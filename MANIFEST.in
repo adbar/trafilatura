@@ -1,0 +1,3 @@
+include README.rst LICENSE tox.ini
+include tests/unit_tests.py
+graft tests/cache/

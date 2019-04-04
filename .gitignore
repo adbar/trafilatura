@@ -1,0 +1,16 @@
+# Compiled python modules.
+*.pyc
+
+# logs
+*.log
+*.txt
+
+# packaging
+dist/
+build/
+*.egg-info/
+
+# tests
+.tox/
+.cache/
+.coverage

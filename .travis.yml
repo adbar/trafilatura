@@ -1,0 +1,43 @@
+sudo: false
+language: python
+dist: xenial
+
+matrix:
+  include:
+    - python: "3.4"
+      env: TOXENV=py34
+    - python: "3.5"
+      env: TOXENV=py35
+    - python: "3.6"
+      env: TOXENV=py36
+    - python: "3.7"
+      env: TOXENV=py37
+    - python: "3.8-dev"
+      env: TOXENV=py38
+  allow_failures:
+    - python: "3.8-dev"
+      env: TOXENV=py38
+  # fast_finish: true
+
+before_install:
+  - pip install lxml
+  - pip install codecov tox
+
+install:
+  - pip install .
+
+script:
+  - tox
+  # - pytest
+  # - coverage run --source htmldate tests/unit_tests.py
+
+after_success:
+  - codecov
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+#cache:
+#  pip: true
