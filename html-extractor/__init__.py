@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Extract the date of web pages, or web archeology in practice.
+Extract the text content of web pages.
 """
 
 ## meta
-__title__ = 'textract'
+__title__ = 'html-extractor'
 __author__ = 'Adrien Barbaresi'
 __license__ = 'GNU GPL v3'
 __copyright__ = 'Copyright 2019, Adrien Barbaresi'

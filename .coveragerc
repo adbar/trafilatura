@@ -1,5 +1,5 @@
 [run]
-source = textract
+source = html-extractor
 
 omit =
     tests/*

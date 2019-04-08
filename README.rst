@@ -1,20 +1,20 @@
-textract: ...
+html-extractor: ...
 ==============================================
 
-.. image:: https://img.shields.io/pypi/v/textract.svg
-    :target: https://pypi.python.org/pypi/textract
+.. image:: https://img.shields.io/pypi/v/html-extractor.svg
+    :target: https://pypi.python.org/pypi/html-extractor
 
-.. image:: https://img.shields.io/pypi/l/textract.svg
-    :target: https://pypi.python.org/pypi/textract
+.. image:: https://img.shields.io/pypi/l/html-extractor.svg
+    :target: https://pypi.python.org/pypi/html-extractor
 
-.. image:: https://img.shields.io/pypi/pyversions/textract.svg
-    :target: https://pypi.python.org/pypi/textract
+.. image:: https://img.shields.io/pypi/pyversions/html-extractor.svg
+    :target: https://pypi.python.org/pypi/html-extractor
 
-.. image:: https://img.shields.io/travis/adbar/textract.svg
-    :target: https://travis-ci.org/adbar/textract
+.. image:: https://img.shields.io/travis/adbar/html-extractor.svg
+    :target: https://travis-ci.org/adbar/html-extractor
 
-.. image:: https://img.shields.io/codecov/c/github/adbar/textract.svg
-    :target: https://codecov.io/gh/adbar/textract
+.. image:: https://img.shields.io/codecov/c/github/adbar/html-extractor.svg
+    :target: https://codecov.io/gh/adbar/html-extractor
 
 
 Description here.

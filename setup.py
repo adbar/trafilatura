@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Seamlessly extract the date of web pages based on header or body.
-http://github.com/adbar/textract
+http://github.com/adbar/html-extractor
 """
 
 from codecs import open # python2
@@ -16,7 +16,7 @@ from setuptools import setup # find_packages,
 
 
 here = os.path.abspath(os.path.dirname(__file__))
-packages = ['textract']
+packages = ['html-extractor']
 
 
 def readme():
@@ -24,7 +24,7 @@ def readme():
         return readmefile.read()
 
 setup(
-    name='textract',
+    name='html-extractor',
     version='0.0.1',
     description='',
     long_description=readme(),
@@ -52,7 +52,7 @@ setup(
         'Topic :: Text Processing :: Markup :: HTML',
     ],
     keywords=['entity-extraction', 'html-extraction', 'html-parsing', 'metadata-extraction',  'webarchives', 'web-scraping'],
-    url='http://github.com/adbar/textract',
+    url='http://github.com/adbar/html-extractor',
     author='Adrien Barbaresi',
     author_email='barbaresi@bbaw.de',
     license='GPLv3+',

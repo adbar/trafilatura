@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Unit tests for the textract library.
+Unit tests for the html-extractor library.
 """
 
 import logging
@@ -8,7 +8,7 @@ import os
 import sys
 # https://docs.pytest.org/en/latest/
 
-import textract
+import html-extractor
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -29,7 +29,7 @@ def load_mock_page(url):
 
 def test_main():
     '''test extraction from HTML'''
-    assert textract.process_record(load_mock_page('https://die-partei.net/sh/'), 'https://die-partei.net/sh/', '0000') is not None
+    assert html-extractor.process_record(load_mock_page('https://die-partei.net/sh/'), 'https://die-partei.net/sh/', '0000') is not None
 
 
 if __name__ == '__main__':

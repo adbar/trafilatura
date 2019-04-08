@@ -3,7 +3,7 @@
 Module bundling all functions needed to extract the text in a webpage.
 """
 
-## This file is available from https://github.com/adbar/textract
+## This file is available from https://github.com/adbar/html-extractor
 ## under GNU GPL v3 license
 
 # compatibility
