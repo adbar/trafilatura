@@ -8,7 +8,7 @@ import os
 import sys
 # https://docs.pytest.org/en/latest/
 
-import html-extractor
+import html_extractor
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -29,7 +29,7 @@ def load_mock_page(url):
 
 def test_main():
     '''test extraction from HTML'''
-    assert html-extractor.process_record(load_mock_page('https://die-partei.net/sh/'), 'https://die-partei.net/sh/', '0000') is not None
+    assert html_extractor.process_record(load_mock_page('https://die-partei.net/sh/'), 'https://die-partei.net/sh/', '0000') is not None
 
 
 if __name__ == '__main__':

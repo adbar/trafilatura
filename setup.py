@@ -16,7 +16,7 @@ from setuptools import setup # find_packages,
 
 
 here = os.path.abspath(os.path.dirname(__file__))
-packages = ['html-extractor']
+packages = ['html_extractor']
 
 
 def readme():
@@ -24,7 +24,7 @@ def readme():
         return readmefile.read()
 
 setup(
-    name='html-extractor',
+    name='html_extractor',
     version='0.0.1',
     description='',
     long_description=readme(),
