@@ -29,7 +29,7 @@ install:
 script:
   - tox
   # - pytest
-  # - coverage run --source htmldate tests/unit_tests.py
+  # - coverage run --source html_extractor tests/unit_tests.py
 
 after_success:
   - codecov

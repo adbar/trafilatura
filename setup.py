@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Seamlessly extract the date of web pages based on header or body.
+Extract the main text of web pages
 http://github.com/adbar/html-extractor
 """
 
@@ -68,7 +68,7 @@ setup(
     ],
     # python_requires='>=3',
     #entry_points = {
-    #    'console_scripts': ['htmldate=htmldate.cli:main'],
+    #    'console_scripts': ['html_extractor=html_extractor.cli:main'],
     #},
     # platforms='any',
     tests_require=['pytest', 'tox'],
