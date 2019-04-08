@@ -28,9 +28,10 @@ import langid
 
 # import regex as re # import re
 
-from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 from lxml import etree, html
 from lxml.html.clean import Cleaner
+from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
+
 
 # own
 # import settings
@@ -196,6 +197,7 @@ slug = ''
 
 # trim text function
 def trim(string):
+    """Remove spaces at the beginning and end of a string"""
     # string = re.sub(r'\n+', '\n', string, re.MULTILINE)
     string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
     # may be superfluous
@@ -204,10 +206,10 @@ def trim(string):
 
 
 ## https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-def recursively_empty(elem):
-    if elem.text:
-        return False
-    return all((recursively_empty(c) for c in elem.iterchildren()))
+#def recursively_empty(elem):
+#    if elem.text:
+#        return False
+#    return all((recursively_empty(c) for c in elem.iterchildren()))
 
 
 def load_html(htmlobject):
@@ -256,6 +258,7 @@ def load_html(htmlobject):
 # main process
 #@profile
 def process_record(filecontent, url, record_id, compare=True):
+    '''Main process for text extraction'''
     postfound = False
     commentsfound = False
     global tokens_posts, tokens_comments, lrutest, slug
@@ -281,9 +284,8 @@ def process_record(filecontent, url, record_id, compare=True):
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     group = etree.SubElement(tei, 'group')
     postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
-    # postbody = etree.SubElement(postelem, 'body')
+    postbody = etree.SubElement(postelem, 'body')
     temppost_hand = etree.Element('body')
-    #postbody.text = body
     commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
     commentsbody = etree.SubElement(commentselem, 'body')
 
@@ -319,12 +321,12 @@ def process_record(filecontent, url, record_id, compare=True):
 
         # print(justtextstring)
 
-        print('# INFO:', len(filecontent), len(justtextstring))
+        logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
         try:
             # paragraphs = custom_justext(tree)
             paragraphs = justext.justext(justtextstring, justext_stoplist)
         except ValueError as err: # ValueError: Input object is not an XML element: HtmlComment
-            print('# ERROR: justext', err, record_id)
+            logger.error('justext %s %s', err, record_id)
             return None
         for paragraph in paragraphs:
             if not paragraph.is_boilerplate:
@@ -459,7 +461,7 @@ def process_record(filecontent, url, record_id, compare=True):
                                     #    elem.attrib.pop(key)
                                     elem.attrib.clear()
                                 # insert
-                                # postbody.insert(100, deepcopy(elem))
+                                postbody.insert(100, deepcopy(elem))
                                 temppost_hand.insert(100, deepcopy(elem))
                                 postfound = True
                             # register non-p elements
@@ -475,9 +477,9 @@ def process_record(filecontent, url, record_id, compare=True):
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
     temp_jt = u' '.join(temppost_algo.itertext())
+    logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
     # condition to use justext
     if len(temp_text) > 1000 and len(temp_jt) > 3*len(temp_text):
-        print('jusText', len(temp_jt), 'extraction', len(temp_text), sep='\t')
         # print(temp_jt)
         postbody = temppost_algo
 
@@ -538,9 +540,9 @@ def process_record(filecontent, url, record_id, compare=True):
     temp_text = u' '.join(postbody.itertext())
     temp_comments = u' '.join(commentsbody.itertext())
     if len(temp_text) < MIN_EXTRACTED_SIZE:
-        print('# ERROR, not enough text', record_id, url)
+        logger.error('not enough text %s %s', record_id, url)
     if len(temp_comments) < comm_length:
-        print('# WARN, not enough comments', record_id, url)
+        logger.warning('not enough comments %s %s', record_id, url)
     if len(temp_text) < MIN_EXTRACTED_SIZE and len(temp_comments) < comm_length:
         return None
 
@@ -555,8 +557,8 @@ def process_record(filecontent, url, record_id, compare=True):
     langresult = langid.classify(langtest)
     if langresult[0] != 'de':
     # if langresult[0] != 'en':
-        print(temp_text)
-        print(langresult, url, record_id)
+        logger.warning('wrong language: %s %s %s', langresult, record_id, url)
+        logger.debug('wrong language: %s %s', langresult, temp_text)
         errors['language'].append(url)
         return None
 
@@ -571,7 +573,7 @@ def process_record(filecontent, url, record_id, compare=True):
         if element.tag not in tei_valid:
             # disable warnings for chosen categories
             if element.tag not in ('div', 'span'):
-                print('WARN: not a TEI element, removing', element.tag, record_id)
+                logger.warning('not a TEI element, removing: %s %s', element.tag, record_id)
             # append text AND tail to parent
             full_text = ''
             if element.text is not None and element.tail is not None:
@@ -599,7 +601,7 @@ def process_record(filecontent, url, record_id, compare=True):
         # check attributes
         for attribute in element.attrib:
             if attribute not in tei_valid_attributes:
-                print('WARN: not a valid TEI attribute, removing', attribute, 'in', element.tag, record_id)
+                logger.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
                 element.attrib.pop(attribute)
         # validate ?
         #if relaxng.validate(tei) is False:
@@ -627,12 +629,16 @@ def process_record(filecontent, url, record_id, compare=True):
         try:
             returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
         except UnicodeDecodeError as err:
-            print('WARN: Unicode error,', err)
+            logger.warning('Unicode error: %s %s', err, record_id)
+
         # return None
 
         return returnstring
     # else
     lrutest[teststring] += 1
+
+    logger.info('tokens posts: %s', tokens_posts)
+    logger.info('tokens comments: %s', tokens_comments)
 
     # return values
     return postbody, commentsbody
@@ -644,7 +650,6 @@ def process_record(filecontent, url, record_id, compare=True):
 # https://chardet.readthedocs.io/en/latest/
 
 
-
 #def custom_justext(htmldom):
 #    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
 #    justext.classify_paragraphs(paragraphs, justext.get_stoplist("German"), length_low=LENGTH_LOW_DEFAULT, \
@@ -652,38 +657,6 @@ def process_record(filecontent, url, record_id, compare=True):
 #        stopwords_high=STOPWORDS_HIGH_DEFAULT, max_link_density=MAX_LINK_DENSITY_DEFAULT, no_headings=NO_HEADINGS_DEFAULT)
 #    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
 #    return paragraphs
-
-
-
-## MAIN
-#if __name__ == "__main__":
-
-#    i = 0
-#    j = 0
-
-    #process_warc('test.warc.gz')
-
-#    for filename in glob.glob('dl-test/warc/2017-08-24_27/*.warc.gz'):
-#        process_warc(filename)
-
-
-        # output control (seen, written, tokens in posts, tokens in comments)
-        #if i % 1000 == 0:
-        #    print('## INFO:', i, j, tokens_posts, tokens_comments, '{0:.2f}' . format(time.time() - start_time), sep='\t')
-
-
-#    ## END output
-#    print('## total', str(i), sep='\t\t') # len(filelist)
-#    for key in errors:
-#        print('# ' + key, len(errors[key]), sep='\t\t')
-#        errfile = 'logs/' + key
-#        with open(errfile, 'a', encoding='utf-8') as writefh:
-#            for item in errors[key]:
-#                writefh.write(item + '\n')
-#    exec_time = time.time() - start_time
-#    print('## tokens posts\t\t', str(tokens_posts))
-#    print('## tokens comments\t', str(tokens_comments))
-#    print('## exec time:\t\t{0:.2f}' . format(exec_time))
 
 
 #all unicode characters from 0x0000 - 0x0020 (33 total) are bad and will be replaced by "" (empty string)
