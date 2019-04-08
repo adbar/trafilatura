@@ -14,7 +14,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 MOCK_PAGES = { \
-'https://die-partei.net/sh/': 'die-partei.net.sh.html', \
+'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': 'die-partei.net.luebeck.html', \
+'https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html': 'bmjv.de.konsum.html', \
 }
 # '': '', \
 
@@ -27,10 +28,22 @@ def load_mock_page(url):
         htmlstring = inputf.read()
     return htmlstring
 
+def test_trim():
+    '''test string trimming'''
+    assert html_extractor.trim('	Test  ') == 'Test'
+    assert html_extractor.trim('\t\tTest  Test\r\n') == 'Test Test'
+
 def test_main():
     '''test extraction from HTML'''
-    assert html_extractor.process_record(load_mock_page('https://die-partei.net/sh/'), 'https://die-partei.net/sh/', '0000') is not None
+    url = 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/'
+    result = html_extractor.process_record(load_mock_page(url), url, '0000')
+    assert 'Impressum' not in result and 'Die GEMA dreht völlig am Zeiger!' in result
+    url = 'https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html'
+    result = html_extractor.process_record(load_mock_page(url), url, '0000')
+    assert 'Impressum' not in result and 'Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol' in result
+
 
 
 if __name__ == '__main__':
+    test_trim()
     test_main()
