@@ -4,7 +4,7 @@ Extract the text content of web pages.
 """
 
 ## meta
-__title__ = 'html-extractor'
+__title__ = 'html_extractor'
 __author__ = 'Adrien Barbaresi'
 __license__ = 'GNU GPL v3'
 __copyright__ = 'Copyright 2019, Adrien Barbaresi'
