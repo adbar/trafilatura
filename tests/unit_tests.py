@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Unit tests for the htmldate library.
+Unit tests for the textract library.
 """
 
 import logging
@@ -14,9 +14,9 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 MOCK_PAGES = { \
-'http://blog.python.org/2016/12/python-360-is-now-available.html': 'blog.python.org.html', \
+'https://die-partei.net/sh/': 'die-partei.net.sh.html', \
 }
-# 
+# '': '', \
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -27,6 +27,10 @@ def load_mock_page(url):
         htmlstring = inputf.read()
     return htmlstring
 
+def test_main():
+    '''test extraction from HTML'''
+    assert textract.process_record(load_mock_page('https://die-partei.net/sh/'), 'https://die-partei.net/sh/', '0000') is not None
+
 
 if __name__ == '__main__':
-    load_mock_page()
+    test_main()

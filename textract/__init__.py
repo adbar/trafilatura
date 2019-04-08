@@ -12,6 +12,7 @@ __version__ = '0.0.1'
 
 ## imports
 from .core import *
+from .settings import *
 
 ## logging best practices
 # http://docs.python-guide.org/en/latest/writing/logging/
