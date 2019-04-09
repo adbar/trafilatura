@@ -16,6 +16,9 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 MOCK_PAGES = { \
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': 'die-partei.net.luebeck.html', \
 'https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html': 'bmjv.de.konsum.html', \
+'http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/': 'kulinariaathome.com.mandelplätzchen.html', \
+'https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/': 'denkanstoos.com.2012.html', \
+'http://bunterepublik.wordpress.com/2012/04/13/schwafelrunde-ohne-ritter/': 'bunterepublik.com.schwafelrunde.html', \
 }
 # '': '', \
 
@@ -26,7 +29,8 @@ def load_mock_page(url):
     '''load mock page from samples'''
     with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
         htmlstring = inputf.read()
-    return htmlstring
+    result = html_extractor.process_record(htmlstring, url, '0000')
+    return result
 
 def test_trim():
     '''test string trimming'''
@@ -35,12 +39,23 @@ def test_trim():
 
 def test_main():
     '''test extraction from HTML'''
-    url = 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/'
-    result = html_extractor.process_record(load_mock_page(url), url, '0000')
+    result = load_mock_page('https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/')
     assert 'Impressum' not in result and 'Die GEMA dreht völlig am Zeiger!' in result
-    url = 'https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html'
-    result = html_extractor.process_record(load_mock_page(url), url, '0000')
+
+    result = load_mock_page('https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html')
     assert 'Impressum' not in result and 'Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol' in result
+
+    result = load_mock_page('https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/')
+    assert result is None
+
+    result = load_mock_page('http://bunterepublik.wordpress.com/2012/04/13/schwafelrunde-ohne-ritter/')
+    assert 'Abgelegt unter' not in result and 'Nächster Beitrag' not in result and 'Die Schwafelrunde' in result and 'zusammen.' in result
+
+
+    #result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/')
+    #print(result)
+    #assert 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result
+
 
 
 

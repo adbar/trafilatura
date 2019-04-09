@@ -98,6 +98,7 @@ errors['file'], errors['blogname'], errors['title'], errors['url'], errors['desc
 cut_empty_elems = ('div')
 
 text_blacklist = ('Gefällt mir', 'Facebook', 'Twitter', 'Google', 'E-Mail', 'Drucken')
+comments_blacklist = ('( Abmelden / Ändern )')
 
 ## parse
 htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
@@ -349,9 +350,8 @@ def convert_tags(tree):
     return tree
 
 
-def try_justext(tree, filecontent, record_id):
+def try_justext(tree, filecontent, tempelem, record_id):
     '''safety net: try with justext'''
-    tempelem = etree.Element('body')
     # jt = ''
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
     logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
@@ -366,7 +366,8 @@ def try_justext(tree, filecontent, record_id):
             if lrutest.has_key(paragraph.text) is False or lrutest[paragraph.text] <= 2:
                 elem = etree.Element('p')
                 elem.text = paragraph.text
-                tempelem.insert(100, deepcopy(elem))
+                # tempelem.insert(100, deepcopy(elem))
+                tempelem.insert(100, elem)
             # jt += paragraph.text + '</p><p>'
     # jt += '</p>'
     # temp_jt = u' '.join(jt.itertext())
@@ -374,7 +375,7 @@ def try_justext(tree, filecontent, record_id):
     return tempelem
 
 
-def extract_content(tree, postbody, temppost_hand):
+def extract_content(tree, tempelem):
     '''Find and extract the main content of a page using a set of expressions'''
     postfound = False
     for expr in bodyexpr:
@@ -383,6 +384,7 @@ def extract_content(tree, postbody, temppost_hand):
             for element in tree.xpath(expr):
                 if element.tag in tag_catalog: ### potential restriction here
                     elemtext = element.text
+                    # print(element.tag, elemtext)
                     # test length and remove
                     ## delete unwanted
                     if elemtext is None or len(elemtext) < 1: # was 10
@@ -413,8 +415,9 @@ def extract_content(tree, postbody, temppost_hand):
                                     #    elem.attrib.pop(key)
                                     elem.attrib.clear()
                                 # insert
-                                postbody.insert(100, deepcopy(elem))
-                                temppost_hand.insert(100, deepcopy(elem))
+                                # postbody.insert(100, deepcopy(elem))
+                                # tempelem.insert(100, deepcopy(elem))
+                                tempelem.insert(100, elem)
                                 postfound = True
                             # register non-p elements
                             #if elem.tag != 'p':
@@ -424,7 +427,7 @@ def extract_content(tree, postbody, temppost_hand):
                                 lrutest[teststring] += 1
                             else:
                                 lrutest[teststring] = 1
-    return postbody, temppost_hand
+    return tempelem
 
 
 def extract_comments(tree, commentsbody):
@@ -441,7 +444,7 @@ def extract_comments(tree, commentsbody):
                         elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
                         elem.text = trim(elem.text)
                     # test length and remove
-                    if elem.text is None:
+                    if elem.text is None or elem.text in comments_blacklist:
                         elem.getparent().remove(elem)
                         continue
                     # filter potential interesting p elements
@@ -487,7 +490,10 @@ def process_record(filecontent, url, record_id, compare_flag=True):
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     group = etree.SubElement(tei, 'group')
     postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
-    postbody = etree.SubElement(postelem, 'body')
+    # temporary values to be checked
+    temppost_algo = etree.SubElement(postelem, 'body')
+    temppost_hand = etree.SubElement(postelem, 'body')
+    # comments
     commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
     commentsbody = etree.SubElement(commentselem, 'body')
 
@@ -502,41 +508,30 @@ def process_record(filecontent, url, record_id, compare_flag=True):
     tree = convert_tags(tree)
 
     ## extract content
-    postbody, temppost_hand = extract_content(tree, postbody, etree.Element('body'))
+    temppost_hand = extract_content(tree, temppost_hand)
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
     if compare_flag is True:
         # try with justext
-        temppost_algo = try_justext(tree, filecontent, record_id)
+        temppost_algo = try_justext(tree, filecontent, temppost_algo, record_id)
         # compare
         temp_jt = u' '.join(temppost_algo.itertext())
         logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
         # condition to use justext
-        if len(temp_text) > 1000 and len(temp_jt) > 3*len(temp_text):
-            # print(temp_jt)
+        if len(temp_text) > 10 and len(temp_jt) > 3*len(temp_text):
             postbody = temppost_algo
+            temppost_hand.getparent().remove(temppost_hand)
         else:
             postbody = temppost_hand
+            temppost_algo.getparent().remove(temppost_algo)
     else:
         logger.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
+        temppost_algo.getparent().remove(temppost_algo)
 
     # comments
     commentsbody = extract_comments(tree, commentsbody)
-
-    # strip unnecessary tags
-    # etree.strip_tags(postbody, 'span')
-    # etree.strip_tags(postbody, 'div')
-    # etree.strip_tags(commentsbody, 'span')
-
-    # count tokens
-    #if postbody.text is not None and temp_tokens < 5:
-    #    errors['tokens'].append(filename)
-    #    # return 0
-
-    # sanity check on markup
-    # if re.search(r'\[url', u''.join(postbody.itertext()):
 
     # sanity check on length
     temp_text = u' '.join(postbody.itertext())
@@ -607,6 +602,9 @@ def process_record(filecontent, url, record_id, compare_flag=True):
         #    print(relaxng.error_log.last_error)
         # export metadata
         #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
+
+    # sanity check on markup
+    # if re.search(r'\[url', u''.join(postbody.itertext()):
 
     # check duplicates at body level
     # hashvalue = hashlib.md5(' '.join(postbody.itertext()).encode('utf-8')).digest()
