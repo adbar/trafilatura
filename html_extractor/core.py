@@ -255,9 +255,73 @@ def load_html(htmlobject):
     return (tree, htmlstring)
 
 
+def prune_html(tree):
+    '''delete empty elements'''
+    for element in tree.xpath(".//*[not(node())]"):
+        # print(element.tag)
+        if element.tag in cut_empty_elems:
+            element.getparent().remove(element)
+
+    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
+    # Walk over all elements in the tree and remove all nodes that are recursively empty
+    # context = etree.iterwalk(tree)
+    # for action, element in context:
+    #     parent = element.getparent()
+    #     if element.tag in cut_empty_elems and recursively_empty(element):
+    #        print('#2', elem.tag)
+    #        parent.remove(element)
+    return tree
+
+
+def textfilter(elemtext):
+    '''Filter out unwanted text'''
+    elemtext = re.sub(r'^Gef.llt mir.+|^.hnliche Beitr.+', '', elemtext)
+    elemtext = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elemtext)
+    elemtext = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elemtext)
+    elemtext = re.sub(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', '', elemtext)
+    elemtext = trim(elemtext)
+    return elemtext
+
+
+def duplicate_test(teststring):
+    '''Check for duplicate text'''
+    if len(teststring) > MIN_DUPLCHECK_SIZE and lrutest.has_key(teststring) is True:
+        lrutest[teststring] += 1
+        return True
+    if lrutest.has_key(teststring) is True and lrutest[teststring] > 2:
+        lrutest[teststring] += 1
+        return True
+    return False
+
+
+def try_justext(tree, filecontent, record_id):
+    '''safety net: try with justext'''
+    tempelem = etree.Element('body')
+    # jt = ''
+    justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
+    logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
+    try:
+        # paragraphs = custom_justext(tree)
+        paragraphs = justext.justext(justtextstring, justext_stoplist)
+    except ValueError as err: # ValueError: Input object is not an XML element: HtmlComment
+        logger.error('justext %s %s', err, record_id)
+        return None
+    for paragraph in paragraphs:
+        if not paragraph.is_boilerplate:
+            if lrutest.has_key(paragraph.text) is False or lrutest[paragraph.text] <= 2:
+                elem = etree.Element('p')
+                elem.text = paragraph.text
+                tempelem.insert(100, deepcopy(elem))
+            # jt += paragraph.text + '</p><p>'
+    # jt += '</p>'
+    # temp_jt = u' '.join(jt.itertext())
+    # temp_jt = jt
+    return tempelem
+
+
 # main process
 #@profile
-def process_record(filecontent, url, record_id, compare=True):
+def process_record(filecontent, url, record_id, compare_flag=True):
     '''Main process for text extraction'''
     postfound = False
     commentsfound = False
@@ -285,7 +349,6 @@ def process_record(filecontent, url, record_id, compare=True):
     group = etree.SubElement(tei, 'group')
     postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
     postbody = etree.SubElement(postelem, 'body')
-    temppost_hand = etree.Element('body')
     commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
     commentsbody = etree.SubElement(commentselem, 'body')
 
@@ -296,48 +359,7 @@ def process_record(filecontent, url, record_id, compare=True):
 
     ## clean
     tree = cleaner.clean_html(tree)
-
-    # delete empty elements
-    for element in tree.xpath(".//*[not(node())]"):
-        # print(element.tag)
-        if element.tag in cut_empty_elems:
-            element.getparent().remove(element)
-
-    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-    # Walk over all elements in the tree and remove all nodes that are recursively empty
-    # context = etree.iterwalk(tree)
-    # for action, element in context:
-    #     parent = element.getparent()
-    #     if element.tag in cut_empty_elems and recursively_empty(element):
-    #        print('#2', elem.tag)
-    #        parent.remove(element)
-
-
-    ## safety net: try with justext
-    temppost_algo = etree.Element('body')
-    if compare is True:
-        # jt = ''
-        justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
-
-        # print(justtextstring)
-
-        logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
-        try:
-            # paragraphs = custom_justext(tree)
-            paragraphs = justext.justext(justtextstring, justext_stoplist)
-        except ValueError as err: # ValueError: Input object is not an XML element: HtmlComment
-            logger.error('justext %s %s', err, record_id)
-            return None
-        for paragraph in paragraphs:
-            if not paragraph.is_boilerplate:
-                if lrutest.has_key(paragraph.text) is False or lrutest[paragraph.text] <= 2:
-                    elem = etree.Element('p')
-                    elem.text = paragraph.text
-                    temppost_algo.insert(100, deepcopy(elem))
-                # jt += paragraph.text + '</p><p>'
-        # jt += '</p>'
-        # temp_jt = u' '.join(jt.itertext())
-        # temp_jt = jt
+    tree = prune_html(tree)
 
     ## convert tags
     # head
@@ -417,7 +439,8 @@ def process_record(filecontent, url, record_id, compare=True):
         for elem in tree.xpath('//' + delitem):
             elem.getparent().remove(elem)
 
-    ## content
+    ## extract content
+    temppost_hand = etree.Element('body')
     for expr in bodyexpr:
         if postfound is False:
             # extract content
@@ -436,12 +459,7 @@ def process_record(filecontent, url, record_id, compare=True):
                     if elemtext in text_blacklist:
                         elem.getparent().remove(elem)
                         continue
-                    elemtext = re.sub(r'^Gef.llt mir.+|^.hnliche Beitr.+', '', elemtext)
-                    elemtext = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elemtext)
-                    elemtext = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elemtext)
-                    elemtext = re.sub(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', '', elemtext)
-                    elemtext = trim(elemtext)
-                    elem.text = elemtext # replace back
+                    elem.text = textfilter(elemtext) # replace back
 
                     ## filter potential interesting p elements
                     if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
@@ -476,14 +494,20 @@ def process_record(filecontent, url, record_id, compare=True):
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
-    temp_jt = u' '.join(temppost_algo.itertext())
-    logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
-    # condition to use justext
-    if len(temp_text) > 1000 and len(temp_jt) > 3*len(temp_text):
-        # print(temp_jt)
-        postbody = temppost_algo
-
+    if compare_flag is True:
+        # try with justext
+        temppost_algo = try_justext(tree, filecontent, record_id)
+        # compare
+        temp_jt = u' '.join(temppost_algo.itertext())
+        logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
+        # condition to use justext
+        if len(temp_text) > 1000 and len(temp_jt) > 3*len(temp_text):
+            # print(temp_jt)
+            postbody = temppost_algo
+        else:
+            postbody = temppost_hand
     else:
+        logger.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
 
     ## comments
