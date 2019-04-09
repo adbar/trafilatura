@@ -102,8 +102,6 @@ text_blacklist = ('Gefällt mir', 'Facebook', 'Twitter', 'Google', 'E-Mail', 'Dr
 ## parse
 htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
 
-date_expressions = ["//*[starts-with(@id, 'date')]", "//*[starts-with(@class, 'date')]", "//*[starts-with(@class, 'byline')]", "//*[starts-with(@class, 'entry-date')]", "//*[starts-with(@class, 'post-meta')]", "//*[starts-with(@class, 'postmetadata')]"]
-
 # https://github.com/peterc/pismo/blob/master/lib/pismo/lede_matches.rb
 #     {'attr': 'itemprop', 'value': 'articleBody'}, {'attr': 'class', 'value': 'post-content'}, {'tag': 'article'},
 bodyexpr = ["//*[(self::div or self::section)][starts-with(@id, 'entry-content')]//*", \
@@ -156,6 +154,7 @@ commentsexpr = ["//*[(self::div or self::section or self::ol)][starts-with(@id, 
                 "//*[(self::div or self::section)][starts-with(@id, 'comol')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]//*", \
                 "//ul[starts-with(@id, 'dsq-comments')]//*"]
+# <div id="social">
 
 
 # cleaner config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
@@ -192,8 +191,6 @@ lrutest = LRU(LRU_SIZE)
 # justext
 justext_stoplist = justext.get_stoplist('German')
 
-# vars
-slug = ''
 
 # trim text function
 def trim(string):
@@ -256,12 +253,16 @@ def load_html(htmlobject):
 
 
 def prune_html(tree):
-    '''delete empty elements'''
+    '''delete empty and unwanted elements'''
+    # empty tags
     for element in tree.xpath(".//*[not(node())]"):
         # print(element.tag)
         if element.tag in cut_empty_elems:
             element.getparent().remove(element)
-
+    # remove tags
+    for delitem in delete_tags:
+        for elem in tree.xpath('//' + delitem):
+            elem.getparent().remove(elem)
     # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
     # Walk over all elements in the tree and remove all nodes that are recursively empty
     # context = etree.iterwalk(tree)
@@ -294,6 +295,60 @@ def duplicate_test(teststring):
     return False
 
 
+def convert_tags(tree):
+    # head tags + delete attributes
+    for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
+        elem.attrib.clear()
+        elem.tag = 'head'
+        elem.set('rendition', '#i')
+    # delete p attributes
+    for elem in tree.xpath('//p'):
+        elem.attrib.clear()
+    # br → lb
+    for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
+        elem.tag = 'lb'
+        elem.attrib.clear()
+    # ul/ol → list / li → item
+    for elem in tree.xpath('//ul|//ol|//dl'):
+        elem.tag = 'list'
+        elem.attrib.clear()
+        # change children
+        #for child in elem.iter():
+        #    if child.tag == 'li' or child.tag == 'dt':
+        #        child.tag = 'item'
+        for child in elem.xpath('//li|//dt'):
+            child.tag = 'item'
+    # blockquote | q → quote
+    for elem in tree.xpath('//blockquote|//q'):
+        elem.tag = 'quote'
+    # change rendition #i
+    for elem in tree.xpath('//em|//i'):
+        elem.attrib.clear()
+        elem.tag = 'hi'
+        elem.set('rendition', '#i')
+    # change rendition #b
+    for elem in tree.xpath('//b|//strong'):
+        elem.attrib.clear()
+        elem.tag = 'hi'
+        elem.set('rendition', '#b')
+    # change rendition #u (very rare)
+    for elem in tree.xpath('//u'):
+        elem.tag = 'hi'
+        elem.set('rendition', '#u')
+    # change rendition #t (very rare)
+    for elem in tree.xpath('//tt'):
+        elem.tag = 'hi'
+        elem.set('rendition', '#t')
+    # del | s | strike → <del rend="overstrike">
+    for elem in tree.xpath('//del|//s|//strike'):
+        elem.attrib.clear()
+        elem.tag = 'del'
+        elem.set('rendition', 'overstrike')
+    # strip tags
+    etree.strip_tags(tree, 'a', 'dd')
+    return tree
+
+
 def try_justext(tree, filecontent, record_id):
     '''safety net: try with justext'''
     tempelem = etree.Element('body')
@@ -319,134 +374,13 @@ def try_justext(tree, filecontent, record_id):
     return tempelem
 
 
-# main process
-#@profile
-def process_record(filecontent, url, record_id, compare_flag=True):
-    '''Main process for text extraction'''
+def extract_content(tree, postbody, temppost_hand):
+    '''Find and extract the main content of a page using a set of expressions'''
     postfound = False
-    commentsfound = False
-    global tokens_posts, tokens_comments, lrutest, slug
-    slug = None
-
-    # try to read non-unicode as latin1
-    #if len(filecontent) < 1:
-    #    with open(filename, 'r', encoding='iso-8859-1') as inputfh:
-    #        filecontent = inputfh.read()
-    #        try:
-    #            filecontent = ftfy.fix_text(filecontent, fix_entities=False, fix_encoding=True, fix_surrogates=True)
-    #        except UnicodeDecodeError:
-    #            print('WARN: unicode repair failed', filename)
-    #        if len(filecontent) < 1:
-    #            errors['file'].append(filename)
-    #            print('ERROR: encoding', filename)
-    #            return None
-
-    # init
-    tree, htmlstring = load_html(filecontent)
-    logger.debug('starting')
-
-    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-    group = etree.SubElement(tei, 'group')
-    postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
-    postbody = etree.SubElement(postelem, 'body')
-    commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
-    commentsbody = etree.SubElement(commentselem, 'body')
-
-    # valid or not?
-    # tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
-    #if slug == 'kulinariaathome.wordpress.com':
-    #    print(etree.tostring(tree, pretty_print=True, encoding='unicode'))
-
-    ## clean
-    tree = cleaner.clean_html(tree)
-    tree = prune_html(tree)
-
-    ## convert tags
-    # head
-    for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
-        # delete attributes
-        # for elemkey in elem.attrib:
-        #    elem.attrib.pop(elemkey)
-        elem.attrib.clear()
-        elem.tag = 'head'
-        elem.set('rendition', '#i')
-    # delete p attributes
-    for elem in tree.xpath('//p'):
-        # for elemkey in elem.attrib:
-        #    elem.attrib.pop(elemkey)
-        elem.attrib.clear()
-    # br → lb
-    for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
-        elem.tag = 'lb'
-        # delete attributes
-        # for elemkey in elem.attrib:
-        #    elem.attrib.pop(elemkey)
-        elem.attrib.clear()
-    # ul/ol → list / li → item
-    for elem in tree.xpath('//ul|//ol|//dl'):
-        elem.tag = 'list'
-        # delete attributes
-        # for key in elem.attrib:
-        #    elem.attrib.pop(key)
-        elem.attrib.clear()
-        # change children
-        #for child in elem.iter():
-        #    if child.tag == 'li' or child.tag == 'dt':
-        #        child.tag = 'item'
-        for child in elem.xpath('//li|//dt'):
-            child.tag = 'item'
-    # blockquote | q → quote
-    for elem in tree.xpath('//blockquote|//q'):
-        elem.tag = 'quote'
-    # change rendition
-    for elem in tree.xpath('//em|//i'):
-        # delete attributes
-        # for key in elem.attrib:
-        #    elem.attrib.pop(key)
-        elem.attrib.clear()
-        # change tag
-        elem.tag = 'hi'
-        elem.set('rendition', '#i')
-    for elem in tree.xpath('//b|//strong'):
-        # delete attributes
-        # for key in elem.attrib:
-        #    elem.attrib.pop(key)
-        elem.attrib.clear()
-        # change tag
-        elem.tag = 'hi'
-        elem.set('rendition', '#b')
-    for elem in tree.xpath('//u'):
-        # change tag
-        elem.tag = 'hi'
-        elem.set('rendition', '#u')
-    for elem in tree.xpath('//tt'):
-        # change tag
-        elem.tag = 'hi'
-        elem.set('rendition', '#t')
-    # del | s | strike → <del rend="overstrike">
-    for elem in tree.xpath('//del|//s|//strike'):
-        # delete attributes
-        # for key in elem.attrib:
-        #    elem.attrib.pop(key)
-        elem.attrib.clear()
-        # change tag
-        elem.tag = 'del'
-        elem.set('rendition', 'overstrike')
-    # strip tags
-    etree.strip_tags(tree, 'a', 'dd')
-    # remove tags
-    for delitem in delete_tags:
-        for elem in tree.xpath('//' + delitem):
-            elem.getparent().remove(elem)
-
-    ## extract content
-    temppost_hand = etree.Element('body')
     for expr in bodyexpr:
         if postfound is False:
             # extract content
             for element in tree.xpath(expr):
-                #if slug == 'kulinariaathome.wordpress.com':
-                #    print(etree.tostring(tree, pretty_print=True, encoding='unicode'))
                 if element.tag in tag_catalog: ### potential restriction here
                     elemtext = element.text
                     # test length and remove
@@ -490,7 +424,85 @@ def process_record(filecontent, url, record_id, compare_flag=True):
                                 lrutest[teststring] += 1
                             else:
                                 lrutest[teststring] = 1
+    return postbody, temppost_hand
 
+
+def extract_comments(tree, commentsbody):
+    '''Try and extract comments out of potential sections in the HTML'''
+    commentsfound = False
+    for expr in commentsexpr:
+        if commentsfound is False:
+            # extract content
+            for elem in tree.xpath(expr):
+                if elem.tag in tag_catalog:
+                   # delete unwanted
+                    if elem.text:
+                        elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
+                        elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
+                        elem.text = trim(elem.text)
+                    # test length and remove
+                    if elem.text is None:
+                        elem.getparent().remove(elem)
+                        continue
+                    # filter potential interesting p elements
+                    if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
+                        if elem.text and re.search(r'\w', elem.text):
+                            teststring = ' '.join(elem.itertext()).encode('utf-8')
+                            if lrutest.has_key(teststring) is True: # or lrutest[teststring] <= 1:
+                                lrutest[teststring] += 1
+                            else:
+                                # delete attributes
+                                #for key in elem.attrib:
+                                #    elem.attrib.pop(key)
+                                # insert if words
+                                commentsbody.insert(100, deepcopy(elem))
+                                lrutest[teststring] = 1
+                                commentsfound = True
+    return commentsbody
+
+
+# main process
+#@profile
+def process_record(filecontent, url, record_id, compare_flag=True):
+    '''Main process for text extraction'''
+    global tokens_posts, tokens_comments, lrutest
+
+    # try to read non-unicode as latin1
+    #if len(filecontent) < 1:
+    #    with open(filename, 'r', encoding='iso-8859-1') as inputfh:
+    #        filecontent = inputfh.read()
+    #        try:
+    #            filecontent = ftfy.fix_text(filecontent, fix_entities=False, fix_encoding=True, fix_surrogates=True)
+    #        except UnicodeDecodeError:
+    #            print('WARN: unicode repair failed', filename)
+    #        if len(filecontent) < 1:
+    #            errors['file'].append(filename)
+    #            print('ERROR: encoding', filename)
+    #            return None
+
+    # init
+    tree, htmlstring = load_html(filecontent)
+    logger.debug('starting')
+
+    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    group = etree.SubElement(tei, 'group')
+    postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
+    postbody = etree.SubElement(postelem, 'body')
+    commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
+    commentsbody = etree.SubElement(commentselem, 'body')
+
+    # valid or not?
+    # tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
+
+    ## clean
+    tree = cleaner.clean_html(tree)
+    tree = prune_html(tree)
+
+    ## convert tags
+    tree = convert_tags(tree)
+
+    ## extract content
+    postbody, temppost_hand = extract_content(tree, postbody, etree.Element('body'))
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
@@ -510,42 +522,8 @@ def process_record(filecontent, url, record_id, compare_flag=True):
         logger.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
 
-    ## comments
-    # <div id="social">
-    for expr in commentsexpr:
-        if commentsfound is False:
-            # extract content
-            for elem in tree.xpath(expr):
-                if elem.tag in tag_catalog:
-                   # delete unwanted
-                    if elem.text:
-                        elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
-                        elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
-                        elem.text = trim(elem.text)
-                    # test length and remove
-                    if elem.text is None:
-                        elem.getparent().remove(elem)
-                        continue
-                    # filter potential interesting p elements
-                    if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
-                        if elem.text and re.search(r'\w', elem.text):
-                            # dupl test
-                            # hashvalue = base64.encodestring(hashlib.md5(u' '.join(elem.itertext())).hexdigest())[:16]
-                            # hashvalue = hashlib.md5(' '.join(elem.itertext()).encode('utf-8')).digest()
-                            teststring = ' '.join(elem.itertext()).encode('utf-8')
-                            if lrutest.has_key(teststring) is True: # or lrutest[teststring] <= 1:
-                                lrutest[teststring] += 1
-                            else:
-                                # delete attributes
-                                #for key in elem.attrib:
-                                #    elem.attrib.pop(key)
-                                # insert if words
-                                commentsbody.insert(100, deepcopy(elem))
-                                lrutest[teststring] = 1
-                                commentsfound = True
-                        # test
-                        #else:
-                        #    dupllist.append(u''.join(elem.itertext()))
+    # comments
+    commentsbody = extract_comments(tree, commentsbody)
 
     # strip unnecessary tags
     # etree.strip_tags(postbody, 'span')
@@ -587,9 +565,6 @@ def process_record(filecontent, url, record_id, compare_flag=True):
         return None
 
 
-    # sanity check on date
-    #elif not date:
-    #    return ('')
     # filter output (strip unwanted elements), just in case
     # check and repair
     for element in tei.xpath('//text/body//*'):
