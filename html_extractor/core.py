@@ -104,57 +104,39 @@ htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
 
 # https://github.com/peterc/pismo/blob/master/lib/pismo/lede_matches.rb
 #     {'attr': 'itemprop', 'value': 'articleBody'}, {'attr': 'class', 'value': 'post-content'}, {'tag': 'article'},
-bodyexpr = ["//*[(self::div or self::section)][starts-with(@id, 'entry-content')]//*", \
-                '//*[(self::div or self::section)][starts-with(@class, "entry-content")]//*', \
-                "//*[(self::div or self::section)][starts-with(@class, 'entry')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'post-text')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'post_text')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'post-content')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'post_content')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'postcontent')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'post-entry')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'postentry')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]//*", \
-                "//*[(self::div or self::section)][@class='postarea']//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'main')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'main')]//*", \
-                '//*[(self::div or self::section)][@role="main"]//*', \
-                "//*[(self::div or self::section)][starts-with(@id, 'main-content')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'main-content')]//*", \
-                '//*[(self::div or self::section)][@id="content-main"]//*', \
-                "//*[(self::div or self::section)][starts-with(@id, 'contents')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'content')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'content')]//*", \
-                '//*[(self::div or self::section)][@class="hyphenate storycontent"]//*', \
-                '//*[(self::div or self::section)][@class="storycontent"]//*', \
-                "//*[(self::div or self::section)][starts-with(@id, 'primary')]//*", \
-                '//article//*', \
-                "//*[(self::div or self::section)][starts-with(@class, 'theme-content')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'blog-content')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'section-content')]//*", \
-                '//*[(self::div or self::section)][@class="art-postcontent"]//*', \
-                '//*[(self::div or self::section)][@class="content section"]//*', \
-                '//*[(self::div or self::section)][@class="post"]//*', \
-                '//*[(self::div or self::section)][@class="single-content"]//*', \
-                "//*[(self::div or self::section)][starts-with(@class, 'article')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]//*", \
-                '//div[@class="cell"]//*']
 
-commentsexpr = ["//*[(self::div or self::section or self::ol)][starts-with(@id, 'commentlist')]//*", \
-                "//*[(self::div or self::section or self::ol)][starts-with(@class, 'commentlist')]//*", \
-                "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comments')]//*", \
-                "//*[(self::div or self::section or self::ol)][starts-with(@class, 'comments')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'comment-text')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'comment-content')]//*", \
-                "//*[(self::div or self::section)][starts-with(@class, 'comment-body')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'comment-section')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'commentspanel')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'comment-form-identity')]//*", \
-                "//ul[starts-with(@id, 'commentlist')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'comol')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]//*", \
-                "//ul[starts-with(@id, 'dsq-comments')]//*"]
-# <div id="social">
+bodyexpr = ['//*[contains(@id, "entry-content") or contains(@class, "entry-content")]//*', \
+            "//*[starts-with(@class, 'entry')]//*", \
+            "//*[contains(@class, 'post-text') or contains(@class, 'post_text')]//*", \
+            "//*[contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]//*", \
+            "//*[contains(@class, 'post-entry') or contains(@class, 'postentry')]//*", \
+            "//*[starts-with(@class, 'post-bodycopy')]//*", \
+            "//*[@class='postarea']//*", \
+            # "//*[starts-with(@id, 'main-content')]//*", \
+            # "//*[starts-with(@class, 'main-content')]//*", \
+            "//*[starts-with(@class, 'main') or starts-with(@id, 'main') or starts-with(@role, 'main')]//*", \
+            '//*[@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]//*', \
+            '//*[contains (@class, "storycontent")]//*', \
+            '//article//*', \
+            "//*[starts-with(@id, 'primary')]//*", \
+            "//*[starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or starts-with(@class, 'section-content') or starts-with(@class, 'single-content')]//*", \
+            '//*[@class="art-postcontent"]//*', \
+            '//*[@class="post"]//*', \
+            "//*[starts-with(@class, 'article')]//*", \
+            "//*[starts-with(@class, 'wpb_text_column')]//*", \
+            '//div[@class="cell"]//*', \
+]
+
+commentsexpr = ["//*[contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
+                "//*[starts-with(@id, 'comments') or starts-with(@class, 'comments')]//*", \
+                "//*[starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]//*", \
+                "//*[starts-with(@id, 'comment-form-identity')]//*", \
+                "//*[starts-with(@id, 'commentlist')]//*", \
+                "//*[starts-with(@id, 'comol')]//*", \
+                "//*[starts-with(@id, 'disqus_thread')]//*", \
+                "//*[starts-with(@id, 'dsq-comments')]//*" \
+                "//*[starts-with(@id, 'social')]//*" \
+]
 
 
 # cleaner config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
@@ -392,41 +374,39 @@ def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
     postfound = False
     tempelem = etree.Element('body')
-    for expr in bodyexpr:
-        if postfound is False:
-            # extract content
-            for element in tree.xpath(expr):
-                if element.tag in tag_catalog: ### potential restriction here
-                    elemtext = element.text
-                    # print(element.tag, elemtext)
-                    # test length and remove
-                    ## delete unwanted
-                    if elemtext is None or len(elemtext) < 1: # was 10
-                        element.getparent().remove(element)
-                        continue
-                    # replace by temporary tag
-                    elem = element
-                    if elemtext in text_blacklist:
-                        elem.getparent().remove(elem)
-                        continue
-                    elem.text = textfilter(elemtext) # replace back
+    ## div, section, article or ul
+    for subtree in tree.xpath('//*[(self::article or self::div or self::section or self::ul)]'):
+        for expr in bodyexpr:
+            if postfound is False:
+                # extract content
+                for element in subtree.xpath(expr):
+                    if element.tag in tag_catalog: ### potential restriction here
+                        elemtext = element.text
+                        ## delete unwanted
+                        if elemtext is None or len(elemtext) < 1: # was 10
+                            element.getparent().remove(element)
+                            continue
+                        # replace by temporary tag
+                        elem = element
+                        if elemtext in text_blacklist:
+                            elem.getparent().remove(elem)
+                            continue
+                        elem.text = textfilter(elemtext) # replace back
 
-                    ## filter potential interesting p elements
-                    if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
-                        if elem.text and re.search(r'\w', elem.text):
-                            if duplicate_test(elem) is True:
-                                continue
-                            # filter attributes
-                            if elem.tag == 'p': #  or elem.tag == 'item'
-                                # for key in elem.attrib:
-                                #    elem.attrib.pop(key)
-                                elem.attrib.clear()
-                            # insert
-                            tempelem.append(elem)
-                            postfound = True
-                        # register non-p elements
-                        #if elem.tag != 'p':
-                        #    teststring = ' '.join(elem.itertext()).encode('utf-8')
+                        ## filter potential interesting p elements
+                        if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
+                            if elem.text and re.search(r'\w', elem.text):
+                                if duplicate_test(elem) is True:
+                                    continue
+                                # filter attributes
+                                if elem.tag == 'p': #  or elem.tag == 'item'
+                                    elem.attrib.clear()
+                                # insert
+                                tempelem.append(elem)
+                                postfound = True
+                            # register non-p elements
+                            #if elem.tag != 'p':
+                            #    teststring = ' '.join(elem.itertext()).encode('utf-8')
     return tempelem
 
 
@@ -434,32 +414,30 @@ def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
     commentsfound = False
     commentsbody = etree.Element('body')
-    for expr in commentsexpr:
-        if commentsfound is False:
-            # extract content
-            for elem in tree.xpath(expr):
-                if elem.tag in tag_catalog:
-                   # delete unwanted
-                   ## TODO: text filter
-                    if elem.text:
-                        elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
-                        elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
-                        elem.text = trim(elem.text)
-                    # test length and remove
-                    if elem.text is None or elem.text in comments_blacklist:
-                        elem.getparent().remove(elem)
-                        continue
-                    # filter potential interesting p elements
-                    if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
-                        if elem.text and re.search(r'\w', elem.text):
-                            if duplicate_test(elem) is True:
-                                continue
-                            # delete attributes
-                            #for key in elem.attrib:
-                            #    elem.attrib.pop(key)
-                            # insert if words
-                            commentsbody.append(elem)
-                            commentsfound = True
+    for subtree in tree.xpath('//*[(self::div or self::ol or self::section or self::ul)]'):
+        for expr in commentsexpr:
+            if commentsfound is False:
+                # extract content
+                for elem in subtree.xpath(expr):
+                    if elem.tag in tag_catalog:
+                        # delete unwanted
+                        ## TODO: text filter
+                        if elem.text:
+                            elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
+                            elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
+                            elem.text = trim(elem.text)
+                        # test length and remove
+                        if elem.text is None or elem.text in comments_blacklist:
+                            elem.getparent().remove(elem)
+                            continue
+                        # filter potential interesting p elements
+                        if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
+                            if elem.text and re.search(r'\w', elem.text):
+                                if duplicate_test(elem) is True:
+                                    continue
+                                # insert if words
+                                commentsbody.append(elem)
+                                commentsfound = True
     return commentsbody
 
 
@@ -525,22 +503,8 @@ def check_tei(tei, record_id):
 #@profile
 def process_record(filecontent, url, record_id, compare_flag=True, tei_output=True):
     '''Main process for text extraction'''
-    global tokens_posts, tokens_comments, lrutest
-
-    # try to read non-unicode as latin1
-    #if len(filecontent) < 1:
-    #    with open(filename, 'r', encoding='iso-8859-1') as inputfh:
-    #        filecontent = inputfh.read()
-    #        try:
-    #            filecontent = ftfy.fix_text(filecontent, fix_entities=False, fix_encoding=True, fix_surrogates=True)
-    #        except UnicodeDecodeError:
-    #            print('WARN: unicode repair failed', filename)
-    #        if len(filecontent) < 1:
-    #            errors['file'].append(filename)
-    #            print('ERROR: encoding', filename)
-    #            return None
-
     # init
+    global tokens_posts, tokens_comments, lrutest
     tree = load_html(filecontent)
     logger.debug('starting')
 

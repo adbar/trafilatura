@@ -40,6 +40,7 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 def load_mock_page(url):
     '''load mock page from samples'''
+    # TODO: https://chardet.readthedocs.io/en/latest/usage.html
     try:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
             htmlstring = inputf.read()
