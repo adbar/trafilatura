@@ -476,6 +476,51 @@ def write_teitree(postbody, commentsbody):
     return tei
 
 
+def check_tei(tei, record_id):
+    '''Check if the resulting XML file is conform and scrub remaining tags'''
+    for element in tei.xpath('//text/body//*'):
+        # check elements
+        if element.tag not in tei_valid:
+            # disable warnings for chosen categories
+            if element.tag not in ('div', 'span'):
+                logger.warning('not a TEI element, removing: %s %s', element.tag, record_id)
+            # append text AND tail to parent
+            full_text = ''
+            if element.text is not None and element.tail is not None:
+                full_text = element.text + ' ' + element.tail
+            elif element.text is not None and element.tail is None:
+                full_text = element.text
+            elif element.text is None and element.tail is not None:
+                full_text = element.tail
+            parent = element.getparent()
+            previous = element.getprevious()
+            if previous is not None:
+                # There is a previous node, append text to its tail
+                if previous.tail is not None:
+                    previous.tail += ' ' + full_text
+                else:
+                    previous.tail = full_text
+            else:
+                # It's the first node in <parent/>, append to parent's text
+                if parent.text is not None:
+                    parent.text += ' ' + full_text
+                else:
+                    parent.text = full_text
+            parent.remove(element)
+            continue
+        # check attributes
+        for attribute in element.attrib:
+            if attribute not in tei_valid_attributes:
+                logger.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
+                element.attrib.pop(attribute)
+    # validate ?
+    #if relaxng.validate(tei) is False:
+    #    print(relaxng.error_log.last_error)
+    # export metadata
+    #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
+    return tei
+
+
 # main process
 #@profile
 def process_record(filecontent, url, record_id, compare_flag=True, tei_output=True):
@@ -500,13 +545,15 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     logger.debug('starting')
 
     # valid or not?
-    # tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
+    tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
 
     ## clean
     tree = cleaner.clean_html(tree)
     tree = prune_html(tree)
 
     ## convert tags
+    ## does not work without conversion
+    # if tei_output is True:
     tree = convert_tags(tree)
 
     ## extract content
@@ -521,7 +568,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
         temp_jt = u' '.join(temppost_algo.itertext())
         logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
         # condition to use justext
-        if len(temp_text) > 10 and len(temp_jt) > 3*len(temp_text):
+        if len(temp_text) > 10 and len(temp_jt) > 2*len(temp_text):
             postbody = temppost_algo
         else:
             postbody = temppost_hand
@@ -561,67 +608,34 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     cache(postbody)
     cache(commentsbody)
 
-    ## build TEI tree
-    # if tei_output is True:
-    tei = write_teitree(postbody, commentsbody)
-
-    # filter output (strip unwanted elements), just in case
-    # check and repair
-    for element in tei.xpath('//text/body//*'):
-        # check elements
-        if element.tag not in tei_valid:
-            # disable warnings for chosen categories
-            if element.tag not in ('div', 'span'):
-                logger.warning('not a TEI element, removing: %s %s', element.tag, record_id)
-            # append text AND tail to parent
-            full_text = ''
-            if element.text is not None and element.tail is not None:
-                full_text = element.text + ' ' + element.tail
-            elif element.text is not None and element.tail is None:
-                full_text = element.text
-            elif element.text is None and element.tail is not None:
-                full_text = element.tail
-            parent = element.getparent()
-            previous = element.getprevious()
-            if previous is not None:
-                # There is a previous node, append text to its tail
-                if previous.tail is not None:
-                    previous.tail += ' ' + full_text
-                else:
-                    previous.tail = full_text
-            else:
-                # It's the first node in <parent/>, append to parent's text
-                if parent.text is not None:
-                    parent.text += ' ' + full_text
-                else:
-                    parent.text = full_text
-            parent.remove(element)
-            continue
-        # check attributes
-        for attribute in element.attrib:
-            if attribute not in tei_valid_attributes:
-                logger.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
-                element.attrib.pop(attribute)
-        # validate ?
-        #if relaxng.validate(tei) is False:
-        #    print(relaxng.error_log.last_error)
-        # export metadata
-        #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
+    # XML TEI steps
+    if tei_output is True:
+        # build TEI tree
+        output = write_teitree(postbody, commentsbody)
+        # filter output (strip unwanted elements), just in case
+        # check and repair
+        output = check_tei(output, record_id)
+    else:
+       output = etree.Element('root')
+       postelem = etree.SubElement(output, 'text')
+       postelem.append(postbody)
+       commentselem = etree.SubElement(output, 'comments')
+       commentselem.append(commentsbody)
 
     # sanity check on markup
     # if re.search(r'\[url', u''.join(postbody.itertext()):
 
     # check duplicates at body level
-    # hashvalue = hashlib.md5(' '.join(postbody.itertext()).encode('utf-8')).digest()
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
     if lrutest.has_key(teststring) is False:
-        lrutest[teststring] = 1
+        # lrutest[teststring] = 1
         tokens_posts += len(re.findall(r'\w+', u' '.join(postbody.itertext()), re.UNICODE))
         tokens_comments += len(re.findall(r'\w+', u' '.join(commentsbody.itertext()), re.UNICODE))
-        returnstring = etree.tostring(tei, pretty_print=True, encoding='unicode')  # , date xml_declaration=True,
-        # <hi> space hack
-        returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
-        returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
+        returnstring = etree.tostring(output, pretty_print=True, encoding='unicode') # xml_declaration=True,
+        if tei_output is True:
+            # <hi> space hack
+            returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
+            returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
         # &#13; (space) hack
         returnstring = re.sub(r'&#13;', '', returnstring)
         # filter out empty lines
@@ -636,14 +650,17 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
         # return None
 
         return returnstring
-    # else
-    lrutest[teststring] += 1
 
-    logger.info('tokens posts: %s', tokens_posts)
-    logger.info('tokens comments: %s', tokens_comments)
+    # else
+    # lrutest[teststring] += 1
+
+    #logger.info('tokens posts: %s', tokens_posts)
+    #logger.info('tokens comments: %s', tokens_comments)
 
     # return values
-    return postbody, commentsbody
+    # return postbody, commentsbody
+    # return tei
+    return None
 
 
 ## TODO: unicode test
