@@ -17,7 +17,6 @@ import logging
 import re
 
 from collections import OrderedDict
-from copy import deepcopy
 from io import StringIO # python3
 
 
@@ -216,7 +215,7 @@ def load_html(htmlobject):
         # copy tree
         tree = htmlobject
         # derive string
-        htmlstring = html.tostring(htmlobject, encoding='unicode')
+        # htmlstring = html.tostring(htmlobject, encoding='unicode')
     elif isinstance(htmlobject, str):
         # the string is a URL, download it
         #if re.match(r'https?://', htmlobject):
@@ -226,12 +225,12 @@ def load_html(htmlobject):
         #        htmlstring = rget.text
         # copy string
         #else:
-        htmlstring = htmlobject
+        # htmlstring = htmlobject
         ## robust parsing
         try:
             # parse
             # parser = html.HTMLParser() # encoding='utf8'
-            tree = html.parse(StringIO(htmlstring), parser=htmlparser)
+            tree = html.parse(StringIO(htmlobject), parser=htmlparser)
             ## TODO: clean page?
             # cleaner.clean_html(html.parse(StringIO(filecontent), htmlparser))
             # tree = html.fromstring(html.encode('utf8'), parser=htmlparser)
@@ -249,8 +248,8 @@ def load_html(htmlobject):
     else:
         logger.error('this type cannot be processed: %s', type(htmlobject))
         tree = None
-        htmlstring = None
-    return (tree, htmlstring)
+        # htmlstring = None
+    return tree
 
 
 def prune_html(tree):
@@ -285,18 +284,32 @@ def textfilter(elemtext):
     return elemtext
 
 
-def duplicate_test(teststring):
+def cache(body):
+    '''Implement LRU cache'''
+    global lrutest
+    for element in body:
+        # teststring = ' '.join(element.itertext()).encode('utf-8')
+        teststring = element.text
+        if lrutest.has_key(teststring) is True:
+            lrutest[teststring] += 1
+        else:
+            lrutest[teststring] = 1
+
+
+def duplicate_test(element):
     '''Check for duplicate text'''
-    if len(teststring) > MIN_DUPLCHECK_SIZE and lrutest.has_key(teststring) is True:
-        lrutest[teststring] += 1
-        return True
-    if lrutest.has_key(teststring) is True and lrutest[teststring] > 2:
-        lrutest[teststring] += 1
-        return True
+    global lrutest
+    # teststring = ' '.join(element.itertext()).encode('utf-8')
+    teststring = element.text
+    if len(teststring) > MIN_DUPLCHECK_SIZE:
+        if lrutest.has_key(teststring) is True and lrutest[teststring] > 2:
+            # lrutest[teststring] += 1
+            return True
     return False
 
 
 def convert_tags(tree):
+    '''Convert relevant HTML tags to XML TEI format'''
     # head tags + delete attributes
     for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
         elem.attrib.clear()
@@ -350,9 +363,9 @@ def convert_tags(tree):
     return tree
 
 
-def try_justext(tree, filecontent, tempelem, record_id):
+def try_justext(tree, filecontent, record_id):
     '''safety net: try with justext'''
-    # jt = ''
+    tempelem = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
     logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
     try:
@@ -363,11 +376,11 @@ def try_justext(tree, filecontent, tempelem, record_id):
         return None
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
-            if lrutest.has_key(paragraph.text) is False or lrutest[paragraph.text] <= 2:
+            # if lrutest.has_key(paragraph.text) is False or lrutest[paragraph.text] <= 2:
+            if duplicate_test(paragraph) is not True:
                 elem = etree.Element('p')
                 elem.text = paragraph.text
-                # tempelem.insert(100, deepcopy(elem))
-                tempelem.insert(100, elem)
+                tempelem.append(elem)
             # jt += paragraph.text + '</p><p>'
     # jt += '</p>'
     # temp_jt = u' '.join(jt.itertext())
@@ -375,9 +388,10 @@ def try_justext(tree, filecontent, tempelem, record_id):
     return tempelem
 
 
-def extract_content(tree, tempelem):
+def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
     postfound = False
+    tempelem = etree.Element('body')
     for expr in bodyexpr:
         if postfound is False:
             # extract content
@@ -400,45 +414,33 @@ def extract_content(tree, tempelem):
                     ## filter potential interesting p elements
                     if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
                         if elem.text and re.search(r'\w', elem.text):
-                            teststring = ' '.join(elem.itertext()).encode('utf-8')
-                            ## insert if words + not spam
-                            if len(teststring) > MIN_DUPLCHECK_SIZE and lrutest.has_key(teststring) is True:
-                                lrutest[teststring] += 1
+                            if duplicate_test(elem) is True:
                                 continue
-                            elif lrutest.has_key(teststring) is True and lrutest[teststring] > 2:
-                                lrutest[teststring] += 1
-                                continue
-                            else:
-                                # filter attributes
-                                if elem.tag == 'p': #  or elem.tag == 'item'
-                                    # for key in elem.attrib:
-                                    #    elem.attrib.pop(key)
-                                    elem.attrib.clear()
-                                # insert
-                                # postbody.insert(100, deepcopy(elem))
-                                # tempelem.insert(100, deepcopy(elem))
-                                tempelem.insert(100, elem)
-                                postfound = True
-                            # register non-p elements
-                            #if elem.tag != 'p':
-                            #    teststring = ' '.join(elem.itertext()).encode('utf-8')
-                            # teststring
-                            if lrutest.has_key(teststring) is True:
-                                lrutest[teststring] += 1
-                            else:
-                                lrutest[teststring] = 1
+                            # filter attributes
+                            if elem.tag == 'p': #  or elem.tag == 'item'
+                                # for key in elem.attrib:
+                                #    elem.attrib.pop(key)
+                                elem.attrib.clear()
+                            # insert
+                            tempelem.append(elem)
+                            postfound = True
+                        # register non-p elements
+                        #if elem.tag != 'p':
+                        #    teststring = ' '.join(elem.itertext()).encode('utf-8')
     return tempelem
 
 
-def extract_comments(tree, commentsbody):
+def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
     commentsfound = False
+    commentsbody = etree.Element('body')
     for expr in commentsexpr:
         if commentsfound is False:
             # extract content
             for elem in tree.xpath(expr):
                 if elem.tag in tag_catalog:
                    # delete unwanted
+                   ## TODO: text filter
                     if elem.text:
                         elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
                         elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
@@ -450,23 +452,33 @@ def extract_comments(tree, commentsbody):
                     # filter potential interesting p elements
                     if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
                         if elem.text and re.search(r'\w', elem.text):
-                            teststring = ' '.join(elem.itertext()).encode('utf-8')
-                            if lrutest.has_key(teststring) is True: # or lrutest[teststring] <= 1:
-                                lrutest[teststring] += 1
-                            else:
-                                # delete attributes
-                                #for key in elem.attrib:
-                                #    elem.attrib.pop(key)
-                                # insert if words
-                                commentsbody.insert(100, deepcopy(elem))
-                                lrutest[teststring] = 1
-                                commentsfound = True
+                            if duplicate_test(elem) is True:
+                                continue
+                            # delete attributes
+                            #for key in elem.attrib:
+                            #    elem.attrib.pop(key)
+                            # insert if words
+                            commentsbody.append(elem)
+                            commentsfound = True
     return commentsbody
+
+
+def write_teitree(postbody, commentsbody):
+    '''Bundle the extracted post and comments into a TEI tree'''
+    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    group = etree.SubElement(tei, 'group')
+    # post
+    postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
+    postelem.append(postbody)
+    # comments
+    commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
+    commentselem.append(commentsbody)
+    return tei
 
 
 # main process
 #@profile
-def process_record(filecontent, url, record_id, compare_flag=True):
+def process_record(filecontent, url, record_id, compare_flag=True, tei_output=True):
     '''Main process for text extraction'''
     global tokens_posts, tokens_comments, lrutest
 
@@ -484,18 +496,8 @@ def process_record(filecontent, url, record_id, compare_flag=True):
     #            return None
 
     # init
-    tree, htmlstring = load_html(filecontent)
+    tree = load_html(filecontent)
     logger.debug('starting')
-
-    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-    group = etree.SubElement(tei, 'group')
-    postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
-    # temporary values to be checked
-    temppost_algo = etree.SubElement(postelem, 'body')
-    temppost_hand = etree.SubElement(postelem, 'body')
-    # comments
-    commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
-    commentsbody = etree.SubElement(commentselem, 'body')
 
     # valid or not?
     # tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
@@ -508,30 +510,27 @@ def process_record(filecontent, url, record_id, compare_flag=True):
     tree = convert_tags(tree)
 
     ## extract content
-    temppost_hand = extract_content(tree, temppost_hand)
+    temppost_hand = extract_content(tree)
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
     if compare_flag is True:
         # try with justext
-        temppost_algo = try_justext(tree, filecontent, temppost_algo, record_id)
+        temppost_algo = try_justext(tree, filecontent, record_id)
         # compare
         temp_jt = u' '.join(temppost_algo.itertext())
         logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
         # condition to use justext
         if len(temp_text) > 10 and len(temp_jt) > 3*len(temp_text):
             postbody = temppost_algo
-            temppost_hand.getparent().remove(temppost_hand)
         else:
             postbody = temppost_hand
-            temppost_algo.getparent().remove(temppost_algo)
     else:
         logger.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
-        temppost_algo.getparent().remove(temppost_algo)
 
     # comments
-    commentsbody = extract_comments(tree, commentsbody)
+    commentsbody = extract_comments(tree)
 
     # sanity check on length
     temp_text = u' '.join(postbody.itertext())
@@ -550,7 +549,6 @@ def process_record(filecontent, url, record_id, compare_flag=True):
     # default
     else:
         langtest = temp_text
-
     langresult = langid.classify(langtest)
     if langresult[0] != 'de':
     # if langresult[0] != 'en':
@@ -559,6 +557,13 @@ def process_record(filecontent, url, record_id, compare_flag=True):
         errors['language'].append(url)
         return None
 
+    # cache elements
+    cache(postbody)
+    cache(commentsbody)
+
+    ## build TEI tree
+    # if tei_output is True:
+    tei = write_teitree(postbody, commentsbody)
 
     # filter output (strip unwanted elements), just in case
     # check and repair
