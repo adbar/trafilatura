@@ -1,0 +1,926 @@
+
+<script type="text/javascript">
+					var ucoz_prerollenable = 1 ;
+					window.ucoz_rndid = '';
+					document.write('<div id="mainadsdv" style="width: 0;height: 0;position: fixed;right: 0px;top: 0px;z-index: 2147483647;margin: 0px;padding: 0px;background: none;">');
+					
+		var ucoz_rndid = '';
+		function uOnDomOrLater(f){
+			if(document.readyState == 'loading') {
+				if(document.addEventListener) {
+					document.addEventListener('DOMContentLoaded',f);
+				} else {
+					window.attachEvent('onload',f);
+				}
+			} else {
+				setTimeout(f,0);
+			}
+		}
+	
+if(ucoz_prerollenable){
+	if (typeof jQuery == 'undefined') {
+		document.write('<scr' + 'ipt type="text/javascript" src="/.s/src/jquery-1.7.2.js"></scr' + 'ipt>');
+	}
+	if (typeof _uWnd == 'undefined') {
+		document.write('<scr' + 'ipt type="text/javascript" src="/.s/src/uwnd.js"></scr' + 'ipt>');
+	}
+	function UranCooks1() {
+		var urantimest = Date.now() / 1000 | 0;
+		document.cookie = 'uaoffc1=' + urantimest + ';domain=.' + window.location.host + ';path=/';
+	}
+	var uPreroll = {
+		ad_duration: 30,
+		top_label: 'реклама',
+		country : 'de',
+		isEnglish: function(){
+			return (['hu','ro','au','gb','hk','in','ie','ca','lv','lt','nz','pk','sg','us','ph','za','jm','ee','br','gr','de','rs','fr','bg','it','pl','es','tr','il','cz'].indexOf(uPreroll.country)>=0);
+		},
+		geo: {
+			city: "Berlin",
+			region: "Berlin"
+		},
+		themes: [
+			{header:'',footer: ''},
+			{
+				header:'<div class="modal"><div class="toppanel"><div id="popup4"><div class="close_popup"><div class="rotate_left"><span></span></div><div class="rotate_right"><span></span></div></div><div class="title_popup"><span class="r_label_top">%s</span><span class="counter"></span></div></div></div>',
+				footer: '<div class="modal_text" id="wrapper_uran_footer"><div><span class="modal_head">Не хотите видеть рекламы вообще?</span><span>Скачайте браузер без рекламы</span></div><div class="modal_text_right"><a href="" target="_blank" class="modal_button">Cкачать URAN</a><a href="" target="_blank" class="modal_icon"><img src="/.s/img/bnr/uran_logo.png"></a></div></div></div>'
+			},
+			{header:'',footer: ''},
+			{
+				header:'<div class="modal modal_4"><div class="toppanel"><div id="popup4"><div class="close_popup"><div class="rotate_left"><span></span></div><div class="rotate_right"><span></span></div></div><div class="title_popup"><span class="r_label_top">%s</span><span class="counter"></span></div></div></div>',
+				footer: '<div class="modal_text"><div><span class="modal_head">Нужен бизнес-сайт?</span><span>Решения для бизнеса на любой вкус и кошелек</span></div><div class="modal_buttons"><a href="" target="_blank" class="modal_button">Создать сайт</a><a href="" target="_blank" class="modal_logo"><img src="/.s/img/bnr/ukit_logo.png"></a></div>'
+			},
+			{header:'',footer: ''}
+		],
+		ga_var_landing: [
+			{theme: 1,url:false,track: 'lpnone'},
+			{theme: 1,url: 'http://uran-browser.ucoz.com/',track: 'lp1'},
+			{theme: 1,url:'http://uran-browser.ucoz.com/index/0-2',track: 'lp2'},
+			{theme: 1,url:'http://uran-browser.ucoz.com/index/0-3',track: 'lp3'},
+			{theme: 1,url:'http://uran-browser.ucoz.com/index/0-4',track: 'lp4'}
+		],
+		user_agent: 'chrome',
+		ukit_data : {
+			getLink: function(lang, server){
+				var idx = Math.floor(Math.random()*this[server][lang].length);
+				return this[server][lang][idx];
+			},
+			getUkitWrapperLink: function(){
+				var idx = Math.floor(Math.random()*this['ukitWrapperLinks'].length);
+				return this['ukitWrapperLinks'][idx];
+			},
+			ru:{
+				text: 'Попробовать на www.ukit.com',
+				vlink: '/.s/flash/bnr/TRY4-HD.mp4'
+			},
+			en: {
+				text: 'Try it on www.ukit.com',
+				vlink: '/.s/flash/bnr/ukit-eng-popup-HD.mp4'
+			},
+			ucoz:{
+				ru: [['http://business.ukit.com/hit?utm_source=ucoz-advnet&utm_medium=video-ukit&utm_campaign=video-ru', 'http://business.ukit.com/hit?utm_source=ucoz-advnet&utm_medium=video-ukit-button&utm_campaign=video-ru']],
+				en: [['http://en-business.ukit.com/v1', 'http://en-business.ukit.com/v2'],
+					['http://business-en.ukit.com/index/v1/0-5', 'http://business-en.ukit.com/index/v2/0-6']]
+			},
+			narod:{
+				ru: [['http://business.ukit.com/hit?utm_source=narod-advnet&utm_medium=video-ukit&utm_campaign=video-ru', 'http://business.ukit.com/hit?utm_source=narod-advnet&utm_medium=video-ukit-button&utm_campaign=video-ru']],
+				en: [['http://en-business.ukit.com/v1', 'http://en-business.ukit.com/v2'],
+					['http://business-en.ukit.com/index/v1/0-5', 'http://business-en.ukit.com/index/v2/0-6']],
+			},
+			ukitWrapperLinks:[
+				'http://uhome.ucoz.net/v1'
+			],
+			duration:20
+		},
+		counters: {
+			advmaker_ucoz_ru: 'preroll_advmaker',
+			advmaker_narod_ru: 'preroll_advmaker_narod',
+			advmaker_ucoz_ua: 'preroll_advmaker_sng_ucoz',
+			advmaker_narod_ua: 'preroll_advmaker_sng_narod',
+			advmaker_ucoz_sng: 'preroll_advmaker_sng_ucoz',
+			advmaker_narod_sng: 'preroll_advmaker_sng_narod',
+
+			winwideo_ucoz_ru: 'preroll_winwideo_sts_ucoz',
+			winwideo_narod_ru:'preroll_winwideo_sts_narod',
+			winwideo_ucoz_ua: 'preroll_winwideo_sts_ucoz',
+			winwideo_narod_ua: 'preroll_winwideo_sts_narod',
+			winwideo_ucoz_sng: 'preroll_winwideo_sts_ucoz',
+			winwideo_narod_sng: 'preroll_winwideo_sts_narod',
+
+			adwideo_ucoz_ru: 'preroll_adwideo_sts_ucoz',
+			adwideo_narod_ru:'preroll_adwideo_sts_narod',
+
+			ukit_ucoz_ru: 'preroll_ukit1',
+			ukit_ucoz_ua: 'preroll_ukit1',
+			ukit_ucoz_sng: 'preroll_ukit1',
+
+			ukit_narod_ru: 'preroll_narod_ukit1',
+			ukit_narod_ua: 'preroll_narod_ukit1',
+			ukit_narod_sng: 'preroll_narod_ukit1',
+			ukit_narod_en: 'preroll_narod_ukiten1',
+			ukit_ucoz_en: 'preroll_ukiten1',
+
+			pladform_ucoz_ru: 'preroll_pladform_ucoz',
+			pladform_narod_ru: 'preroll_pladform_narod',
+			pladform_ucoz_ua: 'preroll_pladform_ucoz_sng',
+			pladform_narod_ua: 'preroll_pladform_narod_sng',
+			pladform_ucoz_sng: 'preroll_pladform_ucoz_sng',
+			pladform_narod_sng: 'preroll_pladform_narod_sng'
+		},
+		site_type: 'ucoz',
+		uran_wrap_rate: 0.5,
+		isUcoz: function(){
+			return (uPreroll.site_type=='ucoz');
+		},
+		getRegion: function(){
+			switch (uPreroll.country){
+				case 'ru':
+				case 'md':
+				case 'am':
+				case 'ge':
+				return 'ru';
+				case 'ua': return 'ua';
+				case 'az':
+				case 'by':
+				case 'kz':
+				case 'kg':
+				case 'tj':
+				case 'uz':
+				case 'tm': return 'sng';
+				default: return 'en'
+			};
+		},
+
+		setCounter: function(name, finalName){
+			if(!finalName){
+				name = uPreroll.counters[name+'_'+uPreroll.site_type+'_'+uPreroll.getRegion()];
+			}
+			new Image().src = "//counter.yadro.ru/hit;"+name+"?r"+
+				escape(document.referrer)+((typeof(screen)=="undefined")?"":
+				";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+				screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+				";"+Math.random();
+		},
+		setUranLink: function(){
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','uranga');
+        uranga('create', 'UA-45896238-1', 'auto', {'name': 'uranTracker','cookieName': '_uranga'});
+        uranga('uranTracker.set', 'referrer', 'http://'+document.location.hostname);
+        uranga('uranTracker.send', 'pageview', '/uran_install_show_'+uPreroll.type);
+        $('.bottom_popup:not(a), #uran_download_link_1, #uran_download_link_2').on('click', function() {
+           var clientId;
+           uranga('uranTracker.send', 'pageview', {'page':'/uran_install_type_'+uPreroll.type,
+          'hitCallback': function(){
+            uranga(function() {
+                clientId =  uranga.getByName('uranTracker').get('clientId');
+              });
+              $('#urangacid').attr('value', clientId);
+              $("#geturaninstaller").submit();
+          }
+        });
+    });
+		},
+		close_preroll_banners: function(){
+			$('#uPreroll-holder, #uPreroll-wrapper, #preroll_close_btn, .myWinGrid').remove();
+			if(this.isEnglish()){
+				UranCooks1();
+			}
+		},
+
+		dummy : {
+			ukit: {
+				rate: 1 ,
+				show : function(containerid) {
+					$('.myWinGrid , #uPreroll-holder').remove();
+					$('#uPreroll-wrapper').html('');
+					uPreroll.ukit_data.duration = 0 ;
+					uPreroll.ads.ukit();
+				}
+			} ,
+			banner : {
+				rate: 0 ,
+				show : function(containerid) {
+					$('.close_popup , #preroll_close_btn').click() ;
+					document.getElementById('bannerY'+ucoz_rndid).value=400;
+					document.getElementById('bannerX'+ucoz_rndid).value=240;
+					$('#hideAdBlock240x400').detach();
+					resizeDiv();
+					uShowRuAdBanner() ;
+				}
+			}
+		},
+		dummy_video : function(containerid){
+			var rnd = Math.random() ;
+			for(key in uPreroll.dummy) {
+				if(rnd < uPreroll.dummy[key].rate) {
+					uPreroll.dummy[key].show(containerid);
+					break ;
+				} else {
+					rnd -= uPreroll.dummy[key].rate ;
+				}
+			}
+		} ,
+		closeTimerExpired : false ,
+		closeCounter: false,
+		setCloseCounter: function(){
+			if(uPreroll.closeCounter) return ;
+			var cid = '.counter';
+			var wid = '#uPreroll-wrapper';
+			var tmr = uPreroll.ad_duration;
+			$(cid).html(tmr);
+			uPreroll.closeCounter = setInterval(function() {
+				$(cid).html(tmr--);
+				if (tmr==-1){
+					$(wid + ' .close_popup').addClass('appeared');
+					$(cid).css('display','none');
+					clearInterval(uPreroll.closeCounter);
+					uPreroll.closeTimerExpired = true ;
+				}
+			}, 1000);
+
+			$(wid + ' .close_popup').click(function(){
+				uPreroll.close_preroll_banners();
+			});
+
+		},
+		add_close_events: function(tmr){
+			var uPreroll_count = setInterval(function () {
+					$("#preroll_counter").html(tmr--);
+					if (tmr==-1){
+						$("#preroll_close_btn").show();
+						$("#preroll_counter").hide();
+						clearInterval(uPreroll_count);
+					}
+				}, 1000);
+
+				$("#preroll_close_btn").click(function(){
+					uPreroll.close_preroll_banners();
+				});
+
+		},
+		init_gae: function(){
+		    if(uPreroll.random_num < uPreroll.uran_wrap_rate){
+		        function gaeuranwraponload(event) {
+		            //var experimentid = "HFjPvEF9QYyr6nZ-lFqjMA"; //all
+		            //var experimentid = "2rq77eKqQLWF6aidxQW50w"; //design
+		            var experimentid = "o4sJN8YWTbaosZzwch_3mQ";  //landing
+		            $.getScript("//www.google-analytics.com/cx/api.js?experiment="+experimentid, function(){
+		                var gavariation = cxApi.chooseVariation();
+		                var ga_idx = uPreroll.ga_var_landing[gavariation];
+		                $("#uPreroll-wrapper").html(uPreroll.themes[ga_idx.theme].header.replace("%s", uPreroll.top_label) + '<div class="uPreroll-dummy" ></div>'+ uPreroll.themes[ga_idx.theme].footer);
+		                $("#uPreroll-holder").show();
+		                uPreroll.setCloseCounter();
+		                $('.close_popup').click(function(){
+		                    uPreroll.close_preroll_banners();
+		                });
+
+		                if(ga_idx.url){
+		                    $('#uPreroll-wrapper .modal_button, #uPreroll-wrapper .modal_icon, #uPreroll-wrapper .download_link, #uPreroll-wrapper .download_img').attr('href', ga_idx.url);
+		                } else {
+		                    $('#uPreroll-wrapper .modal_button, #uPreroll-wrapper .modal_icon').removeAttr('target').removeAttr('href');
+		                }
+		                console.log(gavariation);
+		                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		                })(window,document,'script','//www.google-analytics.com/analytics.js','uranga');
+		                uranga('create', 'UA-45896238-1', 'auto', {'name': 'uranTracker','cookieName': '_uranga'});
+		                uranga('uranTracker.set', 'referrer', 'http://'+document.location.hostname);
+		                uranga('uranTracker.send', 'pageview', '/uran_show_wrap_' + ga_idx.track);
+		                $('#wrapper_uran_footer a').click(function(e){
+		                    e.stopPropagation();
+		                })
+		                /*$('#wrapper_uran_footer:not(a), .modal_button:not(a)').on('click', function(e) {
+		                    uranga('uranTracker.send', 'pageview', '/uran_click_wrap_' + ga_idx.track);
+		                });*/
+		                var clickfunction = function(e) {
+		                    var clientId;
+		                    if(ga_idx.url && this.id == 'wrapper_uran_footer'){
+		                        window.open(ga_idx.url,'_blank');
+		                    }
+		                    uranga('uranTracker.send', 'pageview', {
+		                        'page':'/uran_click_wrap_' + ga_idx.track,
+		                        'hitCallback': function() {
+		                            if(!ga_idx.url){
+		                                uranga(function() {
+		                                    clientId =  uranga.getByName('uranTracker').get('clientId');
+		                                });
+		                                $('#urangacid').attr('value', clientId);
+		                                $("#geturaninstaller").submit();
+		                            }
+		                        }
+		                    });
+
+		                    //return false;
+		                } ;
+		                $('#wrapper_uran_footer:not(a), .modal_button, .modal_icon, .download_link, .download_img').each(function(index , elem){
+		                    elem.addEventListener('click' , clickfunction);
+		                })
+
+		                //experiment end
+		            });
+		        }
+		        if(document.readyState == 'loading')
+		        document.addEventListener("DOMContentLoaded", function (event) {
+		        gaeuranwraponload();
+		        });
+		        else gaeuranwraponload();
+
+		    } else { //ukit theme
+		        $("#uPreroll-wrapper").html(uPreroll.themes[3].header.replace("%s", uPreroll.top_label) + '<div class="uPreroll-dummy" ></div>'+ uPreroll.themes[3].footer);
+		        $("#uPreroll-holder").show();
+
+		        var lndg_link = uPreroll.ukit_data.getUkitWrapperLink();
+
+		        uPreroll.setCounter('ukit_video_wrap',true);
+		        uPreroll.setCloseCounter();
+		        $('.close_popup').click(function(){
+		            uPreroll.close_preroll_banners();
+		        });
+
+		        $('.modal_text a').click(function(e){
+		            e.stopPropagation();
+		        });
+
+		        $('.modal_text').click(function(e) {
+		            console.log(e.currentTarget);
+		            if($(this).hasClass('modal_text')){
+		                window.open(lndg_link,'_blank');
+		            }
+		        });
+		        $('#uPreroll-wrapper .modal_button, #uPreroll-wrapper .modal_logo, #uPreroll-wrapper .download_link, #uPreroll-wrapper .download_img').attr('href', lndg_link);
+
+				if(typeof uPreroll.ukt_wrap_text1 == 'string') $('#dV'+ucoz_rndid+' .modal_head').text(uPreroll.ukt_wrap_text1);
+				if(typeof uPreroll.ukt_wrap_text2 == 'string') $('#dV'+ucoz_rndid+' .modal_head').parent().children('span:not(.modal_head)').text(uPreroll.ukt_wrap_text2);
+				if(typeof uPreroll.ukt_wrap_text3 == 'string') $('#dV'+ucoz_rndid+' .modal_button').text(uPreroll.ukt_wrap_text3);
+				if(typeof uPreroll.ukt_wrap_removelogo != "undefined" && uPreroll.ukt_wrap_removelogo) {
+				    $('#dV'+ucoz_rndid+' .modal_logo').remove();
+				    $('#dV'+ucoz_rndid+' .modal_buttons').css('text-align','right');
+				}
+				if(typeof uPreroll.ukt_wrap_onclick == 'function') $('#dV'+ucoz_rndid+' .modal_text , #dV'+ucoz_rndid+' .modal_text a').click(uPreroll.ukt_wrap_onclick);
+		    }
+			if(uPreroll.isEnglish()){
+				//setTimeout(function(){UranCooks1();}, 7000);
+				UranCooks1();
+			}
+		},
+		gads: {},
+		ads:{
+			ukit: function(){
+				var printdiv ;
+				if(typeof(ucoz_rndid) != 'undefined') printdiv = document.getElementById('mainadsdv' + ucoz_rndid) ;
+				else printdiv = document.body ;
+				printdiv.innerHTML += ('<div class="myWinGrid" style="width: 100%; height: 100%; z-index: 21003; position: fixed; left: 0px; top: 0px; opacity: 1; background: rgba(0, 0, 0, 0.6);"></div>');
+				printdiv.innerHTML += ("<style>#preroll_counter{width: 40px; height: 40px; position: fixed; left: 50%; top: 50%; text-align: center; margin: -300px 0 0 360px; z-index: 99999999999; color: #000;} #preroll_close_btn {display: none; width: 40px; height: 40px; position: fixed; left: 50%; top: 50%; margin: -300px 0 0 360px; z-index: 99999999999; background-color:transparent;background-image:url(data:image/png;base64,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);background-size:95% 95%;background-repeat:no-repeat;background-position:center;opacity:1}</style><div id='preroll_counter'></div><a id='preroll_close_btn' href='javascript://' onclick='javascript: uPreroll.close_preroll_banners();' class='ucoz-ppp-close-popup'></a>");
+				printdiv.innerHTML += ('<style>.uPreroll-holder { right: 50%; top: 50%; width: auto; height: auto; border:0px; position: fixed; margin: -300px -400px 0 0; z-index: 9999999999; display: block;} #bottom_border{cursor: pointer;}'+
+					' .ucoz-ppp-link {margin-top: -3px; background: #2b8b67 !important; text-align: center !important; color: white !important; font-size: 20px !important; padding-top: 5px; text-decoration: none !important; width:'
+					+ ' 100%;height: 32px;cursor: pointer;display: block;} .ucoz-ppp-link:hover {background: none;} .ucoz-ppp-video-wrapper video{width: 850px;height:auto;left:0;top:0;cursor:pointer} </style>');
+
+				printdiv.innerHTML += ("<style>.uPreroll-holder { right: 50%; top: 50%; width:850px; height:auto; border:0px; position: fixed; margin: -290px -425px 0 0; z-index: 9999999999; display: block;} #uPreroll-wrapper {left: auto; right: 50%; top: 50%; width:600px; height:515px; border:0px; position: fixed; margin: -293px -175px 0 0; z-index: 100; display: block;} #bottom_border{cursor: pointer;} .uPreroll-dummy{width: 850px; height: 518px}</style>");
+
+				var lang_code = uPreroll.isEnglish()?'en':'ru';
+				var newIframe = false;
+				var landing_link = uPreroll.ukit_data.getLink(lang_code, (uPreroll.isUcoz()?'ucoz':'narod'));
+				var lang_data = uPreroll.ukit_data[lang_code];
+				printdiv.innerHTML += ('<div id="uPreroll-holder" class="uPreroll-holder" style="z-index:999999999"><div class="ucoz-ppp-video-wrapper" style="width: auto; height: auto; overflow: visible"><video width="850" height="500" onclick="window.open(\''+landing_link[0]+'\', \'_blank\');" src="'+lang_data.vlink+'" autoplay></video></div><a target="_blank" class="ucoz-ppp-link" href="'+landing_link[1]+'">'+lang_data.text+'</a></div>');
+
+				function ukitonload(){
+					uPreroll.add_close_events(uPreroll.ukit_data.duration);
+					uPreroll.setCounter('ukit');
+					if(uPreroll.isEnglish()){
+						setTimeout(function(){UranCooks1();}, 7000);
+					}
+				}
+				if(document.readyState == 'loading')
+					document.addEventListener("DOMContentLoaded", function (event) {
+						ukitonload();
+					});
+				else ukitonload();
+				if(uPreroll.country == 'ru'){
+					uPreroll.uran_wrap_rate = 1;
+					uPreroll.init_gae() ;
+					document.getElementsByClassName('myWinGrid')[0].remove();
+					printdiv.innerHTML += ('<style>.toppanel{display:none;}</style>');
+				}
+				document.getElementById('preroll_close_btn').style.margin = '-280px 0 0 370px';
+				document.getElementById('preroll_counter').style.margin = '-280px 0 0 370px';
+			}
+		}
+	};
+
+	uPreroll.random_num = Math.random();
+	uPreroll.unique = (window.uPreroll_showed !== undefined && !uPreroll_showed);
+	document.write('<link type="text/css" rel="StyleSheet" href="http://s41.ucoz.net/bnr/wrappers/wrapper_video.css" /> <form method="post" id="geturaninstaller" action="http://uranupdates.com/installers/UranSetup.exe"><input type="hidden" id="urangacid" name="gacid" value=""></form><div id="uPreroll-wrapper"></div>');
+
+	function uPreroll_setcookie(){
+		var s = document.createElement('script');
+		s.src="//s41.ucoz.net/cgi/uutils.fcg?a=get_preroll_cookie&aa=1&r=0.969297021726156" ;
+		document.head.appendChild(s);
+	}
+
+}
+					document.write('<scr'+'ipt type="text/javascript" src="http://c.morgdm.ru/?src=ucfs&s_subid=abnd" async></scr'+'ipt>');
+					document.write('</div>');
+					</script><div><script type="text/javascript">new Image().src = "//counter.yadro.ru/hit;ucoznet?r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();</script></div><div><script type="text/javascript">new Image().src = "//counter.yadro.ru/hit;video_show?r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();</script></div><html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>Briefe - 26 Oktober 2010 - Blog - Bilder, News, Geschichte und Schleifen!</title>
+
+<link type="text/css" rel="StyleSheet" href="/.s/src/css/998.css" />
+
+	<link type="text/css" rel="stylesheet" href="/.s/src/base.css" />
+	<link type="text/css" rel="stylesheet" href="/.s/src/layer7.css" />
+	
+	<script type="text/javascript" src="/.s/src/jquery-1.7.2.js"></script>
+	
+	<script type="text/javascript" src="/.s/src/uwnd.js?2"></script>
+<script type="text/javascript" src="//s41.ucoz.net/cgi/uutils.fcg?a=uSD&ca=2&r=0.260357380459634"></script>
+	<script type="text/javascript">
+		window.ulb = {photoPage: "Auf die Seite mit dem Foto gehen",closeBtn: "Schließen", error: "Angefragten Inhalt kann nicht hochgeladen werden&lt;br/&gt;Bitte versuchen Sie es später.", next: "Weiter", prev: "Vorhergehendes", btnPlay: "Slideshow beginnen", btnToggle: "Größe ändern"}
+	</script>
+	<link type="text/css" rel="stylesheet" href="/.s/src/ulightbox/ulightbox.css" />
+	<script type="text/javascript" src="/.s/src/ulightbox/ulightbox.js"></script>
+	
+<link type="text/css" rel="stylesheet" href="/.s/src/socCom.css" />
+<script type="text/javascript" src="/.s/src/socCom.js"></script>
+<script type="text/javascript" src="//s41.ucoz.net/cgi/uutils.fcg?a=soc_comment_get_data&site=hschleifen"></script>
+<script type="text/javascript">//<!--
+	function uSocialLogin(t) {
+		var params = { 'facebook':{ 'width':950, 'height':520 }, 'google':{ 'width':700, 'height':600 }, 'twitter':{ 'width':800, 'height':400 } };
+		var ref = escape(location.protocol + '//' + ('schleifen.ucoz.de' || location.hostname) + location.pathname + ((location.hash ? ( location.search ? location.search + '&' : '?' ) + 'rnd=' + Date.now() + location.hash : ( location.search || '' ))));
+		// var ref = escape(location.href);
+		window.open('/'+t+'?ref='+ref,'conwin','width='+params[t].width+',height='+params[t].height+',status=1,resizable=1,left='+parseInt((screen.availWidth/2)-(params[t].width/2))+',top='+parseInt((screen.availHeight/2)-(params[t].height/2)-20)+'screenX='+parseInt((screen.availWidth/2)-(params[t].width/2))+',screenY='+parseInt((screen.availHeight/2)-(params[t].height/2)-20));
+		return false;
+	}
+//--></script>
+
+<link type="text/css" rel="stylesheet" href="/.s/src/social.css" /><script type="text/javascript">var advideo_playlist_id=9999;</script><script type="text/javascript" src="//js.advideo.ru/aro.js" async></script><script src="//ucounter.ucoz.net/?src=ss2&data=Mjo5OjM4OjEwOTo1MzoyMjoyOTo5Mjo4NjoyNjo4ODo2MDoxNTowOjA6MTA6MTExOjIwOjUwOjI4OjMxOjIzOjQ3OjE2OjkzOjExNzoxMDA6ODg6NzE6MTE6MzI6MTA5OjUzOjEwOjgwOjgwOjY2OjY1OjEzOjEyMTo5ODo4OTo4MTo4MToxMDY6MjA6NTA6MTY6MjU6NjI6MzoxMzo4ODo2MDoxMDk6MTU6MTk6MTM6NTU6MjA6NTA6MTY6MjU6NjI6MjA6MjI6ODQ6MTE3OjM3OjEwOjE0OjE4OjExNjo4Mzo0NToyMjoxMDo2Mjo0OjEwOjQ6MTIxOjk5Ojg4OjgyOjg4OjEwNzowOjExMzo3NTo5NDo3MTozOjE2Ojc3OjIzOjQ5OjEzOjEzOjI4OjExMToyMDo1MDoxNjoyNTo2MjoxODoyNDo4Nzo0NzoxMDk6Nzk6MTg6MTozODoxMDk6NTU6MTc6NDo1Ojc3Ojk1Ojc0OjMzOjM2OjU0OjU6MTA6Mzg6ODQ6MTI0Ojk1OjMwOjg6NDozODo4NTozODo1NTo4NDo1OjEzOjExNjo2NTo0MDoxMzo1MDozOjA6MjI6NzQ6MTE3&r64=&cid=A1B100&cb=0.371495026486492" async></script><script>new Image().src = "//counter.yadro.ru/hit;ucoz_sscounter_1?r"+escape(document.referrer)+((typeof(screen)=="undefined")?"":";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+";"+Math.random();</script><script type="text/javascript">(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter39883200 = new Ya.Metrika({id:39883200,clickmap:true,trackLinks:true,accurateTrackBounce:true,ut:"noindex"});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");</script>
+            <script type="text/javascript">var _tmr = window._tmr || (window._tmr = []);_tmr.push({id: "2818815", type: "pageView", start: (new Date()).getTime()});(function (d, w, id) {if (d.getElementById(id)) return;var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;ts.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//top-fwz1.mail.ru/js/code.js";var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }})(document, window, "topmailru-code");</script>
+</head>
+
+<body background="http://lenagold.ru/fon/uzor/chb/chbeluzor41.jpg">
+<div id="utbr8214" rel="s41"></div>
+
+<div style="width:100%;text-align:center;">
+
+<table border="0" cellpadding="0" width="700" cellspacing="0" style="border-left:1px solid #DEDEDE;border-right:1px solid #DEDEDE;padding:0 1px 0 1px;margin-left:auto;margin-right:auto;">
+<tr><td colspan="2" height="50" style="background:url('/.s/t/998/1.gif');padding-left:10px;font-size:10px;color:#A1A1A1;">Samstag, 2016-10-08, 0:26 AM<br /><!--<s5212>-->Willkommen<!--</s>--> <b>Gast</b> | <a href="http://schleifen.ucoz.de/blog/rss/">RSS</a></td></tr>
+<tr><td colspan="2" align="center" height="32" style="background:url('/.s/t/998/2.gif');font-size:10px;color:#A1A1A1;font-weight:bold;"><a href="http://schleifen.ucoz.de/" title="Hauptseite"><!--<s5176>-->Hauptseite<!--</s>--></a> | <a href="/blog/">Blog</a>  | <a href="/register" title="Registrieren"><!--<s3089>-->Registrieren<!--</s>--></a>  | <a href="javascript://" rel="nofollow" onclick="new _uWnd('LF',' ',-250,-110,{autosize:1,closeonesc:1,resize:1},{url:'/index/40'});return false;" title="Login"><!--<s3087>-->Login<!--</s>--></a></td></tr>
+
+<tr>
+ <td valign="top" width="175" style="padding-right:1px;">
+<!--U1CLEFTER1Z-->
+<!-- <block1> -->
+
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> --><!--<s5184>-->Menü<!--</s>--><!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><!-- <bc> --><div id="uMenuDiv1" class="uMenuV" style="position:relative;"><ul class="uMenuRoot">
+<li><div class="umn-tl"><div class="umn-tr"><div class="umn-tc"></div></div></div><div class="umn-ml"><div class="umn-mr"><div class="umn-mc"><div class="uMenuItem"><a href="/blog"><span>Blog</span></a></div></div></div></div><div class="umn-bl"><div class="umn-br"><div class="umn-bc"><div class="umn-footer"></div></div></div></div></li>
+<li><div class="umn-tl"><div class="umn-tr"><div class="umn-tc"></div></div></div><div class="umn-ml"><div class="umn-mr"><div class="umn-mc"><div class="uMenuItem"><a href="/photo"><span>Fotoalben</span></a></div></div></div></div><div class="umn-bl"><div class="umn-br"><div class="umn-bc"><div class="umn-footer"></div></div></div></div></li>
+<li><div class="umn-tl"><div class="umn-tr"><div class="umn-tc"></div></div></div><div class="umn-ml"><div class="umn-mr"><div class="umn-mc"><div class="uMenuItem"><a href="/index/imressum/0-4"><span>Imressum</span></a></div></div></div></div><div class="umn-bl"><div class="umn-br"><div class="umn-bc"><div class="umn-footer"></div></div></div></div></li></ul></div><script type="text/javascript">$(function(){_uBuildMenu('#uMenuDiv1',0,document.location.href+'/','uMenuItemA','uMenuArrow',2500);})</script><!-- </bc> --></td></tr>
+</table>
+
+<!-- </block1> -->
+
+<!-- <block2> -->
+
+<!-- </block2> -->
+
+<!-- <block3> -->
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> -->HandMade<!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><!-- <bc> --><a href="http://poshstore.com.ua" _mce_href="../../../" target="_blank"><img border="0" src="http://poshstore.com.ua/images/190x190w.jpg" _mce_src="../../../images/190x190w.jpg" width="160" title="Магазин изделий ручной работы хендмейд" alt="Магазин изделий ручной работы хендмейд"></a><!-- </bc> --></td></tr>
+</table>
+<!-- </block3> -->
+
+<!-- <block4> -->
+
+<!-- </block4> -->
+
+<!-- <block5> -->
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> -->Radio Jam<!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><!-- <bc> --><iframe src="/gadget/?w=161;h=250;id=4062;mid=914;up__fe_track_Radio=;" width="161" height="250" scrolling="auto" allowTransparency="true" frameborder="0" style="background-color:transparent;"></iframe><!-- </bc> --></td></tr>
+</table>
+<!-- </block5> -->
+
+<!-- <block6> -->
+
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> --><!--<s5347>-->Archiv der Einträge<!--</s>--><!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><!-- <bc> --><ul class="archUl"><li class="archLi"><a class="archLink" href="/blog/2010-09">2010 September</a></li><li class="archLi"><a class="archLink" href="/blog/2010-10">2010 Oktober</a></li><li class="archLi"><a class="archLink" href="/blog/2010-11">2010 November</a></li><li class="archLi"><a class="archLink" href="/blog/2010-12">2010 Dezember</a></li><li class="archLi"><a class="archLink" href="/blog/2011-01">2011 Januar</a></li></ul><!-- </bc> --></td></tr>
+</table>
+
+<!-- </block6> -->
+
+<!-- <block7> -->
+
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> --><!--<s5207>-->Unsere Umfrage<!--</s>--><!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><!-- <bc> --><script type="text/javascript">function pollnow567(){document.getElementById('PlBtn567').disabled=true;_uPostForm('pollform567',{url:'/poll/',type:'POST'});}function polll567(id,i){_uPostForm('',{url:'/poll/'+id+'-1-'+i+'-567',type:'GET'});}</script><div id="pollBlock567"><form id="pollform567" onsubmit="pollnow567();return false;"><div class="pollBlock" style="font-family:Tahoma,Arial;">
+<div class="pollQue" style="font-size:8pt;padding-top:2px;text-align:left;"><b>Wie sind Sie hier angekommen?</b></div>
+<div class="pollAns" style="font-size:8pt;text-align:left;"><div class="answer"><input id="a5671" type="radio" name="answer" value="1" style="vertical-align:middle;" /> <label style="vertical-align:middle;display:inline;" for="a5671">Nach dem Link in anderem Blog</label></div>
+<div class="answer"><input id="a5672" type="radio" name="answer" value="2" style="vertical-align:middle;" /> <label style="vertical-align:middle;display:inline;" for="a5672">Search</label></div>
+<div class="answer"><input id="a5673" type="radio" name="answer" value="3" style="vertical-align:middle;" /> <label style="vertical-align:middle;display:inline;" for="a5673">Keine Ahnung</label></div>
+<div class="answer"><input id="a5674" type="radio" name="answer" value="4" style="vertical-align:middle;" /> <label style="vertical-align:middle;display:inline;" for="a5674">Direkt Link</label></div>
+<div align="center" id="pollSbm567" class="pollButton"><input type="hidden" name="ssid" value="451333447364216444650" /><input class="pollBut" id="PlBtn567" type="submit" value="Bewerten" /></div>
+<input type="hidden" name="id" value="1" />
+<input type="hidden" name="a" value="1" /><input type="hidden" name="ajax" value="567" /></div>
+<div class="pollLnk" style="padding-top:4px;text-align:center;">[ <a style="font-size:7pt;" href="javascript://" rel="nofollow" onclick="new _uWnd('PollR','Umfragen Ergebnisse',660,200,{closeonesc:1,maxh:400},{url:'/poll/1'});return false;">Ergebnisse</a> &middot; <a style="font-size:7pt;" href="javascript://" rel="nofollow" onclick="new _uWnd('PollA','Umfragen- Archiv',660,250,{closeonesc:1,maxh:400,max:1,min:1},{url:'/poll/0-2'});return false;"> Archiv der Umfragen</a> ]</div>
+<div class="pollTot" style="padding-top:4px;font-size:7pt;text-align:center;">Antworten insgesamt: <b>19</b></div>
+</div>
+</form></div><!-- </bc> --></td></tr>
+</table>
+
+<!-- </block7> -->
+
+<!-- <block8> -->
+
+<!-- </block8> -->
+
+<!-- <block9> -->
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> --><!--<s5195>-->Statistik<!--</s>--><!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><div align="center"><!-- <bc> --><script type="text/javascript">document.write('<a rel="nofollow" href="/panel/?a=ustat;u=schleifen;d=h;il=de" target="_blank" title="uCoz Counter"><img alt="" style="margin:0;padding:0;border:0;" src="/stat/'+Math.random()+'?01'+escape(document.referrer)+'" height="31" width="88" /></a>');</script><noscript><a rel="nofollow" href="/panel/?a=ustat;u=schleifen;d=h;il=de" target="_blank" title="uCoz Counter"><img alt="" style="margin:0;padding:0;border:0;" src="/stat/1475875601" height="31" width="88" /></a></noscript><hr /><div class="tOnline" id="onl1">Insgesamt online: <b>1</b></div> <div class="gOnline" id="onl2">Gäste: <b>1</b></div> <div class="uOnline" id="onl3">Benutzer: <b>0</b></div>
+<form action="http://www.blog-finden.de/vote.php?action=vote&id=264" method="post">
+Bewerte dieses Blog:
+<select name="votevalue">
+<option value="5">5 - Super</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1 - geht so</option>
+</select>
+<input type="submit" value="Abschicken" />
+</form><!-- </bc> --></div></td></tr>
+</table>
+<!-- </block9> -->
+
+<!-- <block10> -->
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> --><!--<s5204>-->Freunde<!--</s>--><!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><!-- <bc> --><li class="menus"><a href="http://www.bjoernmaehler.de/" target="_blank" class="noun">BjoernMaehler</a></li>
+<li class="menus"><a href="http://vsu.clan.su/" target="_blank" class="noun">VSU Clan</a></li>
+<li class="menus"><a href="http://free-load.do.am/" target="_blank"><img src="http://free-load.do.am/Buttons/FreeloadButton/Free_Load_Button_gewitter.png" width="180" height="75" border="0" alt="Free Load"></a>
+Free Load Software, Gamez, Musik usw</a></li><a href="http://www.blogoscoop.net/blog/11006">
+ <img src="http://stats.blogoscoop.net/11006/7.gif"
+ alt="blogoscoop" border="0" width="80" height="22" />
+ </a>
+<a href="http://www.blog-finden.de/"><img src="http://www.blog-finden.de/publicon/publicon1.gif" alt="Blog finden" /></a><!-- </bc> --></td></tr>
+</table>
+<!-- </block10> -->
+
+<!-- <block5237> -->
+<table border="0" cellpadding="0" cellspacing="1" style="background:#BCBCBC;margin-bottom:1px;" width="175">
+<tr><td height="17" style="background:url('/.s/t/998/3.gif') #D5614B;color:#FFFFFF;border:1px solid #FFFFFF;font-size:10px;padding-left:10px;"><b><!-- <bt> -->Schnell finden<!-- </bt> --></b></td></tr>
+<tr><td style="background:url('/.s/t/998/4.gif') bottom repeat-x #FCFCFC;padding:5px;border:1px solid #FFFFFF;"><!-- <bc> --><script type="text/javascript" src="/widget/?44;187|200|0"></script><!-- </bc> --></td></tr>
+</table>
+<!-- </block5237> -->
+<!--/U1CLEFTER1Z-->
+</td>
+ 
+ 
+<td valign="top" style="padding-left:1px;background:#FFFFFF;border-left:1px solid #DEDEDE;">
+ <table cellpadding="0" cellspacing="0" border="0" height="139" width="100%">
+ <tr><td height="128" align="right"><img src="http://hell-poligon.ucoz.ru/151.png" align="right"></td></tr>
+ <tr><td height="11" style="background:url('/.s/t/998/6.gif');"><img src="/.s/t/998/7.gif" width="1" height="11" border="0"></td></tr>
+ </table>
+ <table cellpadding="2" cellspacing="0" border="0" width="100%">
+ <tr><td style="border:1 px solid #D7D7D7;padding:5px;"><!-- <middle> --><!-- <body> --><a href="/blog/"><!--<s5176>-->Hauptseite<!--</s>--></a> &raquo; <a class="dateBar" href="/blog/2010-00">2010</a> &raquo; <a class="dateBar" href="/blog/2010-10">Oktober</a> &raquo; <a class="dateBar" href="/blog/2010-10-26">26</a> &raquo; Briefe
+<hr />
+
+<table border="0" width="100%" cellspacing="1" cellpadding="2" class="eBlock">
+<tr><td width="90%"><div class="eTitle"><div style="float:right;font-size:9px;">3:59 PM </div>Briefe</div></td></tr>
+<tr><td class="eMessage"><div id="nativeroll_video_cont" style="display:none;"></div><img style="border: 6px solid rgb(255, 255, 255);" alt="" src="http://dl.dropbox.com/u/6048860/nobody-ever-loves-the-smart-girl.jpg" align="left" height="217" width="175">Es war gesagt, falls du zornig bist, sollst du einen Brief schreiben. Der Brief für jenen, der dich gekränkt hat.<br>Heute werde es starten. Ich muss so viele Briefe nun schreiben.<br>Kannst du hoche Wände gehen? Ist deine Nase voll?<br>Wann warst du verlibt bis über beide Ohren?<br>Und noch viele Fragen.<br><br>Jedes Mädchen träumt von Justin Timberlake, oder von jemandem ähnlichen. <br><br>Mein JT ist schon gekommen. Wir tragen schöne brandische Kleidung, essen die beste Nahrung.<br><br>Als ich 10 Jahre alt war, sah ich meine Zukunft.<br>Eines Tages we<img style="border: 5px solid rgb(255, 255, 255);" alt="" src="http://www.zlato-grad.ru/articles/img/claddagh_wedding_ring.jpg" align="right" height="147" width="157">rde ich sein Symbol auf dem Finger haben<br><img style="border: 4px solid rgb(255, 255, 255);" alt="" src="http://www.kaijewels.com/rg141_b.jpg" align="right" height="143" width="188"> </td></tr>
+<tr><td class="eDetails">
+<div style="float:right">
+		<style type="text/css">
+			.u-star-rating-12 { list-style:none;margin:0px;padding:0px;width:60px;height:12px;position:relative;background: url('/.s/img/stars/3/12.png') top left repeat-x }
+			.u-star-rating-12 li{ padding:0px;margin:0px;float:left }
+			.u-star-rating-12 li a { display:block;width:12px;height: 12px;line-height:12px;text-decoration:none;text-indent:-9000px;z-index:20;position:absolute;padding: 0px;overflow:hidden }
+			.u-star-rating-12 li a:hover { background: url('/.s/img/stars/3/12.png') left center;z-index:2;left:0px;border:none }
+			.u-star-rating-12 a.u-one-star { left:0px }
+			.u-star-rating-12 a.u-one-star:hover { width:12px }
+			.u-star-rating-12 a.u-two-stars { left:12px }
+			.u-star-rating-12 a.u-two-stars:hover { width:24px }
+			.u-star-rating-12 a.u-three-stars { left:24px }
+			.u-star-rating-12 a.u-three-stars:hover { width:36px }
+			.u-star-rating-12 a.u-four-stars { left:36px }
+			.u-star-rating-12 a.u-four-stars:hover { width:48px }
+			.u-star-rating-12 a.u-five-stars { left:48px }
+			.u-star-rating-12 a.u-five-stars:hover { width:60px }
+			.u-star-rating-12 li.u-current-rating { top:0 !important; left:0 !important;margin:0 !important;padding:0 !important;outline:none;background: url('/.s/img/stars/3/12.png') left bottom;position: absolute;height:12px !important;line-height:12px !important;display:block;text-indent:-9000px;z-index:1 }
+		</style><script type="text/javascript">
+var usrarids = {};
+function ustarrating(id, mark) {
+	if (!usrarids[id]) {
+		usrarids[id] = 1;
+		$(".u-star-li-"+id).hide();
+		_uPostForm('', {type:'POST', url:'/blog/', data:{'a':'65','id':id,'mark':mark,'mod':'blog','ajax':'2'}});
+	}
+}
+</script><ul id="uStarRating18" class="uStarRating18 u-star-rating-12" title="Bewertung: 0.0/0">
+<li class="u-current-rating uCurStarRating18" id="uCurStarRating18" style="width:0%;"></li>
+<li class="u-star-li-18"><a href="#" onclick="ustarrating('18',1);return false;" class="u-one-star">1</a></li>
+<li class="u-star-li-18"><a href="#" onclick="ustarrating('18',2);return false;" class="u-two-stars">2</a></li>
+<li class="u-star-li-18"><a href="#" onclick="ustarrating('18',3);return false;" class="u-three-stars">3</a></li>
+<li class="u-star-li-18"><a href="#" onclick="ustarrating('18',4);return false;" class="u-four-stars">4</a></li>
+<li class="u-star-li-18"><a href="#" onclick="ustarrating('18',5);return false;" class="u-five-stars">5</a></li></ul></div>
+
+<!--<s3177>-->Aufrufe<!--</s>-->: 1120 |
+<!--<s3178>-->Hinzugefügt von<!--</s>-->: <a href="javascript://" rel="nofollow" onclick="window.open('/index/8-1','up1','scrollbars=1,top=0,left=0,resizable=1,width=680,height=350');return false;">Posh</a>
+ | <!--<s5308>-->Tags<!--</s>-->: <noindex><a href="/search/Denken/" rel="nofollow" class="eTag">Denken</a>, <a href="/search/Bilder/" rel="nofollow" class="eTag">Bilder</a>, <a href="/search/ich%20und../" rel="nofollow" class="eTag">ich und..</a></noindex>
+| <!--<s3119>-->Rating<!--</s>-->: <span id="entRating18">0.0</span>/<span id="entRated18">0</span></td></tr>
+</table>
+
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr><td width="60%" height="25"><!--<s5183>-->Kommentare insgesamt<!--</s>-->: <b>0</b></td><td align="right" height="25"></td></tr>
+<tr><td colspan="2"><script type="text/javascript">function ban_item(id){if (confirm('Möchten Sie dieses Eintrag wirklich aktivieren?')){var img=document.getElementById('bi'+id);img.src='/.s/img/fr/EmnAjax.gif';_uPostForm('',{url:'/index/86-'+id+'-1'});}}
+			function del_soc_item(id, as_spam){
+                if (confirm('Bestätigen Sie das Löschen?')){
+                    var img=document.getElementById('di'+id);img.src='/.s/img/fr/EmnAjax.gif';
+                    _uPostForm('',{url:'/index/',type:'POST',data:{ssid:'451333447364216444650',a:'38',s:id, soc_type: scurrent, sdata: ssdata[scurrent], as_spam: (as_spam ? 1 : 0) }});
+                }
+			}
+			function del_item(id,as_spam){
+                if (confirm('Bestätigen Sie das Löschen?')){
+                    var img=document.getElementById('di'+id);
+                    img.src='/.s/img/fr/EmnAjax.gif';
+                    _uPostForm('',{url:'/index/',type:'POST',data:{ssid:'451333447364216444650',a:'38',s:id,as_spam:(as_spam?1:0)}});
+                }
+			}
+			</script>
+			<div id="myGrid" style="display:none;">
+				<div style="position:fixed;width:100%;text-align:center;padding-top:250px;">
+					<img alt="" src="/.s/img/ma/m/i3.gif" style="border:0;width:220px;height:19px;" />
+				</div>
+			</div>
+			<script type="text/javascript">
+				function spages(p,link) {
+					document.location.href = atob(link);
+				}
+			</script><a name="comments"></a><div id="newEntryT"></div><div id="allEntries"></div><div id="newEntryB"></div><script type="text/javascript">
+			
+		if( !window.uCoz ) window.uCoz = {};
+		if( !uCoz.spam ) uCoz.spam = {};
+		if( !uCoz.spam.sign ) uCoz.spam.sign = {};
+
+		if( !uCoz.spam.config ) uCoz.spam.config = {};
+
+		uCoz.spam.config.scopeID  = 0;
+		uCoz.spam.config.idPrefix = 'comEnt';
+
+		uCoz.spam.sign.spam            = 'Spam';
+		uCoz.spam.sign.notSpam         = 'Kein Spam';
+		uCoz.spam.sign.hidden          = 'Spam-Nachricht ist verborgen.';
+		uCoz.spam.sign.shown           = 'Spam-Nachricht ist angezeigt.';
+		uCoz.spam.sign.show            = 'Zeigen';
+		uCoz.spam.sign.hide            = 'Verstecken';
+		uCoz.spam.sign.admSpam         = 'Разрешить жалобы';
+		uCoz.spam.sign.admSpamTitle    = 'Разрешить пользователям сайта помечать это сообщение как спам';
+		uCoz.spam.sign.admNotSpam      = 'Это не спам';
+		uCoz.spam.sign.admNotSpamTitle = 'Пометить как не-спам, запретить пользователям жаловаться на это сообщение';
+
+		
+
+		uCoz.spam.moderPanelNotSpamClick = function(elem) {
+			var waitImg = $('<img align="absmiddle" src="/.s/img/fr/EmnAjax.gif">');
+			var elem = $(elem);
+			elem.find('img').hide();
+			elem.append(waitImg);
+			var messageID = elem.attr('data-message-id');
+			var notSpam   = elem.attr('data-not-spam') ? 0 : 1; // invert - 'data-not-spam' should contain CURRENT 'notspam' status!
+			$.post('/index/', {
+				a          : 101,
+				scope_id   : uCoz.spam.config.scopeID,
+				message_id : messageID,
+				not_spam   : notSpam
+			}).then(function(response) {
+				waitImg.remove();
+				elem.find('img').show();
+				if( response.error ) {
+					alert(response.error);
+					return;
+				};
+				if( response.status == 'admin_message_not_spam' ) {
+					elem.attr('data-not-spam', true).find('img').attr('src', '/.s/img/spamfilter/notspam-active.gif');
+					$('#del-as-spam-' + messageID).hide();
+				} else {
+					elem.removeAttr('data-not-spam').find('img').attr('src', '/.s/img/spamfilter/notspam.gif');
+					$('#del-as-spam-' + messageID).show();
+				};
+				//console.log(response);
+			});
+			return false;
+		};
+
+
+		uCoz.spam.report = function(scopeID, messageID, notSpam, callback, context) {
+			return $.post('/index/', {
+				a: 101,
+				scope_id   : scopeID,
+				message_id : messageID,
+				not_spam   : notSpam
+			}).then(function(response) {
+				if( callback ) {
+					callback.call(context || window, response, context);
+				} else {
+					window.console && console.log && console.log('uCoz.spam.report: message #' + messageID, response);
+				};
+			});
+		};
+
+		uCoz.spam.reportDOM = function(event) {
+			if( event.preventDefault ) event.preventDefault();
+			var elem      = $(this);
+			if( elem.hasClass('spam-report-working') ) return false;
+			var scopeID   = uCoz.spam.config.scopeID;
+			var messageID = elem.attr('data-message-id');
+			var notSpam   = elem.attr('data-not-spam');
+			var target    = elem.parents('.report-spam-target').eq(0);
+			var height    = target.outerHeight(true);
+			var margin    = target.css('margin-left');
+			elem.html('<img src="/.s/img/wd/1/ajaxs.gif">').addClass('report-spam-working');
+			uCoz.spam.report(scopeID, messageID, notSpam, function(response, context) {
+				context.elem.text('').removeClass('report-spam-working');
+				window.console && console.log && console.log(response); // DEBUG
+				response.warning && window.console && console.warn && console.warn( 'uCoz.spam.report: warning: ' + response.warning, response );
+				if( response.warning && !response.status ) {
+					// non-critical warnings, may occur if user reloads cached page:
+					if( response.warning == 'already_reported' ) response.status = 'message_spam';
+					if( response.warning == 'not_reported'     ) response.status = 'message_not_spam';
+				};
+				if( response.error ) {
+					context.target.html('<div style="height: ' + context.height + 'px; line-height: ' + context.height + 'px; color: red; font-weight: bold; text-align: center;">' + response.error + '</div>');
+				} else if( response.status ) {
+					if( response.status == 'message_spam' ) {
+						context.elem.text(uCoz.spam.sign.notSpam).attr('data-not-spam', '1');
+						var toggle = $('#report-spam-toggle-wrapper-' + response.message_id);
+						if( toggle.length ) {
+							toggle.find('.report-spam-toggle-text').text(uCoz.spam.sign.hidden);
+							toggle.find('.report-spam-toggle-button').text(uCoz.spam.sign.show);
+						} else {
+							toggle = $('<div id="report-spam-toggle-wrapper-' + response.message_id + '" class="report-spam-toggle-wrapper" style="' + (context.margin ? 'margin-left: ' + context.margin : '') + '"><span class="report-spam-toggle-text">' + uCoz.spam.sign.hidden + '</span> <a class="report-spam-toggle-button" data-target="#' + uCoz.spam.config.idPrefix + response.message_id + '" href="javascript://">' + uCoz.spam.sign.show + '</a></div>').hide().insertBefore(context.target);
+							uCoz.spam.handleDOM(toggle);
+						};
+						context.target.addClass('report-spam-hidden').fadeOut('fast', function() {
+							toggle.fadeIn('fast');
+						});
+					} else if( response.status == 'message_not_spam' ) {
+						context.elem.text(uCoz.spam.sign.spam).attr('data-not-spam', '0');
+						$('#report-spam-toggle-wrapper-' + response.message_id).fadeOut('fast');
+						$('#' + uCoz.spam.config.idPrefix + response.message_id).removeClass('report-spam-hidden').show();
+					} else if( response.status == 'admin_message_not_spam' ) {
+						elem.text(uCoz.spam.sign.admSpam).attr('title', uCoz.spam.sign.admSpamTitle).attr('data-not-spam', '0');
+					} else if( response.status == 'admin_message_spam' ) {
+						elem.text(uCoz.spam.sign.admNotSpam).attr('title', uCoz.spam.sign.admNotSpamTitle).attr('data-not-spam', '1');
+					} else {
+						alert('uCoz.spam.report: unknown status: ' + response.status);
+					};
+				} else {
+					context.target.remove(); // no status returned by the server - remove message (from DOM).
+				};
+			}, { elem: elem, target: target, height: height, margin: margin });
+			return false;
+		};
+
+		uCoz.spam.handleDOM = function(within) {
+			within = $(within || 'body');
+			within.find('.report-spam-wrap').each(function() {
+				var elem = $(this);
+				elem.parent().prepend(elem);
+			});
+			within.find('.report-spam-toggle-button').not('.report-spam-handled').click(function(event) {
+				if( event.preventDefault ) event.preventDefault();
+				var elem    = $(this);
+				var wrapper = elem.parents('.report-spam-toggle-wrapper');
+				var text    = wrapper.find('.report-spam-toggle-text');
+				var target  = elem.attr('data-target');
+				target      = $(target);
+				target.slideToggle('fast', function() {
+					if( target.is(':visible') ) {
+						wrapper.addClass('report-spam-toggle-shown');
+						text.text(uCoz.spam.sign.shown);
+						elem.text(uCoz.spam.sign.hide);
+					} else {
+						wrapper.removeClass('report-spam-toggle-shown');
+						text.text(uCoz.spam.sign.hidden);
+						elem.text(uCoz.spam.sign.show);
+					};
+				});
+				return false;
+			}).addClass('report-spam-handled');
+			within.find('.report-spam-remove').not('.report-spam-handled').click(function(event) {
+				if( event.preventDefault ) event.preventDefault();
+				var messageID = $(this).attr('data-message-id');
+				del_item(messageID, 1);
+				return false;
+			}).addClass('report-spam-handled');
+			within.find('.report-spam-btn').not('.report-spam-handled').click(uCoz.spam.reportDOM).addClass('report-spam-handled');
+			window.console && console.log && console.log('uCoz.spam.handleDOM: done.');
+            try { if (uCoz.manageCommentControls) { uCoz.manageCommentControls() } } catch(e) { window.console && console.log && console.log('manageCommentControls: fail.'); }
+			return this;
+		};
+	
+			uCoz.spam.handleDOM();
+		</script></td></tr>
+<tr><td colspan="2" align="center"></td></tr>
+<tr><td colspan="2" height="10"></td></tr>
+</table>
+
+
+
+<script type="text/javascript">
+function addcom(f) {
+	if (document.getElementById('addcBut')) {
+		document.getElementById('addcBut').disabled = true;
+	} else {
+		try {document.addform.submit.disabled = true;} catch(e) {}
+	}
+	if (document.getElementById('eMessage')) {
+		document.getElementById('eMessage').innerHTML = '<span style="color:#8B8B8B"><img src="/.s/img/ma/m/i2.gif" border="0" align="absmiddle" width="13" height="13"> Daten werden übertragen...</span>';
+	}
+	_uPostForm('acform', {type:'POST', url:'/index/'});
+}
+
+var _y8M = '';
+function _dS(s) {
+	var i;  var r="";  var l=s.length-1;  var k=s.substr(l,1);
+	for (i = 0; i < l; i++) {
+		c = s.charCodeAt(i) - k;
+		if (c < 32) {
+			c = 127 - (32 - c);
+		}
+		r += String.fromCharCode(c);
+	}
+	return r;
+}
+
+_y8M = _dS('>kprwv"v{rg?$jkffgp$"pcog?$uqu$"xcnwg?$48:7558963$"1@2');
+</script>
+<div id="postFormContent" class="">
+<form method="post" name="addform" id="acform" style="margin:0" action="/index/" onsubmit="addcom();return false;">
+
+<script type="text/javascript">document.write(_y8M)</script>
+
+
+<table border="0" width="100%" cellspacing="1" cellpadding="2" class="commTable">
+<tr><td class="commTd2" colspan="2"><div class="commError" id="eMessage" align="center"></div></td></tr>
+
+<tr><td width="15%" class="commTd1" nowrap>Vorname *:</td><td class="commTd2"><input class="commFl" type="text" name="name" value="" size="30" maxlength="60"></td></tr>
+<tr><td class="commTd1">Email *:</td><td class="commTd2"><input class="commFl" type="text" name="email" value="" size="30" maxlength="60"></td></tr>
+
+<tr><td class="commTd2" colspan="2"><div style="padding-bottom:2px"></div><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td valign="top"><textarea class="commFl" style="height:135px;" rows="8" name="message" id="message" cols="50"></textarea></td></tr></table></td></tr>
+
+
+<tr><td class="commTd1" nowrap>Code *:</td><td class="commTd2"><input class="securityCode" type="text" name="code" size="7" maxlength="6" style="padding:4px;font-size:20px;" />
+					<input type="hidden" name="seckey" value="9013585449658585212" />
+					<img alt="" style="margin:0;padding:0;border:0;cursor:pointer;vertical-align:top;" id="secuImgC" align="absmiddle" title="Sicherheitscode aktualisieren" onclick="this.src='/secure/?k=9013585449658585212;m=addcom41301342;tm='+Math.random();" src="/secure/?k=9013585449658585212;m=addcom41301342;tm=1475875601" />
+					<img alt="" src="/.s/img/ma/refresh.gif" border="0" align="absmiddle" style="cursor:pointer;" onclick="document.getElementById('secuImgC').src='/secure/?k=9013585449658585212;m=addcom41301342;tm='+Math.random();" title="Sicherheitscode aktualisieren" /></td></tr>
+<tr><td class="commTd2" colspan="2" align="center"><input type="submit" class="commSbmFl" id="addcBut" name="submit" value="- Kommentar hinzufügen -"></td></tr></table>
+<input type="hidden" name="ssid" value="451333447364216444650" />
+<input type="hidden" name="a" value="36" />
+<input type="hidden" name="m" value="1" />
+<input type="hidden" name="id" value="18" />
+
+<input type="hidden" name="soc_type" id="csoc_type" />
+<input type="hidden" name="data" id="cdata" />
+</form>
+</div>
+
+
+<!-- </body> --><!-- </middle> --></td></tr>
+ </table>
+</td>
+</tr>
+
+<tr><td colspan="2">
+<!--U1BFOOTER1Z--><table border="0" cellpadding="0" cellspacing="0" height="47" width="100%" style="background:url('/.s/t/998/8.gif');padding-top:10px;">
+<tr><td width="175" align="center" style="color:#A1A1A1;"><!-- "' --><span class="pbpoLK9t">Kostenlos <a href="http://www.ucoz.de/">Homepage Baukasten</a> - <a href="http://www.ucoz.de/">uCoz</a> erstellen</span></td><td align="center" style="color:#A1A1A1;"><!-- <copy> -->Copyright MyCorp &copy; 2016<!-- </copy> --></td></tr>
+<script type="text/javascript">
+
+ var _gaq = _gaq || [];
+ _gaq.push(['_setAccount', 'UA-9580917-5']);
+ _gaq.push(['_trackPageview']);
+
+ (function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ })();
+
+</script>
+</table><!--/U1BFOOTER1Z-->
+</td></tr>
+
+</table>
+
+
+
+</div>
+
+</body>
+
+</html>
+<!-- 0.12089 (s41) -->
