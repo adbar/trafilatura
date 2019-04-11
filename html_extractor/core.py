@@ -375,37 +375,39 @@ def extract_content(tree):
     tempelem = etree.Element('body')
     # iterate
     for expr in bodyexpr:
-        if postfound is False:
-            # logger.debug(expr)
-            # extract content
-            for element in tree.xpath(expr):
-                if element.tag in tag_catalog: ### potential restriction here
-                    elemtext = element.text
-                    ## delete unwanted
-                    if elemtext is None or len(elemtext) < 1: # was 10
-                        element.getparent().remove(element)
-                        continue
-                    # replace by temporary tag
-                    elem = element
-                    if elemtext in text_blacklist:
-                        elem.getparent().remove(elem)
-                        continue
-                    elem.text = textfilter(elemtext) # replace back
+        # extract content
+        for element in tree.xpath(expr):
+            if element.tag in tag_catalog: ### potential restriction here
+                elemtext = element.text
+                ## delete unwanted
+                if elemtext is None or len(elemtext) < 1: # was 10
+                    element.getparent().remove(element)
+                    continue
+                # replace by temporary tag
+                elem = element
+                if elemtext in text_blacklist:
+                    elem.getparent().remove(elem)
+                    continue
+                elem.text = textfilter(elemtext) # replace back
 
-                    ## filter potential interesting p elements
-                    if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
-                        if elem.text and re.search(r'\w', elem.text):
-                            if duplicate_test(elem) is True:
-                                continue
-                            # filter attributes
-                            if elem.tag == 'p': #  or elem.tag == 'item'
-                                elem.attrib.clear()
-                            # insert
-                            tempelem.append(elem)
-                            postfound = True
-                        # register non-p elements
-                        #if elem.tag != 'p':
-                        #    teststring = ' '.join(elem.itertext()).encode('utf-8')
+                ## filter potential interesting p elements
+                if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
+                    if elem.text and re.search(r'\w', elem.text):
+                        if duplicate_test(elem) is True:
+                            continue
+                        # filter attributes
+                        if elem.tag == 'p': #  or elem.tag == 'item'
+                            elem.attrib.clear()
+                        # insert
+                        tempelem.append(elem)
+                        postfound = True
+                    # register non-p elements
+                    #if elem.tag != 'p':
+                    #    teststring = ' '.join(elem.itertext()).encode('utf-8')
+        # control
+        if postfound is True:
+            logger.debug(expr)
+            break
     return tempelem
 
 
@@ -414,29 +416,31 @@ def extract_comments(tree):
     commentsfound = False
     commentsbody = etree.Element('body')
     for expr in commentsexpr:
-        if commentsfound is False:
-            # logger.debug(expr)
-            # extract content
-            for elem in tree.xpath(expr):
-                if elem.tag in tag_catalog:
-                    # delete unwanted
-                    ## TODO: text filter
-                    if elem.text:
-                        elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
-                        elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
-                        elem.text = trim(elem.text)
-                    # test length and remove
-                    if elem.text is None or elem.text in comments_blacklist:
-                        elem.getparent().remove(elem)
-                        continue
-                    # filter potential interesting p elements
-                    if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
-                        if elem.text and re.search(r'\w', elem.text):
-                            if duplicate_test(elem) is True:
-                                continue
-                            # insert if words
-                            commentsbody.append(elem)
-                            commentsfound = True
+        # extract content
+        for elem in tree.xpath(expr):
+            if elem.tag in tag_catalog:
+                # delete unwanted
+                ## TODO: text filter
+                if elem.text:
+                    elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
+                    elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
+                    elem.text = trim(elem.text)
+                # test length and remove
+                if elem.text is None or elem.text in comments_blacklist:
+                    elem.getparent().remove(elem)
+                    continue
+                # filter potential interesting p elements
+                if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
+                    if elem.text and re.search(r'\w', elem.text):
+                        if duplicate_test(elem) is True:
+                            continue
+                        # insert if words
+                        commentsbody.append(elem)
+                        commentsfound = True
+        # control
+        if commentsfound is True:
+            logger.debug(expr)
+            break
     return commentsbody
 
 
