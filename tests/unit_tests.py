@@ -32,6 +32,8 @@ MOCK_PAGES = { \
 'http://www.wehranlage-horka.de/veranstaltung/887/': 'wehranlage-horka.de.887.html',
 'https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/': 'de.creativecommons.org.endlich.html', \
 'https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/': 'piratenpartei-mv.de.grundeinkommen.html', \
+'https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/': 'spektrum.de.engelbart.html', \
+'https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975': 'sueddeutsche.de.genderdebatte.html', \
 }
 # '': '', \
 
@@ -91,28 +93,50 @@ def test_main():
     assert 'das letzte Wort sein kann.' in result and 'Ähnliche Beiträge' not in result
     #  and 'Michael Blahm' not in result # comments
 
-    #result = load_mock_page('https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/')
-    #assert 'Volksinitiative Schweiz zum Grundeinkommen.' in result and 'getaggt mit:' not in result and 'Was denkst du?' not in result
+    result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975')
+    assert 'Es ist erstaunlich:' in result and 'Damaris Nübling ist Professorin' in result and 'Der Fall Weinstein' not in result and 'Leser empfehlen' not in result
 
-    # result = load_mock_page('http://www.wehranlage-horka.de/veranstaltung/887/')
-    # print(result)
-    
-    #result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html')
+    result = load_mock_page('https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/')
+    assert 'Volksinitiative Schweiz zum Grundeinkommen.' in result and 'getaggt mit:' not in result and 'Was denkst du?' not in result
+
+    result = load_mock_page('https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/')
+    assert 'Zweitens wird der Genderstern' in result and 'alldem leider – nichts.' in result
+    # and 'Beitragsbild' not in result
+
+    result = load_mock_page('http://www.wehranlage-horka.de/veranstaltung/887/')
+    assert 'In eine andere Zeit' in result and 'Infos zum Verein' not in result
+    # and 'Groß­vä­ter' in result # segmented words
+
+    result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft')
+    assert 'Eines der großen Probleme,' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result
+
+    result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html')
+    assert 'Erdöl bildet nach Millionen' in result and 'in unserem Artikel "Warum wird das Erdöl knapp?".' # and 'Die Natur ist aus chemischen Elementen aufgebaut' not in result
+    print(result)
+
+
+
+    #result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975')
+    #print(result)
+    #result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975')
+    #print(result)
+    #result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975')
     #print(result)
 
-    #result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft')
-    #print(result)
-    #assert 'Auch die große Menge an Müll' in result
 
-    # result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html')
-    # print(result)
+
+
+    #result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html')
+    #print(result)
+
+    #result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18')
+    #print(result)
 
     #result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/')
     #print(result)
     #assert 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result
 
-    #result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18')
-    #print(result)
+
 
     # print(html_extractor.lrutest)
 

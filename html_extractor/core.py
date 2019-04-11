@@ -90,7 +90,7 @@ logger = logging.getLogger(__name__)
 
 comm_length = 2 # was 10
 
-tag_catalog = set(['code', 'del', 'head', 'hi', 'list', 'p', 'span', 'quote']) # item
+tag_catalog = set(['code', 'del', 'head', 'hi', 'list', 'p', 'quote']) # item, 'span', 
 errors = OrderedDict() # dict() # defaultdict(list)
 errors['file'], errors['blogname'], errors['title'], errors['url'], errors['description'], errors['date'], errors['categories'], errors['tags'], errors['body'], errors['comments'], errors['author'], errors['language'] = [[] for _ in range(12)]
 
@@ -105,37 +105,35 @@ htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
 # https://github.com/peterc/pismo/blob/master/lib/pismo/lede_matches.rb
 #     {'attr': 'itemprop', 'value': 'articleBody'}, {'attr': 'class', 'value': 'post-content'}, {'tag': 'article'},
 
-bodyexpr = ['//*[contains(@id, "entry-content") or contains(@class, "entry-content")]//*', \
-            "//*[starts-with(@class, 'entry')]//*", \
-            "//*[contains(@class, 'post-text') or contains(@class, 'post_text')]//*", \
-            "//*[contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]//*", \
-            "//*[contains(@class, 'post-entry') or contains(@class, 'postentry')]//*", \
-            "//*[starts-with(@class, 'post-bodycopy')]//*", \
-            "//*[@class='postarea']//*", \
-            # "//*[starts-with(@id, 'main-content')]//*", \
-            # "//*[starts-with(@class, 'main-content')]//*", \
-            "//*[starts-with(@class, 'main') or starts-with(@id, 'main') or starts-with(@role, 'main')]//*", \
-            '//*[@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]//*', \
-            '//*[contains (@class, "storycontent")]//*', \
-            '//article//*', \
-            "//*[starts-with(@id, 'primary')]//*", \
-            "//*[starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or starts-with(@class, 'section-content') or starts-with(@class, 'single-content')]//*", \
-            '//*[@class="art-postcontent"]//*', \
-            '//*[@class="post"]//*', \
-            "//*[starts-with(@class, 'article')]//*", \
-            "//*[starts-with(@class, 'wpb_text_column')]//*", \
+bodyexpr = ['//article//*', \
+            '//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]//*', \
+            "//*[(self::div or self::section)][starts-with(@class, 'entry')]//*", \
+            "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]//*", \
+            "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]//*", \
+            "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]//*", \
+            "//*[(self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]//*", \
+            '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]//*', \
+            "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]//*", \
+            "//*[(self::div or self::section)][@class='postarea']//*", \
+            '//*[(self::div or self::section)][contains (@class, "storycontent")]//*', \
+            "//*[(self::div or self::section)][starts-with(@id, 'primary')]//*", \
+            "//*[(self::div or self::section)][starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or starts-with(@class, 'section-content') or starts-with(@class, 'single-content')]//*", \
+            '//*[(self::div or self::section)][@class="art-postcontent"]//*', \
+            '//*[(self::div or self::section)][@class="post"]//*', \
+            "//*[(self::div or self::section)][starts-with(@class, 'article')]//*", \
+            "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]//*", \
             '//div[@class="cell"]//*', \
 ]
 
-commentsexpr = ["//*[contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
-                "//*[starts-with(@id, 'comments') or starts-with(@class, 'comments')]//*", \
-                "//*[starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]//*", \
-                "//*[starts-with(@id, 'comment-form-identity')]//*", \
-                "//*[starts-with(@id, 'commentlist')]//*", \
-                "//*[starts-with(@id, 'comol')]//*", \
-                "//*[starts-with(@id, 'disqus_thread')]//*", \
-                "//*[starts-with(@id, 'dsq-comments')]//*" \
-                "//*[starts-with(@id, 'social')]//*" \
+commentsexpr = ["//*[(self::div or self::section or self::ol)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
+                "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comments') or starts-with(@class, 'comments')]//*", \
+                "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]//*", \
+                "//*[(self::div or self::section)][starts-with(@id, 'comment-form-identity')]//*", \
+                "//*[(self::div or self::section or self::ul)][starts-with(@id, 'commentlist')]//*", \
+                "//*[(self::div or self::section)][starts-with(@id, 'comol')]//*", \
+                "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]//*", \
+                "//*[(self::div or self::section)][starts-with(@id, 'social')]//*" \
+                "//ul[starts-with(@id, 'dsq-comments')]//*" \
 ]
 
 
@@ -156,7 +154,7 @@ cleaner.safe_attrs_only = False
 cleaner.scripts = True
 cleaner.style = False
 cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'small', 'sub', 'sup', 'wbr'] #  'center', 'strike', , 'u' 'table', 'tbody', 'td', 'th', 'tr',
-cleaner.kill_tags = ['audio', 'canvas', 'embed', 'figure', 'img', 'label', 'map', 'math', 'object', 'picture', 'style', 'svg', 'video'] # 'area', 'table'
+cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'map', 'math', 'nav', 'object', 'picture', 'style', 'svg', 'video'] # 'area', 'table' #  'header', 
 
 # to delete after parsing
 delete_tags = set(['link', 'noscript', 'table', 'time'])
@@ -172,6 +170,7 @@ lrutest = LRU(LRU_SIZE)
 
 # justext
 justext_stoplist = justext.get_stoplist('German')
+
 
 
 # trim text function
@@ -374,39 +373,39 @@ def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
     postfound = False
     tempelem = etree.Element('body')
-    ## div, section, article or ul
-    for subtree in tree.xpath('//*[(self::article or self::div or self::section or self::ul)]'):
-        for expr in bodyexpr:
-            if postfound is False:
-                # extract content
-                for element in subtree.xpath(expr):
-                    if element.tag in tag_catalog: ### potential restriction here
-                        elemtext = element.text
-                        ## delete unwanted
-                        if elemtext is None or len(elemtext) < 1: # was 10
-                            element.getparent().remove(element)
-                            continue
-                        # replace by temporary tag
-                        elem = element
-                        if elemtext in text_blacklist:
-                            elem.getparent().remove(elem)
-                            continue
-                        elem.text = textfilter(elemtext) # replace back
+    # iterate
+    for expr in bodyexpr:
+        if postfound is False:
+            # logger.debug(expr)
+            # extract content
+            for element in tree.xpath(expr):
+                if element.tag in tag_catalog: ### potential restriction here
+                    elemtext = element.text
+                    ## delete unwanted
+                    if elemtext is None or len(elemtext) < 1: # was 10
+                        element.getparent().remove(element)
+                        continue
+                    # replace by temporary tag
+                    elem = element
+                    if elemtext in text_blacklist:
+                        elem.getparent().remove(elem)
+                        continue
+                    elem.text = textfilter(elemtext) # replace back
 
-                        ## filter potential interesting p elements
-                        if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
-                            if elem.text and re.search(r'\w', elem.text):
-                                if duplicate_test(elem) is True:
-                                    continue
-                                # filter attributes
-                                if elem.tag == 'p': #  or elem.tag == 'item'
-                                    elem.attrib.clear()
-                                # insert
-                                tempelem.append(elem)
-                                postfound = True
-                            # register non-p elements
-                            #if elem.tag != 'p':
-                            #    teststring = ' '.join(elem.itertext()).encode('utf-8')
+                    ## filter potential interesting p elements
+                    if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
+                        if elem.text and re.search(r'\w', elem.text):
+                            if duplicate_test(elem) is True:
+                                continue
+                            # filter attributes
+                            if elem.tag == 'p': #  or elem.tag == 'item'
+                                elem.attrib.clear()
+                            # insert
+                            tempelem.append(elem)
+                            postfound = True
+                        # register non-p elements
+                        #if elem.tag != 'p':
+                        #    teststring = ' '.join(elem.itertext()).encode('utf-8')
     return tempelem
 
 
@@ -414,30 +413,30 @@ def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
     commentsfound = False
     commentsbody = etree.Element('body')
-    for subtree in tree.xpath('//*[(self::div or self::ol or self::section or self::ul)]'):
-        for expr in commentsexpr:
-            if commentsfound is False:
-                # extract content
-                for elem in subtree.xpath(expr):
-                    if elem.tag in tag_catalog:
-                        # delete unwanted
-                        ## TODO: text filter
-                        if elem.text:
-                            elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
-                            elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
-                            elem.text = trim(elem.text)
-                        # test length and remove
-                        if elem.text is None or elem.text in comments_blacklist:
-                            elem.getparent().remove(elem)
-                            continue
-                        # filter potential interesting p elements
-                        if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
-                            if elem.text and re.search(r'\w', elem.text):
-                                if duplicate_test(elem) is True:
-                                    continue
-                                # insert if words
-                                commentsbody.append(elem)
-                                commentsfound = True
+    for expr in commentsexpr:
+        if commentsfound is False:
+            # logger.debug(expr)
+            # extract content
+            for elem in tree.xpath(expr):
+                if elem.tag in tag_catalog:
+                    # delete unwanted
+                    ## TODO: text filter
+                    if elem.text:
+                        elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
+                        elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
+                        elem.text = trim(elem.text)
+                    # test length and remove
+                    if elem.text is None or elem.text in comments_blacklist:
+                        elem.getparent().remove(elem)
+                        continue
+                    # filter potential interesting p elements
+                    if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
+                        if elem.text and re.search(r'\w', elem.text):
+                            if duplicate_test(elem) is True:
+                                continue
+                            # insert if words
+                            commentsbody.append(elem)
+                            commentsfound = True
     return commentsbody
 
 
@@ -497,6 +496,25 @@ def check_tei(tei, record_id):
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return tei
+
+
+def sanitize(text):
+    # text = ' '.join(text.split())
+    #all unicode characters from 0x0000 - 0x0020 (33 total) are bad and will be replaced by "" (empty string)
+    # newtext = ''
+    #for line in text:
+    #    for pos in range(0,len(line)):
+    #        if ord(line[pos]) < 32:
+    #            line[pos] = None
+    #newtext = newtext + u''.join([c for c in line if c]) + '\n'
+    #return newtext
+    text = text.replace('\r\n', '\n')
+    invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
+    text = invalid_xml.sub('', text)
+#\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
+    unicode_whitespace = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
+    text = unicode_whitespace.sub('', text)
+    return text
 
 
 # main process
@@ -580,11 +598,11 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
         # check and repair
         output = check_tei(output, record_id)
     else:
-       output = etree.Element('root')
-       postelem = etree.SubElement(output, 'text')
-       postelem.append(postbody)
-       commentselem = etree.SubElement(output, 'comments')
-       commentselem.append(commentsbody)
+        output = etree.Element('root')
+        postelem = etree.SubElement(output, 'text')
+        postelem.append(postbody)
+        commentselem = etree.SubElement(output, 'comments')
+        commentselem.append(commentsbody)
 
     # sanity check on markup
     # if re.search(r'\[url', u''.join(postbody.itertext()):
@@ -611,7 +629,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
         except UnicodeDecodeError as err:
             logger.warning('Unicode error: %s %s', err, record_id)
 
-        # return None
+        ## returnstring = sanitize(returnstring)
 
         return returnstring
 
@@ -621,7 +639,6 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     #logger.info('tokens posts: %s', tokens_posts)
     #logger.info('tokens comments: %s', tokens_comments)
 
-    # return values
     # return postbody, commentsbody
     # return tei
     return None
@@ -632,7 +649,6 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
 #    pass
 # https://chardet.readthedocs.io/en/latest/
 
-
 #def custom_justext(htmldom):
 #    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
 #    justext.classify_paragraphs(paragraphs, justext.get_stoplist("German"), length_low=LENGTH_LOW_DEFAULT, \
@@ -641,17 +657,4 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
 #    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
 #    return paragraphs
 
-
-#all unicode characters from 0x0000 - 0x0020 (33 total) are bad and will be replaced by "" (empty string)
-#for line in fileinput.input(xmlInputFileLocation, inplace=1):
-#    for pos in range(0,len(line)):
-#        if unichr(line[pos]) < 32:
-#            line[pos] = None
-#    print u''.join([c for c in line if c])
-
-# invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
-# newdata, count = invalid_xml.subn('', data)
-
 # reader = codecs.EncodedFile(xmlfile, 'utf8', 'utf8', 'replace')
-
-# &#13;
