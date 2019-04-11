@@ -67,9 +67,9 @@ setup(
         # 'requests >= 2.19.0',
     ],
     # python_requires='>=3',
-    #entry_points = {
-    #    'console_scripts': ['html_extractor=html_extractor.cli:main'],
-    #},
+    entry_points = {
+        'console_scripts': ['html_extractor=html_extractor.cli:main'],
+    },
     # platforms='any',
     tests_require=['pytest', 'tox'],
     zip_safe=False,
