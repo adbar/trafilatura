@@ -50,7 +50,6 @@ MIN_EXTRACTED_COMM_SIZE = 100
 # alternatives if text too short:
 # https://github.com/kingwkb/readability
 # https://github.com/grangier/python-goose
-# https://github.com/miso-belica/jusText
 # https://github.com/buriy/python-readability
 # # python-boilerpipe for text?
 # # https://github.com/seomoz/dragnet
@@ -58,15 +57,7 @@ MIN_EXTRACTED_COMM_SIZE = 100
 ## DESIDERATA:
 # https://github.com/benhoyt/scandir
 # title -dash/hyphen- blogname
-# date <div class="meta-text"> 10. Jun 2013 ?
-# encoding detection? https://code.google.com/p/chared/
 # if p empty, take div?
-# os.path.getmtime() as last rescue for date?
-
-# <meta name="geo.placename" content="Marl" />
-# <meta name="geo.position" content="51.6789;7.11825" />
-# <meta name="ICBM" content="51.6789, 7.11825" />
-# attributes data-geo-lat data-geo-long
 
 ### http://teibyexample.org/xquery/TBEvalidator.xq
 
@@ -75,10 +66,14 @@ MIN_EXTRACTED_COMM_SIZE = 100
 # https://github.com/chardet/chardet
 # https://github.com/PyYoshi/cChardet
 
+# https://pypi.org/project/guess_language-spirit/
+
+
 # https://github.com/zachwill/moment
 
 # parser:
-# https://html5-parser.readthedocs.io/en/latest/
+# https://github.com/kovidgoyal/html5-parser
+# https://github.com/rushter/selectolax
 
 # metadata:
 # https://github.com/peterc/pismo/
@@ -90,7 +85,7 @@ logger = logging.getLogger(__name__)
 
 comm_length = 2 # was 10
 
-tag_catalog = set(['code', 'del', 'head', 'hi', 'list', 'p', 'quote']) # item, 'span', 
+tag_catalog = set(['code', 'del', 'div', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # item, 'span',  , 
 errors = OrderedDict() # dict() # defaultdict(list)
 errors['file'], errors['blogname'], errors['title'], errors['url'], errors['description'], errors['date'], errors['categories'], errors['tags'], errors['body'], errors['comments'], errors['author'], errors['language'] = [[] for _ in range(12)]
 
@@ -111,7 +106,9 @@ bodyexpr = ['//article//*', \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]//*", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]//*", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]//*", \
+            "//*[(self::div or self::section)][starts-with(@id, 'content')]//*", \
             "//*[(self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]//*", \
+            '//*[(self::div or self::section)][@class="text"]//*', \
             '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]//*', \
             "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]//*", \
             "//*[(self::div or self::section)][@class='postarea']//*", \
@@ -123,7 +120,12 @@ bodyexpr = ['//article//*', \
             "//*[(self::div or self::section)][starts-with(@class, 'article')]//*", \
             "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]//*", \
             '//div[@class="cell"]//*', \
+            '//*[(self::div or self::section)][@itemprop="articleBody"]//*', \
 ]
+# https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
+# <p id="sysopText" class="clearfix postContent">
+# https://www.mydealz.de/deals/babybay-maxi-seidenmatt-klarlackiert-beistellbett-furs-baby-stufenlos-hohenverstellbar-1368832
+
 
 commentsexpr = ["//*[(self::div or self::section or self::ol)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
                 "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comments') or starts-with(@class, 'comments')]//*", \
@@ -135,6 +137,8 @@ commentsexpr = ["//*[(self::div or self::section or self::ol)][contains(@id, 'co
                 "//*[(self::div or self::section)][starts-with(@id, 'social')]//*" \
                 "//ul[starts-with(@id, 'dsq-comments')]//*" \
 ]
+# https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
+# <div class="article-comment-title">
 
 
 # cleaner config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
@@ -261,6 +265,7 @@ def textfilter(elemtext):
     elemtext = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elemtext)
     elemtext = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elemtext)
     elemtext = re.sub(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', '', elemtext)
+    elemtext = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elemtext)
     elemtext = trim(elemtext)
     return elemtext
 
@@ -378,13 +383,23 @@ def extract_content(tree):
         # extract content
         for element in tree.xpath(expr):
             if element.tag in tag_catalog: ### potential restriction here
-                elemtext = element.text
                 ## delete unwanted
-                if elemtext is None or len(elemtext) < 1: # was 10
-                    element.getparent().remove(element)
-                    continue
+                # TODO: weird and empty element such as <p><p>...</p></p> ???
+                if element.text is None or len(element.text) < 1: # was 10
+                    if element.tail is None or len(element.tail) < 10:
+                        element.getparent().remove(element)
+                        continue
+                    else:
+                        # if element.tag == 'lb':
+                        logger.debug('using tail for element %s', element.tag)
+                        element.text = element.tail
+                        element.tail = ''
+                        if element.tag == 'lb':
+                            element.tag = 'p'
+                        # logger.debug('%s', element.text)
                 # replace by temporary tag
                 elem = element
+                elemtext = element.text
                 if elemtext in text_blacklist:
                     elem.getparent().remove(elem)
                     continue
@@ -422,9 +437,8 @@ def extract_comments(tree):
                 # delete unwanted
                 ## TODO: text filter
                 if elem.text:
-                    elem.text = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elem.text)
-                    elem.text = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elem.text)
-                    elem.text = trim(elem.text)
+                    elem.text = textfilter(elem.text)
+
                 # test length and remove
                 if elem.text is None or elem.text in comments_blacklist:
                     elem.getparent().remove(elem)
@@ -533,28 +547,34 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     # valid or not?
     tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
 
-    ## clean
-    tree = cleaner.clean_html(tree)
+    # save space and processing time
     tree = prune_html(tree)
 
+    ## clean
+    ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
+    ##print(len(teststring))
+    cleaned_tree = cleaner.clean_html(tree)
+    ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
+    ##print(len(teststring))
+
     ## convert tags
-    ## does not work without conversion
+    ## the rest does not work without conversion
     # if tei_output is True:
-    tree = convert_tags(tree)
+    cleaned_tree = convert_tags(cleaned_tree)
 
     ## extract content
-    temppost_hand = extract_content(tree)
+    temppost_hand = extract_content(cleaned_tree)
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
     if compare_flag is True:
         # try with justext
-        temppost_algo = try_justext(tree, filecontent, record_id)
+        temppost_algo = try_justext(cleaned_tree, filecontent, record_id)
         # compare
         temp_jt = u' '.join(temppost_algo.itertext())
         logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
         # condition to use justext
-        if len(temp_text) > 10 and len(temp_jt) > 2*len(temp_text):
+        if 0 < len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
             postbody = temppost_algo
         else:
             postbody = temppost_hand
@@ -562,8 +582,17 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
         logger.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
 
+    # try to use original/dirty tree
+    if len(temp_text) == 0 and len(temp_jt) == 0:
+        tree = convert_tags(tree)
+        temppost_hand = extract_content(tree)
+        temp_text = u' '.join(temppost_hand.itertext())
+        logger.info('non-clean extracted length: %s (extraction)', len(temp_text))
+        postbody = temppost_hand
+
+
     # comments
-    commentsbody = extract_comments(tree)
+    commentsbody = extract_comments(cleaned_tree)
 
     # sanity check on length
     temp_text = u' '.join(postbody.itertext())
@@ -660,5 +689,3 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
 #        stopwords_high=STOPWORDS_HIGH_DEFAULT, max_link_density=MAX_LINK_DENSITY_DEFAULT, no_headings=NO_HEADINGS_DEFAULT)
 #    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
 #    return paragraphs
-
-# reader = codecs.EncodedFile(xmlfile, 'utf8', 'utf8', 'replace')
