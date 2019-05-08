@@ -6,30 +6,23 @@ Module bundling all functions needed to extract the text in a webpage.
 ## This file is available from https://github.com/adbar/html-extractor
 ## under GNU GPL v3 license
 
-# compatibility
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-# from future import standard_library
-# standard_library.install_aliases()
-
 # standard
 import logging
 import re
 
 from io import StringIO # python3
 
-
 # third-party
 import ftfy
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
-
-# import regex as re # import re
+# import regex as re
 
 from lxml import etree, html
 from lxml.html.clean import Cleaner
 from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 
+# pylint:disable-msg=E0611,I1101
 
 # own
 # import settings
@@ -91,7 +84,7 @@ tag_catalog = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p',
 
 cut_empty_elems = ('div', 'p', 'section')
 
-text_blacklist = ('Gefällt mir', 'Facebook', 'Twitter', 'Google', 'E-Mail', 'Drucken')
+text_blacklist = ('Fill in your details below', 'Trage deine Daten unten', 'Kommentar verfassen', 'Bitte logge dich', 'Hinterlasse einen Kommentar', 'Gefällt mir', 'Facebook', 'Twitter', 'Google', 'E-Mail', 'Drucken')
 comments_blacklist = ('( Abmelden / Ändern )')
 
 ## parse
@@ -125,7 +118,7 @@ bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or
             "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]", \
             '//div[@class="cell"]', \
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
-]
+           ]
 # '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]', \
 # https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
 # <p id="sysopText" class="clearfix postContent">
@@ -141,7 +134,7 @@ commentsexpr = ["//*[(self::div or self::section or self::ol)][contains(@id, 'co
                 "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'social')]//*" \
                 "//ul[starts-with(@id, 'dsq-comments')]//*" \
-]
+               ]
 # https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
 # <div class="article-comment-title">
 
@@ -162,11 +155,8 @@ cleaner.remove_unknown_tags = False
 cleaner.safe_attrs_only = False
 cleaner.scripts = True
 cleaner.style = False
-cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'small', 'sub', 'sup', 'wbr'] #  'center', 'strike', , 'u' 'table', 'tbody', 'td', 'th', 'tr',
-cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'map', 'math', 'nav', 'object', 'picture', 'style', 'svg', 'video'] # 'area', 'table' # 'header'
-
-# to delete after parsing
-delete_tags = set(['link', 'noscript', 'time']) # 'table'
+cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
+cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
 tei_valid = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
@@ -179,24 +169,6 @@ lrutest = LRU(LRU_SIZE)
 
 # justext
 justext_stoplist = justext.get_stoplist('German')
-
-
-
-# trim text function
-def trim(string):
-    """Remove spaces at the beginning and end of a string"""
-    # string = re.sub(r'\n+', '\n', string, re.MULTILINE)
-    string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
-    # may be superfluous
-    # string = re.sub(r'^\s+|\s+$', '', string.strip(' \t\n\r'))
-    return string
-
-
-## https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-#def recursively_empty(elem):
-#    if elem.text:
-#        return False
-#    return all((recursively_empty(c) for c in elem.iterchildren()))
 
 
 def load_html(htmlobject):
@@ -243,34 +215,42 @@ def load_html(htmlobject):
 
 
 def prune_html(tree):
-    '''delete empty and unwanted elements'''
+    '''delete empty elements'''
     # empty tags
     for element in tree.xpath(".//*[not(node())]"):
-        # print(element.tag)
         if element.tag in cut_empty_elems:
             element.getparent().remove(element)
-    # remove tags
-    for delitem in delete_tags:
-        for elem in tree.xpath('//' + delitem):
-            elem.getparent().remove(elem)
     # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
     # Walk over all elements in the tree and remove all nodes that are recursively empty
     # context = etree.iterwalk(tree)
     # for action, element in context:
     #     parent = element.getparent()
     #     if element.tag in cut_empty_elems and recursively_empty(element):
-    #        print('#2', elem.tag)
     #        parent.remove(element)
+    ## https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
+    # if elem.text:
+    #    return False
+    # return all((recursively_empty(c) for c in elem.iterchildren()))
     return tree
+
+
+# trim text function
+def trim(string):
+    """Remove spaces at the beginning and end of a string"""
+    # string = re.sub(r'\n+', '\n', string, re.MULTILINE)
+    string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
+    # may be superfluous
+    # string = re.sub(r'^\s+|\s+$', '', string.strip(' \t\n\r'))
+    return string
 
 
 def textfilter(elemtext):
     '''Filter out unwanted text'''
+    ## TODO: text_blacklist
     elemtext = re.sub(r'^Gef.llt mir.+|^.hnliche Beitr.+', '', elemtext)
     elemtext = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elemtext)
     elemtext = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elemtext)
     elemtext = re.sub(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', '', elemtext)
-    elemtext = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elemtext)
     elemtext = trim(elemtext)
     return elemtext
 
@@ -356,7 +336,7 @@ def convert_tags(tree):
 
 def try_justext(tree, filecontent, record_id):
     '''safety net: try with justext'''
-    tempelem = etree.Element('body')
+    result_body = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
     logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
     try:
@@ -371,12 +351,20 @@ def try_justext(tree, filecontent, record_id):
             if duplicate_test(paragraph) is not True:
                 elem = etree.Element('p')
                 elem.text = paragraph.text
-                tempelem.append(elem)
+                result_body.append(elem)
             # jt += paragraph.text + '</p><p>'
     # jt += '</p>'
     # temp_jt = u' '.join(jt.itertext())
     # temp_jt = jt
-    return tempelem
+    return result_body
+
+#def custom_justext(htmldom):
+#    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
+#    justext.classify_paragraphs(paragraphs, justext.get_stoplist("German"), length_low=LENGTH_LOW_DEFAULT, \
+#        length_high=LENGTH_HIGH_DEFAULT, stopwords_low=STOPWORDS_LOW_DEFAULT, \
+#        stopwords_high=STOPWORDS_HIGH_DEFAULT, max_link_density=MAX_LINK_DENSITY_DEFAULT, no_headings=NO_HEADINGS_DEFAULT)
+#    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
+#    return paragraphs
 
 
 def extract_content(tree):
@@ -468,7 +456,7 @@ def extract_comments(tree):
                     elem.getparent().remove(elem)
                     continue
                 # filter potential interesting p elements
-                if not elem.attrib or not 'style' in elem.attrib: # or not 'align' in elem.attrib
+                if not elem.attrib or 'style' not in elem.attrib: # or not 'align' in elem.attrib
                     if elem.text and re.search(r'\w', elem.text):
                         if duplicate_test(elem) is True:
                             continue
@@ -688,7 +676,6 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
             logger.warning('Unicode error: %s %s', err, record_id)
 
         ## returnstring = sanitize(returnstring)
-
         return returnstring
 
     # else
@@ -697,8 +684,6 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     #logger.info('tokens posts: %s', tokens_posts)
     #logger.info('tokens comments: %s', tokens_comments)
 
-    # return postbody, commentsbody
-    # return tei
     return None
 
 
@@ -706,11 +691,3 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
 #def unicode_test(htmlstring):
 #    pass
 # https://chardet.readthedocs.io/en/latest/
-
-#def custom_justext(htmldom):
-#    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
-#    justext.classify_paragraphs(paragraphs, justext.get_stoplist("German"), length_low=LENGTH_LOW_DEFAULT, \
-#        length_high=LENGTH_HIGH_DEFAULT, stopwords_low=STOPWORDS_LOW_DEFAULT, \
-#        stopwords_high=STOPWORDS_HIGH_DEFAULT, max_link_density=MAX_LINK_DENSITY_DEFAULT, no_headings=NO_HEADINGS_DEFAULT)
-#    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
-#    return paragraphs
