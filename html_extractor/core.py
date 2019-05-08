@@ -107,11 +107,11 @@ bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
+            '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content"]', \
+            "//*[(self::div or self::section)][starts-with(@class, 'article')]", \
             "//*[(self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
             '//article', \
-            "//*[(self::div or self::section)][starts-with(@id, 'content')]", \
             '//*[(self::div or self::section)][@class="text"]', \
-            '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]", \
             "//*[(self::div or self::section)][@class='postarea']", \
             '//*[(self::div or self::section)][contains (@class, "storycontent")]', \
@@ -119,11 +119,11 @@ bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or
             "//*[(self::div or self::section)][starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or starts-with(@class, 'section-content') or starts-with(@class, 'single-content')]", \
             '//*[(self::div or self::section)][@class="art-postcontent"]', \
             '//*[(self::div or self::section)][@class="post"]', \
-            "//*[(self::div or self::section)][starts-with(@class, 'article')]", \
             "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]", \
             '//div[@class="cell"]', \
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
 ]
+# '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]', \
 # https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
 # <p id="sysopText" class="clearfix postContent">
 # https://www.mydealz.de/deals/babybay-maxi-seidenmatt-klarlackiert-beistellbett-furs-baby-stufenlos-hohenverstellbar-1368832
@@ -163,7 +163,7 @@ cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins
 cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'map', 'math', 'nav', 'object', 'picture', 'style', 'svg', 'video'] # 'area', 'table' #  'header', 
 
 # to delete after parsing
-delete_tags = set(['link', 'noscript', 'table', 'time'])
+delete_tags = set(['link', 'noscript', 'time']) # 'table', 
 
 # validation
 tei_valid = set(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
@@ -391,6 +391,7 @@ def extract_content(tree):
         potential_tags = set(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote'])
         if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
             potential_tags.add('div')
+        logger.debug(potential_tags)
         # extract content
         for element in subtree.xpath('.//*'):
             if element.tag in potential_tags: ### potential restriction here
@@ -410,6 +411,7 @@ def extract_content(tree):
                             element.tag = 'p'
                         # logger.debug('%s', element.text)
                 # replace by temporary tag
+                ## print(element.tag, element.text)
                 elem = element
                 elemtext = element.text
                 if elemtext in text_blacklist:
@@ -440,6 +442,16 @@ def extract_content(tree):
         if postfound is True:
             logger.debug(expr)
             break
+    # try parsing wild <p> elements
+    if postfound is False:
+        # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
+        for element in tree.xpath('//p'):
+            # print(element.tag, element.text)
+            if element.text is not None:
+                # if duplicate_test(elem) is True:
+                element.attrib.clear()
+                element.tail = ''
+                tempelem.append(element)
     return tempelem
 
 
@@ -565,12 +577,12 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
 
     # save space and processing time
-    tree = prune_html(tree)
+    cleaned_tree = prune_html(tree)
 
     ## clean
     ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
     ##print(len(teststring))
-    cleaned_tree = cleaner.clean_html(tree)
+    cleaned_tree = cleaner.clean_html(cleaned_tree)
     ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
     ##print(len(teststring))
 

@@ -36,6 +36,11 @@ MOCK_PAGES = { \
 'https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975': 'sueddeutsche.de.genderdebatte.html', \
 'https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html': 'rnz.de.witzel.html',
 'https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg': 'austria.info.radfahren.html',
+'https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/': 'buchperlen.wordpress.com.html', \
+'https://www.greenpeace.de/themen/artenvielfalt/loechrige-lebensversicherung': 'greenpeace.org.artenvielfalt.html', \
+'https://www.fairkom.eu/about': 'fairkom.eu.about.html', \
+'https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461': 'futurezone.at.lyft.html', \
+'http://www.hundeverein-kreisunna.de/unserverein.html': 'hundeverein-kreisunna.de.html', \
 }
 # '': '', \
 
@@ -100,7 +105,7 @@ def test_main():
     assert 'Es ist erstaunlich:' in result and 'Damaris Nübling ist Professorin' in result and 'Der Fall Weinstein' not in result and 'Leser empfehlen' not in result
 
     result = load_mock_page('https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/')
-    assert 'Volksinitiative Schweiz zum Grundeinkommen.' in result and 'getaggt mit:' not in result and 'Was denkst du?' not in result
+    assert 'Unter diesem Motto findet am 14. September' in result and 'Volksinitiative Schweiz zum Grundeinkommen.' in result and 'getaggt mit:' not in result # and 'Was denkst du?' not in result
 
     result = load_mock_page('https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/')
     assert 'Zweitens wird der Genderstern' in result and 'alldem leider – nichts.' in result
@@ -119,28 +124,44 @@ def test_main():
     result = load_mock_page('https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html')
     assert 'Für einen Roman' in result and 'Auszeichnung der Branche.' in result
 
+    result = load_mock_page('https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/')
+    # print(result)
+    assert 'Dann sollten Sie erst recht' in result and 'als saure Gürkchen entlarvte Ex-Boyfriends.' in result and 'Ähnliche Beiträge' not in result
+
+    result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975')
+    assert 'Es ist erstaunlich:'in result and 'Foto: rclassen' not in result and '(Narr-Verlag).' in result and 'Diskussion zu diesem Artikel auf:' not in result
+
+    result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html')
+    print(result)
+    assert 'künftig das XADO-Schutzfett verwenden.' in result and 'Newsletter' not in result # and 'Sie könnten auch an folgenden Artikeln interessiert sein' not in result and  'bis zu 50% Verschleiß.' in result and 'Die Lebensdauer von Bauteilen erhöht sich beträchtlich.' in result
+
+    result = load_mock_page('https://www.greenpeace.de/themen/artenvielfalt/loechrige-lebensversicherung')
+    assert 'Wir erodieren global' in result and 'Pummelige Hummeln, schillernde Schmetterlinge' not in result and 'Doch daran arbeitet wir.' in result and 'Menschenrechtsverletzungen bei Frauen und Kindern' not in result
+
+    result = load_mock_page('https://www.fairkom.eu/about')
+    assert 'ein gemeinwohlorientiertes Partnerschaftsnetzwerk' in result and 'Stimmberechtigung bei der Generalversammlung.' in result and 'support@fairkom.eu' not in result
+
+    result = load_mock_page('https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461')
+    assert 'Einige Kunden des Fahrdienst-Vermittler Lyft' in result and 'zeitweise rund vier Prozent.' in result and 'Allgemeine Nutzungsbedingungen' not in result # Waymo bittet Autohersteller um Geld not in result
+
+    result = load_mock_page('http://www.hundeverein-kreisunna.de/unserverein.html')
+    assert 'Beate und Norbert Olschewski' in result and 'ein Familienmitglied und unser Freund.' in result and 'zurück zur Startseite' not in result
+
+    #result = load_mock_page('')
+    #print(result)
+    #assert 1 == 0
+
     result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg')
     print(result)
     assert 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
 
 
-    #result = load_mock_page('https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/')
-    #print(result)
-    #result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975')
-    #print(result)
-    #result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975')
-    #print(result)
-
-
-    #result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html')
-    #print(result)
-
-    #result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18')
-    #print(result)
-
     #result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/')
     #print(result)
     #assert 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result
+
+    ##result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18')
+    ##print(result)
 
     # print(html_extractor.lrutest)
 
