@@ -102,6 +102,10 @@ htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
 # https://github.com/peterc/pismo/blob/master/lib/pismo/lede_matches.rb
 #     {'attr': 'itemprop', 'value': 'articleBody'}, {'attr': 'class', 'value': 'post-content'}, {'tag': 'article'},
 
+# ns = {"re": "http://exslt.org/regular-expressions"}
+#query = "//definition//variable[re:test(@name, '^{0}$', 'i')]".format(tag_name)
+#result = tree.xpath(query, namespaces=ns)
+
 bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
@@ -114,11 +118,12 @@ bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or
             '//*[(self::div or self::section)][@class="text"]', \
             "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]", \
             "//*[(self::div or self::section)][@class='postarea']", \
-            '//*[(self::div or self::section)][contains (@class, "storycontent")]', \
+            '//*[(self::div or self::section)][contains(@class, "storycontent")]', \
             "//*[(self::div or self::section)][starts-with(@id, 'primary')]", \
             "//*[(self::div or self::section)][starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or starts-with(@class, 'section-content') or starts-with(@class, 'single-content')]", \
             '//*[(self::div or self::section)][@class="art-postcontent"]', \
             '//*[(self::div or self::section)][@class="post"]', \
+            '//div[contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]", \
             '//div[@class="cell"]', \
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \

@@ -41,6 +41,9 @@ MOCK_PAGES = { \
 'https://www.fairkom.eu/about': 'fairkom.eu.about.html', \
 'https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461': 'futurezone.at.lyft.html', \
 'http://www.hundeverein-kreisunna.de/unserverein.html': 'hundeverein-kreisunna.de.html', \
+'https://viehbacher.com/de/steuerrecht': 'viehbacher.com.steuerrecht.html', \
+'http://www.jovelstefan.de/2011/09/11/gefallt-mir/': 'jovelstefan.de.gefallt.html', \
+'https://www.stuttgart.de/item/show/132240/1': 'stuttgart.de.html', \
 }
 # '': '', \
 
@@ -147,14 +150,18 @@ def test_main():
     result = load_mock_page('http://www.hundeverein-kreisunna.de/unserverein.html')
     assert 'Beate und Norbert Olschewski' in result and 'ein Familienmitglied und unser Freund.' in result and 'zurück zur Startseite' not in result
 
-    #result = load_mock_page('')
+    result = load_mock_page('https://viehbacher.com/de/steuerrecht')
+    assert 'und wirtschaftlich orientierte Privatpersonen' in result and 'rund um die Uhr.' in result and 'Was sind Cookies?' not in result # and 'Mensch im Mittelpunkt.' in result
+
+    result = load_mock_page('http://www.jovelstefan.de/2011/09/11/gefallt-mir/')
+    assert 'Manchmal überrascht einen' in result and 'kein Meisterwerk war!' in result and 'Pingback von' not in result # and 'Kommentare geschlossen' not in result
+
+    result = load_mock_page('https://www.stuttgart.de/item/show/132240/1')
+    assert 'Das Bohnenviertel entstand' in result and 'sich herrlich entspannen.' in result and 'Nützliche Links' not in result # and 'Mehr zum Thema' not in result
+
+    #result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg')
     #print(result)
-    #assert 1 == 0
-
-    result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg')
-    print(result)
-    assert 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
-
+    #assert 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
 
     #result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/')
     #print(result)
