@@ -85,9 +85,11 @@ logger = logging.getLogger(__name__)
 
 comm_length = 2 # was 10
 
-tag_catalog = set(['code', 'del', 'div', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # item, 'span',  , 
-errors = OrderedDict() # dict() # defaultdict(list)
-errors['file'], errors['blogname'], errors['title'], errors['url'], errors['description'], errors['date'], errors['categories'], errors['tags'], errors['body'], errors['comments'], errors['author'], errors['language'] = [[] for _ in range(12)]
+tag_catalog = set(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # item, 'span',  , 
+# extra_tags = set(['div'])
+
+#errors = OrderedDict() # dict() # defaultdict(list)
+#errors['file'], errors['blogname'], errors['title'], errors['url'], errors['description'], errors['date'], errors['categories'], errors['tags'], errors['body'], errors['comments'], errors['author'], errors['language'] = [[] for _ in range(12)]
 
 cut_empty_elems = ('div')
 
@@ -100,27 +102,27 @@ htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
 # https://github.com/peterc/pismo/blob/master/lib/pismo/lede_matches.rb
 #     {'attr': 'itemprop', 'value': 'articleBody'}, {'attr': 'class', 'value': 'post-content'}, {'tag': 'article'},
 
-bodyexpr = ['//article//*', \
-            '//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]//*', \
-            "//*[(self::div or self::section)][starts-with(@class, 'entry')]//*", \
-            "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]//*", \
-            "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]//*", \
-            "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]//*", \
-            "//*[(self::div or self::section)][starts-with(@id, 'content')]//*", \
-            "//*[(self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]//*", \
-            '//*[(self::div or self::section)][@class="text"]//*', \
-            '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]//*', \
-            "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]//*", \
-            "//*[(self::div or self::section)][@class='postarea']//*", \
-            '//*[(self::div or self::section)][contains (@class, "storycontent")]//*', \
-            "//*[(self::div or self::section)][starts-with(@id, 'primary')]//*", \
-            "//*[(self::div or self::section)][starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or starts-with(@class, 'section-content') or starts-with(@class, 'single-content')]//*", \
-            '//*[(self::div or self::section)][@class="art-postcontent"]//*', \
-            '//*[(self::div or self::section)][@class="post"]//*', \
-            "//*[(self::div or self::section)][starts-with(@class, 'article')]//*", \
-            "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]//*", \
-            '//div[@class="cell"]//*', \
-            '//*[(self::div or self::section)][@itemprop="articleBody"]//*', \
+bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
+            "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
+            "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
+            "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
+            "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
+            "//*[(self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
+            '//article', \
+            "//*[(self::div or self::section)][starts-with(@id, 'content')]", \
+            '//*[(self::div or self::section)][@class="text"]', \
+            '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]', \
+            "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]", \
+            "//*[(self::div or self::section)][@class='postarea']", \
+            '//*[(self::div or self::section)][contains (@class, "storycontent")]', \
+            "//*[(self::div or self::section)][starts-with(@id, 'primary')]", \
+            "//*[(self::div or self::section)][starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or starts-with(@class, 'section-content') or starts-with(@class, 'single-content')]", \
+            '//*[(self::div or self::section)][@class="art-postcontent"]', \
+            '//*[(self::div or self::section)][@class="post"]', \
+            "//*[(self::div or self::section)][starts-with(@class, 'article')]", \
+            "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]", \
+            '//div[@class="cell"]', \
+            '//*[(self::div or self::section)][@itemprop="articleBody"]', \
 ]
 # https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
 # <p id="sysopText" class="clearfix postContent">
@@ -380,13 +382,23 @@ def extract_content(tree):
     tempelem = etree.Element('body')
     # iterate
     for expr in bodyexpr:
+        # select tree if the expression has been found
+        subtree = tree.xpath(expr)
+        if len(subtree) == 0:
+            continue
+        subtree = subtree[0]
+        # define iteration strategy
+        potential_tags = set(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote'])
+        if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
+            potential_tags.add('div')
         # extract content
-        for element in tree.xpath(expr):
-            if element.tag in tag_catalog: ### potential restriction here
+        for element in subtree.xpath('.//*'):
+            if element.tag in potential_tags: ### potential restriction here
                 ## delete unwanted
                 # TODO: weird and empty element such as <p><p>...</p></p> ???
                 if element.text is None or len(element.text) < 1: # was 10
-                    if element.tail is None or len(element.tail) < 10:
+                    # try the tail
+                    if element.tail is None or len(element.tail) < 50:
                         element.getparent().remove(element)
                         continue
                     else:
@@ -406,13 +418,18 @@ def extract_content(tree):
                 elem.text = textfilter(elemtext) # replace back
 
                 ## filter potential interesting p elements
-                if not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
+                if True: #not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
                     if elem.text and re.search(r'\w', elem.text):
                         if duplicate_test(elem) is True:
                             continue
                         # filter attributes
                         if elem.tag == 'p': #  or elem.tag == 'item'
                             elem.attrib.clear()
+                        if elem.tag == 'div':
+                            elem.tag = 'p'
+                            elem.attrib.clear()
+                        if elem.tag != 'p':
+                            elem.tail = ''
                         # insert
                         tempelem.append(elem)
                         postfound = True
@@ -542,7 +559,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     # init
     global tokens_posts, tokens_comments, lrutest
     tree = load_html(filecontent)
-    logger.debug('starting')
+    logger.debug('starting %s', url)
 
     # valid or not?
     tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
@@ -574,7 +591,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
         temp_jt = u' '.join(temppost_algo.itertext())
         logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
         # condition to use justext
-        if 0 < len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
+        if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
             postbody = temppost_algo
         else:
             postbody = temppost_hand
@@ -616,7 +633,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     # if langresult[0] != 'en':
         logger.warning('wrong language: %s %s %s', langresult, record_id, url)
         logger.debug('wrong language: %s %s', langresult, temp_text)
-        errors['language'].append(url)
+        #errors['language'].append(url)
         return None
 
     # cache elements
