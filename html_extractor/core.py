@@ -16,7 +16,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import logging
 import re
 
-from collections import OrderedDict
 from io import StringIO # python3
 
 
@@ -85,13 +84,12 @@ logger = logging.getLogger(__name__)
 
 comm_length = 2 # was 10
 
-tag_catalog = set(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # item, 'span',  , 
-# extra_tags = set(['div'])
+tag_catalog = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote']) # 'span'
 
 #errors = OrderedDict() # dict() # defaultdict(list)
 #errors['file'], errors['blogname'], errors['title'], errors['url'], errors['description'], errors['date'], errors['categories'], errors['tags'], errors['body'], errors['comments'], errors['author'], errors['language'] = [[] for _ in range(12)]
 
-cut_empty_elems = ('div')
+cut_empty_elems = ('div', 'p', 'section')
 
 text_blacklist = ('Gefällt mir', 'Facebook', 'Twitter', 'Google', 'E-Mail', 'Drucken')
 comments_blacklist = ('( Abmelden / Ändern )')
@@ -165,13 +163,13 @@ cleaner.safe_attrs_only = False
 cleaner.scripts = True
 cleaner.style = False
 cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'small', 'sub', 'sup', 'wbr'] #  'center', 'strike', , 'u' 'table', 'tbody', 'td', 'th', 'tr',
-cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'map', 'math', 'nav', 'object', 'picture', 'style', 'svg', 'video'] # 'area', 'table' #  'header', 
+cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'map', 'math', 'nav', 'object', 'picture', 'style', 'svg', 'video'] # 'area', 'table' # 'header'
 
 # to delete after parsing
-delete_tags = set(['link', 'noscript', 'time']) # 'table', 
+delete_tags = set(['link', 'noscript', 'time']) # 'table'
 
 # validation
-tei_valid = set(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
+tei_valid = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
 tei_valid_attributes = set(['rendition'])
 
 # counters
@@ -383,8 +381,7 @@ def try_justext(tree, filecontent, record_id):
 
 def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
-    postfound = False
-    tempelem = etree.Element('body')
+    result_body = etree.Element('body')
     # iterate
     for expr in bodyexpr:
         # select tree if the expression has been found
@@ -393,62 +390,55 @@ def extract_content(tree):
             continue
         subtree = subtree[0]
         # define iteration strategy
-        potential_tags = set(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote'])
+        potential_tags = set(tag_catalog) # 'span'
         if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
             potential_tags.add('div')
         logger.debug(potential_tags)
         # extract content
         for element in subtree.xpath('.//*'):
-            if element.tag in potential_tags: ### potential restriction here
-                ## delete unwanted
-                # TODO: weird and empty element such as <p><p>...</p></p> ???
-                if element.text is None or len(element.text) < 1: # was 10
-                    # try the tail
-                    if element.tail is None or len(element.tail) < 50:
-                        element.getparent().remove(element)
-                        continue
-                    else:
-                        # if element.tag == 'lb':
-                        logger.debug('using tail for element %s', element.tag)
-                        element.text = element.tail
-                        element.tail = ''
-                        if element.tag == 'lb':
-                            element.tag = 'p'
-                        # logger.debug('%s', element.text)
-                # replace by temporary tag
-                ## print(element.tag, element.text)
-                elem = element
-                elemtext = element.text
-                if elemtext in text_blacklist:
-                    elem.getparent().remove(elem)
+            ## delete unwanted
+            if element.tag not in potential_tags:
+                continue
+            # TODO: weird and empty elements such as <p><p>...</p></p> ???
+            if element.text is None: # or len(element.text) < 10
+                # try the tail
+                if element.tail is None or len(element.tail) < 50:
+                    element.getparent().remove(element)
                     continue
-                elem.text = textfilter(elemtext) # replace back
+                # if element.tag == 'lb':
+                logger.debug('using tail for element %s', element.tag)
+                element.text = element.tail
+                element.tail = ''
+                if element.tag == 'lb':
+                    element.tag = 'p'
+            ## logger.debug(element.tag, element.text)
+            if element.text in text_blacklist:
+                element.getparent().remove(element)
+                continue
+            element.text = textfilter(element.text) # replace back
 
-                ## filter potential interesting p elements
-                if True: #not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
-                    if elem.text and re.search(r'\w', elem.text):
-                        if duplicate_test(elem) is True:
-                            continue
-                        # filter attributes
-                        if elem.tag == 'p': #  or elem.tag == 'item'
-                            elem.attrib.clear()
-                        if elem.tag == 'div':
-                            elem.tag = 'p'
-                            elem.attrib.clear()
-                        if elem.tag != 'p':
-                            elem.tail = ''
-                        # insert
-                        tempelem.append(elem)
-                        postfound = True
-                    # register non-p elements
-                    #if elem.tag != 'p':
-                    #    teststring = ' '.join(elem.itertext()).encode('utf-8')
+            ## filter potential interesting p elements?
+            #not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
+            if element.text and re.search(r'\w', element.text):
+                ## TODO: improve duplicate detection
+                if duplicate_test(element) is True:
+                    continue
+                # small div-correction # could be moved elsewhere
+                if element.tag == 'div':
+                    element.tag = 'p'
+                # handle p-tags and attributes
+                if element.tag == 'p': #  or element.tag == 'item'
+                    element.attrib.clear()
+                else:
+                    element.tail = ''
+                # insert
+                result_body.append(element)
         # control
-        if postfound is True:
+        if result_body: # if not list(result_body) # if it has children
             logger.debug(expr)
             break
     # try parsing wild <p> elements
-    if postfound is False:
+    if not result_body:
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
         for element in tree.xpath('//p'):
             # print(element.tag, element.text)
@@ -456,8 +446,8 @@ def extract_content(tree):
                 # if duplicate_test(elem) is True:
                 element.attrib.clear()
                 element.tail = ''
-                tempelem.append(element)
-    return tempelem
+                result_body.append(element)
+    return result_body
 
 
 def extract_comments(tree):
@@ -511,8 +501,8 @@ def check_tei(tei, record_id):
         # check elements
         if element.tag not in tei_valid:
             # disable warnings for chosen categories
-            if element.tag not in ('div', 'span'):
-                logger.warning('not a TEI element, removing: %s %s', element.tag, record_id)
+            # if element.tag not in ('div', 'span'):
+            logger.warning('not a TEI element, removing: %s %s', element.tag, record_id)
             # append text AND tail to parent
             full_text = ''
             if element.text is not None and element.tail is not None:
@@ -551,6 +541,7 @@ def check_tei(tei, record_id):
 
 
 def sanitize(text):
+    '''Convert text and discard incompatible unicode and invalid XML characters'''
     # text = ' '.join(text.split())
     #all unicode characters from 0x0000 - 0x0020 (33 total) are bad and will be replaced by "" (empty string)
     # newtext = ''
