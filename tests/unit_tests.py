@@ -74,11 +74,14 @@ def test_download():
     '''test page download'''
     assert cli.fetch_url('https://httpbin.org/status/404') is None
     teststring = cli.fetch_url('https://httpbin.org/status/200')
-    assert teststring is not None and cli.examine(teststring) is None
+    assert teststring is not None
+    assert cli.examine(teststring, False, True) is None
     teststring = cli.fetch_url('https://httpbin.org/links/2/2')
-    assert teststring is not None and cli.examine(teststring) is None
+    assert teststring is not None
+    assert cli.examine(teststring, False, True) is None
     teststring = cli.fetch_url('https://httpbin.org/html')
-    assert teststring is not None and cli.examine(teststring) is not None
+    assert teststring is not None
+    assert cli.examine(teststring, False, True) is not None
 
 
 def test_main():

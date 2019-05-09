@@ -23,7 +23,7 @@ def fetch_url(url):
     return response.text
 
 
-def examine(htmlstring):
+def examine(htmlstring, txtflag, xmlteiflag):
     """ Generic safeguards and triggers """
     # safety check
     if len(htmlstring) > 10000000:
@@ -32,7 +32,12 @@ def examine(htmlstring):
         sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
-        result = process_record(htmlstring, None, '0000', tei_output=True)
+        if txtflag is True:
+            result = process_record(htmlstring, None, '0000', txt_output=True)
+        elif xmlteiflag is True:
+            result = process_record(htmlstring, None, '0000', tei_output=True)
+        else:
+            result = process_record(htmlstring, None, '0000')
         return result
     return None
 
@@ -41,6 +46,8 @@ def main():
     """ Run as a command-line utility. """
     # arguments
     argsparser = argparse.ArgumentParser()
+    argsparser.add_argument("--txt", help="TXT output", action="store_true")
+    argsparser.add_argument("--xmltei", help="XML TEI output", action="store_true")
     argsparser.add_argument("-u", "--URL", help="custom URL download")
     argsparser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
     args = argsparser.parse_args()
@@ -63,7 +70,7 @@ def main():
             sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
             sys.exit(1)
 
-    result = examine(htmlstring)
+    result = examine(htmlstring, args.txt, args.xmltei)
     if result is not None:
         sys.stdout.write(result + '\n')
 

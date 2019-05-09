@@ -548,9 +548,17 @@ def sanitize(text):
     return text
 
 
+def xmltotxt(xmloutput):
+    '''Convert to plain text format'''
+    returnstring = ' '.join(xmloutput.itertext())
+    returnstring = trim(returnstring)
+    returnstring = sanitize(returnstring)
+    return returnstring
+
+
 # main process
 #@profile
-def process_record(filecontent, url, record_id, compare_flag=True, tei_output=True, language_check=False):
+def process_record(filecontent, url, record_id, compare_flag=True, tei_output=False, language_check=False, txt_output=True):
     '''Main process for text extraction'''
     # init
     global tokens_posts, tokens_comments, lrutest
@@ -658,13 +666,16 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
     if lrutest.has_key(teststring) is False:
         # lrutest[teststring] = 1
-        tokens_posts += len(re.findall(r'\w+', u' '.join(postbody.itertext()), re.UNICODE))
-        tokens_comments += len(re.findall(r'\w+', u' '.join(commentsbody.itertext()), re.UNICODE))
-        returnstring = etree.tostring(output, pretty_print=True, encoding='unicode') # xml_declaration=True,
-        if tei_output is True:
+        tokens_posts += len(re.findall(r'\w+', ' '.join(postbody.itertext()), re.UNICODE))
+        tokens_comments += len(re.findall(r'\w+', ' '.join(commentsbody.itertext()), re.UNICODE))
+        if txt_output is True:
+            returnstring = xmltotxt(output)
+        else:
+            returnstring = etree.tostring(output, pretty_print=True, encoding='unicode') # xml_declaration=True,
+            if tei_output is True:
             # <hi> space hack
-            returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
-            returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
+                returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
+                returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
         # &#13; (space) hack
         returnstring = re.sub(r'&#13;', '', returnstring)
         # filter out empty lines
