@@ -47,8 +47,8 @@ MOCK_PAGES = { \
 }
 # '': '', \
 
-
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+
 
 def load_mock_page(url):
     '''load mock page from samples'''
@@ -62,10 +62,12 @@ def load_mock_page(url):
     result = html_extractor.process_record(htmlstring, url, '0000', tei_output=False)
     return result
 
+
 def test_trim():
     '''test string trimming'''
     assert html_extractor.trim('	Test  ') == 'Test'
     assert html_extractor.trim('\t\tTest  Test\r\n') == 'Test Test'
+
 
 def test_main():
     '''test extraction from HTML'''
@@ -76,7 +78,8 @@ def test_main():
     assert 'Impressum' not in result and 'Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol' in result
 
     result = load_mock_page('https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/')
-    assert result is None
+    print(result)
+    assert '10-15 min lightning talks' in result and 'What type? Etc. (30 mins)' in result and 'Dieser Eintrag wurde veröffentlicht' not in result # and 'Mit anderen Teillen' not in result
 
     result = load_mock_page('http://bunterepublik.wordpress.com/2012/04/13/schwafelrunde-ohne-ritter/')
     assert 'Abgelegt unter' not in result and 'Nächster Beitrag' not in result and 'Die Schwafelrunde' in result and 'zusammen.' in result
@@ -85,7 +88,7 @@ def test_main():
     assert 'Das Bukett präsentiert sich' in result and 'Besonders gut passt er zu asiatischen Gerichten' in result and 'Kunden kauften auch' not in result and 'Gutschein sichern' not in result
 
     result = load_mock_page('https://www.landwirt.com/Precision-Farming-Moderne-Sensortechnik-im-Kuhstall,,4229,,Bericht.html')
-    assert 'Überwachung der somatischen Zellen' in result and 'tragbaren Ultraschall-Geräten' in result and 'Anzeigentarife' not in result # and 'Aktuelle Berichte aus dieser Kategorie' not in result and 'Kotkonsistenz' in result 
+    assert 'Überwachung der somatischen Zellen' in result and 'tragbaren Ultraschall-Geräten' in result and 'Kotkonsistenz' in result  and 'Anzeigentarife' not in result # and 'Aktuelle Berichte aus dieser Kategorie' not in result
 
     result = load_mock_page('http://www.rs-ingenieure.de/de/hochbau/leistungen/tragwerksplanung')
     assert 'Wir bearbeiten alle Leistungsbilder' in result and 'Brückenbau' not in result
@@ -94,8 +97,7 @@ def test_main():
     assert 'Catch Evolution' not in result and 'und gekennzeichnet mit' not in result and 'Heut geht es' in result and 'Ich komme dann zu dir vor Ort.' in result
 
     result = load_mock_page('http://love-hina.ch/news/0409.html')
-    # print(result)
-    assert 'Kapitel 121 ist' in result and 'Besucher online' not in result # and 'Kommentare schreiben' not in result 
+    assert 'Kapitel 121 ist' in result and 'Besucher online' not in result and 'Kommentare schreiben' not in result
 
     result = load_mock_page('http://www.cdu-fraktion-erfurt.de/inhalte/aktuelles/entwicklung-der-waldorfschule-ermoeglicht/index.html')
     assert 'der steigenden Nachfrage gerecht zu werden.' in result and 'Zurück zur Übersicht' not in result and 'Erhöhung für Zoo-Eintritt' not in result
@@ -119,10 +121,10 @@ def test_main():
     # and 'Groß­vä­ter' in result # segmented words
 
     result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft')
-    assert 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result #  Eines der großen Probleme, 
+    assert 'Eines der großen Probleme,' in result and 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result
 
     result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html')
-    assert 'Erdöl bildet nach Millionen' in result and 'in unserem Artikel "Warum wird das Erdöl knapp?".' # and 'Die Natur ist aus chemischen Elementen aufgebaut' not in result
+    assert 'Erdöl bildet nach Millionen' in result and 'in unserem Artikel "Warum wird das Erdöl knapp?".' in result # and 'Die Natur ist aus chemischen Elementen aufgebaut' not in result
 
     result = load_mock_page('https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html')
     assert 'Für einen Roman' in result and 'Auszeichnung der Branche.' in result
@@ -145,7 +147,7 @@ def test_main():
     assert 'ein gemeinwohlorientiertes Partnerschaftsnetzwerk' in result and 'Stimmberechtigung bei der Generalversammlung.' in result and 'support@fairkom.eu' not in result
 
     result = load_mock_page('https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461')
-    assert 'Einige Kunden des Fahrdienst-Vermittler Lyft' in result and 'zeitweise rund vier Prozent.' in result and 'Allgemeine Nutzungsbedingungen' not in result # Waymo bittet Autohersteller um Geld not in result
+    assert 'Einige Kunden des Fahrdienst-Vermittler Lyft' in result and 'zeitweise rund vier Prozent.' in result and 'Allgemeine Nutzungsbedingungen' not in result # and 'Waymo bittet Autohersteller um Geld' not in result
 
     result = load_mock_page('http://www.hundeverein-kreisunna.de/unserverein.html')
     assert 'Beate und Norbert Olschewski' in result and 'ein Familienmitglied und unser Freund.' in result and 'zurück zur Startseite' not in result
@@ -159,16 +161,15 @@ def test_main():
     result = load_mock_page('https://www.stuttgart.de/item/show/132240/1')
     assert 'Das Bohnenviertel entstand' in result and 'sich herrlich entspannen.' in result and 'Nützliche Links' not in result # and 'Mehr zum Thema' not in result
 
-    #result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg')
-    #print(result)
-    #assert 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
+    result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/')
+    assert 'zu einem glatten Teig verarbeiten.' in result and 'goldbraun sind.' in result and 'Sei der Erste' not in result and 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result
+    #assert and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result
 
-    #result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/')
-    #print(result)
-    #assert 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result
+    result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18')
+    assert 'Es war gesagt,' in result and 'Symbol auf dem Finger haben' in result and 'Aufrufe:' not in result
 
-    ##result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18')
-    ##print(result)
+    result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg')
+    assert 'Salzburg liebt seine Radfahrer.' in result and 'Puls einsaugen zu lassen.' in result and 'Das könnte Sie auch interessieren ...' not in result and 'So macht Radfahren sonst noch Spaß' not in result # and 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
 
     # print(html_extractor.lrutest)
 
