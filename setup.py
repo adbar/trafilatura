@@ -46,12 +46,11 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'Topic :: Scientific/Engineering',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
         'Topic :: Text Processing :: Markup :: HTML',
     ],
-    keywords=['entity-extraction', 'html-extraction', 'html-parsing', 'metadata-extraction',  'webarchives', 'web-scraping'],
+    keywords=['entity-extraction', 'html-extraction', 'html-parsing', 'text-mining', 'webarchives', 'web-scraping'],
     url='http://github.com/adbar/html-extractor',
     author='Adrien Barbaresi',
     author_email='barbaresi@bbaw.de',
@@ -64,7 +63,7 @@ setup(
         'langid',
         'lru-dict',
         'lxml == 4.3.0', # CPython parser issue with version 4.3.1
-        # 'requests >= 2.19.0',
+        'requests >= 2.19.0',
     ],
     # python_requires='>=3',
     entry_points = {
