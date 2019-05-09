@@ -550,7 +550,7 @@ def sanitize(text):
 
 # main process
 #@profile
-def process_record(filecontent, url, record_id, compare_flag=True, tei_output=True):
+def process_record(filecontent, url, record_id, compare_flag=True, tei_output=True, language_check=False):
     '''Main process for text extraction'''
     # init
     global tokens_posts, tokens_comments, lrutest
@@ -618,19 +618,20 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Tr
         return None
 
     # sanity check on language
-    # comments
-    if len(temp_comments) > len(temp_text):
-        langtest = temp_comments
-    # default
-    else:
-        langtest = temp_text
-    langresult = langid.classify(langtest)
-    if langresult[0] != 'de':
-    # if langresult[0] != 'en':
-        logger.warning('wrong language: %s %s %s', langresult, record_id, url)
-        logger.debug('wrong language: %s %s', langresult, temp_text)
-        #errors['language'].append(url)
-        return None
+    if language_check is True:
+        # comments
+        if len(temp_comments) > len(temp_text):
+            langtest = temp_comments
+        # default
+        else:
+            langtest = temp_text
+        langresult = langid.classify(langtest)
+        if langresult[0] != 'de':
+        # if langresult[0] != 'en':
+            logger.warning('wrong language: %s %s %s', langresult, record_id, url)
+            logger.debug('wrong language: %s %s', langresult, temp_text)
+            #errors['language'].append(url)
+            return None
 
     # cache elements
     cache(postbody)
