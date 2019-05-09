@@ -9,6 +9,7 @@ import sys
 # https://docs.pytest.org/en/latest/
 
 import html_extractor
+from html_extractor import cli
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -67,6 +68,17 @@ def test_trim():
     '''test string trimming'''
     assert html_extractor.trim('	Test  ') == 'Test'
     assert html_extractor.trim('\t\tTest  Test\r\n') == 'Test Test'
+
+
+def test_download():
+    '''test page download'''
+    assert cli.fetch_url('https://httpbin.org/status/404') is None
+    teststring = cli.fetch_url('https://httpbin.org/status/200')
+    assert teststring is not None and cli.examine(teststring) is None
+    teststring = cli.fetch_url('https://httpbin.org/links/2/2')
+    assert teststring is not None and cli.examine(teststring) is None
+    teststring = cli.fetch_url('https://httpbin.org/html')
+    assert teststring is not None and cli.examine(teststring) is not None
 
 
 def test_main():
@@ -177,3 +189,4 @@ def test_main():
 if __name__ == '__main__':
     test_trim()
     test_main()
+    test_download()
