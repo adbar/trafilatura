@@ -60,7 +60,7 @@ def load_mock_page(url):
     except UnicodeDecodeError:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r', encoding='ISO-8859-1') as inputf:
             htmlstring = inputf.read()
-    result = html_extractor.process_record(htmlstring, url, '0000', tei_output=False)
+    result = html_extractor.process_record(htmlstring, url, '0000', tei_output=False, txt_output=False)
     return result
 
 
@@ -162,6 +162,7 @@ def test_main():
     assert 'ein gemeinwohlorientiertes Partnerschaftsnetzwerk' in result and 'Stimmberechtigung bei der Generalversammlung.' in result and 'support@fairkom.eu' not in result
 
     result = load_mock_page('https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461')
+    print(result)
     assert 'Einige Kunden des Fahrdienst-Vermittler Lyft' in result and 'zeitweise rund vier Prozent.' in result and 'Allgemeine Nutzungsbedingungen' not in result # and 'Waymo bittet Autohersteller um Geld' not in result
 
     result = load_mock_page('http://www.hundeverein-kreisunna.de/unserverein.html')

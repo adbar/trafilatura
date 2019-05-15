@@ -103,9 +103,9 @@ bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
             '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content"]', \
-            "//*[(self::div or self::section)][starts-with(@class, 'article')]", \
-            "//*[(self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
             '//article', \
+            "//*[(self::article or self::div or self::section)][starts-with(@class, 'article')]", \
+            "//*[(self::article or self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
             '//*[(self::div or self::section)][@class="text"]', \
             "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]", \
             "//*[(self::div or self::section)][@class='postarea']", \
@@ -155,7 +155,7 @@ cleaner.remove_unknown_tags = False
 cleaner.safe_attrs_only = False
 cleaner.scripts = True
 cleaner.style = False
-cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
+cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
 cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
@@ -551,10 +551,23 @@ def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     returnstring = ''
     # returnstring = ' '.join(xmloutput.itertext())
-    for textelement in xmloutput.itertext():
+    for element in xmloutput.iter():
+        if element.text is None and element.tail is None:
+           continue
+        elif element.text is not None and element.tail is not None:
+            textelement = element.text + ' ' + element.tail
+        elif element.text is not None and element.tail is None:
+            textelement = element.text
+        else:
+            textelement = element.tail
         textelement = sanitize(textelement)
         textelement = trim(textelement)
-        returnstring += textelement + '\n'
+        if element.tag == 'head':
+            returnstring += '\n' + textelement + '\n'
+        elif element.tag == 'p':
+            returnstring += textelement + '\n'
+        else:
+            returnstring += textelement + ' '
     #returnstring = sanitize(returnstring)
     #returnstring = trim(returnstring)
     return returnstring
@@ -562,7 +575,7 @@ def xmltotxt(xmloutput):
 
 # main process
 #@profile
-def process_record(filecontent, url, record_id, compare_flag=True, tei_output=False, language_check=False, txt_output=True):
+def process_record(filecontent, url, record_id, compare_flag=True, tei_output=False, language_check=False, txt_output=False):
     '''Main process for text extraction'''
     # init
     global tokens_posts, tokens_comments, lrutest
@@ -586,6 +599,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Fa
     ## the rest does not work without conversion
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
+    #print(html.tostring(cleaned_tree, pretty_print=False, encoding='unicode'))
 
     ## extract content
     temppost_hand = extract_content(cleaned_tree)
