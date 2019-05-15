@@ -33,11 +33,11 @@ def examine(htmlstring, txtflag, xmlteiflag):
     # proceed
     else:
         if txtflag is True:
-            result = process_record(htmlstring, None, '0000', txt_output=True)
+            result = process_record(htmlstring, None, '0000', txt_output=True, tei_output=False)
         elif xmlteiflag is True:
-            result = process_record(htmlstring, None, '0000', tei_output=True)
+            result = process_record(htmlstring, None, '0000', txt_output=False, tei_output=True)
         else:
-            result = process_record(htmlstring, None, '0000')
+            result = process_record(htmlstring, None, '0000', txt_output=False, tei_output=False)
         return result
     return None
 
