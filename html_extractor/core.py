@@ -239,8 +239,7 @@ def trim(string):
     """Remove spaces at the beginning and end of a string"""
     # string = re.sub(r'\n+', '\n', string, re.MULTILINE)
     string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
-    # may be superfluous
-    # string = re.sub(r'^\s+|\s+$', '', string.strip(' \t\n\r'))
+    string = string.strip()
     return string
 
 
@@ -422,11 +421,11 @@ def extract_content(tree):
                 # insert
                 result_body.append(element)
         # control
-        if result_body: # if not list(result_body) # if it has children
+        if len(result_body)> 0: # if it has children
             logger.debug(expr)
             break
     # try parsing wild <p> elements
-    if not result_body:
+    if len(result_body) == 0: # no children
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
         for element in tree.xpath('//p'):
             # print(element.tag, element.text)
@@ -550,9 +549,14 @@ def sanitize(text):
 
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
-    returnstring = ' '.join(xmloutput.itertext())
-    returnstring = trim(returnstring)
-    returnstring = sanitize(returnstring)
+    returnstring = ''
+    # returnstring = ' '.join(xmloutput.itertext())
+    for textelement in xmloutput.itertext():
+        textelement = sanitize(textelement)
+        textelement = trim(textelement)
+        returnstring += textelement + '\n'
+    #returnstring = sanitize(returnstring)
+    #returnstring = trim(returnstring)
     return returnstring
 
 
