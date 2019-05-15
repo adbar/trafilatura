@@ -84,7 +84,7 @@ def test_download():
     assert cli.examine(teststring, False, True) is not None
 
 
-def test_main(txtoutput):
+def test_main(txtoutput=False):
     '''test extraction from HTML'''
     result = load_mock_page('https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/', txtoutput)
     assert 'Impressum' not in result and 'Die GEMA dreht völlig am Zeiger!' in result
