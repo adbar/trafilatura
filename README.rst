@@ -82,6 +82,19 @@ The simplest way to use html_extractor is as follows:
 
 The only required argument is the ``response`` element, the rest is optional. It is also possible to use a previously parsed tree (i.e. a lxml.html object) as input, which is then handled seamlessly.
 
+.. code-block:: python
+
+    >>> from lxml import html
+    >>> mytree = html.fromstring('<html><body><article><p>Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></article></body></html>')
+    >>> html_extractor.process_record(mytree, txt_output=True)
+    'Here is the main text...'
+
+Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match.
+
+.. code-block:: python
+
+    >>> result = html_extractor.process_record(response, url, target_language='de')
+
 
 On the command-line
 -------------------
