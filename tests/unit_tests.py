@@ -73,15 +73,18 @@ def test_trim():
 def test_download():
     '''test page download'''
     assert cli.fetch_url('https://httpbin.org/status/404') is None
-    teststring = cli.fetch_url('https://httpbin.org/status/200')
+    url = 'https://httpbin.org/status/200'
+    teststring = cli.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, False, True) is None
-    teststring = cli.fetch_url('https://httpbin.org/links/2/2')
+    assert cli.examine(teststring, url, False, True) is None
+    url = 'https://httpbin.org/links/2/2'
+    teststring = cli.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, False, True) is None
-    teststring = cli.fetch_url('https://httpbin.org/html')
+    assert cli.examine(teststring, url, False, True) is None
+    url = 'https://httpbin.org/html'
+    teststring = cli.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, False, True) is not None
+    assert cli.examine(teststring, url, False, True) is not None
 
 
 def test_main(txtoutput=False):

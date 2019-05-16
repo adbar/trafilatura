@@ -10,9 +10,12 @@ import argparse
 import logging
 import sys
 
+#import chardet
 import requests
 
 from html_extractor import process_record
+
+logger = logging.getLogger(__name__)
 
 
 def fetch_url(url):
@@ -20,10 +23,11 @@ def fetch_url(url):
     response = requests.get(url)
     if int(response.status_code) != 200:
         return None
+    logger.debug('guessed encoding: %s', response.encoding)
     return response.text
 
 
-def examine(htmlstring, txtflag, xmlteiflag):
+def examine(htmlstring, url, txtflag, xmlteiflag):
     """ Generic safeguards and triggers """
     # safety check
     if len(htmlstring) > 10000000:
@@ -33,11 +37,11 @@ def examine(htmlstring, txtflag, xmlteiflag):
     # proceed
     else:
         if txtflag is True:
-            result = process_record(htmlstring, None, '0000', txt_output=True, tei_output=False)
+            result = process_record(htmlstring, url, '0000', txt_output=True, tei_output=False)
         elif xmlteiflag is True:
-            result = process_record(htmlstring, None, '0000', txt_output=False, tei_output=True)
+            result = process_record(htmlstring, url, '0000', txt_output=False, tei_output=True)
         else:
-            result = process_record(htmlstring, None, '0000', txt_output=False, tei_output=False)
+            result = process_record(htmlstring, url, '0000', txt_output=False, tei_output=False)
         return result
     return None
 
@@ -70,7 +74,7 @@ def main():
             sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
             sys.exit(1)
 
-    result = examine(htmlstring, args.txt, args.xmltei)
+    result = examine(htmlstring, args.URL, args.txt, args.xmltei)
     if result is not None:
         sys.stdout.write(result + '\n')
 

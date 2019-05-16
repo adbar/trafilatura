@@ -45,29 +45,17 @@ MIN_EXTRACTED_COMM_SIZE = 100
 # # python-boilerpipe for text?
 # # https://github.com/seomoz/dragnet
 
-## DESIDERATA:
-# https://github.com/benhoyt/scandir
-# title -dash/hyphen- blogname
-# if p empty, take div?
-
 ### http://teibyexample.org/xquery/TBEvalidator.xq
 
 # https://github.com/seomoz/simhash-py
 
 # https://github.com/chardet/chardet
 # https://github.com/PyYoshi/cChardet
-
 # https://pypi.org/project/guess_language-spirit/
-
-
-# https://github.com/zachwill/moment
 
 # parser:
 # https://github.com/kovidgoyal/html5-parser
 # https://github.com/rushter/selectolax
-
-# metadata:
-# https://github.com/peterc/pismo/
 
 
 
@@ -84,10 +72,7 @@ text_blacklist = ('Fill in your details below', 'Trage deine Daten unten', 'Komm
 comments_blacklist = ('( Abmelden / Ändern )')
 
 ## parse
-CUSTOM_HTMLPARSER = html.HTMLParser() # remove_blank_text=True recover=True
-
-# https://github.com/peterc/pismo/blob/master/lib/pismo/lede_matches.rb
-#     {'attr': 'itemprop', 'value': 'articleBody'}, {'attr': 'class', 'value': 'post-content'}, {'tag': 'article'},
+CUSTOM_HTMLPARSER = html.HTMLParser()
 
 # ns = {"re": "http://exslt.org/regular-expressions"}
 #query = "//definition//variable[re:test(@name, '^{0}$', 'i')]".format(tag_name)
@@ -116,9 +101,6 @@ BODY_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "entr
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
            ]
 # '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]', \
-# https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
-# <p id="sysopText" class="clearfix postContent">
-# https://www.mydealz.de/deals/babybay-maxi-seidenmatt-klarlackiert-beistellbett-furs-baby-stufenlos-hohenverstellbar-1368832
 
 
 COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
@@ -175,8 +157,9 @@ def load_html(htmlobject):
     elif isinstance(htmlobject, str):
         ## robust parsing
         try:
+            # guessed_encoding = chardet.detect(htmlobject.encode())['encoding']
             # parse
-            # parser = html.HTMLParser() # encoding='utf8'  # document_fromstring
+            # parser = html.HTMLParser() # encoding=guessed_encoding  # document_fromstring
             tree = html.parse(StringIO(htmlobject), parser=CUSTOM_HTMLPARSER)
         except UnicodeDecodeError as err:
             logger.error('unicode %s', err)
@@ -395,8 +378,8 @@ def extract_content(tree):
                 # handle p-tags and attributes
                 if element.tag == 'p': #  or element.tag == 'item'
                     element.attrib.clear()
-                else:
-                    element.tail = ''
+                #else:
+                #    element.tail = ''
                 # insert
                 result_body.append(element)
         # control
@@ -541,10 +524,8 @@ def xmltotxt(xmloutput):
             textelement = element.tail
         textelement = sanitize(textelement)
         textelement = trim(textelement)
-        if element.tag == 'head':
+        if element.tag == ('code', 'head', 'item', 'lb', 'p', 'quote'):
             returnstring += '\n' + textelement + '\n'
-        elif element.tag == 'p':
-            returnstring += textelement + '\n'
         else:
             returnstring += textelement + ' '
     #returnstring = sanitize(returnstring)
@@ -561,24 +542,16 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     tree = load_html(filecontent)
     logger.debug('HTML tree loaded for URL: %s', url)
 
-    # valid or not?
-    # tree = html.parse(StringIO(filecontent), CUSTOM_HTMLPARSER) # document_fromstring
-
     # save space and processing time
     cleaned_tree = prune_html(tree)
 
     ## clean
-    ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
-    ##print(len(teststring))
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-    ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
-    ##print(len(teststring))
 
     ## convert tags
     ## the rest does not work without conversion
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
-    #print(html.tostring(cleaned_tree, pretty_print=False, encoding='unicode'))
 
     ## extract content
     temppost_hand = extract_content(cleaned_tree)
@@ -607,7 +580,6 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         temp_text = u' '.join(temppost_hand.itertext())
         logger.info('non-clean extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
-
 
     # comments
     commentsbody = extract_comments(cleaned_tree)
@@ -692,9 +664,3 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     #logger.info('tokens comments: %s', tokens_comments)
 
     return None
-
-
-## TODO: unicode test
-#def unicode_test(htmlstring):
-#    pass
-# https://chardet.readthedocs.io/en/latest/
