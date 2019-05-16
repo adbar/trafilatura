@@ -28,7 +28,6 @@ from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dic
 # import settings
 MIN_EXTRACTED_SIZE = 200
 MIN_DUPLCHECK_SIZE = 100
-CORPUS_VERSION = 2017.1
 LRU_SIZE = 10000000
 MIN_EXTRACTED_COMM_SIZE = 100
 
@@ -77,10 +76,7 @@ logger = logging.getLogger(__name__)
 
 comm_length = 2 # was 10
 
-tag_catalog = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote']) # 'span'
-
-#errors = OrderedDict() # dict() # defaultdict(list)
-#errors['file'], errors['blogname'], errors['title'], errors['url'], errors['description'], errors['date'], errors['categories'], errors['tags'], errors['body'], errors['comments'], errors['author'], errors['language'] = [[] for _ in range(12)]
+TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote']) # 'span'
 
 cut_empty_elems = ('div', 'p', 'section')
 
@@ -88,7 +84,7 @@ text_blacklist = ('Fill in your details below', 'Trage deine Daten unten', 'Komm
 comments_blacklist = ('( Abmelden / Ändern )')
 
 ## parse
-htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
+CUSTOM_HTMLPARSER = html.HTMLParser() # remove_blank_text=True recover=True
 
 # https://github.com/peterc/pismo/blob/master/lib/pismo/lede_matches.rb
 #     {'attr': 'itemprop', 'value': 'articleBody'}, {'attr': 'class', 'value': 'post-content'}, {'tag': 'article'},
@@ -97,7 +93,7 @@ htmlparser = html.HTMLParser() # remove_blank_text=True recover=True
 #query = "//definition//variable[re:test(@name, '^{0}$', 'i')]".format(tag_name)
 #result = tree.xpath(query, namespaces=ns)
 
-bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
+BODY_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
@@ -125,7 +121,7 @@ bodyexpr = ['//*[(self::div or self::section)][contains(@id, "entry-content") or
 # https://www.mydealz.de/deals/babybay-maxi-seidenmatt-klarlackiert-beistellbett-furs-baby-stufenlos-hohenverstellbar-1368832
 
 
-commentsexpr = ["//*[(self::div or self::section or self::ol)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
+COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
                 "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comments') or starts-with(@class, 'comments')]//*", \
                 "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'comment-form-identity')]//*", \
@@ -139,28 +135,28 @@ commentsexpr = ["//*[(self::div or self::section or self::ol)][contains(@id, 'co
 # <div class="article-comment-title">
 
 
-# cleaner config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
-cleaner = Cleaner()
-cleaner.annoying_tags = True
-cleaner.comments = True
-cleaner.embedded = True
-cleaner.forms = True
-cleaner.frames = True
-cleaner.javascript = True
-cleaner.links = False
-cleaner.meta = False
-cleaner.page_structure = False
-cleaner.processing_instructions = True
-cleaner.remove_unknown_tags = False
-cleaner.safe_attrs_only = False
-cleaner.scripts = True
-cleaner.style = False
-cleaner.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
-cleaner.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
+# HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
+HTML_CLEANER = Cleaner()
+HTML_CLEANER.annoying_tags = True
+HTML_CLEANER.comments = True
+HTML_CLEANER.embedded = True
+HTML_CLEANER.forms = True
+HTML_CLEANER.frames = True
+HTML_CLEANER.javascript = True
+HTML_CLEANER.links = False
+HTML_CLEANER.meta = False
+HTML_CLEANER.page_structure = False
+HTML_CLEANER.processing_instructions = True
+HTML_CLEANER.remove_unknown_tags = False
+HTML_CLEANER.safe_attrs_only = False
+HTML_CLEANER.scripts = True
+HTML_CLEANER.style = False
+HTML_CLEANER.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
+HTML_CLEANER.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
-tei_valid = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
-tei_valid_attributes = set(['rendition'])
+TEI_VALID_TAGS = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
+TEI_VALID_ATTRS = set(['rendition'])
 
 # counters
 tokens_posts = 0
@@ -168,7 +164,7 @@ tokens_comments = 0
 lrutest = LRU(LRU_SIZE)
 
 # justext
-justext_stoplist = justext.get_stoplist('German')
+JUSTEXT_STOPLIST = justext.get_stoplist('German')
 
 
 def load_html(htmlobject):
@@ -176,27 +172,12 @@ def load_html(htmlobject):
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         # copy tree
         tree = htmlobject
-        # derive string
-        # htmlstring = html.tostring(htmlobject, encoding='unicode')
     elif isinstance(htmlobject, str):
-        # the string is a URL, download it
-        #if re.match(r'https?://', htmlobject):
-        #    logger.info('URL detected, downloading: %s', htmlobject)
-        #    rget = fetch_url(htmlobject)
-        #    if rget is not None:
-        #        htmlstring = rget.text
-        # copy string
-        #else:
-        # htmlstring = htmlobject
         ## robust parsing
         try:
             # parse
             # parser = html.HTMLParser() # encoding='utf8'
-            tree = html.parse(StringIO(htmlobject), parser=htmlparser)
-            ## TODO: clean page?
-            # cleaner.clean_html(html.parse(StringIO(filecontent), htmlparser))
-            # tree = html.fromstring(html.encode('utf8'), parser=htmlparser)
-            # <svg>
+            tree = html.parse(StringIO(htmlobject), parser=CUSTOM_HTMLPARSER)
         except UnicodeDecodeError as err:
             logger.error('unicode %s', err)
             tree = None
@@ -204,13 +185,11 @@ def load_html(htmlobject):
             logger.error('parsed string %s', err)
             tree = None
         except (etree.XMLSyntaxError, ValueError, AttributeError) as err:
-            #errors['file'].append(filename)
             logger.error('parser %s', err)
             tree = None
     else:
         logger.error('this type cannot be processed: %s', type(htmlobject))
         tree = None
-        # htmlstring = None
     return tree
 
 
@@ -340,7 +319,7 @@ def try_justext(tree, filecontent, record_id):
     logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
     try:
         # paragraphs = custom_justext(tree)
-        paragraphs = justext.justext(justtextstring, justext_stoplist)
+        paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
     except ValueError as err: # ValueError: Input object is not an XML element: HtmlComment
         logger.error('justext %s %s', err, record_id)
         return None
@@ -370,14 +349,14 @@ def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
     result_body = etree.Element('body')
     # iterate
-    for expr in bodyexpr:
+    for expr in BODY_XPATH_EXPRESSIONS:
         # select tree if the expression has been found
         subtree = tree.xpath(expr)
         if len(subtree) == 0:
             continue
         subtree = subtree[0]
         # define iteration strategy
-        potential_tags = set(tag_catalog) # 'span'
+        potential_tags = set(TAG_CATALOG) # 'span'
         if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
             potential_tags.add('div')
         logger.debug(potential_tags)
@@ -421,7 +400,7 @@ def extract_content(tree):
                 # insert
                 result_body.append(element)
         # control
-        if len(result_body)> 0: # if it has children
+        if len(result_body) > 0: # if it has children
             logger.debug(expr)
             break
     # try parsing wild <p> elements
@@ -441,10 +420,10 @@ def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
     commentsfound = False
     commentsbody = etree.Element('body')
-    for expr in commentsexpr:
+    for expr in COMMENTS_XPATH:
         # extract content
         for elem in tree.xpath(expr):
-            if elem.tag in tag_catalog:
+            if elem.tag in TAG_CATALOG:
                 # delete unwanted
                 ## TODO: text filter
                 if elem.text:
@@ -486,7 +465,7 @@ def check_tei(tei, record_id):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     for element in tei.xpath('//text/body//*'):
         # check elements
-        if element.tag not in tei_valid:
+        if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
             # if element.tag not in ('div', 'span'):
             logger.warning('not a TEI element, removing: %s %s', element.tag, record_id)
@@ -516,7 +495,7 @@ def check_tei(tei, record_id):
             continue
         # check attributes
         for attribute in element.attrib:
-            if attribute not in tei_valid_attributes:
+            if attribute not in TEI_VALID_ATTRS:
                 logger.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
                 element.attrib.pop(attribute)
     # validate ?
@@ -553,7 +532,7 @@ def xmltotxt(xmloutput):
     # returnstring = ' '.join(xmloutput.itertext())
     for element in xmloutput.iter():
         if element.text is None and element.tail is None:
-           continue
+            continue
         elif element.text is not None and element.tail is not None:
             textelement = element.text + ' ' + element.tail
         elif element.text is not None and element.tail is None:
@@ -575,7 +554,7 @@ def xmltotxt(xmloutput):
 
 # main process
 #@profile
-def process_record(filecontent, url, record_id, compare_flag=True, tei_output=False, language_check=False, txt_output=False):
+def process_record(filecontent, url=None, record_id='0001', compare_flag=True, tei_output=False, language_check=False, txt_output=False):
     '''Main process for text extraction'''
     # init
     global tokens_posts, tokens_comments, lrutest
@@ -583,7 +562,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Fa
     logger.debug('starting %s', url)
 
     # valid or not?
-    tree = html.parse(StringIO(filecontent), htmlparser) # document_fromstring
+    tree = html.parse(StringIO(filecontent), CUSTOM_HTMLPARSER) # document_fromstring
 
     # save space and processing time
     cleaned_tree = prune_html(tree)
@@ -591,7 +570,7 @@ def process_record(filecontent, url, record_id, compare_flag=True, tei_output=Fa
     ## clean
     ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
     ##print(len(teststring))
-    cleaned_tree = cleaner.clean_html(cleaned_tree)
+    cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
     ##teststring = html.tostring(tree, pretty_print=False, encoding='unicode')
     ##print(len(teststring))
 
