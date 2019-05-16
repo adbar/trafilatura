@@ -17,8 +17,9 @@ html-extractor: Extract the main text content of web pages
     :target: https://codecov.io/gh/adbar/html-extractor
 
 
-Robust text extraction and boilerplate removal based on a combination of rules, XPath expressions and HTML tree examination.
-Extract the main text content of web pages, including text formatting and page structure. Given a HTML document, it parses it, retrieves the main body text and converts it to XML or plain text.
+Robust extraction of main text content and boilerplate removal based on a combination of DOM-based examination, XPath expressions and rules.
+
+This library handles the extraction of the main text content while preserving part of the text formatting and page structure. Given a HTML document, it parses it, retrieves the main body text and converts it to XML or plain text.
 
 *Work in progress, first package release ahead.*
 
@@ -33,11 +34,17 @@ Extract the main text content of web pages, including text formatting and page s
 Features
 --------
 
-Robust text extraction and boilerplate removal based on a combination of rules, XPath expressions and HTML tree examination.
+Robust text extraction and boilerplate removal based on a combination of rules, XPath expressions and HTML tree examination. Also known as DOM-based content extraction, main content identification, HTML text cleaning. The purpose is to find relevant and original text sections of a web page and also to remove the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.)
 
-Because it relies on lxml_, html_extractor is robust and fast.
+Because it relies on lxml_, html_extractor is comparatively fast. It is also robust, as the additional generic algorithm jusText_ is used as a backup solution.
 
-Preserves text formatting (bold, italic, etc.) and page structure (titles, lists).
+The result of processing can be in plain text or XML format. In the latter case, basic formatting elements are preserved such as text formatting (bold, italic, etc.) and page structure (paragraphs, titles, lists), which can be used for further processing.
+
+Currently experimental features:
+
+-  XML output compatible with the recommendations of the Text Encoding Initiative (XML TEI)
+-  Language detection on the extracted content
+-  Separate extraction of main text and comments
 
 
 Installation
@@ -47,7 +54,7 @@ html_extractor is a Python 3 package that is available on PyPI_ and can be insta
 
 ``pip install html_extractor``
 
-(Or use pip3 install ftfy on systems where Python 2 and 3 are both globally installed and pip refers to Python 2.)
+*(Or use ``pip3 install html_extractor`` on systems where Python 2 and 3 are both globally installed and pip refers to Python 2.)*
 
 Direct installation of the latest version over pip is possible (see `build status <https://travis-ci.org/adbar/html-extractor>`_):
 
@@ -60,29 +67,35 @@ With Python
 Basic use
 ~~~~~~~~~
 
-The simplest way to use html_extractor is:
-
+The simplest way to use html_extractor is as follows:
 
 .. code-block:: python
 
     >>> import html_extractor
+    >>> import requests
+    >>> url = 'response = requests.get(url)'
+    >>> response = requests.get(url)
+    >>> result = html_extractor.process_record(response, url)
+    >>> print(result) # formatting preserved in basic XML structure
+    >>> result = html_extractor.process_record(response, url, txt_output=True)
+    >>> print(result) # plain text
 
-    >>> ...
-
-
+The only required argument is the ``response`` element, the rest is optional. It is also possible to use a previously parsed tree (i.e. a lxml.html object) as input, which is then handled seamlessly.
 
 
 On the command-line
 -------------------
 
-A basic command-line interface is included, URLs can be directly used
+A basic command-line interface is included, URLs can be used directly (``-u/--URL``):
 
 .. code-block:: bash
 
     $ html_extractor --URL "https://de.creativecommons.org/index.php/was-ist-cc/"
-    $ ... outputs text ...
+    $ # outputs main text with basic XML structure ...
+    $ html_extractor --txt -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
+    $ # outputs main content in plain text format ...
 
-A HTML response body can also be piped to html-extractor:
+A HTML document (and response body) can also be piped to the html-extractor:
 
 .. code-block:: bash
 
