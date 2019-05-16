@@ -176,7 +176,7 @@ def load_html(htmlobject):
         ## robust parsing
         try:
             # parse
-            # parser = html.HTMLParser() # encoding='utf8'
+            # parser = html.HTMLParser() # encoding='utf8'  # document_fromstring
             tree = html.parse(StringIO(htmlobject), parser=CUSTOM_HTMLPARSER)
         except UnicodeDecodeError as err:
             logger.error('unicode %s', err)
@@ -554,15 +554,15 @@ def xmltotxt(xmloutput):
 
 # main process
 #@profile
-def process_record(filecontent, url=None, record_id='0001', compare_flag=True, tei_output=False, language_check=False, txt_output=False):
+def process_record(filecontent, url=None, record_id='0001', compare_flag=True, tei_output=False, target_language=None, txt_output=False):
     '''Main process for text extraction'''
     # init
     global tokens_posts, tokens_comments, lrutest
     tree = load_html(filecontent)
-    logger.debug('starting %s', url)
+    logger.debug('HTML tree loaded for URL: %s', url)
 
     # valid or not?
-    tree = html.parse(StringIO(filecontent), CUSTOM_HTMLPARSER) # document_fromstring
+    # tree = html.parse(StringIO(filecontent), CUSTOM_HTMLPARSER) # document_fromstring
 
     # save space and processing time
     cleaned_tree = prune_html(tree)
@@ -623,7 +623,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         return None
 
     # sanity check on language
-    if language_check is True:
+    if target_language is not None:
         # comments
         if len(temp_comments) > len(temp_text):
             langtest = temp_comments
@@ -631,11 +631,9 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         else:
             langtest = temp_text
         langresult = langid.classify(langtest)
-        if langresult[0] != 'de':
-        # if langresult[0] != 'en':
+        if langresult[0] != target_language:
             logger.warning('wrong language: %s %s %s', langresult, record_id, url)
             logger.debug('wrong language: %s %s', langresult, temp_text)
-            #errors['language'].append(url)
             return None
 
     # cache elements

@@ -51,7 +51,7 @@ MOCK_PAGES = { \
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
-def load_mock_page(url, txtoutput=False, langcheck=False):
+def load_mock_page(url, txtoutput=False, langcheck=None):
     '''load mock page from samples'''
     # TODO: https://chardet.readthedocs.io/en/latest/usage.html
     try:
@@ -60,7 +60,7 @@ def load_mock_page(url, txtoutput=False, langcheck=False):
     except UnicodeDecodeError:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r', encoding='ISO-8859-1') as inputf:
             htmlstring = inputf.read()
-    result = html_extractor.process_record(htmlstring, url, '0000', tei_output=False, txt_output=txtoutput, language_check=langcheck)
+    result = html_extractor.process_record(htmlstring, url, '0000', tei_output=False, txt_output=txtoutput, target_language=langcheck)
     return result
 
 
@@ -149,7 +149,7 @@ def test_main(txtoutput=False):
 
     # bug here
     if txtoutput is False:
-        result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975', langcheck=True)
+        result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975', langcheck='de')
         assert 'Es ist erstaunlich:'in result and 'Foto: rclassen' not in result and '(Narr-Verlag).' in result and 'Diskussion zu diesem Artikel auf:' not in result
 
     result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html', txtoutput)
