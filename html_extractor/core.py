@@ -70,7 +70,6 @@ TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p',
 
 cut_empty_elems = ('div', 'p', 'section')
 
-text_blacklist = ('Fill in your details below', 'Trage deine Daten unten', 'Kommentar verfassen', 'Bitte logge dich', 'Hinterlasse einen Kommentar', 'Gefällt mir', 'Facebook', 'Twitter', 'Google', 'E-Mail', 'Drucken')
 comments_blacklist = ('( Abmelden / Ändern )')
 
 ## parse
@@ -80,7 +79,7 @@ CUSTOM_HTMLPARSER = html.HTMLParser()
 #query = "//definition//variable[re:test(@name, '^{0}$', 'i')]".format(tag_name)
 #result = tree.xpath(query, namespaces=ns)
 
-BODY_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
+BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
@@ -119,11 +118,11 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
 # https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
 # <div class="article-comment-title">
 
-DISCARD_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
-                             '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
-#                            '//aside', \ # conflicts with text extraction
-                             '//footer', \
-                            ]
+DISCARD_XPATH = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
+                 '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
+#                '//aside', \ # conflicts with text extraction
+                 '//footer', \
+                ]
 
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
@@ -207,7 +206,7 @@ def prune_html(tree):
 
 def discard_unwanted(tree):
     '''delete unwanted sections'''
-    for expr in DISCARD_XPATH_EXPRESSIONS:
+    for expr in DISCARD_XPATH:
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
     return tree
@@ -222,15 +221,16 @@ def trim(string):
     return string
 
 
-def textfilter(elemtext):
+def textfilter(element):
     '''Filter out unwanted text'''
     ## TODO: text_blacklist
-    elemtext = re.sub(r'^Gef.llt mir.+|^.hnliche Beitr.+', '', elemtext)
-    elemtext = re.sub(r'^Fill in your details below.+|^Trage deine Daten unten.+|^Kommentar verfassen.+|^Bitte logge dich.+|^Hinterlasse einen Kommentar', '', elemtext)
-    elemtext = re.sub(r'^Connecting to %s|^Verbinde mit %s', '', elemtext)
-    elemtext = re.sub(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', '', elemtext)
-    elemtext = trim(elemtext)
-    return elemtext
+    if re.match(r'Gef.llt mir.+|.hnliche Beitr.+|Fill in your details below.+|Trage deine Daten unten.+|Kommentar verfassen.+|Bitte logge dich.+|Hinterlasse einen Kommentar|Connecting to %s|Verbinde mit %s|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$', element.text):
+        return True
+    if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', element.text):
+        return True
+    # elemtext = trim(elemtext)
+    #return elemtext
+    return False
 
 
 def cache(body):
@@ -245,11 +245,14 @@ def cache(body):
             lrutest[teststring] = 1
 
 
-def duplicate_test(element):
+def duplicate_test(element, justext_switch=False):
     '''Check for duplicate text'''
     global lrutest
     # teststring = ' '.join(element.itertext()).encode('utf-8')
-    teststring = element.text
+    if justext_switch is False:
+        teststring = element.text_content()
+    else:
+        teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
         if lrutest.has_key(teststring) is True and lrutest[teststring] > 2:
             # lrutest[teststring] += 1
@@ -327,7 +330,7 @@ def try_justext(tree, filecontent, record_id):
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
             # if lrutest.has_key(paragraph.text) is False or lrutest[paragraph.text] <= 2:
-            if duplicate_test(paragraph) is not True:
+            if duplicate_test(paragraph, justext_switch=True) is not True:
                 elem = etree.Element('p')
                 elem.text = paragraph.text
                 result_body.append(elem)
@@ -350,7 +353,7 @@ def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
     result_body = etree.Element('body')
     # iterate
-    for expr in BODY_XPATH_EXPRESSIONS:
+    for expr in BODY_XPATH:
         # select tree if the expression has been found
         subtree = tree.xpath(expr)
         if len(subtree) == 0:
@@ -369,7 +372,7 @@ def extract_content(tree):
             if element.tag not in potential_tags:
                 continue
             # TODO: weird and empty elements such as <p><p>...</p></p> ???
-            if element.text is None: # or len(element.text) < 10
+            if element.text is None: # or len(element.text) < 10 # text_content()
                 # try the tail
                 if element.tail is None or len(element.tail) < 50:
                     element.getparent().remove(element)
@@ -381,14 +384,12 @@ def extract_content(tree):
                 if element.tag == 'lb':
                     element.tag = 'p'
             ## logger.debug(element.tag, element.text)
-            if element.text in text_blacklist:
-                element.getparent().remove(element)
+            if textfilter(element) is True:
                 continue
-            element.text = textfilter(element.text) # replace back
 
             ## filter potential interesting p elements?
             #not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
-            if element.text and re.search(r'\w', element.text):
+            if element.text and re.search(r'\w', element.text): # text_content()
                 ## TODO: improve duplicate detection
                 if duplicate_test(element) is True:
                     continue
@@ -428,13 +429,12 @@ def extract_comments(tree):
         for elem in tree.xpath(expr):
             if elem.tag in TAG_CATALOG:
                 # delete unwanted
-                ## TODO: text filter
-                if elem.text:
-                    elem.text = textfilter(elem.text)
-
                 # test length and remove
                 if elem.text is None or elem.text in comments_blacklist:
-                    elem.getparent().remove(elem)
+                    # elem.getparent().remove(elem)
+                    continue
+                ## TODO: text filter
+                if textfilter(elem) is True:
                     continue
                 # filter potential interesting p elements
                 if not elem.attrib or 'style' not in elem.attrib: # or not 'align' in elem.attrib
