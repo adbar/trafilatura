@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint:disable-msg=E0611,I1101
 """
 Module bundling all functions needed to extract the text in a webpage.
 """
@@ -10,21 +11,21 @@ Module bundling all functions needed to extract the text in a webpage.
 import logging
 import re
 
+# from collections import defaultdict
 from io import StringIO # python3
 
 # third-party
-import ftfy
+# import ftfy
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
-langid.set_languages(['de','en','es','fr','ja','nl','ru'])
+langid.set_languages(['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru'])
 # import regex as re
 
+from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
+## https://docs.python.org/3/library/functools.html#functools.lru_cache
 from lxml import etree, html
 from lxml.html.clean import Cleaner
-## https://docs.python.org/3/library/functools.html#functools.lru_cache
-from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 
-# pylint:disable-msg=E0611,I1101
 
 # own
 # import settings
@@ -38,7 +39,6 @@ MIN_EXTRACTED_COMM_SIZE = 100
 # add sqlite3 for control of seen URLs?
 # line-based heuristics?
 # check max depth recursion in output XML?
-# https://github.com/lxml/lxml/blob/master/benchmark/bench_etree.py
 
 # alternatives if text too short:
 # https://github.com/kingwkb/readability
@@ -51,14 +51,11 @@ MIN_EXTRACTED_COMM_SIZE = 100
 
 # https://github.com/seomoz/simhash-py
 
-# https://github.com/chardet/chardet
 # https://github.com/PyYoshi/cChardet
-# https://pypi.org/project/guess_language-spirit/
 
 # parser:
 # https://github.com/kovidgoyal/html5-parser
 # https://github.com/rushter/selectolax
-
 
 
 ## INIT
@@ -72,12 +69,12 @@ cut_empty_elems = ('div', 'p', 'section')
 
 comments_blacklist = ('( Abmelden / Ändern )')
 
+unicode_whitespace = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
+
+# LRU_DICT = defaultdict(int)
+
 ## parse
 CUSTOM_HTMLPARSER = html.HTMLParser()
-
-# ns = {"re": "http://exslt.org/regular-expressions"}
-#query = "//definition//variable[re:test(@name, '^{0}$', 'i')]".format(tag_name)
-#result = tree.xpath(query, namespaces=ns)
 
 BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
@@ -524,12 +521,18 @@ def sanitize(text):
     #newtext = newtext + u''.join([c for c in line if c]) + '\n'
     #return newtext
     text = text.replace('\r\n', '\n')
-    invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
-    text = invalid_xml.sub('', text)
-#\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
-    unicode_whitespace = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
+    # invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
+    # text = invalid_xml.sub('', text)
+    #\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
     text = unicode_whitespace.sub('', text)
-    return text
+    text = re.sub(r'&#13;|', '', text)
+    # filter out empty lines
+    returntext = ''
+    for line in text.splitlines():
+        if not re.match(r'[\s\t]*$', line):
+            # line = line.replace('\s\s\s', '\s')
+            returntext += line + '\n'
+    return returntext
 
 
 def xmltotxt(xmloutput):
@@ -664,22 +667,17 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
             returnstring = xmltotxt(output)
         else:
             returnstring = etree.tostring(output, pretty_print=True, encoding='unicode') # xml_declaration=True,
-            #if tei_output is True:
-            # <hi> space hack
-            #returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
-            #returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
-        # &#13; (space) hack
-        returnstring = re.sub(r'&#13;', '', returnstring)
-        # filter out empty lines
-        returnstring = '\n'.join(line for line in returnstring.split('\n') if line.strip())
 
         ##  garbled unicode
         #try:
         #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
         #except UnicodeDecodeError as err:
         #    logger.warning('Unicode error: %s %s', err, record_id)
+        # <hi> space hack
+        #returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
+        #returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
 
-        ## returnstring = sanitize(returnstring)
+        returnstring = sanitize(returnstring)
         return returnstring
 
     # else
