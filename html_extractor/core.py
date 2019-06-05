@@ -16,6 +16,7 @@ from io import StringIO # python3
 import ftfy
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
+langid.set_languages(['de','en','es','fr','ja','nl','ru'])
 # import regex as re
 
 from lxml import etree, html
@@ -105,23 +106,24 @@ BODY_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "entr
 # '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]', \
 
 
-COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
-                "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comments') or starts-with(@class, 'comments')]//*", \
+COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
+                "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments')]//*", \
                 "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'comment-form-identity')]//*", \
-                "//*[(self::div or self::section or self::ul)][starts-with(@id, 'commentlist')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'comol')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'social')]//*" \
                 "//ul[starts-with(@id, 'dsq-comments')]//*" \
+                "//*[(self::div or self::section)][starts-with(@id, 'social')]//*" \
                ]
+#                 "//*[(self::div or self::section or self::ul)][starts-with(@id, 'commentlist')]//*", \
 # https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
 # <div class="article-comment-title">
 
 DISCARD_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                              '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
+#                            '//aside', \ # conflicts with text extraction
+                             '//footer', \
                             ]
-#                              '//*[(self::div or self::section)][starts-with(@id, "clearfix") or starts-with(@class, "clearfix")]', \
 
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
@@ -140,7 +142,7 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = True
 HTML_CLEANER.style = False
-HTML_CLEANER.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
+HTML_CLEANER.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'a', 'center', 'table', 'tbody', 'td', 'th', 'tr',
 HTML_CLEANER.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
@@ -445,8 +447,11 @@ def extract_comments(tree):
         # control
         if commentsfound is True:
             logger.debug(expr)
+            # remove corresponding subtree
+            for subtree in tree.xpath(expr):
+                subtree.getparent().remove(subtree)
             break
-    return commentsbody
+    return commentsbody, tree
 
 
 def write_teitree(postbody, commentsbody):
@@ -573,6 +578,9 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     # remove hi-element to avoid tail bug
     #etree.strip_tags(cleaned_tree, 'hi')
 
+    # comments first, then remove
+    commentsbody, cleaned_tree = extract_comments(cleaned_tree)
+
     ## extract content
     temppost_hand = extract_content(cleaned_tree)
 
@@ -600,9 +608,6 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         temp_text = u' '.join(temppost_hand.itertext())
         logger.info('non-clean extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
-
-    # comments
-    commentsbody = extract_comments(cleaned_tree)
 
     # sanity check on length
     temp_text = u' '.join(postbody.itertext())
