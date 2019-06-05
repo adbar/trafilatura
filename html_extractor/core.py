@@ -20,6 +20,7 @@ import langid
 
 from lxml import etree, html
 from lxml.html.clean import Cleaner
+## https://docs.python.org/3/library/functools.html#functools.lru_cache
 from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 
 # pylint:disable-msg=E0611,I1101
@@ -84,6 +85,7 @@ BODY_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "entr
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
             '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content"]', \
+            "//*[(self::div or self::section)][starts-with(@id, 'article')]", \
             '//article', \
             "//*[(self::article or self::div or self::section)][starts-with(@class, 'article')]", \
             "//*[(self::article or self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
@@ -115,6 +117,11 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol)][contains(@id, '
                ]
 # https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
 # <div class="article-comment-title">
+
+DISCARD_XPATH_EXPRESSIONS = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
+                             '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
+                            ]
+#                              '//*[(self::div or self::section)][starts-with(@id, "clearfix") or starts-with(@class, "clearfix")]', \
 
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
@@ -196,6 +203,14 @@ def prune_html(tree):
     return tree
 
 
+def discard_unwanted(tree):
+    '''delete unwanted sections'''
+    for expr in DISCARD_XPATH_EXPRESSIONS:
+        for subtree in tree.xpath(expr):
+            subtree.getparent().remove(subtree)
+    return tree
+
+
 # trim text function
 def trim(string):
     """Remove spaces at the beginning and end of a string"""
@@ -264,6 +279,7 @@ def convert_tags(tree):
         #        child.tag = 'item'
         for child in elem.xpath('//li|//dt'):
             child.tag = 'item'
+            child.attrib.clear()
     # blockquote | q → quote
     for elem in tree.xpath('//blockquote|//q'):
         elem.tag = 'quote'
@@ -338,6 +354,8 @@ def extract_content(tree):
         if len(subtree) == 0:
             continue
         subtree = subtree[0]
+        # prune
+        subtree = discard_unwanted(subtree)
         # define iteration strategy
         potential_tags = set(TAG_CATALOG) # 'span'
         if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
@@ -524,7 +542,7 @@ def xmltotxt(xmloutput):
             textelement = element.tail
         textelement = sanitize(textelement)
         textelement = trim(textelement)
-        if element.tag == ('code', 'head', 'item', 'lb', 'p', 'quote'):
+        if element.tag in ('code', 'head', 'item', 'lb', 'p', 'quote'):
             returnstring += '\n' + textelement + '\n'
         else:
             returnstring += textelement + ' '
@@ -552,6 +570,8 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     ## the rest does not work without conversion
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
+    # remove hi-element to avoid tail bug
+    #etree.strip_tags(cleaned_tree, 'hi')
 
     ## extract content
     temppost_hand = extract_content(cleaned_tree)
@@ -639,20 +659,20 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
             returnstring = xmltotxt(output)
         else:
             returnstring = etree.tostring(output, pretty_print=True, encoding='unicode') # xml_declaration=True,
-            if tei_output is True:
+            #if tei_output is True:
             # <hi> space hack
-                returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
-                returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
+            #returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
+            #returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
         # &#13; (space) hack
         returnstring = re.sub(r'&#13;', '', returnstring)
         # filter out empty lines
         returnstring = '\n'.join(line for line in returnstring.split('\n') if line.strip())
 
         ##  garbled unicode
-        try:
-            returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
-        except UnicodeDecodeError as err:
-            logger.warning('Unicode error: %s %s', err, record_id)
+        #try:
+        #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
+        #except UnicodeDecodeError as err:
+        #    logger.warning('Unicode error: %s %s', err, record_id)
 
         ## returnstring = sanitize(returnstring)
         return returnstring
