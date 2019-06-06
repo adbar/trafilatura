@@ -26,7 +26,10 @@ def fetch_url(url):
     logger.debug('response encoding: %s', response.encoding)
     guessed_encoding = chardet.detect(response.content)['encoding']
     logger.debug('guessed encoding: %s', guessed_encoding)
-    htmltext = response.content.decode(guessed_encoding)
+    if guessed_encoding is not None:
+        htmltext = response.content.decode(guessed_encoding)
+    else:
+        htmltext = response.text
     return htmltext
 
 
