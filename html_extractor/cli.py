@@ -10,7 +10,7 @@ import argparse
 import logging
 import sys
 
-#import chardet
+import chardet
 import requests
 
 from html_extractor import process_record
@@ -23,8 +23,11 @@ def fetch_url(url):
     response = requests.get(url)
     if int(response.status_code) != 200:
         return None
-    logger.debug('guessed encoding: %s', response.encoding)
-    return response.text
+    logger.debug('response encoding: %s', response.encoding)
+    guessed_encoding = chardet.detect(response.content)['encoding']
+    logger.debug('guessed encoding: %s', guessed_encoding)
+    htmltext = response.content.decode(guessed_encoding)
+    return htmltext
 
 
 def examine(htmlstring, url, txtflag, xmlteiflag):
