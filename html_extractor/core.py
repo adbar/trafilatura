@@ -15,6 +15,7 @@ import re
 from io import StringIO # python3
 
 # third-party
+# import chardet
 # import ftfy
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
@@ -61,8 +62,6 @@ MIN_EXTRACTED_COMM_SIZE = 100
 ## INIT
 logger = logging.getLogger(__name__)
 
-comm_length = 2 # was 10
-
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote']) # 'span'
 
 cut_empty_elems = ('div', 'p', 'section')
@@ -99,24 +98,23 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") 
             '//div[@class="cell"]', \
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
            ]
-# '//*[(self::div or self::section)][@id="content-main" or starts-with(@id, "content") or starts-with(@class, "content")]', \
-
 
 COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
                 "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments')]//*", \
                 "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'comment-form-identity')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'comol')]//*", \
                 "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]//*", \
                 "//ul[starts-with(@id, 'dsq-comments')]//*" \
                 "//*[(self::div or self::section)][starts-with(@id, 'social')]//*" \
+                "//*[(self::div or self::section)][contains(@class, 'comment')]//*", \
                ]
-#                 "//*[(self::div or self::section or self::ul)][starts-with(@id, 'commentlist')]//*", \
-# https://www.spiegel.de/forum/politik/fdp-bundestreffen-die-216-prozent-partei-thread-895203-3.html
-# <div class="article-comment-title">
+# '//*[(self::div or self::section)][@id="comments" or @class="comments"]//*', \
 
 DISCARD_XPATH = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
+                 '//div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
+                 # sharing
+                 '//div[starts-with(@id, "share") or starts-with(@id, "social") or @id="jp-post-flair" or starts-with(@id, "dpsp-content")]',\
 #                '//aside', \ # conflicts with text extraction
                  '//footer', \
                 ]
@@ -162,7 +160,8 @@ def load_html(htmlobject):
     elif isinstance(htmlobject, str):
         ## robust parsing
         try:
-            # guessed_encoding = chardet.detect(htmlobject.encode())['encoding']
+            #guessed_encoding = chardet.detect(htmlobject.encode())['encoding']
+            #logger.info('guessed encoding: %s', guessed_encoding)
             # parse
             # parser = html.HTMLParser() # encoding=guessed_encoding  # document_fromstring
             tree = html.parse(StringIO(htmlobject), parser=CUSTOM_HTMLPARSER)
@@ -362,7 +361,7 @@ def extract_content(tree):
         potential_tags = set(TAG_CATALOG) # 'span'
         if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
             potential_tags.add('div')
-        logger.debug(potential_tags)
+        logger.debug(sorted(potential_tags))
         # extract content
         for element in subtree.xpath('.//*'):
             ## delete unwanted
@@ -421,10 +420,12 @@ def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
     commentsfound = False
     commentsbody = etree.Element('body')
+    potential_tags = set(TAG_CATALOG) # 'span'
+    potential_tags.add('div')
     for expr in COMMENTS_XPATH:
         # extract content
         for elem in tree.xpath(expr):
-            if elem.tag in TAG_CATALOG:
+            if elem.tag in potential_tags: # TAG_CATALOG:
                 # delete unwanted
                 # test length and remove
                 if elem.text is None or elem.text in comments_blacklist:
@@ -434,13 +435,13 @@ def extract_comments(tree):
                 if textfilter(elem) is True:
                     continue
                 # filter potential interesting p elements
-                if not elem.attrib or 'style' not in elem.attrib: # or not 'align' in elem.attrib
-                    if elem.text and re.search(r'\w', elem.text):
-                        if duplicate_test(elem) is True:
-                            continue
-                        # insert if words
-                        commentsbody.append(elem)
-                        commentsfound = True
+                # if not elem.attrib or 'style' not in elem.attrib: # or not 'align' in elem.attrib
+                if elem.text and re.search(r'\w', elem.text):
+                    if duplicate_test(elem) is True:
+                        continue
+                    # insert if words
+                    commentsbody.append(elem)
+                    commentsfound = True
         # control
         if commentsfound is True:
             logger.debug(expr)
@@ -609,7 +610,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         tree = convert_tags(tree)
         temppost_hand = extract_content(tree)
         temp_text = u' '.join(temppost_hand.itertext())
-        logger.info('non-clean extracted length: %s (extraction)', len(temp_text))
+        logger.debug('non-clean extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
 
     # sanity check on length
@@ -617,9 +618,10 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     temp_comments = u' '.join(commentsbody.itertext())
     if len(temp_text) < MIN_EXTRACTED_SIZE:
         logger.error('not enough text %s %s', record_id, url)
-    if len(temp_comments) < comm_length:
+    if len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
         logger.warning('not enough comments %s %s', record_id, url)
-    if len(temp_text) < MIN_EXTRACTED_SIZE and len(temp_comments) < comm_length:
+    if len(temp_text) < MIN_EXTRACTED_SIZE and len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
+        logger.info('text and comments not long enough: %s %s', len(temp_text), len(temp_comments))
         return None
 
     # sanity check on language
