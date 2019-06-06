@@ -78,6 +78,7 @@ CUSTOM_HTMLPARSER = html.HTMLParser()
 BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
+            "//*[(self::div or self::section)][contains(@class, 'post-body')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
             '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content"]', \
@@ -113,8 +114,10 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
 DISCARD_XPATH = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
-                 # sharing
-                 '//div[starts-with(@id, "share") or starts-with(@id, "social") or @id="jp-post-flair" or starts-with(@id, "dpsp-content")]',\
+                 # related posts
+                 '//*[(self::div or self::section)][starts-with(@id, "related-posts") or starts-with(@class, "related-posts")]',\
+                 # sharing jp-post-flair jp-relatedposts
+                 '//div[starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]',\
 #                '//aside', \ # conflicts with text extraction
                  '//footer', \
                 ]
@@ -284,6 +287,7 @@ def convert_tags(tree):
     # blockquote | q → quote
     for elem in tree.xpath('//blockquote|//q'):
         elem.tag = 'quote'
+        elem.attrib.clear()
     # change rendition #i
     for elem in tree.xpath('//em|//i'):
         elem.attrib.clear()
@@ -405,8 +409,11 @@ def extract_content(tree):
             break
     # try parsing wild <p> elements
     if len(result_body) == 0: # no children
+        logger.debug('Taking all p-elements')
+        # prune
+        search_tree = discard_unwanted(tree)
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
-        for element in tree.xpath('//p'):
+        for element in search_tree.xpath('//p'):
             # print(element.tag, element.text)
             if element.text is not None:
                 # if duplicate_test(elem) is True:
@@ -421,7 +428,7 @@ def extract_comments(tree):
     commentsfound = False
     commentsbody = etree.Element('body')
     potential_tags = set(TAG_CATALOG) # 'span'
-    potential_tags.add('div')
+    ## potential_tags.add('div') trouble with <div class="comment-author meta">
     for expr in COMMENTS_XPATH:
         # extract content
         for elem in tree.xpath(expr):
@@ -580,7 +587,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
     # remove hi-element to avoid tail bug
-    #etree.strip_tags(cleaned_tree, 'hi')
+    etree.strip_tags(cleaned_tree, 'hi')
 
     # comments first, then remove
     commentsbody, cleaned_tree = extract_comments(cleaned_tree)

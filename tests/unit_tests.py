@@ -48,6 +48,10 @@ MOCK_PAGES = { \
 'https://www.heise.de/newsticker/meldung/Zahlen-bitte-100-scheinbare-Kanaele-die-den-Hype-um-Marsmenschen-ausloesten-4438438.html': 'heise.de.marsmenschen.html', \
 'https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/': 'modepilot.de.duschkopf.html', \
 'https://www.otto.de/twoforfashion/strohtasche/': 'otto.de.twoforfashion.html', \
+'http://iloveponysmag.com/2018/05/24/barbour-coastal/': 'iloveponysmag.com.barbour.html', \
+'https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/': 'moritz-meyer.net.vreni.html', \
+'http://www.womencantalksports.com/top-10-women-talking-sports/': 'womencantalksports.com.top10.html', \
+'https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html': 'plentylife.blogspot.pamela-reif.html', \
 }
 # '': '', \
 
@@ -201,6 +205,19 @@ def test_main(txtoutput=False):
     result = load_mock_page('https://www.otto.de/twoforfashion/strohtasche/', txtoutput)
     assert 'Ob rund oder kastenförmig, ob dezent oder auffällig' in result and 'XX, Die Redaktion' in result and ' Kommentieren' not in result and 'Dienstag, 4. Juni 2019' not in result
 
+    result = load_mock_page('http://iloveponysmag.com/2018/05/24/barbour-coastal/', txtoutput)
+    assert 'Eine meiner besten Entscheidungen bisher:' in result and 'Verlassenes Gewächshaus meets versteckter Deich' in result and 'Der Hundestrand in Stein an der Ostsee' in result and 'Tags: Barbour,' not in result and 'Bitte (noch) mehr Bilder von Helle' in result and 'Hinterlasse einen Kommentar' not in result
+
+    result = load_mock_page('https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/', txtoutput)
+    assert 'Das ist alles nicht gekennzeichnet, wie soll ich wissen' in result and 'Instagramshops machen es Abmahnanwälten leicht' in result and 'Diese Geschichte teilen' not in result and 'Ähnliche Beiträge ' not in result and 'Ich bin der Ansicht, abwarten und Tee trinken.' in result and 'Danke für dein Feedback. Auch zum Look meiner Seite.' in result and 'Diese Website verwendet Akismet, um Spam zu reduzieren.' not in result
+
+    result = load_mock_page('http://www.womencantalksports.com/top-10-women-talking-sports/', txtoutput)
+    assert '3.Charlotte Jones Anderson' in result and 'Keep Talking Sports!' in result and 'Category: Blog Popular' not in result and 'Copyright Women Can Talk Sports.' not in result and 'Submit your sports question below' not in result
+
+    result = load_mock_page('https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html', txtoutput)
+    assert 'Schönheit kommt für Pamela von Innen und Außen' in result and 'Die Workout Übungen kannte ich bereits' in result and 'Great post, I like your blog' in result and 'Links zu diesem Post' not in result and 'mehr über mich ♥' not in result
+    # 'Vielen Dank an den den Verlag' in result
+    # and 'Bitte beachte auch die Datenschutzerklärung von Google.' not in result
 
     # print(html_extractor.lrutest)
 
