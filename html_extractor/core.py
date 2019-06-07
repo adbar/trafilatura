@@ -115,7 +115,7 @@ DISCARD_XPATH = ['//*[(self::div or self::section)][contains(@id, "sidebar") or 
                  '//div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
                  # related posts
-                 '//*[(self::div or self::section)][starts-with(@id, "related-posts") or starts-with(@class, "related-posts")]',\
+                 '//*[(self::div or self::section)][starts-with(@id, "related-") or starts-with(@class, "related-")]',\
                  # sharing jp-post-flair jp-relatedposts
                  '//div[starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]',\
 #                '//aside', \ # conflicts with text extraction

@@ -52,6 +52,8 @@ MOCK_PAGES = { \
 'https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/': 'moritz-meyer.net.vreni.html', \
 'http://www.womencantalksports.com/top-10-women-talking-sports/': 'womencantalksports.com.top10.html', \
 'https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html': 'plentylife.blogspot.pamela-reif.html', \
+'https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html': 'luxuryhaven.co.hyatt.html', \
+'https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/': 'luxuriousmagazine.com.polo.html', \
 }
 # '': '', \
 
@@ -218,6 +220,17 @@ def test_main(txtoutput=False):
     assert 'Schönheit kommt für Pamela von Innen und Außen' in result and 'Die Workout Übungen kannte ich bereits' in result and 'Great post, I like your blog' in result and 'Links zu diesem Post' not in result and 'mehr über mich ♥' not in result
     # 'Vielen Dank an den den Verlag' in result
     # and 'Bitte beachte auch die Datenschutzerklärung von Google.' not in result
+
+    result = load_mock_page('https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html', txtoutput)
+    assert 'Grounded in sustainable architecture and refined Vietnamese craftsmanship,' in result and 'and Carmelo Resort' in result and 'OMG what a beautiful place to stay! ' in result and 'Food Advertising by' not in result
+   # 'Dining and Drinking' in result
+   # 'Reply' not in result and 'A lovely note makes a beautiful day!' not in result
+
+    result = load_mock_page('https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/', txtoutput)
+    assert 'Argentina, the birthplace of polo.' in result and 'Simon Wittenberg travels to the Eternal City in Italy' in result and 'Luxury and lifestyle articles' not in result
+   # 'Pinterest' not in result
+
+
 
     # print(html_extractor.lrutest)
 
