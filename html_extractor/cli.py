@@ -10,7 +10,8 @@ import argparse
 import logging
 import sys
 
-from html_extractor import process_record
+from .core import process_record
+from .utils import fetch_url
 
 
 logger = logging.getLogger(__name__)
