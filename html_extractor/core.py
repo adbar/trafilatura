@@ -37,6 +37,7 @@ MIN_EXTRACTED_COMM_SIZE = 100
 
 
 ## TODO:
+# remove control characters in sanitizer
 # add sqlite3 for control of seen URLs?
 # line-based heuristics?
 # check max depth recursion in output XML?
@@ -98,27 +99,36 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") 
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
            ]
 
-COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]//*", \
-                "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments')]//*", \
-                "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'comol')]//*", \
-                "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]//*", \
-                "//ul[starts-with(@id, 'dsq-comments')]//*" \
-                "//*[(self::div or self::section)][starts-with(@id, 'social')]//*" \
-                "//*[(self::div or self::section)][contains(@class, 'comment')]//*", \
+COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]", \
+                "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments')]", \
+                "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]", \
+                "//*[(self::div or self::section)][starts-with(@id, 'comol')]", \
+                "//*[(self::div or self::section)][starts-with(@id, 'disqus_thread')]", \
+                "//ul[starts-with(@id, 'dsq-comments')]" \
+                "//*[(self::div or self::section)][starts-with(@id, 'social')]" \
+                "//*[(self::div or self::section)][contains(@class, 'comment')]", \
                ]
-# '//*[(self::div or self::section)][@id="comments" or @class="comments"]//*', \
+# '//*[(self::div or self::section)][@id="comments" or @class="comments"]', \
 
 DISCARD_XPATH = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
-                 # related posts
-                 '//*[(self::div or self::section)][starts-with(@id, "related-") or starts-with(@class, "related-")]',\
+                 '//*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
+                 # news outlets
+                 '//*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]',\
+                 # navigation
+                 '//*[(self::div or self::section)][starts-with(@id, "breadcrumbs")]',\
+                 '//*[(self::ol or self::ul)][contains(@id, "breadcrumbs") or contains(@class, "breadcrumbs")]',\
+                 # related posts # starts-with(@id, "related-") or starts-with(@class, "related-") or 
+                 '//*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]',\
                  # sharing jp-post-flair jp-relatedposts
-                 '//div[starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]',\
+                 '//*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]',\
 #                '//aside', \ # conflicts with text extraction
                  '//footer', \
                 ]
+
+COMMENTS_DISCARD_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "respond")]', \
+                         ]
 
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
@@ -177,6 +187,14 @@ def prune_html(tree):
 def discard_unwanted(tree):
     '''delete unwanted sections'''
     for expr in DISCARD_XPATH:
+        for subtree in tree.xpath(expr):
+            subtree.getparent().remove(subtree)
+    return tree
+
+
+def discard_unwanted_comments(tree):
+    '''delete unwanted comment sections'''
+    for expr in COMMENTS_DISCARD_XPATH:
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
     return tree
@@ -401,8 +419,15 @@ def extract_comments(tree):
     potential_tags = set(TAG_CATALOG) # 'span'
     ## potential_tags.add('div') trouble with <div class="comment-author meta">
     for expr in COMMENTS_XPATH:
+        # select tree if the expression has been found
+        subtree = tree.xpath(expr)
+        if len(subtree) == 0:
+            continue
+        subtree = subtree[0]
+        # prune
+        subtree = discard_unwanted_comments(subtree)
         # extract content
-        for elem in tree.xpath(expr):
+        for elem in subtree.xpath('//*'): # was: for elem in tree.xpath(expr):
             if elem.tag in potential_tags: # TAG_CATALOG:
                 # delete unwanted
                 # test length and remove
