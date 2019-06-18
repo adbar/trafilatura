@@ -9,7 +9,7 @@ import sys
 # https://docs.pytest.org/en/latest/
 
 import html_extractor
-from html_extractor import cli
+from html_extractor import cli, utils
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -81,17 +81,17 @@ def test_trim():
 
 def test_download():
     '''test page download'''
-    assert cli.fetch_url('https://httpbin.org/status/404') is None
+    assert utils.fetch_url('https://httpbin.org/status/404') is None
     url = 'https://httpbin.org/status/200'
-    teststring = cli.fetch_url(url)
+    teststring = utils.fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, url, False, True) is None
     url = 'https://httpbin.org/links/2/2'
-    teststring = cli.fetch_url(url)
+    teststring = utils.fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, url, False, True) is None
     url = 'https://httpbin.org/html'
-    teststring = cli.fetch_url(url)
+    teststring = utils.fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, url, False, True) is not None
 

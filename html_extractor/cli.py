@@ -10,30 +10,10 @@ import argparse
 import logging
 import sys
 
-import chardet
-import requests
-
 from html_extractor import process_record
 
+
 logger = logging.getLogger(__name__)
-
-
-def fetch_url(url):
-    """ Fetch page using requests """
-    response = requests.get(url)
-    if int(response.status_code) != 200:
-        return None
-    logger.debug('response encoding: %s', response.encoding)
-    guessed_encoding = chardet.detect(response.content)['encoding']
-    logger.debug('guessed encoding: %s', guessed_encoding)
-    if guessed_encoding is not None:
-        try:
-            htmltext = response.content.decode(guessed_encoding)
-        except UnicodeDecodeError:
-            htmltext = response.text
-    else:
-        htmltext = response.text
-    return htmltext
 
 
 def examine(htmlstring, url, txtflag, xmlteiflag):

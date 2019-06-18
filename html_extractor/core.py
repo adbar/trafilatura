@@ -12,7 +12,6 @@ import logging
 import re
 
 # from collections import defaultdict
-from io import StringIO # python3
 
 # third-party
 # import chardet
@@ -27,8 +26,9 @@ from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dic
 from lxml import etree, html
 from lxml.html.clean import Cleaner
 
-
 # own
+from .utils import *
+
 # import settings
 MIN_EXTRACTED_SIZE = 200
 MIN_DUPLCHECK_SIZE = 100
@@ -72,8 +72,6 @@ unicode_whitespace = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2
 
 # LRU_DICT = defaultdict(int)
 
-## parse
-CUSTOM_HTMLPARSER = html.HTMLParser()
 
 BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
@@ -154,33 +152,6 @@ lrutest = LRU(LRU_SIZE)
 # justext
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
 
-
-def load_html(htmlobject):
-    """Load object given as input and validate its type (accepted: LXML tree and string)"""
-    if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
-        # copy tree
-        tree = htmlobject
-    elif isinstance(htmlobject, str):
-        ## robust parsing
-        try:
-            #guessed_encoding = chardet.detect(htmlobject.encode())['encoding']
-            #logger.info('guessed encoding: %s', guessed_encoding)
-            # parse
-            # parser = html.HTMLParser() # encoding=guessed_encoding  # document_fromstring
-            tree = html.parse(StringIO(htmlobject), parser=CUSTOM_HTMLPARSER)
-        except UnicodeDecodeError as err:
-            logger.error('unicode %s', err)
-            tree = None
-        except UnboundLocalError as err:
-            logger.error('parsed string %s', err)
-            tree = None
-        except (etree.XMLSyntaxError, ValueError, AttributeError) as err:
-            logger.error('parser %s', err)
-            tree = None
-    else:
-        logger.error('this type cannot be processed: %s', type(htmlobject))
-        tree = None
-    return tree
 
 
 def prune_html(tree):
