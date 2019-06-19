@@ -130,6 +130,7 @@ This module is part of methods to derive metadata from web documents in order to
 Kudos to...
 ~~~~~~~~~~~
 
+-  `cchardet <https://github.com/PyYoshi/cChardet>`_
 -  `ftfy <https://github.com/LuminosoInsight/python-ftfy>`_
 -  `jusText <https://github.com/miso-belica/jusText>`_
 -  `lxml <http://lxml.de/>`_

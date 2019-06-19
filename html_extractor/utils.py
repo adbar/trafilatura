@@ -4,13 +4,11 @@
 Module bundling functions related to HTML processing.
 """
 
-import chardet
 import logging
-
 from io import StringIO # python3
 
+import cchardet as chardet
 import requests
-
 from lxml import etree, html
 
 
