@@ -113,18 +113,19 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
 DISCARD_XPATH = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
-                 '//*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
+                 '//footer', \
                  # news outlets
                  '//*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]',\
                  # navigation
+                 '//*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
                  '//*[(self::div or self::section)][starts-with(@id, "breadcrumbs")]',\
                  '//*[(self::ol or self::ul)][contains(@id, "breadcrumbs") or contains(@class, "breadcrumbs")]',\
                  # related posts # starts-with(@id, "related-") or starts-with(@class, "related-") or 
-                 '//*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]',\
+                 '//*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]', \
                  # sharing jp-post-flair jp-relatedposts
-                 '//*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]',\
+                 '//*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@class, "shar") or contains(@class, "share-") or starts-with(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
+                 '//*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
 #                '//aside', \ # conflicts with text extraction
-                 '//footer', \
                 ]
 
 COMMENTS_DISCARD_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "respond")]', \
@@ -414,10 +415,12 @@ def extract_content(tree):
 
 def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
-    commentsfound = False
-    commentsbody = etree.Element('body')
+    comments_body = etree.Element('body')
+    # define iteration strategy
     potential_tags = set(TAG_CATALOG) # 'span'
     ## potential_tags.add('div') trouble with <div class="comment-author meta">
+    # logger.debug(sorted(potential_tags))
+    ## return comments_body, tree
     for expr in COMMENTS_XPATH:
         # select tree if the expression has been found
         subtree = tree.xpath(expr)
@@ -427,9 +430,8 @@ def extract_comments(tree):
         # prune
         subtree = discard_unwanted_comments(subtree)
         # extract content
-        for elem in subtree.xpath('//*'): # was: for elem in tree.xpath(expr):
+        for elem in subtree.xpath('.//*'): # was: for elem in tree.xpath(expr):
             if elem.tag in potential_tags: # TAG_CATALOG:
-                # delete unwanted
                 # test length and remove
                 if elem.text is None or elem.text in comments_blacklist:
                     # elem.getparent().remove(elem)
@@ -443,16 +445,15 @@ def extract_comments(tree):
                     if duplicate_test(elem) is True:
                         continue
                     # insert if words
-                    commentsbody.append(elem)
-                    commentsfound = True
+                    comments_body.append(elem)
         # control
-        if commentsfound is True:
+        if len(comments_body) > 0: # if it has children
             logger.debug(expr)
             # remove corresponding subtree
-            for subtree in tree.xpath(expr):
-                subtree.getparent().remove(subtree)
+            #for subtree in tree.xpath(expr):
+            subtree.getparent().remove(subtree)
             break
-    return commentsbody, tree
+    return comments_body, tree
 
 
 def write_teitree(postbody, commentsbody):
