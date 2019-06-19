@@ -14,7 +14,7 @@ from .core import process_record
 from .utils import fetch_url
 
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 
 def examine(htmlstring, url, txtflag, xmlteiflag):

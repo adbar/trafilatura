@@ -14,8 +14,6 @@ import re
 # from collections import defaultdict
 
 # third-party
-# import chardet
-# import ftfy
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
 langid.set_languages(['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru'])
@@ -27,7 +25,8 @@ from lxml import etree, html
 from lxml.html.clean import Cleaner
 
 # own
-from .utils import *
+from .utils import load_html, sanitize, trim
+
 
 # import settings
 MIN_EXTRACTED_SIZE = 200
@@ -37,7 +36,6 @@ MIN_EXTRACTED_COMM_SIZE = 100
 
 
 ## TODO:
-# remove control characters in sanitizer
 # add sqlite3 for control of seen URLs?
 # line-based heuristics?
 # check max depth recursion in output XML?
@@ -53,23 +51,19 @@ MIN_EXTRACTED_COMM_SIZE = 100
 
 # https://github.com/seomoz/simhash-py
 
-# https://github.com/PyYoshi/cChardet
-
 # parser:
 # https://github.com/kovidgoyal/html5-parser
 # https://github.com/rushter/selectolax
 
 
 ## INIT
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote']) # 'span'
 
 cut_empty_elems = ('div', 'p', 'section')
 
 comments_blacklist = ('( Abmelden / Ändern )')
-
-unicode_whitespace = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
 # LRU_DICT = defaultdict(int)
 
@@ -206,15 +200,6 @@ def discard_unwanted_comments(tree):
     return tree
 
 
-# trim text function
-def trim(string):
-    """Remove spaces at the beginning and end of a string"""
-    # string = re.sub(r'\n+', '\n', string, re.MULTILINE)
-    string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
-    string = string.strip()
-    return string
-
-
 def textfilter(element):
     '''Filter out unwanted text'''
     ## TODO: text_blacklist
@@ -278,7 +263,7 @@ def convert_tags(tree):
                 child.tag = 'item'
                 child.attrib.clear()
             #else:
-            #    logger.debug('other child in list: %s', child.tag)
+            #    LOGGER.debug('other child in list: %s', child.tag)
     # blockquote | q → quote
     for elem in tree.xpath('//blockquote|//q'):
         elem.tag = 'quote'
@@ -315,12 +300,12 @@ def try_justext(tree, filecontent, record_id):
     '''safety net: try with justext'''
     result_body = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
-    logger.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
+    LOGGER.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
     try:
         # paragraphs = custom_justext(tree)
         paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
     except ValueError as err: # ValueError: Input object is not an XML element: HtmlComment
-        logger.error('justext %s %s', err, record_id)
+        LOGGER.error('justext %s %s', err, record_id)
         return None
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
@@ -360,7 +345,7 @@ def extract_content(tree):
         potential_tags = set(TAG_CATALOG) # 'span'
         if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
             potential_tags.add('div')
-        logger.debug(sorted(potential_tags))
+        LOGGER.debug(sorted(potential_tags))
         # extract content
         for element in subtree.xpath('.//*'):
             ## delete unwanted
@@ -373,12 +358,12 @@ def extract_content(tree):
                     element.getparent().remove(element)
                     continue
                 # if element.tag == 'lb':
-                logger.debug('using tail for element %s', element.tag)
+                LOGGER.debug('using tail for element %s', element.tag)
                 element.text = element.tail
                 element.tail = ''
                 if element.tag == 'lb':
                     element.tag = 'p'
-            ## logger.debug(element.tag, element.text)
+            ## LOGGER.debug(element.tag, element.text)
             if textfilter(element) is True:
                 continue
 
@@ -400,11 +385,11 @@ def extract_content(tree):
                 result_body.append(element)
         # control
         if len(result_body) > 0: # if it has children
-            logger.debug(expr)
+            LOGGER.debug(expr)
             break
     # try parsing wild <p> elements
     if len(result_body) == 0: # no children
-        logger.debug('Taking all p-elements')
+        LOGGER.debug('Taking all p-elements')
         # prune
         search_tree = discard_unwanted(tree)
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
@@ -424,7 +409,7 @@ def extract_comments(tree):
     # define iteration strategy
     potential_tags = set(TAG_CATALOG) # 'span'
     ## potential_tags.add('div') trouble with <div class="comment-author meta">
-    # logger.debug(sorted(potential_tags))
+    # LOGGER.debug(sorted(potential_tags))
     ## return comments_body, tree
     for expr in COMMENTS_XPATH:
         # select tree if the expression has been found
@@ -453,7 +438,7 @@ def extract_comments(tree):
                     comments_body.append(elem)
         # control
         if len(comments_body) > 0: # if it has children
-            logger.debug(expr)
+            LOGGER.debug(expr)
             # remove corresponding subtree
             #for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
@@ -481,7 +466,7 @@ def check_tei(tei, record_id):
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
             # if element.tag not in ('div', 'span'):
-            logger.warning('not a TEI element, removing: %s %s', element.tag, record_id)
+            LOGGER.warning('not a TEI element, removing: %s %s', element.tag, record_id)
             # append text AND tail to parent
             full_text = ''
             if element.text is not None and element.tail is not None:
@@ -509,7 +494,7 @@ def check_tei(tei, record_id):
         # check attributes
         for attribute in element.attrib:
             if attribute not in TEI_VALID_ATTRS:
-                logger.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
+                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
                 element.attrib.pop(attribute)
     # validate ?
     #if relaxng.validate(tei) is False:
@@ -517,32 +502,6 @@ def check_tei(tei, record_id):
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return tei
-
-
-def sanitize(text):
-    '''Convert text and discard incompatible unicode and invalid XML characters'''
-    # text = ' '.join(text.split())
-    #all unicode characters from 0x0000 - 0x0020 (33 total) are bad and will be replaced by "" (empty string)
-    # newtext = ''
-    #for line in text:
-    #    for pos in range(0,len(line)):
-    #        if ord(line[pos]) < 32:
-    #            line[pos] = None
-    #newtext = newtext + u''.join([c for c in line if c]) + '\n'
-    #return newtext
-    text = text.replace('\r\n', '\n')
-    # invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
-    # text = invalid_xml.sub('', text)
-    #\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
-    text = unicode_whitespace.sub('', text)
-    text = re.sub(r'&#13;|', '', text)
-    # filter out empty lines
-    returntext = ''
-    for line in text.splitlines():
-        if not re.match(r'[\s\t]*$', line):
-            # line = line.replace('\s\s\s', '\s')
-            returntext += line + '\n'
-    return returntext
 
 
 def xmltotxt(xmloutput):
@@ -576,7 +535,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     # init
     global tokens_posts, tokens_comments, lrutest
     tree = load_html(filecontent)
-    logger.debug('HTML tree loaded for URL: %s', url)
+    LOGGER.debug('HTML tree loaded for URL: %s', url)
 
     # save space and processing time
     cleaned_tree = prune_html(tree)
@@ -604,14 +563,14 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         temppost_algo = try_justext(cleaned_tree, filecontent, record_id)
         # compare
         temp_jt = u' '.join(temppost_algo.itertext())
-        logger.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
+        LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
         # condition to use justext
         if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
             postbody = temppost_algo
         else:
             postbody = temppost_hand
     else:
-        logger.info('extracted length: %s (extraction)', len(temp_text))
+        LOGGER.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
 
     # try to use original/dirty tree
@@ -619,18 +578,18 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         tree = convert_tags(tree)
         temppost_hand = extract_content(tree)
         temp_text = u' '.join(temppost_hand.itertext())
-        logger.debug('non-clean extracted length: %s (extraction)', len(temp_text))
+        LOGGER.debug('non-clean extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
 
     # sanity check on length
     temp_text = u' '.join(postbody.itertext())
     temp_comments = u' '.join(commentsbody.itertext())
     if len(temp_text) < MIN_EXTRACTED_SIZE:
-        logger.error('not enough text %s %s', record_id, url)
+        LOGGER.error('not enough text %s %s', record_id, url)
     if len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
-        logger.warning('not enough comments %s %s', record_id, url)
+        LOGGER.warning('not enough comments %s %s', record_id, url)
     if len(temp_text) < MIN_EXTRACTED_SIZE and len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
-        logger.info('text and comments not long enough: %s %s', len(temp_text), len(temp_comments))
+        LOGGER.info('text and comments not long enough: %s %s', len(temp_text), len(temp_comments))
         return None
 
     # sanity check on language
@@ -643,8 +602,8 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
             langtest = temp_text
         langresult = langid.classify(langtest)
         if langresult[0] != target_language:
-            logger.warning('wrong language: %s %s %s', langresult, record_id, url)
-            logger.debug('wrong language: %s %s', langresult, temp_text)
+            LOGGER.warning('wrong language: %s %s %s', langresult, record_id, url)
+            LOGGER.debug('wrong language: %s %s', langresult, temp_text)
             return None
 
     # cache elements
@@ -683,7 +642,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         #try:
         #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
         #except UnicodeDecodeError as err:
-        #    logger.warning('Unicode error: %s %s', err, record_id)
+        #    LOGGER.warning('Unicode error: %s %s', err, record_id)
         # <hi> space hack
         #returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
         #returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
@@ -694,7 +653,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
     # else
     # lrutest[teststring] += 1
 
-    #logger.info('tokens posts: %s', tokens_posts)
-    #logger.info('tokens comments: %s', tokens_comments)
+    #LOGGER.info('tokens posts: %s', tokens_posts)
+    #LOGGER.info('tokens comments: %s', tokens_comments)
 
     return None
