@@ -110,25 +110,30 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
                ]
 # '//*[(self::div or self::section)][@id="comments" or @class="comments"]', \
 
-DISCARD_XPATH = ['//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
-                 '//div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
-                 '//*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
-                 '//footer', \
+DISCARD_XPATH = ['.//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
+                 './/div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
+                 './/*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
+                 './/footer', \
+                 './/header', \
+                 './/*[(self::div or self::section)][contains(@id, "header") or contains(@class, "header")]', \
+                 './/*[(self::div or self::section)][contains(@id, "tags") or contains(@class, "tags")]', \
                  # news outlets
-                 '//*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]',\
+                 './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]',\
                  # navigation
-                 '//*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
-                 '//*[(self::div or self::section)][starts-with(@id, "breadcrumbs")]',\
-                 '//*[(self::ol or self::ul)][contains(@id, "breadcrumbs") or contains(@class, "breadcrumbs")]',\
-                 # related posts # starts-with(@id, "related-") or starts-with(@class, "related-") or 
-                 '//*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]', \
+                 './/*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
+                 './/*[(self::div or self::section)][starts-with(@id, "breadcrumbs")]',\
+                 './/*[(self::ol or self::ul)][contains(@id, "breadcrumbs") or contains(@class, "breadcrumbs")]',\
+                 # related posts
+                 './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]', \
                  # sharing jp-post-flair jp-relatedposts
-                 '//*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@class, "shar") or contains(@class, "share-") or starts-with(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
-                 '//*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
-#                '//aside', \ # conflicts with text extraction
+                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@class, "shar") or contains(@class, "share-") or starts-with(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
+                 './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
+#                './/aside', \ # conflicts with text extraction
                 ]
 
-COMMENTS_DISCARD_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "respond")]', \
+COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
+                          './/cite', \
+                          './/quote', \
                          ]
 
 
@@ -148,7 +153,7 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = True
 HTML_CLEANER.style = False
-HTML_CLEANER.remove_tags = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'a', 'center', 'table', 'tbody', 'td', 'th', 'tr',
+HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
 HTML_CLEANER.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
@@ -268,12 +273,12 @@ def convert_tags(tree):
         elem.tag = 'list'
         elem.attrib.clear()
         # change children
-        #for child in elem.iter():
-        #    if child.tag == 'li' or child.tag == 'dt':
-        #        child.tag = 'item'
-        for child in elem.xpath('//li|//dt'):
-            child.tag = 'item'
-            child.attrib.clear()
+        for child in elem.iter(): # for child in elem.xpath('.//li|.//dt'):
+            if child.tag == 'li' or child.tag == 'dt':
+                child.tag = 'item'
+                child.attrib.clear()
+            #else:
+            #    logger.debug('other child in list: %s', child.tag)
     # blockquote | q → quote
     for elem in tree.xpath('//blockquote|//q'):
         elem.tag = 'quote'
