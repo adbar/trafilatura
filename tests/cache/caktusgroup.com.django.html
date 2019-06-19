@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+  <head>
+  
+  
+    
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var o=n[t]={exports:{}};e[t][0].call(o.exports,function(n){var o=e[t][1][n];return r(o||n)},o,o.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<t.length;o++)r(t[o]);return r}({1:[function(e,n,t){function r(){}function o(e,n,t){return function(){return i(e,[c.now()].concat(u(arguments)),n?null:this,t),n?void 0:this}}var i=e("handle"),a=e(3),u=e(4),f=e("ee").get("tracer"),c=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],d="api-",l=d+"ixn-";a(p,function(e,n){s[n]=o(d+n,!0,"api")}),s.addPageAction=o(d+"addPageAction",!0),s.setCurrentRouteName=o(d+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,o="function"==typeof n;return i(l+"tracer",[c.now(),e,t],r),function(){if(f.emit((o?"":"no-")+"fn-start",[c.now(),r,o],t),o)try{return n.apply(this,arguments)}catch(e){throw f.emit("fn-err",[arguments,this,e],t),e}finally{f.emit("fn-end",[c.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=o(l+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),i("err",[e,c.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){if(!o)return!1;if(e!==o)return!1;if(!n)return!0;if(!i)return!1;for(var t=i.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var o=null,i=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var u=navigator.userAgent,f=u.match(a);f&&u.indexOf("Chrome")===-1&&u.indexOf("Chromium")===-1&&(o="Safari",i=f[1])}n.exports={agent:o,version:i,match:r}},{}],3:[function(e,n,t){function r(e,n){var t=[],r="",i=0;for(r in e)o.call(e,r)&&(t[i]=n(r,e[r]),i+=1);return t}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],4:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,o=t-n||0,i=Array(o<0?0:o);++r<o;)i[r]=e[n+r];return i}n.exports=r},{}],5:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function o(e){function n(e){return e&&e instanceof r?e:e?f(e,u,i):i()}function t(t,r,o,i){if(!d.aborted||i){e&&e(t,r,o);for(var a=n(o),u=v(t),f=u.length,c=0;c<f;c++)u[c].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function l(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||o(t)}function w(e,n){c(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:l,addEventListener:l,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function i(){return new r}function a(){(s.api||s.feature)&&(d.aborted=!0,s=d.backlog={})}var u="nr@context",f=e("gos"),c=e(3),s={},p={},d=n.exports=o();d.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(o.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return e[n]=r,r}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){o.buffer([e],r),o.emit(e,n,t)}var o=e("ee").get("handle");n.exports=r,r.ee=o},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,i,function(){return o++})}var o=1,i="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!E++){var e=x.info=NREUM.info,n=l.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();c(y,function(n,t){e[n]||(e[n]=t)}),f("mark",["onload",a()+x.offset],null,"api");var t=l.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function o(){"complete"===l.readyState&&i()}function i(){f("mark",["domContent",a()+x.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(u=Math.max((new Date).getTime(),u))-x.offset}var u=(new Date).getTime(),f=e("handle"),c=e(3),s=e("ee"),p=e(2),d=window,l=d.document,m="addEventListener",v="attachEvent",g=d.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:d.setImmediate,CT:clearTimeout,XHR:g,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1123.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),x=n.exports={offset:u,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),l[m]?(l[m]("DOMContentLoaded",i,!1),d[m]("load",r,!1)):(l[v]("onreadystatechange",o),d[v]("onload",r)),f("mark",["firstbyte",u],null,"api");var E=0,O=e(5)},{}]},{},["loader"]);</script><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"0ebf1aaaa2","applicationID":"222469971","transactionName":"NFJVN0VVXxEFUhEIDg0YcRZZV0ULC19KAgAIQ0IQaENUABdYEQRPAFhFBhlZWAYAXQAWABFSDSJZW18kAUUGCScRWFogVldZBylYAQUNBkBWEVI=","queueTime":0,"applicationTime":4,"agent":""}</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A test passes in isolation, but fails when run in the full suite, pointing to some global shared state between tests. ">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/png" href="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/static/images/favicon.png">
+    <link rel="apple-touch-icon" href="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/static/images/favicon-152.png">
+
+    
+
+    
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary_large_image" />
+
+      <meta property="og:title" content="Testing Client-Side Applications with Django Post Mortem | Caktus Group" />
+      <meta property="og:url" content="http://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/" />
+      <meta property="og:image" content="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/media/blog-categories/technical.jpg?rev=84ea736d" />
+
+      
+        
+      
+      <meta property="og:description" content="A test passes in isolation, but fails when run in the full suite, pointing to some global shared state between tests. " />
+      <meta name="twitter:description" content="A test passes in isolation, but fails when run in the full suite, pointing to some global shared state between tests. " />
+
+      <meta name="twitter:image" content="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/media/blog-categories/technical.jpg?rev=84ea736d" />
+
+    
+
+    
+    
+  
+    <link rel="alternate" type="application/rss+xml"
+          href="/feeds/main/" title="Caktus Blog" />
+  
+
+
+    <title>Testing Client-Side Applications with Django Post Mortem | Caktus Group</title>
+
+    
+      <link rel="stylesheet" type="text/css" media="all" href="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/static/css/bundle.css?rev=84ea736d">
+
+      
+    
+    
+    
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+    
+    
+
+    
+    
+    
+
+    
+
+    
+      
+        <!-- Google Analytics Script -->
+        <script type="text/javascript">
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+          ga('create', 'UA-15492387-4', 'auto');
+          ga('send', 'pageview');
+        </script>
+      
+    
+    
+      
+        <!-- Global site tag (gtag.js) - Google AdWords -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-1061434655"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          gtag('js', new Date());
+          gtag('config', 'AW-1061434655');
+        </script>
+      
+    
+    
+      
+    
+  
+</head>
+
+  <body id="post_detail" class="">
+  
+    
+        
+
+    <!-- Begin Navbar -->
+    <div id="nav" class="navbar" role="navigation">
+      
+        <div class="wrapper">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            <a class="navbar-brand" href="/">
+              <img src="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/static/images/caktus-logo-426x234.png"/>
+            </a>
+          </div>
+          <nav class="navbar-caktus navbar-off">
+              <ul class="nav navbar-nav">
+                <li><a class="service-page" href="/services/">Services <span class="fa"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="10px" height="10px" viewBox="0 0 284.929 284.929" style="enable-background:new 0 0 284.929 284.929;"
+	 xml:space="preserve">
+	 <title>Angle Down</title>
+<g>
+	<path d="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
+		L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082
+		c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647
+		c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z"/>
+</g>
+</svg>
+</span></a>
+                  <ul>
+                    <li><a href="/services/#section-service-types">Service types</a></li>
+                    <li><a href="/services/#section-areas-of-expertise">Areas of expertise</a></li>
+                    <li><a href="/services/#section-pricing">Pricing</a></li>
+                  </ul>
+                </li>
+                <li><a class="our-work" href="/casestudies/">Our work <span class="fa"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="10px" height="10px" viewBox="0 0 284.929 284.929" style="enable-background:new 0 0 284.929 284.929;"
+	 xml:space="preserve">
+	 <title>Angle Down</title>
+<g>
+	<path d="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
+		L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082
+		c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647
+		c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z"/>
+</g>
+</svg>
+</span></a>
+                  <ul>
+                    <li><a href="/casestudies/#section-case-studies">Case studies</a></li>
+                    <li><a href="/casestudies/#section-client-feedback">Client feedback</a></li>
+                  </ul>
+                </li>
+                <li><a class="about-us" href="/about/">About us <span class="fa"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="10px" height="10px" viewBox="0 0 284.929 284.929" style="enable-background:new 0 0 284.929 284.929;"
+	 xml:space="preserve">
+	 <title>Angle Down</title>
+<g>
+	<path d="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
+		L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082
+		c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647
+		c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z"/>
+</g>
+</svg>
+</span></a>
+                  <ul>
+                    <li><a href="/about/#section-open-source">Open source</a></li>
+                    <li><a href="/about/#section-community-participation">Community engagement</a></li>
+                    <li><a href="/about/#section-press">Press</a></li>
+                    <li><a href="/ebooks/">Ebooks</a></li>
+                    <li><a href="/about/#section-charitable-giving">Charitable giving</a></li>
+                    <li><a href="/talks/">Talks &amp; Publications</a></li>
+                    <li><a href="/about/#section-our-team">Team</a></li>
+                  </ul>
+                </li>
+                <li><a class="careers" href="/careers/">Careers</a></li>
+                <li><a class="posts" href="https://learn.caktusgroup.com/caktus-blogs">Blogs <span
+                    class="fa"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="10px" height="10px" viewBox="0 0 284.929 284.929" style="enable-background:new 0 0 284.929 284.929;"
+	 xml:space="preserve">
+	 <title>Angle Down</title>
+<g>
+	<path d="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
+		L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082
+		c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647
+		c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z"/>
+</g>
+</svg>
+</span></a>
+                  <ul>
+                    <li><a
+                        href="/blog/">Developer Access
+                    </a></li>
+                    <li><a
+                        href="https://learn.caktusgroup.com/blog">Sharp Insights
+                    </a></li>
+                  </ul>
+                </li>
+                <li class="focus"><a class="contact" href="/contact/">Contact</a></li>
+              </ul>
+          </nav>
+        </div>
+      
+    </div><!-- /end Navbar -->
+
+    <div id="wrap">
+      <main id="main-content">
+        
+        <div class="container">
+          
+          
+          
+        </div>
+        
+
+        
+          
+        
+        
+<!-- TOPIC, TITLE, TAGS -->
+
+<div class="spacer"></div>
+
+<div class="full white-bg cushion-sides underline-link">
+  <div class="reading-wrapper tags">
+  <h4 class="blue">
+    <a href="/blog/" class="dark-blue"><span class="fa"><?xml version="1.0" encoding="utf-8"?><!-- Generator: Adobe Illustrator 20.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  --><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="6.5px" height="11.1px" viewBox="0 0 6.5 11.1" style="enable-background:new 0 0 6.5 11.1;" xml:space="preserve"><title>Angle Left</title><path d="M6.5,0.9c0,0.1,0,0.2-0.1,0.3L2,5.6L6.4,10c0.1,0.1,0.1,0.2,0.1,0.3c0,0.1,0,0.2-0.1,0.3L5.8,11c-0.1,0.1-0.2,0.1-0.3,0.1
+	c-0.1,0-0.2,0-0.3-0.1L0.1,5.8C0,5.8,0,5.7,0,5.6s0-0.2,0.1-0.3l5.2-5.2C5.4,0,5.5,0,5.6,0c0.1,0,0.2,0,0.3,0.1l0.6,0.6
+	C6.5,0.7,6.5,0.8,6.5,0.9z"/></svg></span>
+        Back to blog</a>
+  </h4>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<div class="full white-bg cushion-sides underline-link">
+  <div class="reading-wrapper tags">
+    <h4 class="dark-blue">
+      
+        <a class="dark-blue" href="/blog/categories/technical/">Technical</a>
+        
+      
+    </h4>
+
+    <h1 class="dark-blue">Testing Client-Side Applications with Django Post Mortem</h1>
+
+    
+      <span class="blue"><?xml version="1.0" encoding="utf-8"?>
+<svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><title>Tag</title><path d="M576 448q0-53-37.5-90.5t-90.5-37.5-90.5 37.5-37.5 90.5 37.5 90.5 90.5 37.5 90.5-37.5 37.5-90.5zm1067 576q0 53-37 90l-491 492q-39 37-91 37-53 0-90-37l-715-716q-38-37-64.5-101t-26.5-117v-416q0-52 38-90t90-38h416q53 0 117 26.5t102 64.5l715 714q37 39 37 91z"/></svg></span>&thinsp;
+      <ul class="blue">
+        
+          <li><a class="blue" href="/blog/tags/python/">python</a>, </li>
+        
+          <li><a class="blue" href="/blog/tags/webcast/">webcast</a>, </li>
+        
+          <li><a class="blue" href="/blog/tags/testing/">testing</a>, </li>
+        
+          <li><a class="blue" href="/blog/tags/django/">django</a></li>
+        
+      </ul>
+    
+  </div>
+
+
+
+
+<!-- AUTHOR & SOCIAL SHARE -->
+
+
+
+  <div class="reading-wrapper">
+    <div class="blog-detail full">
+      <div class="full authors">
+          
+            <div class="inlineblock">
+              
+               
+                
+                    <img alt="Mark Lavin"
+                         class="staff_photos" src="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/media/thumbnail-cache/3e/d7/3ed792cd96a903acf9f5b83cd6f85475.jpg" />
+                
+              
+              
+                <h5>
+                  Mark Lavin
+                </h5>
+              
+              
+            </div>
+          
+      </div>
+      <div class="full date-and-social">
+          <h5 class="grey">June 8, 2015
+          </h5>
+          <div class="detail-page-social-media-holder">
+            <div class="post-social-media-icon-bundle">
+              
+                
+                  
+
+<div class="card-common--social-media">
+<!-- Twitter -->
+<a target="_blank" href="https://twitter.com/intent/tweet?text=Testing%20Client-Side%20Applications%20with%20Django%20Post%20Mortem&tw_p=tweetbutton&url=http://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/"><span class="fa"><svg version="1.1" id="svg_twitter" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 449.956 449.956" style="enable-background:new 0 0 449.956 449.956;"
+	 xml:space="preserve">
+	 <title>Twitter</title>
+<g>
+	<path d="M449.956,85.657c-17.702,7.614-35.408,12.369-53.102,14.279c19.985-11.991,33.503-28.931,40.546-50.819
+		c-18.281,10.847-37.787,18.268-58.532,22.267c-18.274-19.414-40.73-29.125-67.383-29.125c-25.502,0-47.246,8.992-65.24,26.98
+		c-17.984,17.987-26.977,39.731-26.977,65.235c0,6.851,0.76,13.896,2.284,21.128c-37.688-1.903-73.042-11.372-106.068-28.407
+		C82.46,110.158,54.433,87.46,31.403,59.101c-8.375,14.272-12.564,29.787-12.564,46.536c0,15.798,3.711,30.456,11.138,43.97
+		c7.422,13.512,17.417,24.455,29.98,32.831c-14.849-0.572-28.743-4.475-41.684-11.708v1.142c0,22.271,6.995,41.824,20.983,58.674
+		c13.99,16.848,31.645,27.453,52.961,31.833c-7.995,2.091-16.086,3.138-24.269,3.138c-5.33,0-11.136-0.475-17.416-1.42
+		c5.9,18.459,16.75,33.633,32.546,45.535c15.799,11.896,33.691,18.028,53.677,18.418c-33.498,26.262-71.66,39.393-114.486,39.393
+		c-8.186,0-15.607-0.373-22.27-1.139c42.827,27.596,90.03,41.394,141.612,41.394c32.738,0,63.478-5.181,92.21-15.557
+		c28.746-10.369,53.297-24.267,73.665-41.686c20.362-17.415,37.925-37.448,52.674-60.097c14.75-22.651,25.738-46.298,32.977-70.946
+		c7.23-24.653,10.848-49.344,10.848-74.092c0-5.33-0.096-9.325-0.287-11.991C421.785,120.202,437.202,104.306,449.956,85.657z"/>
+</g>
+</svg>
+</span></a>
+
+&ensp;
+
+<!-- LinkedIn -->
+<a target="_blank" href="https://www.linkedin.com/cws/share?url=http://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/"><span class="fa"><svg version="1.1" id="svg_linkedin" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 438.536 438.535" style="enable-background:new 0 0 438.536 438.535;"
+	 xml:space="preserve">
+	 <title>LinkedIn</title>
+<g>
+	<g>
+		<rect x="5.424" y="145.895" width="94.216" height="282.932"/>
+		<path d="M408.842,171.739c-19.791-21.604-45.967-32.408-78.512-32.408c-11.991,0-22.891,1.475-32.695,4.427
+			c-9.801,2.95-18.079,7.089-24.838,12.419c-6.755,5.33-12.135,10.278-16.129,14.844c-3.798,4.337-7.512,9.389-11.136,15.104
+			v-40.232h-93.935l0.288,13.706c0.193,9.139,0.288,37.307,0.288,84.508c0,47.205-0.19,108.777-0.572,184.722h93.931V270.942
+			c0-9.705,1.041-17.412,3.139-23.127c4-9.712,10.037-17.843,18.131-24.407c8.093-6.572,18.13-9.855,30.125-9.855
+			c16.364,0,28.407,5.662,36.117,16.987c7.707,11.324,11.561,26.98,11.561,46.966V428.82h93.931V266.664
+			C438.529,224.976,428.639,193.336,408.842,171.739z"/>
+		<path d="M53.103,9.708c-15.796,0-28.595,4.619-38.4,13.848C4.899,32.787,0,44.441,0,58.529c0,13.891,4.758,25.505,14.275,34.829
+			c9.514,9.325,22.078,13.99,37.685,13.99h0.571c15.99,0,28.887-4.661,38.688-13.99c9.801-9.324,14.606-20.934,14.417-34.829
+			c-0.19-14.087-5.047-25.742-14.561-34.973C81.562,14.323,68.9,9.708,53.103,9.708z"/>
+	</g>
+</g>
+</svg>
+</span></a>
+
+&ensp;
+
+<!-- Facebook -->
+<a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/"><span class="fa"><svg version="1.1" id="svg_facebook" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 470.513 470.513" style="enable-background:new 0 0 470.513 470.513;"
+	 xml:space="preserve">
+	 <title>Facebook</title>
+<g>
+	<path d="M271.521,154.17v-40.541c0-6.086,0.28-10.8,0.849-14.13c0.567-3.335,1.857-6.615,3.859-9.853
+		c1.999-3.236,5.236-5.47,9.706-6.708c4.476-1.24,10.424-1.858,17.85-1.858h40.539V0h-64.809c-37.5,0-64.433,8.897-80.803,26.691
+		c-16.368,17.798-24.551,44.014-24.551,78.658v48.82h-48.542v81.086h48.539v235.256h97.362V235.256h64.805l8.566-81.086H271.521z"/>
+</g>
+</svg>
+</span></a>
+</div>
+
+                
+              
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- LEADING IMAGE -->
+  <div class="full white-bg">
+    <div class="blog-image-wrapper">
+      <img alt="Testing Client-Side Applications with Django Post Mortem" src="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/media/blog-categories/technical.jpg">
+    </div>
+  </div>
+
+<!-- DATE & BODY COPY -->
+<div class="full row white-bg cushion-sides">
+  <div id="blog-text" class="reading-wrapper">
+    <p>I had the opportunity to give a <a href="http://www.oreilly.com/pub/e/3302">webcast for O’Reilly Media</a> during which I encountered a presenter’s nightmare: a broken demo. Worse than that it was a test failure in a presentation about testing. Is there any way to salvage such an epic failure?</p>
+<h4>What Happened</h4>
+<p>It was my second webcast and I chose to use the same format for both. I started with some brief introductory slides but most of the time was spent as a screen share, going through the code as well as running some commands in the terminal. Since this webcast was about testing this was mostly writing more tests and then running them. I had git branches setup for each phase of the process and for the first forty minutes this was going along great. Then it came to the grand finale. Integrate the server and client tests all together and run one last time. And it failed.</p>
+<p><img alt="Test Failure" class="img-responsive" src="https://s3.amazonaws.com/caktus-website-production-2015/media/blog-images/test-failure.png"/></p>
+<p>I quickly abandoned the idea of attempting to live debug this error and since I was at the end away I just went into my wrap up. Completely humbled and embarrassed I tried to answer the questions from the audience as gracefully as I could while inside I wanted to just curl up and hide.</p>
+<h4>Tracing the Error</h4>
+<p>The webcast was the end of the working day for me so when I was done I packed up and headed home. I had dinner with my family and tried not to obsess about what had just happened. The next morning with a clearer head I decided to dig into the problem. I had done much of the setup on my personal laptop but ran the webcast on my work laptop. Maybe there was something different about the machine setups. I ran the test again on my personal laptop. Still failed. I was sure I had tested this. Was I losing my mind?</p>
+<p>I looked through my terminal history. There it was and I ran it again.</p>
+<p><img alt="Single Test Passing" class="img-responsive" src="https://s3.amazonaws.com/caktus-website-production-2015/media/blog-images/test-passing.png"/></p>
+<p>It passed! I’m not crazy! But what does that mean? I had run the test in isolation and it passed but when run in the full suite it failed. This points to some global shared state between tests. I took another look at the test.</p>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib.staticfiles.testing</span> <span class="kn">import</span> <span class="n">StaticLiveServerTestCase</span>
+<span class="kn">from</span> <span class="nn">django.test.utils</span> <span class="kn">import</span> <span class="n">override_settings</span>
+
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>
+
+
+<span class="nd">@override_settings</span><span class="p">(</span><span class="n">STATICFILES_DIRS</span><span class="o">=</span><span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">'static'</span><span class="p">),</span> <span class="p">))</span>
+<span class="k">class</span> <span class="nc">QunitTests</span><span class="p">(</span><span class="n">StaticLiveServerTestCase</span><span class="p">):</span>
+    <span class="sd">"""Iteractive tests with selenium."""</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">PhantomJS</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUpClass</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">PhantomJS</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">setUpClass</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">tearDownClass</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">tearDownClass</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">test_qunit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">"""Load the QUnit tests and check for failures."""</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">live_server_url</span> <span class="o">+</span> <span class="n">settings</span><span class="o">.</span><span class="n">STATIC_URL</span> <span class="o">+</span> <span class="s">'index.html'</span><span class="p">)</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span>
+            <span class="n">expected_conditions</span><span class="o">.</span><span class="n">visibility_of_element_located</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">By</span><span class="o">.</span><span class="n">ID</span><span class="p">,</span> <span class="s">'qunit-testresult'</span><span class="p">)))</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s">'total'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">failed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s">'failed'</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">total</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">failed</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+<p>It seemed pretty isolated to me. The test gets its own webdriver instance. There is no file system manipulation. There is no interaction with the database and even if it did Django runs each test in its own transaction and rolls it back. Maybe this shared state wasn’t in my code.</p>
+<h4>Finding a Fix</h4>
+<p>I’ll admit when people on IRC or Stackoverflow claim to have found a bug in Django my first instinct is to laugh. However, Django does have some shared state in its settings configuration. The test is using the <code>override_settings</code> decorator but perhaps there was something preventing it from working. I started to dig into the staticfiles code and that’s where I found it. Django was using the <code>lru_cache</code> decorator for the construction of the staticfiles finders. This means they were being cached after their first access. Since this test was running last in the suite it meant that the change to <code>STATICFILES_DIRS</code> was not taking effect. To fix my test meant that I simply needed to bust this cache at the start of my test.</p>
+<div class="codehilite"><pre><span class="o">...</span>
+<span class="kn">from</span> <span class="nn">django.contrib.staticfiles</span> <span class="kn">import</span> <span class="n">finders</span><span class="p">,</span> <span class="n">storage</span>
+<span class="o">...</span>
+<span class="kn">from</span> <span class="nn">django.utils.functional</span> <span class="kn">import</span> <span class="n">empty</span>
+<span class="o">...</span>
+<span class="k">class</span> <span class="nc">QunitTests</span><span class="p">(</span><span class="n">StaticLiveServerTestCase</span><span class="p">):</span>
+<span class="o">...</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Clear the cache versions of the staticfiles finders and storage</span>
+        <span class="c"># See https://code.djangoproject.com/ticket/24197</span>
+        <span class="n">storage</span><span class="o">.</span><span class="n">staticfiles_storage</span><span class="o">.</span><span class="n">_wrapped</span> <span class="o">=</span> <span class="n">empty</span>
+        <span class="n">finders</span><span class="o">.</span><span class="n">get_finder</span><span class="o">.</span><span class="n">cache_clear</span><span class="p">()</span>
+</pre></div>
+<p><img alt="All Tests Passing" class="img-responsive" src="https://s3.amazonaws.com/caktus-website-production-2015/media/blog-images/tests-all-passing.png"/></p>
+<h4>Fixing at the Source</h4>
+<p>Digging into this problem, it became clear that this wasn’t just a problem with the <code>STATICFILES_DIRS</code> setting but was a problem with using <code>override_settings</code> with most of the contrib.staticfiles related settings. In fact I found the easiest fix for my test case by looking at Django’s own test suite. I decided this really needed to be fixed in Django so that this issue wouldn’t bite any other developers. I <a href="https://code.djangoproject.com/ticket/24197">opened a ticket</a> and a few days later I <a href="https://github.com/django/django/pull/3985">created a pull request</a> with the fix. After some helpful review from Tim Graham it was merged and was included in the recent 1.8 release.</p>
+<h4>What’s Next</h4>
+<p>Having a test which passes alone and fails when running in the suite is a very frustrating problem. It wasn’t something that I planned to demonstrate when I started with this webcast but that’s where I ended up. The problem I experienced was entirely preventable if I had prepared for the webcast better. However, my own failing lead to a great example of tracking down global state in a test suite and ultimately helped to improve my favorite web framework in just the slightest amount. All together I think it makes the webcast better than I could have planned it.</p>
+  </div>
+</div>
+
+
+  <!-- CTA Button -->
+  <div class="white-bg cta-holder center">
+    <!--HubSpot Call-to-Action Code --><span class="hs-cta-wrapper" id="hs-cta-wrapper-71427a9f-f564-4f65-a1c5-a6f7852d655e"><span class="hs-cta-node hs-cta-71427a9f-f564-4f65-a1c5-a6f7852d655e" id="hs-cta-71427a9f-f564-4f65-a1c5-a6f7852d655e"><!--[if lte IE 8]><div id="hs-cta-ie-element"></div><![endif]--><a href="https://cta-redirect.hubspot.com/cta/redirect/1883108/71427a9f-f564-4f65-a1c5-a6f7852d655e" ><img class="hs-cta-img" id="hs-cta-img-71427a9f-f564-4f65-a1c5-a6f7852d655e" style="border-width:0px;" src="https://no-cache.hubspot.com/cta/default/1883108/71427a9f-f564-4f65-a1c5-a6f7852d655e.png"  alt="New Call-to-action"/></a></span><script charset="utf-8" src="https://js.hscta.net/cta/current.js"></script><script type="text/javascript"> hbspt.cta.load(1883108, '71427a9f-f564-4f65-a1c5-a6f7852d655e', {}); </script></span><!-- end HubSpot Call-to-Action Code -->
+  </div>
+
+
+<!-- The Show/Hide Disqus Comments button -->
+<div class="white-bg center">
+  <a id='toggle-disqus-container' class="hollow-button-blue-fill">
+    <!-- Div with the word "Show"; it will be removed and replaced with a div with the word "Hide" when a user clicks on it -->
+    <div id="div-with-show" style="display:inline-block">Show</div>
+    <div id="toggle-disqus" style="display:inline-block">Comments</div>
+  </a>
+</div>
+
+<!-- DISQUS Block -->
+
+
+<div class="full row white-bg">
+  <div class="reading-wrapper cushion-sides">
+    
+      
+      
+      <div id="disqus_thread"></div>
+<script type="text/javascript">
+/* <![CDATA[ */
+
+	var disqus_shortname = 'wwwcaktusblog';
+	var disqus_url = "http://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/";
+
+	/* * * DON'T EDIT BELOW THIS LINE * * */
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	})();
+/* ]]> */
+</script>
+<noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="//disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    
+  </div>
+</div>
+
+
+<!-- RELATED POSTS, List Style -->
+
+<!-- Using an inclusion tag to load the related posts and resources -->
+
+
+<div class="full green-bg">
+  <div class="reading-wrapper cushion-sides underline-link">
+    <div class="full">
+      <br>
+      <h4 class="heavy-type center">You might also like:</h4>
+      <!-- Related Posts -->
+      <div class="half row cushion-ends" id="related-posts">
+        <p class="heavy-type">Posts:</p>
+        
+          
+            <!-- Relevant Post -->
+            <div class="related-post-card">
+              <h4><a class="white" href="/blog/2019/06/11/favorite-pycon-2019-presentations/">Our Favorite PyCon 2019 Presentations</a></h4>
+              <a class="white" href="/blog/2019/06/11/favorite-pycon-2019-presentations/">News &amp; Events</a>&ensp; <span class="fa white"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="6.5px" height="11.1px" viewBox="0 0 6.5 11.1" style="enable-background:new 0 0 6.5 11.1;" xml:space="preserve">
+<title>Angle Right</title>
+<path d="M6.5,5.6c0,0.1,0,0.2-0.1,0.3L1.2,11c-0.1,0.1-0.2,0.1-0.3,0.1s-0.2,0-0.3-0.1l-0.6-0.6C0,10.4,0,10.3,0,10.2
+	C0,10.1,0,10,0.1,10l4.4-4.4L0.1,1.2C0,1.1,0,1,0,0.9s0-0.2,0.1-0.3l0.6-0.6C0.7,0,0.8,0,0.9,0s0.2,0,0.3,0.1l5.2,5.2
+	C6.5,5.4,6.5,5.5,6.5,5.6z"/>
+</svg>
+</span>&ensp;
+              <a class="white" href="/blog/2019/06/11/favorite-pycon-2019-presentations/">June 11, 2019</a>
+            </div>
+          
+            <!-- Relevant Post -->
+            <div class="related-post-card">
+              <h4><a class="white" href="/blog/2019/05/23/newbies-guide-pycon/">Be Quick or Eat Potatoes: A Newbie’s Guide to PyCon</a></h4>
+              <a class="white" href="/blog/2019/05/23/newbies-guide-pycon/">Technical</a>&ensp; <span class="fa white"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="6.5px" height="11.1px" viewBox="0 0 6.5 11.1" style="enable-background:new 0 0 6.5 11.1;" xml:space="preserve">
+<title>Angle Right</title>
+<path d="M6.5,5.6c0,0.1,0,0.2-0.1,0.3L1.2,11c-0.1,0.1-0.2,0.1-0.3,0.1s-0.2,0-0.3-0.1l-0.6-0.6C0,10.4,0,10.3,0,10.2
+	C0,10.1,0,10,0.1,10l4.4-4.4L0.1,1.2C0,1.1,0,1,0,0.9s0-0.2,0.1-0.3l0.6-0.6C0.7,0,0.8,0,0.9,0s0.2,0,0.3,0.1l5.2,5.2
+	C6.5,5.4,6.5,5.5,6.5,5.6z"/>
+</svg>
+</span>&ensp;
+              <a class="white" href="/blog/2019/05/23/newbies-guide-pycon/">May 23, 2019</a>
+            </div>
+          
+            <!-- Relevant Post -->
+            <div class="related-post-card">
+              <h4><a class="white" href="/blog/2019/04/11/pycon-2019/">We&#39;re Eagerly Preparing for PyCon 2019!</a></h4>
+              <a class="white" href="/blog/2019/04/11/pycon-2019/">Caktus &amp; Community</a>&ensp; <span class="fa white"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="6.5px" height="11.1px" viewBox="0 0 6.5 11.1" style="enable-background:new 0 0 6.5 11.1;" xml:space="preserve">
+<title>Angle Right</title>
+<path d="M6.5,5.6c0,0.1,0,0.2-0.1,0.3L1.2,11c-0.1,0.1-0.2,0.1-0.3,0.1s-0.2,0-0.3-0.1l-0.6-0.6C0,10.4,0,10.3,0,10.2
+	C0,10.1,0,10,0.1,10l4.4-4.4L0.1,1.2C0,1.1,0,1,0,0.9s0-0.2,0.1-0.3l0.6-0.6C0.7,0,0.8,0,0.9,0s0.2,0,0.3,0.1l5.2,5.2
+	C6.5,5.4,6.5,5.5,6.5,5.6z"/>
+</svg>
+</span>&ensp;
+              <a class="white" href="/blog/2019/04/11/pycon-2019/">April 11, 2019</a>
+            </div>
+          
+        
+      </div>
+
+      <!---Related Resources--->
+      <div class="half row cushion-ends" id="related-resources">
+        <p class="heavy-type">Resources:</p>
+        
+          
+            <!-- Relevant Resource -->
+            <div class="related-post-card">
+              <h4>
+                <a class="white" href="/talks/developer-fitness/">Developer Fitness</a>
+              </h4>
+              <a class="white" href="/talks/developer-fitness/">Talk</a>
+            </div>
+          
+            <!-- Relevant Resource -->
+            <div class="related-post-card">
+              <h4>
+                <a class="white" href="/talks/automated-problem-reporting/">Teach Your Sites to Call for Help: Automated Problem Reporting for Online Services</a>
+              </h4>
+              <a class="white" href="/talks/automated-problem-reporting/">Talk</a>
+            </div>
+          
+            <!-- Relevant Resource -->
+            <div class="related-post-card">
+              <h4>
+                <a class="white" href="/talks/#books-section">Django 1.1 Testing and Debugging</a>
+              </h4>
+              <a class="white" href="/talks/#books-section">Book</a>
+            </div>
+          
+        
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+        <!-- END OF THE ROAD -->
+      </main><!-- /end mainContent -->
+
+
+      
+    </div><!-- /end wrap -->
+
+    
+    <footer id="footer" class="full footer">
+      <div class="wrapper">
+        <div class="half">
+
+          <div class="half">
+              
+    <div><h3>Contact us</h3></div>
+
+
+            <p>
+              <a href="mailto:solutions@caktusgroup.com" target="_blank">solutions@caktusgroup.com</a>
+            </p>
+            <p>
+              T 919-951-0052
+              <br>
+              F 919-928-5516
+            </p>
+            
+              <p>
+                108 Morris St, Suite 2<br>
+                
+                Durham, NC 27701<br>
+              </p>
+            
+          </div>
+
+          <div class="half site-map">
+              
+    <div><h3>Quick links</h3></div>
+
+
+            <ul>
+              <li><a href="/services/">Services</a></li>
+              <li><a href="/casestudies/">Our work</a></li>
+              <li><a href="/about/">About us</a></li>
+              <li><a href="https://learn.caktusgroup.com/caktus-blogs">Blogs</a></li>
+              <li><a href="/careers/">Careers</a></li>
+              <li><a href="/events/">Events</a></li>
+              <li><a href="/talks/">Talks</a></li>
+              <li><a href="/ebooks/">Ebooks</a></li>
+              <li><a href="/press/">Press</a></li>
+              <li><a href="/contact/">Contact</a></li>
+            </ul>
+          </div>
+        </div><!--End first half-->
+
+        <div class="half">
+          <div class="half newsletter-sign-up">
+            
+               
+    <div><h3>Newsletter</h3></div>
+
+
+              <form action="/subscribe/"
+                    method="post" class="newsletter-form form-inline" novalidate>
+                <input type='hidden' name='csrfmiddlewaretoken' value='Xu50ovWtSXah5OY6xr2vv36vmNwR9CZnaqpThaij4WM23aa5My05wOu6m2EatVYN' />
+                <div style="display: none;">
+  <label>
+    Leave this blank to prove your humanity:
+    <input type="text" name="body" value="" />
+  </label>
+</div>
+
+                <ul class="errors list-unstyled"></ul>
+                <label class="sr-only" for="id_email">
+                  Email address
+                </label>
+                <div class="sign-up-container">
+                  <span class="icon">
+                    <button type="submit" aria-label="Submit">
+                      <span class="fa grey"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 511.626 511.627" style="enable-background:new 0 0 511.626 511.627;"
+	 xml:space="preserve">
+	 <title>Envelope</title>
+<g>
+	<path d="M498.208,68.235c-8.945-8.947-19.701-13.418-32.261-13.418H45.682c-12.562,0-23.318,4.471-32.264,13.418
+		C4.471,77.18,0,87.935,0,100.499v310.633c0,12.566,4.471,23.312,13.418,32.257c8.945,8.953,19.701,13.422,32.264,13.422h420.266
+		c12.56,0,23.315-4.469,32.261-13.422c8.949-8.945,13.418-19.697,13.418-32.257V100.499
+		C511.626,87.935,507.158,77.18,498.208,68.235z M475.078,411.125c0,2.475-0.903,4.616-2.714,6.424
+		c-1.81,1.81-3.949,2.706-6.42,2.706H45.679c-2.474,0-4.616-0.896-6.423-2.706c-1.809-1.808-2.712-3.949-2.712-6.424V191.858
+		c6.09,6.852,12.657,13.134,19.7,18.843c51.012,39.209,91.553,71.374,121.627,96.5c9.707,8.186,17.607,14.561,23.697,19.13
+		c6.09,4.571,14.322,9.185,24.694,13.846c10.373,4.668,20.129,6.991,29.265,6.991h0.287h0.284c9.134,0,18.894-2.323,29.263-6.991
+		c10.376-4.661,18.613-9.274,24.701-13.846c6.089-4.569,13.99-10.944,23.698-19.13c30.074-25.126,70.61-57.291,121.624-96.5
+		c7.043-5.708,13.613-11.991,19.694-18.843V411.125L475.078,411.125z M475.078,107.92v3.14c0,11.229-4.421,23.745-13.271,37.543
+		c-8.851,13.798-18.419,24.792-28.691,32.974c-36.74,28.936-74.897,59.101-114.495,90.506c-1.14,0.951-4.474,3.757-9.996,8.418
+		c-5.514,4.668-9.894,8.241-13.131,10.712c-3.241,2.478-7.471,5.475-12.703,8.993c-5.236,3.518-10.041,6.14-14.418,7.851
+		c-4.377,1.707-8.47,2.562-12.275,2.562h-0.284h-0.287c-3.806,0-7.895-0.855-12.275-2.562c-4.377-1.711-9.185-4.333-14.417-7.851
+		c-5.231-3.519-9.467-6.516-12.703-8.993c-3.234-2.471-7.614-6.044-13.132-10.712c-5.52-4.661-8.854-7.467-9.995-8.418
+		c-39.589-31.406-77.75-61.57-114.487-90.506c-27.981-22.076-41.969-49.106-41.969-81.083c0-2.472,0.903-4.615,2.712-6.421
+		c1.809-1.809,3.949-2.714,6.423-2.714h420.266c1.52,0.855,2.854,1.093,3.997,0.715c1.143-0.385,1.998,0.331,2.566,2.138
+		c0.571,1.809,1.095,2.664,1.57,2.57c0.477-0.096,0.764,1.093,0.859,3.571c0.089,2.473,0.137,3.718,0.137,3.718V107.92
+		L475.078,107.92z"/>
+</g>
+</svg>
+</span>
+                    </button>
+                  </span>
+                  <input type="email" value="" name="email"
+                         style="border: none" id="id_email" class="form-control"
+                         placeholder="youremail@email.com" required />
+                   <input type="hidden" name="page_name" id="id_page_name" />
+                </div>
+              </form>
+              <div class="newsletter-info">
+                
+    <div>Get tips, see case studies, and stay up to date on Caktus news. <br><a href="https://learn.caktusgroup.com/newsletter" style="font-weight: bold;">Learn more.</a></div>
+
+
+              </div>
+            
+            <p>
+              <a href="https://www.iubenda.com/privacy-policy/91739120">Privacy Policy</a>
+            </p>
+            <p>
+              <a href="https://www.iubenda.com/privacy-policy/91739120/cookie-policy">Cookie Policy</a>
+            </p>
+          </div>
+
+          <div class="half social-media">
+            <div id="socialicons" class="socialicons">
+              
+    <div><h3>Follow us</h3></div>
+
+
+              <ul>
+                
+                <li>
+                  <a href="https://twitter.com/caktusgroup" target="_blank">
+                    
+                      <span class="fa grey"><svg version="1.1" id="svg_twitter" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 449.956 449.956" style="enable-background:new 0 0 449.956 449.956;"
+	 xml:space="preserve">
+	 <title>Twitter</title>
+<g>
+	<path d="M449.956,85.657c-17.702,7.614-35.408,12.369-53.102,14.279c19.985-11.991,33.503-28.931,40.546-50.819
+		c-18.281,10.847-37.787,18.268-58.532,22.267c-18.274-19.414-40.73-29.125-67.383-29.125c-25.502,0-47.246,8.992-65.24,26.98
+		c-17.984,17.987-26.977,39.731-26.977,65.235c0,6.851,0.76,13.896,2.284,21.128c-37.688-1.903-73.042-11.372-106.068-28.407
+		C82.46,110.158,54.433,87.46,31.403,59.101c-8.375,14.272-12.564,29.787-12.564,46.536c0,15.798,3.711,30.456,11.138,43.97
+		c7.422,13.512,17.417,24.455,29.98,32.831c-14.849-0.572-28.743-4.475-41.684-11.708v1.142c0,22.271,6.995,41.824,20.983,58.674
+		c13.99,16.848,31.645,27.453,52.961,31.833c-7.995,2.091-16.086,3.138-24.269,3.138c-5.33,0-11.136-0.475-17.416-1.42
+		c5.9,18.459,16.75,33.633,32.546,45.535c15.799,11.896,33.691,18.028,53.677,18.418c-33.498,26.262-71.66,39.393-114.486,39.393
+		c-8.186,0-15.607-0.373-22.27-1.139c42.827,27.596,90.03,41.394,141.612,41.394c32.738,0,63.478-5.181,92.21-15.557
+		c28.746-10.369,53.297-24.267,73.665-41.686c20.362-17.415,37.925-37.448,52.674-60.097c14.75-22.651,25.738-46.298,32.977-70.946
+		c7.23-24.653,10.848-49.344,10.848-74.092c0-5.33-0.096-9.325-0.287-11.991C421.785,120.202,437.202,104.306,449.956,85.657z"/>
+</g>
+</svg>
+</span>
+                    
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://github.com/caktus" target="_blank">
+                    
+                      <span class="fa grey"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 438.549 438.549" style="enable-background:new 0 0 438.549 438.549;"
+	 xml:space="preserve">
+	 <title>Github</title>
+<g>
+	<path d="M409.132,114.573c-19.608-33.596-46.205-60.194-79.798-79.8C295.736,15.166,259.057,5.365,219.271,5.365
+		c-39.781,0-76.472,9.804-110.063,29.408c-33.596,19.605-60.192,46.204-79.8,79.8C9.803,148.168,0,184.854,0,224.63
+		c0,47.78,13.94,90.745,41.827,128.906c27.884,38.164,63.906,64.572,108.063,79.227c5.14,0.954,8.945,0.283,11.419-1.996
+		c2.475-2.282,3.711-5.14,3.711-8.562c0-0.571-0.049-5.708-0.144-15.417c-0.098-9.709-0.144-18.179-0.144-25.406l-6.567,1.136
+		c-4.187,0.767-9.469,1.092-15.846,1c-6.374-0.089-12.991-0.757-19.842-1.999c-6.854-1.231-13.229-4.086-19.13-8.559
+		c-5.898-4.473-10.085-10.328-12.56-17.556l-2.855-6.57c-1.903-4.374-4.899-9.233-8.992-14.559
+		c-4.093-5.331-8.232-8.945-12.419-10.848l-1.999-1.431c-1.332-0.951-2.568-2.098-3.711-3.429c-1.142-1.331-1.997-2.663-2.568-3.997
+		c-0.572-1.335-0.098-2.43,1.427-3.289c1.525-0.859,4.281-1.276,8.28-1.276l5.708,0.853c3.807,0.763,8.516,3.042,14.133,6.851
+		c5.614,3.806,10.229,8.754,13.846,14.842c4.38,7.806,9.657,13.754,15.846,17.847c6.184,4.093,12.419,6.136,18.699,6.136
+		c6.28,0,11.704-0.476,16.274-1.423c4.565-0.952,8.848-2.383,12.847-4.285c1.713-12.758,6.377-22.559,13.988-29.41
+		c-10.848-1.14-20.601-2.857-29.264-5.14c-8.658-2.286-17.605-5.996-26.835-11.14c-9.235-5.137-16.896-11.516-22.985-19.126
+		c-6.09-7.614-11.088-17.61-14.987-29.979c-3.901-12.374-5.852-26.648-5.852-42.826c0-23.035,7.52-42.637,22.557-58.817
+		c-7.044-17.318-6.379-36.732,1.997-58.24c5.52-1.715,13.706-0.428,24.554,3.853c10.85,4.283,18.794,7.952,23.84,10.994
+		c5.046,3.041,9.089,5.618,12.135,7.708c17.705-4.947,35.976-7.421,54.818-7.421s37.117,2.474,54.823,7.421l10.849-6.849
+		c7.419-4.57,16.18-8.758,26.262-12.565c10.088-3.805,17.802-4.853,23.134-3.138c8.562,21.509,9.325,40.922,2.279,58.24
+		c15.036,16.18,22.559,35.787,22.559,58.817c0,16.178-1.958,30.497-5.853,42.966c-3.9,12.471-8.941,22.457-15.125,29.979
+		c-6.191,7.521-13.901,13.85-23.131,18.986c-9.232,5.14-18.182,8.85-26.84,11.136c-8.662,2.286-18.415,4.004-29.263,5.146
+		c9.894,8.562,14.842,22.077,14.842,40.539v60.237c0,3.422,1.19,6.279,3.572,8.562c2.379,2.279,6.136,2.95,11.276,1.995
+		c44.163-14.653,80.185-41.062,108.068-79.226c27.88-38.161,41.825-81.126,41.825-128.906
+		C438.536,184.851,428.728,148.168,409.132,114.573z"/>
+</g>
+</svg>
+</span>
+                    
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://www.facebook.com/CaktusGroup" target="_blank">
+                    
+                      <span class="fa grey"><svg version="1.1" id="svg_facebook" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 470.513 470.513" style="enable-background:new 0 0 470.513 470.513;"
+	 xml:space="preserve">
+	 <title>Facebook</title>
+<g>
+	<path d="M271.521,154.17v-40.541c0-6.086,0.28-10.8,0.849-14.13c0.567-3.335,1.857-6.615,3.859-9.853
+		c1.999-3.236,5.236-5.47,9.706-6.708c4.476-1.24,10.424-1.858,17.85-1.858h40.539V0h-64.809c-37.5,0-64.433,8.897-80.803,26.691
+		c-16.368,17.798-24.551,44.014-24.551,78.658v48.82h-48.542v81.086h48.539v235.256h97.362V235.256h64.805l8.566-81.086H271.521z"/>
+</g>
+</svg>
+</span>
+                    
+                  </a>
+                </li>
+              
+                <li>
+                  <a href="https://www.linkedin.com/company/caktus-consulting-group-llc" target="_blank">
+                    
+                      <span class="fa grey"><svg version="1.1" id="svg_linkedin" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 438.536 438.535" style="enable-background:new 0 0 438.536 438.535;"
+	 xml:space="preserve">
+	 <title>LinkedIn</title>
+<g>
+	<g>
+		<rect x="5.424" y="145.895" width="94.216" height="282.932"/>
+		<path d="M408.842,171.739c-19.791-21.604-45.967-32.408-78.512-32.408c-11.991,0-22.891,1.475-32.695,4.427
+			c-9.801,2.95-18.079,7.089-24.838,12.419c-6.755,5.33-12.135,10.278-16.129,14.844c-3.798,4.337-7.512,9.389-11.136,15.104
+			v-40.232h-93.935l0.288,13.706c0.193,9.139,0.288,37.307,0.288,84.508c0,47.205-0.19,108.777-0.572,184.722h93.931V270.942
+			c0-9.705,1.041-17.412,3.139-23.127c4-9.712,10.037-17.843,18.131-24.407c8.093-6.572,18.13-9.855,30.125-9.855
+			c16.364,0,28.407,5.662,36.117,16.987c7.707,11.324,11.561,26.98,11.561,46.966V428.82h93.931V266.664
+			C438.529,224.976,428.639,193.336,408.842,171.739z"/>
+		<path d="M53.103,9.708c-15.796,0-28.595,4.619-38.4,13.848C4.899,32.787,0,44.441,0,58.529c0,13.891,4.758,25.505,14.275,34.829
+			c9.514,9.325,22.078,13.99,37.685,13.99h0.571c15.99,0,28.887-4.661,38.688-13.99c9.801-9.324,14.606-20.934,14.417-34.829
+			c-0.19-14.087-5.047-25.742-14.561-34.973C81.562,14.323,68.9,9.708,53.103,9.708z"/>
+	</g>
+</g>
+</svg>
+</span>
+                    
+                  </a>
+                </li>
+              
+              </ul>
+            </div>
+
+            <div class="twitter-feed">
+              <a class="twitter-timeline" href="https://twitter.com/caktusgroup" data-widget-id=616657501325541376 data-tweet-limit="1" data-chrome="noheader noborders transparent nofooter"></a>
+              <script>!function(d,s,id)
+                {var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                  if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+              </script>
+            </div>
+          </div>
+        </div><!--End second half-->
+      </div><!--End wrapper-->
+    </footer>
+    
+
+    
+      <div class="modal fade" id="newsletter-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+              </button>
+              <h4>Success!</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    
+
+    
+      <script src="https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/static/js/bundle.js?rev=84ea736d"></script>
+      
+        <script type="text/javascript">
+        var _iub = _iub || [];
+        _iub.csConfiguration =
+        { cookiePolicyId: 91739120, siteId: 1020454, lang: "en" }
+
+        ;
+        </script>
+        <script type="text/javascript" src="//cdn.iubenda.com/cookie_solution/safemode/iubenda_cs.js" charset="UTF-8" async></script>
+    
+    
+
+
+<!--Newsletter signup popup-->
+<div class="newsletter-popup">
+    <form action="/subscribe/" method="post" class="newsletter-popup-form form-inline" novalidate>
+        <label>Subscribe to our newsletter</label> 
+        <input type='hidden' name='csrfmiddlewaretoken' value='Xu50ovWtSXah5OY6xr2vv36vmNwR9CZnaqpThaij4WM23aa5My05wOu6m2EatVYN' />
+        <div style="display: none;">
+  <label>
+    Leave this blank to prove your humanity:
+    <input type="text" name="body" value="" />
+  </label>
+</div>
+
+        <ul class="errors list-unstyled"></ul>
+        <label class="sr-only" for="id_email">
+            Email address
+        </label>
+        <div class="sign-up-container">
+            <button type="submit" class="fa grey icon" style="background:none; border:none" aria-label="Submit">
+                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="20px" height="20px" viewBox="0 0 511.626 511.627" style="enable-background:new 0 0 511.626 511.627;"
+	 xml:space="preserve">
+	 <title>Envelope</title>
+<g>
+	<path d="M498.208,68.235c-8.945-8.947-19.701-13.418-32.261-13.418H45.682c-12.562,0-23.318,4.471-32.264,13.418
+		C4.471,77.18,0,87.935,0,100.499v310.633c0,12.566,4.471,23.312,13.418,32.257c8.945,8.953,19.701,13.422,32.264,13.422h420.266
+		c12.56,0,23.315-4.469,32.261-13.422c8.949-8.945,13.418-19.697,13.418-32.257V100.499
+		C511.626,87.935,507.158,77.18,498.208,68.235z M475.078,411.125c0,2.475-0.903,4.616-2.714,6.424
+		c-1.81,1.81-3.949,2.706-6.42,2.706H45.679c-2.474,0-4.616-0.896-6.423-2.706c-1.809-1.808-2.712-3.949-2.712-6.424V191.858
+		c6.09,6.852,12.657,13.134,19.7,18.843c51.012,39.209,91.553,71.374,121.627,96.5c9.707,8.186,17.607,14.561,23.697,19.13
+		c6.09,4.571,14.322,9.185,24.694,13.846c10.373,4.668,20.129,6.991,29.265,6.991h0.287h0.284c9.134,0,18.894-2.323,29.263-6.991
+		c10.376-4.661,18.613-9.274,24.701-13.846c6.089-4.569,13.99-10.944,23.698-19.13c30.074-25.126,70.61-57.291,121.624-96.5
+		c7.043-5.708,13.613-11.991,19.694-18.843V411.125L475.078,411.125z M475.078,107.92v3.14c0,11.229-4.421,23.745-13.271,37.543
+		c-8.851,13.798-18.419,24.792-28.691,32.974c-36.74,28.936-74.897,59.101-114.495,90.506c-1.14,0.951-4.474,3.757-9.996,8.418
+		c-5.514,4.668-9.894,8.241-13.131,10.712c-3.241,2.478-7.471,5.475-12.703,8.993c-5.236,3.518-10.041,6.14-14.418,7.851
+		c-4.377,1.707-8.47,2.562-12.275,2.562h-0.284h-0.287c-3.806,0-7.895-0.855-12.275-2.562c-4.377-1.711-9.185-4.333-14.417-7.851
+		c-5.231-3.519-9.467-6.516-12.703-8.993c-3.234-2.471-7.614-6.044-13.132-10.712c-5.52-4.661-8.854-7.467-9.995-8.418
+		c-39.589-31.406-77.75-61.57-114.487-90.506c-27.981-22.076-41.969-49.106-41.969-81.083c0-2.472,0.903-4.615,2.712-6.421
+		c1.809-1.809,3.949-2.714,6.423-2.714h420.266c1.52,0.855,2.854,1.093,3.997,0.715c1.143-0.385,1.998,0.331,2.566,2.138
+		c0.571,1.809,1.095,2.664,1.57,2.57c0.477-0.096,0.764,1.093,0.859,3.571c0.089,2.473,0.137,3.718,0.137,3.718V107.92
+		L475.078,107.92z"/>
+</g>
+</svg>
+
+            </button>
+            <input type="email" value="" name="email" id="" class="form-control" placeholder="youremail@email.com" required />
+            <input type="hidden" name="popup_page_name" id="id_popup_page_name" />
+        </div>
+        <span class="fa close"><?xml version="1.0" encoding="utf-8"?>
+<svg width="20px" height="20px" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><title>Times</title><path d="M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z"/></svg></span>
+    </form>
+</div>
+
+<!--Success message popup-->
+
+<div class="newsletter-popup-success">
+    <span class="fa"><?xml version="1.0" encoding="utf-8"?>
+<svg width="40px" height="40px" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><title>Check</title><path d="M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z"/></svg></span>  <h3>Success!</h3>  
+    <div class="message">
+    </div>
+    <span class="fa close"><?xml version="1.0" encoding="utf-8"?>
+<svg width="20px" height="20px" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><title>Times</title><path d="M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z"/></svg></span>
+</div>
+
+<!--Already subscribed message popup-->
+
+<div class="newsletter-popup-already-subscribed">
+    <h3>You're already subscribed</h3>
+    <div class="message">
+    </div>
+    <span class="fa close"><?xml version="1.0" encoding="utf-8"?>
+<svg width="20px" height="20px" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><title>Times</title><path d="M1490 1322q0 40-28 68l-136 136q-28 28-68 28t-68-28l-294-294-294 294q-28 28-68 28t-68-28l-136-136q-28-28-28-68t28-68l294-294-294-294q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 294 294-294q28-28 68-28t68 28l136 136q28 28 28 68t-28 68l-294 294 294 294q28 28 28 68z"/></svg></span>
+</div>
+
+  
+<!-- For posts that we want to have a pretty box in the Google search results. -->
+
+<script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "headline": "Testing Client-Side Applications with Django Post Mortem",
+  "datePublished": "2015-06-08T08:22:35-04:00",
+  "dateModified": "2019-04-16T13:18:34.455790-04:00",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Caktus Group",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/static/images/caktus-logo_110x60.png",
+      "height": 60,
+      "width": 110
+    }
+  },
+  "mainEntityOfPage": "http://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Mark Lavin",
+      "image": "https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/media/team/mark-lavin.jpg"
+    }
+  ],
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://cw-production-assetsbucket-8j84s7jns7p2.s3.amazonaws.com/media/blog-categories/technical.jpg",
+    "height": 684,
+    "width": 1024
+  }
+}
+</script>
+
+  
+
+  
+    
+
+
+  
+    <!-- Start of Async HubSpot Analytics Code -->
+    <script type="text/javascript">
+      (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/1883108.js';
+        e.parentNode.insertBefore(n, e);
+      })(document,"script","hs-analytics",300000);
+    </script>
+    <!-- End of Async HubSpot Analytics Code -->
+  
+
+  
+    <!-- Start of Adroll Code -->
+      <script type="text/javascript">
+          adroll_adv_id = "4SXKCPWKKVFL7CGO4ABFGD";
+          adroll_pix_id = "S3NXO4MKCNCNTJCTD7FQ3F";
+
+          (function () {
+              var _onload = function(){
+                  if (document.readyState && !/loaded|complete/.test(document.readyState)){setTimeout(_onload, 10);return}
+                  if (!window.__adroll_loaded){__adroll_loaded=true;setTimeout(_onload, 50);return}
+                  var scr = document.createElement("script");
+                  var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+                  scr.setAttribute('async', 'true');
+                  scr.type = "text/javascript";
+                  scr.src = host + "/j/roundtrip.js";
+                  ((document.getElementsByTagName('head') || [null])[0] ||
+                      document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+              };
+              if (window.addEventListener) {window.addEventListener('load', _onload, false);}
+              else {window.attachEvent('onload', _onload)}
+          }());
+      </script>
+    <!-- End of Adroll Code -->
+  
+  </body>
+</html>
