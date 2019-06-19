@@ -6,6 +6,7 @@ Module bundling functions related to HTML and text processing.
 
 import logging
 import re
+import unicodedata
 
 from io import StringIO # python3
 
@@ -68,6 +69,11 @@ def load_html(htmlobject):
     return tree
 
 
+# https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
+def remove_control_characters(string):
+    return "".join(char for char in string if unicodedata.category(char)[0]!="C" or char in ('\t', '\n'))
+
+
 def sanitize(text):
     '''Convert text and discard incompatible unicode and invalid XML characters'''
     # TODO: remove control characters in sanitizer
@@ -79,6 +85,7 @@ def sanitize(text):
     #        if ord(line[pos]) < 32:
     #            line[pos] = None
     #newtext = newtext + u''.join([c for c in line if c]) + '\n'
+    text = remove_control_characters(text)
     #return newtext
     text = text.replace('\r\n', '\n')
     # invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
