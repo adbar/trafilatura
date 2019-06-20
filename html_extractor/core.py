@@ -104,7 +104,7 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
                ]
 # '//*[(self::div or self::section)][@id="comments" or @class="comments"]', \
 
-DISCARD_XPATH = ['.//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
+DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  './/*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
                  './/footer', \
                  './/header', \
@@ -119,7 +119,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section)][contains(@id, "sidebar") or
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]', \
                  # sharing jp-post-flair jp-relatedposts
-                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "share") or starts-with(@id, "social") or starts-with(@class, "shar") or contains(@class, "share-") or starts-with(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
+                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
 #                './/aside', \ # conflicts with text extraction
                 ]
@@ -127,6 +127,8 @@ DISCARD_XPATH = ['.//*[(self::div or self::section)][contains(@id, "sidebar") or
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
                           './/cite', \
                           './/quote', \
+                          './/*[starts-with(@id, "reply-") or starts-with(@class, "reply-title")]', \
+                          './/*[contains(@id, "akismet") or contains(@class, "akismet")]', \
                          ]
 
 
@@ -146,7 +148,7 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = True
 HTML_CLEANER.style = False
-HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'span', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
+HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span', 
 HTML_CLEANER.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
@@ -281,8 +283,8 @@ def convert_tags(tree):
     for elem in tree.xpath('//u'):
         elem.tag = 'hi'
         elem.set('rendition', '#u')
-    # change rendition #t (very rare)
-    for elem in tree.xpath('//tt'):
+    # change rendition #pre and #t (very rare)
+    for elem in tree.xpath('//pre|//tt'): # //code
         elem.tag = 'hi'
         elem.set('rendition', '#t')
     # del | s | strike → <del rend="overstrike">
@@ -290,8 +292,14 @@ def convert_tags(tree):
         elem.attrib.clear()
         elem.tag = 'del'
         elem.set('rendition', 'overstrike')
+    # add space
+    for elem in tree.xpath('//span'): # //a|
+        if elem.text is None:
+            elem.text = ' '
+        else:
+            elem.text = elem.text + ' '
     # strip tags
-    etree.strip_tags(tree, 'a', 'dd')
+    etree.strip_tags(tree, 'dd', 'span')
     return tree
 
 
