@@ -68,12 +68,12 @@ comments_blacklist = ('( Abmelden / Ändern )')
 # LRU_DICT = defaultdict(int)
 
 
-BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content")]', \
-            "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
+BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content")]', \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-body')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
+            "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content"]', \
             "//*[(self::div or self::section)][starts-with(@id, 'article')]", \
             '//article', \
@@ -105,7 +105,6 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
 # '//*[(self::div or self::section)][@id="comments" or @class="comments"]', \
 
 DISCARD_XPATH = ['.//*[(self::div or self::section)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
-                 './/div[contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  './/*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
                  './/footer', \
                  './/header', \
@@ -115,8 +114,8 @@ DISCARD_XPATH = ['.//*[(self::div or self::section)][contains(@id, "sidebar") or
                  './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]',\
                  # navigation
                  './/*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
-                 './/*[(self::div or self::section)][starts-with(@id, "breadcrumbs")]',\
-                 './/*[(self::ol or self::ul)][contains(@id, "breadcrumbs") or contains(@class, "breadcrumbs")]',\
+                 './/*[starts-with(@id, "breadcrumbs")]',\
+                 './/*[contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]',\
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]', \
                  # sharing jp-post-flair jp-relatedposts
@@ -354,11 +353,12 @@ def extract_content(tree):
             # TODO: weird and empty elements such as <p><p>...</p></p> ???
             if element.text is None: # or len(element.text) < 10 # text_content()
                 # try the tail
-                if element.tail is None or len(element.tail) < 50:
+                if element.tail is None or len(element.tail) < 2: # was 50
                     element.getparent().remove(element)
                     continue
                 # if element.tag == 'lb':
                 LOGGER.debug('using tail for element %s', element.tag)
+                # TODO: handle differently for br/lb
                 element.text = element.tail
                 element.tail = ''
                 if element.tag == 'lb':
@@ -506,6 +506,7 @@ def check_tei(tei, record_id):
 
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
+    #TODO: sanitize/valid XML
     returnstring = ''
     # returnstring = ' '.join(xmloutput.itertext())
     for element in xmloutput.iter():
