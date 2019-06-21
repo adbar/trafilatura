@@ -67,6 +67,10 @@ MOCK_PAGES = { \
 'https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/': 'adac.de.kindersitze.html', \
 'https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/': 'caktusgroup.com.django.html', \
 'https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/': 'computerbase.de.htc.html', \
+'http://www.chineselyrics4u.com/2011/07/zhi-neng-xiang-nian-ni-jam-hsiao-jing.html': 'chineselyrics4u.com.zhineng.html', \
+'https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/': 'basicthinking.de.tweets.html', \
+'https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/': 'meedia.de.freenet.html', \
+'https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/': 'incurvy.de.wellness.html', \
 }
 # '': '', \
 
@@ -284,6 +288,21 @@ def test_main(txtoutput=False):
 
     result = load_mock_page('https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/', txtoutput)
     assert 'Vor knapp zwei Wochen' in result and 'gibt es in der dazugehörigen Vorstellungs-News.' in result and 'Themen:' not in result and 'bis Januar 2009 Artikel für ComputerBase verfasst.' not in result and 'Warum Werbebanner?' not in result and '71 Kommentare' not in result
+
+    result = load_mock_page('http://www.chineselyrics4u.com/2011/07/zhi-neng-xiang-nian-ni-jam-hsiao-jing.html', txtoutput)
+    assert '就放心去吧' in result and 'Repeat Chorus' in result and 'Older post' not in result and 'Thank you for your support!' not in result
+
+    result = load_mock_page('https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/', txtoutput)
+    assert 'Frank Thelen, Investor' in result and 'Female founders must constantly consider' in result and 'Thema des öffentlichen Interesses' in result and 'Nach langjähriger Tätigkeit im Ausland' not in result and 'Schaut man ganz genau hin, ist der Habeck-Kommentar' in result and 'Mit Absendung des Formulars willige ich' not in result and 'Kommentieren' not in result
+    # and 'Auch interessant' not in result and 'Wir tun jeden Tag, was wir lieben.' not in result
+
+    result = load_mock_page('https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/', txtoutput)
+    assert 'Welche Werbeeinnahmen erwarten Sie hier langfristig?' in result and 'wir haben keinerlei Pläne, das zu verändern.' in result and 'Nachrichtenüberblick abonnieren' not in result and 'über alle aktuellen Entwicklungen auf dem Laufenden.' not in result and 'Schlagworte' not in result and 'Teilen' not in result and 'Dauerzoff um drohenden UKW-Blackout' not in result and 'Mobilcom Debitel has charged me for third party' in result
+
+    result = load_mock_page('https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/', txtoutput)
+    assert 'Zeit für Loslassen und Entspannung.' in result and 'Erfrischende, abschwellende Augencreme Phyto Contour' in result and 'Wie sieht dein Alltag aus?' in result and 'Vielen Dank Anja für deine Tipps rund um Beauty' in result and 'Betreiberin von incurvy Plus Size' not in result and 'Wellness Gesichtsbehandlung: Plaisir D’Aromes' not in result
+    # and 'Das Thema könnte dich auch interessieren:' not in result
+
 
     # print(html_extractor.lrutest)
 
