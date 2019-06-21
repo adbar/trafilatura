@@ -148,7 +148,7 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = True
 HTML_CLEANER.style = False
-HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span', 
+HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span',
 HTML_CLEANER.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
@@ -244,12 +244,12 @@ def convert_tags(tree):
     '''Convert relevant HTML tags to XML TEI format'''
     # head tags + delete attributes
     for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
-        elem.attrib.clear()
+        # elem.attrib.clear()
         elem.tag = 'head'
-        elem.set('rendition', '#i')
+        # elem.set('rendition', '#i')
     # delete p attributes
-    for elem in tree.xpath('//p'):
-        elem.attrib.clear()
+    # for elem in tree.xpath('//p'):
+        # elem.attrib.clear()
     # br → lb
     for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
         elem.tag = 'lb'
@@ -257,7 +257,7 @@ def convert_tags(tree):
     # ul/ol → list / li → item
     for elem in tree.xpath('//ul|//ol|//dl'):
         elem.tag = 'list'
-        elem.attrib.clear()
+        # elem.attrib.clear()
         # change children
         for child in elem.iter(): # for child in elem.xpath('.//li|.//dt'):
             if child.tag == 'li' or child.tag == 'dt':
@@ -285,6 +285,7 @@ def convert_tags(tree):
         elem.set('rendition', '#u')
     # change rendition #pre and #t (very rare)
     for elem in tree.xpath('//pre|//tt'): # //code
+        elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#t')
     # del | s | strike → <del rend="overstrike">
@@ -358,6 +359,9 @@ def extract_content(tree):
             ## delete unwanted
             if element.tag not in potential_tags:
                 continue
+            # strip attrs after discard is run
+            if element.tag in ('head', 'list', 'p'):
+                element.attrib.clear()
             # TODO: weird and empty elements such as <p><p>...</p></p> ???
             if element.text is None: # or len(element.text) < 10 # text_content()
                 # try the tail
