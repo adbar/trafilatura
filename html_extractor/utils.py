@@ -12,11 +12,12 @@ from io import StringIO # python3
 
 import cchardet as chardet
 import requests
+import urllib3
 from lxml import etree, html
 
 
 LOGGER = logging.getLogger(__name__)
-
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 CUSTOM_HTMLPARSER = html.HTMLParser()
 
@@ -24,21 +25,57 @@ UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2
 
 
 def fetch_url(url):
-    """ Fetch page using requests """
-    response = requests.get(url)
-    if int(response.status_code) != 200:
-        return None
-    LOGGER.debug('response encoding: %s', response.encoding)
-    guessed_encoding = chardet.detect(response.content)['encoding']
-    LOGGER.debug('guessed encoding: %s', guessed_encoding)
-    if guessed_encoding is not None:
-        try:
-            htmltext = response.content.decode(guessed_encoding)
-        except UnicodeDecodeError:
-            htmltext = response.text
+    """ Fetch page using requests/urllib3
+    Args:
+        URL: URL of the page to fetch
+    Returns:
+        request object (headers + body).
+    Raises:
+        Nothing.
+    """
+
+    # customize headers
+    headers = requests.utils.default_headers()
+    headers.update({
+        'Connection': 'close',  # another way to cover tracks
+        # 'User-Agent': '', # your string here
+    })
+    # send
+    try:
+       response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=headers)
+    except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
+        LOGGER.error('malformed URL: %s', url)
+    except requests.exceptions.TooManyRedirects:
+        LOGGER.error('redirects: %s', url)
+    except requests.exceptions.SSLError as err:
+        LOGGER.error('SSL: %s %s', url, err)
+    except (socket.timeout, requests.exceptions.ConnectionError, requests.exceptions.Timeout, socket.error, socket.gaierror) as err:
+        LOGGER.error('connection: %s %s', url, err)
+    #except Exception as err:
+    #    logging.error('unknown: %s %s', url, err) # sys.exc_info()[0]
+    # if no error
     else:
-        htmltext = response.text
-    return htmltext
+        # safety checks
+        if int(response.status_code) != 200:
+            LOGGER.error('not a 200 response: %s', response.status_code)
+        #elif response.text is None or len(response.text) < 100:
+        #    LOGGER.error('file too small/incorrect response: %s %s', url, len(response.text))
+        elif len(response.text) > 20000000:
+            LOGGER.error('file too large: %s %s', url, len(response.text))
+        else:
+            guessed_encoding = chardet.detect(response.content)['encoding']
+            LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
+            if guessed_encoding is not None:
+                try:
+                    htmltext = response.content.decode(guessed_encoding)
+                except UnicodeDecodeError:
+                    htmltext = response.text
+            else:
+                htmltext = response.text
+            # return here
+            return htmltext
+    # catchall
+    return None
 
 
 def load_html(htmlobject):

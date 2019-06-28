@@ -20,10 +20,12 @@ LOGGER = logging.getLogger(__name__)
 def examine(htmlstring, url, txtflag, xmlteiflag):
     """ Generic safeguards and triggers """
     # safety check
-    if len(htmlstring) > 10000000:
-        sys.stderr.write('# ERROR: file too large\n')
-    elif len(htmlstring) < 10:
-        sys.stderr.write('# ERROR: file too small\n')
+    if htmlstring is None:
+        sys.stderr.write('# ERROR: empty document\n')
+    #elif len(htmlstring) > 10000000:
+    #    sys.stderr.write('# ERROR: file too large\n')
+    #elif len(htmlstring) < 10:
+    #    sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
         if txtflag is True:
