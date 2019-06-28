@@ -4,6 +4,9 @@
 Module bundling functions related to HTML and text processing.
 """
 
+## This file is available from https://github.com/adbar/trafilatura
+## under GNU GPL v3 license
+
 import logging
 import re
 import unicodedata

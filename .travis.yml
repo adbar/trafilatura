@@ -20,7 +20,6 @@ matrix:
   # fast_finish: true
 
 before_install:
-  - pip install lxml
   - pip install codecov tox
 
 install:
@@ -29,7 +28,7 @@ install:
 script:
   - tox
   # - pytest
-  # - coverage run --source html_extractor tests/unit_tests.py
+  # - coverage run --source trafilatura tests/unit_tests.py
 
 after_success:
   - codecov

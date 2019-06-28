@@ -4,7 +4,7 @@
 Implementing a basic command-line interface.
 """
 
-## This file is available from https://github.com/adbar/html-extractor
+## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
 

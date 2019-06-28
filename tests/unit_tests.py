@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Unit tests for the html-extractor library.
+Unit tests for the trafilatura library.
 """
 
 import logging
@@ -8,8 +8,8 @@ import os
 import sys
 # https://docs.pytest.org/en/latest/
 
-import html_extractor
-from html_extractor import cli, utils
+import trafilatura
+from trafilatura import cli, utils
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -86,14 +86,14 @@ def load_mock_page(url, txtoutput=False, langcheck=None):
     except UnicodeDecodeError:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r', encoding='ISO-8859-1') as inputf:
             htmlstring = inputf.read()
-    result = html_extractor.process_record(htmlstring, url, '0000', tei_output=False, txt_output=txtoutput, target_language=langcheck)
+    result = trafilatura.process_record(htmlstring, url, '0000', tei_output=False, txt_output=txtoutput, target_language=langcheck)
     return result
 
 
 def test_trim():
     '''test string trimming'''
-    assert html_extractor.trim('	Test  ') == 'Test'
-    assert html_extractor.trim('\t\tTest  Test\r\n') == 'Test Test'
+    assert trafilatura.trim('	Test  ') == 'Test'
+    assert trafilatura.trim('\t\tTest  Test\r\n') == 'Test Test'
 
 
 def test_download():
@@ -304,7 +304,7 @@ def test_main(txtoutput=False):
     # and 'Das Thema könnte dich auch interessieren:' not in result
 
 
-    # print(html_extractor.lrutest)
+    # print(trafilatura.lrutest)
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 Extract the main text of web pages
-http://github.com/adbar/html-extractor
+http://github.com/adbar/trafilatura
 """
 
 from codecs import open # python2
@@ -16,7 +16,7 @@ from setuptools import setup # find_packages,
 
 
 here = os.path.abspath(os.path.dirname(__file__))
-packages = ['html_extractor']
+packages = ['trafilatura']
 
 
 def readme():
@@ -24,7 +24,7 @@ def readme():
         return readmefile.read()
 
 setup(
-    name='html_extractor',
+    name='trafilatura',
     version='0.0.1',
     description='',
     long_description=readme(),
@@ -51,7 +51,7 @@ setup(
         'Topic :: Text Processing :: Markup :: HTML',
     ],
     keywords=['entity-extraction', 'html-extraction', 'html-parsing', 'text-mining', 'webarchives', 'web-scraping'],
-    url='http://github.com/adbar/html-extractor',
+    url='http://github.com/adbar/trafilatura',
     author='Adrien Barbaresi',
     author_email='barbaresi@bbaw.de',
     license='GPLv3+',
@@ -63,12 +63,12 @@ setup(
         'justext',
         'langid',
         'lru-dict',
-        # 'lxml == 4.3.0', # CPython parser issue with version 4.3.1
+        'lxml >= 4.3.4', # CPython parser issue with version 4.3.1
         'requests >= 2.19.0',
     ],
     # python_requires='>=3',
     entry_points = {
-        'console_scripts': ['html_extractor=html_extractor.cli:main'],
+        'console_scripts': ['trafilatura=trafilatura.cli:main'],
     },
     # platforms='any',
     tests_require=['pytest', 'tox'],
