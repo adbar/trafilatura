@@ -12,7 +12,7 @@ import sys
 
 from .core import process_record
 from .utils import fetch_url
-
+from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
 
 LOGGER = logging.getLogger(__name__)
 
@@ -22,10 +22,10 @@ def examine(htmlstring, url, txtflag, xmlteiflag):
     # safety check
     if htmlstring is None:
         sys.stderr.write('# ERROR: empty document\n')
-    #elif len(htmlstring) > 10000000:
-    #    sys.stderr.write('# ERROR: file too large\n')
-    #elif len(htmlstring) < 10:
-    #    sys.stderr.write('# ERROR: file too small\n')
+    elif len(htmlstring) > MAX_FILE_SIZE:
+        sys.stderr.write('# ERROR: file too large\n')
+    elif len(htmlstring) < MIN_FILE_SIZE:
+        sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
         if txtflag is True:

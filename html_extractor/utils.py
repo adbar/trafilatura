@@ -15,6 +15,8 @@ import requests
 import urllib3
 from lxml import etree, html
 
+from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
+
 
 LOGGER = logging.getLogger(__name__)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -60,7 +62,7 @@ def fetch_url(url):
             LOGGER.error('not a 200 response: %s', response.status_code)
         #elif response.text is None or len(response.text) < 100:
         #    LOGGER.error('file too small/incorrect response: %s %s', url, len(response.text))
-        elif len(response.text) > 20000000:
+        elif len(response.text) > MAX_FILE_SIZE:
             LOGGER.error('file too large: %s %s', url, len(response.text))
         else:
             guessed_encoding = chardet.detect(response.content)['encoding']
