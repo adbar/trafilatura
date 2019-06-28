@@ -337,6 +337,7 @@ def try_justext(tree, filecontent, record_id):
 #    return paragraphs
 
 
+# @profile
 def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
     result_body = etree.Element('body')
@@ -360,7 +361,7 @@ def extract_content(tree):
             if element.tag not in potential_tags:
                 continue
             # strip attrs after discard is run
-            if element.tag in ('head', 'list', 'p'):
+            if element.tag in ('div', 'head', 'list', 'p'):
                 element.attrib.clear()
             # TODO: weird and empty elements such as <p><p>...</p></p> ???
             if element.text is None: # or len(element.text) < 10 # text_content()
@@ -389,8 +390,9 @@ def extract_content(tree):
                 if element.tag == 'div':
                     element.tag = 'p'
                 # handle p-tags and attributes
-                if element.tag == 'p': #  or element.tag == 'item'
-                    element.attrib.clear()
+                #if element.tag == 'p': #  or element.tag == 'item'
+                #    element.attrib.clear()
+                #    LOGGER.debug(element.text)
                 #else:
                 #    element.tail = ''
                 # insert
@@ -415,6 +417,7 @@ def extract_content(tree):
     return result_body
 
 
+# @profile
 def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
@@ -542,7 +545,7 @@ def xmltotxt(xmloutput):
 
 
 # main process
-#@profile
+# @profile
 def process_record(filecontent, url=None, record_id='0001', compare_flag=True, tei_output=False, target_language=None, txt_output=False):
     '''Main process for text extraction'''
     # init
