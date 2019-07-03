@@ -546,7 +546,7 @@ def xmltotxt(xmloutput):
 
 # main process
 # @profile
-def process_record(filecontent, url=None, record_id='0001', compare_flag=True, tei_output=False, target_language=None, txt_output=False):
+def process_record(filecontent, url=None, record_id='0001', compare_flag=True, xml_output=True, tei_output=False, target_language=None):
     '''Main process for text extraction'''
     # init
     global tokens_posts, tokens_comments, lrutest
@@ -649,7 +649,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, t
         # lrutest[teststring] = 1
         tokens_posts += len(re.findall(r'\w+', ' '.join(postbody.itertext()), re.UNICODE))
         tokens_comments += len(re.findall(r'\w+', ' '.join(commentsbody.itertext()), re.UNICODE))
-        if txt_output is True:
+        if xml_output is False and tei_output is False:
             returnstring = xmltotxt(output)
         else:
             returnstring = etree.tostring(output, pretty_print=True, encoding='unicode') # xml_declaration=True,

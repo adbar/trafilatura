@@ -76,9 +76,9 @@ The simplest way to use trafilatura is as follows:
     >>> url = 'response = requests.get(url)'
     >>> response = requests.get(url)
     >>> result = trafilatura.process_record(response, url)
-    >>> print(result) # formatting preserved in basic XML structure
-    >>> result = trafilatura.process_record(response, url, txt_output=True)
-    >>> print(result) # plain text
+    >>> print(result) # newlines preserved, TXT output
+    >>> result = trafilatura.process_record(response, url, xml_output=True)
+    >>> print(result) # some formatting preserved in basic XML structure
 
 The only required argument is the ``response`` element, the rest is optional. It is also possible to use a previously parsed tree (i.e. a lxml.html object) as input, which is then handled seamlessly.
 
@@ -86,7 +86,7 @@ The only required argument is the ``response`` element, the rest is optional. It
 
     >>> from lxml import html
     >>> mytree = html.fromstring('<html><body><article><p>Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></article></body></html>')
-    >>> trafilatura.process_record(mytree, txt_output=True)
+    >>> trafilatura.process_record(mytree)
     'Here is the main text...'
 
 Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match.
@@ -103,10 +103,10 @@ A basic command-line interface is included, URLs can be used directly (``-u/--UR
 
 .. code-block:: bash
 
-    $ trafilatura --URL "https://de.creativecommons.org/index.php/was-ist-cc/"
-    $ # outputs main text with basic XML structure ...
-    $ trafilatura --txt -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
+    $ trafilatura -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
     $ # outputs main content in plain text format ...
+    $ trafilatura --xml --URL "https://de.creativecommons.org/index.php/was-ist-cc/"
+    $ # outputs main text with basic XML structure ...
 
 A HTML document (and response body) can also be piped to the trafilatura:
 
@@ -127,6 +127,11 @@ This module is part of methods to derive metadata from web documents in order to
 
 -  Barbaresi, Adrien. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
+Name
+~~~~
+
+*Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
+
 Kudos to...
 ~~~~~~~~~~~
 
@@ -134,7 +139,6 @@ Kudos to...
 -  `ftfy <https://github.com/LuminosoInsight/python-ftfy>`_
 -  `jusText <https://github.com/miso-belica/jusText>`_
 -  `lxml <http://lxml.de/>`_
-
 
 Contact
 ~~~~~~~
