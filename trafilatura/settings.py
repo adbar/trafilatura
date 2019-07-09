@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
-Implementing a basic command-line interface.
+Listing a series of settings that are applied module-wide.
 """
 
 ## This file is available from https://github.com/adbar/trafilatura

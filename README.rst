@@ -17,11 +17,22 @@ trafilatura: Extract the main text content of web pages
     :target: https://codecov.io/gh/adbar/trafilatura
 
 
-Robust extraction of main text content and boilerplate removal based on a combination of DOM-based examination, XPath expressions and rules.
+Robust extraction of main text content and boilerplate removal based on a combination of DOM-based examination, XPath expressions and rules. Given a HTML document, this library parses it, retrieves the main body text and converts it to XML or plain text, while preserving part of the text formatting and page structure.
 
-This library handles web page content extraction while preserving part of the text formatting and page structure. Given a HTML document, it parses it, retrieves the main body text and converts it to XML or plain text.
+.. code-block:: python
 
-*Work in progress, first package release ahead.*
+    >>> import requests, trafilatura
+    >>> response = requests.get('https://www.iana.org/about')
+    >>> trafilatura.process_record(response.text)
+    >>> # outputs main content in plain text format ...
+
+.. code-block:: bash
+
+    $ trafilatura -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
+    $ # outputs main content in plain text format ...
+
+
+*Work in progress, first package release ahead.*trafilatura -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
 
 :Code:           https://github.com/adbar/trafilatura
 :Issue tracker:  https://github.com/adbar/trafilatura/issues
@@ -71,13 +82,11 @@ The simplest way to use trafilatura is as follows:
 
 .. code-block:: python
 
-    >>> import trafilatura
-    >>> import requests
-    >>> url = 'response = requests.get(url)'
-    >>> response = requests.get(url)
-    >>> result = trafilatura.process_record(response, url)
+    >>> import requests, trafilatura
+    >>> response = requests.get('https://www.iana.org/about')
+    >>> result = trafilatura.process_record(response.text)
     >>> print(result) # newlines preserved, TXT output
-    >>> result = trafilatura.process_record(response, url, xml_output=True)
+    >>> result = trafilatura.process_record(response.text, xml_output=True)
     >>> print(result) # some formatting preserved in basic XML structure
 
 The only required argument is the ``response`` element, the rest is optional. It is also possible to use a previously parsed tree (i.e. a lxml.html object) as input, which is then handled seamlessly.
@@ -93,7 +102,7 @@ Experimental feature: the target language can also be set using 2-letter codes (
 
 .. code-block:: python
 
-    >>> result = trafilatura.process_record(response, url, target_language='de')
+    >>> result = trafilatura.process_record(response.text, url, target_language='de')
 
 
 On the command-line

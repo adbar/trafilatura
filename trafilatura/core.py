@@ -546,7 +546,7 @@ def xmltotxt(xmloutput):
 
 # main process
 # @profile
-def process_record(filecontent, url=None, record_id='0001', compare_flag=True, xml_output=True, tei_output=False, target_language=None):
+def process_record(filecontent, url=None, record_id='0001', compare_flag=True, xml_output=False, tei_output=False, target_language=None):
     '''Main process for text extraction'''
     # init
     global tokens_posts, tokens_comments, lrutest
