@@ -32,7 +32,7 @@ Robust extraction of main text content and boilerplate removal based on a combin
     $ # outputs main content in plain text format ...
 
 
-*Work in progress, first package release ahead.*trafilatura -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
+*Work in progress, first package release ahead.*
 
 :Code:           https://github.com/adbar/trafilatura
 :Issue tracker:  https://github.com/adbar/trafilatura/issues
@@ -47,7 +47,7 @@ Features
 
 Robust text extraction and boilerplate removal based on a combination of rules, XPath expressions and HTML tree examination. Also known as DOM-based content extraction, main content identification, HTML text cleaning. The purpose is to find relevant and original text sections of a web page and also to remove the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.)
 
-Because it relies on lxml_, trafilatura is comparatively fast. It is also robust, as the additional generic algorithm jusText_ is used as a backup solution.
+Because it relies on `lxml <https://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic algorithm `jusText <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
 
 The result of processing can be in plain text or XML format. In the latter case, basic formatting elements are preserved such as text formatting (bold, italic, etc.) and page structure (paragraphs, titles, lists), which can be used for further processing.
 
@@ -61,7 +61,7 @@ Currently experimental features:
 Installation
 ------------
 
-trafilatura is a Python 3 package that is available on PyPI_ and can be installed using ``pip``:
+*trafilatura* is a Python 3 package that is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``:
 
 ``pip install trafilatura``
 
@@ -144,10 +144,10 @@ Name
 Kudos to...
 ~~~~~~~~~~~
 
--  `cchardet <https://github.com/PyYoshi/cChardet>`_
--  `ftfy <https://github.com/LuminosoInsight/python-ftfy>`_
--  `jusText <https://github.com/miso-belica/jusText>`_
 -  `lxml <http://lxml.de/>`_
+-  `jusText <https://github.com/miso-belica/jusText>`_
+-  `cchardet <https://github.com/PyYoshi/cChardet>`_ & `ftfy <https://github.com/LuminosoInsight/python-ftfy>`_
+
 
 Contact
 ~~~~~~~
