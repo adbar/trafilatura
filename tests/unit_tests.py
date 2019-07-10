@@ -8,11 +8,13 @@ import os
 import sys
 # https://docs.pytest.org/en/latest/
 
-import trafilatura
+from lxml import etree, html
+
+# import trafilatura
+from trafilatura.core import cache, duplicate_test, lrutest, process_record, trim
 from trafilatura import cli, utils
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
 
 
 
@@ -79,21 +81,20 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 def load_mock_page(url, xml_flag=False, langcheck=None):
     '''load mock page from samples'''
-    # TODO: https://chardet.readthedocs.io/en/latest/usage.html
     try:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
             htmlstring = inputf.read()
     except UnicodeDecodeError:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r', encoding='ISO-8859-1') as inputf:
             htmlstring = inputf.read()
-    result = trafilatura.process_record(htmlstring, url, '0000', xml_output=xml_flag, tei_output=False, target_language=langcheck)
+    result = process_record(htmlstring, url, '0000', xml_output=xml_flag, tei_output=False, target_language=langcheck)
     return result
 
 
 def test_trim():
     '''test string trimming'''
-    assert trafilatura.trim('	Test  ') == 'Test'
-    assert trafilatura.trim('\t\tTest  Test\r\n') == 'Test Test'
+    assert trim('	Test  ') == 'Test'
+    assert trim('\t\tTest  Test\r\n') == 'Test Test'
 
 
 def test_download():
@@ -304,11 +305,31 @@ def test_main(xmloutput=False):
     # and 'Das Thema könnte dich auch interessieren:' not in result
 
 
-    # print(trafilatura.lrutest)
+def test_lrucache():
+    '''test basic duplicate detection'''
+    lrutest.clear()
+    my_body = etree.Element('body')
+    ### element too short
+    my_element = html.fromstring('<p>AAAA BBBB</p>')
+    my_body.append(my_element)
+    cache(my_body)
+    assert duplicate_test(my_element, justext_switch=False) is False
+    ### cached element
+    my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
+    my_body.append(my_element)
+    assert duplicate_test(my_element, justext_switch=False) is False
+    cache(my_body)
+    assert duplicate_test(my_element, justext_switch=False) is False
+    cache(my_body)
+    assert duplicate_test(my_element, justext_switch=False) is False
+    cache(my_body)
+    assert duplicate_test(my_element, justext_switch=False) is True
+    print(lrutest)
 
 
 if __name__ == '__main__':
     test_trim()
+    test_lrucache()
     test_main(xmloutput=False)
     test_main(xmloutput=True)
     test_download()
