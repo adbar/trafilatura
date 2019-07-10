@@ -13,8 +13,8 @@ __version__ = '0.0.1'
 ## imports
 import logging
 
-from .core import *
-from .utils import *
+from .core import process_record
+# from .utils import *
 # from .settings import *
 
 ## logging best practices

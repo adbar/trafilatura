@@ -20,19 +20,12 @@ langid.set_languages(['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru'])
 # import regex as re
 
 from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
-## https://docs.python.org/3/library/functools.html#functools.lru_cache
 from lxml import etree, html
 from lxml.html.clean import Cleaner
 
 # own
+from .settings import MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, MIN_DUPLCHECK_SIZE, LRU_SIZE
 from .utils import load_html, sanitize, trim
-
-
-# import settings
-MIN_EXTRACTED_SIZE = 200
-MIN_DUPLCHECK_SIZE = 100
-LRU_SIZE = 10000000
-MIN_EXTRACTED_COMM_SIZE = 100
 
 
 ## TODO:
