@@ -26,7 +26,7 @@ def readme():
 setup(
     name='trafilatura',
     version='0.0.1',
-    description='',
+    description='Scrapes the main text of web pages while preserving some structure.',
     long_description=readme(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -66,7 +66,7 @@ setup(
         'lxml >= 4.3.4', # CPython parser issue with version 4.3.1
         'requests >= 2.19.0',
     ],
-    # python_requires='>=3',
+    python_requires='>=3',
     entry_points = {
         'console_scripts': ['trafilatura=trafilatura.cli:main'],
     },

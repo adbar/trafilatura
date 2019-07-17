@@ -1,5 +1,5 @@
-trafilatura: Extract the main text content of web pages
-==========================================================
+trafilatura: Scrapes the main text of web pages while preserving some structure
+===============================================================================
 
 .. image:: https://img.shields.io/pypi/v/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
@@ -45,9 +45,9 @@ Robust extraction of main text content and boilerplate removal based on a combin
 Features
 --------
 
-Robust text extraction and boilerplate removal based on a combination of rules, XPath expressions and HTML tree examination. Also known as DOM-based content extraction, main content identification, HTML text cleaning. The purpose is to find relevant and original text sections of a web page and also to remove the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.)
+Scrapes the main text of web pages while preserving some structure. Also known as boilerplate removal, DOM-based content extraction, main content identification, HTML text cleaning. The purpose is to find relevant and original text sections of a web page and also to remove the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.)
 
-Because it relies on `lxml <https://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic algorithm `jusText <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
+Because it relies on `lxml <http://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
 
 The result of processing can be in plain text or XML format. In the latter case, basic formatting elements are preserved such as text formatting (bold, italic, etc.) and page structure (paragraphs, titles, lists), which can be used for further processing.
 
