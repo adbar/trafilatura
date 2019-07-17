@@ -17,7 +17,13 @@ trafilatura: Extract the main text content of web pages
     :target: https://codecov.io/gh/adbar/trafilatura
 
 
+:Code:           https://github.com/adbar/trafilatura
+:Issue tracker:  https://github.com/adbar/trafilatura/issues
+:License:        GNU GPL v3; see LICENSE file
+
+
 Robust extraction of main text content and boilerplate removal based on a combination of DOM-based examination, XPath expressions and rules. Given a HTML document, this library parses it, retrieves the main body text and converts it to XML or plain text, while preserving part of the text formatting and page structure.
+
 
 .. code-block:: python
 
@@ -32,12 +38,6 @@ Robust extraction of main text content and boilerplate removal based on a combin
     $ # outputs main content in plain text format ...
 
 
-*Work in progress, first package release ahead.*
-
-:Code:           https://github.com/adbar/trafilatura
-:Issue tracker:  https://github.com/adbar/trafilatura/issues
-:License:        GNU GPL v3; see LICENSE file
-
 .. contents:: **Contents**
     :backlinks: none
 
@@ -51,11 +51,12 @@ Because it relies on `lxml <https://lxml.de/>`_, trafilatura is comparatively fa
 
 The result of processing can be in plain text or XML format. In the latter case, basic formatting elements are preserved such as text formatting (bold, italic, etc.) and page structure (paragraphs, titles, lists), which can be used for further processing.
 
-Currently experimental features:
+*Work in progress*, currently experimental features:
 
--  XML output compatible with the recommendations of the Text Encoding Initiative (XML TEI)
--  Language detection on the extracted content
 -  Separate extraction of main text and comments
+-  Duplicate detection at paragraph level using a least recently used (LRU) cache
+-  Language detection on the extracted content
+-  XML output compatible with the recommendations of the Text Encoding Initiative (XML TEI)
 
 
 Installation
@@ -96,7 +97,7 @@ The only required argument is the ``response`` element, the rest is optional. It
     >>> from lxml import html
     >>> mytree = html.fromstring('<html><body><article><p>Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></article></body></html>')
     >>> trafilatura.process_record(mytree)
-    'Here is the main text...'
+    'Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n'
 
 Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match.
 
@@ -104,11 +105,13 @@ Experimental feature: the target language can also be set using 2-letter codes (
 
     >>> result = trafilatura.process_record(response.text, url, target_language='de')
 
+For further configuration see the variables in ``settings.py``.
+
 
 On the command-line
 -------------------
 
-A basic command-line interface is included, URLs can be used directly (``-u/--URL``):
+A command-line interface is included, URLs can be used directly (``-u/--URL``):
 
 .. code-block:: bash
 
@@ -117,7 +120,7 @@ A basic command-line interface is included, URLs can be used directly (``-u/--UR
     $ trafilatura --xml --URL "https://de.creativecommons.org/index.php/was-ist-cc/"
     $ # outputs main text with basic XML structure ...
 
-A HTML document (and response body) can also be piped to the trafilatura:
+You can also pipe a HTML document (and response body) to the trafilatura:
 
 .. code-block:: bash
 
