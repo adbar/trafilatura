@@ -116,7 +116,8 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
                  './/*[(self::div or self::section or self::span)][contains(@id, "button") or contains(@class, "button")]', \
-                 './/*[(self::div or self::section)][contains(@id, "hidden") or contains(@class, "hidden") or contains(@style, "hidden")]', \
+                 # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
+                 './/*[(self::div or self::section)][contains(@style, "hidden")]', \
                  # optional??
 #                './/*[(self::div or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
 #                './/aside', \ # conflicts with text extraction

@@ -162,8 +162,8 @@ def test_main(xmloutput=False):
     # and 'Beitragsbild' not in result
 
     result = load_mock_page('http://www.wehranlage-horka.de/veranstaltung/887/', xmloutput)
-    assert 'In eine andere Zeit' in result and 'Infos zum Verein' not in result
-    # and 'Groß­vä­ter' in result # segmented words
+    print(result)
+    assert 'In eine andere Zeit' in result and 'Während Sie über den Markt schlendern' in result and 'Infos zum Verein' not in result and 'nach oben' not in result and 'Datenschutzerklärung' not in result
 
     result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft', xmloutput)
     assert 'Eines der großen Probleme,' in result and 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result
@@ -175,7 +175,6 @@ def test_main(xmloutput=False):
     assert 'Für einen Roman' in result and 'Auszeichnung der Branche.' in result
 
     result = load_mock_page('https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/', xmloutput)
-    # print(result)
     assert 'Dann sollten Sie erst recht' in result and 'als saure Gürkchen entlarvte Ex-Boyfriends.' in result and 'Ähnliche Beiträge' not in result
 
     # bug here
@@ -184,14 +183,14 @@ def test_main(xmloutput=False):
         assert 'Es ist erstaunlich:'in result and 'Foto: rclassen' not in result and '(Narr-Verlag).' in result and 'Diskussion zu diesem Artikel auf:' not in result
 
     result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html', xmloutput)
-    assert 'künftig das XADO-Schutzfett verwenden.' in result and 'bis zu 50% Verschleiß.' in result and 'Die Lebensdauer von Bauteilen erhöht sich beträchtlich.' in result and 'Newsletter' not in result # and 'Sie könnten auch an folgenden Artikeln interessiert sein' not in result
+    assert 'künftig das XADO-Schutzfett verwenden.' in result and 'bis zu 50% Verschleiß.' in result and 'Die Lebensdauer von Bauteilen erhöht sich beträchtlich.' in result and 'Newsletter' not in result
+    # and 'Sie könnten auch an folgenden Artikeln interessiert sein' not in result
 
     result = load_mock_page('https://www.greenpeace.de/themen/artenvielfalt/loechrige-lebensversicherung', xmloutput)
     assert 'Wir erodieren global' in result and 'Pummelige Hummeln, schillernde Schmetterlinge' not in result and 'Doch daran arbeitet wir.' in result and 'Menschenrechtsverletzungen bei Frauen und Kindern' not in result
 
-    # to improve...
-    #result = load_mock_page('https://www.fairkom.eu/about', xmloutput)
-    #assert 'ein gemeinwohlorientiertes Partnerschaftsnetzwerk' in result and 'Stimmberechtigung bei der Generalversammlung.' in result and 'support@fairkom.eu' not in result
+    result = load_mock_page('https://www.fairkom.eu/about', xmloutput)
+    assert 'ein gemeinwohlorientiertes Partnerschaftsnetzwerk' in result and 'Stimmberechtigung bei der Generalversammlung.' in result and 'support@fairkom.eu' not in result
 
     result = load_mock_page('https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461', xmloutput)
     assert 'Einige Kunden des Fahrdienst-Vermittler Lyft' in result and 'zeitweise rund vier Prozent.' in result and 'Allgemeine Nutzungsbedingungen' not in result # and 'Waymo bittet Autohersteller um Geld' not in result
@@ -200,7 +199,7 @@ def test_main(xmloutput=False):
     assert 'Beate und Norbert Olschewski' in result and 'ein Familienmitglied und unser Freund.' in result and 'zurück zur Startseite' not in result
 
     result = load_mock_page('https://viehbacher.com/de/steuerrecht', xmloutput)
-    assert 'und wirtschaftlich orientierte Privatpersonen' in result and 'rund um die Uhr.' in result and 'Was sind Cookies?' not in result # and 'Mensch im Mittelpunkt.' in result
+    assert 'und wirtschaftlich orientierte Privatpersonen' in result and 'rund um die Uhr.' in result and 'Mensch im Mittelpunkt.' in result and 'Was sind Cookies?' not in result
 
     result = load_mock_page('http://www.jovelstefan.de/2011/09/11/gefallt-mir/', xmloutput)
     assert 'Manchmal überrascht einen' in result and 'kein Meisterwerk war!' in result and 'Pingback von' not in result # and 'Kommentare geschlossen' not in result
@@ -209,8 +208,7 @@ def test_main(xmloutput=False):
     assert 'Das Bohnenviertel entstand' in result and 'sich herrlich entspannen.' in result and 'Nützliche Links' not in result # and 'Mehr zum Thema' not in result
 
     result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/', xmloutput)
-    assert 'zu einem glatten Teig verarbeiten.' in result and 'goldbraun sind.' in result and 'Sei der Erste' not in result and 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result
-    #assert and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result
+    assert 'zu einem glatten Teig verarbeiten.' in result and 'goldbraun sind.' in result and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result and 'Sei der Erste' not in result and 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result
 
     result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18', xmloutput)
     assert 'Es war gesagt,' in result and 'Symbol auf dem Finger haben' in result and 'Aufrufe:' not in result
@@ -231,7 +229,6 @@ def test_main(xmloutput=False):
     assert 'Eine meiner besten Entscheidungen bisher:' in result and 'Verlassenes Gewächshaus meets versteckter Deich' in result and 'Der Hundestrand in Stein an der Ostsee' in result and 'Tags: Barbour,' not in result and 'Bitte (noch) mehr Bilder von Helle' in result and 'Hinterlasse einen Kommentar' not in result
 
     result = load_mock_page('https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/', xmloutput)
-    #print(result)
     assert 'Das ist alles nicht gekennzeichnet, wie soll ich wissen' in result and 'Instagramshops machen es Abmahnanwälten leicht' in result and 'Diese Geschichte teilen' not in result and 'Ähnliche Beiträge ' not in result and 'Ich bin der Ansicht, abwarten und Tee trinken.' in result and 'Danke für dein Feedback. Auch zum Look meiner Seite.' in result and 'Diese Website verwendet Akismet, um Spam zu reduzieren.' not in result
 
     result = load_mock_page('http://www.womencantalksports.com/top-10-women-talking-sports/', xmloutput)
@@ -243,8 +240,7 @@ def test_main(xmloutput=False):
     # and 'Bitte beachte auch die Datenschutzerklärung von Google.' not in result
 
     result = load_mock_page('https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html', xmloutput)
-    assert 'Grounded in sustainable architecture and refined Vietnamese craftsmanship,' in result and 'and Carmelo Resort' in result and 'OMG what a beautiful place to stay! ' in result and 'Food Advertising by' not in result
-    # 'Dining and Drinking' in result
+    assert 'Grounded in sustainable architecture and refined Vietnamese craftsmanship,' in result and 'and Carmelo Resort' in result and 'OMG what a beautiful place to stay! ' in result and 'Food Advertising by' not in result and 'Dining and Drinking' in result
     # 'Reply' not in result and 'A lovely note makes a beautiful day!' not in result
 
     result = load_mock_page('https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/', xmloutput)
