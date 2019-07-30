@@ -126,7 +126,17 @@ You can also pipe a HTML document (and response body) to the trafilatura:
 
     $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura
 
-For usage instructions see ``trafilatura -h``
+For usage instructions see ``trafilatura -h``:
+
+usage: trafilatura [-h] [--nocomments] [--xml] [--xmltei] [-u URL] [-v]
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --nocomments       Don't output any comments
+  --xml              XML output
+  --xmltei           XML TEI output
+  -u URL, --URL URL  custom URL download
+  -v, --verbose      increase output verbosity
 
 
 Additional information

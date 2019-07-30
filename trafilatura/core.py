@@ -68,9 +68,8 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") 
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content"]', \
-            "//*[(self::div or self::section)][starts-with(@id, 'article')]", \
             '//article', \
-            "//*[(self::article or self::div or self::section)][starts-with(@class, 'article')]", \
+            "//*[(self::article or self::div or self::section)][@id='article' or @class='article']", \
             "//*[(self::article or self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
             '//*[(self::div or self::section)][@class="text"]', \
             "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]", \
@@ -103,8 +102,10 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/header', \
                  './/*[(self::div or self::section)][contains(@id, "header") or contains(@class, "header")]', \
                  './/*[(self::div or self::section)][contains(@id, "tags") or contains(@class, "tags")]', \
-                 # news outlets
-                 './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]',\
+                 # news outlets # 
+                 './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]', \
+                 './/*[(self::div or self::p or self::section)][contains(@id, "newsletter") or contains(@class, "newsletter")]', \
+#                 './/*[contains(@id, "cookie") or contains(@class, "cookie")]', \
                  # navigation
                  './/*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
                  './/*[starts-with(@id, "breadcrumbs")]',\
@@ -114,6 +115,10 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  # sharing jp-post-flair jp-relatedposts
                  './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
+                 './/*[(self::div or self::section)][contains(@id, "button") or contains(@class, "button")]', \
+                 './/*[(self::div or self::section)][contains(@id, "hidden") or contains(@class, "hidden") or contains(@style, "hidden")]', \
+                 # optional??
+#                './/*[(self::div or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
 #                './/aside', \ # conflicts with text extraction
                 ]
 
@@ -411,7 +416,7 @@ def extract_content(tree):
 
 
 # @profile
-def extract_comments(tree):
+def extract_comments(tree, include_comments):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
     # define iteration strategy
@@ -451,6 +456,8 @@ def extract_comments(tree):
             #for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
             break
+    if include_comments is False:
+        comments_body = etree.Element('body')
     return comments_body, tree
 
 
@@ -539,9 +546,10 @@ def xmltotxt(xmloutput):
 
 # main process
 # @profile
-def process_record(filecontent, url=None, record_id='0001', compare_flag=True, xml_output=False, tei_output=False, target_language=None):
+def process_record(filecontent, url=None, record_id='0001', compare_flag=True, include_comments=True, xml_output=False, tei_output=False, target_language=None):
     '''Main process for text extraction'''
     # init
+    # LOGGER.debug('comments status: %s', include_comments)
     global tokens_posts, tokens_comments, lrutest
     tree = load_html(filecontent)
     LOGGER.debug('HTML tree loaded for URL: %s', url)
@@ -560,7 +568,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, x
     etree.strip_tags(cleaned_tree, 'hi')
 
     # comments first, then remove
-    commentsbody, cleaned_tree = extract_comments(cleaned_tree)
+    commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
 
     ## extract content
     temppost_hand = extract_content(cleaned_tree)
