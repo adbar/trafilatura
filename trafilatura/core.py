@@ -113,9 +113,9 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]', \
                  # sharing jp-post-flair jp-relatedposts
-                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
+                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
-                 './/*[(self::div or self::section)][contains(@id, "button") or contains(@class, "button")]', \
+                 './/*[(self::div or self::section or self::span)][contains(@id, "button") or contains(@class, "button")]', \
                  './/*[(self::div or self::section)][contains(@id, "hidden") or contains(@class, "hidden") or contains(@style, "hidden")]', \
                  # optional??
 #                './/*[(self::div or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
@@ -202,10 +202,15 @@ def discard_unwanted_comments(tree):
 def textfilter(element):
     '''Filter out unwanted text'''
     ## TODO: text_blacklist
-    if re.match(r'Gef.llt mir.+|.hnliche Beitr.+|Fill in your details below.+|Trage deine Daten unten.+|Kommentar verfassen.+|Bitte logge dich.+|Hinterlasse einen Kommentar|Connecting to %s|Verbinde mit %s|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$', element.text):
-        return True
-    if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', element.text):
-        return True
+    # print('#', element.text)
+    for line in element.text.splitlines():
+        if len(line) < 5:
+            continue
+        # print('###', line)
+        if re.match(r'Gef.llt mir|.hnliche Beitr|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar|Connecting to %s|Verbinde mit %s|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$', line):
+            return True
+        if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
+            return True
     # elemtext = trim(elemtext)
     #return elemtext
     return False
