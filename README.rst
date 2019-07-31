@@ -24,6 +24,7 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 
 Robust extraction of main text content and boilerplate removal based on a combination of DOM-based examination, XPath expressions and rules. Given a HTML document, this library parses it, retrieves the main body text and converts it to XML or plain text, while preserving part of the text formatting and page structure.
 
+In a nutshell, with Python:
 
 .. code-block:: python
 
@@ -31,6 +32,8 @@ Robust extraction of main text content and boilerplate removal based on a combin
     >>> response = requests.get('https://www.iana.org/about')
     >>> trafilatura.process_record(response.text)
     >>> # outputs main content in plain text format ...
+
+On the command-line:
 
 .. code-block:: bash
 
@@ -128,7 +131,7 @@ You can also pipe a HTML document (and response body) to the trafilatura:
 
 For usage instructions see ``trafilatura -h``:
 
-usage: trafilatura [-h] [--nocomments] [--xml] [--xmltei] [-u URL] [-v]
+``usage: trafilatura [-h] [--nocomments] [--xml] [--xmltei] [-u URL] [-v]``
 
 optional arguments:
   -h, --help         show this help message and exit
