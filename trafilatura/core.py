@@ -61,11 +61,12 @@ comments_blacklist = ('( Abmelden / Ändern )')
 # LRU_DICT = defaultdict(int)
 
 
-BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content")]', \
+BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content")]', \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-body')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
+            "//*[(self::div or self::section)][starts-with(@id, 'story')]", \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content"]', \
             '//article', \
@@ -97,11 +98,11 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
 # '//*[(self::div or self::section)][@id="comments" or @class="comments"]', \
 
 DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
-                 './/*[(self::div or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
                  './/footer', \
+                 './/*[(self::div or self::p or self::section)][contains(@id, "footer") or contains(@class, "footer")]', \
                  './/header', \
                  './/*[(self::div or self::section)][contains(@id, "header") or contains(@class, "header")]', \
-                 './/*[(self::div or self::section)][contains(@id, "tags") or contains(@class, "tags")]', \
+                 './/*[(self::a or self::div or self::p or self::section or self::ul)][contains(@id, "tags") or contains(@class, "tags")]', \
                  # news outlets # 
                  './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "newsletter") or contains(@class, "newsletter")]', \
@@ -112,6 +113,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]',\
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")]', \
+                 './/*[(self::div or self::section)][contains(@id, "viral") or contains(@class, "viral")]', \
                  # sharing jp-post-flair jp-relatedposts
                  './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
