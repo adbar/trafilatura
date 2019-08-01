@@ -52,9 +52,9 @@ from .utils import load_html, sanitize, trim
 ## INIT
 LOGGER = logging.getLogger(__name__)
 
-TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span' # 'item', 
+TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
 
-cut_empty_elems = ('div', 'p', 'section')
+CUT_EMPTY_ELEMS = ('div', 'p', 'section')
 
 comments_blacklist = ('( Abmelden / Ändern )')
 
@@ -103,7 +103,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/header', \
                  './/*[(self::div or self::section)][contains(@id, "header") or contains(@class, "header")]', \
                  './/*[(self::a or self::div or self::p or self::section or self::ul)][contains(@id, "tags") or contains(@class, "tags")]', \
-                 # news outlets # 
+                 # news outlets
                  './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "newsletter") or contains(@class, "newsletter")]', \
 #                 './/*[contains(@id, "cookie") or contains(@class, "cookie")]', \
@@ -120,10 +120,11 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::section or self::span)][contains(@id, "button") or contains(@class, "button")]', \
                  # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
                  './/*[(self::div or self::section)][contains(@style, "hidden")]', \
+                ]
                  # optional??
 #                './/*[(self::div or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
 #                './/aside', \ # conflicts with text extraction
-                ]
+
 
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
                           './/cite', \
@@ -170,14 +171,14 @@ def prune_html(tree):
     '''delete empty elements'''
     # empty tags
     for element in tree.xpath(".//*[not(node())]"):
-        if element.tag in cut_empty_elems:
+        if element.tag in CUT_EMPTY_ELEMS:
             element.getparent().remove(element)
     # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
     # Walk over all elements in the tree and remove all nodes that are recursively empty
     # context = etree.iterwalk(tree)
     # for action, element in context:
     #     parent = element.getparent()
-    #     if element.tag in cut_empty_elems and recursively_empty(element):
+    #     if element.tag in CUT_EMPTY_ELEMS and recursively_empty(element):
     #        parent.remove(element)
     ## https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
     # if elem.text:
@@ -406,7 +407,7 @@ def extract_content(tree):
                     if child.tag in ('dt', 'li'):
                         processed_child = handle_textnode(child)
                         if processed_child is not None:
-                            newsub = etree.SubElement(processed_list , 'item')
+                            newsub = etree.SubElement(processed_list, 'item')
                             newsub.text = processed_child.text
                 if len(processed_list) > 0: # if it has children
                     result_body.append(processed_list)
@@ -463,18 +464,17 @@ def extract_comments(tree, include_comments):
         # extract content
         for elem in subtree.xpath('.//*'): # was: for elem in tree.xpath(expr):
             if elem.tag in potential_tags: # TAG_CATALOG:
+                processed_element = handle_textnode(elem)
                 # test length and remove
-                if elem.text is None or elem.text in comments_blacklist:
+                if processed_element is None or processed_element.text in comments_blacklist:
                     # elem.getparent().remove(elem)
                     continue
+                else:
                 ## TODO: text filter
-                if textfilter(elem) is True:
-                    continue
+                #if textfilter(elem) is True:
+                #    continue
                 # filter potential interesting p elements
                 # if not elem.attrib or 'style' not in elem.attrib: # or not 'align' in elem.attrib
-                if elem.text and re.search(r'\w', elem.text):
-                    if duplicate_test(elem) is True:
-                        continue
                     # insert if words
                     comments_body.append(elem)
         # control
