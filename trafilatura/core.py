@@ -52,7 +52,7 @@ from .utils import load_html, sanitize, trim
 ## INIT
 LOGGER = logging.getLogger(__name__)
 
-TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote']) # 'span'
+TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span' # 'item', 
 
 cut_empty_elems = ('div', 'p', 'section')
 
@@ -264,12 +264,12 @@ def convert_tags(tree):
         elem.tag = 'list'
         elem.attrib.clear()
         # change children
-        for child in elem.iter(): # for child in elem.xpath('.//li|.//dt'):
-            if child.tag == 'li' or child.tag == 'dt':
-                child.tag = 'item'
-                child.attrib.clear()
-                if child.text:
-                    child.text = trim(child.text)
+        #for child in elem.iter(): # for child in elem.xpath('.//li|.//dt'):
+        #    if child.tag == 'li' or child.tag == 'dt':
+        #        child.tag = 'item'
+        #        child.attrib.clear()
+                #if child.text:
+                #    child.text = trim(child.text)
             #else:
             #    LOGGER.debug('other child in list: %s', child.tag)
     # blockquote | q → quote
@@ -401,38 +401,21 @@ def extract_content(tree):
             ## TODO: nested elements
             # bypass: add empty elements
             if element.tag == 'list':
-                result_body.append(element)
+                processed_list = etree.Element('list')
+                for child in element.iter():
+                    if child.tag in ('dt', 'li'):
+                        processed_child = handle_textnode(child)
+                        if processed_child is not None:
+                            newsub = etree.SubElement(processed_list , 'item')
+                            newsub.text = processed_child.text
+                if len(processed_list) > 0: # if it has children
+                    result_body.append(processed_list)
                 continue
             # strip attrs after discard is run
             if element.tag in ('div', 'p'): # 'head', 'list',
                 element.attrib.clear()
 
             # TODO: weird and empty elements such as <p><p>...</p></p> ???
-            #if element.text is None: # or len(element.text) < 10 # text_content()
-            #    # try the tail
-            #    if element.tail is None or len(element.tail) < 2: # was 50
-            #        element.getparent().remove(element)
-            #        continue
-            #    # if element.tag == 'lb':
-            #    LOGGER.debug('using tail for element %s', element.tag)
-            #    # TODO: handle differently for br/lb
-            #    element.text = element.tail
-            #    element.tail = ''
-            #    if element.tag == 'lb':
-            #        element.tag = 'p'
-            #element.text = trim(element.text) + '\n'
-            #if element.tail:
-            #    element.tail = trim(element.tail) + '\n'
-            ### LOGGER.debug(element.tag, element.text)
-            #if textfilter(element) is True:
-            #    continue
-
-            ### filter potential interesting p elements?
-            ##not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
-            #if element.text and re.search(r'\w', element.text): # text_content()
-            #    ## TODO: improve duplicate detection
-            #    if duplicate_test(element) is True:
-            #        continue
             processed_element = handle_textnode(element)
             if processed_element is not None:
                 # small div-correction # could be moved elsewhere
@@ -452,11 +435,11 @@ def extract_content(tree):
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
         for element in search_tree.xpath('//p'):
             # print(element.tag, element.text)
-            if element.text is not None:
-                # if duplicate_test(elem) is True:
-                element.attrib.clear()
-                element.tail = ''
-                result_body.append(element)
+            processed_element = handle_textnode(element)
+            if processed_element is not None:
+                processed_element.attrib.clear()
+                processed_element.tail = ''
+                result_body.append(processed_element)
     return result_body
 
 
