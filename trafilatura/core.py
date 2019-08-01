@@ -250,12 +250,11 @@ def convert_tags(tree):
     '''Convert relevant HTML tags to XML TEI format'''
     # head tags + delete attributes
     for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
-        # elem.attrib.clear()
+        elem.attrib.clear()
         elem.tag = 'head'
+        if elem.text:
+            elem.text = trim(elem.text)
         # elem.set('rendition', '#i')
-    # delete p attributes
-    # for elem in tree.xpath('//p'):
-        # elem.attrib.clear()
     # br → lb
     for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
         elem.tag = 'lb'
@@ -263,12 +262,14 @@ def convert_tags(tree):
     # ul/ol → list / li → item
     for elem in tree.xpath('//ul|//ol|//dl'):
         elem.tag = 'list'
-        # elem.attrib.clear()
+        elem.attrib.clear()
         # change children
         for child in elem.iter(): # for child in elem.xpath('.//li|.//dt'):
             if child.tag == 'li' or child.tag == 'dt':
                 child.tag = 'item'
                 child.attrib.clear()
+                if child.text:
+                    child.text = trim(child.text)
             #else:
             #    LOGGER.debug('other child in list: %s', child.tag)
     # blockquote | q → quote
@@ -344,6 +345,37 @@ def try_justext(tree, filecontent, record_id):
 
 
 # @profile
+def handle_textnode(element):
+    '''Convert, format, and probe potential text elements'''
+    if element.text is None: # or len(element.text) < 10 # text_content()
+        # try the tail
+        if element.tail is None or len(element.tail) < 2: # was 50
+            #element.getparent().remove(element)
+            #continue
+            return None
+        # if element.tag == 'lb':
+        LOGGER.debug('using tail for element %s', element.tag)
+        # TODO: handle differently for br/lb
+        element.text = element.tail
+        element.tail = ''
+        if element.tag == 'lb':
+            element.tag = 'p'
+    element.text = trim(element.text) + '\n'
+    if element.tail:
+        element.tail = trim(element.tail) + '\n'
+    ## LOGGER.debug(element.tag, element.text)
+    if textfilter(element) is True:
+        return None
+    if element.text and re.search(r'\w', element.text): # text_content()
+        ## TODO: improve duplicate detection
+        if duplicate_test(element) is True:
+            return None
+    else:
+        return None
+    return element
+
+
+# @profile
 def extract_content(tree):
     '''Find and extract the main content of a page using a set of expressions'''
     result_body = etree.Element('body')
@@ -366,41 +398,46 @@ def extract_content(tree):
             ## delete unwanted
             if element.tag not in potential_tags:
                 continue
-            # strip attrs after discard is run
-            if element.tag in ('div', 'head', 'list', 'p'):
-                element.attrib.clear()
-            # TODO: weird and empty elements such as <p><p>...</p></p> ???
-            if element.text is None: # or len(element.text) < 10 # text_content()
-                # try the tail
-                if element.tail is None or len(element.tail) < 2: # was 50
-                    element.getparent().remove(element)
-                    continue
-                # if element.tag == 'lb':
-                LOGGER.debug('using tail for element %s', element.tag)
-                # TODO: handle differently for br/lb
-                element.text = element.tail
-                element.tail = ''
-                if element.tag == 'lb':
-                    element.tag = 'p'
-            ## LOGGER.debug(element.tag, element.text)
-            if textfilter(element) is True:
+            ## TODO: nested elements
+            # bypass: add empty elements
+            if element.tag == 'list':
+                result_body.append(element)
                 continue
+            # strip attrs after discard is run
+            if element.tag in ('div', 'p'): # 'head', 'list',
+                element.attrib.clear()
 
-            ## filter potential interesting p elements?
-            #not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
-            if element.text and re.search(r'\w', element.text): # text_content()
-                ## TODO: improve duplicate detection
-                if duplicate_test(element) is True:
-                    continue
+            # TODO: weird and empty elements such as <p><p>...</p></p> ???
+            #if element.text is None: # or len(element.text) < 10 # text_content()
+            #    # try the tail
+            #    if element.tail is None or len(element.tail) < 2: # was 50
+            #        element.getparent().remove(element)
+            #        continue
+            #    # if element.tag == 'lb':
+            #    LOGGER.debug('using tail for element %s', element.tag)
+            #    # TODO: handle differently for br/lb
+            #    element.text = element.tail
+            #    element.tail = ''
+            #    if element.tag == 'lb':
+            #        element.tag = 'p'
+            #element.text = trim(element.text) + '\n'
+            #if element.tail:
+            #    element.tail = trim(element.tail) + '\n'
+            ### LOGGER.debug(element.tag, element.text)
+            #if textfilter(element) is True:
+            #    continue
+
+            ### filter potential interesting p elements?
+            ##not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
+            #if element.text and re.search(r'\w', element.text): # text_content()
+            #    ## TODO: improve duplicate detection
+            #    if duplicate_test(element) is True:
+            #        continue
+            processed_element = handle_textnode(element)
+            if processed_element is not None:
                 # small div-correction # could be moved elsewhere
                 if element.tag == 'div':
                     element.tag = 'p'
-                # handle p-tags and attributes
-                #if element.tag == 'p': #  or element.tag == 'item'
-                #    element.attrib.clear()
-                #    LOGGER.debug(element.text)
-                #else:
-                #    element.tail = ''
                 # insert
                 result_body.append(element)
         # control
