@@ -236,10 +236,11 @@ def duplicate_test(element, justext_switch=False):
     '''Check for duplicate text'''
     global lrutest
     # teststring = ' '.join(element.itertext()).encode('utf-8')
-    if justext_switch is False:
-        teststring = element.text_content()
-    else:
-        teststring = element.text
+    #if justext_switch is False:
+    #    teststring = element.text_content()
+    #else:
+    #    teststring = element.text
+    teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
         if lrutest.has_key(teststring) is True and lrutest[teststring] > 2:
             # lrutest[teststring] += 1
@@ -361,16 +362,12 @@ def handle_textnode(element):
         element.tail = ''
         if element.tag == 'lb':
             element.tag = 'p'
-    element.text = trim(element.text) + '\n'
+    # delete spaces that are not related to punctuation or markup
+    element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
+    # trim
+    element.text = trim(element.text) # + '\n'
     if element.tail:
         element.tail = trim(element.tail) + '\n'
-    ## LOGGER.debug(element.tag, element.text)
-    if textfilter(element) is True:
-        return None
-    if element.text and re.search(r'\w', element.text): # text_content()
-        ## TODO: improve duplicate detection
-        if duplicate_test(element) is True:
-            return None
     else:
         return None
     return element
@@ -399,8 +396,7 @@ def extract_content(tree):
             ## delete unwanted
             if element.tag not in potential_tags:
                 continue
-            ## TODO: nested elements
-            # bypass: add empty elements
+            # bypass: add nested elements
             if element.tag == 'list':
                 processed_list = etree.Element('list')
                 for child in element.iter():
@@ -409,21 +405,87 @@ def extract_content(tree):
                         if processed_child is not None:
                             newsub = etree.SubElement(processed_list, 'item')
                             newsub.text = processed_child.text
+                            newsub.tail = processed_child.tail
+                    child.tag = 'done'
                 if len(processed_list) > 0: # if it has children
+                    #if textfilter(processed_list) is True:
+                    #    continue
+                #if processed_list.text and re.search(r'\w', processed_list.text): # text_content()
+                    #if duplicate_test(processed_list) is True:
+                    #    continue
                     result_body.append(processed_list)
                 continue
+            elif element.tag == 'quote':
+                processed_quote = etree.Element('quote')
+                for child in element.iter():
+                    if child.tag in potential_tags:
+                        processed_child = handle_textnode(child)
+                        if processed_child is not None:
+                            newsub = etree.SubElement(processed_quote, child.tag)
+                            newsub.text = processed_child.text
+                            newsub.tail = processed_child.tail
+                    child.tag = 'done'
+                if len(processed_quote) > 0: # if it has children
+                    #if textfilter(processed_quote) is True:
+                    #    continue
+                #if processed_quote.text and re.search(r'\w', processed_quote.text): # text_content()
+                    #if duplicate_test(processed_quote) is True:
+                        #continue
+                    result_body.append(processed_quote)
+                continue
+            # normal elements
+            # TODO: weird and empty elements such as <p><p>...</p></p> ???
             # strip attrs after discard is run
             if element.tag in ('div', 'p'): # 'head', 'list',
                 element.attrib.clear()
-
-            # TODO: weird and empty elements such as <p><p>...</p></p> ???
-            processed_element = handle_textnode(element)
-            if processed_element is not None:
+                processed_element = handle_textnode(element)
+                #if textfilter(processed_element) is True:
+                #    continue
+                ## filter potential interesting p elements?
+                #not elem.attrib or not 'style' in elem.attrib: # not 'align' in elem.attrib or
+                #if processed_element.text and re.search(r'\w', processed_element.text): # text_content()
+                    ## TODO: improve duplicate detection
+                #if duplicate_test(processed_element) is True:
+                #    continue
                 # small div-correction # could be moved elsewhere
-                if element.tag == 'div':
-                    element.tag = 'p'
+                #if element.tag == 'div':
+                #    element.tag = 'p'
+                if len(processed_element) > 0:
+                    result_body.append(element)
+                #element.attrib.clear()
+                #processed_element = etree.Element(element.tag)
+                #processed_element.text = ''
+                #for child in element.iter():
+                #    if child.tag in potential_tags:
+                #        processed_child = handle_textnode(child)
+                #        if processed_child is not None:
+                #            # paragraph, append text
+                #            if child.tag == 'p':
+                #                if processed_child.text is not None:
+                #                    processed_element.text = processed_element.text + processed_child.text
+                #                if processed_child.tail is not None:
+                #                    processed_element.text = processed_element.text + ' ' + processed_child.tail
+                #            else:
+                #                newsub = etree.SubElement(processed_element, child.tag)
+                #                newsub.text = processed_child.text
+                #                newsub.tail = processed_child.tail
+                #    child.tag = 'done'
+                #if len(processed_element) > 0: # if it has children
+                #    # small div-correction # could be moved elsewhere
+                #    if processed_element.tag == 'div':
+                #        processed_element.tag = 'p'
+                #    #if textfilter(processed_element) is True:
+                #    #    continue
+                #    #if processed_element.text and re.search(r'\w', processed_element.text): # text_content()
+                #    #if duplicate_test(processed_element) is True:
+                #    #    continue
+                #    result_body.append(processed_element)
+                #continue
+            # TODO: weird and empty elements such as <p><p>...</p></p> ???
+            #processed_element = handle_textnode(element)
+            #if processed_element is not None:
                 # insert
-                result_body.append(element)
+            #     result_body.append(element)
         # control
         if len(result_body) > 0: # if it has children
             LOGGER.debug(expr)
@@ -612,8 +674,10 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
         # condition to use justext
         if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
             postbody = temppost_algo
+            LOGGER.info('using justext')
         else:
             postbody = temppost_hand
+            LOGGER.info('using custom extraction')
     else:
         LOGGER.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
