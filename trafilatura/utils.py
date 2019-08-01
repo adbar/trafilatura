@@ -84,7 +84,7 @@ def fetch_url(url):
 
 
 def load_html(htmlobject):
-    """Load object given as input and validate its type (accepted: LXML tree and string)"""
+    '''Load object given as input and validate its type (accepted: LXML tree and string)'''
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         # copy tree
         tree = htmlobject
@@ -111,8 +111,9 @@ def load_html(htmlobject):
     return tree
 
 
-# https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
 def remove_control_characters(string):
+    '''Prevent XML invalid character errors'''
+    # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
     return "".join(char for char in string if unicodedata.category(char)[0]!="C" or char in ('\t', '\n'))
 
 
@@ -145,8 +146,7 @@ def sanitize(text):
 
 
 def trim(string):
-    """Remove spaces at the beginning and end of a string"""
-    # string = re.sub(r'\n+', '\n', string, re.MULTILINE)
+    '''Remove spaces at the beginning and end of a string'''
     string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
     string = string.strip()
     return string
