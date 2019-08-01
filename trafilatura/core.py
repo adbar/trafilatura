@@ -361,6 +361,9 @@ def handle_textnode(element):
         element.tail = ''
         if element.tag == 'lb':
             element.tag = 'p'
+    # delete spaces that are not related to punctuation or markup
+    element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
+    # trim
     element.text = trim(element.text) + '\n'
     if element.tail:
         element.tail = trim(element.tail) + '\n'
@@ -399,8 +402,7 @@ def extract_content(tree):
             ## delete unwanted
             if element.tag not in potential_tags:
                 continue
-            ## TODO: nested elements
-            # bypass: add empty elements
+            # bypass: nested elements
             if element.tag == 'list':
                 processed_list = etree.Element('list')
                 for child in element.iter():
@@ -409,9 +411,30 @@ def extract_content(tree):
                         if processed_child is not None:
                             newsub = etree.SubElement(processed_list, 'item')
                             newsub.text = processed_child.text
+                            # newsub.tail = processed_child.tail
+                    # child.tag = 'done' # causes errors
                 if len(processed_list) > 0: # if it has children
                     result_body.append(processed_list)
                 continue
+            elif element.tag == 'quote':
+                processed_quote = etree.Element('quote')
+                for child in element.iter():
+                    if child.tag in potential_tags:
+                        processed_child = handle_textnode(child)
+                        if processed_child is not None:
+                            newsub = etree.SubElement(processed_quote, child.tag)
+                            newsub.text = processed_child.text
+                            newsub.tail = processed_child.tail
+                    # child.tag = 'done'
+                if len(processed_quote) > 0: # if it has children
+                    #if textfilter(processed_quote) is True:
+                    #    continue
+                #if processed_quote.text and re.search(r'\w', processed_quote.text): # text_content()
+                    #if duplicate_test(processed_quote) is True:
+                        #continue
+                    result_body.append(processed_quote)
+                continue
+
             # strip attrs after discard is run
             if element.tag in ('div', 'p'): # 'head', 'list',
                 element.attrib.clear()
@@ -612,8 +635,10 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
         # condition to use justext
         if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
             postbody = temppost_algo
+            LOGGER.info('using justext')
         else:
             postbody = temppost_hand
+            LOGGER.info('using custom extraction')
     else:
         LOGGER.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
