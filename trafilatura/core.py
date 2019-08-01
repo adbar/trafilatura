@@ -425,7 +425,7 @@ def extract_content(tree):
                             newsub = etree.SubElement(processed_quote, child.tag)
                             newsub.text = processed_child.text
                             newsub.tail = processed_child.tail
-                    # child.tag = 'done'
+                    child.tag = 'done'
                 if len(processed_quote) > 0: # if it has children
                     #if textfilter(processed_quote) is True:
                     #    continue
@@ -438,15 +438,36 @@ def extract_content(tree):
             # strip attrs after discard is run
             if element.tag in ('div', 'p'): # 'head', 'list',
                 element.attrib.clear()
+                # if element.tag == 'div':
+                #     element.tag = 'p'
+                processed_element = handle_textnode(element)
+                if processed_element is not None:
+                    result_body.append(processed_element)
+                continue
+                #processed_element = etree.Element(element.tag)
+                #processed_element.text = ''
+                #for child in element.iter():
+                #    if child.tag in potential_tags:
+                #        processed_child = handle_textnode(child)
+                #        if processed_child is not None:
+                #            # paragraph, append text
+                #            if child.tag == 'p':
+                #                if processed_child.text is not None:
+                #                    processed_element.text = processed_element.text + processed_child.text
+                #                if processed_child.tail is not None:
+                #                    processed_element.text = processed_element.text + ' ' + processed_child.tail
+                #            else:
+                #                newsub = etree.SubElement(processed_element, child.tag)
+                #                newsub.text = processed_child.text
+                #                newsub.tail = processed_child.tail
+                #    child.tag = 'done'
 
             # TODO: weird and empty elements such as <p><p>...</p></p> ???
             processed_element = handle_textnode(element)
             if processed_element is not None:
                 # small div-correction # could be moved elsewhere
-                if element.tag == 'div':
-                    element.tag = 'p'
                 # insert
-                result_body.append(element)
+                result_body.append(processed_element)
         # control
         if len(result_body) > 0: # if it has children
             LOGGER.debug(expr)
