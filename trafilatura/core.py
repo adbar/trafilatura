@@ -14,17 +14,17 @@ import re # import regex as re
 # third-party
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
-langid.set_languages(['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru'])
 
 from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 from lxml import etree, html
 from lxml.html.clean import Cleaner
 
 # own
-from .settings import MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, MIN_DUPLCHECK_SIZE, LRU_SIZE
+from .settings import LANGUAGES, LRU_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, MIN_DUPLCHECK_SIZE
 from .utils import load_html, sanitize, trim
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, DISCARD_XPATH, COMMENTS_DISCARD_XPATH
 
+langid.set_languages(LANGUAGES)
 
 ## TODO:
 # add sqlite3 for control of seen URLs?

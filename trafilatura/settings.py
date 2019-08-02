@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
 Listing a series of settings that are applied module-wide.
@@ -19,6 +18,6 @@ MIN_DUPLCHECK_SIZE = 100
 LRU_SIZE = 10000000
 
 # filters
-# LANG = 'de'
+LANGUAGES = ['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru']
 
 #CORPUS_VERSION = 2017.1
