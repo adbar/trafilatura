@@ -11,6 +11,8 @@ Module bundling all functions needed to extract the text in a webpage.
 import logging
 import re # import regex as re
 
+from io import BytesIO
+
 # third-party
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
@@ -263,9 +265,9 @@ def handle_textnode(element, comments_fix=True):
     # delete newlines that are not related to punctuation or markup
     element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
     # trim
-    element.text = trim(element.text) + '\n'
+    element.text = trim(element.text) # + '\n'
     if element.tail:
-        element.tail = trim(element.tail) + '\n'
+        element.tail = trim(element.tail) # + '\n'
     ## LOGGER.debug(element.tag, element.text)
     if textfilter(element) is True:
         return None
@@ -664,7 +666,10 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
         if xml_output is False and tei_output is False:
             returnstring = xmltotxt(output)
         else:
-            returnstring = etree.tostring(output, pretty_print=True, encoding='unicode') # xml_declaration=True,
+            control_string = etree.tostring(output)
+            control_parser = etree.XMLParser(remove_blank_text=True)
+            output_tree = etree.parse(BytesIO(control_string), control_parser)
+            returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode') # xml_declaration=True,
 
         ##  garbled unicode
         #try:
