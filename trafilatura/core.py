@@ -9,15 +9,12 @@ Module bundling all functions needed to extract the text in a webpage.
 
 # standard
 import logging
-import re
-
-# from collections import defaultdict
+import re # import regex as re
 
 # third-party
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 import langid
 langid.set_languages(['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru'])
-# import regex as re
 
 from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 from lxml import etree, html
@@ -32,21 +29,6 @@ from .utils import load_html, sanitize, trim
 # add sqlite3 for control of seen URLs?
 # line-based heuristics?
 # check max depth recursion in output XML?
-
-# alternatives if text too short:
-# https://github.com/kingwkb/readability
-# https://github.com/grangier/python-goose
-# https://github.com/buriy/python-readability
-# # python-boilerpipe for text?
-# # https://github.com/seomoz/dragnet
-
-### http://teibyexample.org/xquery/TBEvalidator.xq
-
-# https://github.com/seomoz/simhash-py
-
-# parser:
-# https://github.com/kovidgoyal/html5-parser
-# https://github.com/rushter/selectolax
 
 
 ## INIT
@@ -336,7 +318,7 @@ def try_justext(tree, filecontent, record_id):
 
 
 # @profile
-def handle_textnode(element):
+def handle_textnode(element, comments_fix=True):
     '''Convert, format, and probe potential text elements'''
     if element.text is None: # or len(element.text) < 10 # text_content()
         # try the tail
@@ -349,9 +331,9 @@ def handle_textnode(element):
         # TODO: handle differently for br/lb
         element.text = element.tail
         element.tail = ''
-        if element.tag == 'lb':
+        if comments_fix is True and element.tag == 'lb':
             element.tag = 'p'
-    # delete spaces that are not related to punctuation or markup
+    # delete newlines that are not related to punctuation or markup
     element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
     # trim
     element.text = trim(element.text) + '\n'
@@ -367,6 +349,22 @@ def handle_textnode(element):
     else:
         return None
     return element
+
+
+# @profile
+def handle_subelement(subelement):
+    '''Convert, format, and probe potential text subelements'''
+    if subelement.tail is None:
+        return subelement
+    # delete newlines that are not related to punctuation or markup
+    subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
+    # trim
+    subelement.tail = trim(subelement.tail) + '\n'
+    #if textfilter(subelement) is True:
+    #    return None
+    #if duplicate_test(subelement) is True:
+    #    return None
+    return subelement
 
 
 # @profile
@@ -438,6 +436,10 @@ def extract_content(tree):
                 for child in element.iter():
                     if child.tag in potential_tags:
                         processed_child = handle_textnode(child)
+                        if child.tag == 'lb':
+                            newsub = etree.SubElement(processed_element, 'lb')
+                            newsub.tail = handle_subelement(child).tail
+                            continue
                         if processed_child is not None:
                             # paragraph, append text
                             if child.tag == 'p':
@@ -455,6 +457,10 @@ def extract_content(tree):
                 if len(processed_element.text) > 0:
                     result_body.append(processed_element)
                 continue
+
+            # insert it directly
+            #elif element.tag == 'lb':
+            #    result_body.append(element)
 
             # other elements (div, ??, ??)
             else:
@@ -508,7 +514,7 @@ def extract_comments(tree, include_comments):
         # extract content
         for elem in subtree.xpath('.//*'): # was: for elem in tree.xpath(expr):
             if elem.tag in potential_tags: # TAG_CATALOG:
-                processed_element = handle_textnode(elem)
+                processed_element = handle_textnode(elem, comments_fix=True)
                 # test length and remove
                 if processed_element is None or processed_element.text in comments_blacklist:
                     # elem.getparent().remove(elem)
