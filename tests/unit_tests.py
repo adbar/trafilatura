@@ -11,7 +11,7 @@ import sys
 from lxml import etree, html
 
 # import trafilatura
-from trafilatura.core import cache, duplicate_test, lrutest, process_record, trim
+from trafilatura.core import cache, duplicate_test, LRU_TEST, process_record, trim
 from trafilatura import cli, utils
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -305,7 +305,7 @@ def test_main(xmloutput=False):
 
 def test_lrucache():
     '''test basic duplicate detection'''
-    lrutest.clear()
+    LRU_TEST.clear()
     my_body = etree.Element('body')
     ### element too short
     my_element = html.fromstring('<p>AAAA BBBB</p>')
@@ -322,7 +322,7 @@ def test_lrucache():
     assert duplicate_test(my_element, justext_switch=False) is False
     cache(my_body)
     assert duplicate_test(my_element, justext_switch=False) is True
-    print(lrutest)
+    print(LRU_TEST)
 
 
 if __name__ == '__main__':

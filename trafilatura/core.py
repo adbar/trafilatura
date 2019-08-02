@@ -160,7 +160,7 @@ TEI_VALID_ATTRS = set(['rendition'])
 # counters
 tokens_posts = 0
 tokens_comments = 0
-lrutest = LRU(LRU_SIZE)
+LRU_TEST = LRU(LRU_SIZE)
 
 # justext
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
@@ -222,27 +222,27 @@ def textfilter(element):
 
 def cache(body):
     '''Implement LRU cache'''
-    global lrutest
+    global LRU_TEST
     for element in body:
         # teststring = ' '.join(element.itertext()).encode('utf-8')
         teststring = element.text
-        if lrutest.has_key(teststring) is True:
-            lrutest[teststring] += 1
+        if LRU_TEST.has_key(teststring) is True:
+            LRU_TEST[teststring] += 1
         else:
-            lrutest[teststring] = 1
+            LRU_TEST[teststring] = 1
 
 
 def duplicate_test(element, justext_switch=False):
     '''Check for duplicate text'''
-    global lrutest
+    global LRU_TEST
     # teststring = ' '.join(element.itertext()).encode('utf-8')
     if justext_switch is False:
         teststring = element.text_content()
     else:
         teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
-        if lrutest.has_key(teststring) is True and lrutest[teststring] > 2:
-            # lrutest[teststring] += 1
+        if LRU_TEST.has_key(teststring) is True and LRU_TEST[teststring] > 2:
+            # LRU_TEST[teststring] += 1
             return True
     return False
 
@@ -253,8 +253,6 @@ def convert_tags(tree):
     for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
         elem.attrib.clear()
         elem.tag = 'head'
-        #if elem.text:
-        #    elem.text = trim(elem.text)
         # elem.set('rendition', '#i')
     # br → lb
     for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
@@ -264,15 +262,6 @@ def convert_tags(tree):
     for elem in tree.xpath('//ul|//ol|//dl'):
         elem.tag = 'list'
         elem.attrib.clear()
-        # change children
-        #for child in elem.iter(): # for child in elem.xpath('.//li|.//dt'):
-        #    if child.tag == 'li' or child.tag == 'dt':
-        #        child.tag = 'item'
-        #        child.attrib.clear()
-                #if child.text:
-                #    child.text = trim(child.text)
-            #else:
-            #    LOGGER.debug('other child in list: %s', child.tag)
     # blockquote | q → quote
     for elem in tree.xpath('//blockquote|//q'):
         elem.tag = 'quote'
@@ -325,7 +314,7 @@ def try_justext(tree, filecontent, record_id):
         return None
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
-            # if lrutest.has_key(paragraph.text) is False or lrutest[paragraph.text] <= 2:
+            # if LRU_TEST.has_key(paragraph.text) is False or LRU_TEST[paragraph.text] <= 2:
             if duplicate_test(paragraph, justext_switch=True) is not True:
                 elem = etree.Element('p')
                 elem.text = paragraph.text
@@ -335,6 +324,7 @@ def try_justext(tree, filecontent, record_id):
     # temp_jt = u' '.join(jt.itertext())
     # temp_jt = jt
     return result_body
+
 
 #def custom_justext(htmldom):
 #    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
@@ -407,8 +397,9 @@ def extract_content(tree):
                 processed_element = etree.Element(element.tag)
                 for child in element.iter():
                     # list-specific check
-                    if element.tag == 'list' and child.tag not in ('dt', 'li'): #  'item'
+                    if element.tag == 'list' and child.tag not in ('dt', 'li'): # 'item'
                         continue
+                    # proceed with iteration
                     processed_child = handle_textnode(child)
                     if processed_child is not None:
                         if element.tag == 'list':
@@ -467,6 +458,7 @@ def extract_content(tree):
 
             # other elements (div, ??, ??)
             else:
+                LOGGER.debug('processing other element: %s', element.tag)
                 processed_element = handle_textnode(element)
                 if processed_element is not None:
                     element.attrib.clear()
@@ -630,7 +622,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
     '''Main process for text extraction'''
     # init
     # LOGGER.debug('comments status: %s', include_comments)
-    global tokens_posts, tokens_comments, lrutest
+    global tokens_posts, tokens_comments, LRU_TEST
     tree = load_html(filecontent)
     LOGGER.debug('HTML tree loaded for URL: %s', url)
 
@@ -664,10 +656,10 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
         # condition to use justext
         if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
             postbody = temppost_algo
-            LOGGER.info('using justext')
+            LOGGER.info('using justext: %s', url)
         else:
             postbody = temppost_hand
-            LOGGER.info('using custom extraction')
+            LOGGER.info('using custom extraction: %s', url)
     else:
         LOGGER.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
@@ -728,8 +720,8 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
 
     # check duplicates at body level
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
-    if lrutest.has_key(teststring) is False:
-        # lrutest[teststring] = 1
+    if LRU_TEST.has_key(teststring) is False:
+        # LRU_TEST[teststring] = 1
         tokens_posts += len(re.findall(r'\w+', ' '.join(postbody.itertext()), re.UNICODE))
         tokens_comments += len(re.findall(r'\w+', ' '.join(commentsbody.itertext()), re.UNICODE))
         if xml_output is False and tei_output is False:
@@ -750,7 +742,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
         return returnstring
 
     # else
-    # lrutest[teststring] += 1
+    # LRU_TEST[teststring] += 1
 
     #LOGGER.info('tokens posts: %s', tokens_posts)
     #LOGGER.info('tokens comments: %s', tokens_comments)
