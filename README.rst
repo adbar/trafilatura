@@ -164,14 +164,14 @@ Kudos to...
 -  `jusText <https://github.com/miso-belica/jusText>`_
 -  `cchardet <https://github.com/PyYoshi/cChardet>`_ & `ftfy <https://github.com/LuminosoInsight/python-ftfy>`_
 
-Alternatives in Python
-~~~~~~~~~~~~~~~~~~~~~~
+Alternatives
+~~~~~~~~~~~~
 
 Most corresponding Python modules are not actively maintained, following alternatives exist:
 
-- `dragnet <https://github.com/dragnet-org/dragnet>_` features combined and machine-learning approaches, but requires many dependencies as well as extensive tuning
-- `python-readability <https://github.com/buriy/python-readability>_` cleans the page and preserves some markup but is mostly geared towards news texts
-- `html2text <https://github.com/Alir3z4/html2text>_` converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
+- `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires many dependencies as well as extensive tuning
+- `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
+- `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
 
 Contact
 ~~~~~~~
