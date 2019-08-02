@@ -73,6 +73,8 @@ MOCK_PAGES = { \
 'https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/': 'basicthinking.de.tweets.html', \
 'https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/': 'meedia.de.freenet.html', \
 'https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/': 'incurvy.de.wellness.html', \
+'https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843': 'dw.com.uncork.html', \
+'https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html': 'jolie.de.adele.html', \
 }
 # '': '', \
 
@@ -162,7 +164,6 @@ def test_main(xmloutput=False):
     # and 'Beitragsbild' not in result
 
     result = load_mock_page('http://www.wehranlage-horka.de/veranstaltung/887/', xmloutput)
-    print(result)
     assert 'In eine andere Zeit' in result and 'Während Sie über den Markt schlendern' in result and 'Infos zum Verein' not in result and 'nach oben' not in result and 'Datenschutzerklärung' not in result
 
     result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft', xmloutput)
@@ -299,8 +300,21 @@ def test_main(xmloutput=False):
     assert 'Welche Werbeeinnahmen erwarten Sie hier langfristig?' in result and 'wir haben keinerlei Pläne, das zu verändern.' in result and 'Nachrichtenüberblick abonnieren' not in result and 'über alle aktuellen Entwicklungen auf dem Laufenden.' not in result and 'Schlagworte' not in result and 'Teilen' not in result and 'Dauerzoff um drohenden UKW-Blackout' not in result and 'Mobilcom Debitel has charged me for third party' in result
 
     result = load_mock_page('https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/', xmloutput)
-    assert 'Zeit für Loslassen und Entspannung.' in result and 'Erfrischende, abschwellende Augencreme Phyto Contour' in result and 'Wie sieht dein Alltag aus?' in result and 'Vielen Dank Anja für deine Tipps rund um Beauty' in result and 'Betreiberin von incurvy Plus Size' not in result and 'Wellness Gesichtsbehandlung: Plaisir D’Aromes' not in result
-    # and 'Das Thema könnte dich auch interessieren:' not in result
+    assert 'Zeit für Loslassen und Entspannung.' in result and 'Erfrischende, abschwellende Augencreme Phyto Contour' in result and 'Wie sieht dein Alltag aus?' in result and 'Vielen Dank Anja für deine Tipps rund um Beauty' in result and 'Betreiberin von incurvy Plus Size' not in result and 'Wellness Gesichtsbehandlung: Plaisir D’Aromes' not in result # and 'Das Thema könnte dich auch interessieren:' not in result
+
+    result = load_mock_page('https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843', xmloutput)
+    print(result)
+    assert 'No grape variety invites as much intrigue' in result and 'With just 0.9 hectares' in result and 'Related Subjects' not in result and 'Audios and videos on the topic' not in result # and 'But boozers in Berlin' not in result 
+
+    result = load_mock_page('https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html', xmloutput)
+    assert 'Adele feierte ausgelassen mit den Spice Girls' in result and 'wie sich Adele weiterentwickelt.' in result and 'Sommerzeit ist Urlaubszeit,' not in result and 'Sie zeigt sich schlanker denn je!' not in result
+
+    #result = load_mock_page('', xmloutput)
+    #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
+    #result = load_mock_page('', xmloutput)
+    #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
+    #result = load_mock_page('', xmloutput)
+    #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
 
 
 def test_lrucache():

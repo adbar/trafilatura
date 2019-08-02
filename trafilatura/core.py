@@ -409,10 +409,11 @@ def extract_content(tree):
                         newsub.text = processed_child.text
                         if element.tag == 'quote':
                             newsub.tail = processed_child.tail
-                            #child.tag = 'done' # can cause errors
+                    # child.getparent().remove(child)
+                    child.tag = 'done' # can cause errors
                 # avoid double tags??
-                if element.tag == 'quote':
-                    element.tag = 'done' # can cause errors
+                # element.getparent().remove(element)
+                # element.tag = 'done' # can cause errors
                 if len(processed_element) > 0: # if it has children
                     result_body.append(processed_element)
                 continue
