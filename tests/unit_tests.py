@@ -75,6 +75,11 @@ MOCK_PAGES = { \
 'https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/': 'incurvy.de.wellness.html', \
 'https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843': 'dw.com.uncork.html', \
 'https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html': 'jolie.de.adele.html', \
+'https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx': 'speicherguide.de.schwierige.html', \
+'https://novalanalove.com/ear-candy/': 'novalanalove.com.ear-candy.html', \
+'http://www.franziska-elea.de/2019/02/10/das-louis-vuitton-missgeschick/': 'franziska-elea.de.vuitton.html', \
+'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html': 'gofeminin.de.abnehmen.html', \
+'https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html': 'brigitte.de.ikigai.html', \
 }
 # '': '', \
 
@@ -309,10 +314,24 @@ def test_main(xmloutput=False):
     result = load_mock_page('https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html', xmloutput)
     assert 'Adele feierte ausgelassen mit den Spice Girls' in result and 'wie sich Adele weiterentwickelt.' in result and 'Sommerzeit ist Urlaubszeit,' not in result and 'Sie zeigt sich schlanker denn je!' not in result
 
+    result = load_mock_page('https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx', xmloutput)
+    assert 'Konflikte mag keiner.' in result and 'Gespräche meistern können.' in result and 'Weiterführender Link' not in result and 'so geht’s!' not in result and 'Flexible Wege in die' not in result
+
+    result = load_mock_page('https://novalanalove.com/ear-candy/', xmloutput)
+    assert 'Earcuff: Zoeca' in result and 'mit längeren Ohrringen (:' in result and 'Kreole: Stella Hoops' in result and 'Jetzt heißt es schnell sein:' not in result and 'Diese Website speichert Cookies' not in result and 'VON Sina Giebel' not in result
+
+    result = load_mock_page('http://www.franziska-elea.de/2019/02/10/das-louis-vuitton-missgeschick/', xmloutput)
+    assert 'Zuerst dachte ich, ich könnte das' in result and 'x Franzi' in result and 'Flauschjacke: Bershka' in result and 'Palm Springs Mini (links)' not in result and 'Diese Website verwendet Akismet' not in result and 'New York, New York' not in result
+
+    result = load_mock_page('https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html', xmloutput)
+    assert 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and '2. Satt essen bei den Mahlzeiten' in result and 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result # and 'Bringt die Kilos zum Purzeln!' not in result
+
+    result = load_mock_page('https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html', xmloutput)
+    assert 'Glücks-Trend Konkurrenz' in result and 'Praktiziere Dankbarkeit' in result and 'dein Ikigai schon gefunden?' in result and '14,90 Euro.' in result and 'Neu in Liebe' not in result and 'Erfahre mehr' not in result and 'Erfahrung mit privater Arbeitsvermittlung?' not in result
+
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
-    #result = load_mock_page('', xmloutput)
-    #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
+
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
 
