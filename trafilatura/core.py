@@ -253,8 +253,8 @@ def convert_tags(tree):
     for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
         elem.attrib.clear()
         elem.tag = 'head'
-        if elem.text:
-            elem.text = trim(elem.text)
+        #if elem.text:
+        #    elem.text = trim(elem.text)
         # elem.set('rendition', '#i')
     # br → lb
     for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
@@ -418,48 +418,68 @@ def extract_content(tree):
                         newsub.text = processed_child.text
                         if element.tag == 'quote':
                             newsub.tail = processed_child.tail
-                            child.tag = 'done' # causes errors
+                            child.tag = 'done' # can cause errors
                 if len(processed_element) > 0: # if it has children
                     result_body.append(processed_element)
                 continue
 
+            # bypass: head:
+            elif element.tag == 'head':
+                if element.text is not None:
+                    element.text = trim(element.text)
+                    if element.text and re.search(r'\w', element.text):
+                        result_body.append(element)
+                continue
+
             # strip attrs after discard is run
-            if element.tag in ('div', 'p'): # 'head', 'list',
+            # TODO: weird and empty elements such as <p><p>...</p></p> ???
+            elif element.tag == 'p':
                 element.attrib.clear()
-                # if element.tag == 'div':
-                #     element.tag = 'p'
-                processed_element = handle_textnode(element)
-                if processed_element is not None:
+                # no children
+                if len(element) == 0:
+                    processed_element = handle_textnode(element)
+                    if processed_element is not None:
+                        result_body.append(processed_element)
+                    continue
+                # children
+                processed_element = etree.Element(element.tag)
+                processed_element.text = ''
+                for child in element.iter():
+                    if child.tag in potential_tags:
+                        processed_child = handle_textnode(child)
+                        if processed_child is not None:
+                            # paragraph, append text
+                            if child.tag == 'p':
+                                if processed_child.text is not None:
+                                    processed_element.text = processed_element.text + processed_child.text
+                                if processed_child.tail is not None:
+                                    processed_element.text = processed_element.text + ' ' + processed_child.tail
+                            else:
+                                newsub = etree.SubElement(processed_element, child.tag)
+                                newsub.text = processed_child.text
+                                newsub.tail = processed_child.tail
+                    child.tag = 'done'
+                # finish
+                #if len(processed_element) > 0:
+                if len(processed_element.text) > 0:
                     result_body.append(processed_element)
                 continue
-                #processed_element = etree.Element(element.tag)
-                #processed_element.text = ''
-                #for child in element.iter():
-                #    if child.tag in potential_tags:
-                #        processed_child = handle_textnode(child)
-                #        if processed_child is not None:
-                #            # paragraph, append text
-                #            if child.tag == 'p':
-                #                if processed_child.text is not None:
-                #                    processed_element.text = processed_element.text + processed_child.text
-                #                if processed_child.tail is not None:
-                #                    processed_element.text = processed_element.text + ' ' + processed_child.tail
-                #            else:
-                #                newsub = etree.SubElement(processed_element, child.tag)
-                #                newsub.text = processed_child.text
-                #                newsub.tail = processed_child.tail
-                #    child.tag = 'done'
 
-            # TODO: weird and empty elements such as <p><p>...</p></p> ???
-            processed_element = handle_textnode(element)
-            if processed_element is not None:
-                # small div-correction # could be moved elsewhere
-                # insert
-                result_body.append(processed_element)
+            # other elements (div, ??, ??)
+            else:
+                processed_element = handle_textnode(element)
+                if processed_element is not None:
+                    element.attrib.clear()
+                    # small div-correction # could be moved elsewhere
+                    if element.tag == 'div':
+                        element.tag = 'p'
+                    # insert
+                    result_body.append(processed_element)
         # control
         if len(result_body) > 0: # if it has children
             LOGGER.debug(expr)
             break
+
     # try parsing wild <p> elements
     if len(result_body) == 0: # no children
         LOGGER.debug('Taking all p-elements')
