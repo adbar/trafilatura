@@ -43,7 +43,7 @@ comments_blacklist = ('( Abmelden / Ändern )')
 # LRU_DICT = defaultdict(int)
 
 
-BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content")]', \
+BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content") or starts-with(@class, "entry-content") or starts-with(@id, "article-content") or starts-with(@class, "article-content") or starts-with(@id, "article__content") or starts-with(@class, "article__content")]', \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-body')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
@@ -67,6 +67,8 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") 
             '//div[@class="cell"]', \
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
            ]
+#             '//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content")]', \
+
 
 COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]", \
                 "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments')]", \
@@ -88,7 +90,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  # news outlets
                  './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "newsletter") or contains(@class, "newsletter")]', \
-#                 './/*[contains(@id, "cookie") or contains(@class, "cookie")]', \
+                 './/*[(self::div or self::p or self::section)][contains(@id, "cookie") or contains(@class, "cookie")]', \
                  # navigation
                  './/*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-")]', \
                  './/*[starts-with(@id, "breadcrumbs")]',\
@@ -245,7 +247,7 @@ def convert_tags(tree):
         elem.tag = 'list'
         elem.attrib.clear()
     # blockquote | q → quote
-    for elem in tree.xpath('//blockquote|//q'):
+    for elem in tree.xpath('//blockquote|//pre|//q'):
         elem.tag = 'quote'
         elem.attrib.clear()
     # change rendition #i
@@ -263,7 +265,7 @@ def convert_tags(tree):
         elem.tag = 'hi'
         elem.set('rendition', '#u')
     # change rendition #pre and #t (very rare)
-    for elem in tree.xpath('//pre|//tt'): # //code
+    for elem in tree.xpath('//tt'): # //pre| //code
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#t')
