@@ -407,7 +407,10 @@ def extract_content(tree):
                         newsub.text = processed_child.text
                         if element.tag == 'quote':
                             newsub.tail = processed_child.tail
-                            child.tag = 'done' # can cause errors
+                            #child.tag = 'done' # can cause errors
+                # avoid double tags??
+                if element.tag == 'quote':
+                    element.tag = 'done' # can cause errors
                 if len(processed_element) > 0: # if it has children
                     result_body.append(processed_element)
                 continue
@@ -421,7 +424,6 @@ def extract_content(tree):
                 continue
 
             # strip attrs after discard is run
-            # TODO: weird and empty elements such as <p><p>...</p></p> ???
             elif element.tag == 'p':
                 element.attrib.clear()
                 # no children
@@ -459,8 +461,9 @@ def extract_content(tree):
                 continue
 
             # insert it directly
-            #elif element.tag == 'lb':
-            #    result_body.append(element)
+            elif element.tag == 'lb':
+                #pass
+                result_body.append(element)
 
             # other elements (div, ??, ??)
             else:
