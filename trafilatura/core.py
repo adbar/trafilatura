@@ -248,7 +248,7 @@ def duplicate_test(element, justext_switch=False):
 
 
 def convert_tags(tree):
-    '''Convert relevant HTML tags to XML TEI format'''
+    '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # head tags + delete attributes
     for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
         elem.attrib.clear()
@@ -403,36 +403,24 @@ def extract_content(tree):
             if element.tag not in potential_tags:
                 continue
             # bypass: nested elements
-            if element.tag == 'list':
-                processed_list = etree.Element('list')
+            if element.tag in ('list', 'quote'):
+                processed_element = etree.Element(element.tag)
                 for child in element.iter():
-                    if child.tag in ('dt', 'li'):
-                        processed_child = handle_textnode(child)
-                        if processed_child is not None:
-                            newsub = etree.SubElement(processed_list, 'item')
-                            newsub.text = processed_child.text
-                            # newsub.tail = processed_child.tail
-                    # child.tag = 'done' # causes errors
-                if len(processed_list) > 0: # if it has children
-                    result_body.append(processed_list)
-                continue
-            elif element.tag == 'quote':
-                processed_quote = etree.Element('quote')
-                for child in element.iter():
-                    if child.tag in potential_tags:
-                        processed_child = handle_textnode(child)
-                        if processed_child is not None:
-                            newsub = etree.SubElement(processed_quote, child.tag)
-                            newsub.text = processed_child.text
+                    # list-specific check
+                    if element.tag == 'list' and child.tag not in ('dt', 'li'): #  'item'
+                        continue
+                    processed_child = handle_textnode(child)
+                    if processed_child is not None:
+                        if element.tag == 'list':
+                            newsub = etree.SubElement(processed_element, 'item')
+                        else:
+                            newsub = etree.SubElement(processed_element, child.tag)
+                        newsub.text = processed_child.text
+                        if element.tag == 'quote':
                             newsub.tail = processed_child.tail
-                    child.tag = 'done'
-                if len(processed_quote) > 0: # if it has children
-                    #if textfilter(processed_quote) is True:
-                    #    continue
-                #if processed_quote.text and re.search(r'\w', processed_quote.text): # text_content()
-                    #if duplicate_test(processed_quote) is True:
-                        #continue
-                    result_body.append(processed_quote)
+                            child.tag = 'done' # causes errors
+                if len(processed_element) > 0: # if it has children
+                    result_body.append(processed_element)
                 continue
 
             # strip attrs after discard is run
