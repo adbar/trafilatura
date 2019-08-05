@@ -9,6 +9,7 @@ Module bundling functions related to HTML and text processing.
 
 import logging
 import re
+import socket
 import unicodedata
 
 from io import StringIO # python3
@@ -47,7 +48,7 @@ def fetch_url(url):
     })
     # send
     try:
-       response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=headers)
+        response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=headers)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
     except requests.exceptions.TooManyRedirects:
@@ -114,7 +115,7 @@ def load_html(htmlobject):
 def remove_control_characters(string):
     '''Prevent XML invalid character errors'''
     # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
-    return "".join(char for char in string if unicodedata.category(char)[0]!="C" or char in ('\t', '\n'))
+    return ''.join(char for char in string if unicodedata.category(char)[0] != "C" or char in ('\t', '\n'))
 
 
 def sanitize(text):

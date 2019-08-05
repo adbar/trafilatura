@@ -17,7 +17,7 @@ from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
 LOGGER = logging.getLogger(__name__)
 
 
-def examine(htmlstring, url, no_fallback=False, include_comments=True, include_tables=True, xml_output=False, tei_output=False):
+def examine(htmlstring, url=None, no_fallback=False, include_comments=True, include_tables=True, xml_output=False, tei_output=False):
     """ Generic safeguards and triggers """
     # safety check
     if htmlstring is None:
@@ -64,7 +64,7 @@ def main():
             sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
             sys.exit(1)
 
-    result = examine(htmlstring, url=args.url, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei)
+    result = examine(htmlstring, url=args.URL, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei)
     if result is not None:
         sys.stdout.write(result + '\n')
 

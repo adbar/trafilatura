@@ -11,7 +11,6 @@ BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content
             "//*[(self::div or self::section)][contains(@class, 'post-body')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
-#            "//*[(self::div or self::section)][starts-with(@id, 'story')]", \ # story-content
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
             '//*[(self::div or self::main or self::section)][@id="content-main" or @id="content" or @class="content" or contains(@class, "main-content") or contains(@class, "ArticleContent")]', \
             '//article', \
@@ -30,7 +29,8 @@ BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content
             '//div[@class="cell"]', \
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
            ]
-#             '//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content")]', \
+#            "//*[(self::div or self::section)][starts-with(@id, 'story')]", \ # story-content
+#            '//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content")]', \
 
 
 COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]", \

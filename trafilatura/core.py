@@ -472,7 +472,7 @@ def extract_content(tree, include_tables=False):
                         # element.getparent().remove(element)
                 # prune recursively empty elements
                 context = etree.iterwalk(table_elem)
-                for action, elem in context:
+                for _, elem in context:
                     parent = elem.getparent()
                     if recursively_empty(elem):
                         parent.remove(elem)
