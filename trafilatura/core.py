@@ -308,13 +308,15 @@ def extract_content(tree, include_tables=False):
         subtree = discard_unwanted(subtree)
         # define iteration strategy
         potential_tags = set(TAG_CATALOG) # 'span'
-        if len(subtree.xpath('.//p//text()')) == 0: # no paragraphs containing text
+        if len(subtree.xpath('//p//text()')) == 0: # no paragraphs containing text
+            LOGGER.debug('adding div')
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
         for element in subtree.xpath('.//*'):
             ## delete unwanted
             if element.tag not in potential_tags:
+                # LOGGER.debug('discarding: %s %s', element.tag, element.text)
                 continue
             # bypass: nested elements
             if element.tag in ('list', 'quote'):
@@ -366,6 +368,8 @@ def extract_content(tree, include_tables=False):
                     if child.tag in potential_tags:
                         processed_child = handle_textnode(child)
                         if child.tag == 'lb':
+                            if child.tail is None or not re.search('\w+', child.tail):
+                                continue
                             newsub = etree.SubElement(processed_element, 'lb')
                             newsub.tail = handle_subelement(child).tail
                             continue
@@ -378,8 +382,10 @@ def extract_content(tree, include_tables=False):
                                     processed_element.text = processed_element.text + ' ' + processed_child.tail
                             else:
                                 newsub = etree.SubElement(processed_element, child.tag)
-                                newsub.text = processed_child.text
-                                newsub.tail = processed_child.tail
+                                if processed_child.text is not None:
+                                    newsub.text = trim(processed_child.text)
+                                if processed_child.tail is not None:
+                                    newsub.tail = trim(processed_child.tail)
                     child.tag = 'done'
                 # finish
                 #if len(processed_element) > 0:
@@ -389,8 +395,9 @@ def extract_content(tree, include_tables=False):
 
             # insert it directly
             elif element.tag == 'lb':
-                #pass
-                result_body.append(element)
+                if element.tail is not None and re.search('\w+', element.tail):
+                    element.tail = trim(element.tail)
+                    result_body.append(element)
 
             # other elements (div, ??, ??)
             else:
@@ -505,6 +512,7 @@ def extract_comments(tree, include_comments):
                 # filter potential interesting p elements
                 # if not elem.attrib or 'style' not in elem.attrib: # or not 'align' in elem.attrib
                     # insert if words
+                    elem.attrib.clear()
                     comments_body.append(elem)
         # control
         if len(comments_body) > 0: # if it has children

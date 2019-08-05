@@ -13,7 +13,7 @@ BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
 #            "//*[(self::div or self::section)][starts-with(@id, 'story')]", \ # story-content
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
-            '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content" or contains(@class, "main-content") or contains(@class, "ArticleContent")]', \
+            '//*[(self::div or self::main or self::section)][@id="content-main" or @id="content" or @class="content" or contains(@class, "main-content") or contains(@class, "ArticleContent")]', \
             '//article', \
             "//*[(self::article or self::div or self::section)][@id='article' or @class='article']", \
             "//*[(self::article or self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
@@ -66,11 +66,12 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
                  './/*[(self::div or self::section or self::span)][contains(@id, "button") or contains(@class, "button")]', \
+                 './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
+
                  # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
                  './/*[(self::div or self::section)][contains(@style, "hidden")]', \
                 ]
                  # optional??
-#                './/*[(self::div or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
 #                './/aside', \ # conflicts with text extraction
 
 
