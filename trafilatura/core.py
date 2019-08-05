@@ -297,7 +297,7 @@ def handle_subelement(subelement):
 
 
 # @profile
-def extract_content(tree):
+def extract_content(tree, include_tables):
     '''Find and extract the main content of a page using a set of expressions'''
     result_body = etree.Element('body')
     # iterate
@@ -424,6 +424,45 @@ def extract_content(tree):
                 processed_element.attrib.clear()
                 processed_element.tail = ''
                 result_body.append(processed_element)
+
+    # TODO:
+    # try parsing tables
+# for _, element in etree.iterparse(xml_file, tag='a'):
+#      print('%s -- %s' % (element.findtext('b'), element[1].text))
+#      element.clear()
+    if include_tables is True: #len(result_body) == 0: # no children
+        LOGGER.debug('Switching to table extraction')
+        search_tree = discard_unwanted(tree)
+        for table_elem in search_tree.xpath('//table'):
+            # iterate through elements in table
+            for subelement in table_elem.xpath('.//*'):
+                subelement.attrib.clear()
+                if subelement.text is not None:
+                    subelement.text = re.sub(r'(?<![p{P}>])\n', ' ', subelement.text)
+                subelement.tail = ''
+                if subelement.tag == 'th':
+                    subelement.tag = 'head'
+                elif subelement.tag == 'tr':
+                    subelement.tag = 'row'
+                    if len(' '.join(subelement.itertext())) < 50:
+                        subelement.getparent().remove(subelement)
+                        continue
+                elif subelement.tag == 'td':
+                    if len(' '.join(subelement.itertext())) < 30:
+                        subelement.getparent().remove(subelement)
+                        continue
+                    subelement.tag = 'cell'
+                else:
+                    # subelement.getparent().remove(subelement)
+                    etree.strip_tags(table_elem, subelement.tag)
+            # insert
+            if len(' '.join(table_elem.itertext())) > MIN_EXTRACTED_SIZE:
+                table_elem.attrib.clear()
+                for element in table_elem.iter():
+                    if not re.search(r'[p{L}]+', ''.join(element.itertext())):
+                        element.clear()
+                        # element.getparent().remove(element)
+                result_body.append(table_elem)
     return result_body
 
 
@@ -546,7 +585,7 @@ def xmltotxt(xmloutput):
             textelement = element.tail
         textelement = sanitize(textelement)
         textelement = trim(textelement)
-        if element.tag in ('code', 'head', 'item', 'lb', 'p', 'quote'):
+        if element.tag in ('code', 'head', 'item', 'lb', 'p', 'quote', 'row', 'table'):
             returnstring += '\n' + textelement + '\n'
         else:
             returnstring += textelement + ' '
@@ -557,7 +596,7 @@ def xmltotxt(xmloutput):
 
 # main process
 # @profile
-def process_record(filecontent, url=None, record_id='0001', compare_flag=True, include_comments=True, xml_output=False, tei_output=False, target_language=None):
+def process_record(filecontent, url=None, record_id='0001', compare_flag=True, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
     # LOGGER.debug('comments status: %s', include_comments)
@@ -582,18 +621,24 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
     commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
 
     ## extract content
-    temppost_hand = extract_content(cleaned_tree)
+    temppost_hand = extract_content(cleaned_tree, include_tables)
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
     if compare_flag is True:
         # try with justext
-        temppost_algo = try_justext(cleaned_tree, filecontent, record_id)
+        temppost_algo = try_justext(tree, filecontent, record_id) # cleaned_tree
         # compare
         temp_jt = u' '.join(temppost_algo.itertext())
         LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
-        # condition to use justext
-        if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text): # was len(temp_text) > 10
+        # conditions to use justext
+        if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text):
+            justext_flag = True
+        elif len(temppost_hand.xpath('//p')) == 0: # borderline case
+            justext_flag = True
+        else:
+            justext_flag = False
+        if justext_flag is True: # was len(temp_text) > 10
             postbody = temppost_algo
             LOGGER.info('using justext: %s', url)
         else:
