@@ -84,18 +84,15 @@ def prune_html(tree):
     for element in tree.xpath(".//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
             element.getparent().remove(element)
-    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-    # Walk over all elements in the tree and remove all nodes that are recursively empty
-    # context = etree.iterwalk(tree)
-    # for action, element in context:
-    #     parent = element.getparent()
-    #     if element.tag in CUT_EMPTY_ELEMS and recursively_empty(element):
-    #        parent.remove(element)
-    ## https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-    # if elem.text:
-    #    return False
-    # return all((recursively_empty(c) for c in elem.iterchildren()))
     return tree
+
+
+def recursively_empty(e):
+    '''return recursively empty elements'''
+    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
+    if e.text:
+        return False
+    return all((recursively_empty(c) for c in e.iterchildren()))
 
 
 def discard_unwanted(tree):
@@ -162,8 +159,8 @@ def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # head tags + delete attributes
     for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
-        elem.attrib.clear()
         elem.tag = 'head'
+        elem.attrib.clear()
         # elem.set('rendition', '#i')
     # br → lb
     for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
@@ -431,7 +428,7 @@ def extract_content(tree, include_tables=False):
 #      print('%s -- %s' % (element.findtext('b'), element[1].text))
 #      element.clear()
     if include_tables is True: #len(result_body) == 0: # no children
-        LOGGER.debug('Switching to table extraction')
+        LOGGER.debug('Using table extraction')
         search_tree = discard_unwanted(tree)
         for table_elem in search_tree.xpath('//table'):
             # iterate through elements in table
@@ -447,10 +444,14 @@ def extract_content(tree, include_tables=False):
                     if len(' '.join(subelement.itertext())) < 50:
                         subelement.getparent().remove(subelement)
                         continue
+                    if subelement.text is not None:
+                        subelement.text = trim(subelement.text)
                 elif subelement.tag == 'td':
-                    if len(' '.join(subelement.itertext())) < 30:
-                        subelement.getparent().remove(subelement)
-                        continue
+                    #if len(' '.join(subelement.itertext())) < 30:
+                        #subelement.getparent().remove(subelement)
+                        #continue
+                    if subelement.text is not None:
+                        subelement.text = trim(subelement.text)
                     subelement.tag = 'cell'
                 else:
                     # subelement.getparent().remove(subelement)
@@ -462,6 +463,12 @@ def extract_content(tree, include_tables=False):
                     if not re.search(r'[p{L}]+', ''.join(element.itertext())):
                         element.clear()
                         # element.getparent().remove(element)
+                # prune recursively empty elements
+                context = etree.iterwalk(table_elem)
+                for action, elem in context:
+                    parent = elem.getparent()
+                    if recursively_empty(elem):
+                        parent.remove(elem)
                 result_body.append(table_elem)
     return result_body
 

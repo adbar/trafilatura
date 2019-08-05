@@ -13,7 +13,7 @@ BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
 #            "//*[(self::div or self::section)][starts-with(@id, 'story')]", \ # story-content
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
-            '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content" or contains(@class, "ArticleContent")]', \
+            '//*[(self::div or self::section)][@id="content-main" or @id="content" or @class="content" or contains(@class, "main-content") or contains(@class, "ArticleContent")]', \
             '//article', \
             "//*[(self::article or self::div or self::section)][@id='article' or @class='article']", \
             "//*[(self::article or self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
