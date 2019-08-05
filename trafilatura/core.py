@@ -297,7 +297,7 @@ def handle_subelement(subelement):
 
 
 # @profile
-def extract_content(tree, include_tables):
+def extract_content(tree, include_tables=False):
     '''Find and extract the main content of a page using a set of expressions'''
     result_body = etree.Element('body')
     # iterate
@@ -634,7 +634,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
         # conditions to use justext
         if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text):
             justext_flag = True
-        elif len(temppost_hand.xpath('//p')) == 0: # borderline case
+        elif len(temppost_hand.xpath('//p')) == 0 and len(temp_jt) > 0: # borderline case
             justext_flag = True
         else:
             justext_flag = False
