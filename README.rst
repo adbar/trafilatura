@@ -131,11 +131,13 @@ You can also pipe a HTML document (and response body) to the trafilatura:
 
 For usage instructions see ``trafilatura -h``:
 
-``usage: trafilatura [-h] [--nocomments] [--xml] [--xmltei] [-u URL] [-v]``
+``usage: trafilatura [-h] [-f] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
 
 optional arguments:
   -h, --help         show this help message and exit
+  -f, --fast         Fast (without fallback detection)
   --nocomments       Don't output any comments
+  --notables         Don't output any table elements
   --xml              XML output
   --xmltei           XML TEI output
   -u URL, --URL URL  custom URL download

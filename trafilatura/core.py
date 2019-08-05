@@ -253,7 +253,7 @@ def handle_textnode(element, comments_fix=True):
             #continue
             return None
         # if element.tag == 'lb':
-        LOGGER.debug('using tail for element %s', element.tag)
+        # LOGGER.debug('using tail for element %s', element.tag)
         # TODO: handle differently for br/lb
         element.text = element.tail
         element.tail = ''
@@ -611,7 +611,7 @@ def xmltotxt(xmloutput):
 
 # main process
 # @profile
-def process_record(filecontent, url=None, record_id='0001', compare_flag=True, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
+def process_record(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
     # LOGGER.debug('comments status: %s', include_comments)
@@ -640,7 +640,7 @@ def process_record(filecontent, url=None, record_id='0001', compare_flag=True, i
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
-    if compare_flag is True:
+    if no_fallback is False:
         # try with justext
         temppost_algo = try_justext(tree, filecontent, record_id) # cleaned_tree
         # compare

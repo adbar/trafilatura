@@ -110,15 +110,15 @@ def test_download():
     url = 'https://httpbin.org/status/200'
     teststring = utils.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, url, True, False, True) is None
+    assert cli.examine(teststring, url) is None
     url = 'https://httpbin.org/links/2/2'
     teststring = utils.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, url, True, False, True) is None
+    assert cli.examine(teststring, url) is None
     url = 'https://httpbin.org/html'
     teststring = utils.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, url, True, False, True) is not None
+    assert cli.examine(teststring, url) is not None
 
 
 def test_main(xmloutput=False):
@@ -301,7 +301,7 @@ def test_main(xmloutput=False):
     assert 'Zeit für Loslassen und Entspannung.' in result and 'Erfrischende, abschwellende Augencreme Phyto Contour' in result and 'Wie sieht dein Alltag aus?' in result and 'Vielen Dank Anja für deine Tipps rund um Beauty' in result and 'Betreiberin von incurvy Plus Size' not in result and 'Wellness Gesichtsbehandlung: Plaisir D’Aromes' not in result # and 'Das Thema könnte dich auch interessieren:' not in result
 
     result = load_mock_page('https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843', xmloutput)
-    print(result)
+    # print(result)
     assert 'No grape variety invites as much intrigue' in result and 'With just 0.9 hectares' in result and 'Related Subjects' not in result and 'Audios and videos on the topic' not in result # and 'But boozers in Berlin' not in result 
 
     result = load_mock_page('https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html', xmloutput)
