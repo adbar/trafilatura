@@ -6,7 +6,7 @@ X-Path expressions needed to extract and filter the main text content
 ## under GNU GPL v3 license
 
 
-BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content") or starts-with(@class, "entry-content") or starts-with(@id, "article-content") or starts-with(@class, "article-content") or starts-with(@id, "article__content") or starts-with(@class, "article__content")]', \
+BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content") or starts-with(@class, "entry-content") or starts-with(@id, "article-content") or starts-with(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content") or contains(@id, "article__body") or contains(@class, "article__body")]', \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-body')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \

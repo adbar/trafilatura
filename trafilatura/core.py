@@ -662,6 +662,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     else:
         LOGGER.info('extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
+        temp_jt = ''
 
     # try to use original/dirty tree
     if len(temp_text) == 0 and len(temp_jt) == 0:
