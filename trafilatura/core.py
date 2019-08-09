@@ -301,6 +301,7 @@ def extract_content(tree, include_tables=False):
     for expr in BODY_XPATH:
         # select tree if the expression has been found
         subtree = tree.xpath(expr)
+        # print(expr, len(subtree))
         if len(subtree) == 0:
             continue
         subtree = subtree[0]
@@ -313,7 +314,8 @@ def extract_content(tree, include_tables=False):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
-        for element in subtree.xpath('.//*'):
+        for element in subtree.xpath('.//*'): # subtree.iter()
+            # print(element.tag)
             ## delete unwanted
             if element.tag not in potential_tags:
                 # LOGGER.debug('discarding: %s %s', element.tag, element.text)
@@ -421,7 +423,7 @@ def extract_content(tree, include_tables=False):
         # prune
         search_tree = discard_unwanted(tree)
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
-        for element in search_tree.xpath('//p'):
+        for element in search_tree.xpath('//p'): # search_tree.xpath('//p')
             # print(element.tag, element.text)
             processed_element = handle_textnode(element)
             if processed_element is not None:
@@ -640,7 +642,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
 
     ## compare
     temp_text = u' '.join(temppost_hand.itertext())
-    if no_fallback is False:
+    if no_fallback is False and 0 <= len(temp_text) < 300:
         # try with justext
         temppost_algo = try_justext(tree, filecontent, record_id) # cleaned_tree
         # compare

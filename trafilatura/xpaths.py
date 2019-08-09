@@ -6,15 +6,15 @@ X-Path expressions needed to extract and filter the main text content
 ## under GNU GPL v3 license
 
 
-BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content") or starts-with(@class, "entry-content") or starts-with(@id, "article-content") or starts-with(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content") or contains(@id, "article__body") or contains(@class, "article__body")]', \
+BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content") or contains(@id, "article__body") or contains(@class, "article__body")]', \
             "//*[(self::div or self::section)][contains(@class, 'post-text') or contains(@class, 'post_text')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-body')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-content') or contains(@class, 'post_content') or contains(@class, 'postcontent')]", \
             "//*[(self::div or self::section)][contains(@class, 'post-entry') or contains(@class, 'postentry')]", \
             "//*[(self::div or self::section)][starts-with(@class, 'entry')]", \
-            '//*[(self::div or self::main or self::section)][@id="content-main" or @id="content" or @class="content" or contains(@class, "main-content") or contains(@class, "ArticleContent")]', \
+            '//*[(self::div or self::main or self::section)][@id="content" or contains(@id, "content-main") or contains(@class, "content-main") or contains(@class, "main-content") or contains(@class, "ArticleContent") or contains(@class, "page-content")]', \
             '//article', \
-            "//*[(self::article or self::div or self::section)][@id='article' or @class='article']", \
+            "//*[(self::article or self::div or self::section)][starts-with(@id, 'article') or starts-with(@class, 'article')]", \
             "//*[(self::article or self::div or self::section)][starts-with(@id, 'main') or starts-with(@class, 'main') or starts-with(@role, 'main')]", \
             '//*[(self::div or self::section)][@class="text"]', \
             "//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy')]", \
@@ -31,6 +31,7 @@ BODY_XPATH = ['//*[(self::div or self::section)][starts-with(@id, "entry-content
            ]
 #            "//*[(self::div or self::section)][starts-with(@id, 'story')]", \ # story-content
 #            '//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content")]', \
+# or @id="content" or @class="content"
 
 
 COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]", \
