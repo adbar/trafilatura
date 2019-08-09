@@ -30,7 +30,6 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "entry-content") 
             '//*[(self::div or self::section)][@itemprop="articleBody"]', \
            ]
 #            "//*[(self::div or self::section)][starts-with(@id, 'story')]", \ # story-content
-#            '//*[(self::div or self::section)][contains(@id, "entry-content") or contains(@class, "entry-content") or contains(@id, "article-content") or contains(@class, "article-content") or contains(@id, "article__content") or contains(@class, "article__content")]', \
 # or @id="content" or @class="content"
 
 

@@ -25,7 +25,7 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.0.2',
+    version='0.0.3',
     description='Scrapes the main text of web pages while preserving some structure.',
     long_description=readme(),
     classifiers=[
