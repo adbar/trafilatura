@@ -67,12 +67,11 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::section)][contains(@id, "author") or contains(@class, "author")]', \
                  './/*[(self::div or self::section or self::span)][contains(@id, "button") or contains(@class, "button")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
-
-                 # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
                  './/*[(self::div or self::section)][contains(@style, "hidden")]', \
                 ]
                  # optional??
 #                './/aside', \ # conflicts with text extraction
+                 # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
 
 
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \

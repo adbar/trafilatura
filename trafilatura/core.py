@@ -119,7 +119,7 @@ def textfilter(element):
         if len(line) < 5:
             continue
         # print('###', line)
-        if re.match(r'Gef.llt mir|.hnliche Beitr|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar|Connecting to %s|Verbinde mit %s|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$', line):
+        if re.match(r'Gef.llt mir|.hnliche Beitr|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar|Connecting to %s|Verbinde mit %s|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$|Whats[Aa]pp$', line):
             return True
         if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
             return True
@@ -205,7 +205,7 @@ def convert_tags(tree):
         else:
             elem.text = elem.text + ' '
     # strip tags
-    etree.strip_tags(tree, 'dd', 'span')
+    etree.strip_tags(tree, 'dd', 'span') #
     return tree
 
 
