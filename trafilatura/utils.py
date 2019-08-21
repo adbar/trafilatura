@@ -96,7 +96,7 @@ def load_html(htmlobject):
             #LOGGER.info('guessed encoding: %s', guessed_encoding)
             # parse
             # parser = html.HTMLParser() # encoding=guessed_encoding  # document_fromstring
-            tree = html.parse(StringIO(htmlobject), parser=CUSTOM_HTMLPARSER)
+            tree = html.parse(StringIO(htmlobject)) # , parser=CUSTOM_HTMLPARSER
         except UnicodeDecodeError as err:
             LOGGER.error('unicode %s', err)
             tree = None
@@ -114,8 +114,10 @@ def load_html(htmlobject):
 
 def remove_control_characters(string):
     '''Prevent XML invalid character errors'''
+    # TODO: slow
     # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
     return ''.join(char for char in string if unicodedata.category(char)[0] != "C" or char in ('\t', '\n'))
+    # return re.sub(r'[\x00-\x1f\x7f-\x9f\t\n]', '', string)
 
 
 def sanitize(text):

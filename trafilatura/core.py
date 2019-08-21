@@ -39,7 +39,7 @@ LOGGER = logging.getLogger(__name__)
 
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
 
-CUT_EMPTY_ELEMS = ('a', 'div', 'i', 'ins', 'li', 'link', 'p', 'script', 'section', 'source', 'span', 'strong', 'td') # 'meta',
+CUT_EMPTY_ELEMS = ('a', 'abbr', 'acronym', 'address', 'big', 'cite', 'div', 'font', 'i', 'ins', 'li', 'link', 'p', 'script', 'section', 'small', 'source', 'span', 'strong', 'sub', 'sup', 'td', 'wbr') # 'meta',
 
 comments_blacklist = ('( Abmelden / Ändern )')
 
@@ -47,7 +47,7 @@ comments_blacklist = ('( Abmelden / Ändern )')
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
 HTML_CLEANER = Cleaner()
-HTML_CLEANER.annoying_tags = True
+HTML_CLEANER.annoying_tags = False # True
 HTML_CLEANER.comments = True
 HTML_CLEANER.embedded = False # True
 HTML_CLEANER.forms = False # True
@@ -82,7 +82,7 @@ def manual_cleaning(tree):
     '''Prune the tree by discard unwanted elements'''
     #for element in tree.xpath('//*'):
     #    print('ZZZ ', element.tag)
-    for expression in ['//audio', '//canvas', '//embed', '//figure', '//footer', '//form', '//head', '//iframe', '//img',  '//link', '//map', '//math', '//nav', '//noscript', '//object', '//picture', '//script', '//style', '//svg', '//time', '//video']: # '//aside', '//header',
+    for expression in ['//audio', '//blink', '//canvas', '//embed', '//figure', '//footer', '//form', '//head', '//iframe', '//img',  '//link', '//map', '//marquee', '//math', '//nav', '//noscript', '//object', '//picture', '//script', '//style', '//svg', '//time', '//video']: # '//aside', '//header',
         for element in tree.xpath(expression):
             element.getparent().remove(element)
     # etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr')
