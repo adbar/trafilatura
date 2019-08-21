@@ -39,7 +39,7 @@ LOGGER = logging.getLogger(__name__)
 
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
 
-CUT_EMPTY_ELEMS = ('div', 'p', 'section')
+CUT_EMPTY_ELEMS = ('a', 'div', 'i', 'ins', 'li', 'link', 'p', 'script', 'section', 'source', 'span', 'strong', 'td') # 'meta',
 
 comments_blacklist = ('( Abmelden / Ändern )')
 
@@ -49,20 +49,20 @@ comments_blacklist = ('( Abmelden / Ändern )')
 HTML_CLEANER = Cleaner()
 HTML_CLEANER.annoying_tags = True
 HTML_CLEANER.comments = True
-HTML_CLEANER.embedded = True
-HTML_CLEANER.forms = True
-HTML_CLEANER.frames = True
-HTML_CLEANER.javascript = True
+HTML_CLEANER.embedded = False # True
+HTML_CLEANER.forms = False # True
+HTML_CLEANER.frames = False # True
+HTML_CLEANER.javascript = False # True
 HTML_CLEANER.links = False
 HTML_CLEANER.meta = False
 HTML_CLEANER.page_structure = False
 HTML_CLEANER.processing_instructions = True
 HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
-HTML_CLEANER.scripts = True
+HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
 HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span',
-HTML_CLEANER.kill_tags = ['aside', 'audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'label', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
+# HTML_CLEANER.kill_tags = ['audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video'] # 'aside', 'area', 'table' # 'header'
 
 # validation
 TEI_VALID_TAGS = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
@@ -77,16 +77,31 @@ LRU_TEST = LRU(LRU_SIZE)
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
 
 
+@profile
+def manual_cleaning(tree):
+    '''Prune the tree by discard unwanted elements'''
+    #for element in tree.xpath('//*'):
+    #    print('ZZZ ', element.tag)
+    for expression in ['//audio', '//canvas', '//embed', '//figure', '//footer', '//form', '//head', '//iframe', '//img',  '//link', '//map', '//math', '//nav', '//noscript', '//object', '//picture', '//script', '//style', '//svg', '//time', '//video']: # '//aside', '//header',
+        for element in tree.xpath(expression):
+            element.getparent().remove(element)
+    # etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr')
+    return tree
 
+
+@profile
 def prune_html(tree):
     '''delete empty elements'''
     # empty tags
     for element in tree.xpath(".//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
             element.getparent().remove(element)
+        #else:
+        #    print(element.tag)
     return tree
 
 
+@profile
 def recursively_empty(e):
     '''return recursively empty elements'''
     # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
@@ -95,6 +110,7 @@ def recursively_empty(e):
     return all((recursively_empty(c) for c in e.iterchildren()))
 
 
+@profile
 def discard_unwanted(tree):
     '''delete unwanted sections'''
     for expr in DISCARD_XPATH:
@@ -103,6 +119,7 @@ def discard_unwanted(tree):
     return tree
 
 
+@profile
 def discard_unwanted_comments(tree):
     '''delete unwanted comment sections'''
     for expr in COMMENTS_DISCARD_XPATH:
@@ -111,15 +128,16 @@ def discard_unwanted_comments(tree):
     return tree
 
 
+@profile
 def textfilter(element):
     '''Filter out unwanted text'''
     ## TODO: text_blacklist
     # print('#', element.text)
     for line in element.text.splitlines():
-        if len(line) < 5:
+        if len(line) <= 5:
             continue
-        # print('###', line)
-        if re.match(r'Gef.llt mir|.hnliche Beitr|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar|Connecting to %s|Verbinde mit %s|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$|Whats[Aa]pp$', line):
+        # print('###', line) |.hnliche Beitr|
+        if re.match(r'Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s$| mit %s$|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$|Whats[Aa]pp$', line):
             return True
         if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
             return True
@@ -155,6 +173,7 @@ def duplicate_test(element, justext_switch=False):
     return False
 
 
+@profile
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # head tags + delete attributes
@@ -243,7 +262,7 @@ def try_justext(tree, filecontent, record_id):
 #    return paragraphs
 
 
-# @profile
+@profile
 def handle_textnode(element, comments_fix=True):
     '''Convert, format, and probe potential text elements'''
     if element.text is None: # or len(element.text) < 10 # text_content()
@@ -266,9 +285,9 @@ def handle_textnode(element, comments_fix=True):
     if element.tail:
         element.tail = trim(element.tail) # + '\n'
     ## LOGGER.debug(element.tag, element.text)
-    if textfilter(element) is True:
-        return None
     if element.text and re.search(r'\w', element.text): # text_content()
+        if textfilter(element) is True:
+            return None
         ## TODO: improve duplicate detection
         if duplicate_test(element) is True:
             return None
@@ -277,7 +296,7 @@ def handle_textnode(element, comments_fix=True):
     return element
 
 
-# @profile
+@profile
 def handle_subelement(subelement):
     '''Convert, format, and probe potential text subelements'''
     if subelement.tail is None:
@@ -293,7 +312,7 @@ def handle_subelement(subelement):
     return subelement
 
 
-# @profile
+@profile
 def extract_content(tree, include_tables=False):
     '''Find and extract the main content of a page using a set of expressions'''
     result_body = etree.Element('body')
@@ -482,7 +501,7 @@ def extract_content(tree, include_tables=False):
     return result_body
 
 
-# @profile
+@profile
 def extract_comments(tree, include_comments):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
@@ -612,7 +631,7 @@ def xmltotxt(xmloutput):
 
 
 # main process
-# @profile
+@profile
 def process_record(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
@@ -621,10 +640,12 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     tree = load_html(filecontent)
     LOGGER.debug('HTML tree loaded for URL: %s', url)
 
+
     # save space and processing time
     cleaned_tree = prune_html(tree)
-
-    ## clean
+    # clean
+    cleaned_tree = manual_cleaning(cleaned_tree)
+    # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
 
     ## convert tags

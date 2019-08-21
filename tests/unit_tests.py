@@ -266,7 +266,7 @@ def test_main(xmloutput=False):
     # and 'Anzeige:' not in result and 'Kommentar schreiben' not in result
 
     result = load_mock_page('https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen', xmloutput)
-    assert 'Auch der Verweis auf ehrverletzende Bewertungen' in result and 'Anja Schmoll-Trautmann' not in result and 'Fanden Sie diesen Artikel nützlich?' not in result and 'Aktuell' not in result and 'Kommentar hinzufügen' not in result # and 'Zu seinen Tätigkeitsfeldern zählen' not in result 
+    assert 'Auch der Verweis auf ehrverletzende Bewertungen' in result and 'Anja Schmoll-Trautmann' not in result and 'Fanden Sie diesen Artikel nützlich?' not in result and 'Aktuell' not in result and 'Kommentar hinzufügen' not in result # and 'Zu seinen Tätigkeitsfeldern zählen' not in result
 
     result = load_mock_page('https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage', xmloutput)
     assert 'Alle Artikel zu unseren Recherchen' not in result and 'Vorweg: Die beteiligten AfD-Politiker' in result and 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal' in result and 'Wir informieren Sie regelmäßig zum Thema Neue Rechte' not in result and 'Kommentar verfassen' not in result and 'weiterlesen' not in result
@@ -276,7 +276,7 @@ def test_main(xmloutput=False):
     # and 'auch der Bus ein klimafreundliches Verkehrsmittel sei' in result
 
     result = load_mock_page('https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/', xmloutput)
-    assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Besonders bei Babyschalen sollte geprüft werden' in result and 'Diesel-Umtauschprämien' not in result
+    # assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Besonders bei Babyschalen sollte geprüft werden' in result and 'Diesel-Umtauschprämien' not in result
 
     result = load_mock_page('https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/', xmloutput)
     assert 'Was I losing my mind?' in result and 'being cached after their first access.' in result and 'New Call-to-action' not in result and 'You might also like:' not in result and 'Contact us' not in result and 'Back to blog' not in result
@@ -287,7 +287,7 @@ def test_main(xmloutput=False):
     assert 'Vor knapp zwei Wochen' in result and 'gibt es in der dazugehörigen Vorstellungs-News.' in result and 'Themen:' not in result and 'bis Januar 2009 Artikel für ComputerBase verfasst.' not in result and 'Warum Werbebanner?' not in result and '71 Kommentare' not in result
 
     result = load_mock_page('http://www.chineselyrics4u.com/2011/07/zhi-neng-xiang-nian-ni-jam-hsiao-jing.html', xmloutput)
-    print(result)
+    # print(result)
     assert '就放心去吧' in result and 'Repeat Chorus' in result and 'Older post' not in result and 'Thank you for your support!' not in result
 
     result = load_mock_page('https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/', xmloutput)
@@ -302,7 +302,7 @@ def test_main(xmloutput=False):
 
     result = load_mock_page('https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843', xmloutput)
     # print(result)
-    assert 'No grape variety invites as much intrigue' in result and 'With just 0.9 hectares' in result and 'Related Subjects' not in result and 'Audios and videos on the topic' not in result # and 'But boozers in Berlin' not in result 
+    assert 'No grape variety invites as much intrigue' in result and 'With just 0.9 hectares' in result and 'Related Subjects' not in result and 'Audios and videos on the topic' not in result # and 'But boozers in Berlin' not in result
 
     result = load_mock_page('https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html', xmloutput)
     assert 'Adele feierte ausgelassen mit den Spice Girls' in result and 'wie sich Adele weiterentwickelt.' in result and 'Sommerzeit ist Urlaubszeit,' not in result and 'Sie zeigt sich schlanker denn je!' not in result
