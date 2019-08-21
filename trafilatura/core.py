@@ -213,7 +213,7 @@ def try_justext(tree, filecontent, record_id):
     '''safety net: try with justext'''
     result_body = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
-    LOGGER.info('raw length: %s (file) %s (tostring) ', len(filecontent), len(justtextstring))
+    LOGGER.info('raw length: %s (tostring) ', len(justtextstring))
     try:
         # paragraphs = custom_justext(tree)
         paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
@@ -530,7 +530,7 @@ def extract_comments(tree, include_comments):
 
 def write_teitree(postbody, commentsbody):
     '''Bundle the extracted post and comments into a TEI tree'''
-    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    tei = etree.Element('TEI') # , xmlns='http://www.tei-c.org/ns/1.0'
     group = etree.SubElement(tei, 'group')
     # post
     postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
