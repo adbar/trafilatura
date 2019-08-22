@@ -170,11 +170,10 @@ def test_main(xmloutput=False):
     assert 'In eine andere Zeit' in result and 'Während Sie über den Markt schlendern' in result and 'Infos zum Verein' not in result and 'nach oben' not in result and 'Datenschutzerklärung' not in result
 
     result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft', xmloutput)
-    assert 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result # 'Eines der großen Probleme,' in result and
+    assert 'Eines der großen Probleme,' in result and 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result
 
-    #result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html', xmloutput)
-    #print(result)
-    #assert 'Erdöl bildet nach Millionen' in result and 'in unserem Artikel "Warum wird das Erdöl knapp?".' in result # and 'Die Natur ist aus chemischen Elementen aufgebaut' not in result
+    result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html', xmloutput)
+    assert 'Erdöl bildet nach Millionen' in result and 'in unserem Artikel "Warum wird das Erdöl knapp?".' in result and 'Die Natur ist aus chemischen Elementen aufgebaut' not in result
 
     result = load_mock_page('https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html', xmloutput)
     assert 'Für einen Roman' in result and 'Auszeichnung der Branche.' in result
@@ -240,7 +239,7 @@ def test_main(xmloutput=False):
     assert '3.Charlotte Jones Anderson' in result and 'Keep Talking Sports!' in result and 'Category: Blog Popular' not in result and 'Copyright Women Can Talk Sports.' not in result and 'Submit your sports question below' not in result
 
     result = load_mock_page('https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html', xmloutput)
-    assert 'Schönheit kommt für Pamela von Innen und Außen' in result and 'Die Workout Übungen kannte ich bereits' in result and 'Great post, I like your blog' in result and 'Links zu diesem Post' not in result and 'mehr über mich ♥' not in result # and 'Bitte beachte auch die Datenschutzerklärung von Google.' not in result # and 'Vielen Dank an den den Verlag' in result
+    assert 'Schönheit kommt für Pamela von Innen und Außen' in result and 'Die Workout Übungen kannte ich bereits' in result and 'Great post, I like your blog' in result and 'Links zu diesem Post' not in result and 'mehr über mich ♥' not in result # and 'Vielen Dank an den den Verlag' in result # and 'Bitte beachte auch die Datenschutzerklärung von Google.' not in result
 
     result = load_mock_page('https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html', xmloutput)
     assert 'Grounded in sustainable architecture and refined Vietnamese craftsmanship,' in result and 'and Carmelo Resort' in result and 'OMG what a beautiful place to stay! ' in result and 'Food Advertising by' not in result and 'Dining and Drinking' in result # and 'Reply' not in result # and 'A lovely note makes a beautiful day!' not in result
@@ -258,12 +257,13 @@ def test_main(xmloutput=False):
     assert 'Leitsätze des Gerichts' in result and 'III. Die Revision der Beklagten' and 'twittern' not in result and 'Ähnliche Beiträge' not in result and 'd.toelle[at]rechtambild.de' not in result
 
     result = load_mock_page('http://www.internet-law.de/2011/07/verstost-der-ausschluss-von-pseudonymen-bei-google-gegen-deutsches-recht.html', xmloutput)
-    assert 'Wann Blogs einer Impressumspflicht unterliegen,' in result and 'Mit Verlaub, ich halte das für groben Unsinn.' in result and 'Über mich' not in result and 'Gesetzes- und Rechtsprechungszitate werden automatisch' not in result
+    assert 'Wann Blogs einer Impressumspflicht unterliegen,' in result and 'Über mich' not in result and 'Gesetzes- und Rechtsprechungszitate werden automatisch' not in result
+    ## comments!
+    # and 'Mit Verlaub, ich halte das für groben Unsinn.' in result
     # and 'Comment by' not in result
 
     result = load_mock_page('https://www.telemedicus.info/article/2766-Rezension-Haerting-Internetrecht,-5.-Auflage-2014.html', xmloutput)
-    assert 'Aufbau und Inhalt' in result and 'Verlag Dr. Otto Schmidt' in result and 'Handbuch' not in result and 'Drucken' not in result and 'Ähnliche Artikel' not in result
-    # and 'Anzeige:' not in result and 'Kommentar schreiben' not in result
+    assert 'Aufbau und Inhalt' in result and 'Verlag Dr. Otto Schmidt' in result and 'Handbuch' not in result and 'Drucken' not in result and 'Ähnliche Artikel' not in result # and 'Anzeige:' not in result and 'Kommentar schreiben' not in result
 
     result = load_mock_page('https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen', xmloutput)
     assert 'Auch der Verweis auf ehrverletzende Bewertungen' in result and 'Anja Schmoll-Trautmann' not in result and 'Fanden Sie diesen Artikel nützlich?' not in result and 'Aktuell' not in result and 'Kommentar hinzufügen' not in result # and 'Zu seinen Tätigkeitsfeldern zählen' not in result
@@ -272,11 +272,10 @@ def test_main(xmloutput=False):
     assert 'Alle Artikel zu unseren Recherchen' not in result and 'Vorweg: Die beteiligten AfD-Politiker' in result and 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal' in result and 'Wir informieren Sie regelmäßig zum Thema Neue Rechte' not in result and 'Kommentar verfassen' not in result and 'weiterlesen' not in result
 
     result = load_mock_page('https://www.sueddeutsche.de/wirtschaft/bahn-flixbus-flixtrain-deutschlandtakt-fernverkehr-1.4445845', xmloutput)
-    assert '05:28 Uhr' not in result and 'Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt' in result and 'ICE im S-Bahn-Takt' not in result and 'Diskussion zu diesem Artikel auf:' not in result and 'Berater-Affäre bringt Bahnchef Lutz in Bedrängnis' not in result
-    # and 'auch der Bus ein klimafreundliches Verkehrsmittel sei' in result
+    assert '05:28 Uhr' not in result and 'Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt' in result and 'ICE im S-Bahn-Takt' not in result and 'Diskussion zu diesem Artikel auf:' not in result and 'Berater-Affäre bringt Bahnchef Lutz in Bedrängnis' not in result # and 'auch der Bus ein klimafreundliches Verkehrsmittel sei' in result
 
     result = load_mock_page('https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/', xmloutput)
-    # assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Besonders bei Babyschalen sollte geprüft werden' in result and 'Diesel-Umtauschprämien' not in result
+    assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Besonders bei Babyschalen sollte geprüft werden' in result and 'Diesel-Umtauschprämien' not in result
 
     result = load_mock_page('https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/', xmloutput)
     assert 'Was I losing my mind?' in result and 'being cached after their first access.' in result and 'New Call-to-action' not in result and 'You might also like:' not in result and 'Contact us' not in result and 'Back to blog' not in result

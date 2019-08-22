@@ -62,7 +62,7 @@ HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
 HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span',
-# HTML_CLEANER.kill_tags = ['audio', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video'] # 'aside', 'area', 'table' # 'header'
+HTML_CLEANER.kill_tags = ['aside', 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
 
 # validation
 TEI_VALID_TAGS = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
@@ -319,6 +319,7 @@ def extract_content(tree, include_tables=False):
     # iterate
     for expr in BODY_XPATH:
         # select tree if the expression has been found
+        #print(expr)
         subtree = tree.xpath(expr)
         # print(expr, len(subtree))
         if len(subtree) == 0:
@@ -642,9 +643,9 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
 
 
     # save space and processing time
-    cleaned_tree = prune_html(tree)
+    # cleaned_tree = prune_html(tree)
     # clean
-    cleaned_tree = manual_cleaning(cleaned_tree)
+    cleaned_tree = manual_cleaning(tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
 
@@ -769,8 +770,5 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
 
     # else
     # LRU_TEST[teststring] += 1
-
-    #LOGGER.info('tokens posts: %s', tokens_posts)
-    #LOGGER.info('tokens comments: %s', tokens_comments)
 
     return None

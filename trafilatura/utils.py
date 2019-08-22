@@ -117,7 +117,10 @@ def remove_control_characters(string):
     # TODO: slow
     # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
     return ''.join(char for char in string if unicodedata.category(char)[0] != "C" or char in ('\t', '\n'))
-    # return re.sub(r'[\x00-\x1f\x7f-\x9f\t\n]', '', string)
+    # return re.sub(r'[\x00-\x1f\x7f-\x9f]', '', string)
+    # invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
+    # text = invalid_xml.sub('', text)
+    #\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
 
 
 def sanitize(text):
@@ -134,11 +137,9 @@ def sanitize(text):
     text = remove_control_characters(text)
     #return newtext
     text = text.replace('\r\n', '\n')
-    # invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
-    # text = invalid_xml.sub('', text)
-    #\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
+    text = text.replace('&#13;', '')
     text = UNICODE_WHITESPACE.sub('', text)
-    text = re.sub(r'&#13;|', '', text)
+    #text = re.sub(r'&#13;|', '', text)
     # filter out empty lines
     returntext = ''
     for line in text.splitlines():
