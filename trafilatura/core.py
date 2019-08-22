@@ -62,30 +62,28 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
-HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span',
-HTML_CLEANER.kill_tags = ['aside'] # 'area', 'table' # 'header'
-# , 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video'
+# HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span',
+HTML_CLEANER.kill_tags = ['aside']
+# 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'
 
 # validation
 TEI_VALID_TAGS = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
 TEI_VALID_ATTRS = set(['rendition'])
 
 # counters
-tokens_posts = 0
-tokens_comments = 0
 LRU_TEST = LRU(LRU_SIZE)
 
 # justext
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
 
 
-@profile
+#@profile
 def manual_cleaning(tree):
     '''Prune the tree by discard unwanted elements'''
     #for element in tree.xpath('//*'):
     #    print('ZZZ ', element.tag)
     for expression in ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'input', 'link', 'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video']: # 'frame' 'frameset' 'source',
-        for element in tree.getiterator(expression):
+        for element in tree.iter(expression):
             element.getparent().remove(element)
     #for expression in ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr']:
     #    for element in tree.getiterator(expression):
@@ -93,7 +91,7 @@ def manual_cleaning(tree):
     return tree
 
 
-@profile
+#@profile
 def prune_html(tree):
     '''delete empty elements'''
     # empty tags
@@ -109,7 +107,7 @@ def prune_html(tree):
     return tree
 
 
-@profile
+#@profile
 def recursively_empty(e):
     '''return recursively empty elements'''
     # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
@@ -118,7 +116,7 @@ def recursively_empty(e):
     return all((recursively_empty(c) for c in e.iterchildren()))
 
 
-@profile
+#@profile
 def discard_unwanted(tree):
     '''delete unwanted sections'''
     for expr in DISCARD_XPATH:
@@ -127,7 +125,7 @@ def discard_unwanted(tree):
     return tree
 
 
-@profile
+#@profile
 def discard_unwanted_comments(tree):
     '''delete unwanted comment sections'''
     for expr in COMMENTS_DISCARD_XPATH:
@@ -136,7 +134,7 @@ def discard_unwanted_comments(tree):
     return tree
 
 
-@profile
+#@profile
 def textfilter(element):
     '''Filter out unwanted text'''
     ## TODO: text_blacklist
@@ -181,58 +179,59 @@ def duplicate_test(element, justext_switch=False):
     return False
 
 
-@profile
+#@profile
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
+    # strip tags
+    etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr')
     # head tags + delete attributes
-    for elem in tree.xpath('//h1|//h2|//h3|//h4|//h5|//h6'):
+    for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         elem.tag = 'head'
         elem.attrib.clear()
         # elem.set('rendition', '#i')
     # br → lb
-    for elem in tree.xpath('//br|//hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
+    for elem in tree.iter('br', 'hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
         elem.tag = 'lb'
         elem.attrib.clear()
     # ul/ol → list / li → item
-    for elem in tree.xpath('//ul|//ol|//dl'):
+    for elem in tree.iter('ul', 'ol', 'dl'):
         elem.tag = 'list'
         elem.attrib.clear()
     # blockquote | q → quote
-    for elem in tree.xpath('//blockquote|//pre|//q'):
+    for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
         elem.attrib.clear()
     # change rendition #i
-    for elem in tree.xpath('//em|//i'):
+    for elem in tree.iter('em', 'i'):
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#i')
     # change rendition #b
-    for elem in tree.xpath('//b|//strong'):
+    for elem in tree.iter('b', 'strong'):
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#b')
     # change rendition #u (very rare)
-    for elem in tree.xpath('//u'):
+    for elem in tree.iter('u'):
         elem.tag = 'hi'
         elem.set('rendition', '#u')
     # change rendition #pre and #t (very rare)
-    for elem in tree.xpath('//tt'): # //pre| //code
+    for elem in tree.iter('tt'): # //pre| //code
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#t')
     # del | s | strike → <del rend="overstrike">
-    for elem in tree.xpath('//del|//s|//strike'):
+    for elem in tree.iter('del', 's', 'strike'):
         elem.attrib.clear()
         elem.tag = 'del'
         elem.set('rendition', 'overstrike')
     # add space
-    for elem in tree.xpath('//span'): # //a|
-        if elem.text is None:
-            elem.text = ' '
-        else:
-            elem.text = elem.text + ' '
-    # strip tags
-    etree.strip_tags(tree, 'dd', 'span') #
+    #for elem in tree.iter('span'): # //a|
+    #    elem.drop_tag()
+        #if elem.text is None:
+        #    elem.text = ' '
+        #else:
+        #    elem.text = elem.text + ' '
     return tree
 
 
@@ -270,7 +269,7 @@ def try_justext(tree, filecontent, record_id):
 #    return paragraphs
 
 
-@profile
+#@profile
 def handle_textnode(element, comments_fix=True):
     '''Convert, format, and probe potential text elements'''
     if element.text is None: # or len(element.text) < 10 # text_content()
@@ -304,7 +303,7 @@ def handle_textnode(element, comments_fix=True):
     return element
 
 
-@profile
+#@profile
 def handle_subelement(subelement):
     '''Convert, format, and probe potential text subelements'''
     if subelement.tail is None:
@@ -320,11 +319,11 @@ def handle_subelement(subelement):
     return subelement
 
 
-@profile
+#@profile
 def extract_content(tree, include_tables=False):
     '''Find and extract the main content of a page using a set of expressions'''
     #tree_cache = dict()
-    #tree_cache[tree] = list(tree.getiterator())
+    #tree_cache[tree] = list(tree.iter())
     result_body = etree.Element('body')
     # iterate
     for expr in BODY_XPATH:
@@ -512,7 +511,7 @@ def extract_content(tree, include_tables=False):
     return result_body
 
 
-@profile
+#@profile
 def extract_comments(tree, include_comments):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
@@ -616,6 +615,7 @@ def check_tei(tei, record_id):
     return tei
 
 
+#@profile
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     #TODO: sanitize/valid XML
@@ -642,11 +642,11 @@ def xmltotxt(xmloutput):
 
 
 # main process
-@profile
+#@profile
 def process_record(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
-    global tokens_posts, tokens_comments, LRU_TEST
+    global LRU_TEST
     tree = load_html(filecontent)
     # LOGGER.debug('HTML tree loaded for URL: %s', url)
 
@@ -656,7 +656,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     cleaned_tree = prune_html(cleaned_tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-    #tree_cache[cleaned_tree] = list(cleaned_tree.getiterator())
+    #tree_cache[cleaned_tree] = list(cleaned_tree.iter())
 
     ## convert tags
     ## the rest does not work without conversion
@@ -756,8 +756,6 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
     if LRU_TEST.has_key(teststring) is False:
         # LRU_TEST[teststring] = 1
-        tokens_posts += len(re.findall(r'\w+', ' '.join(postbody.itertext()), re.UNICODE))
-        tokens_comments += len(re.findall(r'\w+', ' '.join(commentsbody.itertext()), re.UNICODE))
         if xml_output is False and tei_output is False:
             returnstring = xmltotxt(output)
         else:
