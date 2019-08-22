@@ -39,13 +39,12 @@ LOGGER = logging.getLogger(__name__)
 
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
 
-CUT_EMPTY_ELEMS = ('a', 'abbr', 'acronym', 'address', 'big', 'cite', 'div', 'font', 'i', 'ins', 'li', 'link', 'p', 'script', 'section', 'small', 'source', 'span', 'strong', 'sub', 'sup', 'td', 'wbr') # 'meta',
+CUT_EMPTY_ELEMS = ('article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'i', 'li', 'main', 'p', 'section', 'span', 'strong', 'td') # 'meta',
 
 comments_blacklist = ('( Abmelden / Ändern )')
 
 # LRU_DICT = defaultdict(int)
-
-tree_cache = dict()
+# tree_cache = dict()
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
 HTML_CLEANER = Cleaner()
@@ -85,7 +84,7 @@ def manual_cleaning(tree):
     '''Prune the tree by discard unwanted elements'''
     #for element in tree.xpath('//*'):
     #    print('ZZZ ', element.tag)
-    for expression in ['audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img',  'link', 'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video']: # 'frame' 'frameset'
+    for expression in ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'input', 'link', 'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video']: # 'frame' 'frameset' 'source',
         for element in tree.getiterator(expression):
             element.getparent().remove(element)
     #for expression in ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr']:
@@ -102,7 +101,11 @@ def prune_html(tree):
         if element.tag in CUT_EMPTY_ELEMS:
             element.getparent().remove(element)
         #else:
-        #    print(element.tag)
+        #    print('ZZZ ', element.tag)
+    #for expression in CUT_EMPTY_ELEMS:
+    #    for element in tree.getiterator(expression):
+    #        if recursively_empty(element):
+    #            element.getparent().remove(element)
     return tree
 
 
@@ -237,7 +240,7 @@ def try_justext(tree, filecontent, record_id):
     '''safety net: try with justext'''
     result_body = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
-    LOGGER.info('raw length: %s (tostring) ', len(justtextstring))
+    LOGGER.debug('raw length: %s (tostring) ', len(justtextstring))
     try:
         # paragraphs = custom_justext(tree)
         paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
@@ -320,6 +323,8 @@ def handle_subelement(subelement):
 @profile
 def extract_content(tree, include_tables=False):
     '''Find and extract the main content of a page using a set of expressions'''
+    #tree_cache = dict()
+    #tree_cache[tree] = list(tree.getiterator())
     result_body = etree.Element('body')
     # iterate
     for expr in BODY_XPATH:
@@ -335,7 +340,6 @@ def extract_content(tree, include_tables=False):
         # define iteration strategy
         potential_tags = set(TAG_CATALOG) # 'span'
         if len(subtree.xpath('//p//text()')) == 0: # no paragraphs containing text
-            LOGGER.debug('adding div')
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
@@ -428,7 +432,8 @@ def extract_content(tree, include_tables=False):
 
             # other elements (div, ??, ??)
             else:
-                LOGGER.debug('processing other element: %s', element.tag)
+                if element.tag != 'div':
+                    LOGGER.warning('processing other element: %s', element.tag)
                 processed_element = handle_textnode(element)
                 if processed_element is not None:
                     element.attrib.clear()
@@ -641,20 +646,17 @@ def xmltotxt(xmloutput):
 def process_record(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
-    # LOGGER.debug('comments status: %s', include_comments)
     global tokens_posts, tokens_comments, LRU_TEST
     tree = load_html(filecontent)
-    LOGGER.debug('HTML tree loaded for URL: %s', url)
+    # LOGGER.debug('HTML tree loaded for URL: %s', url)
 
-
-    # save space and processing time
-    # cleaned_tree = prune_html(tree)
     # clean
     cleaned_tree = manual_cleaning(tree)
+    # save space and processing time
+    cleaned_tree = prune_html(cleaned_tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
     #tree_cache[cleaned_tree] = list(cleaned_tree.getiterator())
-
 
     ## convert tags
     ## the rest does not work without conversion
