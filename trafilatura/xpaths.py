@@ -29,7 +29,8 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
 
 
 DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
-                 './/header|.//footer', \
+                 './/header', \
+                 # |.//footer
                  './/*[(self::div or self::p or self::section)][contains(@id, "header") or contains(@class, "header") or contains(@id, "footer") or contains(@class, "footer")]', \
                  './/*[(self::a or self::div or self::p or self::section or self::ul)][contains(@id, "tags") or contains(@class, "tags")]', \
                  # news outlets
@@ -43,6 +44,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section or self::span)][contains(@id, "author") or contains(@class, "author") or contains(@style, "hidden") or contains(@id, "button") or contains(@class, "button")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
+                 './/*[starts-with(@class, "widget")]', \
                 ]
                  # optional??
 #                './/aside', \ # conflicts with text extraction

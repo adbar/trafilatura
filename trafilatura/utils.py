@@ -25,7 +25,7 @@ from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
 LOGGER = logging.getLogger(__name__)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-CUSTOM_HTMLPARSER = html.HTMLParser()
+CUSTOM_HTMLPARSER = html.HTMLParser() # etree.HTMLParser()
 
 UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
@@ -94,9 +94,9 @@ def load_html(htmlobject):
         try:
             #guessed_encoding = chardet.detect(htmlobject.encode())['encoding']
             #LOGGER.info('guessed encoding: %s', guessed_encoding)
-            # parse
-            # parser = html.HTMLParser() # encoding=guessed_encoding  # document_fromstring
+            # parse # encoding=guessed_encoding
             tree = html.parse(StringIO(htmlobject)) # , parser=CUSTOM_HTMLPARSER
+            #tree = html.document_fromstring(htmlobject) # , parser=CUSTOM_HTMLPARSER
         except UnicodeDecodeError as err:
             LOGGER.error('unicode %s', err)
             tree = None
@@ -125,17 +125,7 @@ def remove_control_characters(string):
 
 def sanitize(text):
     '''Convert text and discard incompatible unicode and invalid XML characters'''
-    # TODO: remove control characters in sanitizer
-    # text = ' '.join(text.split())
-    #all unicode characters from 0x0000 - 0x0020 (33 total) are bad and will be replaced by "" (empty string)
-    # newtext = ''
-    #for line in text:
-    #    for pos in range(0,len(line)):
-    #        if ord(line[pos]) < 32:
-    #            line[pos] = None
-    #newtext = newtext + u''.join([c for c in line if c]) + '\n'
     text = remove_control_characters(text)
-    #return newtext
     text = text.replace('\r\n', '\n')
     text = text.replace('&#13;', '')
     text = UNICODE_WHITESPACE.sub('', text)

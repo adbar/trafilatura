@@ -45,6 +45,8 @@ comments_blacklist = ('( Abmelden / Ändern )')
 
 # LRU_DICT = defaultdict(int)
 
+tree_cache = dict()
+
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
 HTML_CLEANER = Cleaner()
 HTML_CLEANER.annoying_tags = False # True
@@ -62,7 +64,8 @@ HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
 HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span',
-HTML_CLEANER.kill_tags = ['aside', 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video'] # 'area', 'table' # 'header'
+HTML_CLEANER.kill_tags = ['aside'] # 'area', 'table' # 'header'
+# , 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video'
 
 # validation
 TEI_VALID_TAGS = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
@@ -82,10 +85,12 @@ def manual_cleaning(tree):
     '''Prune the tree by discard unwanted elements'''
     #for element in tree.xpath('//*'):
     #    print('ZZZ ', element.tag)
-    for expression in ['//audio', '//blink', '//canvas', '//embed', '//figure', '//footer', '//form', '//head', '//iframe', '//img',  '//link', '//map', '//marquee', '//math', '//nav', '//noscript', '//object', '//picture', '//script', '//style', '//svg', '//time', '//video']: # '//aside', '//header',
-        for element in tree.xpath(expression):
+    for expression in ['audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img',  'link', 'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video']: # 'frame' 'frameset'
+        for element in tree.getiterator(expression):
             element.getparent().remove(element)
-    # etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr')
+    #for expression in ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr']:
+    #    for element in tree.getiterator(expression):
+    #        element.drop_tag()
     return tree
 
 
@@ -648,6 +653,8 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     cleaned_tree = manual_cleaning(tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
+    #tree_cache[cleaned_tree] = list(cleaned_tree.getiterator())
+
 
     ## convert tags
     ## the rest does not work without conversion
@@ -724,6 +731,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     # cache elements
     cache(postbody)
     cache(commentsbody)
+    #del tree_cache[cleaned_tree]
 
     # XML TEI steps
     if tei_output is True:
