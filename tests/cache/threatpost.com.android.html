@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+
+<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="https://threatpost.com/wp-content/themes/threatpost-2018/assets/css/main.css?v=1566374491" type="text/css">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/favicon/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/favicon/favicon-16x16.png">
+	<link rel="manifest" href="https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/favicon/site.webmanifest">
+	<link rel="mask-icon" href="https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/favicon/safari-pinned-tab.svg" color="#e2211c">
+	<link rel="shortcut icon" href="https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/favicon/favicon.ico">
+	<meta name="msapplication-TileColor" content="#e2211c">
+	<meta name="msapplication-config" content="https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/favicon/browserconfig.xml">
+	<meta name="theme-color" content="#e2211c">
+
+	<title>Android Ransomware Spreads Via &#039;Sex Simulation Game&#039; Links on Reddit, SMS | Threatpost</title>
+
+<!-- Start The SEO Framework by Sybre Waaijer -->
+<meta name="keywords" content="Hacks, Malware, Vulnerabilities, Web Security, Mobile Security, Privacy, android, ransomware, malware, android device, SMS message, reddit, malicious link, mobile security" />
+<meta name="description" content="A new strain of ransomware is being distributed to Android users via online forums and SMS messages." />
+<meta property="og:image" content="https://media.threatpost.com/wp-content/uploads/sites/103/2019/05/08101104/android_api.png" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Android Ransomware Spreads Via &#039;Sex Simulation Game&#039; Links on Reddit, SMS" />
+<meta property="og:description" content="A new strain of ransomware is being distributed to Android users via online forums and SMS messages." />
+<meta property="og:url" content="https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@threatpost" />
+<meta name="twitter:creator" content="@threatpost" />
+<meta name="twitter:title" content="Android Ransomware Spreads Via &#039;Sex Simulation Game&#039; Links on Reddit, SMS" />
+<meta name="twitter:description" content="A new strain of ransomware is being distributed to Android users via online forums and SMS messages." />
+<meta name="twitter:image" content="https://media.threatpost.com/wp-content/uploads/sites/103/2019/05/08101104/android_api.png" />
+<link rel="canonical" href="https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://threatpost.com/","name":"Threatpost","image":"https://media.threatpost.com/wp-content/uploads/sites/103/2018/04/12084846/tp_twitter.png"}},{"@type":"ListItem","position":2,"item":{"@id":"https://threatpost.com/category/mobile-security/","name":"Mobile Security"}},{"@type":"ListItem","position":3,"item":{"@id":"https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/","name":"Android Ransomware Spreads Via &#039;Sex Simulation Game&#039; Links on Reddit, SMS","image":"https://media.threatpost.com/wp-content/uploads/sites/103/2019/05/08101104/android_api.png"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/"},"headline":"Android Ransomware Spreads Via &#8216;Sex Simulation Game&#8217; Links on Reddit, SMS","image":{"@type":"ImageObject","url":"https://media.threatpost.com/wp-content/uploads/sites/103/2019/05/08101104/android_api.png","height":471,"width":800},"datePublished":"2019-07-30T13:16:29-04:00","dateModified":"2019-07-30T13:16:29-04:00","author":{"@type":"Person","name":"Lindsey O&#039;Donnell"},"publisher":{"@type":"Organization","name":"Threatpost","logo":{"@type":"ImageObject","url":"https://media.threatpost.com/wp-content/uploads/sites/103/2018/12/04121519/amp_logo.png","width":60,"height":60}},"description":"A new strain of ransomware is being distributed to Android users via online forums and SMS messages."}</script>
+<!-- End The SEO Framework by Sybre Waaijer | 0.01056s -->
+
+<link rel='dns-prefetch' href='//cdnjs.cloudflare.com' />
+<link rel='dns-prefetch' href='//threatpost.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Threatpost - English - Global - threatpost.com &raquo; Feed" href="https://threatpost.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Threatpost - English - Global - threatpost.com &raquo; Comments Feed" href="https://threatpost.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Threatpost - English - Global - threatpost.com &raquo; Android Ransomware Spreads Via &#8216;Sex Simulation Game&#8217; Links on Reddit, SMS Comments Feed" href="https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/feed/" />
+<link rel='stylesheet' id='wp-block-library-group-css' href='//assets.threatpost.com/wp-content/plugins/bwp-minify/min/?f=wp-includes/css/dist/block-library/style.min.css,wp-content/plugins/wds-kaspersky-widgets/css/trending-authors.css,wp-content/plugins/wds-rss-builder/includes/css/select2.min.css,wp-content/plugins/wds-rss-builder/includes/css/wds-rss.css,wp-content/plugins/honeypot-comments/public/assets/css/public.css,wp-content/plugins/kspr_twitter_pullquote/css/style.css,wp-content/plugins/pullquote-shortcode/css/pullquote-shortcode.css,wp-content/plugins/kaspersky-social-sharing/assets/css/style.css,wp-content/plugins/kaspersky-social-sharing/assets/css/custom.css&#038;ver=b04433dc' type='text/css' media='all' />
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/postscribe/2.0.8/postscribe.min.js?ver=5.2.2'></script>
+<script type='text/javascript' src='https://threatpost.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var gdprDynamicStrings = {"notification_text":"We use cookies to make your experience of our websites better. By using and further navigating this website you accept this. Detailed information about the use of cookies on this website is available by clicking on <a href=\"https:\/\/threatpost.com\/web-privacy-policy\/\" target=\"_blank\">more information<\/a>.","button_text":"ACCEPT AND CLOSE"};
+/* ]]> */
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var kss = {"twitter_account":"threatpost"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='//assets.threatpost.com/wp-content/plugins/bwp-minify/min/?f=wp-content/plugins/adrupt-options/dist/js/adrupt.ads.min.js,wp-content/plugins/kaspersky-cookies-notification/scripts/alert_text.js,wp-content/plugins/kaspersky-cookies-notification/scripts/alert.js,wp-content/plugins/kaspersky-taboola-ads/assets/js/start.js,wp-content/plugins/honeypot-comments/public/assets/js/public.js,wp-content/plugins/kspr_twitter_pullquote/js/kaspersky-twitter-pullquote.js,wp-content/themes/threatpost-2018/assets/js/main.js,wp-content/themes/threatpost-2018/assets/js/loadmore.js,wp-content/plugins/kaspersky-social-sharing/assets/js/social-share.js&#038;ver=b04433dc'></script>
+<link rel='https://api.w.org/' href='https://threatpost.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://threatpost.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://threatpost.com/wp-includes/wlwmanifest.xml" /> 
+<link rel="alternate" type="application/json+oembed" href="https://threatpost.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthreatpost.com%2Fandroid-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms%2F146774%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://threatpost.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthreatpost.com%2Fandroid-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms%2F146774%2F&#038;format=xml" />
+<script src='https://kasperskycontenthub.com/?dm=ed1f9e435dc885292eab65620c51f3fb&amp;action=load&amp;blogid=103&amp;siteid=1&amp;t=1815035131&amp;back=https%3A%2F%2Fthreatpost.com%2Fandroid-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms%2F146774%2F' type='text/javascript'></script>
+	<!-- cmnUNT | Header Unit Centering Styles -->
+	<link rel="stylesheet" type="text/css" href="https://threatpost.com/wp-content/plugins/adrupt-options/dist/css/adrupt_style.css" />
+	<script async src="//pagead2.googlesyndication.com/
+pagead/js/adsbygoogle.js"></script>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push(
+
+{ google_ad_client: "ca-pub-7500593236707325", enable_page_level_ads: false }
+);
+</script><!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PM29HLF');</script>
+<!-- End Google Tag Manager --></head>
+
+<body class="" style=""  >
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PM29HLF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<div class="c-ad-section">
+	<div class="o-container-fluid">
+		<div class="c-ad u-bg--none@sm">
+			<div class="c-ad__container">
+								<div class="textwidget custom-html-widget"><div class="adRUPTad header" data-adunit="header" data-size-mapping="header"></div></div><div class="textwidget custom-html-widget"><div id="modal_newsletter" class="mfp-hide">
+<div id="default-modal" class="c-modal c-modal--narrow">
+<div class="c-modal__header">
+	<a href="#" class="c-modal__close c-modal__close--dark js-modal-close"><svg class="icon fill"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://threatpost.com/wp-content/themes/threatpost-2018//assets/sprite/icons.svg#icon-remove"></use></svg></a>
+	</div>
+<div class="c-modal__main">
+<div class="c-section c-section--bg c-section--dark c-newsletter-modal" style="background-image: url(https://threatpost.com/wp-content/themes/threatpost-2018/assets/images/photo-newsletter.jpg);">
+<div class="c-section__overlay"></div>
+<div class="o-container-fluid">
+<p><span class="c-label c-label--white-transparent">Newsletter</span></p>
+<div class="o-row">
+<div class="o-col-6@sm c-newsletter-modal__content">
+<div class="c-newsletter-modal__header">
+<h3><strong>Subscribe to our <em>Threatpost Today</em> newsletter</strong></h3>
+<p>Join thousands of people who receive the latest breaking cybersecurity news every day.</p>
+</div>
+<div class="c-note c-note--dash u-hidden u-block@md"><p>The administrator of your personal data will be Threatpost, Inc., 500 Unicorn Park, Woburn, MA 01801. Detailed information on the processing of personal data can be found in the <a href="https://threatpost.com/web-privacy-policy/">privacy policy</a>. In addition, you will find them in the message confirming the subscription to the newsletter.</p></div>
+</div>
+<div class="o-col-6@sm">
+
+
+                <div class='gf_browser_gecko gform_wrapper' id='gform_wrapper_5' style='display:none'><a id='gf_5' class='gform_anchor' ></a><form method='post' enctype='multipart/form-data' target='gform_ajax_frame_5' id='gform_5'  action='/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/#gf_5'>
+                        <div class='gform_body'><ul id='gform_fields_5' class='gform_fields top_label form_sublabel_below description_below'><li id='field_5_8' class='gfield field_sublabel_below field_description_below gfield_visibility_visible' ><label class='gfield_label' for='input_5_8' ></label><div class='ginput_container ginput_container_text'><input name='input_8' id='input_5_8' type='text' value='' class='medium'  tabindex='1' onchange='gf_apply_rules(5,[0]);' onkeyup='clearTimeout(__gf_timeout_handle); __gf_timeout_handle = setTimeout("gf_apply_rules(5,[0])", 300);' placeholder='Your name'  aria-invalid="false" /></div></li><li id='field_5_1' class='gfield gfield_contains_required field_sublabel_below field_description_below gfield_visibility_visible' ><label class='gfield_label' for='input_5_1' ><span class='gfield_required'>*</span></label><div class='ginput_container ginput_container_email'>
+                            <input name='input_1' id='input_5_1' type='text' value='' class='medium' tabindex='2' onchange='gf_apply_rules(5,[0]);' onkeyup='clearTimeout(__gf_timeout_handle); __gf_timeout_handle = setTimeout("gf_apply_rules(5,[0])", 300);'  placeholder='Your e-mail address' aria-required="true" aria-invalid="false"/>
+                        </div></li><li id='field_5_2' class='gfield input-without-label label-gdpr gfield_contains_required field_sublabel_below field_description_below gfield_visibility_visible' ><label class='gfield_label'  ><span class='gfield_required'>*</span></label><div class='ginput_container ginput_container_checkbox'><ul class='gfield_checkbox' id='input_5_2'><li class='gchoice_5_2_1'>
+								<input name='input_2.1' type='checkbox' onclick='gf_apply_rules(5,[0]);' onkeypress='gf_apply_rules(5,[0]);' value='I agree'  id='choice_5_2_1' tabindex='3'  />
+								<label for='choice_5_2_1' id='label_5_2_1'>I agree to my personal data being stored and used to receive the newsletter</label>
+							</li></ul></div></li><li id='field_5_5' class='gfield input-without-label label-gdpr gfield_contains_required field_sublabel_below field_description_below gfield_visibility_visible' ><label class='gfield_label'  ><span class='gfield_required'>*</span></label><div class='ginput_container ginput_container_checkbox'><ul class='gfield_checkbox' id='input_5_5'><li class='gchoice_5_5_1'>
+								<input name='input_5.1' type='checkbox' onclick='gf_apply_rules(5,[0]);' onkeypress='gf_apply_rules(5,[0]);' value='I agree'  id='choice_5_5_1' tabindex='4'  />
+								<label for='choice_5_5_1' id='label_5_5_1'>I agree to accept information and occasional commercial offers from Threatpost partners</label>
+							</li></ul></div></li><li id='field_5_9' class='gfield gform_validation_container field_sublabel_below field_description_below gfield_visibility_visible' ><label class='gfield_label' for='input_5_9' >Phone</label><div class='ginput_container'><input name='input_9' id='input_5_9' type='text' value='' /></div><div class='gfield_description'>This field is for validation purposes and should be left unchanged.</div></li>
+                            </ul></div>
+        <div class='gform_footer top_label'> <input type='submit' id='gform_submit_button_5' class='gform_button button' value='Subscribe' tabindex='5' onclick='if(window["gf_submitting_5"]){return false;}  window["gf_submitting_5"]=true;  ' onkeypress='if( event.keyCode == 13 ){ if(window["gf_submitting_5"]){return false;} window["gf_submitting_5"]=true;  jQuery("#gform_5").trigger("submit",[true]); }' /> <input type='hidden' name='gform_ajax' value='form_id=5&amp;title=&amp;description=&amp;tabindex=1' />
+            <input type='hidden' class='gform_hidden' name='is_submit_5' value='1' />
+            <input type='hidden' class='gform_hidden' name='gform_submit' value='5' />
+            
+            <input type='hidden' class='gform_hidden' name='gform_unique_id' value='' />
+            <input type='hidden' class='gform_hidden' name='state_5' value='WyJbXSIsImIwODQwZTA2ZGQ0NzYwODcyOTBkZjNmZDM1NDk2Y2ZkIl0=' />
+            <input type='hidden' class='gform_hidden' name='gform_target_page_number_5' id='gform_target_page_number_5' value='0' />
+            <input type='hidden' class='gform_hidden' name='gform_source_page_number_5' id='gform_source_page_number_5' value='1' />
+            <input type='hidden' name='gform_field_values' value='' />
+            
+        </div>
+                        </form>
+                        </div>
+                <iframe style='display:none;width:0px;height:0px;' src='about:blank' name='gform_ajax_frame_5' id='gform_ajax_frame_5'>This iframe contains the logic required to handle Ajax powered Gravity Forms.</iframe>
+                <script type='text/javascript'>jQuery(document).ready(function($){gformInitSpinner( 5, 'https://threatpost.com/wp-content/plugins/gravityforms/images/spinner.gif' );jQuery('#gform_ajax_frame_5').load( function(){var contents = jQuery(this).contents().find('*').html();var is_postback = contents.indexOf('GF_AJAX_POSTBACK') >= 0;if(!is_postback){return;}var form_content = jQuery(this).contents().find('#gform_wrapper_5');var is_confirmation = jQuery(this).contents().find('#gform_confirmation_wrapper_5').length > 0;var is_redirect = contents.indexOf('gformRedirect(){') >= 0;var is_form = form_content.length > 0 && ! is_redirect && ! is_confirmation;if(is_form){jQuery('#gform_wrapper_5').html(form_content.html());if(form_content.hasClass('gform_validation_error')){jQuery('#gform_wrapper_5').addClass('gform_validation_error');} else {jQuery('#gform_wrapper_5').removeClass('gform_validation_error');}setTimeout( function() { /* delay the scroll by 50 milliseconds to fix a bug in chrome */ jQuery(document).scrollTop(jQuery('#gform_wrapper_5').offset().top); }, 50 );if(window['gformInitDatepicker']) {gformInitDatepicker();}if(window['gformInitPriceFields']) {gformInitPriceFields();}var current_page = jQuery('#gform_source_page_number_5').val();gformInitSpinner( 5, 'https://threatpost.com/wp-content/plugins/gravityforms/images/spinner.gif' );jQuery(document).trigger('gform_page_loaded', [5, current_page]);window['gf_submitting_5'] = false;}else if(!is_redirect){var confirmation_content = jQuery(this).contents().find('.GF_AJAX_POSTBACK').html();if(!confirmation_content){confirmation_content = contents;}setTimeout(function(){jQuery('#gform_wrapper_5').replaceWith(confirmation_content);jQuery(document).scrollTop(jQuery('#gf_5').offset().top);jQuery(document).trigger('gform_confirmation_loaded', [5]);window['gf_submitting_5'] = false;}, 50);}else{jQuery('#gform_5').append(contents);if(window['gformRedirect']) {gformRedirect();}}jQuery(document).trigger('gform_post_render', [5, current_page]);} );} );</script><script type='text/javascript'> if(typeof gf_global == 'undefined') var gf_global = {"gf_currency_config":{"name":"U.S. Dollar","symbol_left":"$","symbol_right":"","symbol_padding":"","thousand_separator":",","decimal_separator":".","decimals":2},"base_url":"https:\/\/threatpost.com\/wp-content\/plugins\/gravityforms","number_formats":[],"spinnerUrl":"https:\/\/threatpost.com\/wp-content\/plugins\/gravityforms\/images\/spinner.gif"};jQuery(document).bind('gform_post_render', function(event, formId, currentPage){if(formId == 5) {gf_global["number_formats"][5] = {"8":{"price":false,"value":false},"1":{"price":false,"value":false},"2":{"price":false,"value":false},"5":{"price":false,"value":false},"9":{"price":false,"value":false}};if(window['jQuery']){if(!window['gf_form_conditional_logic'])window['gf_form_conditional_logic'] = new Array();window['gf_form_conditional_logic'][5] = { logic: { 0: {"field":{"actionType":"show","logicType":"all","rules":[{"fieldId":"2","operator":"is","value":"I agree"},{"fieldId":"5","operator":"is","value":"I agree"}]},"section":null} }, dependents: { 0: [0] }, animation: 1, defaults: [], fields: {"8":[0],"1":[0],"2":[0],"5":[0],"9":[0]} }; if(!window['gf_number_format'])window['gf_number_format'] = 'decimal_dot';jQuery(document).ready(function(){gf_apply_rules(5, [0], true);jQuery('#gform_wrapper_5').show();jQuery(document).trigger('gform_post_conditional_logic', [5, null, true]);jQuery('#gform_5').submit(function(event, isButtonPress){    var visibleButton = jQuery(".gform_next_button:visible, .gform_button:visible, .gform_image_button:visible");    return visibleButton.length > 0 || isButtonPress == true;});} );} if(typeof Placeholders != 'undefined'){
+                        Placeholders.enable();
+                    }} } );jQuery(document).bind('gform_post_conditional_logic', function(event, formId, fields, isInit){} );</script><script type='text/javascript'> jQuery(document).ready(function(){jQuery(document).trigger('gform_post_render', [5, 1]) } ); </script>
+
+<footer class="c-note c-note--border u-hidden@md"><p>The administrator of your personal data will be Threatpost, Inc., 500 Unicorn Park, Woburn, MA 01801. Detailed information on the processing of personal data can be found in the <a href="https://threatpost.com/web-privacy-policy/">privacy policy</a>. In addition, you will find them in the message confirming the subscription to the newsletter.</p></footer>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div>							</div>
+		</div>
+	</div>
+</div>
+
+<div class="c-page-wrapper">
+
+	<header class="c-site-header js-sticky-header">
+		<div class="o-container-fluid">
+
+			<a href="#" class="c-menu-toggle js-menu-toggle">
+				<span></span>
+				<span></span>
+				<span></span>
+			</a>
+
+			<a class="c-site-logo c-site-logo--larger@md" href="https://threatpost.com/">
+									<div>Threatpost</div>
+							</a>
+
+			<div class="c-site-header__nav">
+				<nav class="c-nav-primary"><ul class="c-main-menu"><li id="menu-item-133109" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133109"><a href="https://threatpost.com/category/cloud-security/"><span>Cloud Security</span></a></li>
+<li id="menu-item-133110" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-133110"><a href="https://threatpost.com/category/malware-2/"><span>Malware</span></a></li>
+<li id="menu-item-133112" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133112"><a href="https://threatpost.com/category/vulnerabilities/"><span>Vulnerabilities</span></a></li>
+<li id="menu-item-141047" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-141047"><a href="https://threatpost.com/microsite/infosec-insiders-community/"><span>InfoSec Insider</span></a></li>
+<li id="menu-item-147444" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-147444"><a href="https://threatpost.com/microsite/threatpost-podcasts-going-beyond-the-headlines/"><span>Podcasts</span></a></li>
+</ul></nav>
+				<div class="c-site-header__aside">
+					<nav class="c-nav-social">
+					<ul id="menu-social-menu" class="menu"><li><a href="https://www.facebook.com/Threatpost/" title="Facebook" class="facebook" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-facebook'></use></svg></a></li><li><a href="https://twitter.com/threatpost/" title="Twitter" class="twitter" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-twitter'></use></svg></a></li><li><a href="https://www.linkedin.com/company/threatpost/" title="LinkedIn" class="linkedin" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-linkedin'></use></svg></a></li><li><a href="https://www.youtube.com/user/threatpost" title="YouTube" class="youtube" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-youtube'></use></svg></a></li><li><a href="https://feedly.com/threatpost" title="Feedly" class="feedly" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-feedly'></use></svg></a></li><li><a href="https://www.instagram.com/Threatpost/" title="Instagram" class="instagram" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-instagram'></use></svg></a></li><li><a href="https://threatpost.com/feed" title="RSS" class="rss" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-rss'></use></svg></a></li></ul>					</nav>
+					<!-- <nav class="c-nav-utility">
+						<a href="https://threatpost.com/" class="c-button c-button--secondary-transparent c-button--smaller"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-user'></use></svg> Log in</a>
+					</nav> -->
+					<div class="c-site-search">
+						<div class="c-site-search__wrap js-main-search">
+							<form class="c-site-search__form" role="search" method="get" action="https://threatpost.com/">
+								<input type="text" class="c-site-search__field" name="s" placeholder="Search">
+								<button type="submit" class="c-button c-button--secondary c-button--smaller c-site-search__button" value="Search"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-search'></use></svg> Search</button>
+								<div class="c-site-search__overlay"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div><!-- /.o-container -->
+	</header>
+
+	<div class="c-main">
+
+	<div class="c-section c-section--divider-internal c-nav-links">
+		<div class="o-container-fluid">
+			<nav>
+				<ul>
+					<li class="c-nav-links__prev">
+						<a href="https://threatpost.com/nation-state-actors-go-all-in-on-mobile-malware/146771/" rel="prev"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-arrow-left-2'></use></svg><span class="c-nav-links__title">Nation-State Actors Go All-In on Mobile Malware</span><span class="c-nav-links__desc">Previous article</span></a>					</li>
+					<li class="c-nav-links__next">
+						<a href="https://threatpost.com/apple-imessage-remote-attackersread-iphone-messages/146789/" rel="next"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-arrow-right-2'></use></svg><span class="c-nav-links__title">Apple iMessage Flaw Allows Remote Attackers to Read iPhone Messages</span><span class="c-nav-links__desc">Next article</span></a>					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+	<div class="c-section">
+		<div class="o-container-fluid">
+			<div class="o-row c-fixed-sidebar-layout--300@md">
+				<div class="o-col">
+											<article class="c-article js-reading-wrapper">
+							<header class="c-article__header">
+																<h1 class="c-article__title">Android Ransomware Spreads Via &#8216;Sex Simulation Game&#8217; Links on Reddit, SMS</h1>
+																<figure>
+									<img src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/05/08101104/android_api.png" alt="google android Q" />
+								</figure>
+															</header>
+							<div class="o-row c-fixed-sidebar-layout--140--left@lg">
+								<div class="o-col c-sidebar c-article__info">
+									<div class="c-article__meta">
+																				<div class="c-article__author-avatar">
+											<a href="https://threatpost.com/author/lindseyodonnell/"><img alt='' src='https://media.threatpost.com/wp-content/uploads/sites/103/2018/08/15115541/0.jpeg' srcset='https://media.threatpost.com/wp-content/uploads/sites/103/2018/08/15115541/0.jpeg 2x' class='avatar avatar-60 photo' height='60' width='60' /></a>
+										</div>
+										<div class="c-article__meta-content">
+											<div class="c-article__author">
+																																						<span>Author: </span>
+																																					<a class="c-article__author-name" href="https://threatpost.com/author/lindseyodonnell/">Lindsey O'Donnell</a>
+											</div>
+																					<div class="c-article__time">
+												<time datetime="2019-07-30T13:16:29-04:00">July 30, 2019 <span> 1:16 pm</span></time>
+											</div>
+										</div>
+									</div>
+									<div class="c-sticky-sidebar js-sticky-sidebar">
+										<div class="c-article__progress">
+											<div class="c-article__progress-wrapper">
+												<div class="c-article__progress-bar rpi-progress-bar">
+													<div class="c-article__progress-bar__position rpi-progress-bar__position"></div>
+													<div class="rpi-progress-bar__percentage"></div>
+												</div>
+											</div>
+											<div class="c-article__progress-time">
+												<span class="js-reading-time"></span> minute read
+											</div>
+										</div>
+
+										
+																				<div class="c-article__comment-link u-hidden u-block@md">
+											<a href="#discussion" class="c-label c-label--secondary-transparent"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-comments'></use></svg> Write a comment</a>
+										</div>
+										
+										<div class="c-article__sharing">
+											<p><strong>Share this article:</strong></p>
+											<nav class="c-nav-sharing c-nav-sharing__fixed-height c-nav-sharing__no-wrap@lg c-nav-sharing__show-more@lg c-share-popup js-sharing-popup">
+												<div class="social-likes social-likes_notext" data-title="Android Ransomware Spreads Via &#8216;Sex Simulation Game&#8217; Links on Reddit, SMS" data-url="https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/" data-counters="yes" data-zeroes="yes"><div class="facebook" title="Share via Facebook"></div>
+<div class="twitter" title="Share via Twitter"></div><div class="linkedin" title="Share via LinkedIn"></div>
+<div class="reddit" title="Share via Reddit"></div>
+</div>												<ul class="">
+													<li class="c-nav-sharing__button c-nav-sharing__more"><a href="#"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-dots'></use></svg></a></li>
+													<li class="c-nav-sharing__button c-nav-sharing__less"><a href="#"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-remove'></use></svg></a></li>
+												</ul>
+											</nav>
+										</div>
+									</div>
+								</div>
+								<div class="o-col">
+									<div class="c-article__main">
+																														<div class="c-article__intro" name="overview">
+											<p>A new strain of ransomware is being distributed to Android users via online forums and SMS messages.</p>
+										</div>
+																				<div class="c-article__content js-reading-content">
+											<p>Researchers are warning of a new Android ransomware being spread via links in online forums and SMS messages. The malicious links purport to connect back to a sex simulation game, but in reality lead to ransomware that encrypts victims&#8217; files.</p>
+<p>The Android ransomware, dubbed Android/Filecoder.C, has been active since at least July 12, when researchers found it via two domain links. These links were distributed primarily on online forums, including via Reddit in posts that were porn related, or via a forum for Android developers called &#8220;XDA Developers&#8221; in posts relating to technical topics.</p>
+<p>&#8220;Using victims&#8217; contact lists, it spreads further via SMS with malicious links. Due to narrow targeting and flaws in execution of the campaign, the impact of this new ransomware is limited,&#8221; said Lukas Stefanko with ESET in a <a href="https://www.welivesecurity.com/2019/07/29/android-ransomware-back/" target="_blank" rel="noopener noreferrer">Monday analysis of the ransomware</a>. &#8220;However, if the operators start targeting broader groups of users, the Android/Filecoder.C ransomware could become a serious threat.&#8221;</p>
+<p><a href="https://threatpost.com/newsletter-sign/"><img class="aligncenter wp-image-141989 size-full" src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/02/19151457/subscribe2.jpg" alt="" width="700" height="50" /></a></p>
+<p>In addition to online forums, researchers found the malicious links being spread via SMS messages. Once the victim is infected, the ransomware also sends malicious links of the domains via SMS messages to the victim&#8217;s contact list. These SMS messages add some level of urgency and personalization to con the contacts to open them, as they use the contact name listed in the SMS message, and tells the contact that their photos are being used in the sex simulation game.</p>
+<p>&#8220;These messages include links to the ransomware; to increase the potential victims&#8217; interest, the link is presented as a link to an app that supposedly uses the potential victim&#8217;s photos,&#8221; said Stefanko.</p>
+<p>Targets are sent a link to the malicious application, which must be installed manually by victims. After the app is launched, it displays whatever is promised via the posts distributing it – most often, the sex simulator online game.</p>
+<p>But behind the scenes, the ransomware is activated, launching command-and-control communication, spreading the malicious messages to victims&#8217; other contacts and implementing an encryption-and-decryption mechanism.<a href="https://media.threatpost.com/wp-content/uploads/sites/103/2019/07/30121437/Figure-7.png"><img class=" wp-image-146776 alignleft" src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/07/30121437/Figure-7-169x300.png" alt="android ransomware Android/Filecoder.C" width="158" height="281" /></a></p>
+<p>The ransomware encrypts various filetypes – including DOC, PPT, JPEG and others. That said, the malware leaves files unencrypted if the file extension is .zip or .rar and the file size is over 51,200 KB/50 MB. Also, JPEG, JPG and PNG files with a file size less than 150 KB are also not encrypted.</p>
+<p>After encrypting victims&#8217; files, the ransomware displays a ransom note in the app asking for a payment in Bitcoin. The ransom note warns that data will be lost after 72 hours, and that the files will not be decrypted even if the app has been deleted.</p>
+<p>&#8220;It is true that if the victim removes the app, the ransomware will not be able to decrypt the files, as stated in the ransom note,&#8221; said researchers. &#8220;Also, according to our analysis, there is nothing in the ransomware&#8217;s code to support the claim that the affected data will be lost after 72 hours.&#8221;</p>
+<p>While researchers don&#8217;t say how many have been infected, in inspecting one such bit.ly link spread on Reddit, Stefanko said that it had reached 59 clicks from various sources and countries.</p>
+<p>Researchers urged Android victims to avoid attack by keeping devices up to date and sticking to Google Play for downloading apps. Android devices face a slew of threats: A new recent breed of <a href="https://threatpost.com/malware-agent-smith-android-ads/146359/" target="_blank" rel="noopener noreferrer">Android malware</a>, dubbed &#8220;Agent Smith,&#8221; has infected 25 million handsets in order to replace legitimate apps with doppelgangers that display rogue ads, researchers have said. Researchers have also spotted a <a href="https://threatpost.com/monokle-android-spyware/146655/" target="_blank" rel="noopener noreferrer">mobile surveillance-ware</a> remote access trojan for Android called Monokle, using novel techniques to exfiltrate data.</p>
+<div id="taboola-below-article-thumbnails"></div>
+			<script type="text/javascript">
+				window._taboola = window._taboola || [];
+				_taboola.push({
+					mode: 'thumbnails-a',
+					container: 'taboola-below-article-thumbnails',
+					placement: 'Below Article Thumbnails',
+					target_type: 'mix'
+				});
+			</script>											<footer class="c-article__footer">
+												<div class="c-article__footer__container">
+																										<div class="c-article__footer__col">
+														<a href="#discussion" class="c-button c-button--secondary">Write a comment</a>
+													</div>
+																										<div class="c-article__footer__col">
+														<div class="c-article__sharing">
+															<p><strong>Share this article:</strong></p>
+															<nav class="c-nav-sharing">
+																<div class="social-likes social-likes_notext" data-title="Android Ransomware Spreads Via &#8216;Sex Simulation Game&#8217; Links on Reddit, SMS" data-url="https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/" data-counters="yes" data-zeroes="yes"><div class="facebook" title="Share via Facebook"></div>
+<div class="twitter" title="Share via Twitter"></div><div class="linkedin" title="Share via LinkedIn"></div>
+<div class="reddit" title="Share via Reddit"></div>
+</div>															</nav>
+														</div>
+													</div>
+												</div>
+
+																								<div class="c-article__footer__container">
+													<div class="c-article__footer__col"></div>
+													<div class="c-article__footer__col">
+														<ul class="c-list-categories">
+																															<li><a class="c-label c-label--secondary-transparent" href="https://threatpost.com/category/malware-2/">Malware</a></li>
+																															<li><a class="c-label c-label--secondary-transparent" href="https://threatpost.com/category/mobile-security/">Mobile Security</a></li>
+																													</ul>
+													</div>
+												</div>
+												
+											</footer>
+										</div>
+									</div>
+								</div>
+							</div>
+						</article>
+					
+						
+		<div class="c-post-list-slider">
+		<h3 class="c-section-title"><a href="#"><span>Suggested articles</span></a></h3>
+		<div class="o-row c-border-layout@md js-slider-3">
+	
+											<div class="o-col-4@md">
+							<article class="c-card c-card__image-top">
+																<figure>
+									<a href="https://threatpost.com/the-texas-ransomware-attacks-a-gamechanger-for-cybercriminals/147597/">
+										<img width="540" height="270" src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/06/20122305/Ransomware-540x270.jpg" class="attachment-article-2_1 size-article-2_1 wp-post-image" alt="" />										
+        <div class="c-card__type c-card__type--podcast">
+            <span class="c-card__type-icon"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-mic'></use></svg></span>
+        </div>									</a>
+								</figure>
+								
+								<h2 class="c-card__title"><a href="https://threatpost.com/the-texas-ransomware-attacks-a-gamechanger-for-cybercriminals/147597/">The Texas Ransomware Attacks: A Gamechanger for Cybercriminals</a></h2>
+								<p>Security researchers worry that this weekend&#8217;s coordinated attacks on more than 20 Texas governments mark a change in how ransomware attacks will be launched in the future.</p>
+								<footer class="c-card__info">
+									
+									<div class="c-card__time">
+										<time datetime="2019-08-21T15:20:02-04:00">August 21, 2019</time>
+									</div>
+																	</footer>
+							</article>
+						</div>
+											<div class="o-col-4@md">
+							<article class="c-card c-card__image-top">
+																<figure>
+									<a href="https://threatpost.com/fortnite-ransomware-masquerades-as-an-aimbot-game-hack/147549/">
+										<img width="540" height="270" src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/01/16103911/Fortnite_DS-540x270.jpg" class="attachment-article-2_1 size-article-2_1 wp-post-image" alt="fortnite ransomware" />																			</a>
+								</figure>
+								
+								<h2 class="c-card__title"><a href="https://threatpost.com/fortnite-ransomware-masquerades-as-an-aimbot-game-hack/147549/">Fortnite Ransomware Masquerades as an Aimbot Game Hack</a></h2>
+								<p>Attackers are taking aim at Fortnite&#8217;s global community of 250 million gamers.</p>
+								<footer class="c-card__info">
+									
+									<div class="c-card__time">
+										<time datetime="2019-08-20T16:29:31-04:00">August 20, 2019</time>
+									</div>
+																		<div class="c-card__stats">
+										<div class="c-card__stats-comments">
+											<a href="https://threatpost.com/fortnite-ransomware-masquerades-as-an-aimbot-game-hack/147549/#comments"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-comments'></use></svg> <span>1</span></a>
+										</div>
+									</div>
+																	</footer>
+							</article>
+						</div>
+											<div class="o-col-4@md">
+							<article class="c-card c-card__image-top">
+																<figure>
+									<a href="https://threatpost.com/post-gandcrab-cybercriminals-scouring-the-dark-web-for-the-next-top-ransomware/147476/">
+										<img width="540" height="270" src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/06/14143144/broken-ransomware-540x270.jpg" class="attachment-article-2_1 size-article-2_1 wp-post-image" alt="" />										
+        <div class="c-card__type c-card__type--video">
+            <span class="c-card__type-icon"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-play'></use></svg></span>
+        </div>									</a>
+								</figure>
+								
+								<h2 class="c-card__title"><a href="https://threatpost.com/post-gandcrab-cybercriminals-scouring-the-dark-web-for-the-next-top-ransomware/147476/">Post-GandCrab, Cybercriminals Scouring the Dark Web for the Next Top Ransomware</a></h2>
+								<p>A detailed look at underground forums shows that cybercriminals aren&#8217;t sure where to look on the heels of the GandCrab ransomware group shutting its doors &#8211; and low-level actors are taking advantage of that by developing their own strains.</p>
+								<footer class="c-card__info">
+									
+									<div class="c-card__time">
+										<time datetime="2019-08-19T15:49:27-04:00">August 19, 2019</time>
+									</div>
+																		<div class="c-card__stats">
+										<div class="c-card__stats-comments">
+											<a href="https://threatpost.com/post-gandcrab-cybercriminals-scouring-the-dark-web-for-the-next-top-ransomware/147476/#comments"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-comments'></use></svg> <span>1</span></a>
+										</div>
+									</div>
+																	</footer>
+							</article>
+						</div>
+				</div>
+	</div>
+
+	
+					
+					<div class="c-discussion" name="discussion" id="comments">
+						<h3 class="c-section-title"><span>Discussion</span></h3>
+
+												<ul class="c-comments c-comment__replies">
+							
+        <li>
+            <div class="c-comment" id="comment-692139">
+                <div class="c-comment__author-avatar">
+                    <img alt='' src='https://secure.gravatar.com/avatar/2fd61c62e97e72a9dc6b0b58d60a3da1?s=60&#038;d=https%3A%2F%2Fthreatpost.com%2Fwp-content%2Fthemes%2Fthreatpost-2018%2Fassets%2Fimages%2Favatar-default.jpg&#038;r=g' srcset='https://secure.gravatar.com/avatar/2fd61c62e97e72a9dc6b0b58d60a3da1?s=120&#038;d=https%3A%2F%2Fthreatpost.com%2Fwp-content%2Fthemes%2Fthreatpost-2018%2Fassets%2Fimages%2Favatar-default.jpg&#038;r=g 2x' class=' avatar-60 photo' height='60' width='60' />
+                </div>
+                <header class="c-comment__header">
+                    <p>
+                        <a class="c-comment__author-name" href="#">Mm</a>
+                        <span class="c-article__time">
+                            on <time datetime="2019-08-02T05:38:48-04:00">August 2, 2019</time>
+                        </span>
+                    </p>
+                </header>
+                <div class="c-comment__content">
+                    Any md5 or sha256 or virustutal link for that?
+                </div>
+                <footer class="c-comment__footer"><a rel='nofollow' class='comment-reply-link' href='/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/?replytocom=692139#respond' data-commentid="692139" data-postid="146774" data-belowelement="comment-692139" data-respondelement="respond" aria-label='Reply to Mm'><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-comments'></use></svg> Reply</a></footer>
+            </div></li>						</ul>
+						
+												<div class="c-comment-reply">
+								<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave A Comment <small><a rel="nofollow" id="cancel-comment-reply-link" href="/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/#respond" style="display:none;">Cancel Reply</a></small></h3>			<form action="https://threatpost.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<div class="o-row"><div class="o-col-12@md"><div class="c-form-element"><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true" placeholder="Write a reply..."></textarea></div></div></div><div class="o-row"><div class="o-col-6@md"><div class="c-form-element"><input id="author" name="author" placeholder="Your name" type="text" value="" size="30" /></div></div>
+<div class="o-col-6@md"><div class="c-form-element"><input id="email" name="email" placeholder="Your email" type="text" value="" size="30" /></div></div>
+<div class="o-col-12@md"><div class="c-form-element c-checkbox-wrapper"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /><label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></div></div>
+</div><p class="comment-form-checkbox c-form-element c-checkbox-wrapper"><input type="checkbox" value="1" name="subscribe" id="subscribe"/><label for="subscribe">Notify me when new comments are added.</label></p><p class="form-submit"><input name="submit" type="submit" id="submit" class="c-button c-button--primary" value="Send Comment" /> <input type='hidden' name='comment_post_ID' value='146774' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="6640413ae8" /></p><!-- the following input field has been added by the Honeypot Comments plugin to thwart spambots -->
+	<input type="hidden" id="s2FDKhaZcikVBvmJ9WxY6fJW2" name="6YZWBVouKu3xuI7xrKeZpmwam" /><div class="g-recaptcha" data-sitekey="6Lfgf_8SAAAAADYbQAnKFOk7cvnWbkqo6y57-4-U" data-theme="standard"></div><script type="text/javascript"src="https://www.google.com/recaptcha/api.js?hl=en"></script>            <div id="recaptcha-submit-btn-area">&nbsp;</div>
+            <noscript>
+            <style type='text/css'>#form-submit-save {display:none;}</style>
+            <input name="submit" type="submit" id="submit-alt" tabindex="6"
+                value="Submit Comment"/>
+            </noscript><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="87"/></p>			</form>
+			</div><!-- #respond -->
+	<p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.</p>						</div>
+											</div>
+				</div>
+
+								<div class="o-col c-sidebar">
+
+										<div id="custom_html-3" class="widget_text widget-odd widget-first widget-1 c-ad c-ad--tile-1x1-mrec c-widget widget_custom_html"><div class="textwidget custom-html-widget"><div class="c-ad__container">
+<div class="adRUPTad medrectangle" data-adunit="medrectangle"></div>
+</div></div></div><div id="threatpost_category_posts-2" class="widget-even widget-2 c-widget widget_threatpost_category_posts">
+			<div class="c-widget">
+								<h3 class="c-section-title"><span>Editor's Picks</span></h3>
+				
+				<ul class="c-list-cards">
+									<li>
+						<article class="c-card c-card--small">
+														<figure>
+								<a href="https://threatpost.com/microsite/threatpost-podcasts-going-beyond-the-headlines/" title="Threatpost Podcasts: Going Beyond the Headlines"><img width="64" height="64" src="https://media.threatpost.com/wp-content/uploads/sites/103/2018/08/13160746/Talk-Security-Podcast-October-2014-1024x768-1-64x64.png" class="attachment-article-1_1 size-article-1_1 wp-post-image" alt="" /></a>
+							</figure>
+							
+							<h2 class="c-card__title"><a href="https://threatpost.com/microsite/threatpost-podcasts-going-beyond-the-headlines/">Threatpost Podcasts: Going Beyond the Headlines</a></h2>
+							<footer class="c-card__info">
+								<div class="c-card__time">
+									<time datetime="2019-08-15T15:42:32-04:00">August 15, 2019</time>
+								</div>
+															</footer>
+						</article>
+					</li>
+										<li>
+						<article class="c-card c-card--small">
+														<figure>
+								<a href="https://threatpost.com/microsite/infosec-insiders-community/" title="InfoSec Insider Community"><img width="64" height="64" src="https://media.threatpost.com/wp-content/uploads/sites/103/2018/12/21120202/53-64x64.jpeg" class="attachment-article-1_1 size-article-1_1 wp-post-image" alt="" /></a>
+							</figure>
+							
+							<h2 class="c-card__title"><a href="https://threatpost.com/microsite/infosec-insiders-community/">InfoSec Insider Community</a></h2>
+							<footer class="c-card__info">
+								<div class="c-card__time">
+									<time datetime="2019-08-15T15:26:50-04:00">August 15, 2019</time>
+								</div>
+															</footer>
+						</article>
+					</li>
+										<li>
+						<article class="c-card c-card--small">
+														<figure>
+								<a href="https://threatpost.com/20-year-old-bug-legacy-microsoft-windows-users/147336/" title="20-Year-Old Bug in Legacy Microsoft Code Plagues All Windows Users"><img width="64" height="64" src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/05/14164757/Microsoft-Store-64x64.jpg" class="attachment-article-1_1 size-article-1_1 wp-post-image" alt="" /></a>
+							</figure>
+							
+							<h2 class="c-card__title"><a href="https://threatpost.com/20-year-old-bug-legacy-microsoft-windows-users/147336/">20-Year-Old Bug in Legacy Microsoft Code Plagues All Windows Users</a></h2>
+							<footer class="c-card__info">
+								<div class="c-card__time">
+									<time datetime="2019-08-14T13:35:06-04:00">August 14, 2019</time>
+								</div>
+																<div class="c-card__stats">
+									<div class="c-card__stats-comments">
+										<a href="https://threatpost.com/20-year-old-bug-legacy-microsoft-windows-users/147336/#comments"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-comments'></use></svg> <span>4</span></a>
+									</div>
+								</div>
+															</footer>
+						</article>
+					</li>
+										<li>
+						<article class="c-card c-card--small">
+														<figure>
+								<a href="https://threatpost.com/wormable-remote-desktop-bugs-august-patch-tuesday/147302/" title="Shades of BlueKeep: Wormable Remote Desktop Bugs Top August Patch Tuesday List"><img width="64" height="64" src="https://media.threatpost.com/wp-content/uploads/sites/103/2019/06/11161849/microsoft_patch-64x64.png" class="attachment-article-1_1 size-article-1_1 wp-post-image" alt="microsoft patch tuesday" /></a>
+							</figure>
+							
+							<h2 class="c-card__title"><a href="https://threatpost.com/wormable-remote-desktop-bugs-august-patch-tuesday/147302/">Shades of BlueKeep: Wormable Remote Desktop Bugs Top August Patch Tuesday List</a></h2>
+							<footer class="c-card__info">
+								<div class="c-card__time">
+									<time datetime="2019-08-13T16:29:10-04:00">August 13, 2019</time>
+								</div>
+															</footer>
+						</article>
+					</li>
+										<li>
+						<article class="c-card c-card--small">
+														<figure>
+								<a href="https://threatpost.com/gamers-zero-day-steam-client-affects-windows/147225/" title="Gamers Beware: Zero-Day in Steam Client Affects All Windows Users"><img width="64" height="64" src="https://media.threatpost.com/wp-content/uploads/sites/103/2018/08/01084854/Steam-logo-64x64.jpg" class="attachment-article-1_1 size-article-1_1 wp-post-image" alt="" /></a>
+							</figure>
+							
+							<h2 class="c-card__title"><a href="https://threatpost.com/gamers-zero-day-steam-client-affects-windows/147225/">Gamers Beware: Zero-Day in Steam Client Affects All Windows Users</a></h2>
+							<footer class="c-card__info">
+								<div class="c-card__time">
+									<time datetime="2019-08-12T11:07:34-04:00">August 12, 2019</time>
+								</div>
+																<div class="c-card__stats">
+									<div class="c-card__stats-comments">
+										<a href="https://threatpost.com/gamers-zero-day-steam-client-affects-windows/147225/#comments"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-comments'></use></svg> <span>26</span></a>
+									</div>
+								</div>
+															</footer>
+						</article>
+					</li>
+									</ul>
+			</div>
+		</div><div id="custom_html-4" class="widget_text widget-odd widget-3 c-widget widget_custom_html"><div class="textwidget custom-html-widget"><div class="c-newsletter-widget">
+<div class="c-label-wrapper"><span class="c-label c-label--white-transparent">Newsletter</span></div>
+<h3>Subscribe to <em>Threatpost Today</em></h3>
+<p>Join thousands of people who receive the latest breaking cybersecurity news every day.</p>
+<a class="c-button c-button--primary c-button--full js-modal-open" href="#modal_newsletter">Subscribe now</a>
+</div></div></div><div id="threatpost_tweets-2" class="widget-even widget-4 c-widget threatpost_tweets widget_text">            <div class="c-twitter-post-widget">
+                <div class="c-label-wrapper">
+                    <span class="c-label c-label--white">Twitter</span>
+                </div>
+                <p>Enterprises everyday are threatened by serious <a href="http://twitter.com/search?q=%23security" target="_blank">#security</a> flaws in connected surveillance cameras, printers and othe… <a href="https://t.co/08wWHQCaXS" target="_blank">https://t.co/08wWHQCaXS</a></p>
+                <footer class="c-twitter-post__footer">
+                    <p>9 hours ago</p>
+                    <a class="c-button c-button--white-transparent c-button--full twitter-follow-button" href="https://twitter.com/threatpost" target="_blank">Follow @threatpost</a>
+                </footer>
+            </div>
+            </div><div id="custom_html-5" class="widget_text widget-odd widget-last widget-5 c-widget widget_custom_html"><div class="textwidget custom-html-widget"><div class="adRUPTad tower" data-adunit="tower"></div></div></div>					
+				</div>			</div>
+		</div>
+	</div>
+
+
+
+	</div>
+
+
+				<div class="c-section c-section--bg u-border--top c-newsletter-section">
+			<div class="o-container-fluid">
+				<div class="textwidget custom-html-widget"><div class="o-row">
+<div class="o-col-7@sm o-col-8@md o-col-9@lg">
+<h3>Subscribe to our newsletter, <em>Threatpost Today</em>!</h3>
+<p>Get the latest breaking news delivered daily to your inbox.</p>
+</div>
+<div class="o-col-5@sm o-col-4@md o-col-3@lg"><a class="c-button c-button--secondary c-button--full js-modal-open" href="#modal_newsletter">Subscribe now</a></div>
+</div>
+</div>			</div>
+		</div>
+	
+
+	<footer class="c-site-footer c-section--dark">
+		<div class="o-container-fluid">
+			<div class="o-row c-site-footer__layout">
+				<div class="o-col-6@md c-site-logo-group">
+					<a class="c-site-logo c-site-logo--white c-site-logo--larger@md" href="https://threatpost.com/">
+						<div>Threatpost</div>
+					</a>
+					<p class="c-site-tagline"><a href="https://threatpost.com/">The First Stop For Security News</a></p>
+				</div>
+				<div class="o-col-6@md u-text-right u-hidden u-block@md">
+					<nav class="c-nav-secondary">
+						<ul id="menu-footer-threatpost-menu-2" class="c-main-menu"><li id="menu-item-133105" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-133105"><a href="https://threatpost.com/"><span>Home</span></a></li>
+<li id="menu-item-133106" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-133106"><a href="https://threatpost.com/about-threatpost/"><span>About Us</span></a></li>
+<li id="menu-item-133107" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-133107"><a href="https://threatpost.com/contact-us/"><span>Contact Us</span></a></li>
+<li id="menu-item-147168" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-147168"><a href="https://indd.adobe.com/view/639c3b32-90d4-40a1-9a31-2c49c7a86075"><span>Advertise With Us</span></a></li>
+<li id="menu-item-133108" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-133108"><a href="https://threatpost.com/rss-feeds/"><span>RSS Feeds</span></a></li>
+</ul>					</nav>
+				</div>
+				<div class="o-col-6@md">
+					<nav class="c-site-info">
+										<ul id="menu-footer-threatpost-menu-1" class="c-small-links"><li>Copyright &copy; 2019 Threatpost</li><li id="menu-item-133103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-133103"><a href="https://threatpost.com/privacy-policy/">Privacy Policy</a></li>
+<li id="menu-item-133943" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-133943"><a href="https://threatpost.com/tos/">Terms and Conditions</a></li>
+<li id="menu-item-133958" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-133958"><a href="https://threatpost.com/advertise/">Advertise</a></li>
+</ul>					</nav>
+					<nav class="c-nav-social">
+						<ul id="menu-social-menu-1" class="menu"><li><a href="https://www.facebook.com/Threatpost/" title="Facebook" class="facebook" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-facebook'></use></svg></a></li><li><a href="https://twitter.com/threatpost/" title="Twitter" class="twitter" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-twitter'></use></svg></a></li><li><a href="https://www.linkedin.com/company/threatpost/" title="LinkedIn" class="linkedin" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-linkedin'></use></svg></a></li><li><a href="https://www.youtube.com/user/threatpost" title="YouTube" class="youtube" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-youtube'></use></svg></a></li><li><a href="https://feedly.com/threatpost" title="Feedly" class="feedly" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-feedly'></use></svg></a></li><li><a href="https://www.instagram.com/Threatpost/" title="Instagram" class="instagram" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-instagram'></use></svg></a></li><li><a href="https://threatpost.com/feed" title="RSS" class="rss" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-rss'></use></svg></a></li></ul>					</nav>
+				</div>
+				<div class="o-col-6@md u-text-right u-hidden u-block@md">
+										<h3 class="c-section-title"><span>Topics</span></h3>
+
+					<ul id="menu-topics" class="c-small-links"><li id="menu-item-133149" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133149"><a target="_blank" rel="noopener noreferrer" href="https://threatpost.com/category/bh/">Black Hat</a></li>
+<li id="menu-item-133150" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133150"><a href="https://threatpost.com/category/breaking-news/">Breaking News</a></li>
+<li id="menu-item-133151" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133151"><a href="https://threatpost.com/category/cloud-security/">Cloud Security</a></li>
+<li id="menu-item-133152" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133152"><a href="https://threatpost.com/category/critical-infrastructure/">Critical Infrastructure</a></li>
+<li id="menu-item-133153" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133153"><a href="https://threatpost.com/category/cryptography/">Cryptography</a></li>
+<li id="menu-item-133154" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133154"><a href="https://threatpost.com/category/facebook/">Facebook</a></li>
+<li id="menu-item-133156" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133156"><a href="https://threatpost.com/category/government/">Government</a></li>
+<li id="menu-item-133157" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133157"><a href="https://threatpost.com/category/hacks/">Hacks</a></li>
+<li id="menu-item-133158" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133158"><a href="https://threatpost.com/category/iot/">IoT</a></li>
+<li id="menu-item-133159" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-133159"><a href="https://threatpost.com/category/malware-2/">Malware</a></li>
+<li id="menu-item-133160" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-133160"><a href="https://threatpost.com/category/mobile-security/">Mobile Security</a></li>
+<li id="menu-item-133161" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133161"><a href="https://threatpost.com/category/podcasts/">Podcasts</a></li>
+<li id="menu-item-133162" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133162"><a href="https://threatpost.com/category/privacy/">Privacy</a></li>
+<li id="menu-item-133163" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133163"><a href="https://threatpost.com/category/rsac/">RSAC</a></li>
+<li id="menu-item-133164" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133164"><a href="https://threatpost.com/category/sas/">Security Analyst Summit</a></li>
+<li id="menu-item-133167" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133167"><a href="https://threatpost.com/category/videos/">Videos</a></li>
+<li id="menu-item-133168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133168"><a href="https://threatpost.com/category/vulnerabilities/">Vulnerabilities</a></li>
+<li id="menu-item-133169" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133169"><a href="https://threatpost.com/category/web-security/">Web Security</a></li>
+</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+
+
+
+<div class="adRUPTad interstitial" data-adunit="interstitial"></div>
+
+
+	<div class="c-site-nav">
+		<div class="c-site-nav__header">
+			<div class="o-container-fluid">
+				<a href="#" class="c-menu-toggle js-menu-toggle">
+					<span></span>
+					<span></span>
+					<span></span>
+				</a>
+				<a class="c-site-logo c-site-logo--larger@md" href="https://threatpost.com/">
+					<div>Threatpost</div>
+				</a>
+				<div class="c-site-nav__header__aside">
+					<nav class="c-nav-social">
+					<ul id="menu-social-menu-2" class="menu"><li><a href="https://www.facebook.com/Threatpost/" title="Facebook" class="facebook" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-facebook'></use></svg></a></li><li><a href="https://twitter.com/threatpost/" title="Twitter" class="twitter" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-twitter'></use></svg></a></li><li><a href="https://www.linkedin.com/company/threatpost/" title="LinkedIn" class="linkedin" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-linkedin'></use></svg></a></li><li><a href="https://www.youtube.com/user/threatpost" title="YouTube" class="youtube" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-youtube'></use></svg></a></li><li><a href="https://feedly.com/threatpost" title="Feedly" class="feedly" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-feedly'></use></svg></a></li><li><a href="https://www.instagram.com/Threatpost/" title="Instagram" class="instagram" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-instagram'></use></svg></a></li><li><a href="https://threatpost.com/feed" title="RSS" class="rss" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-rss'></use></svg></a></li></ul>					</nav>
+					<!-- <nav class="c-nav-utility">
+						<a href="https://threatpost.com/" class="c-button c-button--secondary-transparent c-button--smaller"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-user'></use></svg> Log in</a>
+					</nav> -->
+				</div>
+			</div>
+		</div>
+		<div class="c-site-nav__main">
+			<div class="o-container-fluid">
+				<div class="o-row">
+					<div class="o-col-6@md"><div class="c-site-nav__list js-nav-toggle-container">
+							<div class="c-site-nav__list__header js-nav-toggle-button">
+								<h3 class="c-section-title"><span>Topics</span></h3>
+                            </div><ul class="o-stack-1 o-stack-2@sm c-main-menu"><li><a href="https://threatpost.com/category/cloud-security/"><span>Cloud Security</span></a></li><li><a href="https://threatpost.com/category/malware-2/"><span>Malware</span></a></li><li><a href="https://threatpost.com/category/vulnerabilities/"><span>Vulnerabilities</span></a></li><li><a href="https://threatpost.com/category/privacy/"><span>Privacy</span></a></li></ul>
+                            <a href="#" class="c-label c-label--secondary-transparent u-hidden@md js-nav-toggle-button">Show all</a>
+                            <div class="c-site-nav__list__content js-nav-toggle-content">
+                            <ul class="o-stack-1 o-stack-2@sm c-main-menu"><li><a href="https://threatpost.com/category/bh/"><span>Black Hat</span></a></li><li><a href="https://threatpost.com/category/critical-infrastructure/"><span>Critical Infrastructure</span></a></li><li><a href="https://threatpost.com/category/cryptography/"><span>Cryptography</span></a></li><li><a href="https://threatpost.com/category/facebook/"><span>Facebook</span></a></li><li><a href="https://threatpost.com/category/featured/"><span>Featured</span></a></li><li><a href="https://threatpost.com/category/government/"><span>Government</span></a></li><li><a href="https://threatpost.com/category/hacks/"><span>Hacks</span></a></li><li><a href="https://threatpost.com/category/iot/"><span>IoT</span></a></li><li><a href="https://threatpost.com/category/mobile-security/"><span>Mobile Security</span></a></li><li><a href="https://threatpost.com/category/podcasts/"><span>Podcasts</span></a></li><li><a href="https://threatpost.com/category/rsac/"><span>RSAC</span></a></li><li><a href="https://threatpost.com/category/sas/"><span>Security Analyst Summit</span></a></li><li><a href="https://threatpost.com/category/slideshow/"><span>Slideshow</span></a></li><li><a href="https://threatpost.com/category/videos/"><span>Videos</span></a></li><li><a href="https://threatpost.com/category/web-security/"><span>Web Security</span></a></li></ul></div></div></div><div class="o-col-3@md"><div class="c-site-nav__list js-nav-toggle-container">
+							<div class="c-site-nav__list__header js-nav-toggle-button">
+								<h3 class="c-section-title"><span>Authors</span></h3>
+                            </div><div class="c-site-nav__list__content js-nav-toggle-content"><ul class="o-stack-1  c-main-menu"><li><a href="https://threatpost.com/author/lindseyodonnell/"><span>Lindsey O'Donnell</span></a></li><li><a href="https://threatpost.com/author/sealstara/"><span>Tara Seals</span></a></li><li><a href="https://threatpost.com/author/thomas/"><span>Tom Spring</span></a></li></ul></div></div></div><div class="o-col-3@md"><div class="c-site-nav__list js-nav-toggle-container">
+							<div class="c-site-nav__list__header js-nav-toggle-button">
+								<h3 class="c-section-title"><span>Threatpost</span></h3>
+                            </div><div class="c-site-nav__list__content js-nav-toggle-content"><ul class="o-stack-1  c-main-menu"><li><a href="https://threatpost.com/"><span>Home</span></a></li><li><a href="https://threatpost.com/about-threatpost/"><span>About Us</span></a></li><li><a href="https://threatpost.com/contact-us/"><span>Contact Us</span></a></li><li><a href="https://threatpost.com/advertise/"><span>Advertise With Us</span></a></li><li><a href="https://threatpost.com/rss-feeds/"><span>RSS Feeds</span></a></li><li><a href="https://spotlight.threatpost.com/"><span>HackerOne Spotlight</span></a></li></ul></div></div></div>				</div>
+
+				<div class="o-row">
+					<div class="o-col-6@md o-offset-3@md">
+						<div class="c-site-search c-site-nav__search">
+							<form class="c-site-search__form" role="search" method="get" action="https://threatpost.com/">
+								<input type="text" class="c-site-search__field" name="s" placeholder="Search">
+								<button type="submit" class="c-button c-button--secondary c-button--smaller c-site-search__button" value="Search"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-search'></use></svg> Search</button>
+								<div class="c-site-search__overlay"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="c-site-nav__footer u-hidden@md">
+			<div class="o-container-fluid">
+				<nav class="c-nav-social">
+					<ul id="menu-social-menu-3" class="menu"><li><a href="https://www.facebook.com/Threatpost/" title="Facebook" class="facebook" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-facebook'></use></svg></a></li><li><a href="https://twitter.com/threatpost/" title="Twitter" class="twitter" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-twitter'></use></svg></a></li><li><a href="https://www.linkedin.com/company/threatpost/" title="LinkedIn" class="linkedin" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-linkedin'></use></svg></a></li><li><a href="https://www.youtube.com/user/threatpost" title="YouTube" class="youtube" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-youtube'></use></svg></a></li><li><a href="https://feedly.com/threatpost" title="Feedly" class="feedly" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-feedly'></use></svg></a></li><li><a href="https://www.instagram.com/Threatpost/" title="Instagram" class="instagram" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-instagram'></use></svg></a></li><li><a href="https://threatpost.com/feed" title="RSS" class="rss" target="_blank"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-rss'></use></svg></a></li></ul>				</nav>
+				<!-- <a href="https://threatpost.com/" class="c-button c-button--secondary-transparent c-button--smaller u-size--full"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-user'></use></svg> Log in</a> -->
+			</div>
+		</div>
+	</div>
+<div id="modal_infosec_desc" class="c-modal c-modal--small mfp-hide">
+    <div class="c-modal__header">
+        <a href="#" class="c-modal__close c-modal__close--dark js-modal-close"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-remove'></use></svg></a>
+    </div>
+    <div class="c-modal__main">
+        <div class="c-section c-section--bg c-section--dark">
+            <div class="o-container-fluid">
+                <div class="u-mb-spacer-base">
+                    <div class="c-label c-label--secondary-blue">InfoSec Insider</div>
+                </div>
+                <h3>Infosec Insider Post</h3>
+                <p>Infosec Insider content is written by a trusted community of Threatpost cybersecurity subject matter experts. Each contribution has a goal of bringing a unique voice to important cybersecurity topics. Content strives to be of the highest quality, objective and non-commercial.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_sponsored_desc" class="c-modal c-modal--small mfp-hide">
+    <div class="c-modal__header">
+        <a href="#" class="c-modal__close c-modal__close--dark js-modal-close"><svg class='icon fill'><use xmlns:xlink='http://www.w3.org/1999/xlink' xlink:href='https://threatpost.com/wp-content/themes/threatpost-2018/assets/sprite/icons.svg#icon-remove'></use></svg></a>
+    </div>
+    <div class="c-modal__main">
+        <div class="c-section c-section--bg c-section--dark">
+            <div class="o-container-fluid">
+                <div class="u-mb-spacer-base">
+                    <div class="c-label c-label--secondary-yellow">Sponsored</div>
+                </div>
+                <h3>Sponsored Content</h3>
+                <p>Sponsored Content is paid for by an advertiser. Sponsored content is written and edited by members of our sponsor community. This content creates an opportunity for a sponsor to provide insight and commentary from their point-of-view directly to the Threatpost audience. The Threatpost editorial team does not participate in the writing or editing of Sponsored Content.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+	<script style="display:none;">
+		var adrptRules = {
+			"dfpID": "21707124336",
+			"adSite": "threatpost",
+			"section": "malware-2_article",
+			"contentId": "146774",
+			"contentCategory": "malware-2",
+			"contentTags": "production,homeandroid,android-device,malicious-link,malware,mobile-security-2,ransomware,reddit,sms-message,",
+			"contentExclude": "",
+			"sizeMapping": {
+	            "billboard": [
+		        	{"browser": [970, 260], "ad_sizes": [970, 250]},
+			        {"browser": [760, 100], "ad_sizes": [728, 90]},
+			        {"browser": [0, 0], "ad_sizes": [320, 50]}
+		        ],
+	            "header": [
+	                {"browser": [970, 260], "ad_sizes": [970, 250]},
+			        {"browser": [760, 100], "ad_sizes": [728, 90]},
+			        {"browser": [0, 0], "ad_sizes": [320, 50]}
+		        ],
+	            "leaderboard": [
+			        {"browser": [769, 100], "ad_sizes": [728, 90]},
+			        {"browser": [0, 0], "ad_sizes": [320, 50]}
+		        ],
+		    }
+		};
+		initiateAds();
+	</script>            <script type="text/javascript">
+            if ( typeof _recaptcha_wordpress_savedcomment != 'undefined') {
+                document.getElementById('comment').value =
+                    _recaptcha_wordpress_savedcomment;
+            }
+            </script><script type='text/javascript' src='//assets.threatpost.com/wp-content/plugins/bwp-minify/min/?f=wp-content/plugins/gravityforms/js/jquery.json.min.js&#038;ver=b04433dc'></script>
+<script type='text/javascript' src='//assets.threatpost.com/wp-content/plugins/bwp-minify/min/?f=wp-content/plugins/gravityforms/js/gravityforms.min.js&#038;ver=b04433dc'></script>
+<link rel='stylesheet' id='gravityformsmailchimp_form_settings-group-css' href='//assets.threatpost.com/wp-content/plugins/bwp-minify/min/?f=wp-content/plugins/gravityformsmailchimp/css/form_settings.css&#038;ver=b04433dc' type='text/css' media='all' />
+<script type='text/javascript' src='//assets.threatpost.com/wp-content/plugins/bwp-minify/min/?f=wp-content/plugins/kaspersky-taboola-ads/assets/js/end.js,wp-includes/js/wp-embed.min.js,wp-content/plugins/gravityforms/js/conditional_logic.min.js,wp-content/plugins/gravityforms/js/placeholders.jquery.min.js,wp-content/plugins/akismet/_inc/form.js&#038;ver=b04433dc'></script>
+
+
+<!-- Powered by Whitelist IP For Limit Login Attempts | URL: http://club.orbisius.com/products/wordpress-plugins/whitelist-ip-for-limit-login-attempts/ -->
+
+</body>
+</html>
