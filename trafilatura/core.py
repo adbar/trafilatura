@@ -62,7 +62,7 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
-# HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr', 'span',
+# HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
 HTML_CLEANER.kill_tags = ['aside']
 # 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'
 
@@ -108,12 +108,12 @@ def prune_html(tree):
 
 
 #@profile
-def recursively_empty(e):
+def recursively_empty(elem):
     '''return recursively empty elements'''
     # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-    if e.text:
+    if elem.text:
         return False
-    return all((recursively_empty(c) for c in e.iterchildren()))
+    return all((recursively_empty(c) for c in elem.iterchildren()))
 
 
 #@profile

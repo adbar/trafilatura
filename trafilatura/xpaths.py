@@ -37,7 +37,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser") or contains(@id, "newsletter") or contains(@class, "newsletter") or contains(@id, "cookie") or contains(@class, "cookie")]', \
                  #'.//*[(self::div or self::p or self::section)][]', \
                  # navigation
-                 './/*[(self::div or self::section)][starts-with(@id, "nav-") or starts-with(@class, "nav-") or starts-with(@id, "breadcrumbs") or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]', \
+                 './/*[(self::div or self::ol or self::section or self::ul)][starts-with(@id, "nav-") or starts-with(@class, "nav-") or starts-with(@id, "nav ") or starts-with(@class, "nav ") or starts-with(@id, "breadcrumbs") or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]', \
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related") or contains(@id, "viral") or contains(@class, "viral")]', \
                  # sharing jp-post-flair jp-relatedposts
