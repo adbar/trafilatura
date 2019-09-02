@@ -100,7 +100,7 @@ def load_html(htmlobject):
         except ValueError:
             # try to parse a bytestring
             try:
-                tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+                tree = html.fromstring(htmlobject.encode('utf8'))
             except Exception as err:
                 LOGGER.error('parser bytestring %s', err)
         except UnicodeDecodeError as err:

@@ -648,6 +648,8 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     # init
     global LRU_TEST
     tree = load_html(filecontent)
+    if tree is None:
+        return None
     # LOGGER.debug('HTML tree loaded for URL: %s', url)
 
     # clean
