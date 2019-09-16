@@ -1,6 +1,11 @@
 sudo: false
 language: python
-dist: xenial
+
+# dist: xenial
+os:
+  - windows
+  - linux
+  - osx
 
 matrix:
   include:
