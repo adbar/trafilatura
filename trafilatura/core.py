@@ -15,7 +15,12 @@ from io import BytesIO
 
 # third-party
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
-import langid
+try:
+    import langid
+    langid.set_languages(LANGUAGES)
+    LANGID_FLAG = True
+except ImportError:
+    LANGID_FLAG = False
 
 from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 from lxml import etree, html
@@ -26,7 +31,7 @@ from .settings import LANGUAGES, LRU_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COM
 from .utils import load_html, sanitize, trim
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, DISCARD_XPATH, COMMENTS_DISCARD_XPATH
 
-langid.set_languages(LANGUAGES)
+
 
 ## TODO:
 # add sqlite3 for control of seen URLs?
@@ -720,17 +725,20 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
 
     # sanity check on language
     if target_language is not None:
-        # comments
-        if len(temp_comments) > len(temp_text):
-            langtest = temp_comments
-        # default
+        if LANGID_FLAG is True:
+            # comments
+            if len(temp_comments) > len(temp_text):
+                langtest = temp_comments
+            # default
+            else:
+                langtest = temp_text
+            langresult = langid.classify(langtest)
+            if langresult[0] != target_language:
+                LOGGER.warning('wrong language: %s %s %s', langresult, record_id, url)
+                LOGGER.debug('wrong language: %s %s', langresult, temp_text)
+                return None
         else:
-            langtest = temp_text
-        langresult = langid.classify(langtest)
-        if langresult[0] != target_language:
-            LOGGER.warning('wrong language: %s %s %s', langresult, record_id, url)
-            LOGGER.debug('wrong language: %s %s', langresult, temp_text)
-            return None
+            LOGGER.warning('package not installed, cannot perform language identification')
 
     # cache elements
     cache(postbody)

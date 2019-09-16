@@ -18,6 +18,13 @@ from setuptools import setup # find_packages,
 here = os.path.abspath(os.path.dirname(__file__))
 packages = ['trafilatura']
 
+extras = {
+    'all': [
+        'cchardet',
+        'langid',
+    ]
+}
+
 
 def readme():
     with open(os.path.join(here, 'README.rst'), 'r', 'utf-8') as readmefile:
@@ -58,14 +65,13 @@ setup(
     packages=packages,
     include_package_data=True,
     install_requires=[
-        'cchardet',
         'ftfy',
         'justext',
-        'langid',
         'lru-dict',
         'lxml == 4.3.4', # CPython parser issue with version 4.3.1 # > 4.3.4 not compatible with Python 3.4 
         'requests >= 2.19.0',
     ],
+    extras_require=extras,
     python_requires='>=3',
     entry_points = {
         'console_scripts': ['trafilatura=trafilatura.cli:main'],

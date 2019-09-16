@@ -71,7 +71,9 @@ Installation
 
 *(Or use ``pip3 install trafilatura`` on systems where Python 2 and 3 are both globally installed and pip refers to Python 2.)*
 
-Direct installation of the latest version over pip is possible (see `build status <https://travis-ci.org/adbar/trafilatura>`_):
+For all experimental functionality please use ``pip install trafilatura[all]`` (installation issues on some platforms).
+
+Direct installation of the latest version (see `build status <https://travis-ci.org/adbar/trafilatura>`_):
 
 ``pip install git+https://github.com/adbar/trafilatura.git``
 
@@ -102,7 +104,7 @@ The only required argument is the ``response`` element, the rest is optional. It
     >>> trafilatura.process_record(mytree)
     'Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n'
 
-Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match.
+Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
 
 .. code-block:: python
 
