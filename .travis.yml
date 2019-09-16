@@ -7,48 +7,39 @@ matrix:
       os: linux
       python: 3.4
       env: TOXENV=py34
-    - name: "Python 3.4 on OS X"
-      os: osx
-      python: 3.4
-      env: TOXENV=py34
     - name: "Python 3.5 on Linux"
       os: linux
-      python: 3.5
-      env: TOXENV=py35
-    - name: "Python 3.5 on OS X"
-      os: osx
       python: 3.5
       env: TOXENV=py35
     - name: "Python 3.6 on Linux"
       os: linux
       python: 3.6
       env: TOXENV=py36
-    - name: "Python 3.6 on OS X"
-      os: osx
-      python: 3.6
-      env: TOXENV=py36
     - name: "Python 3.7 on Linux"
       os: linux
       python: 3.7
       env: TOXENV=py37
-    - name: "Python 3.7 on OS X"
-      os: osx
-      python: 3.7
-      env: TOXENV=py37
-    - name: "Python 3.8 on Linux Xenial"
+    - name: "Python 3.8 on Linux"
       os: linux
       dist: xenial
       python: "3.8-dev"
       env: TOXENV=py38
+    - name: "Python 3 on macOS"
+      os: osx
+      osx_image: xcode11
+      language: shell
+      # 'python:' is ignored on Travis CI macOS
+      before_install: python3 --version ; pip3 --version ; sw_vers
   allow_failures:
     - python: "3.8-dev"
-      env: TOXENV=py38
+    - os: osx
   # fast_finish: true
 
 before_install:
   - pip install codecov tox
 
 install:
+  # - pip install --upgrade pip
   - pip install .
 
 script:
@@ -69,3 +60,4 @@ notifications:
 
 # os:
 #  - windows # not supported
+# https://github.com/cclauss/Travis-CI-Python-on-three-OSes/blob/master/.travis.yml
