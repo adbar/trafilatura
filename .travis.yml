@@ -36,11 +36,11 @@ matrix:
   # fast_finish: true
 
 before_install:
-  - pip install codecov tox
+  - pip3 install codecov tox
 
 install:
-  # - pip install --upgrade pip
-  - pip install .
+  # - pip3 install --upgrade pip
+  - pip3 install .
 
 script:
   - tox
