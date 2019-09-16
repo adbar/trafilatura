@@ -18,6 +18,7 @@ from setuptools import setup # find_packages,
 here = os.path.abspath(os.path.dirname(__file__))
 packages = ['trafilatura']
 
+# some problems with installation solved this way
 extras = {
     'all': [
         'cchardet',
@@ -32,7 +33,7 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.0.4',
+    version='0.0.5',
     description='Scrapes the main text of web pages while preserving some structure.',
     long_description=readme(),
     classifiers=[

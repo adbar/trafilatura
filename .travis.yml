@@ -29,7 +29,7 @@ matrix:
       osx_image: xcode11
       language: shell
       # 'python:' is ignored on Travis CI macOS
-      before_install: python3 --version ; pip3 --version ; sw_vers
+      before_install: python3 --version ; pip3 --version ; sw_vers; pip3 install codecov tox
   allow_failures:
     - python: "3.8-dev"
     - os: osx
