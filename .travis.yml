@@ -1,23 +1,44 @@
 sudo: false
 language: python
 
-# dist: xenial
-os:
-  - windows
-  - linux
-  - osx
-
 matrix:
   include:
-    - python: "3.4"
+    - name: "Python 3.4 on Linux"
+      os: linux
+      python: 3.4
       env: TOXENV=py34
-    - python: "3.5"
+    - name: "Python 3.4 on OS X"
+      os: osx
+      python: 3.4
+      env: TOXENV=py34
+    - name: "Python 3.5 on Linux"
+      os: linux
+      python: 3.5
       env: TOXENV=py35
-    - python: "3.6"
+    - name: "Python 3.5 on OS X"
+      os: osx
+      python: 3.5
+      env: TOXENV=py35
+    - name: "Python 3.6 on Linux"
+      os: linux
+      python: 3.6
       env: TOXENV=py36
-    - python: "3.7"
+    - name: "Python 3.6 on OS X"
+      os: osx
+      python: 3.6
+      env: TOXENV=py36
+    - name: "Python 3.7 on Linux"
+      os: linux
+      python: 3.7
       env: TOXENV=py37
-    - python: "3.8-dev"
+    - name: "Python 3.7 on OS X"
+      os: osx
+      python: 3.7
+      env: TOXENV=py37
+    - name: "Python 3.8 on Linux Xenial"
+      os: linux
+      dist: xenial
+      python: "3.8-dev"
       env: TOXENV=py38
   allow_failures:
     - python: "3.8-dev"
@@ -45,3 +66,6 @@ notifications:
 
 #cache:
 #  pip: true
+
+# os:
+#  - windows # not supported
