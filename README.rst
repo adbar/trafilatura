@@ -65,7 +65,7 @@ The result of processing can be in plain text or XML format. In the latter case,
 Installation
 ------------
 
-*trafilatura* is a Python 3 package that is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``:
+*trafilatura* is a Python 3 package that is tested for Linux and macOS, is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``:
 
 ``pip install trafilatura``
 
@@ -154,6 +154,7 @@ Context
 
 This module is part of methods to derive metadata from web documents in order to build text corpora for computational linguistic and NLP analysis. For more information:
 
+-  Barbaresi, Adrien. "`The Vast and the Focused: On the need for domain-focused web corpora <https://ids-pub.bsz-bw.de/files/9025/Barbaresi_The_Vast_and_the_Focused_2019.pdf>`_", Proceedings of the 7th Workshop on Challenges in the Management of Large Corpora (CMLC-7) <http://corpora.ids-mannheim.de/cmlc-2019.html>`_, 2019.
 -  Barbaresi, Adrien. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
 Name

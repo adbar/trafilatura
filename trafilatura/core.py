@@ -17,7 +17,6 @@ from io import BytesIO
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 try:
     import langid
-    langid.set_languages(LANGUAGES)
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False
@@ -31,6 +30,8 @@ from .settings import LANGUAGES, LRU_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COM
 from .utils import load_html, sanitize, trim
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, DISCARD_XPATH, COMMENTS_DISCARD_XPATH
 
+if LANGID_FLAG is True:
+    langid.set_languages(LANGUAGES)
 
 
 ## TODO:
@@ -240,7 +241,7 @@ def convert_tags(tree):
     return tree
 
 
-def try_justext(tree, filecontent, record_id):
+def try_justext(tree, record_id):
     '''safety net: try with justext'''
     result_body = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
@@ -682,7 +683,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     temp_text = u' '.join(temppost_hand.itertext())
     if no_fallback is False and 0 <= len(temp_text) < 300:
         # try with justext
-        temppost_algo = try_justext(tree, filecontent, record_id) # cleaned_tree
+        temppost_algo = try_justext(tree, record_id) # cleaned_tree
         # compare
         temp_jt = u' '.join(temppost_algo.itertext())
         LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))

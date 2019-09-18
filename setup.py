@@ -69,7 +69,7 @@ setup(
         'ftfy',
         'justext',
         'lru-dict',
-        'lxml == 4.3.4', # CPython parser issue with version 4.3.1 # > 4.3.4 not compatible with Python 3.4 
+        'lxml == 4.3.4', # > 4.3.4 not compatible with Python 3.4
         'requests >= 2.19.0',
     ],
     extras_require=extras,
