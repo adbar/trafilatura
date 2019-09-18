@@ -10,6 +10,11 @@ import sys
 
 from lxml import etree, html
 
+try:
+    import cchardet as chardet
+except ImportError:
+    import chardet
+
 # import trafilatura
 from trafilatura.core import cache, duplicate_test, LRU_TEST, process_record, trim
 from trafilatura import cli, utils
@@ -97,9 +102,17 @@ def load_mock_page(url, xml_flag=False, langcheck=None):
     try:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
             htmlstring = inputf.read()
+    # encoding fix for the tests
     except UnicodeDecodeError:
-        with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r', encoding='ISO-8859-1') as inputf:
-            htmlstring = inputf.read()
+        # read as binary
+        with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'rb') as inputf:
+            htmlbinary = inputf.read()
+        guessed_encoding = chardet.detect(htmlbinary)['encoding']
+        if guessed_encoding is not None:
+            try:
+                htmlstring = htmlbinary.decode(guessed_encoding)
+            except UnicodeDecodeError:
+                htmlstring = htmlbinary
     result = process_record(htmlstring, url, '0000', xml_output=xml_flag, tei_output=False, target_language=langcheck)
     return result
 

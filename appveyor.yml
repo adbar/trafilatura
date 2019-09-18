@@ -1,0 +1,16 @@
+# appveyor.yml
+---
+environment:
+  matrix:
+#  - TOXENV: py34
+  - TOXENV: py35
+  - TOXENV: py36
+  - TOXENV: py37
+
+build: off
+
+install:
+- pip install cchardet tox
+
+test_script:
+- tox
