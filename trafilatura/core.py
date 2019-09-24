@@ -35,6 +35,7 @@ if LANGID_FLAG is True:
 
 
 ## TODO:
+# filter line by line
 # add sqlite3 for control of seen URLs?
 # line-based heuristics?
 # check max depth recursion in output XML?
@@ -149,7 +150,7 @@ def textfilter(element):
         if len(line) <= 5:
             continue
         # print('###', line) |.hnliche Beitr|
-        if re.match(r'Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s$| mit %s$|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$|Whats[Aa]pp$', line):
+        if re.match(r'Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s$| mit %s$|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$|Whats[Aa]pp$|XING$|Xing$|PDF$', line):
             return True
         if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
             return True
@@ -193,6 +194,7 @@ def convert_tags(tree):
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         elem.tag = 'head'
+        ## elem.text = re.sub(r'(?<![p{P}>])\n', ' ', elem.text_content())
         elem.attrib.clear()
         # elem.set('rendition', '#i')
     # br → lb
@@ -318,8 +320,8 @@ def handle_subelement(subelement):
     subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
     # trim
     subelement.tail = trim(subelement.tail) + '\n'
-    #if textfilter(subelement) is True:
-    #    return None
+    if textfilter(subelement) is True:
+        return None
     #if duplicate_test(subelement) is True:
     #    return None
     return subelement
