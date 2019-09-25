@@ -28,7 +28,7 @@ extras = {
 
 
 def readme():
-    with open(os.path.join(here, 'README.rst'), 'r', 'utf-8') as readmefile:
+    with open(os.path.join(here, 'README.rst'), 'r', encoding='utf-8') as readmefile:
         return readmefile.read()
 
 setup(

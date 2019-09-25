@@ -76,13 +76,14 @@ Install from package repository: ``pip install trafilatura``
 
 *(Or use ``pip3 install trafilatura`` on systems where Python 2 and 3 are both globally installed and pip refers to Python 2.)*
 
-*(For dependency management see `this thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)*
-
-For all experimental functionality please use ``pip install trafilatura[all]`` (Most notably: language detection and faster processing of downloads. The ``cchardet`` package is currently not working on some macOS versions.).
+For all experimental functionality please use ``pip install trafilatura[all]``
+Most notably: language detection and faster processing of downloads. The ``cchardet`` package is currently not working on some macOS versions.
 
 Direct installation of the latest version (see `build status <https://travis-ci.org/adbar/trafilatura>`_):
 
 ``pip install git+https://github.com/adbar/trafilatura.git``
+
+(For dependency management see `this thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
 
 
 With Python
