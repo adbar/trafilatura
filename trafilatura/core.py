@@ -336,14 +336,14 @@ def extract_content(tree, include_tables=False):
     # iterate
     for expr in BODY_XPATH:
         # select tree if the expression has been found
-        #print(expr)
         subtree = tree.xpath(expr)
-        # print(expr, len(subtree))
         if len(subtree) == 0:
             continue
+        #print(expr, len(subtree))
         subtree = subtree[0]
         # prune
         subtree = discard_unwanted(subtree)
+        #print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # define iteration strategy
         potential_tags = set(TAG_CATALOG) # 'span'
         if len(subtree.xpath('//p//text()')) == 0: # no paragraphs containing text
@@ -667,6 +667,9 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
     #tree_cache[cleaned_tree] = list(cleaned_tree.iter())
+    # bypass
+    # cleaned_tree = tree
+    # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
     ## convert tags
     ## the rest does not work without conversion
