@@ -350,8 +350,8 @@ def extract_content(tree, include_tables=False):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
-        for element in subtree.xpath('.//*'): # subtree.iter()
-            # print(element.tag)
+        for element in subtree.xpath('.//*'): # .iter() .getchildren() .xpath('.//*')
+            # print(element.tag, element.text)
             ## delete unwanted
             if element.tag not in potential_tags:
                 # LOGGER.debug('discarding: %s %s', element.tag, element.text)
@@ -424,7 +424,8 @@ def extract_content(tree, include_tables=False):
                                     newsub.text = trim(processed_child.text)
                                 if processed_child.tail is not None:
                                     newsub.tail = trim(processed_child.tail)
-                    child.tag = 'done'
+                        # print(processed_element.tag, processed_element.text)
+                        child.tag = 'done'
                 # finish
                 #if len(processed_element) > 0:
                 if len(processed_element.text) > 0:

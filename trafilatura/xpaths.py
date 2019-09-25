@@ -16,15 +16,15 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "content-main") o
             '//div[contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]', \
             "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]", \
             '//div[@class="cell"]', \
+            '//main', \
            ]
 # or @id="content" or @class="content" story-content
 # '//*[(self::div or self::section)][@id="content" or @role="main"]', \
 
 
 
-COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist')]", \
-                "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments')]", \
-                "//*[(self::div or self::section or self::ol)][starts-with(@id, 'comment-') or starts-with(@class, 'comment-')]", \
+COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist') or contains(@class, 'comments-content')]", \
+                "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments') or starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or contains(@class, 'article-comments')]", \
                 "//*[(self::div or self::section or self::ul)][starts-with(@id, 'comol') or starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]", \
                 "//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]" \
                ]
@@ -47,15 +47,17 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::section or self::span)][contains(@id, "author") or contains(@class, "author") or contains(@style, "hidden") or contains(@id, "button") or contains(@class, "button")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
                  './/*[starts-with(@class, "widget")]', \
+                 # other content
+                './/*[contains(@class, "attachment")]', \
                 ]
                  # optional??
-#                './/aside', \ # conflicts with text extraction
+                 # './/aside', \ # conflicts with text extraction
                  # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
 
 
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
                           './/cite', \
                           './/quote', \
-                          './/*[starts-with(@id, "reply-") or starts-with(@class, "reply-title")]', \
+                          './/*[starts-with(@id, "reply-") or starts-with(@class, "reply-") or contains(@class, "-reply-")]', \
                           './/*[contains(@id, "akismet") or contains(@class, "akismet")]', \
                          ]
