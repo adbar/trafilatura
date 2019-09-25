@@ -91,8 +91,14 @@ MOCK_PAGES = { \
 'https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html': 'heise.de.lithium.html', \
 'https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact': 'theverge.com.ios13.html', \
 'https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/': 'crazy-julia.de.tipps.html', \
+'https://www.politische-bildung-brandenburg.de/themen/land-und-leute/homo-brandenburgensis': 'brandenburg.de.homo-brandenburgensis.html', \
+'https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html': 'skateboardmsm.de.dormhagen.html', \
+'https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/': 'knowtechie.com.rally.html', \
+'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html': 'boingboing.net.millenials.html', \
 }
 # '': '', \
+
+
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -113,6 +119,8 @@ def load_mock_page(url, xml_flag=False, langcheck=None):
                 htmlstring = htmlbinary.decode(guessed_encoding)
             except UnicodeDecodeError:
                 htmlstring = htmlbinary
+        else:
+            print('Encoding error')
     result = process_record(htmlstring, url, '0000', xml_output=xml_flag, tei_output=False, target_language=langcheck)
     return result
 
@@ -297,9 +305,7 @@ def test_main(xmloutput=False):
     assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Diesel-Umtauschprämien' not in result # and 'Besonders bei Babyschalen sollte geprüft werden' in result
 
     result = load_mock_page('https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/', xmloutput)
-    assert 'Was I losing my mind?' in result and 'being cached after their first access.' in result and 'New Call-to-action' not in result and 'You might also like:' not in result and 'Contact us' not in result and 'Back to blog' not in result
-    # 'Finding a Fix' in result # h4
-    # 'from django.conf import settings' in result # code
+    assert 'Was I losing my mind?' in result and 'being cached after their first access.' in result and 'Finding a Fix' in result and 'from django.conf import settings' in result and 'New Call-to-action' not in result and 'Contact us' not in result and 'Back to blog' not in result # and 'You might also like:' not in result
 
     result = load_mock_page('https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/', xmloutput)
     assert 'Vor knapp zwei Wochen' in result and 'gibt es in der dazugehörigen Vorstellungs-News.' in result and 'Themen:' not in result and 'bis Januar 2009 Artikel für ComputerBase verfasst.' not in result and 'Warum Werbebanner?' not in result and '71 Kommentare' not in result
@@ -358,6 +364,19 @@ def test_main(xmloutput=False):
 
     result = load_mock_page('https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/', xmloutput)
     assert 'in keinem Braut-Beauty-Programm fehlen darf?' in result and 'nicht nur vor der Hochzeit ein absolutes Muss.' in result and 'Gesundes, glänzendes Haar' in result and 'Neue Wandbilder von Posterlounge' not in result and 'mit meinen Texten und mit meinen Gedanken.' not in result and 'Erforderliche Felder sind mit * markiert.' not in result
+
+    result = load_mock_page('https://www.politische-bildung-brandenburg.de/themen/land-und-leute/homo-brandenburgensis', xmloutput)
+    assert 'Stilles Rackern, statt lautem Deklamieren.' in result and 'Watt jibt’s n hier zu lachen?' in result and 'Das Brandenbuch. Ein Land in Stichworten.' in result and 'Bürgerbeteiligung' not in result and 'Anmelden' not in result and 'Foto: Timur' not in result and 'Schlagworte' not in result and 'Zeilenumbrüche und Absätze werden automatisch erzeugt.' not in result
+
+    result = load_mock_page('https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html', xmloutput)
+    assert 'Wakebeach 257' in result and 'Be there or be square!' in result and 'Hier geht’s zur Facebook Veranstaltung' in result and 'More from News' not in result and 'von Redaktion MSM' not in result and 'add yours.' not in result # and 'Blue Tomato präsentiert die dritte' in result
+
+    result = load_mock_page('https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/', xmloutput)
+    assert 'Rocket Pass 4 will begin at 10:00 a.m. PDT' in result and 'Let us know down below in the comments' in result and 'Holy shit, Mortal Kombat 11' in result and 'Related Topics' not in result and 'You can keep up with me on Twitter' not in result and 'Hit the track today with Mario Kart Tour' not in result
+    # and 'what to do with thousands of crates tho' in result
+
+    result = load_mock_page('https://boingboing.net/2013/07/19/hating-millennials-the-preju.html', xmloutput)
+    assert 'Click through for the whole thing.' in result and 'The generation we love to dump on' in result and 'GET THE BOING BOING NEWSLETTER' not in result and 'happy mutants' not in result and 'Patti Smith and Stewart Copeland' not in result
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
