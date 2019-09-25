@@ -6,7 +6,8 @@ http://github.com/adbar/trafilatura
 """
 
 
-import os
+from os import path
+from io import open
 from setuptools import setup # find_packages,
 
 #try:
@@ -15,7 +16,7 @@ from setuptools import setup # find_packages,
 #    from distutils.core import setup
 
 
-here = os.path.abspath(os.path.dirname(__file__))
+here = path.abspath(path.dirname(__file__))
 packages = ['trafilatura']
 
 # some problems with installation solved this way
@@ -28,7 +29,7 @@ extras = {
 
 
 def readme():
-    with open(os.path.join(here, 'README.rst'), 'r', encoding='utf-8') as readmefile:
+    with open(path.join(here, 'README.rst'), 'r', encoding='utf-8') as readmefile:
         return readmefile.read()
 
 setup(

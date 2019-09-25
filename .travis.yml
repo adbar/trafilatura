@@ -1,12 +1,9 @@
 sudo: false
 language: python
+# dist: xenial
 
 matrix:
   include:
-    - name: "Python 3.4 on Linux"
-      os: linux
-      python: 3.4
-      env: TOXENV=py34
     - name: "Python 3.5 on Linux"
       os: linux
       python: 3.5
@@ -31,7 +28,6 @@ matrix:
       # 'python:' is ignored on Travis CI macOS
       before_install: python3 --version ; pip3 --version ; sw_vers; pip3 install codecov tox
   allow_failures:
-    - python: "3.8-dev"
     - os: osx
   # fast_finish: true
 
@@ -57,6 +53,7 @@ notifications:
 
 #cache:
 #  pip: true
+
 
 # os:
 #  - windows # not supported
