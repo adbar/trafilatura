@@ -5,7 +5,7 @@ Extract the main text of web pages
 http://github.com/adbar/trafilatura
 """
 
-from codecs import open # python2
+
 import os
 from setuptools import setup # find_packages,
 
@@ -21,8 +21,8 @@ packages = ['trafilatura']
 # some problems with installation solved this way
 extras = {
     'all': [
-        'cchardet',
-        'langid',
+        'cchardet == 2.0.0',
+        'langid == 1.1.6',
     ]
 }
 
@@ -33,13 +33,13 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.0.5',
+    version='0.1.0',
     description='Scrapes the main text of web pages while preserving some structure.',
     long_description=readme(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        'Development Status :: 3 - Alpha',
-        #'Development Status :: 4 - Beta',
+        #'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         #'Development Status :: 5 - Production/Stable',
         #'Development Status :: 6 - Mature',
         #'Development Status :: 7 - Inactive',
@@ -49,10 +49,10 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
@@ -66,11 +66,11 @@ setup(
     packages=packages,
     include_package_data=True,
     install_requires=[
-        'ftfy',
-        'justext',
-        'lru-dict',
-        'lxml == 4.3.4', # > 4.3.4 not compatible with Python 3.4
-        'requests >= 2.19.0',
+        'ftfy == 5.6',
+        'justext == 2.2.0',
+        'lru-dict == 1.1.6',
+        'lxml == 4.4.1',
+        'requests == 2.22.0',
     ],
     extras_require=extras,
     python_requires='>=3',

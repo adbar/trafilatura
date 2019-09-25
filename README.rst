@@ -3,23 +3,28 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 
 .. image:: https://img.shields.io/pypi/v/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
+    :alt: Python package
 
 .. image:: https://img.shields.io/pypi/l/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
+    :alt: License
 
 .. image:: https://img.shields.io/pypi/pyversions/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
+    :alt: Python versions
 
 .. image:: https://img.shields.io/travis/adbar/trafilatura.svg
     :target: https://travis-ci.org/adbar/trafilatura
+    :alt: Travis build status
 
 .. image:: https://img.shields.io/codecov/c/github/adbar/trafilatura.svg
     :target: https://codecov.io/gh/adbar/trafilatura
+    :alt: Code Coverage
 
 
 :Code:           https://github.com/adbar/trafilatura
+:Documentation:  see README file
 :Issue tracker:  https://github.com/adbar/trafilatura/issues
-:License:        GNU GPL v3; see LICENSE file
 
 
 Robust extraction of main text content and boilerplate removal based on a combination of DOM-based examination, XPath expressions and rules. Given a HTML document, this library parses it, retrieves the main body text and converts it to XML or plain text, while preserving part of the text formatting and page structure.
@@ -65,13 +70,15 @@ The result of processing can be in plain text or XML format. In the latter case,
 Installation
 ------------
 
-*trafilatura* is a Python 3 package that is tested for Linux and macOS, is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``:
+*trafilatura* is a Python package (compatible with Python 3.5 upwards) that is tested on Linux and macOS, is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``:
 
-``pip install trafilatura``
+Install from package repository: ``pip install trafilatura``
 
 *(Or use ``pip3 install trafilatura`` on systems where Python 2 and 3 are both globally installed and pip refers to Python 2.)*
 
-For all experimental functionality please use ``pip install trafilatura[all]`` (installation issues on some platforms).
+*(For dependency management see `this thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)*
+
+For all experimental functionality please use ``pip install trafilatura[all]`` (Most notably: language detection and faster processing of downloads. The ``cchardet`` package is currently not working on some macOS versions.).
 
 Direct installation of the latest version (see `build status <https://travis-ci.org/adbar/trafilatura>`_):
 
@@ -154,7 +161,7 @@ Context
 
 This module is part of methods to derive metadata from web documents in order to build text corpora for computational linguistic and NLP analysis. For more information:
 
--  Barbaresi, Adrien. "`The Vast and the Focused: On the need for domain-focused web corpora <https://ids-pub.bsz-bw.de/files/9025/Barbaresi_The_Vast_and_the_Focused_2019.pdf>`_", Proceedings of the 7th Workshop on Challenges in the Management of Large Corpora (CMLC-7) <http://corpora.ids-mannheim.de/cmlc-2019.html>`_, 2019.
+-  Barbaresi, Adrien. "`The Vast and the Focused: On the need for domain-focused web corpora <https://ids-pub.bsz-bw.de/files/9025/Barbaresi_The_Vast_and_the_Focused_2019.pdf>`_", Proceedings of the `7th Workshop on Challenges in the Management of Large Corpora (CMLC-7) <http://corpora.ids-mannheim.de/cmlc-2019.html>`_, 2019.
 -  Barbaresi, Adrien. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
 Name
@@ -176,6 +183,7 @@ Most corresponding Python modules are not actively maintained, following alterna
 
 - `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires many dependencies as well as extensive tuning
 - `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
+- `goose <https://github.com/grangier/python-goose>`_ can extract information for embedded content but doesn't preserve markup and is not maintained
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
 
 Contact
