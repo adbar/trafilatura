@@ -412,12 +412,12 @@ def extract_content(tree, include_tables=False):
                 for child in element.iter():
                     if child.tag in potential_tags:
                         processed_child = handle_textnode(child, comments_fix=False)
-                        if child.tag == 'lb':
-                            if child.tail is None or not re.search('\w+', child.tail):
-                                continue
-                            newsub = etree.SubElement(processed_element, 'lb')
-                            newsub.tail = handle_subelement(child).tail
-                            continue
+                        #if child.tag == 'lb':
+                        #    if child.tail is None or not re.search('\w+', child.tail):
+                        #        continue
+                        #    newsub = etree.SubElement(processed_element, 'lb')
+                        #    newsub.tail = handle_subelement(child).tail
+                        #    # continue
                         if processed_child is not None:
                             # paragraph, append text
                             if child.tag == 'p':

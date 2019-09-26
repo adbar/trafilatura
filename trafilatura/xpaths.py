@@ -17,21 +17,21 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "content-main") o
             "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]", \
             '//div[@class="cell"]', \
             '//main', \
-           ]
+            ]
 # or @id="content" or @class="content" story-content
 # '//*[(self::div or self::section)][@id="content" or @role="main"]', \
-
 
 
 COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist') or contains(@class, 'comments-content')]", \
                 "//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments') or starts-with(@class, 'comments') or starts-with(@class, 'Comments') or starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or contains(@class, 'article-comments')]", \
                 "//*[(self::div or self::section or self::ul)][starts-with(@id, 'comol') or starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]", \
                 "//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]" \
-               ]
+                ]
 
 
 DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
                  './/header', \
+                 './/*[@class="meta" or contains(@class, "meta-") or contains(@class, "-meta")]', \
                  # |.//footer
                  './/*[(self::div or self::p or self::section)][contains(@id, "header") or contains(@class, "header") or contains(@id, "footer") or contains(@class, "footer")]', \
                  './/*[(self::a or self::div or self::p or self::section or self::ul)][contains(@id, "tags") or contains(@class, "tags")]', \
@@ -39,7 +39,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::p or self::section)][contains(@id, "teaser") or contains(@class, "teaser") or contains(@id, "newsletter") or contains(@class, "newsletter") or contains(@id, "cookie") or contains(@class, "cookie")]', \
                  #'.//*[(self::div or self::p or self::section)][]', \
                  # navigation
-                 './/*[(self::div or self::ol or self::section or self::ul)][starts-with(@id, "nav-") or starts-with(@class, "nav-") or starts-with(@id, "nav ") or starts-with(@class, "nav ") or starts-with(@id, "breadcrumbs") or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]', \
+                 './/*[(self::div or self::ol or self::section or self::ul)][starts-with(@id, "nav-") or starts-with(@class, "nav-") or starts-with(@id, "nav ") or starts-with(@class, "nav ") or starts-with(@class, "post-nav") or starts-with(@id, "breadcrumbs") or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]', \
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related") or contains(@id, "viral") or contains(@class, "viral")]', \
                  # sharing jp-post-flair jp-relatedposts
@@ -48,8 +48,9 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
                  './/*[starts-with(@class, "widget")]', \
                  # other content
-                './/*[contains(@class, "attachment")]', \
-                ]
+                 './/*[contains(@class, "attachment")]', \
+                 './/*[contains(@class, "user-info") or contains(@class, "user-profile")]', \
+                 ]
                  # optional??
                  # './/aside', \ # conflicts with text extraction
                  # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
@@ -61,3 +62,4 @@ COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "
                           './/*[starts-with(@id, "reply-") or starts-with(@class, "reply-") or contains(@class, "-reply-")]', \
                           './/*[contains(@id, "akismet") or contains(@class, "akismet")]', \
                          ]
+                         # './/*[@class="comments-title" or contains(@class, "comments-title")]', \
