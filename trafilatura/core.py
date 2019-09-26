@@ -146,7 +146,11 @@ def textfilter(element):
     '''Filter out unwanted text'''
     ## TODO: text_blacklist
     # print('#', element.text)
-    for line in element.text.splitlines():
+    if element.text is None and element.tail is not None:
+        testtext = element.tail
+    else:
+        testtext = element.text
+    for line in testtext.splitlines():
         if len(line) <= 5:
             continue
         # print('###', line) |.hnliche Beitr|
@@ -280,6 +284,9 @@ def try_justext(tree, record_id):
 #@profile
 def handle_textnode(element, comments_fix=True):
     '''Convert, format, and probe potential text elements'''
+    # lb bypass
+    if comments_fix is False and element.tag == 'lb':
+        return element
     if element.text is None: # or len(element.text) < 10 # text_content()
         # try the tail
         if element.tail is None or len(element.tail) < 2: # was 50
@@ -314,7 +321,7 @@ def handle_textnode(element, comments_fix=True):
 #@profile
 def handle_subelement(subelement):
     '''Convert, format, and probe potential text subelements'''
-    if subelement.tail is None:
+    if subelement.text is None and subelement.tail is None:
         return subelement
     # delete newlines that are not related to punctuation or markup
     subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
@@ -363,8 +370,8 @@ def extract_content(tree, include_tables=False):
                     # list-specific check
                     if element.tag == 'list' and child.tag not in ('dt', 'li'): # 'item'
                         continue
-                    # proceed with iteration
-                    processed_child = handle_textnode(child)
+                    # proceed with iteration, fix for nested elements
+                    processed_child = handle_textnode(child, comments_fix=True)
                     if processed_child is not None:
                         if element.tag == 'list':
                             newsub = etree.SubElement(processed_element, 'item')
@@ -395,7 +402,7 @@ def extract_content(tree, include_tables=False):
                 element.attrib.clear()
                 # no children
                 if len(element) == 0:
-                    processed_element = handle_textnode(element)
+                    processed_element = handle_textnode(element, comments_fix=False)
                     if processed_element is not None:
                         result_body.append(processed_element)
                     continue
@@ -404,7 +411,7 @@ def extract_content(tree, include_tables=False):
                 processed_element.text = ''
                 for child in element.iter():
                     if child.tag in potential_tags:
-                        processed_child = handle_textnode(child)
+                        processed_child = handle_textnode(child, comments_fix=False)
                         if child.tag == 'lb':
                             if child.tail is None or not re.search('\w+', child.tail):
                                 continue
@@ -442,7 +449,7 @@ def extract_content(tree, include_tables=False):
             else:
                 if element.tag != 'div':
                     LOGGER.warning('processing other element: %s', element.tag)
-                processed_element = handle_textnode(element)
+                processed_element = handle_textnode(element, comments_fix=False)
                 if processed_element is not None:
                     element.attrib.clear()
                     # small div-correction # could be moved elsewhere
@@ -463,13 +470,13 @@ def extract_content(tree, include_tables=False):
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
         for element in search_tree.xpath('//p'): # search_tree.xpath('//p')
             # print(element.tag, element.text)
-            processed_element = handle_textnode(element)
+            processed_element = handle_textnode(element, comments_fix=False)
             if processed_element is not None:
                 processed_element.attrib.clear()
                 processed_element.tail = ''
                 result_body.append(processed_element)
 
-    # TODO:
+
     # try parsing tables
 # for _, element in etree.iterparse(xml_file, tag='a'):
 #      print('%s -- %s' % (element.findtext('b'), element[1].text))
