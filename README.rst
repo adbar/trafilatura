@@ -50,10 +50,18 @@ On the command-line:
     :backlinks: none
 
 
+Description
+-----------
+
+Scrapes the main text of web pages while preserving some structure. Distinguishing between the whole page and the main text content can help alleviating many quality problems related to web texts.
+
+The purpose is to find relevant sections of a web page, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and comments. In addition, the extraction focuses on original text and can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.)
+
+Also known as web scraping, boilerplate removal or boilerplate detection, DOM-based content extraction, main content identification, web page template detection, web page cleaning, web content extraction, or HTML text cleaning.
+
+
 Features
 --------
-
-Scrapes the main text of web pages while preserving some structure. Also known as web scraping, boilerplate removal or boilerplate detection, DOM-based content extraction, main content identification, web page template detection, web page cleaning, web content extraction, or HTML text cleaning. The purpose is to find relevant sections of a web page, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and comments. In addition, the extraction focuses on original text and can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.) Distinguishing between the whole page and the main text content can help alleviating many quality problems related to web texts.
 
 Because it relies on `lxml <http://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
 
@@ -162,6 +170,9 @@ Context
 
 This module is part of methods to derive information from web documents in order to build text databases for research (chiefly linguistic analysis and natural language processing). A significant challenge resides in the ability to extract and pre-process web texts to meet scientific expectations. For more information:
 
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
+   :target: https://doi.org/10.5281/zenodo.3460969
+
 -  Barbaresi, Adrien. "`The Vast and the Focused: On the need for domain-focused web corpora <https://ids-pub.bsz-bw.de/files/9025/Barbaresi_The_Vast_and_the_Focused_2019.pdf>`_", Proceedings of the `7th Workshop on Challenges in the Management of Large Corpora (CMLC-7) <http://corpora.ids-mannheim.de/cmlc-2019.html>`_, 2019.
 -  Barbaresi, Adrien. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
@@ -180,7 +191,7 @@ Kudos to...
 Alternatives
 ~~~~~~~~~~~~
 
-Most corresponding Python modules are not actively maintained, following alternatives exist:
+Most corresponding Python packages are not actively maintained, the following alternatives exist:
 
 - `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires many dependencies as well as extensive tuning
 - `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
