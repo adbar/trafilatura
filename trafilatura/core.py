@@ -153,8 +153,8 @@ def textfilter(element):
     for line in testtext.splitlines():
         if len(line) <= 5:
             continue
-        # print('###', line) |.hnliche Beitr|
-        if re.match(r'Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s$| mit %s$|Facebook$|Twitter$|Google$|E-Mail$|Drucken$|LinkedIn$|Whats[Aa]pp$|XING$|Xing$|PDF$', line):
+        # print('###', line) |.hnliche Beitr| Instagram
+        if re.match(r'\W*(Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)', line) or re.match(r'\W*(Facebook|Twitter|Google|E-Mail|Drucken|LinkedIn|Whats[Aa]pp|XING|Xing|PDF)$', line):
             return True
         if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
             return True
