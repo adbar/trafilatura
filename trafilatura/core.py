@@ -199,7 +199,6 @@ def convert_tags(tree):
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         elem.tag = 'head'
         ## elem.text = re.sub(r'(?<![p{P}>])\n', ' ', elem.text_content())
-        elem.attrib.clear()
         # elem.set('rendition', '#i')
     # br → lb
     for elem in tree.iter('br', 'hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
@@ -208,7 +207,7 @@ def convert_tags(tree):
     # ul/ol → list / li → item
     for elem in tree.iter('ul', 'ol', 'dl'):
         elem.tag = 'list'
-        elem.attrib.clear()
+        # elem.attrib.clear()
     # blockquote | q → quote
     for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
@@ -287,6 +286,8 @@ def handle_textnode(element, comments_fix=True):
     # lb bypass
     if comments_fix is False and element.tag == 'lb':
         return element
+    if element.tag in ('head', 'dl', 'ol', 'ul'):
+        element.attrib.clear()
     if element.text is None: # or len(element.text) < 10 # text_content()
         # try the tail
         if element.tail is None or len(element.tail) < 2: # was 50
@@ -394,6 +395,7 @@ def extract_content(tree, include_tables=False):
                 if element.text is not None:
                     element.text = trim(element.text)
                     if element.text and re.search(r'\w', element.text):
+                        element.attrib.clear()
                         result_body.append(element)
                 continue
 

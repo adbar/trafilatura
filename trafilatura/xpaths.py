@@ -59,7 +59,7 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
                           './/cite', \
                           './/quote', \
+                          './/*[@class="comments-title" or contains(@class, "comments-title")]', \
                           './/*[starts-with(@id, "reply-") or starts-with(@class, "reply-") or contains(@class, "-reply-")]', \
                           './/*[contains(@id, "akismet") or contains(@class, "akismet")]', \
                          ]
-                         # './/*[@class="comments-title" or contains(@class, "comments-title")]', \
