@@ -7,6 +7,11 @@ Module bundling all functions needed to extract the text in a webpage.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+## TODO:
+# filter line by line
+# add sqlite3 for control of seen URLs?
+# line-based heuristics?
+
 # standard
 import logging
 import re # import regex as re
@@ -26,19 +31,12 @@ from lxml import etree, html
 from lxml.html.clean import Cleaner
 
 # own
-from .settings import LANGUAGES, LRU_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, MIN_DUPLCHECK_SIZE
+from .settings import LANGUAGES, LRU_SIZE, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
 from .utils import load_html, sanitize, trim
-from .xpaths import BODY_XPATH, COMMENTS_XPATH, DISCARD_XPATH, COMMENTS_DISCARD_XPATH
+from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
 if LANGID_FLAG is True:
     langid.set_languages(LANGUAGES)
-
-
-## TODO:
-# filter line by line
-# add sqlite3 for control of seen URLs?
-# line-based heuristics?
-# check max depth recursion in output XML?
 
 
 ## INIT
@@ -264,20 +262,7 @@ def try_justext(tree, record_id):
                 elem = etree.Element('p')
                 elem.text = paragraph.text
                 result_body.append(elem)
-            # jt += paragraph.text + '</p><p>'
-    # jt += '</p>'
-    # temp_jt = u' '.join(jt.itertext())
-    # temp_jt = jt
     return result_body
-
-
-#def custom_justext(htmldom):
-#    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
-#    justext.classify_paragraphs(paragraphs, justext.get_stoplist("German"), length_low=LENGTH_LOW_DEFAULT, \
-#        length_high=LENGTH_HIGH_DEFAULT, stopwords_low=STOPWORDS_LOW_DEFAULT, \
-#        stopwords_high=STOPWORDS_HIGH_DEFAULT, max_link_density=MAX_LINK_DENSITY_DEFAULT, no_headings=NO_HEADINGS_DEFAULT)
-#    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
-#    return paragraphs
 
 
 #@profile
@@ -294,11 +279,10 @@ def handle_textnode(element, comments_fix=True):
             #element.getparent().remove(element)
             #continue
             return None
-        # if element.tag == 'lb':
         # LOGGER.debug('using tail for element %s', element.tag)
-        # TODO: handle differently for br/lb
         element.text = element.tail
         element.tail = ''
+        # handle differently for br/lb
         if comments_fix is True and element.tag == 'lb':
             element.tag = 'p'
     # delete newlines that are not related to punctuation or markup
@@ -360,10 +344,6 @@ def extract_content(tree, include_tables=False):
         # extract content
         for element in subtree.xpath('.//*'): # .iter() .getchildren() .xpath('.//*')
             # print(element.tag, element.text)
-            ## delete unwanted
-            if element.tag not in potential_tags:
-                # LOGGER.debug('discarding: %s %s', element.tag, element.text)
-                continue
             # bypass: nested elements
             if element.tag in ('list', 'quote'):
                 processed_element = etree.Element(element.tag)
@@ -388,8 +368,6 @@ def extract_content(tree, include_tables=False):
                 # element.tag = 'done' # can cause errors
                 if len(processed_element) > 0: # if it has children
                     result_body.append(processed_element)
-                continue
-
             # bypass: head:
             elif element.tag == 'head':
                 if element.text is not None:
@@ -397,8 +375,6 @@ def extract_content(tree, include_tables=False):
                     if element.text and re.search(r'\w', element.text):
                         element.attrib.clear()
                         result_body.append(element)
-                continue
-
             # strip attrs after discard is run
             elif element.tag == 'p':
                 element.attrib.clear()
@@ -439,16 +415,17 @@ def extract_content(tree, include_tables=False):
                 #if len(processed_element) > 0:
                 if len(processed_element.text) > 0:
                     result_body.append(processed_element)
-                continue
-
             # insert it directly
             elif element.tag == 'lb':
-                if element.tail is not None and re.search('\w+', element.tail):
+                if element.tail is not None and re.search(r'\w+', element.tail):
                     element.tail = trim(element.tail)
                     result_body.append(element)
-
             # other elements (div, ??, ??)
             else:
+                ## delete unwanted
+                if element.tag not in potential_tags:
+                    # LOGGER.debug('discarding: %s %s', element.tag, element.text)
+                    continue
                 if element.tag != 'div':
                     LOGGER.warning('processing other element: %s', element.tag)
                 processed_element = handle_textnode(element, comments_fix=False)
@@ -478,11 +455,8 @@ def extract_content(tree, include_tables=False):
                 processed_element.tail = ''
                 result_body.append(processed_element)
 
-
     # try parsing tables
-# for _, element in etree.iterparse(xml_file, tag='a'):
-#      print('%s -- %s' % (element.findtext('b'), element[1].text))
-#      element.clear()
+    # for _, element in etree.iterparse(xml_file, tag='a'):
     if include_tables is True: #len(result_body) == 0: # no children
         LOGGER.debug('Using table extraction')
         search_tree = discard_unwanted(tree)
@@ -554,15 +528,11 @@ def extract_comments(tree, include_comments):
                 if processed_element is None or processed_element.text in comments_blacklist:
                     # elem.getparent().remove(elem)
                     continue
-                else:
-                ## TODO: text filter
+                ## TODO: text filter, insert if words?
                 #if textfilter(elem) is True:
                 #    continue
-                # filter potential interesting p elements
-                # if not elem.attrib or 'style' not in elem.attrib: # or not 'align' in elem.attrib
-                    # insert if words
-                    elem.attrib.clear()
-                    comments_body.append(elem)
+                elem.attrib.clear()
+                comments_body.append(elem)
         # control
         if len(comments_body) > 0: # if it has children
             LOGGER.debug(expr)
@@ -636,13 +606,13 @@ def check_tei(tei, record_id):
 #@profile
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
-    #TODO: sanitize/valid XML
+    # TODO: sanitize/valid XML
     returnstring = ''
     # returnstring = ' '.join(xmloutput.itertext())
     for element in xmloutput.iter():
         if element.text is None and element.tail is None:
             continue
-        elif element.text is not None and element.tail is not None:
+        if element.text is not None and element.tail is not None:
             textelement = element.text + ' ' + element.tail
         elif element.text is not None and element.tail is None:
             textelement = element.text
@@ -659,7 +629,6 @@ def xmltotxt(xmloutput):
     return returnstring
 
 
-# main process
 #@profile
 def process_record(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
@@ -681,8 +650,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     # cleaned_tree = tree
     # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
-    ## convert tags
-    ## the rest does not work without conversion
+    ## convert tags, the rest does not work without conversion
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
     # remove hi-element to avoid tail bug
@@ -806,3 +774,11 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     # LRU_TEST[teststring] += 1
 
     return None
+
+#def custom_justext(htmldom):
+#    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
+#    justext.classify_paragraphs(paragraphs, justext.get_stoplist("German"), length_low=LENGTH_LOW_DEFAULT, \
+#        length_high=LENGTH_HIGH_DEFAULT, stopwords_low=STOPWORDS_LOW_DEFAULT, \
+#        stopwords_high=STOPWORDS_HIGH_DEFAULT, max_link_density=MAX_LINK_DENSITY_DEFAULT, no_headings=NO_HEADINGS_DEFAULT)
+#    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
+#    return paragraphs
