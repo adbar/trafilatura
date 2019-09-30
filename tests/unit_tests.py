@@ -131,8 +131,17 @@ def test_trim():
     assert trim('\t\tTest  Test\r\n') == 'Test Test'
 
 
+def test_input():
+    '''test if loaded strings/trees are handled properly'''
+    assert utils.load_html(123) is None
+    assert utils.load_html('<html><body>XYZ</body></html>') is not None
+    assert process_record(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
+
+
 def test_download():
-    '''test page download'''
+    '''test page download and command-line interface'''
+    assert cli.examine(' ') is None
+    assert cli.examine('0'*int(10e7), True) is None
     assert utils.fetch_url('https://httpbin.org/status/404') is None
     url = 'https://httpbin.org/status/200'
     teststring = utils.fetch_url(url)
@@ -403,6 +412,7 @@ def test_lrucache():
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
+    test_input()
     test_main(xmloutput=False)
     test_main(xmloutput=True)
     test_download()
