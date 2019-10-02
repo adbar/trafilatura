@@ -288,8 +288,8 @@ def handle_textnode(element, comments_fix=True):
     # element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
     # trim
     element.text = trim(element.text) # + '\n'
-    if element.tail:
-        element.tail = trim(element.tail) # + '\n'
+    # if element.tail:
+    element.tail = trim(element.tail) # + '\n'
     ## LOGGER.debug(element.tag, element.text)
     if element.text and re.search(r'\w', element.text): # text_content()
         if textfilter(element) is True:
@@ -369,11 +369,10 @@ def extract_content(tree, include_tables=False):
                     result_body.append(processed_element)
             # bypass: head:
             elif element.tag == 'head':
-                if element.text is not None:
-                    element.text = trim(element.text)
-                    if element.text and re.search(r'\w', element.text):
-                        element.attrib.clear()
-                        result_body.append(element)
+                element.text = trim(element.text)
+                if element.text and re.search(r'\w', element.text):
+                    element.attrib.clear()
+                    result_body.append(element)
             # strip attrs after discard is run
             elif element.tag == 'p':
                 element.attrib.clear()
@@ -404,10 +403,8 @@ def extract_content(tree, include_tables=False):
                                     processed_element.text = processed_element.text + ' ' + processed_child.tail
                             else:
                                 newsub = etree.SubElement(processed_element, child.tag)
-                                if processed_child.text is not None:
-                                    newsub.text = trim(processed_child.text)
-                                if processed_child.tail is not None:
-                                    newsub.tail = trim(processed_child.tail)
+                                newsub.text = trim(processed_child.text)
+                                newsub.tail = trim(processed_child.tail)
                         # print(processed_element.tag, processed_element.text)
                         child.tag = 'done'
                 # finish
@@ -473,14 +470,13 @@ def extract_content(tree, include_tables=False):
                     if len(' '.join(subelement.itertext())) < 50:
                         subelement.getparent().remove(subelement)
                         continue
-                    if subelement.text is not None:
-                        subelement.text = trim(subelement.text)
+                    subelement.text = trim(subelement.text)
                 elif subelement.tag == 'td':
                     #if len(' '.join(subelement.itertext())) < 30:
                         #subelement.getparent().remove(subelement)
                         #continue
-                    if subelement.text is not None:
-                        subelement.text = trim(subelement.text)
+                    #if subelement.text is not None:
+                    subelement.text = trim(subelement.text)
                     subelement.tag = 'cell'
                 else:
                     # subelement.getparent().remove(subelement)

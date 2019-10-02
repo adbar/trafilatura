@@ -148,9 +148,10 @@ def sanitize(text):
 
 def trim(string):
     '''Remove unnecesary spaces within a text string'''
-    # delete newlines that are not related to punctuation or markup
-    # string = re.sub(r'(?<![p{P}>])\n', ' ', string)
-    # proper trimming
-    string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
-    string = string.strip()
+    if string is not None:
+        # delete newlines that are not related to punctuation or markup
+        string = re.sub(r'(?<![p{P}>])\n', ' ', string)
+        # proper trimming
+        string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
+        string = string.strip()
     return string
