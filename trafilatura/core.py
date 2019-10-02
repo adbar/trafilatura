@@ -196,7 +196,6 @@ def convert_tags(tree):
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         elem.tag = 'head'
-        ## elem.text = re.sub(r'(?<![p{P}>])\n', ' ', elem.text_content())
         # elem.set('rendition', '#i')
     # br → lb
     for elem in tree.iter('br', 'hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
@@ -286,7 +285,7 @@ def handle_textnode(element, comments_fix=True):
         if comments_fix is True and element.tag == 'lb':
             element.tag = 'p'
     # delete newlines that are not related to punctuation or markup
-    element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
+    # element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
     # trim
     element.text = trim(element.text) # + '\n'
     if element.tail:
@@ -304,19 +303,19 @@ def handle_textnode(element, comments_fix=True):
 
 
 #@profile
-def handle_subelement(subelement):
-    '''Convert, format, and probe potential text subelements'''
-    if subelement.text is None and subelement.tail is None:
-        return subelement
+#def handle_subelement(subelement):
+#    '''Convert, format, and probe potential text subelements'''
+#    if subelement.text is None and subelement.tail is None:
+#        return subelement
     # delete newlines that are not related to punctuation or markup
-    subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
-    # trim
-    subelement.tail = trim(subelement.tail) + '\n'
-    if textfilter(subelement) is True:
-        return None
+#    subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
+#    # trim
+#    subelement.tail = trim(subelement.tail) + '\n'
+#    if textfilter(subelement) is True:
+#        return None
     #if duplicate_test(subelement) is True:
     #    return None
-    return subelement
+#    return subelement
 
 
 #@profile
@@ -464,8 +463,8 @@ def extract_content(tree, include_tables=False):
             # iterate through elements in table
             for subelement in table_elem.xpath('.//*'):
                 subelement.attrib.clear()
-                if subelement.text is not None:
-                    subelement.text = re.sub(r'(?<![p{P}>])\n', ' ', subelement.text)
+                #if subelement.text is not None:
+                #    subelement.text = re.sub(r'(?<![p{P}>])\n', ' ', subelement.text)
                 subelement.tail = ''
                 if subelement.tag == 'th':
                     subelement.tag = 'head'
