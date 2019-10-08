@@ -22,8 +22,8 @@ packages = ['trafilatura']
 # some problems with installation solved this way
 extras = {
     'all': [
-        'cchardet == 2.0.0',
-        'langid == 1.1.6',
+        'cchardet >= 2.0.0',
+        'langid >= 1.1.6',
     ]
 }
 
@@ -34,7 +34,7 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.1.0',
+    version='0.1.1',
     description='Scrapes the main text of web pages while preserving some structure.',
     long_description=readme(),
     classifiers=[
