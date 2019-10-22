@@ -1,19 +1,14 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 """
-Extract the main text of web pages
+Scrapes the main text of web pages while preserving some structure
 http://github.com/adbar/trafilatura
 """
 
 
 from os import path
-from io import open
-from setuptools import setup # find_packages,
 
-#try:
-#    from setuptools import setup
-#except ImportError:
-#    from distutils.core import setup
+from codecs import open
+from setuptools import setup
 
 
 here = path.abspath(path.dirname(__file__))
@@ -29,8 +24,9 @@ extras = {
 
 
 def readme():
-    with open(path.join(here, 'README.rst'), 'r', encoding='utf-8') as readmefile:
+    with open(path.join(here, 'README.rst'), 'r', 'utf-8') as readmefile:
         return readmefile.read()
+
 
 setup(
     name='trafilatura',
@@ -66,6 +62,7 @@ setup(
     license='GPLv3+',
     packages=packages,
     include_package_data=True,
+    python_requires='>=3.5',
     install_requires=[
         'ftfy >= 5.6',
         'justext >= 2.2.0',
@@ -74,7 +71,6 @@ setup(
         'requests >= 2.22.0',
     ],
     extras_require=extras,
-    python_requires='>=3',
     entry_points = {
         'console_scripts': ['trafilatura=trafilatura.cli:main'],
     },
