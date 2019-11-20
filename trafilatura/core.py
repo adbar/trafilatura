@@ -81,13 +81,17 @@ LRU_TEST = LRU(LRU_SIZE)
 # justext
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
 
+MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'input', 'link', 'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video']  # 'frame' 'frameset' 'source',
+
 
 #@profile
-def manual_cleaning(tree):
+def manual_cleaning(tree, include_tables):
     '''Prune the tree by discard unwanted elements'''
     #for element in tree.xpath('//*'):
     #    print('ZZZ ', element.tag)
-    for expression in ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'input', 'link', 'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video']: # 'frame' 'frameset' 'source',
+    if include_tables is False:
+        MANUALLY_CLEANED.append('table')
+    for expression in MANUALLY_CLEANED:
         for element in tree.iter(expression):
             element.getparent().remove(element)
     #for expression in ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr']:
@@ -495,6 +499,9 @@ def extract_content(tree, include_tables=False):
                     if recursively_empty(elem):
                         parent.remove(elem)
                 result_body.append(table_elem)
+    # filter output
+    etree.strip_tags(result_body, 'div')
+    # return
     return result_body
 
 
@@ -523,7 +530,7 @@ def extract_comments(tree, include_comments):
                 if processed_element is None or processed_element.text in comments_blacklist:
                     # elem.getparent().remove(elem)
                     continue
-                ## TODO: text filter, insert if words?
+                ## TODO: text filter, insert if words? ## ^Pingback
                 #if textfilter(elem) is True:
                 #    continue
                 elem.attrib.clear()
@@ -635,7 +642,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     # LOGGER.debug('HTML tree loaded for URL: %s', url)
 
     # clean
-    cleaned_tree = manual_cleaning(tree)
+    cleaned_tree = manual_cleaning(tree, include_tables)
     # save space and processing time
     cleaned_tree = prune_html(cleaned_tree)
     # use LXML cleaner
