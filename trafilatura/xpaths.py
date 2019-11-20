@@ -17,8 +17,8 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "content-main") o
             "//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')]", \
             '//div[@class="cell"]', \
             '//main', \
+            '//*[(self::div or self::section)][starts-with(@class, "content ") or contains(@class, " content") or @class="content" or @id="content" or class="story-content"]', \
             ]
-# or @id="content" or @class="content" story-content
 # '//*[(self::div or self::section)][@id="content" or @role="main"]', \
 
 
@@ -48,12 +48,15 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
                  './/*[starts-with(@class, "widget")]', \
                  # other content
+                 './/*[(self::div or self::section or self::ul)][contains(@class, "ratings")]', \
                  './/*[contains(@class, "attachment")]', \
                  './/*[contains(@class, "user-info") or contains(@class, "user-profile")]', \
                  ]
                  # optional??
                  # './/aside', \ # conflicts with text extraction
                  # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
+                 # class=timestamp
+                 # contains(@class, "-ad-")
 
 
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
