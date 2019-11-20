@@ -44,7 +44,7 @@ LOGGER = logging.getLogger(__name__)
 
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
 
-CUT_EMPTY_ELEMS = ('article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'i', 'li', 'main', 'p', 'section', 'span', 'strong', 'td') # 'meta',
+CUT_EMPTY_ELEMS = ('article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'main', 'p', 'section', 'strong', 'td') # 'meta', 'span',
 
 comments_blacklist = ('( Abmelden / Ändern )')
 
@@ -199,6 +199,8 @@ def convert_tags(tree):
     etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr')
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+        # print(elem.tag, elem.text_content())
+        # etree.strip_tags(elem, 'span')
         elem.tag = 'head'
         # elem.set('rendition', '#i')
     # br → lb
@@ -208,7 +210,7 @@ def convert_tags(tree):
     # ul/ol → list / li → item
     for elem in tree.iter('ul', 'ol', 'dl'):
         elem.tag = 'list'
-        # elem.attrib.clear()
+        elem.attrib.clear()
     # blockquote | q → quote
     for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
@@ -370,6 +372,12 @@ def extract_content(tree, include_tables=False):
                 # element.getparent().remove(element)
                 # element.tag = 'done' # can cause errors
                 if len(processed_element) > 0: # if it has children
+                    #teststring = ''.join(processed_element.itertext())
+                    #if len(teststring) > 0 and re.search(r'[a-z]', teststring): # if it has text
+                    # correct nested elements
+                    if processed_element.tag == 'quote':
+                        etree.strip_tags(processed_element, 'quote')
+                        processed_element.tag == 'quote'
                     result_body.append(processed_element)
             # bypass: head:
             elif element.tag == 'head':
@@ -500,6 +508,7 @@ def extract_content(tree, include_tables=False):
                         parent.remove(elem)
                 result_body.append(table_elem)
     # filter output
+    etree.strip_elements(result_body, 'done')
     etree.strip_tags(result_body, 'div')
     # return
     return result_body
@@ -640,6 +649,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     if tree is None:
         return None
     # LOGGER.debug('HTML tree loaded for URL: %s', url)
+    # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
     # clean
     cleaned_tree = manual_cleaning(tree, include_tables)
