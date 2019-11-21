@@ -43,20 +43,18 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related") or contains(@id, "viral") or contains(@class, "viral")]', \
                  # sharing jp-post-flair jp-relatedposts
-                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
+                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@class, "sociable") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
                  './/*[(self::div or self::section or self::span)][contains(@id, "author") or contains(@class, "author") or contains(@style, "hidden") or contains(@id, "button") or contains(@class, "button")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
                  './/*[starts-with(@class, "widget")]', \
                  # other content
                  './/*[(self::div or self::section or self::ul)][contains(@class, "ratings")]', \
-                 './/*[contains(@class, "attachment")]', \
-                 './/*[contains(@class, "user-info") or contains(@class, "user-profile")]', \
+                 './/*[(self::div or self::section)][starts-with(@class, "hide-") or contains(@id, "hidden")]', \
+                 './/*[contains(@class, "attachment") or contains(@class, "timestamp") or contains(@class, "user-info") or contains(@class, "user-profile") or contains(@class, "-ad-")]', \
                  ]
                  # optional??
                  # './/aside', \ # conflicts with text extraction
-                 # conflicts: contains(@id, "hidden") or contains(@class, "hidden") or
-                 # class=timestamp
-                 # contains(@class, "-ad-")
+                 # conflicts: contains(@class, "hidden") or
 
 
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
