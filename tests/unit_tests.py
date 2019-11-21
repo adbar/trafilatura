@@ -95,6 +95,7 @@ MOCK_PAGES = { \
 'https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html': 'skateboardmsm.de.dormhagen.html', \
 'https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/': 'knowtechie.com.rally.html', \
 'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html': 'boingboing.net.millenials.html', \
+'https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding': 'en.wikipedia.org.tsne.html', \
 }
 # '': '', \
 
@@ -206,6 +207,7 @@ def test_main(xmloutput=False):
     assert 'In eine andere Zeit' in result and 'Während Sie über den Markt schlendern' in result and 'Infos zum Verein' not in result and 'nach oben' not in result and 'Datenschutzerklärung' not in result
 
     result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft', xmloutput)
+    print(result)
     assert 'Eines der großen Probleme,' in result and 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result
 
     result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html', xmloutput)
@@ -379,6 +381,10 @@ def test_main(xmloutput=False):
 
     result = load_mock_page('https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/', xmloutput)
     assert 'Rocket Pass 4 will begin at 10:00 a.m. PDT' in result and 'Let us know down below in the comments' in result and 'Holy shit, Mortal Kombat 11' in result and 'Related Topics' not in result and 'You can keep up with me on Twitter' not in result and 'Hit the track today with Mario Kart Tour' not in result # and 'what to do with thousands of crates tho' in result
+    
+    result = load_mock_page('https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding', xmloutput)
+    assert 'Given a set of high-dimensional objects' in result and 'Herein a heavy-tailed Student t-distribution' in result and 'Categories:' not in result and 'Conditional random field' not in result
+
 
     #result = load_mock_page('https://boingboing.net/2013/07/19/hating-millennials-the-preju.html', xmloutput)
     #assert 'Click through for the whole thing.' in result and 'The generation we love to dump on' in result and 'GET THE BOING BOING NEWSLETTER' not in result and 'happy mutants' not in result and 'Patti Smith and Stewart Copeland' not in result

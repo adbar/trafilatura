@@ -46,7 +46,7 @@ TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote'
 
 CUT_EMPTY_ELEMS = ('article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'main', 'p', 'section', 'strong', 'td') # 'meta', 'span',
 
-comments_blacklist = ('( Abmelden / Ändern )')
+COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 # LRU_DICT = defaultdict(int)
 # tree_cache = dict()
@@ -377,7 +377,7 @@ def extract_content(tree, include_tables=False):
                     # correct nested elements
                     if processed_element.tag == 'quote':
                         etree.strip_tags(processed_element, 'quote')
-                        processed_element.tag == 'quote'
+                        # processed_element.tag == 'quote' #superfluous?
                     result_body.append(processed_element)
             # bypass: head:
             elif element.tag == 'head':
@@ -479,8 +479,8 @@ def extract_content(tree, include_tables=False):
                     subelement.tag = 'head'
                 elif subelement.tag == 'tr':
                     subelement.tag = 'row'
-                    rowtext = ' '.join(subelement.itertext())
-                    if len(rowtext) < 50:
+                    rowtext = subelement.text # ' '.join(subelement.itertext())
+                    if rowtext is None or len(rowtext) < 50:
                         subelement.getparent().remove(subelement)
                         continue
                     subelement.text = trim(rowtext)
@@ -538,7 +538,7 @@ def extract_comments(tree, include_comments):
                 # print(elem.tag, elem.text_content())
                 processed_element = handle_textnode(elem, comments_fix=True)
                 # test length and remove
-                if processed_element is None or processed_element.text in comments_blacklist:
+                if processed_element is None or processed_element.text in COMMENTS_BLACKLIST:
                     # elem.getparent().remove(elem)
                     continue
                 ## TODO: text filter, insert if words? ## ^Pingback
