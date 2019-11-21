@@ -340,6 +340,7 @@ def extract_content(tree, include_tables=False):
         subtree = subtree[0]
         # prune
         subtree = discard_unwanted(subtree)
+        # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         #print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # define iteration strategy
         potential_tags = set(TAG_CATALOG) # 'span'
@@ -369,8 +370,6 @@ def extract_content(tree, include_tables=False):
                     # child.getparent().remove(child)
                     child.tag = 'done' # can cause errors
                 # avoid double tags??
-                # element.getparent().remove(element)
-                # element.tag = 'done' # can cause errors
                 if len(processed_element) > 0: # if it has children
                     #teststring = ''.join(processed_element.itertext())
                     #if len(teststring) > 0 and re.search(r'[a-z]', teststring): # if it has text
@@ -400,12 +399,13 @@ def extract_content(tree, include_tables=False):
                 for child in element.iter():
                     if child.tag in potential_tags:
                         processed_child = handle_textnode(child, comments_fix=False)
+                        ## TODO: here
                         #if child.tag == 'lb':
-                        #    if child.tail is None or not re.search('\w+', child.tail):
-                        #        continue
+                            #if child.tail is None or not re.search('\w+', child.tail):
+                            #    continue
                         #    newsub = etree.SubElement(processed_element, 'lb')
-                        #    newsub.tail = handle_subelement(child).tail
-                        #    # continue
+                        #    newsub.tail = child.tail # handle_subelement(child).tail
+                        #    continue
                         if processed_child is not None:
                             # paragraph, append text
                             if child.tag == 'p':
