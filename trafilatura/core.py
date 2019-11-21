@@ -479,10 +479,11 @@ def extract_content(tree, include_tables=False):
                     subelement.tag = 'head'
                 elif subelement.tag == 'tr':
                     subelement.tag = 'row'
-                    if len(' '.join(subelement.itertext())) < 50:
+                    rowtext = ' '.join(subelement.itertext())
+                    if len(rowtext) < 50:
                         subelement.getparent().remove(subelement)
                         continue
-                    subelement.text = trim(subelement.text)
+                    subelement.text = trim(rowtext)
                 elif subelement.tag == 'td':
                     #if len(' '.join(subelement.itertext())) < 30:
                         #subelement.getparent().remove(subelement)
@@ -534,6 +535,7 @@ def extract_comments(tree, include_comments):
         # extract content
         for elem in subtree.xpath('.//*'): # was: for elem in tree.xpath(expr):
             if elem.tag in potential_tags: # TAG_CATALOG:
+                # print(elem.tag, elem.text_content())
                 processed_element = handle_textnode(elem, comments_fix=True)
                 # test length and remove
                 if processed_element is None or processed_element.text in comments_blacklist:
@@ -660,7 +662,7 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     #tree_cache[cleaned_tree] = list(cleaned_tree.iter())
     # bypass
     # cleaned_tree = tree
-    # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
+    # print(html.tostring(cleaned_tree, pretty_print=False, encoding='unicode'))
 
     ## convert tags, the rest does not work without conversion
     # if tei_output is True:

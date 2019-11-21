@@ -27,6 +27,7 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
                 "//*[(self::div or self::section or self::ul)][starts-with(@id, 'comol') or starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]", \
                 "//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]" \
                 ]
+                # or contains(@class, 'Comments')
 
 
 DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
