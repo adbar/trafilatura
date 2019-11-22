@@ -344,6 +344,7 @@ def extract_content(tree, include_tables=False):
         #print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # define iteration strategy
         potential_tags = set(TAG_CATALOG) # 'span'
+        # relevant_tags = potential_tags - set('lb')
         if len(subtree.xpath('//p//text()')) == 0: # no paragraphs containing text
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
@@ -400,12 +401,12 @@ def extract_content(tree, include_tables=False):
                     if child.tag in potential_tags:
                         processed_child = handle_textnode(child, comments_fix=False)
                         ## TODO: here
-                        #if child.tag == 'lb':
-                            #if child.tail is None or not re.search('\w+', child.tail):
-                            #    continue
-                        #    newsub = etree.SubElement(processed_element, 'lb')
-                        #    newsub.tail = child.tail # handle_subelement(child).tail
-                        #    continue
+                        if child.tag == 'lb':
+                            if child.tail is None or not re.search('\w+', child.tail):
+                                continue
+                            newsub = etree.SubElement(processed_element, 'lb')
+                            newsub.tail = child.tail # handle_subelement(child).tail
+                            continue
                         if processed_child is not None:
                             # paragraph, append text
                             if child.tag == 'p':
