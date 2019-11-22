@@ -78,11 +78,9 @@ The result of processing can be in plain text or XML format. In the latter case,
 Installation
 ------------
 
-*trafilatura* is a Python package (compatible with Python 3.5 upwards) that is tested on Linux and macOS, is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``:
+*trafilatura* is a Python package (compatible with Python 3.5 upwards) which is currently tested on Linux and macOS and to some extent on Windows. It is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``. (Use ``pip3 install trafilatura`` on systems where both Python 2 and 3 are globally installed.)
 
 Install from package repository: ``pip install trafilatura``
-
-*(Or use ``pip3 install trafilatura`` on systems where Python 2 and 3 are both globally installed and pip refers to Python 2.)*
 
 For all experimental functionality please use ``pip install trafilatura[all]``
 Most notably: language detection and faster processing of downloads. The ``cchardet`` package is currently not working on some macOS versions.
@@ -91,16 +89,16 @@ Direct installation of the latest version (see `build status <https://travis-ci.
 
 ``pip install git+https://github.com/adbar/trafilatura.git``
 
-(For dependency management see `this thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
+(For infos on dependency management of Python packages see `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
 
+
+Usage
+-----
 
 With Python
------------
+~~~~~~~~~~~
 
-Basic use
-~~~~~~~~~
-
-The simplest way to use trafilatura is as follows:
+Using trafilatura in a straightforward way:
 
 .. code-block:: python
 
@@ -111,7 +109,18 @@ The simplest way to use trafilatura is as follows:
     >>> result = trafilatura.process_record(response.text, xml_output=True)
     >>> print(result) # some formatting preserved in basic XML structure
 
-The only required argument is the ``response`` element, the rest is optional. It is also possible to use a previously parsed tree (i.e. a lxml.html object) as input, which is then handled seamlessly.
+The only required argument is the ``response`` element, the rest is optional.
+
+The inclusion of tables and comments can be deactivated at a function call. The use of a fallback algorithm (currently `jusText <https://github.com/miso-belica/jusText>`_) can also be bypassed in *fast* mode:
+
+.. code-block:: python
+
+    >>> result = trafilatura.process_record(response.text, include_comments=False) # no comments in output
+    >>> result = trafilatura.process_record(response.text, include_tables=True) # skip tables examination
+    >>> result = trafilatura.process_record(response.text, no_fallback=True) # skip justext algorithm used as fallback
+    >>> result = trafilatura.process_record(response.text, include_comments=False, include_tables=True, no_fallback=True) # probably the fastest execution
+
+The input can consists of a previously parsed tree (i.e. a *lxml.html* object), which is then handled seamlessly:
 
 .. code-block:: python
 
@@ -130,7 +139,7 @@ For further configuration see the variables in ``settings.py``.
 
 
 On the command-line
--------------------
+~~~~~~~~~~~~~~~~~~~
 
 A command-line interface is included, URLs can be used directly (``-u/--URL``):
 
