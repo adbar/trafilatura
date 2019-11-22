@@ -8,7 +8,6 @@ Module bundling all functions needed to extract the text in a webpage.
 ## under GNU GPL v3 license
 
 ## TODO:
-# filter line by line
 # add sqlite3 for control of seen URLs?
 # line-based heuristics?
 
@@ -414,12 +413,9 @@ def extract_content(tree, include_tables=False):
                                     if child.tail is not None:
                                         processed_element.text = child.tail
                                     child.tag = 'done'
-                                    continue
-                                #if child.tail is None or not re.search('\w+', child.tail):
-                                #    continue
-                                newsub = etree.SubElement(processed_element, 'lb')
-                                newsub.tail = child.tail # handle_subelement(child).tail
-                                continue
+                                else:
+                                    newsub = etree.SubElement(processed_element, 'lb')
+                                    newsub.tail = child.tail # handle_subelement(child).tail
                             else:
                                 newsub = etree.SubElement(processed_element, child.tag)
                                 newsub.text = trim(processed_child.text)
