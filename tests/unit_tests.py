@@ -96,6 +96,10 @@ MOCK_PAGES = { \
 'https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/': 'knowtechie.com.rally.html', \
 'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html': 'boingboing.net.millenials.html', \
 'https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding': 'en.wikipedia.org.tsne.html', \
+'https://mixed.de/vrodo-deals-vr-taugliches-notebook-fuer-83215-euro-99-cent-leihfilme-bei-amazon-psvr/': 'mixed.de.vrodo.html', \
+'http://www.spreeblick.com/blog/2006/07/29/aus-aus-alles-vorbei-habeck-macht-die-stahnke/': 'spreeblick.com.habeck.html', \
+'https://majkaswelt.com/top-5-fashion-must-haves-2018-werbung/': 'majkaswelt.com.fashion.html', \
+'https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/': 'erp-news.info.interview.html', \
 }
 # '': '', \
 
@@ -384,10 +388,21 @@ def test_main(xmloutput=False):
     
     result = load_mock_page('https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding', xmloutput)
     assert 'Given a set of high-dimensional objects' in result and 'Herein a heavy-tailed Student t-distribution' in result and 'Categories:' not in result and 'Conditional random field' not in result
+    
+    result = load_mock_page('https://mixed.de/vrodo-deals-vr-taugliches-notebook-fuer-83215-euro-99-cent-leihfilme-bei-amazon-psvr/', xmloutput)
+    assert 'Niedlicher Roboter-Spielkamerad: Anki Cozmo' in result and 'Empfehlungen von Dennis:' in result and 'Unterstütze unsere Arbeit' not in result and 'Deepfake-Hollywood' not in result and 'Avengers' not in result and 'Katzenschreck' not in result
 
+    result = load_mock_page('http://www.spreeblick.com/blog/2006/07/29/aus-aus-alles-vorbei-habeck-macht-die-stahnke/', xmloutput)
+    assert 'Hunderttausende von jungen Paaren' in result and 'wie flatterhaft das Mädl ist? :)' in result and 'Malte Welding' not in result and 'YouTube und die Alten' not in result and 'Autokorrektur' not in result
 
-    #result = load_mock_page('https://boingboing.net/2013/07/19/hating-millennials-the-preju.html', xmloutput)
-    #assert 'Click through for the whole thing.' in result and 'The generation we love to dump on' in result and 'GET THE BOING BOING NEWSLETTER' not in result and 'happy mutants' not in result and 'Patti Smith and Stewart Copeland' not in result
+    result = load_mock_page('https://majkaswelt.com/top-5-fashion-must-haves-2018-werbung/', xmloutput)
+    assert 'Rüschen und Volants.' in result and 'ihr jedes Jahr tragen könnt?' in result and 'mein Lieblingskleid vereint' in result and 'Das könnte dich auch interessieren' not in result and 'Catherine Classic Lac 602' not in result
+
+    result = load_mock_page('https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/', xmloutput)
+    assert 'Einblicke in die Vision zukünftiger Softwaregenerationen.' in result and 'Frage 4: Welche Rolle spielt Big Data in Bezug auf Assistenz-Systeme und KI?' in result and 'von The unbelievable Machine Company (*um) zur Verfügung gestellt.' in result and 'Matthias Weber ist ERP-Experte mit langjähriger Berufserfahrung.' not in result and 'Die Top 5 digitalen Trends für den Mittelstand' not in result and ', leading edge,' not in result # 'Lesen Sie hier einen weiteren spannenden Beitrag' not in result
+
+    result = load_mock_page('https://boingboing.net/2013/07/19/hating-millennials-the-preju.html', xmloutput)
+    assert 'Click through for the whole thing.' in result and 'The generation we love to dump on' in result and 'GET THE BOING BOING NEWSLETTER' not in result and 'happy mutants' not in result and 'Patti Smith and Stewart Copeland' not in result
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
