@@ -400,13 +400,6 @@ def extract_content(tree, include_tables=False):
                 for child in element.iter():
                     if child.tag in potential_tags:
                         processed_child = handle_textnode(child, comments_fix=False)
-                        ## TODO: here
-                        if child.tag == 'lb':
-                            if child.tail is None or not re.search('\w+', child.tail):
-                                continue
-                            newsub = etree.SubElement(processed_element, 'lb')
-                            newsub.tail = child.tail # handle_subelement(child).tail
-                            continue
                         if processed_child is not None:
                             # paragraph, append text
                             if child.tag == 'p':
@@ -414,6 +407,19 @@ def extract_content(tree, include_tables=False):
                                     processed_element.text = processed_element.text + processed_child.text
                                 if processed_child.tail is not None:
                                     processed_element.text = processed_element.text + ' ' + processed_child.tail
+                            # handle spaces
+                            elif child.tag == 'lb':
+                                # delete if empty paragraph so far
+                                if len(processed_element.text) < 1:
+                                    if child.tail is not None:
+                                        processed_element.text = child.tail
+                                    child.tag = 'done'
+                                    continue
+                                #if child.tail is None or not re.search('\w+', child.tail):
+                                #    continue
+                                newsub = etree.SubElement(processed_element, 'lb')
+                                newsub.tail = child.tail # handle_subelement(child).tail
+                                continue
                             else:
                                 newsub = etree.SubElement(processed_element, child.tag)
                                 newsub.text = trim(processed_child.text)
