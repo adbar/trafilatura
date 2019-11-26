@@ -35,7 +35,7 @@ In a nutshell, with Python:
 
     >>> import requests, trafilatura
     >>> response = requests.get('https://www.iana.org/about')
-    >>> trafilatura.process_record(response.text)
+    >>> trafilatura.extract(response.text)
     >>> # outputs main content in plain text format ...
 
 On the command-line:
@@ -104,9 +104,9 @@ Using trafilatura in a straightforward way:
 
     >>> import requests, trafilatura
     >>> response = requests.get('https://www.iana.org/about')
-    >>> result = trafilatura.process_record(response.text)
+    >>> result = trafilatura.extract(response.text)
     >>> print(result) # newlines preserved, TXT output
-    >>> result = trafilatura.process_record(response.text, xml_output=True)
+    >>> result = trafilatura.extract(response.text, xml_output=True)
     >>> print(result) # some formatting preserved in basic XML structure
 
 The only required argument is the ``response`` element, the rest is optional.
@@ -115,10 +115,10 @@ The inclusion of tables and comments can be deactivated at a function call. The 
 
 .. code-block:: python
 
-    >>> result = trafilatura.process_record(response.text, include_comments=False) # no comments in output
-    >>> result = trafilatura.process_record(response.text, include_tables=True) # skip tables examination
-    >>> result = trafilatura.process_record(response.text, no_fallback=True) # skip justext algorithm used as fallback
-    >>> result = trafilatura.process_record(response.text, include_comments=False, include_tables=True, no_fallback=True) # probably the fastest execution
+    >>> result = trafilatura.extract(response.text, include_comments=False) # no comments in output
+    >>> result = trafilatura.extract(response.text, include_tables=True) # skip tables examination
+    >>> result = trafilatura.extract(response.text, no_fallback=True) # skip justext algorithm used as fallback
+    >>> result = trafilatura.extract(response.text, include_comments=False, include_tables=True, no_fallback=True) # probably the fastest execution
 
 The input can consists of a previously parsed tree (i.e. a *lxml.html* object), which is then handled seamlessly:
 
@@ -126,14 +126,14 @@ The input can consists of a previously parsed tree (i.e. a *lxml.html* object), 
 
     >>> from lxml import html
     >>> mytree = html.fromstring('<html><body><article><p>Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p></article></body></html>')
-    >>> trafilatura.process_record(mytree)
+    >>> trafilatura.extract(mytree)
     'Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n'
 
 Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
 
 .. code-block:: python
 
-    >>> result = trafilatura.process_record(response.text, url, target_language='de')
+    >>> result = trafilatura.extract(response.text, url, target_language='de')
 
 For further configuration see the variables in ``settings.py``.
 
@@ -141,7 +141,9 @@ For further configuration see the variables in ``settings.py``.
 On the command-line
 ~~~~~~~~~~~~~~~~~~~
 
-A command-line interface is included, URLs can be used directly (``-u/--URL``):
+A command-line interface is included, for general instructions see `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems), `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_, or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_.
+
+URLs can be used directly (``-u/--URL``):
 
 .. code-block:: bash
 
@@ -150,25 +152,37 @@ A command-line interface is included, URLs can be used directly (``-u/--URL``):
     $ trafilatura --xml --URL "https://de.creativecommons.org/index.php/was-ist-cc/"
     $ # outputs main text with basic XML structure ...
 
-You can also pipe a HTML document (and response body) to the trafilatura:
+You can also pipe a HTML document (and response body) to trafilatura:
 
 .. code-block:: bash
 
     $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura
 
+-i: (similar to wget -i)
+
 For usage instructions see ``trafilatura -h``:
 
-``usage: trafilatura [-h] [-f] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
+``usage: trafilatura [-h] [-f] [-i INPUTFILE] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
 
 optional arguments:
   -h, --help         show this help message and exit
-  -f, --fast         Fast (without fallback detection)
-  --nocomments       Don't output any comments
-  --notables         Don't output any table elements
+  -f, --fast         fast (without fallback detection)
+  -i INPUTFILE, --inputfile INPUTFILE
+                     name of input file for batch processing
+  --nocomments       don't output any comments
+  --notables         don't output any table elements
   --xml              XML output
   --xmltei           XML TEI output
   -u URL, --URL URL  custom URL download
   -v, --verbose      increase output verbosity
+
+
+Further documentation
+~~~~~~~~~~~~~~~~~~~~~
+
+To be released soon.
+
+Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=Eei7-8ZQdTc>`_.
 
 
 Additional information
@@ -177,7 +191,7 @@ Additional information
 Scientific context
 ~~~~~~~~~~~~~~~~~~
 
-This module is part of methods to derive information from web documents in order to build text databases for research (chiefly linguistic analysis and natural language processing). A significant challenge resides in the ability to extract and pre-process web texts to meet scientific expectations: Web corpus construction involves numerous design decisions, and this software packages can help facilitate collection and enhance corpus quality. For more information:
+This module is part of methods to derive information from web documents in order to build text databases for research (chiefly linguistic analysis and natural language processing). A significant challenge resides in the ability to extract and pre-process web texts to meet scientific expectations: Web corpus construction involves numerous design decisions, and this software packages can help facilitate collection and enhance corpus quality.
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
