@@ -569,8 +569,9 @@ def write_teitree(postbody, commentsbody):
     postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
     postelem.append(postbody)
     # comments
-    commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
-    commentselem.append(commentsbody)
+    if commentsbody is not None:
+        commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
+        commentselem.append(commentsbody)
     return tei
 
 
@@ -746,7 +747,9 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     cache(commentsbody)
     #del tree_cache[cleaned_tree]
 
-    # XML TEI steps
+    # XML (TEI) steps
+    if include_comments is False:
+        commentsbody = None
     if tei_output is True:
         # build TEI tree
         output = write_teitree(postbody, commentsbody)
@@ -757,8 +760,12 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
         output = etree.Element('root')
         postelem = etree.SubElement(output, 'text')
         postelem.append(postbody)
-        commentselem = etree.SubElement(output, 'comments')
-        commentselem.append(commentsbody)
+        if commentsbody is not None:
+            commentselem = etree.SubElement(output, 'comments')
+            commentselem.append(commentsbody)
+        # url in xml
+        if url is not None:
+            output.set('source', url)
 
     # sanity check on markup
     # if re.search(r'\[url', u''.join(postbody.itertext()):
