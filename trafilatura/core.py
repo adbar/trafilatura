@@ -31,7 +31,7 @@ from lxml.html.clean import Cleaner
 
 # own
 from .settings import LANGUAGES, LRU_SIZE, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
-from .utils import load_html, sanitize, trim
+from .utils import load_html, sanitize, trim, validate_tei
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
 if LANGID_FLAG is True:
@@ -613,9 +613,6 @@ def check_tei(tei, record_id):
             if attribute not in TEI_VALID_ATTRS:
                 LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
                 element.attrib.pop(attribute)
-    # validate ?
-    #if relaxng.validate(tei) is False:
-    #    print(relaxng.error_log.last_error)
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return tei
@@ -757,6 +754,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         # filter output (strip unwanted elements), just in case
         # check and repair
         output = check_tei(output, record_id)
+        # validate
+        result = validate_tei(output)
+        LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)
     else:
         output = etree.Element('doc')
         postbody.tag = 'main'
