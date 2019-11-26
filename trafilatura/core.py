@@ -563,6 +563,7 @@ def extract_comments(tree, include_comments):
 
 def write_teitree(postbody, commentsbody):
     '''Bundle the extracted post and comments into a TEI tree'''
+    # TODO: include URL
     tei = etree.Element('TEI') # , xmlns='http://www.tei-c.org/ns/1.0'
     group = etree.SubElement(tei, 'group')
     # post
@@ -647,7 +648,7 @@ def xmltotxt(xmloutput):
 
 
 #@profile
-def process_record(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
+def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
     global LRU_TEST
@@ -757,12 +758,12 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
         # check and repair
         output = check_tei(output, record_id)
     else:
-        output = etree.Element('root')
-        postelem = etree.SubElement(output, 'text')
-        postelem.append(postbody)
+        output = etree.Element('doc')
+        postbody.tag = 'main'
+        output.append(postbody)
         if commentsbody is not None:
-            commentselem = etree.SubElement(output, 'comments')
-            commentselem.append(commentsbody)
+            commentsbody.tag = 'comments'
+            output.append(commentsbody)
         # url in xml
         if url is not None:
             output.set('source', url)
@@ -798,6 +799,9 @@ def process_record(filecontent, url=None, record_id='0001', no_fallback=False, i
     # LRU_TEST[teststring] += 1
 
     return None
+
+# for legacy and backwards compatibility
+process_record = extract
 
 #def custom_justext(htmldom):
 #    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
