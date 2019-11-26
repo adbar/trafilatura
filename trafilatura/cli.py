@@ -50,13 +50,7 @@ def main():
     if args.verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-    # process input URL
-    if args.URL:
-        htmlstring = fetch_url(args.URL)
-        if htmlstring is None:
-            sys.stderr.write('# ERROR no valid result for url: ' + args.URL + '\n')
-            sys.exit(1)
-    elif args.inputfile:
+    if args.inputfile:
         with open(args.inputfile, mode='r', encoding='utf-8') as inputfile: # errors='strict', buffering=1
             for line in inputfile:
                 url = line.strip()
@@ -69,14 +63,21 @@ def main():
                 except:
                     result = '# ERROR:' + sys.exc_info()[0] + ' for url ' + url + '\n'
                 sys.stdout.write(result + '\n')
-    # process input on STDIN
     else:
-        # unicode check
-        try:
-            htmlstring = sys.stdin.read()
-        except UnicodeDecodeError as err:
-            sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
-            sys.exit(1)
+        # process input URL
+        if args.URL:
+            htmlstring = fetch_url(args.URL)
+            if htmlstring is None:
+                sys.stderr.write('# ERROR no valid result for url: ' + args.URL + '\n')
+                sys.exit(1)
+        # process input on STDIN
+        else:
+            # unicode check
+            try:
+                htmlstring = sys.stdin.read()
+            except UnicodeDecodeError as err:
+                sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
+                sys.exit(1)
         # process
         result = examine(htmlstring, url=args.URL, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei)
         if result is not None:
