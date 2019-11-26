@@ -10,7 +10,7 @@ import argparse
 import logging
 import sys
 
-from .core import process_record
+from .core import extract
 from .utils import fetch_url
 from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
 
@@ -28,7 +28,7 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True, incl
         sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
-        result = process_record(htmlstring, url, '0000', no_fallback=no_fallback, include_comments=include_comments, include_tables=include_tables, xml_output=xml_output, tei_output=tei_output)
+        result = extract(htmlstring, url, '0000', no_fallback=no_fallback, include_comments=include_comments, include_tables=include_tables, xml_output=xml_output, tei_output=tei_output)
         return result
     return None
 
@@ -37,9 +37,10 @@ def main():
     """ Run as a command-line utility. """
     # arguments
     argsparser = argparse.ArgumentParser()
-    argsparser.add_argument("-f", "--fast", help="Fast (without fallback detection)", action="store_true")
-    argsparser.add_argument("--nocomments", help="Don't output any comments", action="store_false")
-    argsparser.add_argument("--notables", help="Don't output any table elements", action="store_false")
+    argsparser.add_argument("-f", "--fast", help="fast (without fallback detection)", action="store_true")
+    argsparser.add_argument("-i", "--inputfile", help="name of input file for batch processing", type=str)
+    argsparser.add_argument("--nocomments", help="don't output any comments", action="store_false")
+    argsparser.add_argument("--notables", help="don't output any table elements", action="store_false")
     argsparser.add_argument("--xml", help="XML output", action="store_true")
     argsparser.add_argument("--xmltei", help="XML TEI output", action="store_true")
     argsparser.add_argument("-u", "--URL", help="custom URL download")
@@ -55,6 +56,19 @@ def main():
         if htmlstring is None:
             sys.stderr.write('# ERROR no valid result for url: ' + args.URL + '\n')
             sys.exit(1)
+    elif args.inputfile:
+        with open(args.inputfile, mode='r', encoding='utf-8') as inputfile: # errors='strict', buffering=1
+            for line in inputfile:
+                url = line.strip()
+                htmlstring = fetch_url(url)
+                try:
+                    result = examine(htmlstring, url=url, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei)
+                    if result is None:
+                        result = '# ERROR: no valid result for url ' + url
+                # ugly but efficient
+                except:
+                    result = '# ERROR:' + sys.exc_info()[0] + ' for url ' + url + '\n'
+                sys.stdout.write(result + '\n')
     # process input on STDIN
     else:
         # unicode check
@@ -63,10 +77,10 @@ def main():
         except UnicodeDecodeError as err:
             sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
             sys.exit(1)
-
-    result = examine(htmlstring, url=args.URL, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei)
-    if result is not None:
-        sys.stdout.write(result + '\n')
+        # process
+        result = examine(htmlstring, url=args.URL, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei)
+        if result is not None:
+            sys.stdout.write(result + '\n')
 
 
 if __name__ == '__main__':
