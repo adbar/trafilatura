@@ -130,6 +130,7 @@ def remove_control_characters(string):
     #\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
 
 
+#@profile
 def sanitize(text):
     '''Convert text and discard incompatible unicode and invalid XML characters'''
     text = remove_control_characters(text)
@@ -146,6 +147,7 @@ def sanitize(text):
     return returntext
 
 
+#@profile
 def trim(string):
     '''Remove unnecesary spaces within a text string'''
     if string is not None:
@@ -196,8 +198,10 @@ def xmltotxt(xmloutput):
             textelement = element.tail
         textelement = sanitize(textelement)
         textelement = trim(textelement)
-        if element.tag in ('code', 'head', 'item', 'lb', 'p', 'quote', 'row', 'table'):
+        if element.tag in ('code', 'head', 'lb', 'p', 'quote', 'row', 'table'):
             returnstring += '\n' + textelement + '\n'
+        elif element.tag == 'item':
+            returnstring += '\n- ' + textelement + '\n'
         else:
             returnstring += textelement + ' '
     #returnstring = sanitize(returnstring)
