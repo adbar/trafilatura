@@ -36,14 +36,14 @@ In a nutshell, with Python:
     >>> import trafilatura
     >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
     >>> trafilatura.extract(downloaded)
-    # outputs main content in plain text format ...
+    # outputs main content as plain text ...
 
 On the command-line:
 
 .. code-block:: bash
 
-    $ trafilatura -u https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/
-    $ # outputs main content in plain text format ...
+    $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
+    # outputs main content as plain text ...
 
 
 .. contents:: **Contents**
@@ -61,17 +61,18 @@ Distinguishing between whole page and essential parts can help to alleviate many
 Features
 --------
 
--  URLs, HTML files or parsed HTML trees are given as input, the result of processing can be in plain text or XML format.
--  Main text and comments can be targeted separately.
--  Formatting elements and the structure of the page are preserved (paragraphs, titles, lists, quotes, code, line breaks), which can be used for further processing.
+-  URLs, HTML files or parsed HTML trees given as input
+-  Formatting elements and the structure of the page are preserved (paragraphs, titles, lists, quotes, code, line breaks), which can be used for further processing
+-  Main text and comments can be targeted separately
+-  Result in plain text (newlines and lists preserved) or XML format (with source and structure)
 
 Because it relies on `lxml <http://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
 
-*Work in progress*, currently experimental features:
+Work in progress, currently experimental features:
 
 -  [x] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [x] Language detection on the extracted content
--  [ ] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
+-  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
 -  [ ] Preservation of in-line text formatting (bold, italic, etc.)
 
 
@@ -82,12 +83,10 @@ Installation
 
 Install from package repository: ``pip install trafilatura``
 
+Direct installation of the latest version (see `build status <https://travis-ci.org/adbar/trafilatura>`_): ``pip install git+https://github.com/adbar/trafilatura.git``
+
 For all experimental functionality please use ``pip install trafilatura[all]``
 Most notably: language detection and faster processing of downloads. The ``cchardet`` package is currently not working on some macOS versions.
-
-Direct installation of the latest version (see `build status <https://travis-ci.org/adbar/trafilatura>`_):
-
-``pip install git+https://github.com/adbar/trafilatura.git``
 
 (For infos on dependency management of Python packages see `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
 
