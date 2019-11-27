@@ -16,7 +16,7 @@ except ImportError:
     import chardet
 
 # import trafilatura
-from trafilatura.core import cache, duplicate_test, LRU_TEST, process_record, trim
+from trafilatura.core import cache, duplicate_test, extract, LRU_TEST, process_record, trim
 from trafilatura import cli, utils
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -126,7 +126,7 @@ def load_mock_page(url, xml_flag=False, langcheck=None):
                 htmlstring = htmlbinary
         else:
             print('Encoding error')
-    result = process_record(htmlstring, url, '0000', xml_output=xml_flag, tei_output=False, target_language=langcheck)
+    result = process_record(htmlstring, url, record_id='0000', no_fallback=False, xml_output=xml_flag, tei_output=False, target_language=langcheck)
     return result
 
 
@@ -156,10 +156,6 @@ def test_download():
     teststring = utils.fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, url) is None
-    url = 'https://httpbin.org/html'
-    teststring = utils.fetch_url(url)
-    assert teststring is not None
-    assert cli.examine(teststring, url) is not None
 
 
 def test_main(xmloutput=False):
@@ -430,6 +426,18 @@ def test_lrucache():
     print(LRU_TEST)
 
 
+def test_tei():
+    '''test TEI-related functions'''
+    # download, parse and validate simple html file
+    url = 'https://httpbin.org/html'
+    teststring = utils.fetch_url(url)
+    assert teststring is not None
+    result = extract(teststring, url, no_fallback=True, tei_output=True)
+    assert result is not None
+    mytree = etree.fromstring(result)
+    assert utils.validate_tei(mytree) is True
+    
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
@@ -437,3 +445,5 @@ if __name__ == '__main__':
     test_main(xmloutput=False)
     test_main(xmloutput=True)
     test_download()
+    test_tei()
+    

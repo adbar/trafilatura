@@ -19,8 +19,13 @@ matrix:
     - name: "Python 3.8 on Linux"
       os: linux
       dist: xenial
-      python: "3.8-dev"
+      python: 3.8
       env: TOXENV=py38
+    - name: "Python 3.9 Nightly on Linux"
+      os: linux
+      dist: bionic
+      python: "nightly"
+      env: TOXENV=py39
     - name: "Python 3 on macOS"
       os: osx
       osx_image: xcode11
@@ -29,6 +34,7 @@ matrix:
       before_install: python3 --version ; pip3 --version ; sw_vers; pip3 install codecov tox
   allow_failures:
     - os: osx
+    - python: nightly
   # fast_finish: true
 
 before_install:
