@@ -33,10 +33,10 @@ In a nutshell, with Python:
 
 .. code-block:: python
 
-    >>> import requests, trafilatura
-    >>> response = requests.get('https://www.iana.org/about')
-    >>> trafilatura.extract(response.text)
-    >>> # outputs main content in plain text format ...
+    >>> import trafilatura
+    >>> downloaded = trafilatura.fetch_url('https://www.iana.org/about')
+    >>> trafilatura.extract(downloaded)
+    # outputs main content in plain text format ...
 
 On the command-line:
 
@@ -102,23 +102,27 @@ Using trafilatura in a straightforward way:
 
 .. code-block:: python
 
-    >>> import requests, trafilatura
-    >>> response = requests.get('https://www.iana.org/about')
-    >>> result = trafilatura.extract(response.text)
-    >>> print(result) # newlines preserved, TXT output
-    >>> result = trafilatura.extract(response.text, xml_output=True)
-    >>> print(result) # some formatting preserved in basic XML structure
+    >>> import trafilatura
+    >>> downloaded = trafilatura.fetch_url('https://www.iana.org/about')
+    >>> downloaded is None # assuming the download was successful
+    False
+    >>> result = trafilatura.extract(downloaded)
+    >>> print(result)
+    # newlines preserved, TXT output ...
+    >>> result = trafilatura.extract(downloaded, xml_output=True)
+    >>> print(result)
+    # some formatting preserved in basic XML structure ...
 
-The only required argument is the ``response`` element, the rest is optional.
+The only required argument is the input document (here a downloaded HTML file), the rest is optional.
 
 The inclusion of tables and comments can be deactivated at a function call. The use of a fallback algorithm (currently `jusText <https://github.com/miso-belica/jusText>`_) can also be bypassed in *fast* mode:
 
 .. code-block:: python
 
-    >>> result = trafilatura.extract(response.text, include_comments=False) # no comments in output
-    >>> result = trafilatura.extract(response.text, include_tables=True) # skip tables examination
-    >>> result = trafilatura.extract(response.text, no_fallback=True) # skip justext algorithm used as fallback
-    >>> result = trafilatura.extract(response.text, include_comments=False, include_tables=True, no_fallback=True) # probably the fastest execution
+    >>> result = trafilatura.extract(downloaded, include_comments=False) # no comments in output
+    >>> result = trafilatura.extract(downloaded, include_tables=True) # skip tables examination
+    >>> result = trafilatura.extract(downloaded, no_fallback=True) # skip justext algorithm used as fallback
+    >>> result = trafilatura.extract(downloaded, include_comments=False, include_tables=True, no_fallback=True) # probably the fastest execution
 
 The input can consists of a previously parsed tree (i.e. a *lxml.html* object), which is then handled seamlessly:
 
@@ -133,7 +137,7 @@ Experimental feature: the target language can also be set using 2-letter codes (
 
 .. code-block:: python
 
-    >>> result = trafilatura.extract(response.text, url, target_language='de')
+    >>> result = trafilatura.extract(downloaded, url, target_language='de')
 
 For further configuration see the variables in ``settings.py``.
 
@@ -156,8 +160,8 @@ You can also pipe a HTML document (and response body) to trafilatura:
 
 .. code-block:: bash
 
-    $ cat 
-    $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura # download 
+    $ cat myfile.html | trafilatura # use the contents of an already existing file
+    $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura # use a custom download
 
 The ``-i/--inputfile`` option allows for bulk download and processing of a list of URLs from a file listing one link per line. Beware that there should be a tacit scraping etiquette and that a server may block you after the download a certain number of pages from the same website/domain in a short period of time. In addition, some website may block the requests `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
 

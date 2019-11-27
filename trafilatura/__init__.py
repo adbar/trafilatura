@@ -13,8 +13,8 @@ __version__ = '0.1.2'
 ## imports
 import logging
 
-from .core import process_record
-# from .utils import *
+from .core import extract, process_record
+from .utils import fetch_url
 # from .settings import *
 
 ## logging best practices

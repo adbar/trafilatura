@@ -31,7 +31,7 @@ from lxml.html.clean import Cleaner
 
 # own
 from .settings import LANGUAGES, LRU_SIZE, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
-from .utils import load_html, sanitize, trim, validate_tei
+from .utils import load_html, sanitize, trim, validate_tei, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
 if LANGID_FLAG is True:
@@ -248,8 +248,8 @@ def convert_tags(tree):
     return tree
 
 
-def try_justext(tree, record_id):
-    '''safety net: try with justext'''
+def try_justext(tree, url):
+    '''Safety net: try with the generic algorithm justext'''
     result_body = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
     LOGGER.debug('raw length: %s (tostring) ', len(justtextstring))
@@ -257,15 +257,16 @@ def try_justext(tree, record_id):
         # paragraphs = custom_justext(tree)
         paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
     except ValueError as err: # ValueError: Input object is not an XML element: HtmlComment
-        LOGGER.error('justext %s %s', err, record_id)
-        return None
-    for paragraph in paragraphs:
-        if not paragraph.is_boilerplate:
-            # if LRU_TEST.has_key(paragraph.text) is False or LRU_TEST[paragraph.text] <= 2:
-            if duplicate_test(paragraph, justext_switch=True) is not True:
-                elem = etree.Element('p')
-                elem.text = paragraph.text
-                result_body.append(elem)
+        LOGGER.error('justext %s %s', err, url)
+        result_body = None
+    else:
+        for paragraph in paragraphs:
+            if not paragraph.is_boilerplate:
+                # if LRU_TEST.has_key(paragraph.text) is False or LRU_TEST[paragraph.text] <= 2:
+                if duplicate_test(paragraph, justext_switch=True) is not True:
+                    elem = etree.Element('p')
+                    elem.text = paragraph.text
+                    result_body.append(elem)
     return result_body
 
 
@@ -576,14 +577,14 @@ def write_teitree(postbody, commentsbody):
     return tei
 
 
-def check_tei(tei, record_id):
+def check_tei(tei, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     for element in tei.xpath('//text/body//*'):
         # check elements
         if element.tag not in TEI_VALID_TAGS:
             # disable warnings for chosen categories
             # if element.tag not in ('div', 'span'):
-            LOGGER.warning('not a TEI element, removing: %s %s', element.tag, record_id)
+            LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
             # append text AND tail to parent
             full_text = ''
             if element.text is not None and element.tail is not None:
@@ -611,37 +612,11 @@ def check_tei(tei, record_id):
         # check attributes
         for attribute in element.attrib:
             if attribute not in TEI_VALID_ATTRS:
-                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, record_id)
+                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
                 element.attrib.pop(attribute)
     # export metadata
     #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
     return tei
-
-
-#@profile
-def xmltotxt(xmloutput):
-    '''Convert to plain text format'''
-    # TODO: sanitize/valid XML
-    returnstring = ''
-    # returnstring = ' '.join(xmloutput.itertext())
-    for element in xmloutput.iter():
-        if element.text is None and element.tail is None:
-            continue
-        if element.text is not None and element.tail is not None:
-            textelement = element.text + ' ' + element.tail
-        elif element.text is not None and element.tail is None:
-            textelement = element.text
-        else:
-            textelement = element.tail
-        textelement = sanitize(textelement)
-        textelement = trim(textelement)
-        if element.tag in ('code', 'head', 'item', 'lb', 'p', 'quote', 'row', 'table'):
-            returnstring += '\n' + textelement + '\n'
-        else:
-            returnstring += textelement + ' '
-    #returnstring = sanitize(returnstring)
-    #returnstring = trim(returnstring)
-    return returnstring
 
 
 #@profile
@@ -682,7 +657,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     temp_text = u' '.join(temppost_hand.itertext())
     if no_fallback is False and 0 <= len(temp_text) < 300:
         # try with justext
-        temppost_algo = try_justext(tree, record_id) # cleaned_tree
+        temppost_algo = try_justext(tree, url) # cleaned_tree
         # compare
         temp_jt = u' '.join(temppost_algo.itertext())
         LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
@@ -753,7 +728,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         output = write_teitree(postbody, commentsbody)
         # filter output (strip unwanted elements), just in case
         # check and repair
-        output = check_tei(output, record_id)
+        output = check_tei(output, url)
         # validate
         result = validate_tei(output)
         LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)

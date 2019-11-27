@@ -156,6 +156,7 @@ def trim(string):
         string = string.strip()
     return string
 
+
 #@profile
 def validate_tei(tei): # , filename=""
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
@@ -176,3 +177,29 @@ def validate_tei(tei): # , filename=""
     #except AssertionError as err:
     #    LOGGER.warning('TEI validation error: %s', err)
     return result
+
+
+#@profile
+def xmltotxt(xmloutput):
+    '''Convert to plain text format'''
+    # TODO: sanitize/valid XML
+    returnstring = ''
+    # returnstring = ' '.join(xmloutput.itertext())
+    for element in xmloutput.iter():
+        if element.text is None and element.tail is None:
+            continue
+        if element.text is not None and element.tail is not None:
+            textelement = element.text + ' ' + element.tail
+        elif element.text is not None and element.tail is None:
+            textelement = element.text
+        else:
+            textelement = element.tail
+        textelement = sanitize(textelement)
+        textelement = trim(textelement)
+        if element.tag in ('code', 'head', 'item', 'lb', 'p', 'quote', 'row', 'table'):
+            returnstring += '\n' + textelement + '\n'
+        else:
+            returnstring += textelement + ' '
+    #returnstring = sanitize(returnstring)
+    #returnstring = trim(returnstring)
+    return returnstring
