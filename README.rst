@@ -156,11 +156,12 @@ You can also pipe a HTML document (and response body) to trafilatura:
 
 .. code-block:: bash
 
-    $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura
+    $ cat 
+    $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura # download 
 
--i: (similar to wget -i)
+The ``-i/--inputfile`` option allows for bulk download and processing of a list of URLs from a file listing one link per line. Beware that there should be a tacit scraping etiquette and that a server may block you after the download a certain number of pages from the same website/domain in a short period of time. In addition, some website may block the requests `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
 
-For usage instructions see ``trafilatura -h``:
+For all usage instructions see ``trafilatura -h``:
 
 ``usage: trafilatura [-h] [-f] [-i INPUTFILE] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
 

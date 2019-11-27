@@ -10,6 +10,8 @@ import argparse
 import logging
 import sys
 
+from time import sleep
+
 from .core import extract
 from .utils import fetch_url
 from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
@@ -63,6 +65,8 @@ def main():
                 except:
                     result = '# ERROR:' + sys.exc_info()[0] + ' for url ' + url + '\n'
                 sys.stdout.write(result + '\n')
+                # sleep 2 sec between requests
+                sleep(2)
     else:
         # process input URL
         if args.URL:
