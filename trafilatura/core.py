@@ -43,7 +43,7 @@ LOGGER = logging.getLogger(__name__)
 
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
 
-CUT_EMPTY_ELEMS = ('article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'main', 'p', 'section', 'strong', 'td') # 'meta', 'span',
+CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'main', 'p', 'section', 'strong', 'td'} # 'meta', 'span',
 
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
@@ -71,8 +71,8 @@ HTML_CLEANER.kill_tags = ['aside']
 # 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'
 
 # validation
-TEI_VALID_TAGS = set(['code', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'])
-TEI_VALID_ATTRS = set(['rendition'])
+TEI_VALID_TAGS = {'code', 'body', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'}
+TEI_VALID_ATTRS = {'rendition', 'type'}
 
 # counters
 LRU_TEST = LRU(LRU_SIZE)
@@ -562,18 +562,32 @@ def extract_comments(tree, include_comments):
     return comments_body, tree
 
 
-def write_teitree(postbody, commentsbody):
+def write_teitree(postbody, commentsbody, url):
     '''Bundle the extracted post and comments into a TEI tree'''
     # TODO: include URL
-    tei = etree.Element('TEI') # , xmlns='http://www.tei-c.org/ns/1.0'
-    group = etree.SubElement(tei, 'group')
+    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    header = etree.SubElement(tei, 'teiHeader')
+    filedesc = etree.SubElement(header, 'fileDesc')
+    titlestmt = etree.SubElement(filedesc, 'titleStmt')
+    title = etree.SubElement(titlestmt, 'title')
+    publicationstmt = etree.SubElement(filedesc, 'publicationStmt')
+    publication_p = etree.SubElement(publicationstmt, 'p')
+    sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
+    source_p = etree.SubElement(sourcedesc, 'p')
+    source_p.text = url
+    textelem = etree.SubElement(tei, 'text')
+    textbody = etree.SubElement(textelem, 'body')
     # post
-    postelem = etree.SubElement(group, 'text', type='entry', rendition='#pst')
-    postelem.append(postbody)
+    postbody.tag = 'div'
+    postbody.set('type', 'entry') # rendition='#pst'
+    # postelem = etree.SubElement(textbody, 'div', type='entry')
+    textbody.append(postbody)
     # comments
     if commentsbody is not None:
-        commentselem = etree.SubElement(group, 'text', type='comments', rendition='#cmt')
-        commentselem.append(commentsbody)
+        commentsbody.tag = 'div'
+        commentsbody.set('type', 'comments')# rendition='#cmt'
+        # commentselem = etree.SubElement(textbody, 'div', type='comments')
+        textbody.append(commentsbody)
     return tei
 
 
@@ -725,12 +739,14 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         commentsbody = None
     if tei_output is True:
         # build TEI tree
-        output = write_teitree(postbody, commentsbody)
+        output = write_teitree(postbody, commentsbody, url)
         # filter output (strip unwanted elements), just in case
         # check and repair
         output = check_tei(output, url)
         # validate
-        result = validate_tei(output)
+        # why is it necessary?
+        testtree = etree.fromstring(etree.tostring(output))
+        result = validate_tei(testtree)
         LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)
     else:
         output = etree.Element('doc')
