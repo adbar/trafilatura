@@ -162,19 +162,13 @@ def test_download():
 def test_main(xmloutput=False):
     '''test extraction from HTML'''
     result = load_mock_page('https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/', xmloutput)
-    try:
-        assert 'Impressum' not in result and 'Die GEMA dreht völlig am Zeiger!' in result
-    except AssertionError as err:
-        if platform.system() == 'Windows':
-            pass
-        else:
-            raise AssertionError(err)
+    assert 'Impressum' not in result and 'Die GEMA dreht völlig am Zeiger!' in result
 
     result = load_mock_page('https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html', xmloutput)
     assert 'Impressum' not in result and 'Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol' in result
 
     result = load_mock_page('https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/', xmloutput)
-    assert 'Two or three 10-15 min' in result and 'What type? Etc. (30 mins)' in result and 'Dieser Eintrag wurde veröffentlicht' not in result # and 'Mit anderen Teillen' not in result
+    assert 'Two or three 10-15 min' in result and 'What type? Etc. (30 mins)' in result and 'Dieser Eintrag wurde veröffentlicht' not in result and 'Mit anderen Teillen' not in result
 
     result = load_mock_page('http://bunterepublik.wordpress.com/2012/04/13/schwafelrunde-ohne-ritter/', xmloutput)
     assert 'Abgelegt unter' not in result and 'Nächster Beitrag' not in result and 'Die Schwafelrunde' in result and 'zusammen.' in result
@@ -195,7 +189,6 @@ def test_main(xmloutput=False):
     assert 'Kapitel 121 ist' in result and 'Besucher online' not in result and 'Kommentare schreiben' not in result
 
     result = load_mock_page('http://www.cdu-fraktion-erfurt.de/inhalte/aktuelles/entwicklung-der-waldorfschule-ermoeglicht/index.html', xmloutput)
-    # print(result)
     assert 'der steigenden Nachfrage gerecht zu werden.' in result and 'Zurück zur Übersicht' not in result # and 'Erhöhung für Zoo-Eintritt' not in result
 
     result = load_mock_page('https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/', xmloutput)
@@ -214,7 +207,6 @@ def test_main(xmloutput=False):
     assert 'In eine andere Zeit' in result and 'Während Sie über den Markt schlendern' in result and 'Infos zum Verein' not in result and 'nach oben' not in result and 'Datenschutzerklärung' not in result
 
     result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft', xmloutput)
-    # print(result)
     assert 'Eines der großen Probleme,' in result and 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result
 
     result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html', xmloutput)
@@ -250,7 +242,7 @@ def test_main(xmloutput=False):
     assert 'und wirtschaftlich orientierte Privatpersonen' in result and 'rund um die Uhr.' in result and 'Mensch im Mittelpunkt.' in result and 'Was sind Cookies?' not in result
 
     result = load_mock_page('http://www.jovelstefan.de/2011/09/11/gefallt-mir/', xmloutput)
-    assert 'Manchmal überrascht einen' in result and 'kein Meisterwerk war!' in result and 'Pingback von' not in result # and 'Kommentare geschlossen' not in result
+    assert 'Manchmal überrascht einen' in result and 'kein Meisterwerk war!' in result and 'Pingback von' not in result and 'Kommentare geschlossen' not in result
 
     result = load_mock_page('https://www.stuttgart.de/item/show/132240/1', xmloutput)
     assert 'Das Bohnenviertel entstand' in result and 'sich herrlich entspannen.' in result and 'Nützliche Links' not in result # and 'Mehr zum Thema' not in result
@@ -284,10 +276,10 @@ def test_main(xmloutput=False):
     assert '3.Charlotte Jones Anderson' in result and 'Keep Talking Sports!' in result and 'Category: Blog Popular' not in result and 'Copyright Women Can Talk Sports.' not in result and 'Submit your sports question below' not in result
 
     result = load_mock_page('https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html', xmloutput)
-    assert 'Schönheit kommt für Pamela von Innen und Außen' in result and 'Die Workout Übungen kannte ich bereits' in result and 'Great post, I like your blog' in result and 'Links zu diesem Post' not in result and 'mehr über mich ♥' not in result # and 'Vielen Dank an den den Verlag' in result # and 'Bitte beachte auch die Datenschutzerklärung von Google.' not in result
+    assert 'Schönheit kommt für Pamela von Innen und Außen' in result and 'Die Workout Übungen kannte ich bereits' in result and 'Great post, I like your blog' in result and 'Links zu diesem Post' not in result and 'mehr über mich ♥' not in result and 'Bitte beachte auch die Datenschutzerklärung von Google.' not in result # and 'Vielen Dank an den den Verlag' in result
 
     result = load_mock_page('https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html', xmloutput)
-    assert 'Grounded in sustainable architecture and refined Vietnamese craftsmanship,' in result and 'and Carmelo Resort' in result and 'OMG what a beautiful place to stay! ' in result and 'Food Advertising by' not in result and 'Dining and Drinking' in result # and 'Reply' not in result # and 'A lovely note makes a beautiful day!' not in result
+    assert 'Grounded in sustainable architecture and refined Vietnamese craftsmanship,' in result and 'and Carmelo Resort' in result and 'OMG what a beautiful place to stay! ' in result and 'Food Advertising by' not in result and 'Dining and Drinking' in result and 'A lovely note makes a beautiful day!' not in result # and 'Reply' not in result
 
     result = load_mock_page('https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/', xmloutput)
     assert 'Argentina, the birthplace of polo.' in result and 'Simon Wittenberg travels to the Eternal City in Italy' in result and 'Luxury and lifestyle articles' not in result # and 'Pinterest' not in result
@@ -371,7 +363,6 @@ def test_main(xmloutput=False):
     assert 'Brazil went dark.' in result and 'the highest number of deforestation warnings.”' in result and 'Tagged:' not in result and 'to the VICE newsletter.' not in result and 'Watch this next' not in result
 
     result = load_mock_page('https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html', xmloutput)
-    print(result)
     assert 'Die Ökobilanz von Elektroautos' in result and 'Nur die Folie bleibt zurück' in result and 'TR 7/2019' not in result and 'Forum zum Thema:' not in result # and 'Highlights aus dem Heft:' not in result
 
     result = load_mock_page('https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact', xmloutput)
@@ -409,6 +400,14 @@ def test_main(xmloutput=False):
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
+ 
+    # try:
+    # ...
+    # except AssertionError as err:
+    #    if platform.system() == 'Windows':
+    #        pass
+    #    else:
+    #        raise AssertionError(err)
 
 
 def test_lrucache():
@@ -452,5 +451,4 @@ if __name__ == '__main__':
     test_main(xmloutput=False)
     test_main(xmloutput=True)
     test_download()
-    test_tei()
-    
+    # test_tei()
