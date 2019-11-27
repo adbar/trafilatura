@@ -10,6 +10,7 @@ Module bundling all functions needed to extract the text in a webpage.
 ## TODO:
 # add sqlite3 for control of seen URLs?
 # line-based heuristics?
+# text blacklist
 
 # standard
 import logging
@@ -145,7 +146,6 @@ def discard_unwanted_comments(tree):
 #@profile
 def textfilter(element):
     '''Filter out unwanted text'''
-    ## TODO: text_blacklist
     # print('#', element.text)
     if element.text is None and element.tail is not None:
         testtext = element.tail
@@ -545,7 +545,7 @@ def extract_comments(tree, include_comments):
                 if processed_element is None or processed_element.text in COMMENTS_BLACKLIST:
                     # elem.getparent().remove(elem)
                     continue
-                ## TODO: text filter, insert if words? ## ^Pingback
+                ## text filter, insert if words? ## ^Pingback
                 #if textfilter(elem) is True:
                 #    continue
                 elem.attrib.clear()
@@ -564,7 +564,6 @@ def extract_comments(tree, include_comments):
 
 def write_teitree(postbody, commentsbody, url):
     '''Bundle the extracted post and comments into a TEI tree'''
-    # TODO: include URL
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
     filedesc = etree.SubElement(header, 'fileDesc')
@@ -634,7 +633,7 @@ def check_tei(tei, url):
 
 
 #@profile
-def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, target_language=None, include_tables=True):
+def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
     global LRU_TEST
@@ -746,8 +745,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         # validate
         # why is it necessary?
         testtree = etree.fromstring(etree.tostring(output))
-        result = validate_tei(testtree)
-        LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)
+        if tei_validation is True:
+            result = validate_tei(testtree)
+            LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)
     else:
         output = etree.Element('doc')
         postbody.tag = 'main'
