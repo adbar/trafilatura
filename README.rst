@@ -34,7 +34,7 @@ In a nutshell, with Python:
 .. code-block:: python
 
     >>> import trafilatura
-    >>> downloaded = trafilatura.fetch_url('https://www.iana.org/about')
+    >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
     >>> trafilatura.extract(downloaded)
     # outputs main content in plain text format ...
 
@@ -42,7 +42,7 @@ On the command-line:
 
 .. code-block:: bash
 
-    $ trafilatura -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
+    $ trafilatura -u https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/
     $ # outputs main content in plain text format ...
 
 
@@ -57,22 +57,22 @@ This library performs a robust extraction of main text content and boilerplate r
 
 Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.) It has to be precise enough not to miss texts or discard valid documents, it also has to be reasonably fast, as it is expected to run in production on millions of documents.
 
-URLs, HTML files or parsed HTML trees are given as input, the result is returned in plain text or XML format. In the latter case, basic formatting elements are preserved such as text formatting (bold, italic, etc.) and page structure (paragraphs, titles, lists), which can be used for further processing.
-
 
 Features
 --------
 
-Because it relies on `lxml <http://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
+-  URLs, HTML files or parsed HTML trees are given as input, the result of processing can be in plain text or XML format.
+-  Main text and comments can be targeted separately.
+-  Formatting elements and the structure of the page are preserved (paragraphs, titles, lists, quotes, code, line breaks), which can be used for further processing.
 
-The result of processing can be in plain text or XML format. In the latter case, basic formatting elements are preserved such as text formatting (bold, italic, etc.) and page structure (paragraphs, titles, lists), which can be used for further processing.
+Because it relies on `lxml <http://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
 
 *Work in progress*, currently experimental features:
 
--  Separate extraction of main text and comments
--  Duplicate detection at paragraph level using a least recently used (LRU) cache
--  Language detection on the extracted content
--  XML output compatible with the recommendations of the Text Encoding Initiative (XML TEI)
+-  [x] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
+-  [x] Language detection on the extracted content
+-  [ ] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
+-  [ ] Preservation of in-line text formatting (bold, italic, etc.)
 
 
 Installation
@@ -103,7 +103,7 @@ Using trafilatura in a straightforward way:
 .. code-block:: python
 
     >>> import trafilatura
-    >>> downloaded = trafilatura.fetch_url('https://www.iana.org/about')
+    >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
     >>> downloaded is None # assuming the download was successful
     False
     >>> result = trafilatura.extract(downloaded)
@@ -151,9 +151,9 @@ URLs can be used directly (``-u/--URL``):
 
 .. code-block:: bash
 
-    $ trafilatura -u https://www.sueddeutsche.de/politik/usa-pompeo-maas-merkel-iran-nordstream-1.4434358
+    $ trafilatura -u https://de.creativecommons.org/index.php/was-ist-cc/
     $ # outputs main content in plain text format ...
-    $ trafilatura --xml --URL "https://de.creativecommons.org/index.php/was-ist-cc/"
+    $ trafilatura --xml --URL "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     $ # outputs main text with basic XML structure ...
 
 You can also pipe a HTML document (and response body) to trafilatura:
