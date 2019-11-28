@@ -6,6 +6,7 @@ Listing a series of settings that are applied module-wide.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+from lxml.html.clean import Cleaner
 
 MAX_FILE_SIZE = 20000000
 MIN_FILE_SIZE = 10
@@ -21,3 +22,23 @@ LRU_SIZE = 10000000
 LANGUAGES = ['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru']
 
 #CORPUS_VERSION = 2017.1
+
+# HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
+HTML_CLEANER = Cleaner()
+HTML_CLEANER.annoying_tags = False # True
+HTML_CLEANER.comments = True
+HTML_CLEANER.embedded = False # True
+HTML_CLEANER.forms = False # True
+HTML_CLEANER.frames = False # True
+HTML_CLEANER.javascript = False # True
+HTML_CLEANER.links = False
+HTML_CLEANER.meta = False
+HTML_CLEANER.page_structure = False
+HTML_CLEANER.processing_instructions = True
+HTML_CLEANER.remove_unknown_tags = False
+HTML_CLEANER.safe_attrs_only = False
+HTML_CLEANER.scripts = False # True
+HTML_CLEANER.style = False
+# HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
+HTML_CLEANER.kill_tags = ['aside']
+# 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'

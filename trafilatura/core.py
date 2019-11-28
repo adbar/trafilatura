@@ -16,8 +16,6 @@ Module bundling all functions needed to extract the text in a webpage.
 import logging
 import re # import regex as re
 
-from io import BytesIO
-
 # third-party
 import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 try:
@@ -28,18 +26,18 @@ except ImportError:
 
 from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
 from lxml import etree, html
-from lxml.html.clean import Cleaner
 
 # own
-from .settings import LANGUAGES, LRU_SIZE, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
-from .utils import load_html, sanitize, trim, validate_tei, xmltotxt
+from .settings import HTML_CLEANER, LANGUAGES, LRU_SIZE, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
+from .utils import load_html, sanitize, trim
+from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
+
+## INIT
 
 if LANGID_FLAG is True:
     langid.set_languages(LANGUAGES)
 
-
-## INIT
 LOGGER = logging.getLogger(__name__)
 
 TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
@@ -50,30 +48,6 @@ COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 # LRU_DICT = defaultdict(int)
 # tree_cache = dict()
-
-# HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
-HTML_CLEANER = Cleaner()
-HTML_CLEANER.annoying_tags = False # True
-HTML_CLEANER.comments = True
-HTML_CLEANER.embedded = False # True
-HTML_CLEANER.forms = False # True
-HTML_CLEANER.frames = False # True
-HTML_CLEANER.javascript = False # True
-HTML_CLEANER.links = False
-HTML_CLEANER.meta = False
-HTML_CLEANER.page_structure = False
-HTML_CLEANER.processing_instructions = True
-HTML_CLEANER.remove_unknown_tags = False
-HTML_CLEANER.safe_attrs_only = False
-HTML_CLEANER.scripts = False # True
-HTML_CLEANER.style = False
-# HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
-HTML_CLEANER.kill_tags = ['aside']
-# 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'
-
-# validation
-TEI_VALID_TAGS = {'code', 'body', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'}
-TEI_VALID_ATTRS = {'rendition', 'type'}
 
 # counters
 LRU_TEST = LRU(LRU_SIZE)
@@ -562,76 +536,6 @@ def extract_comments(tree, include_comments):
     return comments_body, tree
 
 
-def write_teitree(postbody, commentsbody, url):
-    '''Bundle the extracted post and comments into a TEI tree'''
-    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-    header = etree.SubElement(tei, 'teiHeader')
-    filedesc = etree.SubElement(header, 'fileDesc')
-    titlestmt = etree.SubElement(filedesc, 'titleStmt')
-    title = etree.SubElement(titlestmt, 'title')
-    publicationstmt = etree.SubElement(filedesc, 'publicationStmt')
-    publication_p = etree.SubElement(publicationstmt, 'p')
-    sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
-    source_p = etree.SubElement(sourcedesc, 'p')
-    source_p.text = url
-    textelem = etree.SubElement(tei, 'text')
-    textbody = etree.SubElement(textelem, 'body')
-    # post
-    postbody.tag = 'div'
-    postbody.set('type', 'entry') # rendition='#pst'
-    # postelem = etree.SubElement(textbody, 'div', type='entry')
-    textbody.append(postbody)
-    # comments
-    if commentsbody is not None:
-        commentsbody.tag = 'div'
-        commentsbody.set('type', 'comments')# rendition='#cmt'
-        # commentselem = etree.SubElement(textbody, 'div', type='comments')
-        textbody.append(commentsbody)
-    return tei
-
-
-def check_tei(tei, url):
-    '''Check if the resulting XML file is conform and scrub remaining tags'''
-    for element in tei.xpath('//text/body//*'):
-        # check elements
-        if element.tag not in TEI_VALID_TAGS:
-            # disable warnings for chosen categories
-            # if element.tag not in ('div', 'span'):
-            LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
-            # append text AND tail to parent
-            full_text = ''
-            if element.text is not None and element.tail is not None:
-                full_text = element.text + ' ' + element.tail
-            elif element.text is not None and element.tail is None:
-                full_text = element.text
-            elif element.text is None and element.tail is not None:
-                full_text = element.tail
-            parent = element.getparent()
-            previous = element.getprevious()
-            if previous is not None:
-                # There is a previous node, append text to its tail
-                if previous.tail is not None:
-                    previous.tail += ' ' + full_text
-                else:
-                    previous.tail = full_text
-            else:
-                # It's the first node in <parent/>, append to parent's text
-                if parent.text is not None:
-                    parent.text += ' ' + full_text
-                else:
-                    parent.text = full_text
-            parent.remove(element)
-            continue
-        # check attributes
-        for attribute in element.attrib:
-            if attribute not in TEI_VALID_ATTRS:
-                LOGGER.warning('not a valid TEI attribute, removing: %s in %s %s', attribute, element.tag, url)
-                element.attrib.pop(attribute)
-    # export metadata
-    #metadata = (title + '\t' + date + '\t' + uniqueid + '\t' + url + '\t').encode('utf-8')
-    return tei
-
-
 #@profile
 def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
@@ -769,10 +673,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         if xml_output is False and tei_output is False:
             returnstring = xmltotxt(output)
         else:
+            # why is that so?
             control_string = etree.tostring(output)
             control_parser = etree.XMLParser(remove_blank_text=True)
-            output_tree = etree.parse(BytesIO(control_string), control_parser)
-            returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode') # xml_declaration=True,
+            output_tree = etree.fromstring(control_string, control_parser)
+            returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
+            # xml_declaration=True,
 
         ##  garbled unicode
         #try:

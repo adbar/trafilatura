@@ -18,7 +18,7 @@ except ImportError:
 
 # import trafilatura
 from trafilatura.core import cache, duplicate_test, extract, LRU_TEST, process_record, trim
-from trafilatura import cli, utils
+from trafilatura import cli, utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -441,7 +441,7 @@ def test_tei():
     result = extract(teststring, url, no_fallback=True, tei_output=True, tei_validation=True)
     assert result is not None
     mytree = etree.fromstring(result)
-    assert utils.validate_tei(mytree) is True
+    assert xml.validate_tei(mytree) is True
 
 
 if __name__ == '__main__':
@@ -451,4 +451,4 @@ if __name__ == '__main__':
     test_main(xmloutput=False)
     test_main(xmloutput=True)
     test_download()
-    # test_tei()
+    test_tei()

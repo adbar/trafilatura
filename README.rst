@@ -68,22 +68,15 @@ Features
 
 Because it relies on `lxml <http://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
 
-Work in progress, currently experimental features:
-
--  [x] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
--  [x] Language detection on the extracted content
--  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [ ] Preservation of in-line text formatting (bold, italic, etc.)
-
 
 Installation
 ------------
 
 *trafilatura* is a Python package (compatible with Python 3.5 upwards) which is currently tested on Linux and macOS and to some extent on Windows. It is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``. (Use ``pip3 install trafilatura`` on systems where both Python 2 and 3 are globally installed.)
 
-Install from package repository: ``pip install trafilatura``
+First install from package repository: ``pip install trafilatura`` Please update regularly to make sure you have the latest version: ``pip install -U ...``
 
-Direct installation of the latest version (see `build status <https://travis-ci.org/adbar/trafilatura>`_): ``pip install git+https://github.com/adbar/trafilatura.git``
+Direct installation of the latest available code (see build status above): ``pip install git+https://github.com/adbar/trafilatura.git``
 
 For all experimental functionality please use ``pip install trafilatura[all]``
 Most notably: language detection and faster processing of downloads. The ``cchardet`` package is currently not working on some macOS versions.
@@ -105,7 +98,7 @@ Using trafilatura in a straightforward way:
     >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
     >>> downloaded is None # assuming the download was successful
     False
-    >>> result = trafilatura.extract(downloaded)
+    >>> result = trafilatura.extract(downloaded) # trafilatura.process_record is deprecated but works
     >>> print(result)
     # newlines preserved, TXT output ...
     >>> result = trafilatura.extract(downloaded, xml_output=True)
@@ -138,7 +131,7 @@ Experimental feature: the target language can also be set using 2-letter codes (
 
     >>> result = trafilatura.extract(downloaded, url, target_language='de')
 
-For further configuration see the variables in ``settings.py``.
+For further configuration see the variables in ``settings.py`` and re-compile the package locally.
 
 
 On the command-line
@@ -225,6 +218,15 @@ Most corresponding Python packages are not actively maintained, the following al
 - `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
 - `goose <https://github.com/grangier/python-goose>`_ can extract information for embedded content but doesn't preserve markup and is not maintained
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
+
+Roadmap
+~~~~~~~
+
+-  [x] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
+-  [x] Language detection on the extracted content
+-  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
+-  [ ] Preservation of in-line text formatting (bold, italic, etc.)
+-  [ ] Metadata integration
 
 Contact
 ~~~~~~~
