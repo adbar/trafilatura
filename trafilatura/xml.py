@@ -17,8 +17,10 @@ from .utils import fetch_url, sanitize, trim
 
 LOGGER = logging.getLogger(__name__)
 # validation
-TEI_VALID_TAGS = {'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'}
+TEI_VALID_TAGS = {'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
+                  'lb', 'list', 'p', 'quote'}
 TEI_VALID_ATTRS = {'rendition', 'type'}
+TEI_RELAXNG = None # to be downloaded later if necessary
 
 
 #@profile
@@ -72,18 +74,20 @@ def check_tei(tei, url):
 #@profile
 def validate_tei(tei): # , filename=""
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
-    schema = fetch_url('https://tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng')
-    if schema is None:
-        LOGGER.error('No reference for validation available, aborting')
-        return True
-    # remove utf-8 declaration
-    schema = schema.replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0"?>', 1)
-    # load validator
-    relaxng_doc = etree.parse(StringIO(schema))
-    relaxng = etree.RelaxNG(relaxng_doc)
-    result = relaxng.validate(tei)
+    global TEI_RELAXNG
+    if TEI_RELAXNG is None:
+        schema = fetch_url('https://tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng')
+        if schema is None:
+            LOGGER.error('No reference for validation available, aborting')
+            return True
+        # remove utf-8 declaration
+        schema = schema.replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0"?>', 1)
+        # load validator
+        relaxng_doc = etree.parse(StringIO(schema))
+        TEI_RELAXNG = etree.RelaxNG(relaxng_doc)
+    result = TEI_RELAXNG.validate(tei)
     if result is False:
-        print(relaxng.error_log.last_error)
+        print(TEI_RELAXNG.error_log.last_error)
     #try:
     #    result = relaxng.assert_(tei)
     #except AssertionError as err:
