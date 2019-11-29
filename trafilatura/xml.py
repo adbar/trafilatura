@@ -17,13 +17,18 @@ from .utils import fetch_url, sanitize, trim
 
 LOGGER = logging.getLogger(__name__)
 # validation
-TEI_VALID_TAGS = {'code', 'body', 'del', 'div', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'}
+TEI_VALID_TAGS = {'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', 'lb', 'list', 'p', 'quote'}
 TEI_VALID_ATTRS = {'rendition', 'type'}
 
 
 #@profile
 def check_tei(tei, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
+    # convert head tags
+    for elem in tei.iter('head'):
+        elem.tag = 'fw'
+        elem.set('type', 'header')
+    # look for elements that are not valid
     for element in tei.xpath('//text/body//*'):
         # check elements
         if element.tag not in TEI_VALID_TAGS:

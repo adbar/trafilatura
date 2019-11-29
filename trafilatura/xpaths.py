@@ -51,10 +51,9 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  # other content
                  './/*[(self::div or self::section or self::ul)][contains(@class, "ratings")]', \
                  './/*[(self::div or self::section)][starts-with(@class, "hide-") or contains(@id, "hidden")]', \
-                 './/*[contains(@class, "attachment") or contains(@class, "timestamp") or contains(@class, "user-info") or contains(@class, "user-profile") or contains(@class, "-ad-") or contains(@class, "navbox")]', \
+                 './/*[contains(@class, "attachment") or contains(@class, "timestamp") or contains(@class, "user-info") or contains(@class, "user-profile") or contains(@class, "-ad-") or contains(@class, "-icon") or contains(@class, "navbox") or contains(@class, "submeta")]', \
                  ]
                  # optional??
-                 # or contains(@class, "-icon-")
                  # './/aside', \ # conflicts with text extraction
                  # conflicts: contains(@class, "hidden") or
 

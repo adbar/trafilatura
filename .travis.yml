@@ -33,9 +33,10 @@ matrix:
       # 'python:' is ignored on Travis CI macOS
       before_install: python3 --version ; pip3 --version ; sw_vers; pip3 install codecov tox
   allow_failures:
-    - os: osx
     - python: nightly
-  # fast_finish: true
+#   - os: osx
+
+# fast_finish: true
 
 before_install:
   - pip3 install codecov tox

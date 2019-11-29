@@ -18,6 +18,7 @@ packages = ['trafilatura']
 extras = {
     'all': [
         'cchardet >= 2.0.0',
+        'ftfy >= 5.6',
         'langid >= 1.1.6',
     ]
 }
@@ -31,7 +32,7 @@ def readme():
 setup(
     name='trafilatura',
     version='0.2.0',
-    description='Scrapes the main text of web pages while preserving some structure.',
+    description='Scrapes the main text of web pages while preserving some structure. Seamlessly downloads, parses and converts web documents.',
     long_description=readme(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -68,7 +69,6 @@ setup(
     include_package_data=True,
     python_requires='>=3.5',
     install_requires=[
-        'ftfy >= 5.6',
         'justext >= 2.2.0',
         'lru-dict >= 1.1.6',
         'lxml >= 4.4.1',

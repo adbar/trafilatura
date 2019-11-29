@@ -207,6 +207,15 @@ def convert_tags(tree):
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#t')
+    # change rendition sub and sup (very rare)
+    for elem in tree.iter('sub'): # //pre| //code
+        elem.attrib.clear()
+        elem.tag = 'hi'
+        elem.set('rendition', '#sub')
+    for elem in tree.iter('sup'): # //pre| //code
+        elem.attrib.clear()
+        elem.tag = 'hi'
+        elem.set('rendition', '#sup')
     # del | s | strike → <del rend="overstrike">
     for elem in tree.iter('del', 's', 'strike'):
         elem.attrib.clear()
@@ -447,6 +456,7 @@ def extract_content(tree, include_tables=False):
         LOGGER.debug('Using table extraction')
         search_tree = discard_unwanted(tree)
         for table_elem in search_tree.xpath('//table'):
+            # print(html.tostring(table_elem))
             # iterate through elements in table
             for subelement in table_elem.xpath('.//*'):
                 subelement.attrib.clear()
@@ -636,6 +646,8 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     cache(postbody)
     cache(commentsbody)
     #del tree_cache[cleaned_tree]
+
+    # placeholder: metadata here?
 
     # XML (TEI) steps
     if include_comments is False:
