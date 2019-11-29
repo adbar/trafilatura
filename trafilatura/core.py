@@ -8,7 +8,6 @@ Module bundling all functions needed to extract the text in a webpage.
 ## under GNU GPL v3 license
 
 ## TODO:
-# add sqlite3 for control of seen URLs?
 # line-based heuristics?
 # text blacklist
 
@@ -17,7 +16,8 @@ import logging
 import re # import regex as re
 
 # third-party
-import justext # from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
+import justext
+# from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
 try:
     import langid
     LANGID_FLAG = True
@@ -28,7 +28,8 @@ from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dic
 from lxml import etree, html
 
 # own
-from .settings import HTML_CLEANER, LANGUAGES, LRU_SIZE, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
+from .settings import CUT_EMPTY_ELEMS, HTML_CLEANER, LANGUAGES, LRU_SIZE, \
+MANUALLY_CLEANED, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG
 from .utils import load_html, sanitize, trim
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
@@ -40,22 +41,14 @@ if LANGID_FLAG is True:
 
 LOGGER = logging.getLogger(__name__)
 
-TAG_CATALOG = frozenset(['code', 'del', 'head', 'hi', 'lb', 'list', 'p', 'quote']) # 'span', 'item'
-
-CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'main', 'p', 'section', 'strong', 'td'} # 'meta', 'span',
-
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
-
-# LRU_DICT = defaultdict(int)
-# tree_cache = dict()
 
 # counters
 LRU_TEST = LRU(LRU_SIZE)
+# tree_cache = dict()
 
 # justext
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
-
-MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'input', 'link', 'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video']  # 'frame' 'frameset' 'source',
 
 
 #@profile

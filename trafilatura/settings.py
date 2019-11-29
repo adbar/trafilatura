@@ -8,6 +8,7 @@ Listing a series of settings that are applied module-wide.
 
 from lxml.html.clean import Cleaner
 
+
 MAX_FILE_SIZE = 20000000
 MIN_FILE_SIZE = 10
 
@@ -42,3 +43,16 @@ HTML_CLEANER.style = False
 # HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
 HTML_CLEANER.kill_tags = ['aside']
 # 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'
+
+CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', \
+                   'i', 'li', 'main', 'p', 'section', 'strong', 'td'}
+                   # 'meta', 'span',
+
+MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', \
+                    'footer', 'form', 'head', 'iframe', 'img', 'input', 'link', \
+                    'map', 'marquee', 'math', 'nav', 'noscript', 'object', \
+                    'picture', 'script', 'style', 'svg', 'time', 'video']
+                    # 'frame' 'frameset' 'source',
+
+TAG_CATALOG = frozenset(['code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'quote'])
+# 'span', 'item'

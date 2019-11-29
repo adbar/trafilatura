@@ -18,7 +18,7 @@ packages = ['trafilatura']
 extras = {
     'all': [
         'cchardet >= 2.0.0',
-        'ftfy >= 5.6',
+#        'ftfy >= 5.6',
         'langid >= 1.1.6',
     ]
 }
