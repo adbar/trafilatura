@@ -330,16 +330,16 @@ def test_main(xmloutput=False):
     assert 'Welche Werbeeinnahmen erwarten Sie hier langfristig?' in result and 'wir haben keinerlei Pläne, das zu verändern.' in result and 'Nachrichtenüberblick abonnieren' not in result and 'über alle aktuellen Entwicklungen auf dem Laufenden.' not in result and 'Schlagworte' not in result and 'Teilen' not in result and 'Dauerzoff um drohenden UKW-Blackout' not in result and 'Mobilcom Debitel has charged me for third party' in result
 
     result = load_mock_page('https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/', xmloutput)
-    assert 'Zeit für Loslassen und Entspannung.' in result and 'Erfrischende, abschwellende Augencreme Phyto Contour' in result and 'Wie sieht dein Alltag aus?' in result and 'Vielen Dank Anja für deine Tipps rund um Beauty' in result and 'Betreiberin von incurvy Plus Size' not in result and 'Wellness Gesichtsbehandlung: Plaisir D’Aromes' not in result # and 'Das Thema könnte dich auch interessieren:' not in result
+    assert 'Zeit für Loslassen und Entspannung.' in result and 'Erfrischende, abschwellende Augencreme Phyto Contour' in result and 'Wie sieht dein Alltag aus?' in result and 'Vielen Dank Anja für deine Tipps rund um Beauty' in result and 'Betreiberin von incurvy Plus Size' not in result and 'Wir verwenden Cookies' not in result # and 'Das Thema könnte dich auch interessieren:' not in result
 
     result = load_mock_page('https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843', xmloutput)
     assert 'No grape variety invites as much intrigue' in result and 'With just 0.9 hectares' in result and 'Related Subjects' not in result and 'Audios and videos on the topic' not in result # and 'But boozers in Berlin' not in result
 
     result = load_mock_page('https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html', xmloutput)
-    assert 'Adele feierte ausgelassen mit den Spice Girls' in result and 'wie sich Adele weiterentwickelt.' in result and 'Sommerzeit ist Urlaubszeit,' not in result and 'Sie zeigt sich schlanker denn je!' not in result
+    assert 'Adele feierte ausgelassen mit den Spice Girls' in result and 'wie sich Adele weiterentwickelt.' in result and 'Sommerzeit ist Urlaubszeit,' not in result and 'Lade weitere Inhalte' not in result
 
     result = load_mock_page('https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx', xmloutput)
-    assert 'Konflikte mag keiner.' in result and 'Gespräche meistern können.' in result and 'Weiterführender Link' not in result and 'so geht’s!' not in result and 'Flexible Wege in die' not in result
+    assert 'Konflikte mag keiner.' in result and 'Gespräche meistern können.' in result and 'Weiterführender Link' not in result and 'Flexible Wege in die' not in result
 
     result = load_mock_page('https://novalanalove.com/ear-candy/', xmloutput)
     assert 'Earcuff: Zoeca' in result and 'mit längeren Ohrringen (:' in result and 'Kreole: Stella Hoops' in result and 'Jetzt heißt es schnell sein:' not in result and 'Diese Website speichert Cookies' not in result and 'VON Sina Giebel' not in result
@@ -441,6 +441,7 @@ def test_tei():
     result = extract(teststring, url, no_fallback=True, tei_output=True, tei_validation=True)
     assert result is not None
     mytree = etree.fromstring(result)
+    print(result)
     assert xml.validate_tei(mytree) is True
 
 

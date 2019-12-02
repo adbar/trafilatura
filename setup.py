@@ -1,13 +1,12 @@
-#!/usr/bin/env python
 """
 Scrapes the main text of web pages while preserving some structure
 http://github.com/adbar/trafilatura
 """
 
+# workaround for open() with encoding=''
+from codecs import open
 
 from os import path
-
-from codecs import open
 from setuptools import setup
 
 
@@ -19,8 +18,12 @@ extras = {
     'all': [
         'cchardet >= 2.0.0',
 #        'ftfy >= 5.6',
+        'htmldate >= 0.5.6',
         'langid >= 1.1.6',
         'lru-dict >= 1.1.6',
+    ],
+    'metadata': [
+        'htmldate >= 0.5.6',
     ]
 }
 

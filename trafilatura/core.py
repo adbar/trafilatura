@@ -25,6 +25,11 @@ try:
 except ImportError:
     LANGID_FLAG = False
 try:
+    from htmldate import find_date
+    DATE_FLAG = True
+except ImportError:
+    DATE_FLAG = False
+try:
     from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
     LRU_FLAG = True
 except ImportError:
@@ -564,6 +569,16 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     # LOGGER.debug('HTML tree loaded for URL: %s', url)
     # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
+    # Metadata here
+    try:
+        doctitle = tree.find('//title').text
+    except AttributeError: # no title found
+        doctitle = None
+    if DATE_FLAG is True:
+        docdate = find_date(tree, extensive_search=False)
+    else:
+        docdate = None
+
     # clean
     cleaned_tree = manual_cleaning(tree, include_tables)
     # save space and processing time
@@ -655,14 +670,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         cache(commentsbody)
     #del tree_cache[cleaned_tree]
 
-    # placeholder: metadata here?
-
     # XML (TEI) steps
     if include_comments is False:
         commentsbody = None
     if tei_output is True:
         # build TEI tree
-        output = write_teitree(postbody, commentsbody, url)
+        output = write_teitree(postbody, commentsbody, url, doctitle, docdate)
         # filter output (strip unwanted elements), just in case
         # check and repair
         output = check_tei(output, url)
@@ -682,6 +695,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         # url in xml
         if url is not None:
             output.set('source', url)
+        if doctitle is not None:
+            output.set('title', doctitle)
+        if docdate is not None:
+            output.set('date', docdate)
 
     # sanity check on markup
     # if re.search(r'\[url', u''.join(postbody.itertext()):
