@@ -79,7 +79,7 @@ First install from package repository: ``pip install trafilatura`` Please update
 Direct installation of the latest available code (see build status above): ``pip install git+https://github.com/adbar/trafilatura.git``
 
 For all experimental functionality please use ``pip install trafilatura[all]``
-Most notably: language detection and faster processing of downloads. The ``cchardet`` package is currently not working on some macOS versions.
+Most notably: language detection, faster processing of downloads, and more efficient deduplication. The ``cchardet`` package is currently not working on some macOS versions while the ``lru_dict``package might not work out of the box on Windows.
 
 (For infos on dependency management of Python packages see `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
 
@@ -222,7 +222,7 @@ Most corresponding Python packages are not actively maintained, the following al
 Roadmap
 ~~~~~~~
 
--  [x] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
+-  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [x] Language detection on the extracted content
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
 -  [ ] Preservation of in-line text formatting (bold, italic, etc.)

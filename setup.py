@@ -20,6 +20,7 @@ extras = {
         'cchardet >= 2.0.0',
 #        'ftfy >= 5.6',
         'langid >= 1.1.6',
+        'lru-dict >= 1.1.6',
     ]
 }
 
@@ -70,7 +71,6 @@ setup(
     python_requires='>=3.5',
     install_requires=[
         'justext >= 2.2.0',
-        'lru-dict >= 1.1.6',
         'lxml >= 4.4.1',
         'requests >= 2.22.0',
     ],

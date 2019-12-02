@@ -14,6 +14,7 @@ Module bundling all functions needed to extract the text in a webpage.
 # standard
 import logging
 import re # import regex as re
+from collections import defaultdict
 
 # third-party
 import justext
@@ -23,8 +24,11 @@ try:
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False
-
-from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
+try:
+    from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
+    LRU_FLAG = True
+except ImportError:
+    LRU_FLAG = False
 from lxml import etree, html
 
 # own
@@ -44,7 +48,10 @@ LOGGER = logging.getLogger(__name__)
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 # counters
-LRU_TEST = LRU(LRU_SIZE)
+if LRU_FLAG is True:
+    LRU_TEST = LRU(LRU_SIZE)
+else:
+    LRU_TEST = defaultdict(int)
 # tree_cache = dict()
 
 # justext
@@ -137,10 +144,13 @@ def cache(body):
     for element in body:
         # teststring = ' '.join(element.itertext()).encode('utf-8')
         teststring = element.text
-        if LRU_TEST.has_key(teststring) is True:
-            LRU_TEST[teststring] += 1
+        if LRU_FLAG is True:
+            if LRU_TEST.has_key(teststring) is True:
+                LRU_TEST[teststring] += 1
+            else:
+                LRU_TEST[teststring] = 1
         else:
-            LRU_TEST[teststring] = 1
+            LRU_TEST[teststring] += 1
 
 
 def duplicate_test(element, justext_switch=False):
@@ -152,9 +162,14 @@ def duplicate_test(element, justext_switch=False):
     else:
         teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
-        if LRU_TEST.has_key(teststring) is True and LRU_TEST[teststring] > 2:
+        if LRU_FLAG is True:
+            if LRU_TEST.has_key(teststring) is True and LRU_TEST[teststring] > 2:
+                # LRU_TEST[teststring] += 1
+                return True
+        else:
+            if teststring in LRU_TEST and LRU_TEST[teststring] > 2:
+                return True
             # LRU_TEST[teststring] += 1
-            return True
     return False
 
 
@@ -238,7 +253,6 @@ def try_justext(tree, url):
     else:
         for paragraph in paragraphs:
             if not paragraph.is_boilerplate:
-                # if LRU_TEST.has_key(paragraph.text) is False or LRU_TEST[paragraph.text] <= 2:
                 if duplicate_test(paragraph, justext_switch=True) is not True:
                     elem = etree.Element('p')
                     elem.text = paragraph.text
@@ -636,8 +650,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
             LOGGER.warning('package not installed, cannot perform language identification')
 
     # cache elements
-    cache(postbody)
-    cache(commentsbody)
+    if LRU_FLAG is True:
+        cache(postbody)
+        cache(commentsbody)
     #del tree_cache[cleaned_tree]
 
     # placeholder: metadata here?
@@ -673,17 +688,21 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
 
     # check duplicates at body level
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
-    if LRU_TEST.has_key(teststring) is False:
+    if LRU_FLAG is True and LRU_TEST.has_key(teststring) is True:
         # LRU_TEST[teststring] = 1
-        if xml_output is False and tei_output is False:
-            returnstring = xmltotxt(output)
-        else:
-            # why is that so?
-            control_string = etree.tostring(output)
-            control_parser = etree.XMLParser(remove_blank_text=True)
-            output_tree = etree.fromstring(control_string, control_parser)
-            returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
-            # xml_declaration=True,
+        return None
+    elif LRU_FLAG is False and teststring in LRU_TEST:
+        # LRU_TEST[teststring] = 1
+        return None
+
+    if xml_output is False and tei_output is False:
+        returnstring = xmltotxt(output)
+    else:
+        control_string = etree.tostring(output)
+        control_parser = etree.XMLParser(remove_blank_text=True)
+        output_tree = etree.fromstring(control_string, control_parser)
+        returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
+        # xml_declaration=True,
 
         ##  garbled unicode
         #try:
@@ -694,13 +713,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         #returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
         #returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
 
-        returnstring = sanitize(returnstring)
-        return returnstring
+    returnstring = sanitize(returnstring)
+    return returnstring
 
     # else
     # LRU_TEST[teststring] += 1
 
-    return None
 
 # for legacy and backwards compatibility
 process_record = extract
