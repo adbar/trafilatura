@@ -558,6 +558,19 @@ def extract_comments(tree, include_comments):
     return comments_body, tree
 
 
+def extract_metadata(tree):
+    '''Extract title and document date if available/required'''
+    try:
+        doctitle = tree.find('//title').text
+    except AttributeError: # no title found
+        doctitle = None
+    if DATE_FLAG is True:
+        docdate = find_date(tree, extensive_search=False)
+    else:
+        docdate = None
+    return doctitle, docdate
+
+
 #@profile
 def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
@@ -570,14 +583,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
     # Metadata here
-    try:
-        doctitle = tree.find('//title').text
-    except AttributeError: # no title found
-        doctitle = None
-    if DATE_FLAG is True:
-        docdate = find_date(tree, extensive_search=False)
+    if xml_output is True or tei_output is True:
+        doctitle, docdate = extract_metadata(tree)
     else:
-        docdate = None
+        doctitle = docdate = None
 
     # clean
     cleaned_tree = manual_cleaning(tree, include_tables)
@@ -708,7 +717,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     if LRU_FLAG is True and LRU_TEST.has_key(teststring) is True:
         # LRU_TEST[teststring] = 1
         return None
-    elif LRU_FLAG is False and teststring in LRU_TEST:
+    if LRU_FLAG is False and teststring in LRU_TEST:
         # LRU_TEST[teststring] = 1
         return None
 
