@@ -27,7 +27,7 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 :Issue tracker:  https://github.com/adbar/trafilatura/issues
 
 
-*Trafilatura* scrapes the main text of web pages while preserving some structure. The extraction focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and comments. All the operations needed from web page download to HTML parsing are handled seamlessly, including scraping and textual analysis.
+*Trafilatura* downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, XML & TEI-XML. All the operations needed are handled seamlessly.
 
 In a nutshell, with Python:
 
@@ -36,14 +36,14 @@ In a nutshell, with Python:
     >>> import trafilatura
     >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
     >>> trafilatura.extract(downloaded)
-    # outputs main content as plain text ...
+    # outputs main content and comments as plain text ...
 
 On the command-line:
 
 .. code-block:: bash
 
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
-    # outputs main content as plain text ...
+    # outputs main content and comments as plain text ...
 
 
 .. contents:: **Contents**
@@ -54,30 +54,29 @@ On the command-line:
 Description
 -----------
 
-This library performs a robust extraction of main text content and boilerplate removal based on a combination of DOM-based examination, XPath expressions and rules. *Trafilatura* can seamlessly download, parse and convert web documents. It scrapes the main body text while preserving part of the text formatting and page structure, a task also known as web scraping, boilerplate removal or boilerplate detection, DOM-based content extraction, main content identification, web page template detection, web page cleaning, web content extraction, or HTML text cleaning.
+This library performs a robust extraction which focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and comments. *Trafilatura* can seamlessly download, parse and convert web documents. It scrapes the main body text while preserving part of the text formatting and page structure, a task also known as web scraping, boilerplate removal, DOM-based content extraction, main content identification, or web page cleaning.
 
 Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.) It has to be precise enough not to miss texts or discard valid documents, it also has to be reasonably fast, as it is expected to run in production on millions of documents.
 
 
 Features
---------
+~~~~~~~~
 
 -  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input
--  Main text and comments can be targeted separately
--  Formatting elements and the structure of the page are preserved (paragraphs, titles, lists, quotes, code, line breaks)
--  Extraction of metadata
--  Output in plain text (newlines and lists preserved) or XML format (with source and structure)
--  Comparatively fast execution (relies on `lxml <http://lxml.de/>`_)
+-  Focus on main text and/or comments
+-  Formatting and structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks
+-  Extraction of metadata (currently title and date)
+-  Output in plain text (minimal formatting) or XML format (for metadata and structure)
+-  Computationally efficient (relies on `lxml <http://lxml.de/>`_)
 -  Robust extraction and generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ used as fallback
 
-Roadmap
-~~~~~~~
+**Roadmap**
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
--  [-] Language detection on the extracted content
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [ ] Preservation of in-line text formatting (bold, italic, etc.)
 -  [-] Metadata integration
+-  [-] Language detection on the extracted content
+-  [ ] Preservation of in-line text formatting (bold, italic, etc.)
 
 
 Installation
@@ -87,7 +86,7 @@ Installation
 
 .. code-block:: bash
 
-    $ pip install trafilatura # pip3 install trafilatura on systems where both Python 2 and 3 are globally installed
+    $ pip install trafilatura # pip3 install on systems where both Python 2 and 3 are installed
     $ pip install -U trafilatura # to make sure you have the latest version
     $ pip install git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
 
@@ -98,15 +97,15 @@ Additional functions are available with the following extensions:
     $ pip install trafilatura[metadata] # metadata extraction
     $ pip install trafilatura[all] # all experimental functionality 
 
-Experimental functions: language detection, faster processing of downloads, and more efficient deduplication. The ``cchardet`` package is currently not working on some macOS versions while the ``lru_dict``package might not work out of the box on Windows.
+Experimental functions: language detection, faster processing of downloads, and more efficient deduplication.
+``cchardet`` package is currently not working on some macOS versions.
+``lru_dict`` might not work out of the box on Windows.
 
 (For infos on dependency management of Python packages see `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
 
 
 Usage with Python
 -----------------
-
-Using trafilatura in a straightforward way:
 
 .. code-block:: python
 
@@ -197,6 +196,7 @@ optional arguments:
   --notables         don't output any table elements
   --xml              XML output
   --xmltei           XML TEI output
+  --validate         validate TEI output
   -u URL, --URL URL  custom URL download
   -v, --verbose      increase output verbosity
 
