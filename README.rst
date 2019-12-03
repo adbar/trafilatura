@@ -27,7 +27,7 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 :Issue tracker:  https://github.com/adbar/trafilatura/issues
 
 
-*Trafilatura* scrapes the main text of web pages while preserving some structure. The extraction focuses on the main text content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and comments. All the operations needed from web page download to HTML parsing are handled seamlessly, including scraping and textual analysis.
+*Trafilatura* scrapes the main text of web pages while preserving some structure. The extraction focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and comments. All the operations needed from web page download to HTML parsing are handled seamlessly, including scraping and textual analysis.
 
 In a nutshell, with Python:
 
@@ -48,6 +48,7 @@ On the command-line:
 
 .. contents:: **Contents**
     :backlinks: none
+    :depth: 1
 
 
 Description
@@ -61,35 +62,49 @@ Distinguishing between whole page and essential parts can help to alleviate many
 Features
 --------
 
--  URLs, HTML files or parsed HTML trees given as input
--  Formatting elements and the structure of the page are preserved (paragraphs, titles, lists, quotes, code, line breaks), which can be used for further processing
+-  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input
 -  Main text and comments can be targeted separately
--  Result in plain text (newlines and lists preserved) or XML format (with source and structure)
+-  Formatting elements and the structure of the page are preserved (paragraphs, titles, lists, quotes, code, line breaks)
+-  Extraction of metadata
+-  Output in plain text (newlines and lists preserved) or XML format (with source and structure)
+-  Comparatively fast execution (relies on `lxml <http://lxml.de/>`_)
+-  Robust extraction and generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ used as fallback
 
-Because it relies on `lxml <http://lxml.de/>`_, trafilatura is comparatively fast. It is also robust, as the additional generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ is used as a backup solution.
+Roadmap
+~~~~~~~
+
+-  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
+-  [-] Language detection on the extracted content
+-  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
+-  [ ] Preservation of in-line text formatting (bold, italic, etc.)
+-  [-] Metadata integration
 
 
 Installation
 ------------
 
-*trafilatura* is a Python package (compatible with Python 3.5 upwards) which is currently tested on Linux and macOS and to some extent on Windows. It is available on `PyPI <https://pypi.org/>`_ and can be installed using ``pip``. (Use ``pip3 install trafilatura`` on systems where both Python 2 and 3 are globally installed.)
+*trafilatura* is a package compatible with Python 3.5 upwards which is currently tested on Linux and macOS and to some extent on Windows. It is available on the package repository `PyPI <https://pypi.org/>`_:
 
-First install from package repository: ``pip install trafilatura`` Please update regularly to make sure you have the latest version: ``pip install -U ...``
+.. code-block:: bash
 
-Direct installation of the latest available code (see build status above): ``pip install git+https://github.com/adbar/trafilatura.git``
+    $ pip install trafilatura # pip3 install trafilatura on systems where both Python 2 and 3 are globally installed
+    $ pip install -U trafilatura # to make sure you have the latest version
+    $ pip install git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
 
-For additional metadata extraction run  ``pip install trafilatura[metadata]`` after installation.
-For all experimental functionality please use ``pip install trafilatura[all]``.
-Most notably: language detection, faster processing of downloads, and more efficient deduplication. The ``cchardet`` package is currently not working on some macOS versions while the ``lru_dict``package might not work out of the box on Windows.
+Additional functions are available with the following extensions:
+
+.. code-block:: bash
+
+    $ pip install trafilatura[metadata] # metadata extraction
+    $ pip install trafilatura[all] # all experimental functionality 
+
+Experimental functions: language detection, faster processing of downloads, and more efficient deduplication. The ``cchardet`` package is currently not working on some macOS versions while the ``lru_dict``package might not work out of the box on Windows.
 
 (For infos on dependency management of Python packages see `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
 
 
-Usage
------
-
-With Python
-~~~~~~~~~~~
+Usage with Python
+-----------------
 
 Using trafilatura in a straightforward way:
 
@@ -113,11 +128,16 @@ The inclusion of tables and comments can be deactivated at a function call. The 
 .. code-block:: python
 
     >>> result = trafilatura.extract(downloaded, include_comments=False) # no comments in output
-    >>> result = trafilatura.extract(downloaded, include_tables=True) # skip tables examination
+    >>> result = trafilatura.extract(downloaded, include_tables=False) # skip tables examination
     >>> result = trafilatura.extract(downloaded, no_fallback=True) # skip justext algorithm used as fallback
-    >>> result = trafilatura.extract(downloaded, include_comments=False, include_tables=True, no_fallback=True) # probably the fastest execution
 
-The input can consists of a previously parsed tree (i.e. a *lxml.html* object), which is then handled seamlessly:
+This values combined probably provide the fastest execution times:
+
+.. code-block:: python
+
+    >>> result = trafilatura.extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
+
+The input can consist of a previously parsed tree (i.e. a *lxml.html* object), which is then handled seamlessly:
 
 .. code-block:: python
 
@@ -142,7 +162,7 @@ For further configuration see the variables in ``settings.py`` and re-compile th
 
 
 On the command-line
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 A command-line interface is included, for general instructions see `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems), `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_, or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_.
 
@@ -181,16 +201,11 @@ optional arguments:
   -v, --verbose      increase output verbosity
 
 
-Further documentation
-~~~~~~~~~~~~~~~~~~~~~
-
-To be released soon.
-
-Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=Eei7-8ZQdTc>`_.
-
-
 Additional information
 ----------------------
+
+*Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
+
 
 Scientific context
 ~~~~~~~~~~~~~~~~~~
@@ -204,17 +219,20 @@ This module is part of methods to derive information from web documents in order
 -  Barbaresi, A. "`The Vast and the Focused: On the need for domain-focused web corpora <https://ids-pub.bsz-bw.de/files/9025/Barbaresi_The_Vast_and_the_Focused_2019.pdf>`_", Proceedings of the `7th Workshop on Challenges in the Management of Large Corpora (CMLC-7) <http://corpora.ids-mannheim.de/cmlc-2019.html>`_, IDS Mannheim, 2019.
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, ACL, 2016.
 
-Name
-~~~~
 
-*Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
+Further documentation
+~~~~~~~~~~~~~~~~~~~~~
+
+To be released soon.
+
+Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=Eei7-8ZQdTc>`_.
+
 
 Kudos to...
 ~~~~~~~~~~~
 
--  `lxml <http://lxml.de/>`_
--  `jusText <https://github.com/miso-belica/jusText>`_
--  `cchardet <https://github.com/PyYoshi/cChardet>`_
+-  `lxml <http://lxml.de/>`_, `jusText <https://github.com/miso-belica/jusText>`_, `cchardet <https://github.com/PyYoshi/cChardet>`_
+
 
 Alternatives
 ~~~~~~~~~~~~
@@ -222,18 +240,11 @@ Alternatives
 Most corresponding Python packages are not actively maintained, the following alternatives exist:
 
 - `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires many dependencies as well as extensive tuning
-- `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
 - `goose <https://github.com/grangier/python-goose>`_ can extract information for embedded content but doesn't preserve markup and is not maintained
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
+- `newspaper <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction.
+- `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
 
-Roadmap
-~~~~~~~
-
--  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
--  [-] Language detection on the extracted content
--  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [ ] Preservation of in-line text formatting (bold, italic, etc.)
--  [-] Metadata integration
 
 Contact
 ~~~~~~~
