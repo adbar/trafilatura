@@ -78,7 +78,8 @@ First install from package repository: ``pip install trafilatura`` Please update
 
 Direct installation of the latest available code (see build status above): ``pip install git+https://github.com/adbar/trafilatura.git``
 
-For all experimental functionality please use ``pip install trafilatura[all]``
+For additional metadata extraction run  ``pip install trafilatura[metadata]`` after installation.
+For all experimental functionality please use ``pip install trafilatura[all]``.
 Most notably: language detection, faster processing of downloads, and more efficient deduplication. The ``cchardet`` package is currently not working on some macOS versions while the ``lru_dict``package might not work out of the box on Windows.
 
 (For infos on dependency management of Python packages see `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
@@ -130,6 +131,12 @@ Experimental feature: the target language can also be set using 2-letter codes (
 .. code-block:: python
 
     >>> result = trafilatura.extract(downloaded, url, target_language='de')
+
+All currently available options, along with their default values:
+
+.. code-block:: python
+
+    >>>> trafilatura.extract(downloaded, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True)
 
 For further configuration see the variables in ``settings.py`` and re-compile the package locally.
 
@@ -207,7 +214,7 @@ Kudos to...
 
 -  `lxml <http://lxml.de/>`_
 -  `jusText <https://github.com/miso-belica/jusText>`_
--  `cchardet <https://github.com/PyYoshi/cChardet>`_ & `ftfy <https://github.com/LuminosoInsight/python-ftfy>`_
+-  `cchardet <https://github.com/PyYoshi/cChardet>`_
 
 Alternatives
 ~~~~~~~~~~~~
@@ -223,14 +230,14 @@ Roadmap
 ~~~~~~~
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
--  [x] Language detection on the extracted content
+-  [-] Language detection on the extracted content
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
 -  [ ] Preservation of in-line text formatting (bold, italic, etc.)
--  [ ] Metadata integration
+-  [-] Metadata integration
 
 Contact
 ~~~~~~~
 
 Pull requests are welcome.
 
-See my `contact page <http://adrien.barbaresi.eu/contact.html>`_ for additional details.
+See this `contact page <http://adrien.barbaresi.eu/contact.html>`_ for additional details.
