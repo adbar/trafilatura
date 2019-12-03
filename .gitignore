@@ -14,3 +14,6 @@ build/
 .tox/
 .cache/
 .coverage
+
+# appvevor removed
+appveyor.yml
