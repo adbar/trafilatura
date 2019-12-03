@@ -735,19 +735,15 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
         #except UnicodeDecodeError as err:
         #    LOGGER.warning('Unicode error: %s %s', err, record_id)
-        # <hi> space hack
-        #returnstring = re.sub(r'(\S) ?(<hi>) ?(\S)', r'\1 \2\3', returnstring)
-        #returnstring = re.sub(r'(\S) ?(</hi>) ?(\S)', r'\1\2 \3', returnstring)
+
 
     returnstring = sanitize(returnstring)
     return returnstring
 
-    # else
-    # LRU_TEST[teststring] += 1
-
 
 # for legacy and backwards compatibility
 process_record = extract
+
 
 #def custom_justext(htmldom):
 #    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
