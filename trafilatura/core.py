@@ -561,7 +561,7 @@ def extract_comments(tree, include_comments):
 def extract_metadata(tree):
     '''Extract title and document date if available/required'''
     try:
-        doctitle = tree.find('//title').text
+        doctitle = trim(tree.find('//title').text) # h1?
     except AttributeError: # no title found
         doctitle = None
     if DATE_FLAG is True:
@@ -724,20 +724,14 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     if xml_output is False and tei_output is False:
         returnstring = xmltotxt(output)
     else:
-        control_string = etree.tostring(output)
+        # can be improved
+        control_string = etree.tostring(output, encoding='unicode')
+        control_string = sanitize(control_string)
         control_parser = etree.XMLParser(remove_blank_text=True)
         output_tree = etree.fromstring(control_string, control_parser)
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
         # xml_declaration=True,
 
-        ##  garbled unicode
-        #try:
-        #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
-        #except UnicodeDecodeError as err:
-        #    LOGGER.warning('Unicode error: %s %s', err, record_id)
-
-
-    returnstring = sanitize(returnstring)
     return returnstring
 
 

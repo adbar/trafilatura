@@ -136,11 +136,13 @@ def sanitize(text):
     text = remove_control_characters(text)
     text = text.replace('\r\n', '\n')
     text = text.replace('&#13;', '')
+    text = text.replace('&#10;', '')
     text = UNICODE_WHITESPACE.sub('', text)
     #text = re.sub(r'&#13;|', '', text)
     # filter out empty lines
     returntext = ''
     for line in text.splitlines():
+        line = trim(line)
         if not re.match(r'[\s\t]*$', line):
             # line = line.replace('\s\s\s', '\s')
             returntext += line + '\n'
@@ -154,6 +156,12 @@ def trim(string):
         # delete newlines that are not related to punctuation or markup
         string = re.sub(r'(?<![p{P}>])\n', ' ', string)
         # proper trimming
-        string = re.sub(r'\s+', ' ', string.strip(' \t\n\r'), re.MULTILINE)
+        string = ' '.join(re.split('\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
         string = string.strip()
     return string
+
+    ##  garbled unicode
+    #try:
+    #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
+    #except UnicodeDecodeError as err:
+    #    LOGGER.warning('Unicode error: %s %s', err, record_id)

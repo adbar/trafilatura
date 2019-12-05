@@ -117,8 +117,8 @@ def xmltotxt(xmloutput):
             returnstring += '\n- ' + textelement + '\n'
         else:
             returnstring += textelement + ' '
-    #returnstring = sanitize(returnstring)
-    #returnstring = trim(returnstring)
+    returnstring = sanitize(returnstring)
+    # returnstring = trim(returnstring)
     return returnstring
 
 
