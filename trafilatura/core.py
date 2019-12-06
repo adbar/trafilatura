@@ -39,7 +39,7 @@ from lxml import etree, html
 # own
 from .settings import CUT_EMPTY_ELEMS, HTML_CLEANER, LANGUAGES, LRU_SIZE, \
 MANUALLY_CLEANED, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG
-from .utils import load_html, sanitize, trim
+from .utils import load_html, sanitize, txttocsv, trim
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
@@ -572,7 +572,7 @@ def extract_metadata(tree):
 
 
 #@profile
-def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
+def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
     global LRU_TEST
@@ -583,7 +583,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
     # Metadata here
-    if xml_output is True or tei_output is True:
+    if csv_output is True or xml_output is True or tei_output is True:
         doctitle, docdate = extract_metadata(tree)
     else:
         doctitle = docdate = None
@@ -722,13 +722,18 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         return None
 
     if xml_output is False and tei_output is False:
-        returnstring = xmltotxt(output)
+        if csv_output is False:
+            returnstring = xmltotxt(output)
+        else:
+            posttext = xmltotxt(postbody)
+            commentstext = xmltotxt(commentsbody)
+            returnstring = txttocsv(posttext, commentstext, url, doctitle, docdate)
     else:
         # can be improved
         control_string = etree.tostring(output, encoding='unicode')
         control_string = sanitize(control_string)
-        control_parser = etree.XMLParser(remove_blank_text=True)
-        output_tree = etree.fromstring(control_string, control_parser)
+        # control_parser = etree.XMLParser(remove_blank_text=True)
+        output_tree = etree.fromstring(control_string) # , control_parser
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
         # xml_declaration=True,
 

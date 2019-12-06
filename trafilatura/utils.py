@@ -7,6 +7,7 @@ Module bundling functions related to HTML and text processing.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+# import csv
 import logging
 import re
 import socket
@@ -117,6 +118,26 @@ def load_html(htmlobject):
     else:
         LOGGER.error('this type cannot be processed: %s', type(htmlobject))
     return tree
+
+
+#@profile
+def txttocsv(text, comments, url, doctitle, docdate):
+    '''Output the result in CSV format (tab-separated values)'''
+    #outputwriter = csv.writer(sys.stdout, delimiter='\t', quoting=csv.QUOTE_NONE)
+    #outputwriter.writerow()
+    text = trim(' '.join(text.splitlines()))
+    if comments is not None:
+        comments = trim(' '.join(comments.splitlines()))
+    else:
+        comments = ''
+    if url is None:
+        url = ''
+    if doctitle is None:
+        doctitle = ''
+    if docdate is None:
+        docdate = ''
+    tsv_output = url + '\t' + doctitle + '\t' + docdate + '\t' + text + '\t' + comments + '\n'
+    return tsv_output
 
 
 def remove_control_characters(string):

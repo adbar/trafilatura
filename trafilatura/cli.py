@@ -19,7 +19,7 @@ from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
 LOGGER = logging.getLogger(__name__)
 
 
-def examine(htmlstring, url=None, no_fallback=False, include_comments=True, include_tables=True, xml_output=False, tei_output=False, validation=False):
+def examine(htmlstring, url=None, no_fallback=False, include_comments=True, include_tables=True, csv_output=False, xml_output=False, tei_output=False, validation=False):
     """ Generic safeguards and triggers """
     # safety check
     if htmlstring is None:
@@ -30,7 +30,7 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True, incl
         sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
-        result = extract(htmlstring, url, '0000', no_fallback=no_fallback, include_comments=include_comments, include_tables=include_tables, xml_output=xml_output, tei_output=tei_output, tei_validation=validation)
+        result = extract(htmlstring, url, '0000', no_fallback=no_fallback, include_comments=include_comments, include_tables=include_tables, csv_output=csv_output, xml_output=xml_output, tei_output=tei_output, tei_validation=validation)
         return result
     return None
 
@@ -43,6 +43,7 @@ def main():
     argsparser.add_argument("-i", "--inputfile", help="name of input file for batch processing", type=str)
     argsparser.add_argument("--nocomments", help="don't output any comments", action="store_false")
     argsparser.add_argument("--notables", help="don't output any table elements", action="store_false")
+    argsparser.add_argument("--csv", help="CSV output", action="store_true")
     argsparser.add_argument("--xml", help="XML output", action="store_true")
     argsparser.add_argument("--xmltei", help="XML TEI output", action="store_true")
     argsparser.add_argument("--validate", help="validate TEI output", action="store_true")
@@ -59,7 +60,7 @@ def main():
                 url = line.strip()
                 htmlstring = fetch_url(url)
                 try:
-                    result = examine(htmlstring, url=url, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei, validation=args.validate)
+                    result = examine(htmlstring, url=url, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei, validation=args.validate)
                     if result is None:
                         result = '# ERROR: no valid result for url ' + url
                 # ugly but efficient
@@ -84,7 +85,7 @@ def main():
                 sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
                 sys.exit(1)
         # process
-        result = examine(htmlstring, url=args.URL, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, xml_output=args.xml, tei_output=args.xmltei, validation=args.validate)
+        result = examine(htmlstring, url=args.URL, no_fallback=args.fast, include_comments=args.nocomments, include_tables=args.notables, csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei, validation=args.validate)
         if result is not None:
             sys.stdout.write(result + '\n')
 
