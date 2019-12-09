@@ -41,6 +41,7 @@ HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
 # HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
+HTML_CLEANER.remove_tags = ['img']
 HTML_CLEANER.kill_tags = ['aside']
 # 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'
 
@@ -49,10 +50,10 @@ CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', \
                    # 'meta', 'span',
 
 MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', \
-                    'footer', 'form', 'head', 'iframe', 'img', 'input', 'link', \
+                    'footer', 'form', 'head', 'iframe', 'input', 'link', \
                     'map', 'marquee', 'math', 'nav', 'noscript', 'object', \
                     'picture', 'script', 'style', 'svg', 'time', 'video']
-                    # 'frame' 'frameset' 'source',
+                    # 'frame' 'frameset' 'source', 'img',
 
 TAG_CATALOG = frozenset(['code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'quote'])
 # 'span', 'item'

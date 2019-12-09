@@ -20,6 +20,7 @@ BODY_XPATH = ['//*[(self::div or self::section)][contains(@id, "content-main") o
             '//*[(self::div or self::section)][starts-with(@class, "content ") or contains(@class, " content") or @class="content" or @id="content" or class="story-content"]', \
             ]
 # '//*[(self::div or self::section)][@id="content" or @role="main"]', \
+#  or @class="content"
 
 
 COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist') or contains(@class, 'commentlist') or contains(@class, 'comments-content')]", \
@@ -30,7 +31,7 @@ COMMENTS_XPATH = ["//*[(self::div or self::section or self::ol or self::ul)][con
                 # or contains(@class, 'Comments')
 
 
-DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or contains(@class, "sidebar")]', \
+DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or contains(@class, "sidebar") or contains(@id, "banner") or contains(@class, "banner")]', \
                  './/header', \
                  './/*[@class="meta" or contains(@class, "meta-") or contains(@class, "-meta")]', \
                  # |.//footer
@@ -44,17 +45,18 @@ DISCARD_XPATH = ['.//*[(self::div or self::section or self::ul)][contains(@id, "
                  # related posts
                  './/*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related") or contains(@id, "viral") or contains(@class, "viral")]', \
                  # sharing jp-post-flair jp-relatedposts
-                 './/*[(self::div or self::section or self::ul)][starts-with(@class, "author-") or starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@class, "sociable") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
-                 './/*[(self::div or self::section or self::span)][contains(@id, "author") or contains(@class, "author") or contains(@id, "button") or contains(@class, "button") or starts-with(@class, "hide-") or contains(@id, "hidden") or contains(@style, "hidden")]', \
+                 './/*[(self::div or self::section or self::ul)][starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social") or contains(@class, "social") or contains(@class, "sociable") or contains(@id, "syndication") or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]', \
+                 './/*[(self::div or self::p or self::section or self::span or self::ul)][contains(@id, "author") or contains(@class, "author") or contains(@id, "button") or contains(@class, "button") or starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden") or contains(@style, "hidden") or contains(@class, "noprint")]', \
                  './/*[(self::div or self::p or self::section)][contains(@id, "caption") or contains(@class, "caption")]', \
                  './/*[starts-with(@class, "widget")]', \
                  # other content
                  './/*[(self::div or self::section or self::ul)][contains(@class, "ratings")]', \
                  './/*[contains(@class, "attachment") or contains(@class, "timestamp") or contains(@class, "user-info") or contains(@class, "user-profile") or contains(@class, "-ad-") or contains(@class, "-icon") or contains(@class, "navbox") or contains(@class, "submeta")]', \
                  ]
-                 # optional??
-                 # './/aside', \ # conflicts with text extraction
-                 # conflicts: contains(@class, "hidden") or
+                 # optional?
+                 # *[contains(@class, "article-infos")  or contains(@class, "author")
+                 # div/section[contains(@class, "clearfix")
+                 # conflicts: './/aside', contains(@class, "hidden")
 
 
 COMMENTS_DISCARD_XPATH = ['.//*[(self::div or self::section)][starts-with(@id, "respond")]', \
