@@ -65,7 +65,7 @@ JUSTEXT_STOPLIST = justext.get_stoplist('German')
 
 #@profile
 def manual_cleaning(tree, include_tables):
-    '''Prune the tree by discard unwanted elements'''
+    '''Prune the tree by discarding unwanted elements'''
     #for element in tree.xpath('//*'):
     #    print('ZZZ ', element.tag)
     if include_tables is False:
@@ -304,19 +304,19 @@ def handle_textnode(element, comments_fix=True):
 
 
 #@profile
-#def handle_subelement(subelement):
-#    '''Convert, format, and probe potential text subelements'''
-#    if subelement.text is None and subelement.tail is None:
-#        return subelement
+def handle_subelement(subelement):
+    '''Convert, format, and probe potential text subelements'''
+    if subelement.text is None and subelement.tail is None:
+        return subelement
     # delete newlines that are not related to punctuation or markup
-#    subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
-#    # trim
-#    subelement.tail = trim(subelement.tail) + '\n'
-#    if textfilter(subelement) is True:
-#        return None
+    subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
+    # trim
+    subelement.tail = trim(subelement.tail) # + '\n'
+    if textfilter(subelement) is True:
+        return None
     #if duplicate_test(subelement) is True:
     #    return None
-#    return subelement
+    return subelement
 
 
 #@profile
@@ -347,7 +347,7 @@ def extract_content(tree, include_tables=False):
         for element in subtree.xpath('.//*'): # .iter() .getchildren() .xpath('.//*')
             # print(element.tag, element.text)
             # bypass: nested elements
-            if element.tag in ('list', 'quote'):
+            if element.tag in ('list', 'quote'): # 'code',
                 processed_element = etree.Element(element.tag)
                 for child in element.iter():
                     # list-specific check
@@ -403,16 +403,21 @@ def extract_content(tree, include_tables=False):
                                 if processed_child.tail is not None:
                                     processed_element.text = processed_element.text + ' ' + processed_child.tail
                             # handle spaces
-                            elif child.tag == 'lb':
+                            elif child.tag in ('hi', 'lb'):
+                                # check depth:
+                                #if child.tag == 'hi' and len(child) > 0:
+                                #    etree.strip_tags(child, 'hi')
                                 # delete if empty paragraph so far
                                 if len(processed_element.text) < 1:
-                                    if child.tail is not None:
+                                    if child.tail is not None and re.search(r'\w+', child.tail):
                                         processed_element.text = child.tail
                                     child.tag = 'done'
                                 else:
-                                    newsub = etree.SubElement(processed_element, 'lb')
-                                    newsub.tail = child.tail # handle_subelement(child).tail
+                                    newsub = etree.SubElement(processed_element, child.tag)
+                                    if child.tail is not None and re.search(r'\w+', child.tail):
+                                        newsub.tail = handle_subelement(child).tail
                             else:
+                                LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
                                 newsub = etree.SubElement(processed_element, child.tag)
                                 newsub.text = trim(processed_child.text)
                                 newsub.tail = trim(processed_child.tail)
@@ -425,24 +430,27 @@ def extract_content(tree, include_tables=False):
             # insert it directly
             elif element.tag == 'lb':
                 if element.tail is not None and re.search(r'\w+', element.tail):
-                    element.tail = trim(element.tail)
-                    result_body.append(element)
+                    processed_element = etree.Element('p')
+                    processed_element.text = handle_subelement(element).tail
+                    result_body.append(processed_element)
             # other elements (div, ??, ??)
             else:
                 ## delete unwanted
                 if element.tag not in potential_tags:
                     # LOGGER.debug('discarding: %s %s', element.tag, element.text)
                     continue
-                if element.tag != 'div':
+                if element.tag == 'div':
                     LOGGER.warning('processing other element: %s', element.tag)
-                processed_element = handle_textnode(element, comments_fix=False)
-                if processed_element is not None:
-                    element.attrib.clear()
-                    # small div-correction # could be moved elsewhere
-                    if element.tag == 'div':
-                        element.tag = 'p'
-                    # insert
-                    result_body.append(processed_element)
+                    processed_element = handle_textnode(element, comments_fix=False)
+                    if processed_element is not None:
+                        processed_element.attrib.clear()
+                        # small div-correction # could be moved elsewhere
+                        if processed_element.tag == 'div':
+                            processed_element.tag = 'p'
+                        # insert
+                        result_body.append(processed_element)
+                elif element.tag != 'div' and element.tag in potential_tags:
+                        LOGGER.debug('processing other element: %s %s', element.tag, element.text)
         # control
         if len(result_body) > 0: # if it has children
             LOGGER.debug(expr)
