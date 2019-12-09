@@ -458,12 +458,13 @@ def extract_content(tree, include_tables=False):
             break
 
     # try parsing wild <p> elements
-    if len(result_body) == 0: # no children
+    # no children if text too short
+    if len(result_body) == 0 or len(' '.join(result_body.itertext())) < 100: # MIN_EXTRACTED_SIZE:
         LOGGER.debug('Taking all p-elements')
         # prune
         search_tree = discard_unwanted(tree)
         # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
-        for element in search_tree.xpath('//p'): # search_tree.xpath('//p')
+        for element in search_tree.xpath('//p'):
             # print(element.tag, element.text)
             processed_element = handle_textnode(element, comments_fix=False)
             if processed_element is not None:
@@ -652,8 +653,8 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         postbody = temppost_hand
 
     # sanity check on length
-    temp_text = u' '.join(postbody.itertext())
-    temp_comments = u' '.join(commentsbody.itertext())
+    temp_text = ' '.join(postbody.itertext())
+    temp_comments = ' '.join(commentsbody.itertext())
     if len(temp_text) < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s %s', record_id, url)
     if len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:

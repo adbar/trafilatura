@@ -17,8 +17,8 @@ from .utils import fetch_url, sanitize, trim
 
 LOGGER = logging.getLogger(__name__)
 # validation
-TEI_VALID_TAGS = {'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
-                  'lb', 'list', 'p', 'quote'}
+TEI_VALID_TAGS = {'cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
+                  'lb', 'list', 'p', 'quote', 'row'}
 TEI_VALID_ATTRS = {'rendition', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
@@ -111,10 +111,12 @@ def xmltotxt(xmloutput):
             textelement = element.tail
         textelement = sanitize(textelement)
         textelement = trim(textelement)
-        if element.tag in ('code', 'head', 'lb', 'p', 'quote', 'row', 'table'):
+        if element.tag in ('code', 'fw', 'head', 'lb', 'p', 'quote', 'row', 'table'):
             returnstring += '\n' + textelement + '\n'
         elif element.tag == 'item':
             returnstring += '\n- ' + textelement + '\n'
+        elif element.tag == 'cell':
+            returnstring += '|' + textelement + '|'
         else:
             returnstring += textelement + ' '
     returnstring = sanitize(returnstring)
