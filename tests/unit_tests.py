@@ -103,6 +103,10 @@ MOCK_PAGES = { \
 'https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/': 'erp-news.info.interview.html', \
 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/': 'github.blog.spiceland.html', \
 'https://lady50plus.de/2019/06/19/sekre-mystery-bag/': 'lady50plus.de.sekre.html', \
+'https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer': 'sonntag-sachsen.de.emanuel.html', \
+'https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite': 'psl.eu.luniversite.html', \
+'https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html': 'chip.de.beef.html', \
+'http://www.sauvonsluniversite.fr/spip.php?article8532': 'sauvonsluniversite.com.spip.html', \
 }
 # '': '', \
 
@@ -350,7 +354,7 @@ def test_main(xmloutput=False):
     assert 'Zuerst dachte ich, ich könnte das' in result and 'x Franzi' in result and 'Flauschjacke: Bershka' in result and 'Palm Springs Mini (links)' not in result and 'Diese Website verwendet Akismet' not in result and 'New York, New York' not in result
 
     result = load_mock_page('https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html', xmloutput)
-    assert 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and '2. Satt essen bei den Mahlzeiten' in result and 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result and 'Bringt die Kilos zum Purzeln!' not in result
+    assert 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result# and '2. Satt essen bei den Mahlzeiten' in result and 'Bringt die Kilos zum Purzeln!' not in result 
 
     result = load_mock_page('https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html', xmloutput)
     assert 'Glücks-Trend Konkurrenz' in result and 'Praktiziere Dankbarkeit' in result and 'dein Ikigai schon gefunden?' in result and '14,90 Euro.' in result and 'Neu in Liebe' not in result and 'Erfahre mehr' not in result and 'Erfahrung mit privater Arbeitsvermittlung?' not in result
@@ -404,11 +408,19 @@ def test_main(xmloutput=False):
     assert 'Erin Spiceland is a Software Engineer for SpaceX.' in result and 'make effective plans and goals for the future' in result and 'looking forward to next?' in result and 'Research Consultant at Adelard LLP' in result and 'Related posts' not in result and 'Jeremy Epling' not in result and 'Missed the main event?' not in result and 'Privacy' not in result
 
     result = load_mock_page('https://lady50plus.de/2019/06/19/sekre-mystery-bag/', xmloutput)
-    print(result)
     assert 'ist eine echte Luxushandtasche' in result and 'Insgesamt 160 weibliche „Designerinnen“' in result and 'Sei herzlich gegrüßt' in result and 'Ein Mann alleine hätte niemals' in result and 'Erforderliche Felder sind mit' not in result and 'Benachrichtige mich' not in result and 'Reisen ist meine große Leidenschaft' not in result and 'Styling Tipps für Oktober' not in result # and 'in den Bann ziehen!' in result
 
-    #result = load_mock_page('', xmloutput)
-    #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
+    result = load_mock_page('https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer', xmloutput)
+    assert 'Neuer Geschäftsführender Leiter' in result and 'nach Leipzig wechseln.' in result and 'Mehr zum Thema' not in result and 'Folgen Sie uns auf Facebook und Twitter' not in result # and 'Aktuelle Ausgabe' not in result
+
+    result = load_mock_page('https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite', xmloutput)
+    assert 'Le décret n°2019-1130 validant' in result and 'restructurant à cet effet ».' in result and ' utilise des cookies pour' not in result and 'En savoir plus' not in result # and 'CNRS, Inserm, Inria.' not in result
+
+    result = load_mock_page('https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html', xmloutput)
+    assert 'Starke Hitze nur in der Mitte' in result and 'ca. 35,7×29,4 cm' in result and 'Wir sind im Steak-Himmel!' in result and 'Samsung Galaxy S10 128GB' not in result and 'Für Links auf dieser Seite' not in result # and 'Inga Buller ist Head of Social' not in result
+
+    result = load_mock_page('http://www.sauvonsluniversite.fr/spip.php?article8532', xmloutput)
+    assert 'L’AG Éducation Île-de-France inter-degrés' in result and 'Grève et mobilisation pour le climat' in result and 'suivi.reformes.blanquer@gmail.com' in result and 'Sauvons l’Université !' not in result and 'La semaine de SLU' not in result
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
