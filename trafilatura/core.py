@@ -182,7 +182,8 @@ def duplicate_test(element, justext_switch=False):
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # strip tags
-    etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr')
+    etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'span', 'small', 'wbr')
+    # 'dd', 'sub', 'sup',
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         # print(elem.tag, elem.text_content())
@@ -351,7 +352,7 @@ def extract_content(tree, include_tables=False):
                 processed_element = etree.Element(element.tag)
                 for child in element.iter():
                     # list-specific check
-                    if element.tag == 'list' and child.tag not in ('dt', 'li'): # 'item'
+                    if element.tag == 'list' and child.tag not in ('dd', 'dt', 'li'): # 'item'
                         continue
                     # proceed with iteration, fix for nested elements
                     processed_child = handle_textnode(child, comments_fix=True)
