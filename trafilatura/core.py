@@ -480,25 +480,22 @@ def extract_content(tree, include_tables=False):
             # print(html.tostring(table_elem))
             # iterate through elements in table
             for subelement in table_elem.xpath('.//*'):
+                # print(subelement.tag, subelement.text)
                 subelement.attrib.clear()
+                subelement.text = trim(subelement.text)
                 #if subelement.text is not None:
                 #    subelement.text = re.sub(r'(?<![p{P}>])\n', ' ', subelement.text)
-                subelement.tail = ''
-                if subelement.tag == 'th':
-                    subelement.tag = 'head'
-                elif subelement.tag == 'tr':
+                # subelement.tail = ''
+                if subelement.tag == 'tr':
                     subelement.tag = 'row'
-                    rowtext = subelement.text # ' '.join(subelement.itertext())
-                    if rowtext is None or len(rowtext) < 50:
+                    rowtext = ' '.join(subelement.itertext())
+                    if rowtext is None: # or len(rowtext) < 50
                         subelement.getparent().remove(subelement)
                         continue
-                    subelement.text = trim(rowtext)
+                    # subelement.text = trim(rowtext)
+                elif subelement.tag == 'th':
+                    subelement.tag = 'head' # 'cell'
                 elif subelement.tag == 'td':
-                    #if len(' '.join(subelement.itertext())) < 30:
-                        #subelement.getparent().remove(subelement)
-                        #continue
-                    #if subelement.text is not None:
-                    subelement.text = trim(subelement.text)
                     subelement.tag = 'cell'
                 else:
                     # subelement.getparent().remove(subelement)
