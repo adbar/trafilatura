@@ -117,6 +117,8 @@ def xmltotxt(xmloutput):
             returnstring += '\n- ' + textelement + '\n'
         elif element.tag == 'cell':
             returnstring += '|' + textelement + '|'
+        elif element.tag == 'comments':
+            returnstring += '\n\n'
         else:
             returnstring += textelement + ' '
     returnstring = sanitize(returnstring)

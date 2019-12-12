@@ -638,7 +638,8 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
     # remove hi-element to avoid tail bug
-    # etree.strip_tags(cleaned_tree, 'hi')
+    if xml_output is False and tei_output is False:
+        etree.strip_tags(cleaned_tree, 'hi')
 
     # comments first, then remove
     commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
