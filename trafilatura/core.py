@@ -397,42 +397,70 @@ def extract_content(tree, include_tables=False):
                     if child.tag in potential_tags:
                         processed_child = handle_textnode(child, comments_fix=False)
                         if processed_child is not None:
+                            newsub = etree.Element(child.tag)
                             # paragraph, append text
-                            if child.tag == 'p':
-                                if processed_child.text is not None:
-                                    processed_element.text = processed_element.text + processed_child.text
-                                if processed_child.tail is not None:
-                                    processed_element.text = processed_element.text + ' ' + processed_child.tail
+                            #if child.tag == 'p':
+                                # if there are already children
+                            #    if len(processed_element) > 0:
+                            #        newsub.tail = processed_child.text + processed_child.tail
+                            #    else:
+                            #        newsub.text = processed_child.text
+                            #        newsub.tail = processed_child.tail
+                            # handle hi
+                            if child.tag == 'hi':
+                                # check depth and clean
+                                if len(child) > 0:
+                                    for item in child: # children are lists
+                                        item.text = ' ' + item.text
+                                        etree.strip_tags(child, item.tag)
+                                newsub.set('rendition', child.get('rendition'))
                             # handle spaces
-                            elif child.tag in ('hi', 'lb'):
-                                # check depth:
-                                #if child.tag == 'hi' and len(child) > 0:
-                                #    etree.strip_tags(child, 'hi')
+                            elif child.tag == 'lb':
                                 # delete if empty paragraph so far
-                                if len(processed_element.text) < 1:
-                                    if child.tail is not None and re.search(r'\w+', child.tail):
-                                        processed_element.text = child.tail
-                                    child.tag = 'done'
-                                else:
-                                    newsub = etree.SubElement(processed_element, child.tag)
-                                    if child.tail is not None and re.search(r'\w+', child.tail):
-                                        newsub.tail = handle_subelement(child).tail
+                                #if len(processed_element.text) < 1:
+                                #    if child.tail is not None and re.search(r'\w+', child.tail):
+                                #        processed_child.text = child.tail
+                                    # child.tag = 'done'
+                                #else:
+                                #    if child.tail is not None and re.search(r'\w+', child.tail):
+                                #        processed_child.tail = handle_subelement(child).tail
+                                processed_child.tail = handle_subelement(child).tail
                             else:
                                 LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
-                                newsub = etree.SubElement(processed_element, child.tag)
-                                newsub.text = trim(processed_child.text)
-                                newsub.tail = trim(processed_child.tail)
-                        # print(processed_element.tag, processed_element.text)
+                            # prepare text
+                            if processed_child.text is None:
+                                processed_child.text = ''
+                            if processed_child.tail is None:
+                                processed_child.tail = ''
+                            # if there are already children
+                            if len(processed_element) > 0:
+                                newsub.tail = processed_child.text + processed_child.tail
+                            else:
+                                newsub.text = processed_child.text
+                                newsub.tail = processed_child.tail
+                            processed_element.append(newsub)
+                            # print(html.tostring(processed_element))
                         child.tag = 'done'
                 # finish
-                #if len(processed_element) > 0:
-                if len(processed_element.text) > 0:
+                if len(processed_element) > 0 or len(processed_element.text) > 0:
                     result_body.append(processed_element)
+                else:
+                    LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
             # insert it directly
             elif element.tag == 'lb':
                 if element.tail is not None and re.search(r'\w+', element.tail):
                     processed_element = etree.Element('p')
                     processed_element.text = handle_subelement(element).tail
+                    result_body.append(processed_element)
+            # insert it directly
+            elif element.tag == 'hi':
+                if element.text is not None or element.tail is not None:
+                    processed_element = etree.Element('p')
+                    processed_child = etree.SubElement(processed_element, element.tag)
+                    if element.text is not None:
+                        processed_child.text = trim(element.text)
+                    if element.tail is not None:
+                        processed_child.tail = trim(element.tail)
                     result_body.append(processed_element)
             # other elements (div, ??, ??)
             else:
@@ -610,7 +638,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
     # remove hi-element to avoid tail bug
-    etree.strip_tags(cleaned_tree, 'hi')
+    # etree.strip_tags(cleaned_tree, 'hi')
 
     # comments first, then remove
     commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
@@ -739,8 +767,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         # can be improved
         control_string = etree.tostring(output, encoding='unicode')
         control_string = sanitize(control_string)
-        # control_parser = etree.XMLParser(remove_blank_text=True)
-        output_tree = etree.fromstring(control_string) # , control_parser
+        control_parser = etree.XMLParser(remove_blank_text=True)
+        output_tree = etree.fromstring(control_string, control_parser)
+        # output_tree = etree.fromstring(control_string) # , control_parser # problem with cleaning
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
         # xml_declaration=True,
 
