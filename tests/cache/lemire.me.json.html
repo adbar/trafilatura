@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<link rel="profile" href="https://gmpg.org/xfn/11">
+<link rel="pingback" href="https://lemire.me/blog/xmlrpc.php">
+<!--[if lt IE 9]>
+	<script src="https://lemire.me/blog/wp-content/themes/twentyfifteen/js/html5.js"></script>
+	<![endif]-->
+<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>JSON parsing: simdjson vs. JSON for Modern C++ &#8211; Daniel Lemire&#039;s blog</title>
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Daniel Lemire&#039;s blog &raquo; Feed" href="https://lemire.me/blog/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Daniel Lemire&#039;s blog &raquo; Comments Feed" href="https://lemire.me/blog/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Daniel Lemire&#039;s blog &raquo; JSON parsing: simdjson vs. JSON for Modern C++ Comments Feed" href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/feed/" />
+<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/lemire.me\/blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.3"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='wp-block-library-css' href='https://lemire.me/blog/wp-includes/css/dist/block-library/style.min.css?ver=5.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-theme-css' href='https://lemire.me/blog/wp-includes/css/dist/block-library/theme.min.css?ver=5.3' type='text/css' media='all' />
+<link rel='stylesheet' id='wcjp-frontend.css-css' href='https://lemire.me/blog/wp-content/plugins/custom-css-js-php/assets/css/wcjp-frontend.css?ver=5.3' type='text/css' media='all' />
+<link crossorigin="anonymous" rel='stylesheet' id='twentyfifteen-fonts-css' href='https://fonts.googleapis.com/css?family=Noto+Sans%3A400italic%2C700italic%2C400%2C700%7CNoto+Serif%3A400italic%2C700italic%2C400%2C700%7CInconsolata%3A400%2C700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css' href='https://lemire.me/blog/wp-content/themes/twentyfifteen/genericons/genericons.css?ver=3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfifteen-style-css' href='https://lemire.me/blog/wp-content/themes/twentyfifteen/style.css?ver=5.3' type='text/css' media='all' />
+<style id='twentyfifteen-style-inline-css' type='text/css'>
+	/* Color Scheme */
+
+	/* Background Color */
+	body {
+		background-color: #e9f2f9;
+	}
+
+	/* Sidebar Background Color */
+	body:before,
+	.site-header {
+		background-color: #55c3dc;
+	}
+
+	/* Box Background Color */
+	.post-navigation,
+	.pagination,
+	.secondary,
+	.site-footer,
+	.hentry,
+	.page-header,
+	.page-content,
+	.comments-area,
+	.widecolumn {
+		background-color: #ffffff;
+	}
+
+	/* Box Background Color */
+	button,
+	input[type="button"],
+	input[type="reset"],
+	input[type="submit"],
+	.pagination .prev,
+	.pagination .next,
+	.widget_calendar tbody a,
+	.widget_calendar tbody a:hover,
+	.widget_calendar tbody a:focus,
+	.page-links a,
+	.page-links a:hover,
+	.page-links a:focus,
+	.sticky-post {
+		color: #ffffff;
+	}
+
+	/* Main Text Color */
+	button,
+	input[type="button"],
+	input[type="reset"],
+	input[type="submit"],
+	.pagination .prev,
+	.pagination .next,
+	.widget_calendar tbody a,
+	.page-links a,
+	.sticky-post {
+		background-color: #22313f;
+	}
+
+	/* Main Text Color */
+	body,
+	blockquote cite,
+	blockquote small,
+	a,
+	.dropdown-toggle:after,
+	.image-navigation a:hover,
+	.image-navigation a:focus,
+	.comment-navigation a:hover,
+	.comment-navigation a:focus,
+	.widget-title,
+	.entry-footer a:hover,
+	.entry-footer a:focus,
+	.comment-metadata a:hover,
+	.comment-metadata a:focus,
+	.pingback .edit-link a:hover,
+	.pingback .edit-link a:focus,
+	.comment-list .reply a:hover,
+	.comment-list .reply a:focus,
+	.site-info a:hover,
+	.site-info a:focus {
+		color: #22313f;
+	}
+
+	/* Main Text Color */
+	.entry-content a,
+	.entry-summary a,
+	.page-content a,
+	.comment-content a,
+	.pingback .comment-body > a,
+	.author-description a,
+	.taxonomy-description a,
+	.textwidget a,
+	.entry-footer a:hover,
+	.comment-metadata a:hover,
+	.pingback .edit-link a:hover,
+	.comment-list .reply a:hover,
+	.site-info a:hover {
+		border-color: #22313f;
+	}
+
+	/* Secondary Text Color */
+	button:hover,
+	button:focus,
+	input[type="button"]:hover,
+	input[type="button"]:focus,
+	input[type="reset"]:hover,
+	input[type="reset"]:focus,
+	input[type="submit"]:hover,
+	input[type="submit"]:focus,
+	.pagination .prev:hover,
+	.pagination .prev:focus,
+	.pagination .next:hover,
+	.pagination .next:focus,
+	.widget_calendar tbody a:hover,
+	.widget_calendar tbody a:focus,
+	.page-links a:hover,
+	.page-links a:focus {
+		background-color: #22313f; /* Fallback for IE7 and IE8 */
+		background-color: rgba( 34, 49, 63, 0.7);
+	}
+
+	/* Secondary Text Color */
+	blockquote,
+	a:hover,
+	a:focus,
+	.main-navigation .menu-item-description,
+	.post-navigation .meta-nav,
+	.post-navigation a:hover .post-title,
+	.post-navigation a:focus .post-title,
+	.image-navigation,
+	.image-navigation a,
+	.comment-navigation,
+	.comment-navigation a,
+	.widget,
+	.author-heading,
+	.entry-footer,
+	.entry-footer a,
+	.taxonomy-description,
+	.page-links > .page-links-title,
+	.entry-caption,
+	.comment-author,
+	.comment-metadata,
+	.comment-metadata a,
+	.pingback .edit-link,
+	.pingback .edit-link a,
+	.post-password-form label,
+	.comment-form label,
+	.comment-notes,
+	.comment-awaiting-moderation,
+	.logged-in-as,
+	.form-allowed-tags,
+	.no-comments,
+	.site-info,
+	.site-info a,
+	.wp-caption-text,
+	.gallery-caption,
+	.comment-list .reply a,
+	.widecolumn label,
+	.widecolumn .mu_register label {
+		color: #22313f; /* Fallback for IE7 and IE8 */
+		color: rgba( 34, 49, 63, 0.7);
+	}
+
+	/* Secondary Text Color */
+	blockquote,
+	.logged-in-as a:hover,
+	.comment-author a:hover {
+		border-color: #22313f; /* Fallback for IE7 and IE8 */
+		border-color: rgba( 34, 49, 63, 0.7);
+	}
+
+	/* Border Color */
+	hr,
+	.dropdown-toggle:hover,
+	.dropdown-toggle:focus {
+		background-color: #22313f; /* Fallback for IE7 and IE8 */
+		background-color: rgba( 34, 49, 63, 0.1);
+	}
+
+	/* Border Color */
+	pre,
+	abbr[title],
+	table,
+	th,
+	td,
+	input,
+	textarea,
+	.main-navigation ul,
+	.main-navigation li,
+	.post-navigation,
+	.post-navigation div + div,
+	.pagination,
+	.comment-navigation,
+	.widget li,
+	.widget_categories .children,
+	.widget_nav_menu .sub-menu,
+	.widget_pages .children,
+	.site-header,
+	.site-footer,
+	.hentry + .hentry,
+	.author-info,
+	.entry-content .page-links a,
+	.page-links > span,
+	.page-header,
+	.comments-area,
+	.comment-list + .comment-respond,
+	.comment-list article,
+	.comment-list .pingback,
+	.comment-list .trackback,
+	.comment-list .reply a,
+	.no-comments {
+		border-color: #22313f; /* Fallback for IE7 and IE8 */
+		border-color: rgba( 34, 49, 63, 0.1);
+	}
+
+	/* Border Focus Color */
+	a:focus,
+	button:focus,
+	input:focus {
+		outline-color: #22313f; /* Fallback for IE7 and IE8 */
+		outline-color: rgba( 34, 49, 63, 0.3);
+	}
+
+	input:focus,
+	textarea:focus {
+		border-color: #22313f; /* Fallback for IE7 and IE8 */
+		border-color: rgba( 34, 49, 63, 0.3);
+	}
+
+	/* Sidebar Link Color */
+	.secondary-toggle:before {
+		color: #ffffff;
+	}
+
+	.site-title a,
+	.site-description {
+		color: #ffffff;
+	}
+
+	/* Sidebar Text Color */
+	.site-title a:hover,
+	.site-title a:focus {
+		color: rgba( 255, 255, 255, 0.7);
+	}
+
+	/* Sidebar Border Color */
+	.secondary-toggle {
+		border-color: #ffffff; /* Fallback for IE7 and IE8 */
+		border-color: rgba( 255, 255, 255, 0.1);
+	}
+
+	/* Sidebar Border Focus Color */
+	.secondary-toggle:hover,
+	.secondary-toggle:focus {
+		border-color: #ffffff; /* Fallback for IE7 and IE8 */
+		border-color: rgba( 255, 255, 255, 0.3);
+	}
+
+	.site-title a {
+		outline-color: #ffffff; /* Fallback for IE7 and IE8 */
+		outline-color: rgba( 255, 255, 255, 0.3);
+	}
+
+	/* Meta Background Color */
+	.entry-footer {
+		background-color: #f1f1f1;
+	}
+
+	@media screen and (min-width: 38.75em) {
+		/* Main Text Color */
+		.page-header {
+			border-color: #22313f;
+		}
+	}
+
+	@media screen and (min-width: 59.6875em) {
+		/* Make sure its transparent on desktop */
+		.site-header,
+		.secondary {
+			background-color: transparent;
+		}
+
+		/* Sidebar Background Color */
+		.widget button,
+		.widget input[type="button"],
+		.widget input[type="reset"],
+		.widget input[type="submit"],
+		.widget_calendar tbody a,
+		.widget_calendar tbody a:hover,
+		.widget_calendar tbody a:focus {
+			color: #55c3dc;
+		}
+
+		/* Sidebar Link Color */
+		.secondary a,
+		.dropdown-toggle:after,
+		.widget-title,
+		.widget blockquote cite,
+		.widget blockquote small {
+			color: #ffffff;
+		}
+
+		.widget button,
+		.widget input[type="button"],
+		.widget input[type="reset"],
+		.widget input[type="submit"],
+		.widget_calendar tbody a {
+			background-color: #ffffff;
+		}
+
+		.textwidget a {
+			border-color: #ffffff;
+		}
+
+		/* Sidebar Text Color */
+		.secondary a:hover,
+		.secondary a:focus,
+		.main-navigation .menu-item-description,
+		.widget,
+		.widget blockquote,
+		.widget .wp-caption-text,
+		.widget .gallery-caption {
+			color: rgba( 255, 255, 255, 0.7);
+		}
+
+		.widget button:hover,
+		.widget button:focus,
+		.widget input[type="button"]:hover,
+		.widget input[type="button"]:focus,
+		.widget input[type="reset"]:hover,
+		.widget input[type="reset"]:focus,
+		.widget input[type="submit"]:hover,
+		.widget input[type="submit"]:focus,
+		.widget_calendar tbody a:hover,
+		.widget_calendar tbody a:focus {
+			background-color: rgba( 255, 255, 255, 0.7);
+		}
+
+		.widget blockquote {
+			border-color: rgba( 255, 255, 255, 0.7);
+		}
+
+		/* Sidebar Border Color */
+		.main-navigation ul,
+		.main-navigation li,
+		.widget input,
+		.widget textarea,
+		.widget table,
+		.widget th,
+		.widget td,
+		.widget pre,
+		.widget li,
+		.widget_categories .children,
+		.widget_nav_menu .sub-menu,
+		.widget_pages .children,
+		.widget abbr[title] {
+			border-color: rgba( 255, 255, 255, 0.1);
+		}
+
+		.dropdown-toggle:hover,
+		.dropdown-toggle:focus,
+		.widget hr {
+			background-color: rgba( 255, 255, 255, 0.1);
+		}
+
+		.widget input:focus,
+		.widget textarea:focus {
+			border-color: rgba( 255, 255, 255, 0.3);
+		}
+
+		.sidebar a:focus,
+		.dropdown-toggle:focus {
+			outline-color: rgba( 255, 255, 255, 0.3);
+		}
+	}
+
+		/* Custom Header Background Color */
+		body:before,
+		.site-header {
+			background-color: #0a89cc;
+		}
+
+		@media screen and (min-width: 59.6875em) {
+			.site-header,
+			.secondary {
+				background-color: transparent;
+			}
+
+			.widget button,
+			.widget input[type="button"],
+			.widget input[type="reset"],
+			.widget input[type="submit"],
+			.widget_calendar tbody a,
+			.widget_calendar tbody a:hover,
+			.widget_calendar tbody a:focus {
+				color: #0a89cc;
+			}
+		}
+	
+</style>
+<link rel='stylesheet' id='twentyfifteen-block-style-css' href='https://lemire.me/blog/wp-content/themes/twentyfifteen/css/blocks.css?ver=20181230' type='text/css' media='all' />
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentyfifteen-ie-css'  href='https://lemire.me/blog/wp-content/themes/twentyfifteen/css/ie.css?ver=20141010' type='text/css' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentyfifteen-ie7-css'  href='https://lemire.me/blog/wp-content/themes/twentyfifteen/css/ie7.css?ver=20141010' type='text/css' media='all' />
+<![endif]-->
+<script type='text/javascript' src='https://lemire.me/blog/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<link rel='https://api.w.org/' href='https://lemire.me/blog/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://lemire.me/blog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://lemire.me/blog/wp-includes/wlwmanifest.xml" />
+<link rel='prev' title='A new release of simdjson: runtime dispatching, 64-bit ARM support and more' href='https://lemire.me/blog/2019/08/01/a-new-release-of-simdjson-runtime-dispatching-64-bit-arm-support-and-more/' />
+<link rel='next' title='Science and Technology links (August 3rd 2019)' href='https://lemire.me/blog/2019/08/04/science-and-technology-links-august-3rd-2019/' />
+<meta name="generator" content="WordPress 5.3" />
+<link rel="canonical" href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/" />
+<link rel='shortlink' href='https://lemire.me/blog/?p=17725' />
+<link rel="alternate" type="application/json+oembed" href="https://lemire.me/blog/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flemire.me%2Fblog%2F2019%2F08%2F02%2Fjson-parsing-simdjson-vs-json-for-modern-c%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://lemire.me/blog/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flemire.me%2Fblog%2F2019%2F08%2F02%2Fjson-parsing-simdjson-vs-json-for-modern-c%2F&#038;format=xml" />
+
+<style type="text/css">
+table {  
+    color: #333; /* Lighten up font color */
+    font-family: Helvetica, Arial, sans-serif; /* Nicer font */
+    width: 95%; 
+    border-collapse: 
+    collapse; border-spacing: 0; 
+}
+
+td, th { border: 1px solid #CCC; height: 30px; } /* Make cells a bit taller */
+
+th {  
+    background: #F3F3F3; /* Light grey background */
+    font-weight: bold; /* Make sure they're bold */
+}
+
+td {  
+    background: #FAFAFA; /* Lighter grey background */
+    text-align: center; /* Center our text */
+}
+
+</style>
+
+
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/" />
+<meta property="og:title" content="JSON parsing: simdjson vs. JSON for Modern C++" />
+<meta property="og:description" content="JSON is the ubiquitous data format on the Internet. There is a lot of JSON that needs to be parsed and validated. As we just released the latest version of our fast JSON parser (simdjson), a reader of this blog asked how it compared in speed against one of the nicest C++ JSON libraries: JSON &hellip; Continue reading JSON parsing: simdjson vs. JSON for Modern C++" />
+<meta property="og:site_name" content="Daniel Lemire&#039;s blog" />
+<meta property="og:image" content="https://lemire.me/img/portrait2018facebook.jpg" />
+<meta property="og:image:alt" content="" />
+<meta property="og:image:width" content="" />
+<meta property="og:image:height" content="" />
+<meta itemscope itemtype="article" />
+<meta itemprop="description" content="JSON is the ubiquitous data format on the Internet. There is a lot of JSON that needs to be parsed and validated. As we just released the latest version of our fast JSON parser (simdjson), a reader of this blog asked how it compared in speed against one of the nicest C++ JSON libraries: JSON &hellip; Continue reading JSON parsing: simdjson vs. JSON for Modern C++" />
+<meta itemprop="image" content="https://lemire.me/img/portrait2018facebook.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/" />
+<meta name="twitter:title" content="JSON parsing: simdjson vs. JSON for Modern C++" />
+<meta name="twitter:description" content="JSON is the ubiquitous data format on the Internet. There is a lot of JSON that needs to be parsed and validated. As we just released the latest version of our fast JSON parser (simdjson), a reader of this blog asked how it compared in speed against one of the nicest C++ JSON libraries: JSON &hellip; Continue reading JSON parsing: simdjson vs. JSON for Modern C++" />
+<meta name="twitter:image" content="" />
+<style> .entry-footer .byline{ display:none !important; } </style><style> .entry-meta .byline{ display:none !important; } </style><style> .entry-footer .posted-on{ display:none !important; } </style><style> .entry-meta .entry-date{ display:none !important; } </style><style> .entry-meta .date{ display:none !important; } </style><style> .entry-footer .cat-links{ display:none !important; } </style><style> .entry-meta .cat-links{ display:none !important; } </style><style> .entry-meta .categories-links{ display:none !important; } </style><style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style><link rel="amphtml" href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/?amp"><link rel="icon" href="https://lemire.me/blog/wp-content/uploads/2015/10/profile2011_152-150x150.jpg" sizes="32x32" />
+<link rel="icon" href="https://lemire.me/blog/wp-content/uploads/2015/10/profile2011_152.jpg" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="https://lemire.me/blog/wp-content/uploads/2015/10/profile2011_152.jpg" />
+<meta name="msapplication-TileImage" content="https://lemire.me/blog/wp-content/uploads/2015/10/profile2011_152.jpg" />
+</head>
+<body class="post-template-default single single-post postid-17725 single-format-standard wp-embed-responsive">
+<div id="page" class="hfeed site">
+<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+<div id="sidebar" class="sidebar">
+<header id="masthead" class="site-header" role="banner">
+<div class="site-branding">
+<p class="site-title"><a href="https://lemire.me/blog/" rel="home">Daniel Lemire&#039;s blog</a></p>
+<p class="site-description">Daniel Lemire is a computer science professor at the University of Quebec (TELUQ) in Montreal. His research is focused on software performance and data engineering. He is a techno-optimist.</p>
+<button class="secondary-toggle">Menu and widgets</button>
+</div>
+</header>
+<div id="secondary" class="secondary">
+<nav id="site-navigation" class="main-navigation" role="navigation">
+<div class="menu-main-links-container"><ul id="menu-main-links" class="nav-menu"><li id="menu-item-13529" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13529"><a href="https://lemire.me/en/">My home page</a></li>
+<li id="menu-item-13530" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13530"><a href="https://lemire.me/en/#publications">My papers</a></li>
+<li id="menu-item-13531" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13531"><a href="https://github.com/lemire">My software</a></li>
+</ul></div> </nav>
+<div id="widget-area" class="widget-area" role="complementary">
+<aside id="custom_html-7" class="widget_text widget widget_custom_html"><h2 class="widget-title">Subscribe</h2><div class="textwidget custom-html-widget">You can <a href="
+https://feedburner.google.com/fb/a/mailverify?uri=daniel-lemire/atom">subscribe to this blog by email</a>.</div></aside><aside id="custom_html-3" class="widget_text widget widget_custom_html"><h2 class="widget-title">Where to find me?</h2><div class="textwidget custom-html-widget">You can also find Daniel Lemire on
+<ul>
+<li>Twitter as <a href="https://twitter.com/lemire">@lemire</a> with <a href="https://twitter.com/followers">11k&nbsp;followers</a>,</li>
+<li>on <a href="https://github.com/lemire/">GitHub</a> with over <a href="https://github.com/lemire?tab=followers">2k&nbsp;followers</a>,</li>
+<li>on <a href="https://scholar.google.com/citations?user=q1ja-G8AAAAJ">Google Scholar</a> with 3k&nbsp;citations and over 70 peer-reviewed publications,</li>
+<li>on <a href="https://www.facebook.com/daniel.lemire">Facebook</a>,</li>
+<li>and on <a href="https://www.linkedin.com/in/dlemire">LinkedIn</a>.</li>
+</ul>
+If you want to meet Daniel in person, he organizes regular talks open to the public in Montreal (typically in French): <a href="https://tribalab.wordpress.com">tribalab</a> and <a href="https://technolab.fun">technolab</a> .</div></aside><aside id="search-3" class="widget widget_search"><form role="search" method="get" class="search-form" action="https://lemire.me/blog/">
+<label>
+<span class="screen-reader-text">Search for:</span>
+<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" />
+</label>
+<input type="submit" class="search-submit screen-reader-text" value="Search" />
+</form></aside><aside id="custom_html-5" class="widget_text widget widget_custom_html"><h2 class="widget-title">Support my work!</h2><div class="textwidget custom-html-widget">I do not accept any advertisement. However, you can support the blog with <a href="https://www.paypal.me/daniellemirephd/25">donations through paypal</a>. Please consider getting in touch if you are a supporter so that I can thank you.</div></aside> <aside id="recent-posts-2" class="widget widget_recent_entries"> <h2 class="widget-title">Recent Posts</h2> <ul>
+<li>
+<a href="https://lemire.me/blog/2019/12/14/science-and-technology-links-december-14th-2019/">Science and Technology links (December 14th 2019)</a>
+</li>
+<li>
+<a href="https://lemire.me/blog/2019/12/12/are-64-bit-random-identifiers-free-from-collision/">Are 64-bit random identifiers free from collision?</a>
+</li>
+<li>
+<a href="https://lemire.me/blog/2019/12/11/amazons-new-arm-servers-graviton-2/">Amazon&#8217;s new ARM servers: Graviton 2</a>
+</li>
+<li>
+<a href="https://lemire.me/blog/2019/12/07/science-and-technology-links-december-7th-2019/">Science and Technology links (December 7th 2019)</a>
+</li>
+<li>
+<a href="https://lemire.me/blog/2019/12/06/amd-zen-2-and-branch-mispredictions/">AMD Zen 2 and branch mispredictions</a>
+</li>
+</ul>
+</aside><aside id="recent-comments-3" class="widget widget_recent_comments"><h2 class="widget-title">Recent Comments</h2><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href="https://lemire.me/en/" rel='external nofollow ugc' class='url'>Daniel Lemire</a></span> on <a href="https://lemire.me/blog/2019/12/14/science-and-technology-links-december-14th-2019/#comment-468078">Science and Technology links (December 14th 2019)</a></li><li class="recentcomments"><span class="comment-author-link">Jamie_NYC</span> on <a href="https://lemire.me/blog/2019/12/14/science-and-technology-links-december-14th-2019/#comment-467947">Science and Technology links (December 14th 2019)</a></li><li class="recentcomments"><span class="comment-author-link"><a href='http://h2database.com' rel='external nofollow ugc' class='url'>Thomas Müller Graf</a></span> on <a href="https://lemire.me/blog/2019/12/12/are-64-bit-random-identifiers-free-from-collision/#comment-467558">Are 64-bit random identifiers free from collision?</a></li><li class="recentcomments"><span class="comment-author-link">Peter</span> on <a href="https://lemire.me/blog/2019/12/12/are-64-bit-random-identifiers-free-from-collision/#comment-466631">Are 64-bit random identifiers free from collision?</a></li><li class="recentcomments"><span class="comment-author-link">Peter</span> on <a href="https://lemire.me/blog/2019/12/12/are-64-bit-random-identifiers-free-from-collision/#comment-466623">Are 64-bit random identifiers free from collision?</a></li></ul></aside><aside id="pages-3" class="widget widget_pages"><h2 class="widget-title">Pages</h2> <ul>
+<li class="page_item page-item-14034"><a href="https://lemire.me/blog/a-short-history-of-technology/">A short history of technology</a></li>
+<li class="page_item page-item-345"><a href="https://lemire.me/blog/about-me/">About me</a></li>
+<li class="page_item page-item-4194"><a href="https://lemire.me/blog/book-recommendations/">Book recommendations</a></li>
+<li class="page_item page-item-12110"><a href="https://lemire.me/blog/my-bets/">My bets</a></li>
+<li class="page_item page-item-14029"><a href="https://lemire.me/blog/my-favorite-articles/">My favorite articles</a></li>
+<li class="page_item page-item-1794"><a href="https://lemire.me/blog/my-readers/">My readers</a></li>
+<li class="page_item page-item-8035"><a href="https://lemire.me/blog/predictions/">Predictions</a></li>
+<li class="page_item page-item-987"><a href="https://lemire.me/blog/terms-of-use/">Terms of use</a></li>
+<li class="page_item page-item-725"><a href="https://lemire.me/blog/rules-to-write-a-good-research-paper/">Write good papers</a></li>
+</ul>
+</aside><aside id="archives-2" class="widget widget_archive"><h2 class="widget-title">Archives</h2> <label class="screen-reader-text" for="archives-dropdown-2">Archives</label>
+<select id="archives-dropdown-2" name="archive-dropdown">
+<option value="">Select Month</option>
+<option value='https://lemire.me/blog/2019/12/'> December 2019 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2019/11/'> November 2019 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2019/10/'> October 2019 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2019/09/'> September 2019 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2019/08/'> August 2019 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2019/07/'> July 2019 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2019/06/'> June 2019 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2019/05/'> May 2019 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2019/04/'> April 2019 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2019/03/'> March 2019 &nbsp;(15)</option>
+<option value='https://lemire.me/blog/2019/02/'> February 2019 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2019/01/'> January 2019 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2018/12/'> December 2018 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2018/11/'> November 2018 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2018/10/'> October 2018 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2018/09/'> September 2018 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2018/08/'> August 2018 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2018/07/'> July 2018 &nbsp;(14)</option>
+<option value='https://lemire.me/blog/2018/06/'> June 2018 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2018/05/'> May 2018 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2018/04/'> April 2018 &nbsp;(12)</option>
+<option value='https://lemire.me/blog/2018/03/'> March 2018 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2018/02/'> February 2018 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2018/01/'> January 2018 &nbsp;(15)</option>
+<option value='https://lemire.me/blog/2017/12/'> December 2017 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2017/11/'> November 2017 &nbsp;(16)</option>
+<option value='https://lemire.me/blog/2017/10/'> October 2017 &nbsp;(13)</option>
+<option value='https://lemire.me/blog/2017/09/'> September 2017 &nbsp;(20)</option>
+<option value='https://lemire.me/blog/2017/08/'> August 2017 &nbsp;(12)</option>
+<option value='https://lemire.me/blog/2017/07/'> July 2017 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2017/06/'> June 2017 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2017/05/'> May 2017 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2017/04/'> April 2017 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2017/03/'> March 2017 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2017/02/'> February 2017 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2017/01/'> January 2017 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2016/12/'> December 2016 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2016/11/'> November 2016 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2016/10/'> October 2016 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2016/09/'> September 2016 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2016/08/'> August 2016 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2016/07/'> July 2016 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2016/06/'> June 2016 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2016/05/'> May 2016 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2016/04/'> April 2016 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2016/03/'> March 2016 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2016/02/'> February 2016 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2016/01/'> January 2016 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2015/12/'> December 2015 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2015/11/'> November 2015 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2015/10/'> October 2015 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2015/09/'> September 2015 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2015/08/'> August 2015 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2015/07/'> July 2015 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2015/06/'> June 2015 &nbsp;(2)</option>
+<option value='https://lemire.me/blog/2015/05/'> May 2015 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2015/04/'> April 2015 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2015/03/'> March 2015 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2015/02/'> February 2015 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2015/01/'> January 2015 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2014/12/'> December 2014 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2014/11/'> November 2014 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2014/10/'> October 2014 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2014/09/'> September 2014 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2014/08/'> August 2014 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2014/07/'> July 2014 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2014/06/'> June 2014 &nbsp;(2)</option>
+<option value='https://lemire.me/blog/2014/05/'> May 2014 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2014/04/'> April 2014 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2014/03/'> March 2014 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2014/02/'> February 2014 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2014/01/'> January 2014 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2013/12/'> December 2013 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2013/11/'> November 2013 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2013/10/'> October 2013 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2013/09/'> September 2013 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2013/08/'> August 2013 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2013/07/'> July 2013 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2013/06/'> June 2013 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2013/05/'> May 2013 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2013/04/'> April 2013 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2013/03/'> March 2013 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2013/02/'> February 2013 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2013/01/'> January 2013 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2012/12/'> December 2012 &nbsp;(2)</option>
+<option value='https://lemire.me/blog/2012/11/'> November 2012 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2012/10/'> October 2012 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2012/09/'> September 2012 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2012/08/'> August 2012 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2012/07/'> July 2012 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2012/06/'> June 2012 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2012/05/'> May 2012 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2012/04/'> April 2012 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2012/03/'> March 2012 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2012/02/'> February 2012 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2012/01/'> January 2012 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2011/12/'> December 2011 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2011/11/'> November 2011 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2011/10/'> October 2011 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2011/09/'> September 2011 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2011/08/'> August 2011 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2011/07/'> July 2011 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2011/06/'> June 2011 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2011/05/'> May 2011 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2011/04/'> April 2011 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2011/03/'> March 2011 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2011/02/'> February 2011 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2011/01/'> January 2011 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2010/12/'> December 2010 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2010/11/'> November 2010 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2010/10/'> October 2010 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2010/09/'> September 2010 &nbsp;(3)</option>
+<option value='https://lemire.me/blog/2010/08/'> August 2010 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2010/07/'> July 2010 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2010/06/'> June 2010 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2010/05/'> May 2010 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2010/04/'> April 2010 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2010/03/'> March 2010 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2010/02/'> February 2010 &nbsp;(5)</option>
+<option value='https://lemire.me/blog/2010/01/'> January 2010 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2009/12/'> December 2009 &nbsp;(4)</option>
+<option value='https://lemire.me/blog/2009/11/'> November 2009 &nbsp;(6)</option>
+<option value='https://lemire.me/blog/2009/10/'> October 2009 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2009/09/'> September 2009 &nbsp;(8)</option>
+<option value='https://lemire.me/blog/2009/08/'> August 2009 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2009/07/'> July 2009 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2009/06/'> June 2009 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2009/05/'> May 2009 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2009/04/'> April 2009 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2009/03/'> March 2009 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2009/02/'> February 2009 &nbsp;(14)</option>
+<option value='https://lemire.me/blog/2009/01/'> January 2009 &nbsp;(14)</option>
+<option value='https://lemire.me/blog/2008/12/'> December 2008 &nbsp;(16)</option>
+<option value='https://lemire.me/blog/2008/11/'> November 2008 &nbsp;(25)</option>
+<option value='https://lemire.me/blog/2008/10/'> October 2008 &nbsp;(13)</option>
+<option value='https://lemire.me/blog/2008/09/'> September 2008 &nbsp;(15)</option>
+<option value='https://lemire.me/blog/2008/08/'> August 2008 &nbsp;(14)</option>
+<option value='https://lemire.me/blog/2008/07/'> July 2008 &nbsp;(15)</option>
+<option value='https://lemire.me/blog/2008/06/'> June 2008 &nbsp;(14)</option>
+<option value='https://lemire.me/blog/2008/05/'> May 2008 &nbsp;(15)</option>
+<option value='https://lemire.me/blog/2008/04/'> April 2008 &nbsp;(20)</option>
+<option value='https://lemire.me/blog/2008/03/'> March 2008 &nbsp;(18)</option>
+<option value='https://lemire.me/blog/2008/02/'> February 2008 &nbsp;(12)</option>
+<option value='https://lemire.me/blog/2008/01/'> January 2008 &nbsp;(19)</option>
+<option value='https://lemire.me/blog/2007/12/'> December 2007 &nbsp;(24)</option>
+<option value='https://lemire.me/blog/2007/11/'> November 2007 &nbsp;(23)</option>
+<option value='https://lemire.me/blog/2007/10/'> October 2007 &nbsp;(19)</option>
+<option value='https://lemire.me/blog/2007/09/'> September 2007 &nbsp;(13)</option>
+<option value='https://lemire.me/blog/2007/08/'> August 2007 &nbsp;(23)</option>
+<option value='https://lemire.me/blog/2007/07/'> July 2007 &nbsp;(18)</option>
+<option value='https://lemire.me/blog/2007/06/'> June 2007 &nbsp;(15)</option>
+<option value='https://lemire.me/blog/2007/05/'> May 2007 &nbsp;(19)</option>
+<option value='https://lemire.me/blog/2007/04/'> April 2007 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2007/03/'> March 2007 &nbsp;(7)</option>
+<option value='https://lemire.me/blog/2007/02/'> February 2007 &nbsp;(27)</option>
+<option value='https://lemire.me/blog/2007/01/'> January 2007 &nbsp;(20)</option>
+<option value='https://lemire.me/blog/2006/12/'> December 2006 &nbsp;(20)</option>
+<option value='https://lemire.me/blog/2006/11/'> November 2006 &nbsp;(18)</option>
+<option value='https://lemire.me/blog/2006/10/'> October 2006 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2006/09/'> September 2006 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2006/08/'> August 2006 &nbsp;(25)</option>
+<option value='https://lemire.me/blog/2006/07/'> July 2006 &nbsp;(10)</option>
+<option value='https://lemire.me/blog/2006/06/'> June 2006 &nbsp;(18)</option>
+<option value='https://lemire.me/blog/2006/05/'> May 2006 &nbsp;(27)</option>
+<option value='https://lemire.me/blog/2006/04/'> April 2006 &nbsp;(25)</option>
+<option value='https://lemire.me/blog/2006/03/'> March 2006 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2006/02/'> February 2006 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2006/01/'> January 2006 &nbsp;(39)</option>
+<option value='https://lemire.me/blog/2005/12/'> December 2005 &nbsp;(23)</option>
+<option value='https://lemire.me/blog/2005/11/'> November 2005 &nbsp;(25)</option>
+<option value='https://lemire.me/blog/2005/10/'> October 2005 &nbsp;(20)</option>
+<option value='https://lemire.me/blog/2005/09/'> September 2005 &nbsp;(26)</option>
+<option value='https://lemire.me/blog/2005/08/'> August 2005 &nbsp;(39)</option>
+<option value='https://lemire.me/blog/2005/07/'> July 2005 &nbsp;(17)</option>
+<option value='https://lemire.me/blog/2005/06/'> June 2005 &nbsp;(16)</option>
+<option value='https://lemire.me/blog/2005/05/'> May 2005 &nbsp;(9)</option>
+<option value='https://lemire.me/blog/2005/04/'> April 2005 &nbsp;(13)</option>
+<option value='https://lemire.me/blog/2005/03/'> March 2005 &nbsp;(30)</option>
+<option value='https://lemire.me/blog/2005/02/'> February 2005 &nbsp;(20)</option>
+<option value='https://lemire.me/blog/2005/01/'> January 2005 &nbsp;(30)</option>
+<option value='https://lemire.me/blog/2004/12/'> December 2004 &nbsp;(11)</option>
+<option value='https://lemire.me/blog/2004/11/'> November 2004 &nbsp;(19)</option>
+<option value='https://lemire.me/blog/2004/10/'> October 2004 &nbsp;(14)</option>
+<option value='https://lemire.me/blog/2004/09/'> September 2004 &nbsp;(17)</option>
+<option value='https://lemire.me/blog/2004/08/'> August 2004 &nbsp;(13)</option>
+<option value='https://lemire.me/blog/2004/07/'> July 2004 &nbsp;(16)</option>
+<option value='https://lemire.me/blog/2004/06/'> June 2004 &nbsp;(16)</option>
+<option value='https://lemire.me/blog/2004/05/'> May 2004 &nbsp;(12)</option>
+</select>
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "archives-dropdown-2" );
+	function onSelectChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value !== '' ) {
+			document.location.href = this.options[ this.selectedIndex ].value;
+		}
+	}
+	dropdown.onchange = onSelectChange;
+})();
+/* ]]> */
+</script>
+</aside><aside id="meta-3" class="widget widget_meta"><h2 class="widget-title">Boring stuff</h2> <ul>
+<li><a href="https://lemire.me/blog/wp-login.php">Log in</a></li>
+<li><a href="https://lemire.me/blog/feed/">Entries feed</a></li>
+<li><a href="https://lemire.me/blog/comments/feed/">Comments feed</a></li>
+<li><a href="https://wordpress.org/">WordPress.org</a></li> </ul>
+</aside> </div>
+</div>
+</div>
+<div id="content" class="site-content">
+<div id="primary" class="content-area">
+<main id="main" class="site-main" role="main">
+<article id="post-17725" class="post-17725 post type-post status-publish format-standard hentry category-84">
+<header class="entry-header">
+<h1 class="entry-title">JSON parsing: simdjson vs. JSON for Modern C++</h1> </header>
+<div class="entry-content">
+<p>JSON is the ubiquitous data format on the Internet. There is a lot of JSON that needs to be parsed and validated.</p>
+<p>As we just released the latest version of our fast JSON parser (<a href="https://github.com/lemire/simdjson">simdjson</a>), a reader of this blog asked how it compared in speed against one of the nicest C++ JSON libraries: JSON for Modern C++ (<a href="https://github.com/nlohmann/json">nlohmann/json</a>).</p>
+<p>We have not reported on benchmarks against &#8220;JSON for Modern C++&#8221; because we knew that it was not designed for raw speed. It is designed for ease-of-use: it makes the life of the programmer as easy as possible. In contrast, simdjson optimizes for speed, even when it requires a bit more work from the programmer. Nevertheless, it is still interesting to compare speed, to know what your trade-off is.</p>
+<p>Let us run some benchmarks&#8230; I use a Skylake processor with GNU GCC 8.3.</p>
+<table>
+<tbody>
+<tr>
+<th>file</th>
+<th>simdjson</th>
+<th>JSON for Modern C++</th>
+</tr>
+<tr>
+<td>apache_builds</td>
+<td>2.3 GB/s</td>
+<td>0.098 GB/s</td>
+</tr>
+<tr>
+<td>github_events</td>
+<td>2.5 GB/s</td>
+<td>0.093 GB/s</td>
+</tr>
+<tr>
+<td>gsoc-2018</td>
+<td>3.3 GB/s</td>
+<td>0.091 GB/s</td>
+</tr>
+<tr>
+<td>twitter</td>
+<td>2.2 GB/s</td>
+<td>0.094 GB/s</td>
+</tr>
+</tbody>
+</table>
+<p>Thus, roughly speaking, simdjson can parse, validate a JSON document and create a DOM tree, at a speed of about 2 GB/s. The easier-to-use &#8220;JSON for Modern C++&#8221; has a speed of about 0.1 GB/s, so about 20x slower. As a reference, we can easily read files from disk or the network at speeds higher than 2 GB/s.</p>
+<p>Link: <a href="https://github.com/lemire/simdjson">simdjson</a>.</p>
+</div>
+<div class="author-info">
+<h2 class="author-heading">Published by</h2>
+<div class="author-avatar">
+<img alt='' src='https://secure.gravatar.com/avatar/4b736113aa1557b9a110b5123d81d5f6?s=56&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/4b736113aa1557b9a110b5123d81d5f6?s=112&#038;d=mm&#038;r=g 2x' class='avatar avatar-56 photo' height='56' width='56' /> </div>
+<div class="author-description">
+<h3 class="author-title">Daniel Lemire</h3>
+<p class="author-bio">
+A computer science professor at the University of Quebec (TELUQ). <a class="author-link" href="https://lemire.me/blog/author/lemire/" rel="author">
+View all posts by Daniel Lemire </a>
+</p>
+</div>
+</div>
+<footer class="entry-footer">
+<span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/" rel="bookmark"><time class="entry-date published" datetime="2019-08-02T15:57:41+00:00">August 2, 2019</time><time class="updated" datetime="2019-08-02T16:03:18+00:00">August 2, 2019</time></a></span><span class="byline"><span class="author vcard"><span class="screen-reader-text">Author </span><a class="url fn n" href="https://lemire.me/blog/author/lemire/">Daniel Lemire</a></span></span><span class="cat-links"><span class="screen-reader-text">Categories </span><a href="https://lemire.me/blog/category/84/" rel="category tag"></a></span> </footer>
+</article>
+<div id="comments" class="comments-area">
+<h2 class="comments-title">
+5 thoughts on &ldquo;JSON parsing: simdjson vs. JSON for Modern C++&rdquo; </h2>
+<ol class="comment-list">
+<li id="comment-421882" class="comment even thread-even depth-1">
+<article id="div-comment-421882" class="comment-body">
+<footer class="comment-meta">
+<div class="comment-author vcard">
+<img alt='' src='https://secure.gravatar.com/avatar/0e1ea3874530809f31d47b3930a261dd?s=56&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/0e1ea3874530809f31d47b3930a261dd?s=112&#038;d=mm&#038;r=g 2x' class='avatar avatar-56 photo' height='56' width='56' /> <b class="fn"><a href='http://example.com' rel='external nofollow ugc' class='url'>degski</a></b> <span class="says">says:</span> </div>
+<div class="comment-metadata">
+<a href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/#comment-421882">
+<time datetime="2019-08-03T04:11:57+00:00">
+August 3, 2019 at 4:11 am </time>
+</a>
+</div>
+</footer>
+<div class="comment-content">
+<p>Thanks, for posting this.</p>
+<p>That is well a mega difference, very impressive. I&#8217;m just using it [nlohmann/json] for some settings and some data from the web, so speed is not relevant, but if it got to be relevant for another application, I&#8217;d definitely look into simdjson.</p>
+</div>
+<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/?replytocom=421882#respond' data-commentid="421882" data-postid="17725" data-belowelement="div-comment-421882" data-respondelement="respond" aria-label='Reply to degski'>Reply</a></div> </article>
+</li>
+<li id="comment-422154" class="comment odd alt thread-odd thread-alt depth-1 parent">
+<article id="div-comment-422154" class="comment-body">
+<footer class="comment-meta">
+<div class="comment-author vcard">
+<img alt='' src='https://secure.gravatar.com/avatar/0e1ea3874530809f31d47b3930a261dd?s=56&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/0e1ea3874530809f31d47b3930a261dd?s=112&#038;d=mm&#038;r=g 2x' class='avatar avatar-56 photo' height='56' width='56' /> <b class="fn"><a href='http://example.com' rel='external nofollow ugc' class='url'>degski</a></b> <span class="says">says:</span> </div>
+<div class="comment-metadata">
+<a href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/#comment-422154">
+<time datetime="2019-08-05T02:51:17+00:00">
+August 5, 2019 at 2:51 am </time>
+</a>
+</div>
+</footer>
+<div class="comment-content">
+<p>vcpkg has simdjson in its repo (for those that did not know).</p>
+</div>
+<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/?replytocom=422154#respond' data-commentid="422154" data-postid="17725" data-belowelement="div-comment-422154" data-respondelement="respond" aria-label='Reply to degski'>Reply</a></div> </article>
+<ol class="children">
+<li id="comment-422230" class="comment byuser comment-author-lemire bypostauthor even depth-2">
+<article id="div-comment-422230" class="comment-body">
+<footer class="comment-meta">
+<div class="comment-author vcard">
+<img alt='' src='https://secure.gravatar.com/avatar/4b736113aa1557b9a110b5123d81d5f6?s=56&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/4b736113aa1557b9a110b5123d81d5f6?s=112&#038;d=mm&#038;r=g 2x' class='avatar avatar-56 photo' height='56' width='56' /> <b class="fn"><a href="https://lemire.me/en/" rel='external nofollow ugc' class='url'>Daniel Lemire</a></b> <span class="says">says:</span> </div>
+<div class="comment-metadata">
+<a href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/#comment-422230">
+<time datetime="2019-08-05T13:46:09+00:00">
+August 5, 2019 at 1:46 pm </time>
+</a>
+</div>
+</footer>
+<div class="comment-content">
+<p>We are working toward releasing version 0.2 on vcpkg.</p>
+</div>
+<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/?replytocom=422230#respond' data-commentid="422230" data-postid="17725" data-belowelement="div-comment-422230" data-respondelement="respond" aria-label='Reply to Daniel Lemire'>Reply</a></div> </article>
+</li>
+</ol>
+</li>
+<li id="comment-422240" class="comment odd alt thread-even depth-1 parent">
+<article id="div-comment-422240" class="comment-body">
+<footer class="comment-meta">
+<div class="comment-author vcard">
+<img alt='' src='https://secure.gravatar.com/avatar/24cfa9591263008553ae4c125b6a9934?s=56&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/24cfa9591263008553ae4c125b6a9934?s=112&#038;d=mm&#038;r=g 2x' class='avatar avatar-56 photo' height='56' width='56' /> <b class="fn">wmu</b> <span class="says">says:</span> </div>
+<div class="comment-metadata">
+<a href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/#comment-422240">
+<time datetime="2019-08-05T16:43:48+00:00">
+August 5, 2019 at 4:43 pm </time>
+</a>
+</div>
+</footer>
+<div class="comment-content">
+<p>Daniel, you wrote &#8220;[JSON for Modern C++] is designed for ease-of-use: it makes the life of the programmer as easy as possible. In contrast, simdjson optimizes for speed, even when it requires a bit more work from the programmer.&#8221; As a programmer I never used simdjson, but have some experience with nlohmann/json and I&#8217;m wondering how difficult to use your library is.</p>
+</div>
+<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/?replytocom=422240#respond' data-commentid="422240" data-postid="17725" data-belowelement="div-comment-422240" data-respondelement="respond" aria-label='Reply to wmu'>Reply</a></div> </article>
+<ol class="children">
+<li id="comment-422257" class="comment byuser comment-author-lemire bypostauthor even depth-2">
+<article id="div-comment-422257" class="comment-body">
+<footer class="comment-meta">
+<div class="comment-author vcard">
+<img alt='' src='https://secure.gravatar.com/avatar/4b736113aa1557b9a110b5123d81d5f6?s=56&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/4b736113aa1557b9a110b5123d81d5f6?s=112&#038;d=mm&#038;r=g 2x' class='avatar avatar-56 photo' height='56' width='56' /> <b class="fn"><a href="https://lemire.me/en/" rel='external nofollow ugc' class='url'>Daniel Lemire</a></b> <span class="says">says:</span> </div>
+<div class="comment-metadata">
+<a href="https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/#comment-422257">
+<time datetime="2019-08-05T20:28:59+00:00">
+August 5, 2019 at 8:28 pm </time>
+</a>
+</div>
+</footer>
+<div class="comment-content">
+<p>We support a conventional DOM traversal as well as JSON pointers. Our DOM tree is immutable.</p>
+<p>Please try it out!</p>
+</div>
+<div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/?replytocom=422257#respond' data-commentid="422257" data-postid="17725" data-belowelement="div-comment-422257" data-respondelement="respond" aria-label='Reply to Daniel Lemire'>Reply</a></div> </article>
+</li>
+</ol>
+</li>
+</ol>
+<div id="respond" class="comment-respond">
+<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://lemire.me/blog/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><div class='wmd-panel'><div id='wmd-button-barcomment'></div><div id='wmd-button-bar-help'> <p>To create code blocks or other preformatted text, indent by four spaces:</p>
+<pre class='wmd-help'><span class='wmd-help-spaces'>&nbsp;&nbsp;&nbsp;&nbsp;</span>This will be displayed in a monospaced font. The first four 
+<span class='wmd-help-spaces'>&nbsp;&nbsp;&nbsp;&nbsp;</span>spaces will be stripped off, but all other whitespace
+<span class='wmd-help-spaces'>&nbsp;&nbsp;&nbsp;&nbsp;</span>will be preserved.
+<span class='wmd-help-spaces'>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<span class='wmd-help-spaces'>&nbsp;&nbsp;&nbsp;&nbsp;</span>Markdown is turned off in code blocks:
+<span class='wmd-help-spaces'>&nbsp;&nbsp;&nbsp;&nbsp;</span> [This is not a link](http://example.com)
+</pre>
+<p>
+To create not a block, but an inline code span, use backticks:
+</p>
+<pre class='wmd-help'>Here is some inline `code`.</pre> <p>For more help see <a href="https://daringfireball.net/projects/markdown/syntax" rel='no-follow'> http://daringfireball.net/projects/markdown/syntax</a></p></div><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><div id='wmd-previewcomment' class='wmd-panel wmd-preview prettyprint'></div></div><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<div class="comment-sub-ops" data-auto="position">
+<label for="comment-mail-sub-type" class="cso-sub-type">
+<span class="cso-icon"><svg style="width:1em; height:1em; vertical-align:middle;" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<g fill="currentColor" fill-rule="evenodd">
+<path d="M14.1,5.63571636 C14.9517714,6.33967604 15.450459,7.19287046 15.450459,8.11238878 C15.450459,9.00675525 14.9786798,9.83837654 14.1691007,10.5309611 L15.9373937,14.0087185 L12.3204301,12.0078104 C11.9296094,13.5858368 9.54844584,14.7997638 6.66936474,14.7997638 C5.53232152,14.7997638 4.47293941,14.6104254 3.58314938,14.2840966 L3.58314938,14.2840966 L0.600000024,15.934378 L1.91489821,13.3483263 C1.31289726,12.8333222 0.962083376,12.2149306 0.962083376,11.549882 C0.962083376,11.165606 1.07921023,10.7969075 1.29424428,10.4547307 L1.29424428,10.4547307 C0.538036753,9.77771086 0.100000001,8.97417858 0.100000001,8.11238878 C0.100000001,7.04123575 0.776722924,6.06008476 1.89999998,5.30000019 L1.89999998,7.0658888 C1.89999998,7.30870143 2.09163284,7.50553995 2.34867325,7.50553995 L13.6513267,7.50553995 C13.8991221,7.50553995 14.1,7.31362877 14.1,7.0658888 L14.1,5.63571636 L14.1,5.63571636 Z M1.91455086,10.9345943 C1.80464172,11.1556337 1.74596704,11.3882813 1.74596704,11.6284523 C1.74596704,12.1628789 2.03649339,12.660053 2.53556999,13.0749705 L1.89355472,14.5590821 L3.60073421,13.7061116 L3.60073421,13.7061116 C4.4110062,14.0513606 5.42865146,14.2569046 6.53374306,14.2569046 C8.94591699,14.2569046 10.9414496,13.2775827 11.2731076,12.0036603 C10.2241563,12.3100096 9.03514487,12.482874 7.77522952,12.482874 C5.42553187,12.482874 3.3224447,11.8816356 1.91455086,10.9345943 L1.91455086,10.9345943 Z M3.03674893,0 C2.79553911,0 2.5999999,0.198275445 2.5999999,0.450938832 L2.5999999,6.42178844 C2.5999999,6.67083508 2.80610042,6.87272727 3.03674893,6.87272727 L12.9632509,6.87272727 C13.2044607,6.87272727 13.3999999,6.67445183 13.3999999,6.42178844 L13.3999999,0.450938832 C13.3999999,0.201892192 13.1938994,0 12.9632509,0 L3.03674893,0 Z M7.99999989,4.5999999 L12.5,0.600000013 L11.5625,0.600000013 L7.99999989,2.78181813 L4.43749976,0.600000013 L3.5,0.599999905 L7.99999989,4.5999999 Z"></path>
+</g>
+</svg></span> Receive Email Notifications?
+</label>
+<select id="comment-mail-sub-type" name="comment_mail_sub_type" class="cso-sub-type form-control" title="Receive Notifications?">
+<option value="" selected='selected'>no, do not subscribe</option>
+<option value="comment">yes, replies to my comment</option>
+<option value="comments">yes, all comments/replies</option>
+</select>
+<select id="comment-mail-sub-deliver" name="comment_mail_sub_deliver" class="cso-sub-deliver form-control" title="Notify Me">
+<option value="asap" selected='selected'>instantly</option>
+<option value="hourly">hourly digest</option>
+<option value="daily">daily digest</option>
+<option value="weekly">weekly digest</option>
+</select>
+<div class="cso-links">
+<span class="cso-link-new">Or, you can <a href="https://lemire.me/blog/?comment_mail%5Bmanage%5D%5Bsub_new%5D=0&amp;comment_mail%5Bmanage%5D%5Bsub_form%5D%5Bpost_id%5D=17725" rel="nofollow">subscribe without commenting</a>.</span>
+</div>
+</div>
+<style type="text/css">
+        .comment-sub-ops
+        {
+            margin : 1em 0 1em 0;
+        }
+        .comment-sub-ops label
+        {
+            display : block;
+        }
+        .comment-sub-ops select
+        {
+            box-sizing : border-box;
+            display    : inline-block;
+        }
+        .comment-sub-ops select.cso-sub-type
+        {
+            width : 70%;
+            float : left;
+        }
+        .comment-sub-ops select.cso-sub-deliver
+        {
+            width : 28%;
+            float : right;
+        }
+        .comment-sub-ops select.cso-sub-deliver[disabled]
+        {
+            opacity : 0.3;
+        }
+        .comment-sub-ops .cso-links
+        {
+            font-size   : 80%;
+            line-height : 1.5em;
+            margin      : 0 0 0 .5em;
+            clear       : both;
+        }
+        .comment-sub-ops .cso-links .cso-link-summary
+        {
+            display     : block;
+            line-height : 1em;
+        }
+        .comment-sub-ops .cso-sub-list
+        {
+            margin: 1em 0 0 0;
+        }
+        .comment-sub-ops .cso-sub-list label
+        {
+            cursor: pointer;
+        }
+    </style><p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='17725' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="65d86bb072" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="5" /></p></form> </div>
+</div>
+<nav class="navigation post-navigation" role="navigation" aria-label="Posts">
+<h2 class="screen-reader-text">Post navigation</h2>
+<div class="nav-links"><div class="nav-previous"><a href="https://lemire.me/blog/2019/08/01/a-new-release-of-simdjson-runtime-dispatching-64-bit-arm-support-and-more/" rel="prev"><span class="meta-nav" aria-hidden="true">Previous</span> <span class="screen-reader-text">Previous post:</span> <span class="post-title">A new release of simdjson: runtime dispatching, 64-bit ARM support and more</span></a></div><div class="nav-next"><a href="https://lemire.me/blog/2019/08/04/science-and-technology-links-august-3rd-2019/" rel="next"><span class="meta-nav" aria-hidden="true">Next</span> <span class="screen-reader-text">Next post:</span> <span class="post-title">Science and Technology links (August 3rd 2019)</span></a></div></div>
+</nav>
+</main>
+</div>
+</div>
+<footer id="colophon" class="site-footer" role="contentinfo">
+<div class="site-info">
+<a href="https://wordpress.org/" class="imprint">
+Proudly powered by WordPress </a>
+</div>
+</footer>
+</div>
+<script>
+					document.addEventListener('DOMContentLoaded', function(event) {
+						
+						// check remember me by default
+						var forms = document.querySelectorAll('form'); 						
+						if (forms) {
+						
+							// look out for inputs named rememberme
+								var rememberArray = [];
+								var rememberMe = document.getElementsByName('rememberme');
+								if( rememberMe.length ) {
+									rememberArray.push(rememberMe);
+								}
+							
+							// look out for inputs named remember
+								var remember = document.getElementsByName('remember');
+								if( remember.length ) {
+									rememberArray.push(remember);
+								}
+							
+							// if there are remember me inputs
+							if( rememberArray.length ) { 	
+							
+								// 'check' the inputs so they're active		
+									for (i = 0; i < rememberArray.length; i++) {
+										for (x = 0; x < rememberArray[i].length; x++) {
+										  rememberArray[i][x].checked = true;
+										}
+									}
+							
+							}
+		
+							
+							// test for Ultimate Member Plugin forms
+								
+								// find the UM checkboxes
+								var UmCheckboxIcon = document.querySelectorAll('.um-icon-android-checkbox-outline-blank');
+								var UmCheckboxLabel = document.querySelectorAll('.um-field-checkbox');
+								
+								if( UmCheckboxIcon.length && UmCheckboxLabel.length ) {
+									
+									// loop through UM checkboxes
+									for (i = 0; i < UmCheckboxLabel.length; i++) {
+										
+										// find the UM input element
+										var UMCheckboxElement = UmCheckboxLabel[i].children;
+										var UMCheckboxElementName = UMCheckboxElement[0].getAttribute('name');
+										
+										// check if UM input element is remember me box
+										if( UMCheckboxElementName === 'remember' || UMCheckboxElementName === 'rememberme' ) {
+											
+											// activate the UM checkbox if it is a remember me box
+											UmCheckboxLabel[i].classList.add('active');
+											
+											// swap out UM classes to show the active state
+											UmCheckboxIcon[i].classList.add('um-icon-android-checkbox-outline');
+											UmCheckboxIcon[i].classList.remove('um-icon-android-checkbox-outline-blank');
+											
+										} // endif
+									
+									} // end for
+	
+								} // endif UM
+					
+						} // endif forms
+						
+					});
+		
+					</script><link rel='stylesheet' id='wp-markdown-editor-css' href='https://lemire.me/blog/wp-content/plugins/wp-markdown/css/markdown-editor.css?ver=1.6.1' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var PowerStatsParams = {"ajaxurl":"https:\/\/lemire.me\/blog\/wp-admin\/admin-ajax.php","ci":"YTo0OntzOjEyOiJjb250ZW50X3R5cGUiO3M6NDoicG9zdCI7czo4OiJjYXRlZ29yeSI7czoyOiI4NCI7czoxMDoiY29udGVudF9pZCI7aToxNzcyNTtzOjY6ImF1dGhvciI7czo2OiJsZW1pcmUiO30=.8fa7a67a2e1815dc6dd10f02d7aafd41"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/wp-power-stats/wp-power-stats.js'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/custom-css-js-php/assets/js/wcjp-frontend.js?ver=5.3'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/themes/twentyfifteen/js/skip-link-focus-fix.js?ver=20141010'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-includes/js/comment-reply.min.js?ver=5.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var screenReaderText = {"expand":"<span class=\"screen-reader-text\">expand child menu<\/span>","collapse":"<span class=\"screen-reader-text\">collapse child menu<\/span>"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/themes/twentyfifteen/js/functions.js?ver=20150330'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-includes/js/wp-embed.min.js?ver=5.3'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/wp-markdown/js/pagedown/markdown-converter.min.js?ver=1.6.1'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/wp-markdown/js/pagedown/markdown-sanitizer.min.js?ver=1.6.1'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/wp-markdown/js/pagedown/markdown-editor.min.js?ver=1.6.1'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/wp-markdown/js/prettify.min.js?ver=1.6.1'></script>
+<script type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/wp-markdown/js/markdown.min.js?ver=1.6.1'></script>
+<script async="async" type='text/javascript' src='https://lemire.me/blog/wp-content/plugins/akismet/_inc/form.js?ver=4.1.3'></script>
+
+<script type="text/javascript">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-25286235-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script type="text/javascript">
+    (function($) // Comment Mail™ subscr. options.
+    {
+        'use strict'; // Strict standards.
+
+        $(document).ready(
+            function() // On DOM ready handler.
+            {
+                var $subOps = $('.comment-sub-ops'),
+                    $subType, $subDeliver; // Initialize vars.
+
+                if($subOps.data('auto') === 'position') $subOps.prevUntil('form')
+                    .each(function(/* Auto-position subscription options. */)
+                          {
+                              var $this = $(this); // Cache this.
+                              if($this.find(':input[type="submit"]').length)
+                              {
+                                  $subOps.remove(), $this.before($subOps);
+                                  return false; // Break the each() loop.
+                              }
+                          });
+                $subOps = $('.comment-sub-ops'),
+                    $subType = $subOps.find('select.cso-sub-type'),
+                    $subDeliver = $subOps.find('select.cso-sub-deliver');
+
+                $subType.on('change', function()
+                {
+                    if($(this).val() === '')
+                        $subDeliver.attr('disabled', 'disabled');
+                    else $subDeliver.removeAttr('disabled');
+                })
+                    .trigger('change');
+            });
+    })(jQuery);
+</script>
+</body>
+</html>

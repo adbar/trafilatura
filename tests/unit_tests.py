@@ -107,6 +107,8 @@ MOCK_PAGES = { \
 'https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite': 'psl.eu.luniversite.html', \
 'https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html': 'chip.de.beef.html', \
 'http://www.sauvonsluniversite.fr/spip.php?article8532': 'sauvonsluniversite.com.spip.html', \
+'https://www.spiegel.de/spiegel/print/d-161500790.html': 'spiegel.de.albtraum.html', \
+'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': 'lemire.me.json.html', \
 }
 # '': '', \
 
@@ -422,6 +424,12 @@ def test_main(xmloutput=False):
     result = load_mock_page('http://www.sauvonsluniversite.fr/spip.php?article8532', xmloutput)
     assert 'L’AG Éducation Île-de-France inter-degrés' in result and 'Grève et mobilisation pour le climat' in result and 'suivi.reformes.blanquer@gmail.com' in result and 'Sauvons l’Université !' not in result and 'La semaine de SLU' not in result
 
+    result = load_mock_page('https://www.spiegel.de/spiegel/print/d-161500790.html', xmloutput)
+    assert 'Wie konnte es dazu kommen?' in result and 'Die Geschichte beginnt am 26. Oktober' in result and 'Es stützt seine Version.' in result and 'und Vorteile sichern!' not in result and 'Verschickt' not in result # and 'Die digitale Welt der Nachrichten.' not in result and 'Vervielfältigung nur mit Genehmigung' not in result
+
+    result = load_mock_page('https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/', xmloutput)
+    assert 'I use a Skylake processor with GNU GCC 8.3.' in result and 'gsoc-2018' in result and '0.091 GB/s' in result and 'version 0.2 on vcpkg.' in result and 'Leave a Reply' not in result and 'Science and Technology links' not in result and 'Proudly powered by WordPress' not in result
+    
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
  
