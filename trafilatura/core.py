@@ -426,7 +426,8 @@ def extract_content(tree, include_tables=False):
                                 #        processed_child.tail = handle_subelement(child).tail
                                 processed_child.tail = handle_subelement(child).tail
                             else:
-                                LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
+                                if child.tag == 'p':
+                                    LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
                             # prepare text
                             if processed_child.text is None:
                                 processed_child.text = ''
@@ -526,6 +527,9 @@ def extract_content(tree, include_tables=False):
                     subelement.tag = 'head' # 'cell'
                 elif subelement.tag == 'td':
                     subelement.tag = 'cell'
+                # handle spaces??
+                #elif subelement.tag == 'lb':
+                #    subelement.tail = handle_subelement(subelement).tail
                 else:
                     # subelement.getparent().remove(subelement)
                     etree.strip_tags(table_elem, subelement.tag)
@@ -606,6 +610,34 @@ def extract_metadata(tree):
     return doctitle, docdate
 
 
+def compare_extraction(tree, url, temppost_hand, no_fallback):
+    temp_text = ' '.join(temppost_hand.itertext())
+    if no_fallback is False and 0 <= len(temp_text) < 1500: # was 300
+        # try with justext
+        temppost_algo = try_justext(tree, url) # cleaned_tree
+        # compare
+        temp_jt = ' '.join(temppost_algo.itertext())
+        LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
+        # conditions to use justext
+        if 0 <= len(temp_text) < 1500 and len(temp_jt) > 3*len(temp_text): # was 300 and 2x
+            justext_flag = True
+        elif len(temppost_hand.xpath('//p')) == 0 and len(temp_jt) > 0: # borderline case
+            justext_flag = True
+        else:
+            justext_flag = False
+        if justext_flag is True: # was len(temp_text) > 10
+            postbody = temppost_algo
+            LOGGER.info('using justext: %s', url)
+        else:
+            postbody = temppost_hand
+            LOGGER.info('using custom extraction: %s', url)
+    else:
+        LOGGER.info('extracted length: %s (extraction)', len(temp_text))
+        postbody = temppost_hand
+        temp_jt = ''
+    return temp_text, temp_jt, postbody
+
+
 #@profile
 def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
@@ -638,8 +670,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     # if tei_output is True:
     cleaned_tree = convert_tags(cleaned_tree)
     # remove hi-element to avoid tail bug
-    if xml_output is False and tei_output is False:
-        etree.strip_tags(cleaned_tree, 'hi')
+    #if xml_output is False and tei_output is False:
+    #    etree.strip_tags(cleaned_tree, 'hi')
+    etree.strip_tags(cleaned_tree, 'hi')
+
 
     # comments first, then remove
     commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
@@ -648,36 +682,13 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     temppost_hand = extract_content(cleaned_tree, include_tables)
 
     ## compare
-    temp_text = u' '.join(temppost_hand.itertext())
-    if no_fallback is False and 0 <= len(temp_text) < 300:
-        # try with justext
-        temppost_algo = try_justext(tree, url) # cleaned_tree
-        # compare
-        temp_jt = u' '.join(temppost_algo.itertext())
-        LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
-        # conditions to use justext
-        if 0 <= len(temp_text) < 300 and len(temp_jt) > 2*len(temp_text):
-            justext_flag = True
-        elif len(temppost_hand.xpath('//p')) == 0 and len(temp_jt) > 0: # borderline case
-            justext_flag = True
-        else:
-            justext_flag = False
-        if justext_flag is True: # was len(temp_text) > 10
-            postbody = temppost_algo
-            LOGGER.info('using justext: %s', url)
-        else:
-            postbody = temppost_hand
-            LOGGER.info('using custom extraction: %s', url)
-    else:
-        LOGGER.info('extracted length: %s (extraction)', len(temp_text))
-        postbody = temppost_hand
-        temp_jt = ''
+    temp_text, temp_jt, postbody = compare_extraction(tree, url, temppost_hand, no_fallback)
 
     # try to use original/dirty tree
     if len(temp_text) == 0 and len(temp_jt) == 0:
         tree = convert_tags(tree)
         temppost_hand = extract_content(tree)
-        temp_text = u' '.join(temppost_hand.itertext())
+        temp_text = ' '.join(temppost_hand.itertext())
         LOGGER.debug('non-clean extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
 
