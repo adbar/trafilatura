@@ -1,0 +1,2 @@
+# without version specifier
+trafilatura

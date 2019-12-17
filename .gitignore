@@ -3,7 +3,6 @@
 
 # logs
 *.log
-*.txt
 
 # packaging
 dist/
