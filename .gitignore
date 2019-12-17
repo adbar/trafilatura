@@ -15,5 +15,16 @@ build/
 .cache/
 .coverage
 
-# appvevor removed
+# docs
+docs/_autosummary/
+docs/_build/
+docs/_static/
+docs/_template/
+
+# profiling
+*.tmp
+*.lprof
+
+
+### appvevor removed
 appveyor.yml
