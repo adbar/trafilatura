@@ -35,6 +35,10 @@ CUSTOM_HTMLPARSER = html.HTMLParser() # etree.HTMLParser() # remove_pis=True, co
 
 UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
+RE_FILTER = re.compile(r'\W*(Facebook|Twitter|Google|Linkedin|Whatsapp|Xing|Instagram|Pinterest|PDF|E-Mail|Drucken)$', flags=re.IGNORECASE)
+# |.hnliche Beitr| Instagram
+# (r'\W*(Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)', line) or
+
 
 def fetch_url(url):
     """ Fetch page using requests/urllib3
@@ -186,3 +190,21 @@ def trim(string):
     #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
     #except UnicodeDecodeError as err:
     #    LOGGER.warning('Unicode error: %s %s', err, record_id)
+
+
+#@profile
+def textfilter(element):
+    '''Filter out unwanted text'''
+    # print('#', element.text)
+    if element.text is None and element.tail is not None:
+        testtext = element.tail
+    else:
+        testtext = element.text
+    for line in testtext.splitlines():
+        #if len(line) <= 5:
+        #    continue
+        if RE_FILTER.match(line):
+            return True
+        if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
+            return True
+    return False
