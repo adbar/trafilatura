@@ -76,6 +76,8 @@ def validate_tei(tei): # , filename=""
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
     global TEI_RELAXNG
     if TEI_RELAXNG is None:
+        # TODO: store the document internally somewhere along with the "Last-Modified" date in the header
+        # Run a requests.head() to check if the file was modified and don't redownload it if that wasn't the case
         schema = fetch_url('https://tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng')
         if schema is None:
             LOGGER.error('No reference for validation available, aborting')
