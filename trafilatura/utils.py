@@ -146,7 +146,11 @@ def txttocsv(text, comments, url, doctitle, docdate):
         doctitle = ''
     if docdate is None:
         docdate = ''
-    tsv_output = url + '\t' + doctitle + '\t' + docdate + '\t' + text + '\t' + comments + '\n'
+    tsv_output = '{url}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(url=url,
+                                                                             doctitle=doctitle,
+                                                                             docdate=docdate,
+                                                                             text=text,
+                                                                             comments=comments)
     return tsv_output
 
 
