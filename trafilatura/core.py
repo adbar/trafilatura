@@ -480,7 +480,7 @@ def extract_content(tree, include_tables=False):
                         # insert
                         result_body.append(processed_element)
                 elif element.tag != 'div' and element.tag in potential_tags:
-                        LOGGER.debug('processing other element: %s %s', element.tag, element.text)
+                    LOGGER.debug('processing other element: %s %s', element.tag, element.text)
         # control
         if len(result_body) > 0: # if it has children
             LOGGER.debug(expr)
