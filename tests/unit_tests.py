@@ -5,8 +5,8 @@ Unit tests for the trafilatura library.
 
 import logging
 import os
-import platform
 import sys
+import unittest.mock
 # https://docs.pytest.org/en/latest/
 
 from lxml import etree, html
@@ -356,7 +356,7 @@ def test_main(xmloutput=False):
     assert 'Zuerst dachte ich, ich könnte das' in result and 'x Franzi' in result and 'Flauschjacke: Bershka' in result and 'Palm Springs Mini (links)' not in result and 'Diese Website verwendet Akismet' not in result and 'New York, New York' not in result
 
     result = load_mock_page('https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html', xmloutput)
-    assert 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result# and '2. Satt essen bei den Mahlzeiten' in result and 'Bringt die Kilos zum Purzeln!' not in result 
+    assert 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result# and '2. Satt essen bei den Mahlzeiten' in result and 'Bringt die Kilos zum Purzeln!' not in result
 
     result = load_mock_page('https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html', xmloutput)
     assert 'Glücks-Trend Konkurrenz' in result and 'Praktiziere Dankbarkeit' in result and 'dein Ikigai schon gefunden?' in result and '14,90 Euro.' in result and 'Neu in Liebe' not in result and 'Erfahre mehr' not in result and 'Erfahrung mit privater Arbeitsvermittlung?' not in result
@@ -429,10 +429,10 @@ def test_main(xmloutput=False):
 
     result = load_mock_page('https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/', xmloutput)
     assert 'I use a Skylake processor with GNU GCC 8.3.' in result and 'gsoc-2018' in result and '0.091 GB/s' in result and 'version 0.2 on vcpkg.' in result and 'Leave a Reply' not in result and 'Science and Technology links' not in result and 'Proudly powered by WordPress' not in result
-    
+
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
- 
+
     # try:
     # ...
     # except AssertionError as err:
@@ -466,11 +466,18 @@ def test_lrucache():
 
 def test_tei():
     '''test TEI-related functions'''
+    # open local resources to avoid redownloading at each run
+    resources_dir =  os.path.join(TEST_DIR, 'resources')
+    html_filepath = os.path.join(resources_dir, 'httpbin_sample.html')
+    tei_relaxng_path = os.path.join(resources_dir, 'tei_all.rng')
+    with open(html_filepath) as f:
+        teststring = f.read()
+    with open(tei_relaxng_path) as f:
+        tei_relaxng = f.read()
+
     # download, parse and validate simple html file
-    url = 'https://httpbin.org/html'
-    teststring = utils.fetch_url(url)
-    assert teststring is not None
-    result = extract(teststring, url, no_fallback=True, tei_output=True, tei_validation=True)
+    with unittest.mock.patch('trafilatura.xml.fetch_url', return_value=tei_relaxng):
+        result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=True)
     assert result is not None
     mytree = etree.fromstring(result)
     # print(result)

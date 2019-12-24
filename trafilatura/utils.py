@@ -40,6 +40,20 @@ RE_FILTER = re.compile(r'\W*(Facebook|Twitter|Google|Linkedin|Whatsapp|Xing|Inst
 # (r'\W*(Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)', line) or
 
 
+def decode_response(response, chunk_size=65536):
+    guessed_encoding = chardet.detect(response.content[:chunk_size])['encoding']
+    LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
+    if guessed_encoding is not None:
+        try:
+            htmltext = response.content.decode(guessed_encoding)
+        except UnicodeDecodeError:
+            htmltext = response.text
+    else:
+        htmltext = response.text
+    # return here
+    return htmltext
+
+
 def fetch_url(url):
     """ Fetch page using requests/urllib3
     Args:
@@ -51,13 +65,14 @@ def fetch_url(url):
     """
 
     # customize headers
-    headers = requests.utils.default_headers()
-    headers.update({
+    headers = {
         'Connection': 'close',  # another way to cover tracks
         # 'User-Agent': '', # your string here
-    })
+    }
     # send
     try:
+        # TODO: read by streaming chunks (stream=True, iter_content=xx)
+        # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=headers)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
@@ -72,24 +87,15 @@ def fetch_url(url):
     # if no error
     else:
         # safety checks
-        if int(response.status_code) != 200:
+        if response.status_code != 200:
             LOGGER.error('not a 200 response: %s', response.status_code)
         #elif response.text is None or len(response.text) < 100:
         #    LOGGER.error('file too small/incorrect response: %s %s', url, len(response.text))
         elif len(response.text) > MAX_FILE_SIZE:
             LOGGER.error('file too large: %s %s', url, len(response.text))
         else:
-            guessed_encoding = chardet.detect(response.content)['encoding']
-            LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
-            if guessed_encoding is not None:
-                try:
-                    htmltext = response.content.decode(guessed_encoding)
-                except UnicodeDecodeError:
-                    htmltext = response.text
-            else:
-                htmltext = response.text
-            # return here
-            return htmltext
+            return decode_response(response)
+
     # catchall
     return None
 
