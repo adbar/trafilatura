@@ -23,7 +23,7 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 
 
 :Code:           https://github.com/adbar/trafilatura
-:Documentation:  see README file
+:Documentation:  https://trafilatura.readthedocs.io/
 :Issue tracker:  https://github.com/adbar/trafilatura/issues
 
 
