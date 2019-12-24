@@ -35,6 +35,24 @@ CUSTOM_HTMLPARSER = html.HTMLParser() # etree.HTMLParser() # remove_pis=True, co
 
 UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
+RE_FILTER = re.compile(r'\W*(Facebook|Twitter|Google|Linkedin|Whatsapp|Xing|Instagram|Pinterest|PDF|E-Mail|Drucken)$', flags=re.IGNORECASE)
+# |.hnliche Beitr| Instagram
+# (r'\W*(Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)', line) or
+
+
+def decode_response(response, chunk_size=65536):
+    guessed_encoding = chardet.detect(response.content[:chunk_size])['encoding']
+    LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
+    if guessed_encoding is not None:
+        try:
+            htmltext = response.content.decode(guessed_encoding)
+        except UnicodeDecodeError:
+            htmltext = response.text
+    else:
+        htmltext = response.text
+    # return here
+    return htmltext
+
 
 def fetch_url(url):
     """ Fetch page using requests/urllib3
@@ -47,13 +65,14 @@ def fetch_url(url):
     """
 
     # customize headers
-    headers = requests.utils.default_headers()
-    headers.update({
+    headers = {
         'Connection': 'close',  # another way to cover tracks
         # 'User-Agent': '', # your string here
-    })
+    }
     # send
     try:
+        # TODO: read by streaming chunks (stream=True, iter_content=xx)
+        # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=headers)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
@@ -68,24 +87,15 @@ def fetch_url(url):
     # if no error
     else:
         # safety checks
-        if int(response.status_code) != 200:
+        if response.status_code != 200:
             LOGGER.error('not a 200 response: %s', response.status_code)
         #elif response.text is None or len(response.text) < 100:
         #    LOGGER.error('file too small/incorrect response: %s %s', url, len(response.text))
         elif len(response.text) > MAX_FILE_SIZE:
             LOGGER.error('file too large: %s %s', url, len(response.text))
         else:
-            guessed_encoding = chardet.detect(response.content)['encoding']
-            LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
-            if guessed_encoding is not None:
-                try:
-                    htmltext = response.content.decode(guessed_encoding)
-                except UnicodeDecodeError:
-                    htmltext = response.text
-            else:
-                htmltext = response.text
-            # return here
-            return htmltext
+            return decode_response(response)
+
     # catchall
     return None
 
@@ -136,7 +146,11 @@ def txttocsv(text, comments, url, doctitle, docdate):
         doctitle = ''
     if docdate is None:
         docdate = ''
-    tsv_output = url + '\t' + doctitle + '\t' + docdate + '\t' + text + '\t' + comments + '\n'
+    tsv_output = '{url}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(url=url,
+                                                                             doctitle=doctitle,
+                                                                             docdate=docdate,
+                                                                             text=text,
+                                                                             comments=comments)
     return tsv_output
 
 
@@ -186,3 +200,21 @@ def trim(string):
     #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
     #except UnicodeDecodeError as err:
     #    LOGGER.warning('Unicode error: %s %s', err, record_id)
+
+
+#@profile
+def textfilter(element):
+    '''Filter out unwanted text'''
+    # print('#', element.text)
+    if element.text is None and element.tail is not None:
+        testtext = element.tail
+    else:
+        testtext = element.text
+    for line in testtext.splitlines():
+        #if len(line) <= 5:
+        #    continue
+        if RE_FILTER.match(line):
+            return True
+        if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
+            return True
+    return False

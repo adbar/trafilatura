@@ -39,7 +39,7 @@ from lxml import etree, html
 # own
 from .settings import CUT_EMPTY_ELEMS, HTML_CLEANER, LANGUAGES, LRU_SIZE, \
 MANUALLY_CLEANED, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG
-from .utils import load_html, sanitize, txttocsv, trim
+from .utils import load_html, sanitize, textfilter, trim, txttocsv
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
@@ -120,27 +120,6 @@ def discard_unwanted_comments(tree):
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
     return tree
-
-
-#@profile
-def textfilter(element):
-    '''Filter out unwanted text'''
-    # print('#', element.text)
-    if element.text is None and element.tail is not None:
-        testtext = element.tail
-    else:
-        testtext = element.text
-    for line in testtext.splitlines():
-        #if len(line) <= 5:
-        #    continue
-        # print('###', line) |.hnliche Beitr| Instagram
-        if re.match(r'\W*(Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)', line) or re.match(r'\W*(Facebook|Twitter|Google|E-Mail|Drucken|Linked[Ii]n|Whats[Aa]pp|XING|[Xx]ing|PDF|[Pp]df)$', line):
-            return True
-        if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
-            return True
-    # elemtext = trim(elemtext)
-    #return elemtext
-    return False
 
 
 def cache(body):
