@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # pylint:disable-msg=E0611,I1101
 """
 Module bundling all functions needed to extract the text in a webpage.
@@ -29,14 +28,11 @@ try:
     DATE_FLAG = True
 except ImportError:
     DATE_FLAG = False
-try:
-    from lru import LRU # https://github.com/amitdev/lru-dict # pip3 install lru-dict
-    LRU_FLAG = True
-except ImportError:
-    LRU_FLAG = False
+
 from lxml import etree, html
 
 # own
+from .lru import LRUCache
 from .settings import CUT_EMPTY_ELEMS, HTML_CLEANER, LANGUAGES, LRU_SIZE, \
 MANUALLY_CLEANED, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG
 from .utils import load_html, sanitize, textfilter, trim, txttocsv
@@ -48,15 +44,13 @@ from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_
 if LANGID_FLAG is True:
     langid.set_languages(LANGUAGES)
 
+LRU_TEST = LRUCache(maxsize=LRU_SIZE)
+
 LOGGER = logging.getLogger(__name__)
 
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 # counters
-if LRU_FLAG is True:
-    LRU_TEST = LRU(LRU_SIZE)
-else:
-    LRU_TEST = defaultdict(int)
 # tree_cache = dict()
 
 # justext
@@ -128,13 +122,11 @@ def cache(body):
     for element in body:
         # teststring = ' '.join(element.itertext()).encode('utf-8')
         teststring = element.text
-        if LRU_FLAG is True:
-            if LRU_TEST.has_key(teststring) is True:
-                LRU_TEST[teststring] += 1
-            else:
-                LRU_TEST[teststring] = 1
+        if teststring in LRU_TEST.cache:
+            val = LRU_TEST.get(teststring)
+            LRU_TEST.put(teststring, val + 1)
         else:
-            LRU_TEST[teststring] += 1
+            LRU_TEST.put(teststring, 1)
 
 
 def duplicate_test(element, justext_switch=False):
@@ -146,14 +138,9 @@ def duplicate_test(element, justext_switch=False):
     else:
         teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
-        if LRU_FLAG is True:
-            if LRU_TEST.has_key(teststring) is True and LRU_TEST[teststring] > 2:
-                # LRU_TEST[teststring] += 1
-                return True
-        else:
-            if teststring in LRU_TEST and LRU_TEST[teststring] > 2:
-                return True
+        if LRU_TEST.has_key(teststring) is True and LRU_TEST.get(teststring) > 2:
             # LRU_TEST[teststring] += 1
+            return True
     return False
 
 
@@ -700,9 +687,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
             LOGGER.warning('package not installed, cannot perform language identification')
 
     # cache elements
-    if LRU_FLAG is True:
-        cache(postbody)
-        cache(commentsbody)
+    #if LRU_FLAG is True:
+    cache(postbody)
+    cache(commentsbody)
     #del tree_cache[cleaned_tree]
 
     # XML (TEI) steps
@@ -740,10 +727,13 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
 
     # check duplicates at body level
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
-    if LRU_FLAG is True and LRU_TEST.has_key(teststring) is True:
+    #if LRU_FLAG is True and LRU_TEST.has_key(teststring) is True:
         # LRU_TEST[teststring] = 1
-        return None
-    if LRU_FLAG is False and teststring in LRU_TEST:
+    #    return None
+    #if LRU_FLAG is False and teststring in LRU_TEST:
+        # LRU_TEST[teststring] = 1
+    #    return None
+    if LRU_TEST.has_key(teststring) is True:
         # LRU_TEST[teststring] = 1
         return None
 
@@ -766,15 +756,5 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
 
     return returnstring
 
-
 # for legacy and backwards compatibility
 process_record = extract
-
-
-#def custom_justext(htmldom):
-#    paragraphs = ParagraphMaker.make_paragraphs(htmldom)
-#    justext.classify_paragraphs(paragraphs, justext.get_stoplist("German"), length_low=LENGTH_LOW_DEFAULT, \
-#        length_high=LENGTH_HIGH_DEFAULT, stopwords_low=STOPWORDS_LOW_DEFAULT, \
-#        stopwords_high=STOPWORDS_HIGH_DEFAULT, max_link_density=MAX_LINK_DENSITY_DEFAULT, no_headings=NO_HEADINGS_DEFAULT)
-#    justext.revise_paragraph_classification(paragraphs, max_heading_distance=MAX_HEADING_DISTANCE_DEFAULT)
-#    return paragraphs
