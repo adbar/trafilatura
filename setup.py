@@ -20,7 +20,7 @@ extras = {
 #        'ftfy >= 5.6',
         'htmldate >= 0.5.6',
         'langid >= 1.1.6',
-        'lru-dict >= 1.1.6',
+#        'lru-dict >= 1.1.6',
     ],
     'metadata': [
         'htmldate >= 0.5.6',

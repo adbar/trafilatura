@@ -10,8 +10,9 @@ build/
 *.egg-info/
 
 # tests
-.tox/
 .cache/
+.eggs/
+.tox/
 .coverage
 
 # docs

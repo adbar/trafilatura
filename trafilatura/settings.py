@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Listing a series of settings that are applied module-wide.
 """
@@ -17,7 +16,7 @@ MIN_EXTRACTED_SIZE = 200
 MIN_EXTRACTED_COMM_SIZE = 100
 MIN_DUPLCHECK_SIZE = 100
 
-LRU_SIZE = 10000000
+LRU_SIZE = 10000000 # 1024
 
 # filters
 LANGUAGES = ['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru']
@@ -42,12 +41,12 @@ HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
 # HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
 HTML_CLEANER.remove_tags = ['img']
-HTML_CLEANER.kill_tags = ['aside']
-# 'audio', 'blink', 'canvas', 'embed', 'figure', 'footer', 'form', 'head', 'iframe', 'img', 'link', 'map', 'math', 'marquee', 'nav', 'noscript', 'object', 'picture', 'script', 'style', 'svg', 'time', 'video' # 'area', 'table' # 'header'
+HTML_CLEANER.kill_tags = ['aside', 'del']
+# 'area', 'table' # 'header'
 
 CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', \
-                   'i', 'li', 'main', 'p', 'section', 'strong', 'td'}
-                   # 'meta', 'span',
+                   'i', 'li', 'main', 'p', 'section', 'span', 'strong', 'td'}
+                   # 'meta',
 
 MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', \
                     'footer', 'form', 'head', 'iframe', 'input', 'link', \
