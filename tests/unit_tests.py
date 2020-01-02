@@ -159,14 +159,17 @@ def test_input():
     assert process_record(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
 
 
-@pytest.mark.parametrize('test_input,expected', [(('a', 'b', 'c', 'd', 'e'), 'c\td\te\ta\tb\n'),
-                                                 (('a', None, 'c', 'd', 'e'), 'c\td\te\ta\t\n'),
-                                                 (('a', 'b', None, 'd', 'e'), '\td\te\ta\tb\n'),
-                                                 (('a', 'b', 'c', None, 'e'), 'c\t\te\ta\tb\n'),
-                                                 (('a', 'b', 'c', 'd', None), 'c\td\t\ta\tb\n'),
-                                                 (('l1\nl2\nl3', 'b', None, None, None), '\t\t\tl1 l2 l3\tb\n')])
+test_matrix = [(('a', 'b', 'c', 'd', 'e'), 'c\td\te\ta\tb\n'), \
+               (('a', None, 'c', 'd', 'e'), 'c\td\te\ta\t\n'), \
+               (('a', 'b', None, 'd', 'e'), '\td\te\ta\tb\n'), \
+               (('a', 'b', 'c', None, 'e'), 'c\t\te\ta\tb\n'), \
+               (('a', 'b', 'c', 'd', None), 'c\td\t\ta\tb\n'), \
+               (('l1\nl2\nl3', 'b', None, None, None), '\t\t\tl1 l2 l3\tb\n')]
+
+@pytest.mark.parametrize('test_input, expected', test_matrix)
 def test_txttocsv(test_input, expected):
     assert utils.txttocsv(*test_input) == expected
+
 
 def test_download():
     '''test page download and command-line interface'''
