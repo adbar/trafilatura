@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# pylint:disable-msg=W1401
 """
 Unit tests for the trafilatura library.
 """
@@ -6,9 +6,10 @@ Unit tests for the trafilatura library.
 import logging
 import os
 import sys
-import unittest.mock
 import pytest
 # https://docs.pytest.org/en/latest/
+
+from unittest.mock import patch
 
 from lxml import etree, html
 
@@ -22,7 +23,6 @@ from trafilatura.core import cache, duplicate_test, extract, LRU_TEST, process_r
 from trafilatura import cli, utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
 
 
 MOCK_PAGES = {
@@ -124,7 +124,7 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
     try:
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
             htmlstring = inputf.read()
-    # encoding fix for the tests
+    # encoding/windows fix for the tests
     except UnicodeDecodeError:
         # read as binary
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'rb') as inputf:
@@ -159,6 +159,18 @@ def test_input():
     assert process_record(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
 
 
+def test_parser():
+    '''test argument parsing for the command-line interface'''
+    testargs = ['-fv', '--xmltei', '--notables', '-u', 'https://www.example.org']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+        #assert args.fast is True # doesn't work!
+        assert args.notables is False
+        #assert args.verbose is True # doesn't work!
+        assert args.xmltei is True
+        assert args.URL == 'https://www.example.org'
+
+
 test_matrix = [(('a', 'b', 'c', 'd', 'e'), 'c\td\te\ta\tb\n'), \
                (('a', None, 'c', 'd', 'e'), 'c\td\te\ta\t\n'), \
                (('a', 'b', None, 'd', 'e'), '\td\te\ta\tb\n'), \
@@ -184,6 +196,10 @@ def test_download():
     teststring = utils.fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, url) is None
+    url = 'https://httpbin.org/html'
+    teststring = utils.fetch_url(url)
+    assert teststring is not None
+    assert cli.examine(teststring, url) is not None
 
 
 def test_main(xmloutput=False):
@@ -460,14 +476,13 @@ def test_main(xmloutput=False):
     #    else:
     #        raise AssertionError(err)
 
-@unittest.mock.patch('trafilatura.core.MIN_EXTRACTED_SIZE', 0)
-@unittest.mock.patch('trafilatura.core.MIN_EXTRACTED_COMM_SIZE', 0)
+@patch('trafilatura.core.MIN_EXTRACTED_SIZE', 0)
+@patch('trafilatura.core.MIN_EXTRACTED_COMM_SIZE', 0)
 def test_exotic_tags(xmloutput=False):
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xmloutput, tei_output=True)
     assert 'Teletype text' in result
     assert 'My new car is silver.' in result
-
     filepath = os.path.join(TEST_DIR, 'cache', 'exotic_tags_tei.html')
     with open(filepath) as f:
         content = etree.fromstring(f.read())
@@ -507,9 +522,8 @@ def test_tei():
         teststring = f.read()
     with open(tei_relaxng_path) as f:
         tei_relaxng = f.read()
-
     # download, parse and validate simple html file
-    with unittest.mock.patch('trafilatura.xml.fetch_url', return_value=tei_relaxng):
+    with patch('trafilatura.xml.fetch_url', return_value=tei_relaxng):
         result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=True)
     assert result is not None
     mytree = etree.fromstring(result)
@@ -521,6 +535,7 @@ if __name__ == '__main__':
     test_trim()
     test_lrucache()
     test_input()
+    test_parser()
     test_main(xmloutput=False)
     test_main(xmloutput=True)
     test_download()
