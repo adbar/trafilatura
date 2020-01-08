@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # pylint:disable-msg=E0611,I1101
 """
 Module bundling functions related to HTML and text processing.
@@ -13,7 +12,9 @@ import re
 import socket
 import unicodedata
 
-from io import StringIO # python3
+from io import StringIO
+
+import urllib3
 
 try:
     # this module is faster
@@ -22,7 +23,6 @@ except ImportError:
     import chardet
 
 import requests
-import urllib3
 from lxml import etree, html
 
 from .settings import MAX_FILE_SIZE # MIN_FILE_SIZE ?
@@ -41,6 +41,7 @@ RE_FILTER = re.compile(r'\W*(Facebook|Twitter|Google|Linkedin|Whatsapp|Xing|Inst
 
 
 def decode_response(response, chunk_size=65536):
+    """Read the first chunk of server response and decode it"""
     guessed_encoding = chardet.detect(response.content[:chunk_size])['encoding']
     LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
     if guessed_encoding is not None:
@@ -146,11 +147,13 @@ def txttocsv(text, comments, url, doctitle, docdate):
         doctitle = ''
     if docdate is None:
         docdate = ''
-    tsv_output = '{url}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(url=url,
-                                                                             doctitle=doctitle,
-                                                                             docdate=docdate,
-                                                                             text=text,
-                                                                             comments=comments)
+    tsv_output = '{url}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(
+        url=url,
+        doctitle=doctitle,
+        docdate=docdate,
+        text=text,
+        comments=comments
+        )
     return tsv_output
 
 
@@ -191,7 +194,7 @@ def trim(string):
         # delete newlines that are not related to punctuation or markup
         string = re.sub(r'(?<![p{P}>])\n', ' ', string)
         # proper trimming
-        string = ' '.join(re.split('\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
+        string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
         string = string.strip()
     return string
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # pylint:disable-msg=E0611,I1101
 """
 All functions related to XML generation, processing and validation.
@@ -23,7 +22,6 @@ TEI_VALID_ATTRS = {'rendition', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
 
-#@profile
 def check_tei(tei, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
@@ -71,13 +69,11 @@ def check_tei(tei, url):
     return tei
 
 
-#@profile
 def validate_tei(tei): # , filename=""
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
     global TEI_RELAXNG
     if TEI_RELAXNG is None:
-        # TODO: store the document internally somewhere along with the "Last-Modified" date in the header
-        # Run a requests.head() to check if the file was modified and don't redownload it if that wasn't the case
+        # could be stored internally, requests.head() to check for updates
         schema = fetch_url('https://tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng')
         if schema is None:
             LOGGER.error('No reference for validation available, aborting')
@@ -97,7 +93,6 @@ def validate_tei(tei): # , filename=""
     return result
 
 
-#@profile
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     returnstring = ''
@@ -128,7 +123,6 @@ def xmltotxt(xmloutput):
     return returnstring
 
 
-#@profile
 def write_teitree(postbody, commentsbody, url, doctitle, docdate):
     '''Bundle the extracted post and comments into a TEI tree'''
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')

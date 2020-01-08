@@ -1,3 +1,4 @@
+# pylint:disable-msg=E0611
 """
 Listing a series of settings that are applied module-wide.
 """
@@ -44,13 +45,13 @@ HTML_CLEANER.remove_tags = ['img']
 HTML_CLEANER.kill_tags = ['aside', 'del']
 # 'area', 'table' # 'header'
 
-CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', \
+CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
                    'i', 'li', 'main', 'p', 'section', 'span', 'strong', 'td'}
                    # 'meta',
 
-MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure', \
-                    'footer', 'form', 'head', 'iframe', 'input', 'link', \
-                    'map', 'marquee', 'math', 'nav', 'noscript', 'object', \
+MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure',
+                    'footer', 'form', 'head', 'iframe', 'input', 'link',
+                    'map', 'marquee', 'math', 'nav', 'noscript', 'object',
                     'picture', 'script', 'style', 'svg', 'time', 'video']
                     # 'frame' 'frameset' 'source', 'img',
 

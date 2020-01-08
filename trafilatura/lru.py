@@ -10,20 +10,21 @@ https://github.com/python/cpython/blob/3.8/Lib/functools.py
 
 from threading import RLock
 
-PREV, NEXT, KEY, RESULT = 0, 1, 2, 3   # names for the link fields
+PREV, NEXT, KEY, RESULT = 0, 1, 2, 3  # names for the link fields
 
 
 class LRUCache(object):
     # Constants shared by all lru cache instances:
-    sentinel = object()          # unique object used to signal cache misses
-    lock = RLock()           # because linkedlist updates aren't threadsafe
+    sentinel = object()  # unique object used to signal cache misses
+    lock = RLock()  # because linkedlist updates aren't threadsafe
 
     def __init__(self, maxsize=128):
         # cache instance variables
         self.maxsize = maxsize
         self.cache = {}
-        self.root = []                # root of the circular doubly linked list
-        self.root[:] = [self.root, self.root, None, None]     # initialize by pointing to self
+        self.root = []  # root of the circular doubly linked list
+        # initialize by pointing to self
+        self.root[:] = [self.root, self.root, None, None]
         self.full = False
 
     def _move_link(self, link):
@@ -66,7 +67,6 @@ class LRUCache(object):
                 # still adjusting the links.
                 self.root = oldroot[NEXT]
                 oldkey = self.root[KEY]
-                oldresult = self.root[RESULT]
                 self.root[KEY] = self.root[RESULT] = None
                 # Now update the cache dictionary.
                 del self.cache[oldkey]

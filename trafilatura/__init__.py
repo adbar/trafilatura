@@ -3,21 +3,20 @@
 Extract the text content of web pages.
 """
 
-## meta
+# meta
 __title__ = 'trafilatura'
 __author__ = 'Adrien Barbaresi'
 __license__ = 'GNU GPL v3+'
-__copyright__ = 'Copyright 2019, Adrien Barbaresi'
-__version__ = '0.2.1'
+__copyright__ = 'Copyright 2019-2020, Adrien Barbaresi'
+__version__ = '0.3.0'
 
-## imports
+# imports
 import logging
 
 from .core import extract, process_record
 from .utils import fetch_url
-# from .settings import *
 
-## logging best practices
+# logging best practices
 # http://docs.python-guide.org/en/latest/writing/logging/
 # https://github.com/requests/requests/blob/master/requests/__init__.py
 try:  # Python 2.7+

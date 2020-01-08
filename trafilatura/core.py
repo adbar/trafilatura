@@ -6,18 +6,16 @@ Module bundling all functions needed to extract the text in a webpage.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-## TODO:
+# TODO:
 # line-based heuristics?
 # text blacklist
 
 # standard
 import logging
-import re # import regex as re
-from collections import defaultdict
-
+import re
 # third-party
 import justext
-# from justext import classify_paragraphs, get_stoplist, revise_paragraph_classification
+
 try:
     import langid
     LANGID_FLAG = True
@@ -33,13 +31,13 @@ from lxml import etree, html
 
 # own
 from .lru import LRUCache
-from .settings import CUT_EMPTY_ELEMS, HTML_CLEANER, LANGUAGES, LRU_SIZE, \
-MANUALLY_CLEANED, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG
+from .settings import (CUT_EMPTY_ELEMS, HTML_CLEANER, LANGUAGES, LRU_SIZE,
+                       MANUALLY_CLEANED, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE,
+                       MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, textfilter, trim, txttocsv
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
-## INIT
 
 if LANGID_FLAG is True:
     langid.set_languages(LANGUAGES)
@@ -50,18 +48,12 @@ LOGGER = logging.getLogger(__name__)
 
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
-# counters
-# tree_cache = dict()
-
 # justext
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
 
 
-#@profile
 def manual_cleaning(tree, include_tables):
     '''Prune the tree by discarding unwanted elements'''
-    #for element in tree.xpath('//*'):
-    #    print('ZZZ ', element.tag)
     if include_tables is False:
         MANUALLY_CLEANED.append('table')
     for expression in MANUALLY_CLEANED:
@@ -73,23 +65,19 @@ def manual_cleaning(tree, include_tables):
     return tree
 
 
-#@profile
 def prune_html(tree):
     '''delete empty elements'''
     # empty tags
     for element in tree.xpath(".//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
             element.getparent().remove(element)
-        #else:
-        #    print('ZZZ ', element.tag)
-    #for expression in CUT_EMPTY_ELEMS:
+    # for expression in CUT_EMPTY_ELEMS:
     #    for element in tree.getiterator(expression):
     #        if recursively_empty(element):
     #            element.getparent().remove(element)
     return tree
 
 
-#@profile
 def recursively_empty(elem):
     '''return recursively empty elements'''
     # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
@@ -98,7 +86,6 @@ def recursively_empty(elem):
     return all((recursively_empty(c) for c in elem.iterchildren()))
 
 
-#@profile
 def discard_unwanted(tree):
     '''delete unwanted sections'''
     for expr in DISCARD_XPATH:
@@ -107,7 +94,6 @@ def discard_unwanted(tree):
     return tree
 
 
-#@profile
 def discard_unwanted_comments(tree):
     '''delete unwanted comment sections'''
     for expr in COMMENTS_DISCARD_XPATH:
@@ -138,13 +124,13 @@ def duplicate_test(element, justext_switch=False):
     else:
         teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
+        # key in self.cache
         if LRU_TEST.has_key(teststring) is True and LRU_TEST.get(teststring) > 2:
             # LRU_TEST[teststring] += 1
             return True
     return False
 
 
-#@profile
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # strip tags
@@ -183,16 +169,16 @@ def convert_tags(tree):
         elem.tag = 'hi'
         elem.set('rendition', '#u')
     # change rendition #pre and #t (very rare)
-    for elem in tree.iter('tt'): # //pre| //code
+    for elem in tree.iter('tt'):  # //pre| //code
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#t')
     # change rendition sub and sup (very rare)
-    for elem in tree.iter('sub'): # //pre| //code
+    for elem in tree.iter('sub'):  # //pre| //code
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#sub')
-    for elem in tree.iter('sup'): # //pre| //code
+    for elem in tree.iter('sup'):  # //pre| //code
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rendition', '#sup')
@@ -201,13 +187,6 @@ def convert_tags(tree):
         elem.attrib.clear()
         elem.tag = 'del'
         elem.set('rendition', 'overstrike')
-    # add space
-    #for elem in tree.iter('span'): # //a|
-    #    elem.drop_tag()
-        #if elem.text is None:
-        #    elem.text = ' '
-        #else:
-        #    elem.text = elem.text + ' '
     return tree
 
 
@@ -219,7 +198,8 @@ def try_justext(tree, url):
     try:
         # paragraphs = custom_justext(tree)
         paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
-    except ValueError as err: # ValueError: Input object is not an XML element: HtmlComment
+    # ValueError: Input object is not an XML element: HtmlComment
+    except ValueError as err:
         LOGGER.error('justext %s %s', err, url)
         result_body = None
     else:
@@ -232,7 +212,6 @@ def try_justext(tree, url):
     return result_body
 
 
-#@profile
 def handle_textnode(element, comments_fix=True):
     '''Convert, format, and probe potential text elements'''
     # lb bypass
@@ -270,7 +249,6 @@ def handle_textnode(element, comments_fix=True):
     return element
 
 
-#@profile
 def handle_subelement(subelement):
     '''Convert, format, and probe potential text subelements'''
     if subelement.text is None and subelement.tail is None:
@@ -286,7 +264,6 @@ def handle_subelement(subelement):
     return subelement
 
 
-#@profile
 def extract_content(tree, include_tables=False):
     '''Find and extract the main content of a page using a set of expressions'''
     #tree_cache = dict()
@@ -520,7 +497,6 @@ def extract_content(tree, include_tables=False):
     return result_body
 
 
-#@profile
 def extract_comments(tree, include_comments):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
@@ -604,7 +580,6 @@ def compare_extraction(tree, url, temppost_hand, no_fallback):
     return temp_text, temp_jt, postbody
 
 
-#@profile
 def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
     '''Main process for text extraction'''
     # init
@@ -727,13 +702,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
 
     # check duplicates at body level
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
-    #if LRU_FLAG is True and LRU_TEST.has_key(teststring) is True:
-        # LRU_TEST[teststring] = 1
-    #    return None
-    #if LRU_FLAG is False and teststring in LRU_TEST:
-        # LRU_TEST[teststring] = 1
-    #    return None
-    if LRU_TEST.has_key(teststring) is True:
+    if LRU_TEST.has_key(teststring) is True:  # key in self.cache
         # LRU_TEST[teststring] = 1
         return None
 
