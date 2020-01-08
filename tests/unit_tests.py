@@ -20,10 +20,10 @@ except ImportError:
 
 # import trafilatura
 from trafilatura.core import cache, duplicate_test, extract, LRU_TEST, process_record, trim
+from trafilatura.lru import LRUCache
 from trafilatura import cli, utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
 
 MOCK_PAGES = {
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': 'die-partei.net.luebeck.html',
@@ -137,7 +137,7 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
                 htmlstring = htmlbinary
         else:
             print('Encoding error')
-    result = process_record(htmlstring, url,
+    result = extract(htmlstring, url,
                             record_id='0000',
                             no_fallback=False,
                             xml_output=xml_flag,
@@ -150,12 +150,20 @@ def test_trim():
     '''test string trimming'''
     assert trim('	Test  ') == 'Test'
     assert trim('\t\tTest  Test\r\n') == 'Test Test'
+    my_elem = etree.Element('body')
+    #my_elem.text = 'Test Text'
+    #assert utils.textfilter(my_elem) is False
+    my_elem.text = 'Tags: Arbeit, Urlaub'
+    assert utils.textfilter(my_elem) is True
 
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
     assert utils.load_html(123) is None
     assert utils.load_html('<html><body>XYZ</body></html>') is not None
+    assert utils.load_html(b'0'*int(10e3)) is None
+    assert extract(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
+    # legacy
     assert process_record(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
 
 
@@ -492,24 +500,42 @@ def test_exotic_tags(xmloutput=False):
 
 def test_lrucache():
     '''test basic duplicate detection'''
+    global LRU_TEST
     LRU_TEST.clear()
-    my_body = etree.Element('body')
+    LRU_TEST = LRUCache(maxsize=2)
+    my_body = other_body = yet_another_body = etree.Element('body')
     ### element too short
     my_element = html.fromstring('<p>AAAA BBBB</p>')
     my_body.append(my_element)
     cache(my_body)
-    assert duplicate_test(my_element, justext_switch=False) is False
+    assert duplicate_test(my_element) is False
     ### cached element
     my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
     my_body.append(my_element)
-    assert duplicate_test(my_element, justext_switch=False) is False
+    assert duplicate_test(my_element) is False
     cache(my_body)
-    assert duplicate_test(my_element, justext_switch=False) is False
+    assert duplicate_test(my_element) is False
     cache(my_body)
-    assert duplicate_test(my_element, justext_switch=False) is False
+    assert duplicate_test(my_element) is False
     cache(my_body)
-    assert duplicate_test(my_element, justext_switch=False) is True
-    print(LRU_TEST)
+    assert duplicate_test(my_element) is True
+    other_element = html.fromstring('<p>CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD</p>')
+    other_body.append(other_element)
+    cache(other_body)
+    cache(other_body)
+    cache(other_body)
+    assert duplicate_test(other_element) is True
+    yet_another = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
+    yet_another_body.append(yet_another)
+    cache(yet_another_body)
+    cache(yet_another_body)
+    cache(yet_another_body)
+    # 2 elements in cache, original element has been cleared?
+    print(LRU_TEST.maxsize, LRU_TEST.full)
+    assert duplicate_test(other_element) is True
+    assert duplicate_test(yet_another) is True
+    # does not work
+    # assert duplicate_test(my_element) is False
 
 
 def test_tei():
