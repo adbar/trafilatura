@@ -7,8 +7,12 @@ omit =
 
 [report]
 exclude_lines =
+    pragma: no cover
     if __name__ == .__main__.:
-    except .*etree.*:
-    except ImportError:
+    .*level=logging.DEBUG.*
+    except .*etree.XMLSyntaxError.*:
+    except .*ImportError.*:
     except .*requests.exceptions.*:
-    except UnboundLocalError:
+    except .*socket.*
+    except .*UnicodeDecodeError.*:
+    except .*UnboundLocalError.*:
