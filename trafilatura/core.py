@@ -260,30 +260,29 @@ def extract_content(tree, include_tables=False):
         subtree = tree.xpath(expr)
         if len(subtree) == 0:
             continue
-        #print(expr, len(subtree))
         subtree = subtree[0]
         # prune
         subtree = discard_unwanted(subtree)
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
-        #print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
+        # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # define iteration strategy
-        potential_tags = set(TAG_CATALOG) # 'span'
-        # relevant_tags = potential_tags - set('lb')
-        if len(subtree.xpath('//p//text()')) == 0: # no paragraphs containing text
+        potential_tags = set(TAG_CATALOG)  # + 'span'?
+        # no paragraphs containing text
+        if len(subtree.xpath('//p//text()')) == 0:
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
-        for element in subtree.xpath('.//*'): # .iter() .getchildren() .xpath('.//*')
-            # print(element.tag, element.text)
+        for element in subtree.xpath('.//*'):  # .iter() .getchildren()
             # bypass: nested elements
-            if element.tag in ('list', 'quote'): # 'code',
+            if element.tag in ('list', 'quote'):  # + 'code'?
                 processed_element = etree.Element(element.tag)
                 for child in element.iter():
                     # list-specific check
-                    if element.tag == 'list' and child.tag not in ('dd', 'dt', 'li'): # 'item'
-                        continue
+                    if element.tag == 'list' and child.tag not in ('dd', 'dt', 'li'):
+                        continue  # 'item'
                     # proceed with iteration, fix for nested elements
                     processed_child = handle_textnode(child, comments_fix=True)
+                    # add child element to processed_element
                     if processed_child is not None:
                         if element.tag == 'list':
                             newsub = etree.SubElement(processed_element, 'item')
@@ -292,8 +291,7 @@ def extract_content(tree, include_tables=False):
                         newsub.text = processed_child.text
                         if element.tag == 'quote':
                             newsub.tail = processed_child.tail
-                    # child.getparent().remove(child)
-                    child.tag = 'done' # can cause errors
+                    child.tag = 'done'
                 # avoid double tags??
                 if len(processed_element) > 0: # if it has children
                     #teststring = ''.join(processed_element.itertext())
@@ -430,8 +428,9 @@ def extract_content(tree, include_tables=False):
                 result_body.append(processed_element)
 
     # try parsing tables
+    # if len(result_body) == 0: # no children
     # for _, element in etree.iterparse(xml_file, tag='a'):
-    if include_tables is True: #len(result_body) == 0: # no children
+    if include_tables is True:
         LOGGER.debug('Using table extraction')
         search_tree = discard_unwanted(tree)
         for table_elem in search_tree.xpath('//table'):
@@ -441,9 +440,6 @@ def extract_content(tree, include_tables=False):
                 # print(subelement.tag, subelement.text)
                 subelement.attrib.clear()
                 subelement.text = trim(subelement.text)
-                #if subelement.text is not None:
-                #    subelement.text = re.sub(r'(?<![p{P}>])\n', ' ', subelement.text)
-                # subelement.tail = ''
                 if subelement.tag == 'tr':
                     subelement.tag = 'row'
                     rowtext = ' '.join(subelement.itertext())
@@ -455,8 +451,7 @@ def extract_content(tree, include_tables=False):
                     subelement.tag = 'head' # 'cell'
                 elif subelement.tag == 'td':
                     subelement.tag = 'cell'
-                # handle spaces??
-                #elif subelement.tag == 'lb':
+                # handle spaces?? # elif subelement.tag == 'lb':
                 else:
                     etree.strip_tags(table_elem, subelement.tag)
             # insert
@@ -484,10 +479,8 @@ def extract_comments(tree, include_comments):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
     # define iteration strategy
-    potential_tags = set(TAG_CATALOG) # 'span'
-    ## potential_tags.add('div') trouble with <div class="comment-author meta">
-    # LOGGER.debug(sorted(potential_tags))
-    ## return comments_body, tree
+    potential_tags = set(TAG_CATALOG)  # 'span'
+    # potential_tags.add('div') trouble with <div class="comment-author meta">
     for expr in COMMENTS_XPATH:
         # select tree if the expression has been found
         subtree = tree.xpath(expr)
@@ -497,24 +490,22 @@ def extract_comments(tree, include_comments):
         # prune
         subtree = discard_unwanted_comments(subtree)
         # extract content
-        for elem in subtree.xpath('.//*'): # was: for elem in tree.xpath(expr):
-            if elem.tag in potential_tags: # TAG_CATALOG:
+        for elem in subtree.xpath('.//*'):
+            if elem.tag in potential_tags:
                 # print(elem.tag, elem.text_content())
                 processed_element = handle_textnode(elem, comments_fix=True)
                 # test length and remove
                 if processed_element is None or processed_element.text in COMMENTS_BLACKLIST:
                     # elem.getparent().remove(elem)
                     continue
-                ## text filter, insert if words? ## ^Pingback
-                #if textfilter(elem) is True:
+                # if textfilter(elem) is True: # ^Pingback
                 #    continue
                 elem.attrib.clear()
                 comments_body.append(elem)
         # control
-        if len(comments_body) > 0: # if it has children
+        if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
             # remove corresponding subtree
-            #for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
             break
     if include_comments is False:
@@ -537,20 +528,20 @@ def extract_metadata(tree):
 
 def compare_extraction(tree, url, temppost_hand, no_fallback):
     temp_text = ' '.join(temppost_hand.itertext())
-    if no_fallback is False and 0 <= len(temp_text) < 1500: # was 300
-        # try with justext
-        temppost_algo = try_justext(tree, url) # cleaned_tree
+    if no_fallback is False and 0 <= len(temp_text) < 1500:  # was 300
+        # try with justext on cleaned_tree
+        temppost_algo = try_justext(tree, url)
         # compare
         temp_jt = ' '.join(temppost_algo.itertext())
         LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
-        # conditions to use justext
-        if 0 <= len(temp_text) < 1500 and len(temp_jt) > 3*len(temp_text): # was 300 and 2x
+        # conditions to use justext # was 300 and 2x
+        if 0 <= len(temp_text) < 1500 and len(temp_jt) > 3*len(temp_text):
             justext_flag = True
-        elif len(temppost_hand.xpath('//p')) == 0 and len(temp_jt) > 0: # borderline case
-            justext_flag = True
+        elif len(temppost_hand.xpath('//p')) == 0 and len(temp_jt) > 0:
+            justext_flag = True  # borderline case
         else:
             justext_flag = False
-        if justext_flag is True: # was len(temp_text) > 10
+        if justext_flag is True:  # was len(temp_text) > 10
             postbody = temppost_algo
             LOGGER.info('using justext: %s', url)
         else:
@@ -563,14 +554,16 @@ def compare_extraction(tree, url, temppost_hand, no_fallback):
     return temp_text, temp_jt, postbody
 
 
-def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True):
+def extract(filecontent, url=None, record_id='0001', no_fallback=False,
+            include_comments=True, csv_output=False, xml_output=False,
+            tei_output=False, tei_validation=False, target_language=None,
+            include_tables=True):
     '''Main process for text extraction'''
     # init
     global LRU_TEST
     tree = load_html(filecontent)
     if tree is None:
         return None
-    # LOGGER.debug('HTML tree loaded for URL: %s', url)
     # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
     # Metadata here
@@ -597,7 +590,6 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
     #if xml_output is False and tei_output is False:
     #    etree.strip_tags(cleaned_tree, 'hi')
     etree.strip_tags(cleaned_tree, 'hi')
-
 
     # comments first, then remove
     commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
@@ -642,13 +634,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
                 LOGGER.debug('wrong language: %s %s', langresult, temp_text)
                 return None
         else:
-            LOGGER.warning('package not installed, cannot perform language identification')
+            LOGGER.warning('langid not installed, no language detection run')
 
     # cache elements
-    #if LRU_FLAG is True:
     cache(postbody)
     cache(commentsbody)
-    #del tree_cache[cleaned_tree]
+    # del tree_cache[cleaned_tree]
 
     # XML (TEI) steps
     if include_comments is False:
@@ -680,9 +671,6 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         if docdate is not None:
             output.set('date', docdate)
 
-    # sanity check on markup
-    # if re.search(r'\[url', u''.join(postbody.itertext()):
-
     # check duplicates at body level
     teststring = ' '.join(postbody.itertext()).encode('utf-8')
     if LRU_TEST.has_key(teststring) is True:  # key in self.cache
@@ -700,11 +688,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False, include_
         # can be improved
         control_string = etree.tostring(output, encoding='unicode')
         control_string = sanitize(control_string)
+        # necessary for cleaning
         control_parser = etree.XMLParser(remove_blank_text=True)
         output_tree = etree.fromstring(control_string, control_parser)
-        # output_tree = etree.fromstring(control_string) # , control_parser # problem with cleaning
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
-        # xml_declaration=True,
 
     return returnstring
 
