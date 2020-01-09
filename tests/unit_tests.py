@@ -500,8 +500,8 @@ def test_exotic_tags(xmloutput=False):
 
 def test_lrucache():
     '''test basic duplicate detection'''
-    LRU_TEST = LRUCache(maxsize=2)
-    trafilatura.core.LRU_TEST = LRU_TEST
+    lru_test = LRUCache(maxsize=2)
+    trafilatura.core.LRU_TEST = lru_test
     my_body = etree.Element('body')
     ### element too short
     #my_element = html.fromstring('<p>AAAA BBBB</p>')
@@ -536,6 +536,11 @@ def test_lrucache():
     assert duplicate_test(other_element) is True
     assert duplicate_test(yet_another_element) is True
     assert duplicate_test(my_element) is False
+    # clear the cache
+    lru_test.clear()
+    assert duplicate_test(other_element) is False
+    # get wrong key
+    assert lru_test.get('tralala') == -1
 
 
 def test_tei():
