@@ -249,18 +249,6 @@ def handle_textnode(element, comments_fix=True):
     return element
 
 
-def handle_subelement(subelement):
-    '''Convert, format, and probe potential text subelements'''
-    if subelement.text is None and subelement.tail is None:
-        return subelement
-    # trim
-    subelement.tail = trim(subelement.tail)
-    if textfilter(subelement) is True:
-        return None
-#    # duplicate_test(subelement)?
-    return subelement
-
-
 def extract_content(tree, include_tables=False):
     '''Find and extract the main content of a page using a set of expressions'''
     #tree_cache = dict()
@@ -364,7 +352,7 @@ def extract_content(tree, include_tables=False):
                                 #else:
                                 #    if child.tail is not None and re.search(r'\w+', child.tail):
                                 #        processed_child.tail = handle_subelement(child).tail
-                                processed_child.tail = handle_subelement(child).tail
+                                processed_child.tail = handle_textnode(child, comments_fix=False).tail
                             else:
                                 if child.tag == 'p':
                                     LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
@@ -391,7 +379,7 @@ def extract_content(tree, include_tables=False):
             elif element.tag == 'lb':
                 if element.tail is not None and re.search(r'\w+', element.tail):
                     processed_element = etree.Element('p')
-                    processed_element.text = handle_subelement(element).tail
+                    processed_element.text = handle_textnode(element, comments_fix=False).tail
                     result_body.append(processed_element)
             # insert it directly
             elif element.tag == 'hi':
@@ -469,9 +457,7 @@ def extract_content(tree, include_tables=False):
                     subelement.tag = 'cell'
                 # handle spaces??
                 #elif subelement.tag == 'lb':
-                #    subelement.tail = handle_subelement(subelement).tail
                 else:
-                    # subelement.getparent().remove(subelement)
                     etree.strip_tags(table_elem, subelement.tag)
             # insert
             if len(' '.join(table_elem.itertext())) > MIN_EXTRACTED_SIZE:
