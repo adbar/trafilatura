@@ -7,13 +7,13 @@ All functions related to XML generation, processing and validation.
 ## under GNU GPL v3 license
 
 import logging
-import pkg_resources
 import pickle
+import pkg_resources
 
 from io import StringIO
 from lxml import etree
 
-from .utils import fetch_url, sanitize, trim
+from .utils import sanitize, trim
 
 
 LOGGER = logging.getLogger(__name__)

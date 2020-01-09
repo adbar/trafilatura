@@ -104,7 +104,7 @@ def load_html(htmlobject):
     tree = None
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
-    elif isinstance(htmlobject, str):
+    if isinstance(htmlobject, str):
         try:
             # parse # encoding=guessed_encoding # parser=CUSTOM_HTMLPARSER
             tree = html.parse(StringIO(htmlobject))

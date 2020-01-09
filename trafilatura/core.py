@@ -30,19 +30,19 @@ except ImportError:
 from lxml import etree, html
 
 # own
-from .lru import LRUCache
-from .settings import (CUT_EMPTY_ELEMS, HTML_CLEANER, LANGUAGES, LRU_SIZE,
-                       MANUALLY_CLEANED, MIN_DUPLCHECK_SIZE, MIN_EXTRACTED_SIZE,
+from .duplicates import duplicate_test, put_in_cache, test_body_cache
+from .htmlprocess import (convert_tags, handle_textnode, manual_cleaning,
+                          prune_html, recursively_empty, discard_unwanted,
+                          discard_unwanted_comments)
+from .settings import (HTML_CLEANER, LANGUAGES, MIN_EXTRACTED_SIZE,
                        MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG)
-from .utils import load_html, sanitize, textfilter, trim, txttocsv
+from .utils import load_html, sanitize, trim, txttocsv
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
-from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
+from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
 if LANGID_FLAG is True:
     langid.set_languages(LANGUAGES)
-
-LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -50,147 +50,6 @@ COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 # justext
 JUSTEXT_STOPLIST = justext.get_stoplist('German')
-
-
-def manual_cleaning(tree, include_tables):
-    '''Prune the tree by discarding unwanted elements'''
-    if include_tables is False:
-        MANUALLY_CLEANED.append('table')
-    for expression in MANUALLY_CLEANED:
-        for element in tree.iter(expression):
-            element.getparent().remove(element)
-    #for expression in ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr']:
-    #    for element in tree.getiterator(expression):
-    #        element.drop_tag()
-    return tree
-
-
-def prune_html(tree):
-    '''delete empty elements'''
-    # empty tags
-    for element in tree.xpath(".//*[not(node())]"):
-        if element.tag in CUT_EMPTY_ELEMS:
-            element.getparent().remove(element)
-    # for expression in CUT_EMPTY_ELEMS:
-    #    for element in tree.getiterator(expression):
-    #        if recursively_empty(element):
-    #            element.getparent().remove(element)
-    return tree
-
-
-def recursively_empty(elem):
-    '''return recursively empty elements'''
-    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-    if elem.text:
-        return False
-    return all((recursively_empty(c) for c in elem.iterchildren()))
-
-
-def discard_unwanted(tree):
-    '''delete unwanted sections'''
-    for expr in DISCARD_XPATH:
-        for subtree in tree.xpath(expr):
-            subtree.getparent().remove(subtree)
-    return tree
-
-
-def discard_unwanted_comments(tree):
-    '''delete unwanted comment sections'''
-    for expr in COMMENTS_DISCARD_XPATH:
-        for subtree in tree.xpath(expr):
-            subtree.getparent().remove(subtree)
-    return tree
-
-
-def cache(body):
-    '''Implement LRU cache'''
-    global LRU_TEST
-    for element in body:
-        try:
-            teststring = ' '.join(element.itertext())
-        except AttributeError:  # justext Paragraph
-            teststring = element.text
-        if teststring in LRU_TEST.cache:
-            val = LRU_TEST.get(teststring)
-            # print(val, teststring[:10] + '...')
-            LRU_TEST.put(teststring, val + 1)
-        else:
-            # print(0, teststring[:10] + '...')
-            LRU_TEST.put(teststring, 1)
-
-
-def duplicate_test(element):
-    '''Check for duplicate text'''
-    global LRU_TEST
-    try:
-        teststring = ' '.join(element.itertext())
-    except AttributeError:  # justext Paragraph
-        teststring = element.text
-    if len(teststring) > MIN_DUPLCHECK_SIZE:
-        # key in self.cache
-        if LRU_TEST.has_key(teststring) is True and LRU_TEST.get(teststring) > 2:
-            # LRU_TEST[teststring] += 1
-            return True
-    return False
-
-
-def convert_tags(tree):
-    '''Simplify markup and convert relevant HTML tags to an XML standard'''
-    # strip tags
-    etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'span', 'small', 'wbr')
-    # 'dd', 'sub', 'sup',
-    # head tags + delete attributes
-    for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
-        # print(elem.tag, elem.text_content())
-        # etree.strip_tags(elem, 'span')
-        elem.tag = 'head'
-        # elem.set('rendition', '#i')
-    # br → lb
-    for elem in tree.iter('br', 'hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
-        elem.tag = 'lb'
-        elem.attrib.clear()
-    # ul/ol → list / li → item
-    for elem in tree.iter('ul', 'ol', 'dl'):
-        elem.tag = 'list'
-        elem.attrib.clear()
-    # blockquote | q → quote
-    for elem in tree.iter('blockquote', 'pre', 'q'):
-        elem.tag = 'quote'
-        elem.attrib.clear()
-    # change rendition #i
-    for elem in tree.iter('em', 'i'):
-        elem.attrib.clear()
-        elem.tag = 'hi'
-        elem.set('rendition', '#i')
-    # change rendition #b
-    for elem in tree.iter('b', 'strong'):
-        elem.attrib.clear()
-        elem.tag = 'hi'
-        elem.set('rendition', '#b')
-    # change rendition #u (very rare)
-    for elem in tree.iter('u'):
-        elem.tag = 'hi'
-        elem.set('rendition', '#u')
-    # change rendition #pre and #t (very rare)
-    for elem in tree.iter('tt'):  # //pre| //code
-        elem.attrib.clear()
-        elem.tag = 'hi'
-        elem.set('rendition', '#t')
-    # change rendition sub and sup (very rare)
-    for elem in tree.iter('sub'):  # //pre| //code
-        elem.attrib.clear()
-        elem.tag = 'hi'
-        elem.set('rendition', '#sub')
-    for elem in tree.iter('sup'):  # //pre| //code
-        elem.attrib.clear()
-        elem.tag = 'hi'
-        elem.set('rendition', '#sup')
-    # del | s | strike → <del rend="overstrike">
-    for elem in tree.iter('del', 's', 'strike'):
-        elem.attrib.clear()
-        elem.tag = 'del'
-        elem.set('rendition', 'overstrike')
-    return tree
 
 
 def try_justext(tree, url):
@@ -211,42 +70,6 @@ def try_justext(tree, url):
                     elem.text = paragraph.text
                     result_body.append(elem)
     return result_body
-
-
-def handle_textnode(element, comments_fix=True):
-    '''Convert, format, and probe potential text elements'''
-    if element.text is None and element.tail is None:
-        return None
-    # lb bypass
-    if comments_fix is False and element.tag == 'lb':
-        element.tail = trim(element.tail)
-        # if textfilter(element) is True:
-        #     return None
-        # duplicate_test(subelement)?
-        return element
-    if element.tag in ('dl', 'head', 'ol', 'ul'):
-        element.attrib.clear()
-    if element.text is None:
-        # try the tail
-        # LOGGER.debug('using tail for element %s', element.tag)
-        element.text = element.tail
-        element.tail = ''
-        # handle differently for br/lb
-        if comments_fix is True and element.tag == 'lb':
-            element.tag = 'p'
-    # trim
-    element.text = trim(element.text)
-    if element.tail:
-        element.tail = trim(element.tail)
-    if element.text and re.search(r'\w', element.text):  # text_content()?
-        if textfilter(element) is True:
-            return None
-        # TODO: improve duplicate detection
-        if duplicate_test(element) is True:
-            return None
-    else:
-        return None
-    return element
 
 
 def extract_content(tree, include_tables=False):
@@ -516,8 +339,8 @@ def extract_comments(tree, include_comments):
 def extract_metadata(tree):
     '''Extract title and document date if available/required'''
     try:
-        doctitle = trim(tree.find('//title').text) # h1?
-    except AttributeError: # no title found
+        doctitle = trim(tree.find('//title').text)  # h1?
+    except AttributeError:  # no title found
         doctitle = None
     if DATE_FLAG is True:
         docdate = find_date(tree, extensive_search=False)
@@ -560,7 +383,6 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             include_tables=True, include_formatting=False):
     '''Main process for text extraction'''
     # init
-    global LRU_TEST
     tree = load_html(filecontent)
     if tree is None:
         return None
@@ -635,8 +457,8 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             LOGGER.warning('langid not installed, no language detection run')
 
     # cache elements
-    cache(postbody)
-    cache(commentsbody)
+    put_in_cache(postbody)
+    put_in_cache(commentsbody)
     # del tree_cache[cleaned_tree]
 
     # XML (TEI) steps
@@ -670,9 +492,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             output.set('date', docdate)
 
     # check duplicates at body level
-    teststring = ' '.join(postbody.itertext()).encode('utf-8')
-    if LRU_TEST.has_key(teststring) is True:  # key in self.cache
-        # LRU_TEST[teststring] = 1
+    if test_body_cache(postbody) is True:
         return None
 
     if xml_output is False and tei_output is False:
@@ -692,6 +512,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
 
     return returnstring
+
 
 # for legacy and backwards compatibility
 process_record = extract

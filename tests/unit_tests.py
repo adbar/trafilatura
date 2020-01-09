@@ -18,8 +18,9 @@ try:
 except ImportError:
     import chardet
 
-import trafilatura.core
-from trafilatura.core import cache, duplicate_test, extract, process_record, trim
+import trafilatura.duplicates
+from trafilatura.core import extract, process_record, trim
+from trafilatura.duplicates import duplicate_test, put_in_cache
 from trafilatura.lru import LRUCache
 from trafilatura import cli, utils, xml
 
@@ -501,36 +502,36 @@ def test_exotic_tags(xmloutput=False):
 def test_lrucache():
     '''test basic duplicate detection'''
     lru_test = LRUCache(maxsize=2)
-    trafilatura.core.LRU_TEST = lru_test
+    trafilatura.duplicates.LRU_TEST = lru_test
     my_body = etree.Element('body')
     ### element too short
     #my_element = html.fromstring('<p>AAAA BBBB</p>')
     #my_body.append(my_element)
-    #cache(my_body)
+    #put_in_cache(my_body)
     #assert duplicate_test(my_element) is False
     ### cached element
     my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
     my_body.append(my_element)
     assert duplicate_test(my_element) is False
-    cache(my_body)
+    put_in_cache(my_body)
     assert duplicate_test(my_element) is False
-    cache(my_body)
+    put_in_cache(my_body)
     assert duplicate_test(my_element) is False
-    cache(my_body)
+    put_in_cache(my_body)
     assert duplicate_test(my_element) is True
     other_body = etree.Element('body')
     other_element = html.fromstring('<p>CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD</p>')
     other_body.append(other_element)
-    cache(other_body)
-    cache(other_body)
-    cache(other_body)
+    put_in_cache(other_body)
+    put_in_cache(other_body)
+    put_in_cache(other_body)
     assert duplicate_test(other_element) is True
     yet_another_body = etree.Element('body')
     yet_another_element = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
     yet_another_body.append(yet_another_element)
-    cache(yet_another_body)
-    cache(yet_another_body)
-    cache(yet_another_body)
+    put_in_cache(yet_another_body)
+    put_in_cache(yet_another_body)
+    put_in_cache(yet_another_body)
     # 2 elements in cache, original element has been cleared?
     # print(LRU_TEST.maxsize, LRU_TEST.full)
     assert duplicate_test(other_element) is True
@@ -554,7 +555,7 @@ def test_tei():
     with open(tei_relaxng_path) as f:
         tei_relaxng = f.read()
     # download, parse and validate simple html file
-    with patch('trafilatura.xml.fetch_url', return_value=tei_relaxng):
+    with patch('trafilatura.utils.fetch_url', return_value=tei_relaxng):
         result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=True)
     assert result is not None
     mytree = etree.fromstring(result)

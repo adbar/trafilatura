@@ -118,9 +118,9 @@ def main():
                 sys.exit(1)
         # process
         result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
-                        include_comments=args.nocomments, include_tables=args.notables,
-                        csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
-                        validation=args.validate, formatting=args.formatting)
+                         include_comments=args.nocomments, include_tables=args.notables,
+                         csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
+                         validation=args.validate, formatting=args.formatting)
         if result is not None:
             sys.stdout.write(result + '\n')
 
