@@ -18,8 +18,8 @@ try:
 except ImportError:
     import chardet
 
-# import trafilatura
-from trafilatura.core import cache, duplicate_test, extract, LRU_TEST, process_record, trim
+import trafilatura.core
+from trafilatura.core import cache, duplicate_test, extract, process_record, trim
 from trafilatura.lru import LRUCache
 from trafilatura import cli, utils, xml
 
@@ -500,15 +500,14 @@ def test_exotic_tags(xmloutput=False):
 
 def test_lrucache():
     '''test basic duplicate detection'''
-    global LRU_TEST
-    LRU_TEST.clear()
     LRU_TEST = LRUCache(maxsize=2)
-    my_body = other_body = yet_another_body = etree.Element('body')
+    trafilatura.core.LRU_TEST = LRU_TEST
+    my_body = etree.Element('body')
     ### element too short
-    my_element = html.fromstring('<p>AAAA BBBB</p>')
-    my_body.append(my_element)
-    cache(my_body)
-    assert duplicate_test(my_element) is False
+    #my_element = html.fromstring('<p>AAAA BBBB</p>')
+    #my_body.append(my_element)
+    #cache(my_body)
+    #assert duplicate_test(my_element) is False
     ### cached element
     my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
     my_body.append(my_element)
@@ -519,23 +518,24 @@ def test_lrucache():
     assert duplicate_test(my_element) is False
     cache(my_body)
     assert duplicate_test(my_element) is True
+    other_body = etree.Element('body')
     other_element = html.fromstring('<p>CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD</p>')
     other_body.append(other_element)
     cache(other_body)
     cache(other_body)
     cache(other_body)
     assert duplicate_test(other_element) is True
-    yet_another = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
-    yet_another_body.append(yet_another)
+    yet_another_body = etree.Element('body')
+    yet_another_element = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
+    yet_another_body.append(yet_another_element)
     cache(yet_another_body)
     cache(yet_another_body)
     cache(yet_another_body)
     # 2 elements in cache, original element has been cleared?
-    print(LRU_TEST.maxsize, LRU_TEST.full)
+    # print(LRU_TEST.maxsize, LRU_TEST.full)
     assert duplicate_test(other_element) is True
-    assert duplicate_test(yet_another) is True
-    # does not work
-    # assert duplicate_test(my_element) is False
+    assert duplicate_test(yet_another_element) is True
+    assert duplicate_test(my_element) is False
 
 
 def test_tei():

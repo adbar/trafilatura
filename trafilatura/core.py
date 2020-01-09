@@ -110,8 +110,10 @@ def cache(body):
         teststring = element.text
         if teststring in LRU_TEST.cache:
             val = LRU_TEST.get(teststring)
+            #print(val, teststring[:10] + '...')
             LRU_TEST.put(teststring, val + 1)
         else:
+            #print(0, teststring[:10] + '...')
             LRU_TEST.put(teststring, 1)
 
 

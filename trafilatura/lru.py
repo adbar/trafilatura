@@ -2,6 +2,7 @@
 Pure-Python Least Recently Used (LRU) cache
 Adapted from CPython functools.py lru_cache decorator implementation
 https://github.com/python/cpython/blob/3.8/Lib/functools.py
+Courtesy of https://github.com/vbarbaresi
 """
 
 ## This file is available from https://github.com/adbar/trafilatura
