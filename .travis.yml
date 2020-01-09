@@ -1,65 +1,77 @@
-sudo: false
 language: python
-# cache: pip
+os: linux
+cache: pip
 # dist: xenial
 
 matrix:
   include:
     - name: "Python 3.5 on Linux"
-      os: linux
       python: 3.5
       env: TOXENV=py35
       env: MINIMAL=false
     - name: "Python 3.6 on Linux"
-      os: linux
       python: 3.6
       env: TOXENV=py36
       env: MINIMAL=false
     - name: "Python 3.7 on Linux"
-      os: linux
       python: 3.7
       env: TOXENV=py37
       env: MINIMAL=false
     - name: "Python 3.8 on Linux with minimal dependencies"
-      os: linux
       dist: xenial
       python: 3.8
       env: MINIMAL=true
       env: TOXENV=py38
     - name: "Python 3.8 on Linux"
-      os: linux
       dist: xenial
       python: 3.8
       env: TOXENV=py38
       env: MINIMAL=false
+    - name: "Python 3.9 Nightly on Linux with minimal dependencies"
+      dist: bionic
+      python: nightly
+      env: TOXENV=py39
+      env: MINIMAL=true
     - name: "Python 3.9 Nightly on Linux"
-      os: linux
       dist: bionic
       python: nightly
       env: TOXENV=py39
       env: MINIMAL=false
     - name: "Pypy 3 on Linux with minimal dependencies"
-      os: linux
       python: pypy3
       env: MINIMAL=true
       env: TOXENV=pypy3
     - name: "Pypy 3 on Linux"
-      os: linux
       python: pypy3
       env: MINIMAL=false
       env: TOXENV=pypy3
+    - name: "Python 3 on older macOS with minimal dependencies"
+      os: osx
+      osx_image: xcode9.4
+      language: shell
+      env: MINIMAL=true
+      before_install:
+        - sw_vers
+        - python3 --version
+        - pip3 --version
     - name: "Python 3 on macOS with minimal dependencies"
       os: osx
       osx_image: xcode11
       language: shell
-      before_install: python3 --version ; pip3 --version ; sw_vers
       env: MINIMAL=true
+      before_install:
+        - sw_vers
+        - python3 --version
+        - pip3 --version
     - name: "Python 3 on macOS"
       os: osx
       osx_image: xcode11
       language: shell
-      before_install: python3 --version ; pip3 --version ; sw_vers
       env: MINIMAL=false
+      before_install:
+        - sw_vers
+        - python3 --version
+        - pip3 --version
     - name: "Python 3.7.4 on Windows with minimal dependencies"
       os: windows # Windows 10.0.17134 N/A Build 17134
       language: shell
@@ -92,6 +104,7 @@ before_install:
   - lsb_release -a
 
 install:
+  - pip3 install -U pip
   - pip3 install -U pytest pytest-cov codecov tox
   - if $MINIMAL; then pip3 install -U .;
     else pip3 install -U ".[all]"; fi
