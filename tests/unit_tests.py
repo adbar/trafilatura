@@ -198,7 +198,7 @@ def test_download():
     assert utils.fetch_url('https://httpbin.org/status/404') is None
     url = 'https://httpbin.org/status/200'
     teststring = utils.fetch_url(url)
-    assert teststring is not None
+    assert teststring is None  # too small
     assert cli.examine(teststring, url) is None
     url = 'https://httpbin.org/links/2/2'
     teststring = utils.fetch_url(url)
