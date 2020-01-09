@@ -25,13 +25,14 @@ except ImportError:
 import requests
 from lxml import etree, html
 
-from .settings import MAX_FILE_SIZE # MIN_FILE_SIZE ?
+from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE
 
 
 LOGGER = logging.getLogger(__name__)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-CUSTOM_HTMLPARSER = html.HTMLParser() # etree.HTMLParser() # remove_pis=True, collect_ids=False
+# CUSTOM_HTMLPARSER = html.HTMLParser()
+# etree.HTMLParser() # remove_pis=True, collect_ids=False
 
 UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
@@ -51,7 +52,6 @@ def decode_response(response, chunk_size=65536):
             htmltext = response.text
     else:
         htmltext = response.text
-    # return here
     return htmltext
 
 
@@ -64,15 +64,14 @@ def fetch_url(url):
     Raises:
         Nothing.
     """
-
     # customize headers
     headers = {
         'Connection': 'close',  # another way to cover tracks
-        # 'User-Agent': '', # your string here
+        # 'User-Agent': '',  # your string here
     }
     # send
     try:
-        # TODO: read by streaming chunks (stream=True, iter_content=xx)
+        # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=headers)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
@@ -85,35 +84,30 @@ def fetch_url(url):
         LOGGER.error('connection: %s %s', url, err)
     #except Exception as err:
     #    logging.error('unknown: %s %s', url, err) # sys.exc_info()[0]
-    # if no error
     else:
         # safety checks
         if response.status_code != 200:
             LOGGER.error('not a 200 response: %s', response.status_code)
-        #elif response.text is None or len(response.text) < 100:
-        #    LOGGER.error('file too small/incorrect response: %s %s', url, len(response.text))
+        elif response.text is None or len(response.text) < MIN_FILE_SIZE:
+            LOGGER.error('too small/incorrect: %s %s', url, len(response.text))
         elif len(response.text) > MAX_FILE_SIZE:
-            LOGGER.error('file too large: %s %s', url, len(response.text))
+            LOGGER.error('too large: %s %s', url, len(response.text))
         else:
             return decode_response(response)
-
-    # catchall
     return None
 
 
 def load_html(htmlobject):
-    '''Load object given as input and validate its type (accepted: LXML tree and string)'''
+    """Load object given as input and validate its type
+    (accepted: LXML tree and string)
+    """
     tree = None
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
-        # copy tree
-        tree = htmlobject
+        return htmlobject
     elif isinstance(htmlobject, str):
-        ## robust parsing
         try:
-            #guessed_encoding = chardet.detect(htmlobject.encode())['encoding']
-            #LOGGER.info('guessed encoding: %s', guessed_encoding)
-            # parse # encoding=guessed_encoding
-            tree = html.parse(StringIO(htmlobject)) # , parser=CUSTOM_HTMLPARSER
+            # parse # encoding=guessed_encoding # parser=CUSTOM_HTMLPARSER
+            tree = html.parse(StringIO(htmlobject))
         except UnicodeDecodeError as err:
             LOGGER.error('unicode %s', err)
         except ValueError:
@@ -131,11 +125,10 @@ def load_html(htmlobject):
     return tree
 
 
-#@profile
 def txttocsv(text, comments, url, doctitle, docdate):
     '''Output the result in CSV format (tab-separated values)'''
-    #outputwriter = csv.writer(sys.stdout, delimiter='\t', quoting=csv.QUOTE_NONE)
-    #outputwriter.writerow()
+    # outputwriter = csv.writer(sys.stdout, delimiter='\t', quoting=csv.QUOTE_NONE)
+    # outputwriter.writerow()
     text = trim(' '.join(text.splitlines()))
     if comments is not None:
         comments = trim(' '.join(comments.splitlines()))
@@ -168,7 +161,6 @@ def remove_control_characters(string):
     #\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
 
 
-#@profile
 def sanitize(text):
     '''Convert text and discard incompatible unicode and invalid XML characters'''
     text = remove_control_characters(text)
@@ -176,18 +168,15 @@ def sanitize(text):
     text = text.replace('&#13;', '')
     text = text.replace('&#10;', '')
     text = UNICODE_WHITESPACE.sub('', text)
-    #text = re.sub(r'&#13;|', '', text)
     # filter out empty lines
     returntext = ''
     for line in text.splitlines():
         line = trim(line)
         if not re.match(r'[\s\t]*$', line):
-            # line = line.replace('\s\s\s', '\s')
             returntext += line + '\n'
     return returntext
 
 
-#@profile
 def trim(string):
     '''Remove unnecesary spaces within a text string'''
     if string is not None:
@@ -198,14 +187,7 @@ def trim(string):
         string = string.strip()
     return string
 
-    ##  garbled unicode
-    #try:
-    #    returnstring = ftfy.fix_text(returnstring, fix_entities=False, fix_encoding=True, fix_surrogates=True)
-    #except UnicodeDecodeError as err:
-    #    LOGGER.warning('Unicode error: %s %s', err, record_id)
 
-
-#@profile
 def textfilter(element):
     '''Filter out unwanted text'''
     # print('#', element.text)
