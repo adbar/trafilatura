@@ -215,34 +215,33 @@ def try_justext(tree, url):
 
 def handle_textnode(element, comments_fix=True):
     '''Convert, format, and probe potential text elements'''
+    if element.text is None and element.tail is None:
+        return None
     # lb bypass
     if comments_fix is False and element.tag == 'lb':
+        element.tail = trim(element.tail)
+        # if textfilter(element) is True:
+        #     return None
+        # duplicate_test(subelement)?
         return element
-    if element.tag in ('head', 'dl', 'ol', 'ul'):
+    if element.tag in ('dl', 'head', 'ol', 'ul'):
         element.attrib.clear()
-    if element.text is None: # or len(element.text) < 10 # text_content()
+    if element.text is None:
         # try the tail
-        if element.tail is None or len(element.tail) < 2: # was 50
-            #element.getparent().remove(element)
-            #continue
-            return None
         # LOGGER.debug('using tail for element %s', element.tag)
         element.text = element.tail
         element.tail = ''
         # handle differently for br/lb
         if comments_fix is True and element.tag == 'lb':
             element.tag = 'p'
-    # delete newlines that are not related to punctuation or markup
-    # element.text = re.sub(r'(?<![p{P}>])\n', ' ', element.text)
     # trim
-    element.text = trim(element.text) # + '\n'
-    # if element.tail:
-    element.tail = trim(element.tail) # + '\n'
-    ## LOGGER.debug(element.tag, element.text)
-    if element.text and re.search(r'\w', element.text): # text_content()
+    element.text = trim(element.text)
+    if element.tail:
+        element.tail = trim(element.tail)
+    if element.text and re.search(r'\w', element.text):  # text_content()?
         if textfilter(element) is True:
             return None
-        ## TODO: improve duplicate detection
+        # TODO: improve duplicate detection
         if duplicate_test(element) is True:
             return None
     else:
@@ -254,14 +253,11 @@ def handle_subelement(subelement):
     '''Convert, format, and probe potential text subelements'''
     if subelement.text is None and subelement.tail is None:
         return subelement
-    # delete newlines that are not related to punctuation or markup
-    subelement.tail = re.sub(r'(?<![p{P}>])\n', ' ', subelement.tail)
     # trim
-    subelement.tail = trim(subelement.tail) # + '\n'
+    subelement.tail = trim(subelement.tail)
     if textfilter(subelement) is True:
         return None
-    #if duplicate_test(subelement) is True:
-    #    return None
+#    # duplicate_test(subelement)?
     return subelement
 
 
