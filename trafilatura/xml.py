@@ -7,6 +7,8 @@ All functions related to XML generation, processing and validation.
 ## under GNU GPL v3 license
 
 import logging
+import pkg_resources
+import pickle
 
 from io import StringIO
 from lxml import etree
@@ -16,6 +18,7 @@ from .utils import fetch_url, sanitize, trim
 
 LOGGER = logging.getLogger(__name__)
 # validation
+TEI_SCHEMA = pkg_resources.resource_filename('trafilatura', 'data/tei-schema.pickle')
 TEI_VALID_TAGS = {'cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
                   'lb', 'list', 'p', 'quote', 'row'}
 TEI_VALID_ATTRS = {'rendition', 'type'}
@@ -69,27 +72,18 @@ def check_tei(tei, url):
     return tei
 
 
-def validate_tei(tei): # , filename=""
+def validate_tei(tei):  # , filename=""
     '''Check if an XML document is conform to the guidelines of the Text Encoding Initiative'''
     global TEI_RELAXNG
     if TEI_RELAXNG is None:
-        # could be stored internally, requests.head() to check for updates
-        schema = fetch_url('https://tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng')
-        if schema is None:
-            LOGGER.error('No reference for validation available, aborting')
-            return True
-        # remove utf-8 declaration
-        schema = schema.replace('<?xml version="1.0" encoding="utf-8"?>', '<?xml version="1.0"?>', 1)
         # load validator
-        relaxng_doc = etree.parse(StringIO(schema))
+        with open(TEI_SCHEMA, 'rb') as f:
+            schema_data = pickle.load(f)
+        relaxng_doc = etree.parse(StringIO(schema_data))
         TEI_RELAXNG = etree.RelaxNG(relaxng_doc)
     result = TEI_RELAXNG.validate(tei)
     if result is False:
         print(TEI_RELAXNG.error_log.last_error)
-    #try:
-    #    result = relaxng.assert_(tei)
-    #except AssertionError as err:
-    #    LOGGER.warning('TEI validation error: %s', err)
     return result
 
 
