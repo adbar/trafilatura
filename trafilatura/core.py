@@ -106,24 +106,25 @@ def cache(body):
     '''Implement LRU cache'''
     global LRU_TEST
     for element in body:
-        # teststring = ' '.join(element.itertext()).encode('utf-8')
-        teststring = element.text
+        try:
+            teststring = ' '.join(element.itertext())
+        except AttributeError:  # justext Paragraph
+            teststring = element.text
         if teststring in LRU_TEST.cache:
             val = LRU_TEST.get(teststring)
-            #print(val, teststring[:10] + '...')
+            # print(val, teststring[:10] + '...')
             LRU_TEST.put(teststring, val + 1)
         else:
-            #print(0, teststring[:10] + '...')
+            # print(0, teststring[:10] + '...')
             LRU_TEST.put(teststring, 1)
 
 
-def duplicate_test(element, justext_switch=False):
+def duplicate_test(element):
     '''Check for duplicate text'''
     global LRU_TEST
-    # teststring = ' '.join(element.itertext()).encode('utf-8')
-    if justext_switch is False:
-        teststring = element.text_content()
-    else:
+    try:
+        teststring = ' '.join(element.itertext())
+    except AttributeError:  # justext Paragraph
         teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
         # key in self.cache
@@ -195,19 +196,17 @@ def convert_tags(tree):
 def try_justext(tree, url):
     '''Safety net: try with the generic algorithm justext'''
     result_body = etree.Element('body')
-    justtextstring = html.tostring(tree, pretty_print=False, encoding='unicode')
+    justtextstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
     LOGGER.debug('raw length: %s (tostring) ', len(justtextstring))
     try:
-        # paragraphs = custom_justext(tree)
         paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
-    # ValueError: Input object is not an XML element: HtmlComment
-    except ValueError as err:
+    except ValueError as err:  # not an XML element: HtmlComment
         LOGGER.error('justext %s %s', err, url)
         result_body = None
     else:
         for paragraph in paragraphs:
             if not paragraph.is_boilerplate:
-                if duplicate_test(paragraph, justext_switch=True) is not True:
+                if duplicate_test(paragraph) is not True:
                     elem = etree.Element('p')
                     elem.text = paragraph.text
                     result_body.append(elem)
