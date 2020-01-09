@@ -11,19 +11,16 @@ from setuptools import setup
 
 
 here = path.abspath(path.dirname(__file__))
-packages = ['trafilatura']
 
 # some problems with installation solved this way
 extras = {
     'all': [
         'cchardet >= 2.0.0',
-#        'ftfy >= 5.6',
-        'htmldate >= 0.5.6',
+        'htmldate >= 0.6.0',
         'langid >= 1.1.6',
-#        'lru-dict >= 1.1.6',
     ],
     'metadata': [
-        'htmldate >= 0.5.6',
+        'htmldate >= 0.6.0',
     ]
 }
 
@@ -35,16 +32,14 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.2.1',
-    description='Scrapes the main text of web pages while preserving some structure. Seamlessly downloads, parses and converts web documents.',
+    version='0.3.0',
+    description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, XML & TEI-XML',
     long_description=readme(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-        #'Development Status :: 3 - Alpha',
         'Development Status :: 4 - Beta',
         #'Development Status :: 5 - Production/Stable',
         #'Development Status :: 6 - Mature',
-        #'Development Status :: 7 - Inactive',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: Information Technology',
@@ -64,12 +59,13 @@ setup(
         'Topic :: Text Processing :: Linguistic',
         'Topic :: Text Processing :: Markup :: HTML',
     ],
-    keywords=['entity-extraction', 'html-extraction', 'html-parsing', 'text-mining', 'webarchives', 'web-scraping'],
+    keywords=['html2text', 'nlp', 'scraper', 'tei-xml', 'text-extraction', 'webscraping', 'web-scraping'],
     url='http://github.com/adbar/trafilatura',
     author='Adrien Barbaresi',
     author_email='barbaresi@bbaw.de',
     license='GPLv3+',
-    packages=packages,
+    packages=['trafilatura'],
+    package_data={'trafilatura': ['data/tei-schema.pickle']},
     include_package_data=True,
     python_requires='>=3.5',
     install_requires=[
