@@ -557,7 +557,7 @@ def compare_extraction(tree, url, temppost_hand, no_fallback):
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             include_comments=True, csv_output=False, xml_output=False,
             tei_output=False, tei_validation=False, target_language=None,
-            include_tables=True):
+            include_tables=True, include_formatting=False):
     '''Main process for text extraction'''
     # init
     global LRU_TEST
@@ -578,26 +578,24 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     cleaned_tree = prune_html(cleaned_tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-    #tree_cache[cleaned_tree] = list(cleaned_tree.iter())
+    # tree_cache[cleaned_tree] = list(cleaned_tree.iter())
     # bypass
     # cleaned_tree = tree
     # print(html.tostring(cleaned_tree, pretty_print=False, encoding='unicode'))
 
-    ## convert tags, the rest does not work without conversion
-    # if tei_output is True:
+    # convert tags, the rest does not work without conversion
     cleaned_tree = convert_tags(cleaned_tree)
     # remove hi-element to avoid tail bug
-    #if xml_output is False and tei_output is False:
-    #    etree.strip_tags(cleaned_tree, 'hi')
-    etree.strip_tags(cleaned_tree, 'hi')
+    if (xml_output is False and tei_output is False) or include_formatting is False:
+        etree.strip_tags(cleaned_tree, 'hi')
 
     # comments first, then remove
     commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
 
-    ## extract content
+    # extract content
     temppost_hand = extract_content(cleaned_tree, include_tables)
 
-    ## compare
+    # compare
     temp_text, temp_jt, postbody = compare_extraction(tree, url, temppost_hand, no_fallback)
 
     # try to use original/dirty tree
