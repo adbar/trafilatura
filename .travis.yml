@@ -27,6 +27,7 @@ matrix:
       python: 3.8
       env: TOXENV=py38
       env: MINIMAL=false
+      after_success: codecov  # use this version for the tests!
     - name: "Python 3.9 Nightly on Linux with minimal dependencies"
       dist: bionic
       python: nightly
@@ -112,9 +113,6 @@ install:
 script:
   - tox
   # - pytest tests/unit_tests.py --cov=codecov
-
-after_success:
-  - codecov
 
 notifications:
   email:
