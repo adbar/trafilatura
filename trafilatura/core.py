@@ -17,11 +17,6 @@ import re
 import justext
 
 try:
-    import langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
-try:
     from htmldate import find_date
     DATE_FLAG = True
 except ImportError:
@@ -34,22 +29,19 @@ from .duplicates import duplicate_test, put_in_cache
 from .htmlprocess import (convert_tags, handle_textnode, manual_cleaning,
                           prune_html, recursively_empty, discard_unwanted,
                           discard_unwanted_comments)
-from .settings import (HTML_CLEANER, LANGUAGES, MIN_EXTRACTED_SIZE,
+from .settings import (HTML_CLEANER, JUSTEXT_LANGUAGE, MIN_EXTRACTED_SIZE,
                        MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG)
-from .utils import load_html, sanitize, trim, txttocsv
+from .utils import language_filter, load_html, sanitize, trim, txttocsv
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
-
-if LANGID_FLAG is True:
-    langid.set_languages(LANGUAGES)
 
 LOGGER = logging.getLogger(__name__)
 
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 # justext
-JUSTEXT_STOPLIST = justext.get_stoplist('German')
+JUSTEXT_STOPLIST = justext.get_stoplist(JUSTEXT_LANGUAGE)
 
 
 def try_justext(tree, url):
@@ -476,21 +468,8 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         return None
 
     # sanity check on language
-    if target_language is not None:
-        if LANGID_FLAG is True:
-            # comments
-            if len(temp_comments) > len(temp_text):
-                langtest = temp_comments
-            # default
-            else:
-                langtest = temp_text
-            langresult = langid.classify(langtest)
-            if langresult[0] != target_language:
-                LOGGER.warning('wrong language: %s %s %s', langresult, record_id, url)
-                LOGGER.debug('wrong language: %s %s', langresult, temp_text)
-                return None
-        else:
-            LOGGER.warning('langid not installed, no language detection run')
+    if language_filter(temp_text, temp_comments, target_language, record_id, url) is True:
+        return None
 
     # cache elements
     put_in_cache(postbody)

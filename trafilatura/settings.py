@@ -21,7 +21,8 @@ LRU_SIZE = 10000000 # 1024
 MAX_REPETITIONS = 2
 
 # filters
-LANGUAGES = ['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru']
+JUSTEXT_LANGUAGE = 'German'
+DETECTION_LANGUAGES = ['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru']
 
 #CORPUS_VERSION = 2017.1
 
