@@ -21,7 +21,7 @@ LOGGER = logging.getLogger(__name__)
 def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
             include_tables=True, csv_output=False, xml_output=False,
             tei_output=False, validation=False, formatting=False):
-    """ Generic safeguards and triggers """
+    """Generic safeguards and triggers"""
     # safety check
     if htmlstring is None:
         sys.stderr.write('# ERROR: empty document\n')
@@ -34,7 +34,8 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
         result = extract(htmlstring, url, '0000', no_fallback=no_fallback,
                          include_comments=include_comments, include_tables=include_tables,
                          csv_output=csv_output, xml_output=xml_output,
-                         tei_output=tei_output, tei_validation=validation, include_formatting=formatting)
+                         tei_output=tei_output, tei_validation=validation,
+                         include_formatting=formatting)
         return result
     return None
 
@@ -84,7 +85,8 @@ def main():
     if args.verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     if args.inputfile:
-        with open(args.inputfile, mode='r', encoding='utf-8') as inputfile: # errors='strict', buffering=1
+        # optional: errors='strict', buffering=1
+        with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
             for line in inputfile:
                 url = line.strip()
                 htmlstring = fetch_url(url)
@@ -106,16 +108,14 @@ def main():
         if args.URL:
             htmlstring = fetch_url(args.URL)
             if htmlstring is None:
-                sys.stderr.write('# ERROR no valid result for url: ' + args.URL + '\n')
-                sys.exit(1)
+                sys.exit('# ERROR no valid result for url: ' + args.URL + '\n')
         # process input on STDIN
         else:
             # unicode check
             try:
                 htmlstring = sys.stdin.read()
             except UnicodeDecodeError as err:
-                sys.stderr.write('# ERROR system/buffer encoding: ' + str(err) + '\n')
-                sys.exit(1)
+                sys.exit('# ERROR system/buffer encoding: ' + err + '\n')
         # process
         result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
                          include_comments=args.nocomments, include_tables=args.notables,
