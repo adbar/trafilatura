@@ -72,16 +72,17 @@ def discard_unwanted_comments(tree):
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # strip tags
-    etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'span', 'small', 'wbr')
+    etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite',
+                     'font', 'ins', 'meta', 'span', 'small', 'wbr')
     # 'dd', 'sub', 'sup',
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
-        # print(elem.tag, elem.text_content())
         # etree.strip_tags(elem, 'span')
         elem.tag = 'head'
+        elem.attrib.clear()
         # elem.set('rendition', '#i')
     # br → lb
-    for elem in tree.iter('br', 'hr'): # tree.xpath('//[br or hr]'): ## hr → //lb/line ?
+    for elem in tree.iter('br', 'hr'):
         elem.tag = 'lb'
         elem.attrib.clear()
     # ul/ol → list / li → item

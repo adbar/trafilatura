@@ -76,8 +76,10 @@ def handle_titles(element, result_body):
     '''Process head elements (titles)'''
     element.text = trim(element.text)
     if element.text and re.search(r'\w', element.text):
-        element.attrib.clear()
         result_body.append(element)
+    # maybe needs attention
+    if element.tail:
+        LOGGER.debug('tail in title: %s', element.tail)
     return result_body
 
 
@@ -95,34 +97,46 @@ def handle_formatting(element, result_body):
     return result_body
 
 
-def handle_lists_quotes(element, result_body):
-    '''Process lists and quotes elements'''
+def handle_lists(element, result_body):
+    '''Process lists elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
         # list-specific check
-        if element.tag == 'list' and child.tag not in ('dd', 'dt', 'li'):
+        if child.tag not in ('dd', 'dt', 'li'):
             continue  # 'item'
         # proceed with iteration, fix for nested elements
         processed_child = handle_textnode(child, comments_fix=True)
         # add child element to processed_element
         if processed_child is not None:
-            if element.tag == 'list':
-                newsub = etree.SubElement(processed_element, 'item')
-            else:
-                newsub = etree.SubElement(processed_element, child.tag)
+            newsub = etree.SubElement(processed_element, 'item')
             newsub.text = processed_child.text
-            if element.tag == 'quote':
-                newsub.tail = processed_child.tail
         child.tag = 'done'
     # avoid double tags??
     if len(processed_element) > 0:  # if it has children
-        # teststring = ''.join(processed_element.itertext())
-        # if len(teststring) > 0 and re.search(r'[a-z]', teststring): # if it has text
-        # correct nested elements
-        if processed_element.tag == 'quote':
-            etree.strip_tags(processed_element, 'quote')
-            # processed_element.tag == 'quote' #superfluous?
-        result_body.append(processed_element)
+        # test if it has text
+        teststring = ''.join(processed_element.itertext())
+        if len(teststring) > 0 and re.search(r'[a-z]', teststring):
+            result_body.append(processed_element)
+    return result_body
+
+
+def handle_quotes(element, result_body):
+    '''Process quotes elements'''
+    processed_element = etree.Element(element.tag)
+    for child in element.iter():
+        processed_child = handle_textnode(child, comments_fix=True)
+        if processed_child is not None:
+            newsub = etree.SubElement(processed_element, child.tag)
+            newsub.text = processed_child.text
+            newsub.tail = processed_child.tail
+        child.tag = 'done'
+    if len(processed_element) > 0:
+        # avoid double/nested tags
+        etree.strip_tags(processed_element, 'quote')
+        # test if it has text
+        teststring = ''.join(processed_element.itertext())
+        if len(teststring) > 0 and re.search(r'[a-z]', teststring):
+            result_body.append(processed_element)
     return result_body
 
 
@@ -148,7 +162,8 @@ def handle_other_elements(element, result_body, potential_tags):
 
 
 def handle_paragraphs(element, result_body, potential_tags):
-    '''Process paragraphs (p) elements with their children'''
+    '''Process paragraphs (p) elements along with their children,
+       trim and clean the content'''
     element.attrib.clear()
     # no children
     if len(element) == 0:
@@ -164,41 +179,23 @@ def handle_paragraphs(element, result_body, potential_tags):
             processed_child = handle_textnode(child, comments_fix=False)
             if processed_child is not None:
                 newsub = etree.Element(child.tag)
-                # paragraph, append text
-                #if child.tag == 'p':
-                    # if there are already children
-                #    if len(processed_element) > 0:
-                #        newsub.tail = processed_child.text + processed_child.tail
-                #    else:
-                #        newsub.text = processed_child.text
-                #        newsub.tail = processed_child.tail
-                # handle hi
+                # handle formatting
                 if child.tag == 'hi':
                     # check depth and clean
                     if len(child) > 0:
-                        for item in child: # children are lists
+                        for item in child:  # children are lists
                             item.text = ' ' + item.text
                             etree.strip_tags(child, item.tag)
                     newsub.set('rendition', child.get('rendition'))
-                # handle spaces
+                # handle line breaks
                 elif child.tag == 'lb':
-                    # delete if empty paragraph so far
-                    #if len(processed_element.text) < 1:
-                    #    if child.tail is not None and re.search(r'\w+', child.tail):
-                    #        processed_child.text = child.tail
-                        # child.tag = 'done'
-                    #else:
-                    #    if child.tail is not None and re.search(r'\w+', child.tail):
-                            #        processed_child.tail = handle_subelement(child).tail
                     processed_child.tail = handle_textnode(child, comments_fix=False).tail
-                else:
-                    if child.tag == 'p':
-                        LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
+                # needing attention!
+                elif child.tag == 'p':
+                    LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
                 # prepare text
                 if processed_child.text is None:
                     processed_child.text = ''
-                if processed_child.tail is None:
-                    processed_child.tail = ''
                 # if there are already children
                 if len(processed_element) > 0:
                     newsub.tail = processed_child.text + processed_child.tail
@@ -300,25 +297,23 @@ def extract_content(tree, include_tables=False):
         # extract content
         for element in subtree.xpath('.//*'):  # .iter() .getchildren()
             # bypass: nested elements
-            if element.tag in ('list', 'quote'):  # + 'code'?
-                result_body = handle_lists_quotes(element, result_body)
-            # bypass: head:
+            if element.tag == 'list':
+                result_body = handle_lists(element, result_body)
+            elif element.tag == 'quote':   # + 'code'?
+                result_body = handle_quotes(element, result_body)
             elif element.tag == 'head':
                 result_body = handle_titles(element, result_body)
-            # strip attrs after discard is run
             elif element.tag == 'p':
                 result_body = handle_paragraphs(element, result_body, potential_tags)
-            # insert it directly
             elif element.tag == 'lb':
                 if element.tail is not None and re.search(r'\w+', element.tail):
                     processed_element = etree.Element('p')
                     processed_element.text = handle_textnode(element, comments_fix=False).tail
                     result_body.append(processed_element)
-            # insert it directly
             elif element.tag == 'hi':
                 result_body = handle_formatting(element, result_body)
-            # other elements (div, ??, ??)
             else:
+                # other elements (div, ??, ??)
                 result_body = handle_other_elements(element, result_body, potential_tags)
         # exit the loop if the result has children
         if len(result_body) > 0:
