@@ -186,7 +186,7 @@ def handle_paragraphs(element, result_body, potential_tags):
                         for item in child:  # children are lists
                             item.text = ' ' + item.text
                             etree.strip_tags(child, item.tag)
-                    newsub.set('rendition', child.get('rendition'))
+                    newsub.set('rend', child.get('rend'))
                 # handle line breaks
                 elif child.tag == 'lb':
                     processed_child.tail = handle_textnode(child, comments_fix=False).tail

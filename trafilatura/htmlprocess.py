@@ -89,43 +89,43 @@ def convert_tags(tree):
     for elem in tree.iter('ul', 'ol', 'dl'):
         elem.tag = 'list'
         elem.attrib.clear()
-    # blockquote | q → quote
+    # blockquote, pre, q → quote
     for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
         elem.attrib.clear()
-    # change rendition #i
+    # italics
     for elem in tree.iter('em', 'i'):
         elem.attrib.clear()
         elem.tag = 'hi'
-        elem.set('rendition', '#i')
-    # change rendition #b
+        elem.set('rend', '#i')
+    # bold font
     for elem in tree.iter('b', 'strong'):
         elem.attrib.clear()
         elem.tag = 'hi'
-        elem.set('rendition', '#b')
-    # change rendition #u (very rare)
+        elem.set('rend', '#b')
+    # u (very rare)
     for elem in tree.iter('u'):
         elem.tag = 'hi'
-        elem.set('rendition', '#u')
-    # change rendition #pre and #t (very rare)
-    for elem in tree.iter('tt'):  # //pre| //code
+        elem.set('rend', '#u')
+    # tt (very rare)
+    for elem in tree.iter('tt'):
         elem.attrib.clear()
         elem.tag = 'hi'
-        elem.set('rendition', '#t')
-    # change rendition sub and sup (very rare)
-    for elem in tree.iter('sub'):  # //pre| //code
+        elem.set('rend', '#t')
+    # sub and sup (very rare)
+    for elem in tree.iter('sub'):
         elem.attrib.clear()
         elem.tag = 'hi'
-        elem.set('rendition', '#sub')
-    for elem in tree.iter('sup'):  # //pre| //code
+        elem.set('rend', '#sub')
+    for elem in tree.iter('sup'):
         elem.attrib.clear()
         elem.tag = 'hi'
-        elem.set('rendition', '#sup')
+        elem.set('rend', '#sup')
     # del | s | strike → <del rend="overstrike">
     for elem in tree.iter('del', 's', 'strike'):
         elem.attrib.clear()
         elem.tag = 'del'
-        elem.set('rendition', 'overstrike')
+        elem.set('rend', 'overstrike')
     return tree
 
 
