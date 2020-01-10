@@ -1,5 +1,5 @@
 """
-Pure-Python Least Recently Used (LRU) cache
+Pure-Python Least Recently Used (LRU) cache using a circular doubly linked list
 Adapted from CPython functools.py lru_cache decorator implementation
 https://github.com/python/cpython/blob/3.8/Lib/functools.py
 Courtesy of https://github.com/vbarbaresi
@@ -42,7 +42,7 @@ class LRUCache:
 
     def get(self, key):
         '''Tests if the key that is asked for is in the cache
-           and activates LRU mechanism'''
+           and retrieve its value from the linked list'''
         link = self.cache.get(key)
         if link is not None:
             result = self._move_link(link)

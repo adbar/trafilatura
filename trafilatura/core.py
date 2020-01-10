@@ -30,7 +30,7 @@ except ImportError:
 from lxml import etree, html
 
 # own
-from .duplicates import duplicate_test, put_in_cache, test_body_cache
+from .duplicates import duplicate_test, put_in_cache
 from .htmlprocess import (convert_tags, handle_textnode, manual_cleaning,
                           prune_html, recursively_empty, discard_unwanted,
                           discard_unwanted_comments)
@@ -528,7 +528,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             output.set('date', docdate)
 
     # check duplicates at body level
-    if test_body_cache(postbody) is True:
+    if duplicate_test(postbody) is True:
         return None
 
     if xml_output is False and tei_output is False:

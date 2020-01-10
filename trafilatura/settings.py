@@ -18,6 +18,7 @@ MIN_EXTRACTED_COMM_SIZE = 100
 MIN_DUPLCHECK_SIZE = 100
 
 LRU_SIZE = 10000000 # 1024
+MAX_REPETITIONS = 2
 
 # filters
 LANGUAGES = ['de', 'en', 'es', 'fr', 'ja', 'nl', 'ru']
