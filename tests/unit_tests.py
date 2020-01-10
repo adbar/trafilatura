@@ -17,6 +17,13 @@ try:
     import cchardet as chardet
 except ImportError:
     import chardet
+    
+# language detection
+try:
+    import langid
+    LANGID_FLAG = True
+except ImportError:
+    LANGID_FLAG = False
 
 import trafilatura.filters
 from trafilatura.core import extract, process_record, trim
@@ -180,6 +187,16 @@ def test_parser():
         assert args.URL == 'https://www.example.org'
 
 
+def test_climain():
+    '''test arguments and main CLI entrypoint'''
+    exit_status = os.system('trafilatura --help')
+    assert exit_status == 0
+    #exit_status = os.system('trafilatura -f -u https://httpbin.org/html')
+    #assert exit_status == 0
+    #exit_status = os.system('curl -s https://httpbin.org/html | trafilatura')
+    #assert exit_status == 0
+
+
 test_matrix = [(('a', 'b', 'c', 'd', 'e'), 'c\td\te\ta\tb\n'), \
                (('a', None, 'c', 'd', 'e'), 'c\td\te\ta\t\n'), \
                (('a', 'b', None, 'd', 'e'), '\td\te\ta\tb\n'), \
@@ -211,7 +228,7 @@ def test_download():
     assert cli.examine(teststring, url) is not None
 
 
-def test_main(xmloutput=False):
+def test_extract(xmloutput=False):
     '''test extraction from HTML'''
     result = load_mock_page('https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/', xmloutput)
     assert 'Impressum' not in result and 'Die GEMA dreht völlig am Zeiger!' in result
@@ -544,6 +561,42 @@ def test_lrucache():
     assert lru_test.get('tralala') == -1
 
 
+@patch('trafilatura.core.MIN_EXTRACTED_SIZE', 0)
+def test_formatting():
+    '''Test HTML formatting conversion and extraction'''
+    # simple
+    my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
+    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
+    # nested
+    my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
+    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    assert '<hi rend="#b">This here is in bold and italic font.</hi>' in my_result
+    # empty
+    my_document = html.fromstring('<html><body><p><b><i></i></b></p></body></html>')
+    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    assert '<main/>' in my_result
+    # wild div
+    my_document = html.fromstring('<html><body><article><div><strong>Wild text</strong></div></article></body></html>')
+    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    assert '<p>' in my_result and 'Wild text' in my_result  # no rend so far
+    my_result = extract(my_document)
+    assert my_result == 'Wild text\n'
+
+
+def test_filters():
+    '''Test content filtering'''
+    if LANGID_FLAG is True:
+        # main text
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', None, None) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', None, None) is True
+        # comments
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', None, None) is False     
+    else:
+        # no detection
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', None, None) is False     
+
+
 def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
@@ -568,8 +621,11 @@ if __name__ == '__main__':
     test_lrucache()
     test_input()
     test_parser()
-    test_main(xmloutput=False)
-    test_main(xmloutput=True)
+    test_climain()
+    test_formatting()
+    test_filters()
+    test_extract(xmloutput=False)
+    test_extract(xmloutput=True)
     test_download()
     test_tei()
     test_exotic_tags()
