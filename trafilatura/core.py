@@ -81,6 +81,20 @@ def handle_titles(element, result_body):
     return result_body
 
 
+def handle_formatting(element, result_body):
+    '''Process formatting elements (b, i, etc. converted to hi) found
+       outside of paragraphs'''
+    if element.text is not None or element.tail is not None:
+        processed_element = etree.Element('p')
+        processed_child = etree.SubElement(processed_element, element.tag)
+        if element.text is not None:
+            processed_child.text = trim(element.text)
+        if element.tail is not None:
+            processed_child.tail = trim(element.tail)
+        result_body.append(processed_element)
+    return result_body
+
+
 def handle_lists_quotes(element, result_body):
     '''Process lists and quotes elements'''
     processed_element = etree.Element(element.tag)
@@ -109,6 +123,27 @@ def handle_lists_quotes(element, result_body):
             etree.strip_tags(processed_element, 'quote')
             # processed_element.tag == 'quote' #superfluous?
         result_body.append(processed_element)
+    return result_body
+
+
+def handle_other_elements(element, result_body, potential_tags):
+    '''Handle diverse or unknown elements in the scope of relevant tags'''
+    # delete unwanted
+    if element.tag not in potential_tags:
+        # LOGGER.debug('discarding: %s %s', element.tag, element.text)
+        return result_body
+    if element.tag == 'div':
+        LOGGER.warning('processing other element: %s', element.tag)
+        processed_element = handle_textnode(element, comments_fix=False)
+        if processed_element is not None:
+            processed_element.attrib.clear()
+            # small div-correction # could be moved elsewhere
+            if processed_element.tag == 'div':
+                processed_element.tag = 'p'
+            # insert
+            result_body.append(processed_element)
+    else:
+        LOGGER.debug('processing other element: %s %s', element.tag, element.text)
     return result_body
 
 
@@ -223,10 +258,27 @@ def handle_tables(tree, result_body):
     return result_body
 
 
+def recover_wild_paragraphs(tree, result_body):
+    '''Look for all p-elements, including outside of the determined frame
+       and throughout the document to recover potentially missing text parts'''
+    LOGGER.debug('Taking all p-elements')
+    # prune
+    search_tree = discard_unwanted(tree)
+    # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
+    for element in search_tree.xpath('//p'):
+        # print(element.tag, element.text)
+        processed_element = handle_textnode(element, comments_fix=False)
+        if processed_element is not None:
+            processed_element.attrib.clear()
+            processed_element.tail = ''
+            result_body.append(processed_element)
+    return result_body
+
+
 def extract_content(tree, include_tables=False):
-    '''Find and extract the main content of a page using a set of expressions'''
-    #tree_cache = dict()
-    #tree_cache[tree] = list(tree.iter())
+    '''Find the main content of a page using a set of XPath expressions,
+       then extract relevant elements, strip them of unwanted subparts and
+       convert them'''
     result_body = etree.Element('body')
     # iterate
     for expr in BODY_XPATH:
@@ -264,53 +316,18 @@ def extract_content(tree, include_tables=False):
                     result_body.append(processed_element)
             # insert it directly
             elif element.tag == 'hi':
-                if element.text is not None or element.tail is not None:
-                    processed_element = etree.Element('p')
-                    processed_child = etree.SubElement(processed_element, element.tag)
-                    if element.text is not None:
-                        processed_child.text = trim(element.text)
-                    if element.tail is not None:
-                        processed_child.tail = trim(element.tail)
-                    result_body.append(processed_element)
+                result_body = handle_formatting(element, result_body)
             # other elements (div, ??, ??)
             else:
-                ## delete unwanted
-                if element.tag not in potential_tags:
-                    # LOGGER.debug('discarding: %s %s', element.tag, element.text)
-                    continue
-                if element.tag == 'div':
-                    LOGGER.warning('processing other element: %s', element.tag)
-                    processed_element = handle_textnode(element, comments_fix=False)
-                    if processed_element is not None:
-                        processed_element.attrib.clear()
-                        # small div-correction # could be moved elsewhere
-                        if processed_element.tag == 'div':
-                            processed_element.tag = 'p'
-                        # insert
-                        result_body.append(processed_element)
-                elif element.tag != 'div' and element.tag in potential_tags:
-                    LOGGER.debug('processing other element: %s %s', element.tag, element.text)
-        # control
-        if len(result_body) > 0: # if it has children
+                result_body = handle_other_elements(element, result_body, potential_tags)
+        # exit the loop if the result has children
+        if len(result_body) > 0:
             LOGGER.debug(expr)
             break
-    # try parsing wild <p> elements
-    # no children if text too short # MIN_EXTRACTED_SIZE:
+    # try parsing wild <p> elements if nothing found or text too short
     if len(result_body) == 0 or len(' '.join(result_body.itertext())) < 100:
-        LOGGER.debug('Taking all p-elements')
-        # prune
-        search_tree = discard_unwanted(tree)
-        # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
-        for element in search_tree.xpath('//p'):
-            # print(element.tag, element.text)
-            processed_element = handle_textnode(element, comments_fix=False)
-            if processed_element is not None:
-                processed_element.attrib.clear()
-                processed_element.tail = ''
-                result_body.append(processed_element)
-    # try parsing tables
-    # if len(result_body) == 0: # no children
-    # for _, element in etree.iterparse(xml_file, tag='a'):
+        result_body = recover_wild_paragraphs(tree, result_body)
+    # parse tables
     if include_tables is True:
         result_body = handle_tables(tree, result_body)
     # filter output
