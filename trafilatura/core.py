@@ -251,16 +251,15 @@ def recover_wild_paragraphs(tree, result_body):
     '''Look for all p-elements, including outside of the determined frame
        and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Taking all p-elements')
+    potential_tags = set(TAG_CATALOG)
     # prune
     search_tree = discard_unwanted(tree)
-    # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
-    for element in search_tree.xpath('//p'):
-        # print(element.tag, element.text)
-        processed_element = handle_textnode(element, comments_fix=False)
-        if processed_element is not None:
-            processed_element.attrib.clear()
-            processed_element.tail = ''
-            result_body.append(processed_element)
+    for element in search_tree.iter('p'):
+        # processed_element = handle_textnode(element, comments_fix=False)
+        # if processed_element is not None:
+        #    processed_element.attrib.clear()
+        #    processed_element.tail = ''
+        result_body = handle_paragraphs(element, result_body, potential_tags)
     return result_body
 
 
@@ -366,7 +365,7 @@ def extract_metadata(tree):
     '''Extract title and document date if available/required'''
     try:
         doctitle = trim(tree.find('//title').text)  # h1?
-    except AttributeError:  # no title found
+    except (AttributeError, SyntaxError):  # no title found
         doctitle = None
     if DATE_FLAG is True:
         docdate = find_date(tree, extensive_search=False)
