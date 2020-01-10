@@ -14,7 +14,8 @@ from threading import RLock
 PREV, NEXT, KEY, RESULT = 0, 1, 2, 3  # names for the link fields
 
 
-class LRUCache(object):
+class LRUCache:
+    '''Implements a class for the Least Recently Used (LRU) cache'''
     # Constants shared by all lru cache instances:
     sentinel = object()  # unique object used to signal cache misses
     lock = RLock()  # because linkedlist updates aren't threadsafe
@@ -40,6 +41,8 @@ class LRUCache(object):
         return result
 
     def get(self, key):
+        '''Tests if the key that is asked for is in the cache
+           and activates LRU mechanism'''
         link = self.cache.get(key)
         if link is not None:
             result = self._move_link(link)
@@ -47,6 +50,7 @@ class LRUCache(object):
         return -1
 
     def put(self, key, value):
+        '''Stores a given key in the cache'''
         # Size limited caching that tracks accesses by recency
         with self.lock:
             link = self.cache.get(key)
@@ -85,9 +89,12 @@ class LRUCache(object):
                 self.full = (len(self.cache) >= self.maxsize)
 
     def has_key(self, key):
+        '''For convenience, merely tests if the key that is asked for
+           is in the cache'''
         return key in self.cache
 
     def clear(self):
+        '''Delete all cache content'''
         self.cache.clear()
         self.root[:] = [self.root, self.root, None, None]
         self.full = False
