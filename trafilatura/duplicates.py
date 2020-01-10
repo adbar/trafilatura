@@ -1,5 +1,5 @@
 """
-Module bundling functions related to duplicate detection.
+Functions related to duplicate detection using .
 """
 
 from .lru import LRUCache
@@ -28,7 +28,6 @@ def put_in_cache(body):
 
 def duplicate_test(element):
     '''Check for duplicate text'''
-    # global LRU_TEST
     try:
         teststring = ' '.join(element.itertext())
     except AttributeError:  # justext Paragraph
@@ -40,12 +39,3 @@ def duplicate_test(element):
             # LRU_TEST[teststring] += 1
             return True
     return False
-
-
-#def test_body_cache(postbody):
-#    '''Convenience fonction to check document body as a whole'''
-#    teststring = ' '.join(postbody.itertext())
-#    if LRU_TEST.has_key(teststring) is True:
-#        # LRU_TEST[teststring] = 1
-#        return True
-#    return False

@@ -96,8 +96,8 @@ def main():
                     if result is None:
                         result = '# ERROR: no valid result for url ' + url
                 # ugly but efficient
-                except:
-                    result = '# ERROR:' + sys.exc_info()[0] + ' for url ' + url + '\n'
+                except Exception as err:
+                    result = '# ERROR:' + err + sys.exc_info()[0] + ' for url ' + url + '\n'
                 sys.stdout.write(result + '\n')
                 # sleep 2 sec between requests
                 sleep(2)

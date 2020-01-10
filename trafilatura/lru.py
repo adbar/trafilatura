@@ -88,11 +88,6 @@ class LRUCache:
                 # which could potentially be wrapped in an lru_cache itself.
                 self.full = (len(self.cache) >= self.maxsize)
 
-    def has_key(self, key):
-        '''For convenience, merely tests if the key that is asked for
-           is in the cache'''
-        return key in self.cache
-
     def clear(self):
         '''Delete all cache content'''
         self.cache.clear()
