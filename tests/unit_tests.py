@@ -287,10 +287,8 @@ def test_extract(xmloutput=False):
     result = load_mock_page('https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/', xmloutput)
     assert 'Dann sollten Sie erst recht' in result and 'als saure Gürkchen entlarvte Ex-Boyfriends.' in result and 'Ähnliche Beiträge' not in result
 
-    # bug here
-    if xmloutput is False:
-        result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975', langcheck='de')
-        assert 'Es ist erstaunlich:'in result and 'Foto: rclassen' not in result and '(Narr-Verlag).' in result and 'Diskussion zu diesem Artikel auf:' not in result
+    result = load_mock_page('https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975', langcheck='de')
+    assert 'Es ist erstaunlich:'in result and 'Foto: rclassen' not in result and '(Narr-Verlag).' in result and 'Diskussion zu diesem Artikel auf:' not in result
 
     result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html', xmloutput)
     assert 'künftig das XADO-Schutzfett verwenden.' in result and 'bis zu 50% Verschleiß.' in result and 'Die Lebensdauer von Bauteilen erhöht sich beträchtlich.' in result and 'Newsletter' not in result # and 'Sie könnten auch an folgenden Artikeln interessiert sein' not in result
@@ -319,12 +317,13 @@ def test_extract(xmloutput=False):
     result = load_mock_page('http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/', xmloutput)
     assert 'zu einem glatten Teig verarbeiten.' in result and 'goldbraun sind.' in result and '200 g Zucker' in result and 'Ein Backblech mit Backpapier auslegen.' in result and 'Sei der Erste' not in result and 'Gefällt mir' not in result and 'Trotz sorgfältiger inhaltlicher Kontrolle' not in result
 
-    #result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18', xmloutput)
-    #print(result)
-    #assert 'Es war gesagt,' in result and 'Symbol auf dem Finger haben' in result and 'Aufrufe:' not in result
+    # justext performs better here
+    result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18', xmloutput)
+    # print(result)
+    assert 'Es war gesagt,' in result and 'Aufrufe:' not in result # and 'Symbol auf dem Finger haben' in result 
 
     result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg', xmloutput)
-    assert 'Salzburg liebt seine Radfahrer.' in result and 'Puls einsaugen zu lassen.' in result and 'Das könnte Sie auch interessieren ...' not in result and 'So macht Radfahren sonst noch Spaß' not in result # and 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
+    assert 'Salzburg liebt seine Radfahrer.' in result and 'Puls einsaugen zu lassen.' in result and 'Das könnte Sie auch interessieren ...' not in result and 'So macht Radfahren sonst noch Spaß' not in result and 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
 
     result = load_mock_page('https://www.heise.de/newsticker/meldung/Zahlen-bitte-100-scheinbare-Kanaele-die-den-Hype-um-Marsmenschen-ausloesten-4438438.html', xmloutput)
     assert 'Nicht selten sorgen' in result and '(mawi)' in result and 'Mehr zum Thema' not in result and 'Lesezeit' not in result
@@ -363,6 +362,7 @@ def test_extract(xmloutput=False):
     assert 'Leitsätze des Gerichts' in result and 'III. Die Revision der Beklagten' and 'twittern' not in result and 'Ähnliche Beiträge' not in result and 'd.toelle[at]rechtambild.de' not in result
 
     result = load_mock_page('http://www.internet-law.de/2011/07/verstost-der-ausschluss-von-pseudonymen-bei-google-gegen-deutsches-recht.html', xmloutput)
+    # print(result)
     assert 'Wann Blogs einer Impressumspflicht unterliegen,' in result and 'Über mich' not in result and 'Gesetzes- und Rechtsprechungszitate werden automatisch' not in result
     ## comments!
     # and 'Mit Verlaub, ich halte das für groben Unsinn.' in result
@@ -417,7 +417,7 @@ def test_extract(xmloutput=False):
     assert 'Zuerst dachte ich, ich könnte das' in result and 'x Franzi' in result and 'Flauschjacke: Bershka' in result and 'Palm Springs Mini (links)' not in result and 'Diese Website verwendet Akismet' not in result and 'New York, New York' not in result
 
     result = load_mock_page('https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html', xmloutput)
-    assert 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result# and '2. Satt essen bei den Mahlzeiten' in result and 'Bringt die Kilos zum Purzeln!' not in result
+    assert 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result # and '2. Satt essen bei den Mahlzeiten' in result and 'Bringt die Kilos zum Purzeln!' not in result
 
     result = load_mock_page('https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html', xmloutput)
     assert 'Glücks-Trend Konkurrenz' in result and 'Praktiziere Dankbarkeit' in result and 'dein Ikigai schon gefunden?' in result and '14,90 Euro.' in result and 'Neu in Liebe' not in result and 'Erfahre mehr' not in result and 'Erfahrung mit privater Arbeitsvermittlung?' not in result
@@ -462,7 +462,7 @@ def test_extract(xmloutput=False):
     assert 'Rüschen und Volants.' in result and 'ihr jedes Jahr tragen könnt?' in result and 'Das könnte dich auch interessieren' not in result and 'Catherine Classic Lac 602' not in result # and 'mein Lieblingskleid vereint' in result
 
     result = load_mock_page('https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/', xmloutput)
-    assert 'Einblicke in die Vision zukünftiger Softwaregenerationen.' in result and 'Frage 4: Welche Rolle spielt Big Data in Bezug auf Assistenz-Systeme und KI?' in result and 'von The unbelievable Machine Company (*um) zur Verfügung gestellt.' in result and 'Matthias Weber ist ERP-Experte mit langjähriger Berufserfahrung.' not in result and 'Die Top 5 digitalen Trends für den Mittelstand' not in result and ', leading edge,' not in result # 'Lesen Sie hier einen weiteren spannenden Beitrag' not in result
+    assert 'Einblicke in die Vision zukünftiger Softwaregenerationen.' in result and 'Frage 4: Welche Rolle spielt Big Data in Bezug auf Assistenz-Systeme und KI?' in result and 'von The unbelievable Machine Company (*um) zur Verfügung gestellt.' in result and 'Matthias Weber ist ERP-Experte mit langjähriger Berufserfahrung.' not in result and 'Die Top 5 digitalen Trends für den Mittelstand' not in result and ', leading edge,' not in result # and 'Lesen Sie hier einen weiteren spannenden Beitrag' not in result
 
     result = load_mock_page('https://boingboing.net/2013/07/19/hating-millennials-the-preju.html', xmloutput)
     assert 'Click through for the whole thing.' in result and 'The generation we love to dump on' in result and 'GET THE BOING BOING NEWSLETTER' not in result and 'happy mutants' not in result and 'Patti Smith and Stewart Copeland' not in result
@@ -471,7 +471,7 @@ def test_extract(xmloutput=False):
     assert 'Erin Spiceland is a Software Engineer for SpaceX.' in result and 'make effective plans and goals for the future' in result and 'looking forward to next?' in result and 'Research Consultant at Adelard LLP' in result and 'Related posts' not in result and 'Jeremy Epling' not in result and 'Missed the main event?' not in result and 'Privacy' not in result
 
     result = load_mock_page('https://lady50plus.de/2019/06/19/sekre-mystery-bag/', xmloutput)
-    assert 'ist eine echte Luxushandtasche' in result and 'Insgesamt 160 weibliche „Designerinnen“' in result and 'Sei herzlich gegrüßt' in result and 'Ein Mann alleine hätte niemals' in result and 'Erforderliche Felder sind mit' not in result and 'Benachrichtige mich' not in result and 'Reisen ist meine große Leidenschaft' not in result and 'Styling Tipps für Oktober' not in result # and 'in den Bann ziehen!' in result
+    assert 'ist eine echte Luxushandtasche' in result and 'Insgesamt 160 weibliche „Designerinnen“' in result and 'Sei herzlich gegrüßt' in result and 'Ein Mann alleine hätte niemals' in result and 'Erforderliche Felder sind mit' not in result and 'Benachrichtige mich' not in result and 'Reisen ist meine große Leidenschaft' not in result and 'Styling Tipps für Oktober' not in result and 'in den Bann ziehen!' in result
 
     result = load_mock_page('https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer', xmloutput)
     assert 'Neuer Geschäftsführender Leiter' in result and 'nach Leipzig wechseln.' in result and 'Mehr zum Thema' not in result and 'Folgen Sie uns auf Facebook und Twitter' not in result # and 'Aktuelle Ausgabe' not in result
