@@ -18,9 +18,9 @@ try:
 except ImportError:
     import chardet
 
-import trafilatura.duplicates
+import trafilatura.filters
 from trafilatura.core import extract, process_record, trim
-from trafilatura.duplicates import duplicate_test, put_in_cache
+from trafilatura.filters import duplicate_test, put_in_cache, textfilter
 from trafilatura.lru import LRUCache
 from trafilatura import cli, utils, xml
 
@@ -153,9 +153,9 @@ def test_trim():
     assert trim('\t\tTest  Test\r\n') == 'Test Test'
     my_elem = etree.Element('body')
     #my_elem.text = 'Test Text'
-    #assert utils.textfilter(my_elem) is False
+    #assert textfilter(my_elem) is False
     my_elem.text = 'Tags: Arbeit, Urlaub'
-    assert utils.textfilter(my_elem) is True
+    assert textfilter(my_elem) is True
 
 
 def test_input():
@@ -502,7 +502,7 @@ def test_exotic_tags(xmloutput=False):
 def test_lrucache():
     '''test basic duplicate detection'''
     lru_test = LRUCache(maxsize=2)
-    trafilatura.duplicates.LRU_TEST = lru_test
+    trafilatura.filters.LRU_TEST = lru_test
     my_body = etree.Element('body')
     ### element too short
     #my_element = html.fromstring('<p>AAAA BBBB</p>')

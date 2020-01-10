@@ -22,17 +22,10 @@ try:
 except ImportError:
     import chardet
 
-# language detection
-try:
-    import langid
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
-
 import requests
 from lxml import etree, html
 
-from .settings import DETECTION_LANGUAGES, MAX_FILE_SIZE, MIN_FILE_SIZE
+from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE
 
 
 LOGGER = logging.getLogger(__name__)
@@ -42,13 +35,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # etree.HTMLParser() # remove_pis=True, collect_ids=False
 
 UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
-
-RE_FILTER = re.compile(r'\W*(Facebook|Twitter|Google|Linkedin|Whatsapp|Xing|Instagram|Pinterest|PDF|E-Mail|Drucken)$', flags=re.IGNORECASE)
-# |.hnliche Beitr| Instagram
-# (r'\W*(Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)', line) or
-
-if LANGID_FLAG is True:
-    langid.set_languages(DETECTION_LANGUAGES)
 
 
 def decode_response(response, chunk_size=65536):
@@ -196,41 +182,3 @@ def trim(string):
         string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
         string = string.strip()
     return string
-
-
-def textfilter(element):
-    '''Filter out unwanted text'''
-    # print('#', element.text)
-    if element.text is None and element.tail is not None:
-        testtext = element.tail
-    else:
-        testtext = element.text
-    for line in testtext.splitlines():
-        #if len(line) <= 5:
-        #    continue
-        if RE_FILTER.match(line):
-            return True
-        if re.search(r'Tags: [A-ZÄÖÜßa-zäöü ,]+', line):
-            return True
-    return False
-
-
-def language_filter(temp_text, temp_comments, target_language, record_id, url):
-    '''Run external component (if installed) for language identification'''
-    # sanity check on language
-    if target_language is not None:
-        if LANGID_FLAG is True:
-            # comments
-            if len(temp_comments) > len(temp_text):
-                langtest = temp_comments
-            # default
-            else:
-                langtest = temp_text
-            langresult = langid.classify(langtest)
-            if langresult[0] != target_language:
-                LOGGER.warning('wrong language: %s %s %s', langresult, record_id, url)
-                LOGGER.debug('wrong language: %s %s', langresult, temp_text)
-                return True
-        else:
-            LOGGER.warning('langid not installed, no language detection run')
-    return False

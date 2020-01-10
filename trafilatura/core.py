@@ -25,13 +25,13 @@ except ImportError:
 from lxml import etree, html
 
 # own
-from .duplicates import duplicate_test, put_in_cache
+from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocess import (convert_tags, handle_textnode, manual_cleaning,
                           prune_html, recursively_empty, discard_unwanted,
                           discard_unwanted_comments)
 from .settings import (HTML_CLEANER, JUSTEXT_LANGUAGE, MIN_EXTRACTED_SIZE,
                        MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG)
-from .utils import language_filter, load_html, sanitize, trim, txttocsv
+from .utils import load_html, sanitize, trim, txttocsv
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 

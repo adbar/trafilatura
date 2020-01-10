@@ -10,9 +10,9 @@ import re
 
 from lxml import etree
 
-from .duplicates import duplicate_test
+from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED
-from .utils import textfilter, trim
+from .utils import trim
 from .xpaths import COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
 
