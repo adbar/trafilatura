@@ -26,9 +26,9 @@ from lxml import etree, html
 
 # own
 from .filters import duplicate_test, language_filter, put_in_cache
-from .htmlprocess import (convert_tags, handle_textnode, manual_cleaning,
-                          prune_html, recursively_empty, discard_unwanted,
-                          discard_unwanted_comments)
+from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
+                             prune_html, recursively_empty, discard_unwanted,
+                             discard_unwanted_comments)
 from .settings import (HTML_CLEANER, JUSTEXT_LANGUAGE, MIN_EXTRACTED_SIZE,
                        MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
