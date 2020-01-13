@@ -59,26 +59,18 @@ Features
 
 -  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input
 -  Focus on main text and/or comments
--  Formatting and structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks
--  Extraction of metadata (currently title and date)
+-  Formatting and structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
 -  Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
+-  Extraction of metadata (currently title and date, more to come)
 -  Computationally efficient (relies on `lxml <http://lxml.de/>`_)
 -  Robust extraction and generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ used as fallback
-
-**Roadmap**
-
--  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
--  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [-] Metadata integration
--  [-] Language detection on the extracted content
--  [ ] Preservation of in-line text formatting (bold, italic, etc.)
--  [ ] Configuration and extraction parameters
+-  Optional language detection on the extracted content
 
 
 Installation
 ------------
 
-This Python package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.5 upwards. It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
+This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.5 upwards (see `install Python guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_). It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
 
 .. code-block:: bash
 
@@ -197,6 +189,14 @@ optional arguments:
   -v, --verbose      increase output verbosity
 
 
+License
+-------
+
+*trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/htmldate/blob/master/LICENSE>`_
+
+`GPL and free software licensing: What's in it for business? <https://www.techrepublic.com/blog/cio-insights/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
+
+
 Going further
 -------------
 
@@ -207,6 +207,16 @@ Going further
 Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_.
 
 Tutorials in German by Noah Bubenhofer: `Download von Web-Daten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_wwwdownload.html>`_ & `Daten aufbereiten und verwalten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_aufbereitenXML.html>`_.
+
+
+**Roadmap**
+
+-  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
+-  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
+-  [-] Metadata integration
+-  [-] Language detection on the extracted content
+-  [-] Preservation of in-line text formatting (bold, italic, etc.)
+-  [ ] Configuration and extraction parameters
 
 
 Author
