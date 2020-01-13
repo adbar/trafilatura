@@ -5,13 +5,13 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
     :target: https://pypi.python.org/pypi/trafilatura
     :alt: Python package
 
-.. image:: https://img.shields.io/pypi/l/trafilatura.svg
-    :target: https://pypi.python.org/pypi/trafilatura
-    :alt: License
-
 .. image:: https://img.shields.io/pypi/pyversions/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
     :alt: Python versions
+
+.. image:: https://readthedocs.org/projects/trafilatura/badge/?version=latest
+    :target: http://trafilatura.readthedocs.org/en/latest/?badge=latest
+    :alt: Documentation Status
 
 .. image:: https://img.shields.io/travis/adbar/trafilatura.svg
     :target: https://travis-ci.org/adbar/trafilatura
@@ -27,7 +27,7 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 :Issue tracker:  https://github.com/adbar/trafilatura/issues
 
 
-*Trafilatura* downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, XML & TEI-XML. All the operations needed are handled seamlessly.
+*Trafilatura* downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, XML & TEI-XML. All the operations needed are handled seamlessly.
 
 In a nutshell, with Python:
 
@@ -46,11 +46,6 @@ On the command-line:
     # outputs main content and comments as plain text ...
 
 
-.. contents:: **Contents**
-    :backlinks: none
-    :depth: 1
-
-
 Description
 -----------
 
@@ -66,7 +61,7 @@ Features
 -  Focus on main text and/or comments
 -  Formatting and structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks
 -  Extraction of metadata (currently title and date)
--  Output in plain text (minimal formatting) or XML format (for metadata and structure)
+-  Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
 -  Computationally efficient (relies on `lxml <http://lxml.de/>`_)
 -  Robust extraction and generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ used as fallback
 
@@ -77,12 +72,13 @@ Features
 -  [-] Metadata integration
 -  [-] Language detection on the extracted content
 -  [ ] Preservation of in-line text formatting (bold, italic, etc.)
+-  [ ] Configuration and extraction parameters
 
 
 Installation
 ------------
 
-*trafilatura* is a package compatible with Python 3.5 upwards which is currently tested on Linux and macOS and to some extent on Windows. It is available on the package repository `PyPI <https://pypi.org/>`_:
+This Python package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.5 upwards. It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
 
 .. code-block:: bash
 
@@ -90,18 +86,16 @@ Installation
     $ pip install -U trafilatura # to make sure you have the latest version
     $ pip install git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
 
-Additional functions are available with the following extensions:
+A few additional libraries can be installed for extended functionality and faster processing: extraction of publication date (``htmldate``), language detection (``langid``), and faster processing of downloads (``cchardet``, currently not working on some macOS versions).
 
 .. code-block:: bash
 
     $ pip install trafilatura[metadata] # metadata extraction
-    $ pip install trafilatura[all] # all experimental functionality 
+    $ pip install trafilatura[all] # all additional functionality
 
-Experimental functions: language detection, faster processing of downloads, and more efficient deduplication.
-``cchardet`` package is currently not working on some macOS versions.
-``lru_dict`` might not work out of the box on Windows.
+You can also install or update the packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 
-(For infos on dependency management of Python packages see `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_)
+*For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_
 
 
 Usage with Python
@@ -155,7 +149,7 @@ All currently available options, along with their default values:
 
 .. code-block:: python
 
-    >>>> trafilatura.extract(downloaded, url=None, record_id='0001', no_fallback=False, include_comments=True, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True)
+    >>>> trafilatura.extract(downloaded, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True, include_formatting=False)
 
 For further configuration see the variables in ``settings.py`` and re-compile the package locally.
 
@@ -185,15 +179,17 @@ The ``-i/--inputfile`` option allows for bulk download and processing of a list 
 
 For all usage instructions see ``trafilatura -h``:
 
-``usage: trafilatura [-h] [-f] [-i INPUTFILE] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
+``usage: trafilatura [-h] [-f] [--formatting] [-i INPUTFILE] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
 
 optional arguments:
   -h, --help         show this help message and exit
   -f, --fast         fast (without fallback detection)
+  --formatting          include text formatting (bold, italic, etc.)
   -i INPUTFILE, --inputfile INPUTFILE
                      name of input file for batch processing
   --nocomments       don't output any comments
   --notables         don't output any table elements
+  --csv              CSV output
   --xml              XML output
   --xmltei           XML TEI output
   --validate         validate TEI output
@@ -201,35 +197,45 @@ optional arguments:
   -v, --verbose      increase output verbosity
 
 
-Additional information
-----------------------
+Going further
+-------------
+
+**Online documentation:** `trafilatura.readthedocs.io <https://trafilatura.readthedocs.io/>`_
 
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
+Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_.
 
-Scientific context
-~~~~~~~~~~~~~~~~~~
+Tutorials in German by Noah Bubenhofer: `Download von Web-Daten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_wwwdownload.html>`_ & `Daten aufbereiten und verwalten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_aufbereitenXML.html>`_.
 
-This module is part of methods to derive information from web documents in order to build text databases for research (chiefly linguistic analysis and natural language processing). A significant challenge resides in the ability to extract and pre-process web texts to meet scientific expectations: Web corpus construction involves numerous design decisions, and this software packages can help facilitate collection and enhance corpus quality.
+
+Author
+------
+
+This effort is part of methods to derive information from web documents in order to build text databases for research (chiefly linguistic analysis and natural language processing). A significant challenge resides in the ability to extract and pre-process web texts to meet scientific expectations: Web corpus construction involves numerous design decisions, and this software packages can help facilitate collection and enhance corpus quality.
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
 
--  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://corpora.linguistik.uni-erlangen.de/data/konvens/proceedings/papers/kaleidoskop/camera_ready_barbaresi.pdf>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, University of Erlangen, 2019.
--  Barbaresi, A. "`The Vast and the Focused: On the need for domain-focused web corpora <https://ids-pub.bsz-bw.de/files/9025/Barbaresi_The_Vast_and_the_Focused_2019.pdf>`_", Proceedings of the `7th Workshop on Challenges in the Management of Large Corpora (CMLC-7) <http://corpora.ids-mannheim.de/cmlc-2019.html>`_, IDS Mannheim, 2019.
--  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, ACL, 2016.
+-  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://konvens.org/proceedings/2019/papers/kaleidoskop/camera_ready_barbaresi.pdf>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
+-  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
+
+You can contact me via my `contact page <http://adrien.barbaresi.eu/contact.html>`_ or `GitHub <https://github.com/adbar>`_.
 
 
-Further documentation
-~~~~~~~~~~~~~~~~~~~~~
+Contributing
+------------
 
-To be released soon.
+Thanks to these contributors who submitted features and bugfixes:
 
-Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=Eei7-8ZQdTc>`_.
+-  `DerKozmonaut <https://github.com/DerKozmonaut>`_
+-  `vbarbaresi <https://github.com/vbarbaresi>`_
 
+`Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome!
 
-Kudos to...
-~~~~~~~~~~~
+Feel free to file bug reports on the `issues page <https://github.com/adbar/htmldate/issues>`_.
+
+Kudos to the following software libraries:
 
 -  `lxml <http://lxml.de/>`_, `jusText <https://github.com/miso-belica/jusText>`_, `cchardet <https://github.com/PyYoshi/cChardet>`_
 
@@ -244,11 +250,3 @@ Most corresponding Python packages are not actively maintained, the following al
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
 - `newspaper <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction.
 - `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
-
-
-Contact
-~~~~~~~
-
-Pull requests are welcome.
-
-See this `contact page <http://adrien.barbaresi.eu/contact.html>`_ for additional details.

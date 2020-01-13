@@ -5,10 +5,6 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
     :target: https://pypi.python.org/pypi/trafilatura
     :alt: Python package
 
-.. image:: https://img.shields.io/pypi/l/trafilatura.svg
-    :target: https://pypi.python.org/pypi/trafilatura
-    :alt: License
-
 .. image:: https://img.shields.io/pypi/pyversions/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
     :alt: Python versions
@@ -44,11 +40,6 @@ On the command-line:
 
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
-
-
-.. contents:: **Contents**
-    :backlinks: none
-    :depth: 1
 
 
 Description
@@ -253,14 +244,6 @@ Most corresponding Python packages are not actively maintained, the following al
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
 - `newspaper <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction.
 - `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
-
-
-Contact
-~~~~~~~
-
-Pull requests are welcome.
-
-See this `contact page <http://adrien.barbaresi.eu/contact.html>`_ for additional details.
 
 
 Going further
