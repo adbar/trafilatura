@@ -118,6 +118,8 @@ MOCK_PAGES = {
 'http://www.sauvonsluniversite.fr/spip.php?article8532': 'sauvonsluniversite.com.spip.html',
 'https://www.spiegel.de/spiegel/print/d-161500790.html': 'spiegel.de.albtraum.html',
 'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': 'lemire.me.json.html',
+'https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission': 'zeit.de.zugverkehr.html',
+'https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020': 'franceculture.fr.idees.html',
 'http://exotic_tags': 'exotic_tags.html',
 }
 # '': '', \
@@ -490,6 +492,12 @@ def test_extract(xmloutput=False):
 
     result = load_mock_page('https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/', xmloutput)
     assert 'I use a Skylake processor with GNU GCC 8.3.' in result and 'gsoc-2018' in result and '0.091 GB/s' in result and 'version 0.2 on vcpkg.' in result and 'Leave a Reply' not in result and 'Science and Technology links' not in result and 'Proudly powered by WordPress' not in result
+
+    result = load_mock_page('https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission', xmloutput)
+    assert '36 Stunden.' in result and 'Nationale Egoismen' in result and 'Deutschland kaum beschleunigt.' in result and 'Durchgehende Tickets fehlen' not in result and 'geprägte Fehlentscheidung.' in result and 'horrende Preise für miserablen Service bezahlen?' in result and 'Bitte melden Sie sich an, um zu kommentieren.' not in result
+    
+    result = load_mock_page('https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020', xmloutput)
+    assert 'Performativité' in result and 'Les individus productifs communiquent' in result and 'de nos espoirs et de nos désirs.' in result and 'A la tribune je monterai' not in result and 'À découvrir' not in result and 'Le fil culture' not in result
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
