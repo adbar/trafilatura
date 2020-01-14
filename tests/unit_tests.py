@@ -6,10 +6,13 @@ Unit tests for the trafilatura library.
 import logging
 import os
 import sys
+
+
+from unittest.mock import patch
+
 import pytest
 # https://docs.pytest.org/en/latest/
 
-from unittest.mock import patch
 
 from lxml import etree, html
 
@@ -38,7 +41,6 @@ MOCK_PAGES = {
 'https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html': 'bmjv.de.konsum.html',
 'http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/': 'kulinariaathome.com.mandelplätzchen.html',
 'https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/': 'denkanstoos.com.2012.html',
-'http://bunterepublik.wordpress.com/2012/04/13/schwafelrunde-ohne-ritter/': 'bunterepublik.com.schwafelrunde.html',
 'https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft': 'demokratiewebstatt.at.luft.html',
 'http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html': 'toralin.de.schmierfett.html',
 'https://www.ebrosia.de/beringer-zinfandel-rose-stone-cellars-lieblich-suess': 'ebrosia.de.zinfandel.html',
@@ -57,14 +59,12 @@ MOCK_PAGES = {
 'https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html': 'rnz.de.witzel.html',
 'https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg': 'austria.info.radfahren.html',
 'https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/': 'buchperlen.wordpress.com.html',
-'https://www.greenpeace.de/themen/artenvielfalt/loechrige-lebensversicherung': 'greenpeace.org.artenvielfalt.html',
 'https://www.fairkom.eu/about': 'fairkom.eu.about.html',
 'https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461': 'futurezone.at.lyft.html',
 'http://www.hundeverein-kreisunna.de/unserverein.html': 'hundeverein-kreisunna.de.html',
 'https://viehbacher.com/de/steuerrecht': 'viehbacher.com.steuerrecht.html',
 'http://www.jovelstefan.de/2011/09/11/gefallt-mir/': 'jovelstefan.de.gefallt.html',
 'https://www.stuttgart.de/item/show/132240/1': 'stuttgart.de.html',
-'https://www.heise.de/newsticker/meldung/Zahlen-bitte-100-scheinbare-Kanaele-die-den-Hype-um-Marsmenschen-ausloesten-4438438.html': 'heise.de.marsmenschen.html',
 'https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/': 'modepilot.de.duschkopf.html',
 'https://www.otto.de/twoforfashion/strohtasche/': 'otto.de.twoforfashion.html',
 'http://iloveponysmag.com/2018/05/24/barbour-coastal/': 'iloveponysmag.com.barbour.html',
@@ -148,11 +148,11 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
         else:
             print('Encoding error')
     result = extract(htmlstring, url,
-                            record_id='0000',
-                            no_fallback=False,
-                            xml_output=xml_flag,
-                            tei_output=tei_output,
-                            target_language=langcheck)
+                     record_id='0000',
+                     no_fallback=False,
+                     xml_output=xml_flag,
+                     tei_output=tei_output,
+                     target_language=langcheck)
     return result
 
 
@@ -241,9 +241,6 @@ def test_extract(xmloutput=False):
     result = load_mock_page('https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/', xmloutput)
     assert 'Two or three 10-15 min' in result and 'What type? Etc. (30 mins)' in result and 'Dieser Eintrag wurde veröffentlicht' not in result and 'Mit anderen Teillen' not in result
 
-    result = load_mock_page('http://bunterepublik.wordpress.com/2012/04/13/schwafelrunde-ohne-ritter/', xmloutput)
-    assert 'Abgelegt unter' not in result and 'Nächster Beitrag' not in result and 'Die Schwafelrunde' in result and 'zusammen.' in result
-
     result = load_mock_page('https://www.ebrosia.de/beringer-zinfandel-rose-stone-cellars-lieblich-suess', xmloutput)
     assert 'Das Bukett präsentiert sich' in result and 'Besonders gut passt er zu asiatischen Gerichten' in result and 'Kunden kauften auch' not in result and 'Gutschein sichern' not in result
 
@@ -295,9 +292,6 @@ def test_extract(xmloutput=False):
     result = load_mock_page('http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html', xmloutput)
     assert 'künftig das XADO-Schutzfett verwenden.' in result and 'bis zu 50% Verschleiß.' in result and 'Die Lebensdauer von Bauteilen erhöht sich beträchtlich.' in result and 'Newsletter' not in result # and 'Sie könnten auch an folgenden Artikeln interessiert sein' not in result
 
-    result = load_mock_page('https://www.greenpeace.de/themen/artenvielfalt/loechrige-lebensversicherung', xmloutput)
-    assert 'Wir erodieren global' in result and 'Pummelige Hummeln, schillernde Schmetterlinge' not in result and 'Doch daran arbeitet wir.' in result and 'Menschenrechtsverletzungen bei Frauen und Kindern' not in result
-
     result = load_mock_page('https://www.fairkom.eu/about', xmloutput)
     assert 'ein gemeinwohlorientiertes Partnerschaftsnetzwerk' in result and 'Stimmberechtigung bei der Generalversammlung.' in result and 'support@fairkom.eu' not in result
 
@@ -322,13 +316,10 @@ def test_extract(xmloutput=False):
     # justext performs better here
     result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18', xmloutput)
     # print(result)
-    assert 'Es war gesagt,' in result and 'Aufrufe:' not in result # and 'Symbol auf dem Finger haben' in result 
+    assert 'Es war gesagt,' in result and 'Aufrufe:' not in result # and 'Symbol auf dem Finger haben' in result
 
     result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg', xmloutput)
     assert 'Salzburg liebt seine Radfahrer.' in result and 'Puls einsaugen zu lassen.' in result and 'Das könnte Sie auch interessieren ...' not in result and 'So macht Radfahren sonst noch Spaß' not in result and 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt' in result
-
-    result = load_mock_page('https://www.heise.de/newsticker/meldung/Zahlen-bitte-100-scheinbare-Kanaele-die-den-Hype-um-Marsmenschen-ausloesten-4438438.html', xmloutput)
-    assert 'Nicht selten sorgen' in result and '(mawi)' in result and 'Mehr zum Thema' not in result and 'Lesezeit' not in result
 
     result = load_mock_page('https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/', xmloutput)
     assert 'Allerdings sieht es wie ein Dildo aus,' in result and 'gibt Bescheid, ne?' in result and 'Ähnliche Beiträge' not in result and 'Deine E-Mail (bleibt natürlich unter uns)' not in result
@@ -495,7 +486,7 @@ def test_extract(xmloutput=False):
 
     result = load_mock_page('https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission', xmloutput)
     assert '36 Stunden.' in result and 'Nationale Egoismen' in result and 'Deutschland kaum beschleunigt.' in result and 'Durchgehende Tickets fehlen' not in result and 'geprägte Fehlentscheidung.' in result and 'horrende Preise für miserablen Service bezahlen?' in result and 'Bitte melden Sie sich an, um zu kommentieren.' not in result
-    
+
     result = load_mock_page('https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020', xmloutput)
     assert 'Performativité' in result and 'Les individus productifs communiquent' in result and 'de nos espoirs et de nos désirs.' in result and 'A la tribune je monterai' not in result and 'À découvrir' not in result and 'Le fil culture' not in result
 
@@ -599,16 +590,16 @@ def test_filters():
         assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', None, None) is False
         assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', None, None) is True
         # comments
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', None, None) is False     
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', None, None) is False
     else:
         # no detection
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', None, None) is False     
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', None, None) is False 
 
 
 def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
-    resources_dir =  os.path.join(TEST_DIR, 'resources')
+    resources_dir = os.path.join(TEST_DIR, 'resources')
     html_filepath = os.path.join(resources_dir, 'httpbin_sample.html')
     with open(html_filepath) as f:
         teststring = f.read()
