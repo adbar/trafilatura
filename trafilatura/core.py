@@ -70,7 +70,7 @@ def handle_titles(element, result_body):
     if element.text and re.search(r'\w', element.text):
         result_body.append(element)
     # maybe needs attention
-    if element.tail:
+    if element.tail and re.search(r'\w', element.tail):
         LOGGER.debug('tail in title: %s', element.tail)
     return result_body
 
@@ -185,6 +185,9 @@ def handle_paragraphs(element, result_body, potential_tags):
                 # needing attention!
                 elif child.tag == 'p':
                     LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
+                    processed_element.text = ' ' + child.text
+                    processed_element.text = trim(processed_element.text)
+                    continue
                 # prepare text
                 if processed_child.text is None:
                     processed_child.text = ''
@@ -199,6 +202,9 @@ def handle_paragraphs(element, result_body, potential_tags):
             child.tag = 'done'
     # finish
     if len(processed_element) > 0 or len(processed_element.text) > 0:
+        # clean trailing lb-elements
+        if len(processed_element) > 0 and processed_element[-1].tag == 'lb' and processed_element[-1].tail is None:
+            processed_element[-1].getparent().remove(processed_element[-1])
         result_body.append(processed_element)
     else:
         LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
