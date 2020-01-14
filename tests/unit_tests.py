@@ -602,14 +602,10 @@ def test_tei():
     # open local resources to avoid redownloading at each run
     resources_dir =  os.path.join(TEST_DIR, 'resources')
     html_filepath = os.path.join(resources_dir, 'httpbin_sample.html')
-    tei_relaxng_path = os.path.join(resources_dir, 'tei_all.rng')
     with open(html_filepath) as f:
         teststring = f.read()
-    with open(tei_relaxng_path) as f:
-        tei_relaxng = f.read()
     # download, parse and validate simple html file
-    with patch('trafilatura.utils.fetch_url', return_value=tei_relaxng):
-        result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=True)
+    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=True)
     assert result is not None
     mytree = etree.fromstring(result)
     # print(result)
