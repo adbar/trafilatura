@@ -39,7 +39,7 @@ def extract_date(tree):
     return docdate
 
 
-def extract(filecontent, url=None):
+def scrape(filecontent, url=None):
     '''Main process for metadata extraction'''
     # load contents
     tree = load_html(filecontent)
