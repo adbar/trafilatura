@@ -98,11 +98,17 @@ def examine_meta(tree):
 
 def extract_title(tree):
     '''Extract the document title'''
-    try:
-        doctitle = tree.find('//title').text  # h1?
-    except (AttributeError, SyntaxError):  # no title found
-        doctitle = None
-    return trim(doctitle)
+    title = None
+    # extract from first h1
+    if tree.find('//h1') is not None:
+        title = tree.xpath('//h1')[0].text  #text_content()
+    # try from title element
+    elif tree.find('//head/title') is not None:
+        title = tree.find('//head/title').text
+    # take first h2 tag
+    elif tree.find('//h2') is not None:
+        title = tree.xpath('//h2')[0].text
+    return trim(title)
 
 
 def extract_author(tree):

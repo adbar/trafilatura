@@ -18,6 +18,12 @@ def test_titles():
     '''Test the extraction of titles'''
     title, _, _, _ = scrape('<html><head><title>Test Title</title></head><body></body></html>')
     assert title == 'Test Title'
+    title, _, _, _ = scrape('<html><body><h1>First</h1><h1>Second</h1></body></html>')
+    assert title == 'First'
+    title, _, _, _ = scrape('<html><body><h2>First</h2><h1>Second</h1></body></html>')
+    assert title == 'Second'
+    title, _, _, _ = scrape('<html><body><h2>First</h2><h2>Second</h2></body></html>')
+    assert title == 'First'
 
 
 def test_authors():
