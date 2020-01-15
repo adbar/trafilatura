@@ -1,0 +1,74 @@
+language: python
+cache: pip
+os: linux
+# dist: xenial
+
+matrix:
+  include:
+    - name: "Python 3.4 on Linux"
+      python: 3.4
+      env: TOXENV=py34
+    - name: "Python 3.5 on Linux"
+      python: 3.5
+      env: TOXENV=py35
+    - name: "Python 3.6 on Linux"
+      python: 3.6
+      env: TOXENV=py36
+    - name: "Python 3.7 on Linux"
+      python: 3.7
+      env: TOXENV=py37
+    - name: "Python 3.8 on Linux"
+      dist: xenial
+      python: 3.8
+      env: TOXENV=py38
+    - name: "Python 3.9 Nightly on Linux"
+      dist: bionic
+      python: nightly
+      env: TOXENV=py39
+    - name: "Pypy 3 on Linux"
+      python: pypy3
+      env: TOXENV=pypy3
+    - name: "Python 3 on older macOS"
+      os: osx
+      osx_image: xcode9.4
+      language: shell
+      before_install:
+        - sw_vers
+        - python3 --version
+        - pip3 --version
+    - name: "Python 3 on macOS"
+      os: osx
+      osx_image: xcode11
+      language: shell
+      before_install:
+        - sw_vers
+        - python3 --version
+        - pip3 --version
+  allow_failures:
+    - python: 3.4
+    - python: nightly
+    - python: pypy3
+  fast_finish: true
+
+before_install:
+  - python --version
+  - virtualenv --version
+  - pip --version
+  - uname -a
+  - lsb_release -a
+
+install:
+  - pip install -U pytest pytest-cov codecov tox
+  - pip install -U .
+
+script:
+  - tox
+  # - pytest tests/unit_tests.py --cov=codecov
+
+after_success:
+  - codecov
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
