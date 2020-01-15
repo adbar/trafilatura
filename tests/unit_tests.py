@@ -44,6 +44,8 @@ def test_dates():
     '''Simple tests for date extraction (most of the tests are carried out externally for htmldate module)'''
     _, _, _, date, _, _ = scrape('<html><head><meta property="og:published_time" content="2017-09-01"/></head><body></body></html>')
     assert date == '2017-09-01'
+    _, _, _, date, _, _ = scrape('<html><head><meta property="og:url" content="https://example.org/2017/09/01/content.html"/></head><body></body></html>')
+    assert date == '2017-09-01'
 
 
 def test_meta():

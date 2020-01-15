@@ -120,9 +120,9 @@ def extract_author(tree):
     return trim(docauthor)
 
 
-def extract_date(tree):
+def extract_date(tree, url):
     '''Extract the date using external module htmldate'''
-    docdate = find_date(tree, extensive_search=False)
+    docdate = find_date(tree, extensive_search=False, url=url)
     return docdate
 
 
@@ -151,6 +151,6 @@ def scrape(filecontent, url=None):
     if url is None:
         url = extract_url(tree)
     # date
-    date = extract_date(tree)
+    date = extract_date(tree, url=url)
     # return
     return title, author, url, date, description, site_name
