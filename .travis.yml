@@ -58,8 +58,8 @@ before_install:
   - lsb_release -a
 
 install:
-  - pip install -U pytest pytest-cov codecov tox
-  - pip install -U .
+  - pip3 install -U pytest pytest-cov codecov tox
+  - pip3 install -U .
 
 script:
   - tox
