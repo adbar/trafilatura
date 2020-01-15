@@ -26,7 +26,7 @@ def trim(string):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    title = author = url = description = None
+    title = author = url = description = site_name = None
     # "og:" for OpenGraph http://ogp.me/
     for elem in tree.xpath('//head/meta'): # /head/ # for elem in tree.xpath('//meta[@property]'): # /head/
         # safeguard
@@ -40,9 +40,9 @@ def examine_meta(tree):
                 continue
             # faster: detect OpenGraph schema
             if elem.get('property').startswith('og:'):
-                # blogname
-                #if elem.get('property') == 'og:site_name':
-                #    blogname = elem.get('content')
+                # site name
+                if elem.get('property') == 'og:site_name':
+                    site_name = elem.get('content')
                 # blog title
                 if elem.get('property') == 'og:title':
                     title = elem.get('content')
@@ -78,10 +78,10 @@ def examine_meta(tree):
             elif elem.get('name') in('description', 'dc.description', 'dc:description', 'sailthru.description'):
                 if description is None:
                     description = elem.get('content')
-            # blogname
-            #elif elem.get('name') == 'publisher':
-            #    if blogname is None:
-            #        blogname = elem.get('content')
+            # site name
+            elif elem.get('name') == 'publisher':
+                if site_name is None:
+                    site_name = elem.get('content')
             # TODO: keywords
             # elif elem.get('name') in ('keywords', page-topic):
         # other types
@@ -90,10 +90,10 @@ def examine_meta(tree):
                 if len(elem.text_content()) > 0:
                     author = elem.text_content()
             elif elem.get('charset') is not None:
-                pass # e.g. charset=UTF-8
+                pass  # e.g. charset=UTF-8
             else:
                 print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
-    return trim(title), trim(author), trim(url), trim(description)
+    return trim(title), trim(author), trim(url), trim(description), trim(site_name)
 
 
 def extract_title(tree):
@@ -133,7 +133,7 @@ def scrape(filecontent, url=None):
     if tree is None:
         return None
     # meta tags
-    title, author, url, description = examine_meta(tree)
+    title, author, url, description, site_name = examine_meta(tree)
     # title
     if title is None:
         title = extract_title(tree)
@@ -143,4 +143,4 @@ def scrape(filecontent, url=None):
     # date
     date = extract_date(tree)
     # return
-    return title, author, date, description
+    return title, author, date, description, site_name
