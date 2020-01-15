@@ -33,6 +33,15 @@ def extract_title(tree):
     return trim(doctitle)
 
 
+def extract_author(tree):
+    '''Extract the document author(s)'''
+    try:
+        docauthor = tree.find('//a[@rel="author"]').text  # h1?
+    except (AttributeError, SyntaxError):  # no title found
+        docauthor = None
+    return trim(docauthor)
+
+
 def extract_date(tree):
     '''Extract the date using external module htmldate'''
     docdate = find_date(tree, extensive_search=False)
@@ -47,9 +56,9 @@ def scrape(filecontent, url=None):
         return None
     # title
     title = extract_title(tree)
+    # author
+    author = extract_author(tree)
     # date
     date = extract_date(tree)
-    # author
-    # ..
     # return
-    return title, date
+    return title, author, date
