@@ -126,6 +126,14 @@ def extract_date(tree):
     return docdate
 
 
+def extract_url(tree):
+    '''Extract the URL from the canonical link'''
+    element = tree.find('//head/link[@rel="canonical"]')
+    if element is not None:
+        return element.attrib['href']
+    return None
+
+
 def scrape(filecontent, url=None):
     '''Main process for metadata extraction'''
     # load contents
@@ -140,7 +148,9 @@ def scrape(filecontent, url=None):
     # author
     if author is None:
         author = extract_author(tree)
+    if url is None:
+        url = extract_url(tree)
     # date
     date = extract_date(tree)
     # return
-    return title, author, date, description, site_name
+    return title, author, url, date, description, site_name
