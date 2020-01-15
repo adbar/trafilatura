@@ -24,6 +24,78 @@ def trim(string):
     return string
 
 
+def examine_meta(tree):
+    '''Search meta tags for relevant information'''
+    title = author = url = description = None
+    # "og:" for OpenGraph http://ogp.me/
+    for elem in tree.xpath('//head/meta'): # /head/ # for elem in tree.xpath('//meta[@property]'): # /head/
+        # safeguard
+        if len(elem.attrib) < 1:
+            print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+            continue
+        # property attribute
+        if elem.get('property') is not None:
+            # safeguard
+            if elem.get('content') is None or len(elem.get('content')) < 1:
+                continue
+            # faster: detect OpenGraph schema
+            if elem.get('property').startswith('og:'):
+                # blogname
+                #if elem.get('property') == 'og:site_name':
+                #    blogname = elem.get('content')
+                # blog title
+                if elem.get('property') == 'og:title':
+                    title = elem.get('content')
+                # orig URL
+                elif elem.get('property') == 'og:url' and url is None:
+                    url = elem.get('content')
+                # description
+                elif elem.get('property') == 'og:description':
+                    description = elem.get('content')
+                # og:type
+                #elif elem.get('property') == 'og:type':
+                #    posttype = elem.get('content')
+                # og:author
+                elif elem.get('property') in ('og:author', 'og:article:author'):
+                    author = elem.get('content')
+            else:
+                # author
+                if elem.get('property') in ('author', 'article:author'): # article:...
+                    author = elem.get('content')
+        # name attribute
+        elif 'name' in elem.attrib: # elem.get('name') is not None:
+            # safeguard
+            if elem.get('content') is None or len(elem.get('content')) < 1:
+                continue
+            # author
+            if elem.get('name') in ('author', 'byl', 'dc.creator', 'sailthru.author'):
+                author = elem.get('content')
+            # title
+            elif elem.get('name') in ('title', 'dc.title', 'sailthru.title'):
+                if title is None:
+                    title = elem.get('content')
+            # description
+            elif elem.get('name') in('description', 'dc.description', 'dc:description', 'sailthru.description'):
+                if description is None:
+                    description = elem.get('content')
+            # blogname
+            #elif elem.get('name') == 'publisher':
+            #    if blogname is None:
+            #        blogname = elem.get('content')
+            # TODO: keywords
+            # elif elem.get('name') in ('keywords', page-topic):
+        # other types
+        else:
+            if elem.get('itemprop') == 'author':
+                if len(elem.text_content()) > 0:
+                    author = elem.text_content()
+            elif elem.get('charset') is not None:
+                pass # e.g. charset=UTF-8
+            else:
+                print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+    return trim(title), trim(author), trim(url), trim(description)
+
+
 def extract_title(tree):
     '''Extract the document title'''
     try:
@@ -54,11 +126,15 @@ def scrape(filecontent, url=None):
     tree = load_html(filecontent)
     if tree is None:
         return None
+    # meta tags
+    title, author, url, description = examine_meta(tree)
     # title
-    title = extract_title(tree)
+    if title is None:
+        title = extract_title(tree)
     # author
-    author = extract_author(tree)
+    if author is None:
+        author = extract_author(tree)
     # date
     date = extract_date(tree)
     # return
-    return title, author, date
+    return title, author, date, description
