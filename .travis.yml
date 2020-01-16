@@ -5,6 +5,10 @@ cache: pip
 
 matrix:
   include:
+    - name: "Python 3.4 on Linux"
+      python: 3.4
+      env: TOXENV=py34
+      env: MINIMAL=false
     - name: "Python 3.5 on Linux"
       python: 3.5
       env: TOXENV=py35
