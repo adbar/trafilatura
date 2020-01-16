@@ -24,46 +24,59 @@ def trim(string):
     return string
 
 
+def extract_opengraph(tree):
+    '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
+    title = author = url = description = site_name = None
+    for elem in tree.xpath('//head/meta[@property]'):
+        # safeguard
+        if elem.get('content') is None or len(elem.get('content')) < 1:
+            continue
+        # faster: detect OpenGraph schema
+        if elem.get('property').startswith('og:'):
+            # site name
+            if elem.get('property') == 'og:site_name':
+                site_name = elem.get('content')
+            # blog title
+            if elem.get('property') == 'og:title':
+                title = elem.get('content')
+            # orig URL
+            elif elem.get('property') == 'og:url':
+                url = elem.get('content')
+            # description
+            elif elem.get('property') == 'og:description':
+                description = elem.get('content')
+            # og:author
+            elif elem.get('property') in ('og:author', 'og:article:author'):
+                author = elem.get('content')
+            # og:type
+            #elif elem.get('property') == 'og:type':
+            #    pagetype = elem.get('content')
+            # og:locale
+            #elif elem.get('property') == 'og:locale':
+            #    pagelocale = elem.get('content')
+        else:
+            # author
+            if elem.get('property') in ('author', 'article:author'):
+                author = elem.get('content')
+    return trim(title), trim(author), trim(url), trim(description), trim(site_name)
+
+
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
     title = author = url = description = site_name = None
-    # "og:" for OpenGraph http://ogp.me/
-    for elem in tree.xpath('//head/meta'): # /head/ # for elem in tree.xpath('//meta[@property]'): # /head/
+    # test for potential OpenGraph tags
+    if tree.find('//head/meta[@property]') is not None:
+        title, author, url, description, site_name = extract_opengraph(tree)
+        # test if all return values have been assigned
+        if all((title, author, url, description, site_name)):  # if they are all defined
+            return title, author, url, description, site_name
+    for elem in tree.xpath('//head/meta'):
         # safeguard
         if len(elem.attrib) < 1:
             print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
             continue
-        # property attribute
-        if elem.get('property') is not None:
-            # safeguard
-            if elem.get('content') is None or len(elem.get('content')) < 1:
-                continue
-            # faster: detect OpenGraph schema
-            if elem.get('property').startswith('og:'):
-                # site name
-                if elem.get('property') == 'og:site_name':
-                    site_name = elem.get('content')
-                # blog title
-                if elem.get('property') == 'og:title':
-                    title = elem.get('content')
-                # orig URL
-                elif elem.get('property') == 'og:url' and url is None:
-                    url = elem.get('content')
-                # description
-                elif elem.get('property') == 'og:description':
-                    description = elem.get('content')
-                # og:type
-                #elif elem.get('property') == 'og:type':
-                #    posttype = elem.get('content')
-                # og:author
-                elif elem.get('property') in ('og:author', 'og:article:author'):
-                    author = elem.get('content')
-            else:
-                # author
-                if elem.get('property') in ('author', 'article:author'): # article:...
-                    author = elem.get('content')
         # name attribute
-        elif 'name' in elem.attrib: # elem.get('name') is not None:
+        if 'name' in elem.attrib: # elem.get('name') is not None:
             # safeguard
             if elem.get('content') is None or len(elem.get('content')) < 1:
                 continue
@@ -82,7 +95,7 @@ def examine_meta(tree):
             elif elem.get('name') == 'publisher':
                 if site_name is None:
                     site_name = elem.get('content')
-            # TODO: keywords
+            # keywords
             # elif elem.get('name') in ('keywords', page-topic):
         # other types
         else:
