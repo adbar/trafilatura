@@ -30,6 +30,14 @@ def test_authors():
     '''Test the extraction of author names'''
     _, author, _, _, _, _ = scrape('<html><body><a href="" rel="author">Jenny Smith</a></body></html>')
     assert author == 'Jenny Smith'
+    _, author, _, _, _, _ = scrape('<html><body><span class="author">Jenny Smith</span></body></html>')
+    assert author == 'Jenny Smith'
+    _, author, _, _, _, _ = scrape('<html><body><a class="author">Jenny Smith</a></body></html>')
+    assert author == 'Jenny Smith'
+    _, author, _, _, _, _ = scrape('<html><body><address class="author">Jenny Smith</address></body></html>')
+    assert author == 'Jenny Smith'
+    _, author, _, _, _, _ = scrape('<html><body><author>Jenny Smith</author></body></html>')
+    assert author == 'Jenny Smith'
 
 
 def test_url():

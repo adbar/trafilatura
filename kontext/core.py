@@ -113,11 +113,18 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    try:
-        docauthor = tree.find('//a[@rel="author"]').text  # h1?
-    except (AttributeError, SyntaxError):  # no title found
-        docauthor = None
-    return trim(docauthor)
+    author = None
+    if tree.find('//a[@rel="author"]') is not None:  # rel="me"
+        author = tree.find('//a[@rel="author"]').text
+    elif tree.find('//a[@class="author"]') is not None:  # rel="me"
+        author = tree.find('//a[@class="author"]').text
+    elif tree.find('//span[@class="author"]') is not None:
+        author = tree.find('//span[@class="author"]').text
+    elif tree.find('//address[@class="author"]') is not None:
+        author = tree.find('//address[@class="author"]').text
+    elif tree.find('//author') is not None:
+        author = tree.find('//author').text
+    return trim(author)
 
 
 def extract_date(tree, url):
