@@ -45,7 +45,6 @@ matrix:
         - python3 --version
         - pip3 --version
   allow_failures:
-    - python: 3.4
     - python: nightly
     - python: pypy3
   fast_finish: true
