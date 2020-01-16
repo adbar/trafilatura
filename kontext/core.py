@@ -6,6 +6,8 @@ Module bundling all functions needed to scrape metadata from webpages.
 import logging
 import re
 
+from collections import namedtuple
+
 from htmldate import find_date
 from htmldate.utils import load_html
 from lxml import etree, html
@@ -69,7 +71,7 @@ def examine_meta(tree):
         title, author, url, description, site_name = extract_opengraph(tree)
         # test if all return values have been assigned
         if all((title, author, url, description, site_name)):  # if they are all defined
-            return title, author, url, description, site_name
+            return (title, author, url, description, site_name, None)
     for elem in tree.xpath('//head/meta'):
         # safeguard
         if len(elem.attrib) < 1:
@@ -106,7 +108,7 @@ def examine_meta(tree):
                 pass  # e.g. charset=UTF-8
             else:
                 print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
-    return trim(title), trim(author), trim(url), trim(description), trim(site_name)
+    return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None)
 
 
 def extract_title(tree):
@@ -156,21 +158,26 @@ def extract_url(tree):
 
 def scrape(filecontent, url=None):
     '''Main process for metadata extraction'''
+    # create named tuple
+    Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date'])
+    Metadata.__new__.__defaults__ = (None,) * len(Metadata._fields)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
         return None
     # meta tags
-    title, author, url, description, site_name = examine_meta(tree)
+    mymeta = Metadata._make(examine_meta(tree))
     # title
-    if title is None:
-        title = extract_title(tree)
+    if getattr(mymeta, 'title') is None:
+        mymeta = mymeta._replace(title=extract_title(tree))
     # author
-    if author is None:
-        author = extract_author(tree)
-    if url is None:
-        url = extract_url(tree)
+    if getattr(mymeta, 'author') is None:
+        mymeta = mymeta._replace(author=extract_author(tree))
+    # url
+    if getattr(mymeta, 'url') is None:
+        mymeta = mymeta._replace(url=extract_url(tree))
     # date
-    date = extract_date(tree, url=url)
+    # if getattr(mymeta, 'date') is None:
+    mymeta = mymeta._replace(date=extract_date(tree, url=mymeta.url))
     # return
-    return title, author, url, date, description, site_name
+    return mymeta
