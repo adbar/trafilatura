@@ -86,28 +86,42 @@ def examine_meta(tree):
             if elem.get('content') is None or len(elem.get('content')) < 1:
                 continue
             # author
-            if elem.get('name') in ('author', 'byl', 'dc.creator', 'sailthru.author'):
+            if elem.get('name') in ('author', 'byl', 'dc.creator', 'sailthru.author'):  # twitter:creator
                 author = elem.get('content')
             # title
-            elif elem.get('name') in ('title', 'dc.title', 'sailthru.title'):
+            elif elem.get('name') in ('title', 'dc.title', 'sailthru.title', 'twitter:title'):
                 if title is None:
                     title = elem.get('content')
             # description
-            elif elem.get('name') in('description', 'dc.description', 'dc:description', 'sailthru.description'):
+            elif elem.get('name') in('description', 'dc.description', 'dc:description', 'sailthru.description', 'twitter:description'):
                 if description is None:
                     description = elem.get('content')
             # site name
-            elif elem.get('name') == 'publisher':
+            elif elem.get('name') in ('publisher', 'twitter:site'):
                 if site_name is None:
                     site_name = elem.get('content')
+            # url
+            elif elem.get('name') in ('twitter:url'):
+                if url is None:
+                    url = elem.get('content')
             # keywords
             # elif elem.get('name') in ('keywords', page-topic):
+        elif 'itemprop' in elem.attrib:
+            if elem.get('itemprop') == 'author':
+                if author is None:
+                    author = elem.get('content')
+                # elif elem.get('name') is not None:
+                #    author = elem.get('name')
+            if elem.get('itemprop') == 'description':
+                if description is None:
+                    description = elem.get('content')
+            if elem.get('itemprop') == 'name':
+                if title is None:
+                    title = elem.get('content')
+
         # other types
         else:
-            if elem.get('itemprop') == 'author':
-                if elem.get('content') is not None:
-                    author = elem.get('content')
-            elif elem.get('charset') is not None:
+            if elem.get('charset') is not None:
                 pass  # e.g. charset=UTF-8
             else:
                 print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
@@ -194,6 +208,7 @@ def scrape(filecontent, url=None):
     # url
     if getattr(mymeta, 'url') is None:
         mymeta = mymeta._replace(url=extract_url(tree))
+    # link[rel="alternate"][hreflang="x-default"]
     # date
     # if getattr(mymeta, 'date') is None:
     mymeta = mymeta._replace(date=extract_date(tree, url=mymeta.url))
