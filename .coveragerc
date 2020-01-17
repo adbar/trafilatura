@@ -1,5 +1,11 @@
 [run]
 source = kontext
+
 omit =
     tests/*
     setup.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
