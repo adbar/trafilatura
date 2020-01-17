@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link type='text/css' rel='stylesheet' href='https://www.blogger.com/static/v1/widgets/2258130529-css_bundle_v2.css' />
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+<meta content='blogger' name='generator'/>
+<link href='http://blog.python.org/favicon.ico' rel='icon' type='image/x-icon'/>
+<link href='http://blog.python.org/2016/12/python-360-is-now-available.html' rel='canonical'/>
+<link rel="alternate" type="application/atom+xml" title="Python Insider - Atom" href="http://blog.python.org/feeds/posts/default" />
+<link rel="alternate" type="application/rss+xml" title="Python Insider - RSS" href="http://blog.python.org/feeds/posts/default?alt=rss" />
+<link rel="service.post" type="application/atom+xml" title="Python Insider - Atom" href="https://www.blogger.com/feeds/3941553907430899163/posts/default" />
+
+<link rel="alternate" type="application/atom+xml" title="Python Insider - Atom" href="http://blog.python.org/feeds/3969073602705017876/comments/default" />
+<!--[if IE]><script type="text/javascript" src="https://www.blogger.com/static/v1/jsbin/1122417787-ieretrofit.js"></script>
+<![endif]-->
+<meta content='http://blog.python.org/2016/12/python-360-is-now-available.html' property='og:url'/>
+<meta content='Python 3.6.0 is now available!' property='og:title'/>
+<meta content='Python 3.6.0 is now available!   Python 3.6.0 is the newest major release of the Python language, and it contains many new features and opti...' property='og:description'/>
+<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+<title>Python Insider: Python 3.6.0 is now available!</title>
+<meta name='author' value='Marcin Wojtczuk'/>
+<style id='page-skin-1' type='text/css'><!--
+
+--></style>
+<style id='template-skin-1' type='text/css'><!--
+
+--></style>
+<!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+<style type='text/css'>
+body {
+  font-family: Arial,Tahoma,Helvetica,FreeSans,sans-serif;
+  font-size: 12px;
+  color: #111;
+  background:#3272ac;
+
+  background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.21, rgb(50,114,172)),
+    color-stop(0.84, rgb(250,229,164))
+);
+background-image: -moz-linear-gradient(
+    center bottom,
+    #3272ac 21%,
+    #fae5a4 84%
+);
+
+background-repeat:no-repeat;
+}
+
+h2 {font-size: 1em; }
+h3 { font-size: 1.2em}
+
+#wholeC {
+  background-color:#fff;
+  width: 90%;
+  margin: 0 auto 2em auto;
+}
+
+#cmain {
+  float:left;
+  width: 68%;
+  padding:0;
+  margin: 2em 0 2em 2%;
+}
+#cside {
+  float:right;
+  width: 23%;
+  margin-right: 2%;
+  margin-top: 2em;
+  margin-bottom: 3em;
+  padding-bottom: 3em;
+  font-size: 0.95em;
+}
+#cside a {
+font-size: 0.95em
+}
+#cside h2 {
+text-transform:uppercase;
+color: #715707
+}
+
+a { color: #142f46 }
+a:hover { color: #557 }
+a:visited { color: #334 }
+
+h2.date-header { font-size: 13px; }
+h3.post-title { font-size: 16px; margin-bottom: 1em; }
+
+div.date-outer {
+/* blog post container */
+margin: 0 0 2em 0;
+padding: 0;
+font-size:13px;
+line-height:133%;
+}
+
+header#chead {
+display: block;
+margin: 0 auto 1em auto;
+padding: 0;
+width: 70%;
+height:145px;
+overflow: hidden;
+color: #222;
+background: #fff;
+border-bottom: 1px solid #ddd; 
+
+}
+#Header1 {
+font-size:16px;
+}
+#Header1 .description {
+position:relative;
+top: -35px;
+left: 116px;
+}
+
+.wshad {
+    padding: 2em 8px;
+    border: 1px solid #99A;
+    -moz-box-shadow: 0 5px 10px #222;
+    -webkit-box-shadow: 0 5px 10px #222;
+    box-shadow: 0 5px 10px #222;
+}
+
+.post-footer {
+border-top:1px outset #ddd;border-right:1px inset #ddd;
+background-color: #f5f5f5;
+padding: 10px 5px;
+position:relative;
+left:-1.2em;
+opacity: 0.75;
+font-size:0.9em;
+}
+
+</style>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3941553907430899163&amp;zx=1903a0a1-8cad-46ed-b3d3-4ac90e3ba127' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=3941553907430899163&amp;zx=1903a0a1-8cad-46ed-b3d3-4ac90e3ba127' rel='stylesheet'/></noscript>
+</head>
+<body>
+<div class='navbar section' id='navbar'><div class='widget Navbar' data-version='1' id='Navbar1'><script type="text/javascript">
+    function setAttributeOnload(object, attribute, val) {
+      if(window.addEventListener) {
+        window.addEventListener('load',
+          function(){ object[attribute] = val; }, false);
+      } else {
+        window.attachEvent('onload', function(){ object[attribute] = val; });
+      }
+    }
+  </script>
+<div id="navbar-iframe-container"></div>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<script type="text/javascript">
+      gapi.load("gapi.iframes:gapi.iframes.style.bubble", function() {
+        if (gapi.iframes && gapi.iframes.getContext) {
+          gapi.iframes.getContext().openChild({
+              url: 'https://www.blogger.com/navbar.g?targetBlogID\x3d3941553907430899163\x26blogName\x3dPython+Insider\x26publishMode\x3dPUBLISH_MODE_HOSTED\x26navbarType\x3dBLUE\x26layoutType\x3dLAYOUTS\x26searchRoot\x3dhttp://blog.python.org/search\x26blogLocale\x3den\x26v\x3d2\x26homepageUrl\x3dhttp://blog.python.org/\x26targetPostID\x3d3969073602705017876\x26blogPostOrPageUrl\x3dhttp://blog.python.org/2016/12/python-360-is-now-available.html\x26vt\x3d8562821223173252253',
+              where: document.getElementById("navbar-iframe-container"),
+              id: "navbar-iframe"
+          });
+        }
+      });
+    </script><script type="text/javascript">
+(function() {
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = '//pagead2.googlesyndication.com/pagead/js/google_top_exp.js';
+var head = document.getElementsByTagName('head')[0];
+if (head) {
+head.appendChild(script);
+}})();
+</script>
+</div></div>
+<div id='wholeC'>
+<header id='chead'>
+<div class='header section' id='header'><div class='widget Header' data-version='1' id='Header1'>
+<div id='header-inner'>
+<a href='http://blog.python.org/' style='display: block'>
+<img alt='Python Insider' height='139px; ' id='Header1_headerimg' src='http://2.bp.blogspot.com/-Bhao0h7cGF0/TY-us8aVYCI/AAAAAAAAAYw/IhOLTFSw34E/s1600/python-insider-header.png' style='display: block' width='600px; '/>
+</a>
+<div class='descriptionwrapper'>
+<p class='description'><span>Python core development news and information.</span></p>
+</div>
+</div>
+</div></div>
+</header>
+<div id='cmain'>
+<section id='ccontent'>
+<div class='main section' id='main'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+
+          <div class="date-outer">
+        
+<h2 class='date-header'><span>Friday, December 23, 2016</span></h2>
+
+          <div class="date-posts">
+        
+<div class='post-outer'>
+<div class='post hentry'>
+<a name='3969073602705017876'></a>
+<h3 class='post-title entry-title'>
+Python 3.6.0 is now available!
+</h3>
+<div class='post-header'>
+<div class='post-header-line-1'></div>
+</div>
+<div class='post-body entry-content'>
+Python 3.6.0 is now available! &nbsp; Python 3.6.0 is the newest major release of the Python language, and it contains many new features and optimizations. &nbsp;See <a href="https://docs.python.org/3.6/whatsnew/3.6.html" target="_blank">the What&#8217;s New In Python 3.6 document</a> for more information.<br />
+<br />
+You can download Python 3.6.0 <a href="https://www.python.org/downloads/release/python-360/" target="_blank">here</a>. &nbsp;Also, most third-party distributors of Python should be making 3.6.0 packages available soon.<br />
+<div>
+<br /></div>
+Maintenance releases for the 3.6 series will follow at regular intervals starting in the first quarter of 2017.<br />
+<div>
+<br /></div>
+<div>
+We hope you enjoy Python 3.6.0!</div>
+<div>
+<div>
+<br /></div>
+<div>
+P.S. As a volunteer-staffed open source project, we could not bring Python releases to you without the enormous contributions of many, many people. &nbsp;Thank you to all who have contributed and reviewed code and documentation changes, documented and investigated bugs, tested Python and third-party packages, and provided and supported the infrastructure needed to support Python development and testing. &nbsp;Please consider supporting the work of <a href="https://www.python.org/psf-landing/" target="_blank">the Python Software Foundation</a>.</div>
+</div>
+<div>
+<br /></div>
+<div style='clear: both;'></div>
+</div>
+<div class='post-footer'>
+<div class='post-footer-line post-footer-line-1'><span class='post-author vcard'>
+Posted by
+<span class='fn'>Ned Deily</span>
+</span>
+<span class='post-timestamp'>
+at
+<a class='timestamp-link' href='http://blog.python.org/2016/12/python-360-is-now-available.html' rel='bookmark' title='permanent link'><abbr class='published' title='2016-12-23T05:11:00-05:00'>5:11 AM</abbr></a>
+</span>
+<span class='post-comment-link'>
+</span>
+<span class='post-icons'>
+</span>
+<div class='post-share-buttons'>
+<a class='goog-inline-block share-button sb-email' href='https://www.blogger.com/share-post.g?blogID=3941553907430899163&postID=3969073602705017876&target=email' target='_blank' title='Email This'><span class='share-button-link-text'>Email This</span></a><a class='goog-inline-block share-button sb-blog' href='https://www.blogger.com/share-post.g?blogID=3941553907430899163&postID=3969073602705017876&target=blog' onclick='window.open(this.href, "_blank", "height=270,width=475"); return false;' target='_blank' title='BlogThis!'><span class='share-button-link-text'>BlogThis!</span></a><a class='goog-inline-block share-button sb-twitter' href='https://www.blogger.com/share-post.g?blogID=3941553907430899163&postID=3969073602705017876&target=twitter' target='_blank' title='Share to Twitter'><span class='share-button-link-text'>Share to Twitter</span></a><a class='goog-inline-block share-button sb-facebook' href='https://www.blogger.com/share-post.g?blogID=3941553907430899163&postID=3969073602705017876&target=facebook' onclick='window.open(this.href, "_blank", "height=430,width=640"); return false;' target='_blank' title='Share to Facebook'><span class='share-button-link-text'>Share to Facebook</span></a><a class='goog-inline-block share-button sb-pinterest' href='https://www.blogger.com/share-post.g?blogID=3941553907430899163&postID=3969073602705017876&target=pinterest' target='_blank' title='Share to Pinterest'><span class='share-button-link-text'>Share to Pinterest</span></a><div class='goog-inline-block google-plus-share-container'><g:plusone source='blogger:blog:plusone' href='http://blog.python.org/2016/12/python-360-is-now-available.html' size='medium' width='300' annotation='inline'/></div>
+</div>
+</div>
+<div class='post-footer-line post-footer-line-2'><span class='post-labels'>
+</span>
+</div>
+<div class='post-footer-line post-footer-line-3'><span class='post-location'>
+</span>
+</div>
+</div>
+</div>
+<div class='comments' id='comments'>
+<a name='comments'></a>
+<div id='backlinks-container'>
+<div id='Blog1_backlinks-container'>
+</div>
+</div>
+</div>
+</div>
+
+        </div></div>
+      
+</div>
+<div class='blog-pager' id='blog-pager'>
+<span id='blog-pager-newer-link'>
+<a class='blog-pager-newer-link' href='http://blog.python.org/2017/01/python-353rc1-and-python-346rc1-are-now.html' id='Blog1_blog-pager-newer-link' title='Newer Post'>Newer Post</a>
+</span>
+<span id='blog-pager-older-link'>
+<a class='blog-pager-older-link' href='http://blog.python.org/2016/12/python-2713-released.html' id='Blog1_blog-pager-older-link' title='Older Post'>Older Post</a>
+</span>
+<a class='home-link' href='http://blog.python.org/'>Home</a>
+</div>
+<div class='clear'></div>
+<div class='post-feeds'>
+</div>
+<script type='text/javascript'>
+    window.___gcfg = { 'lang': 'en' };
+  </script>
+</div><div class='widget HTML' data-version='1' id='HTML2'>
+<script type='text/javascript'>
+                var disqus_shortname = 'pythoninsider';
+                var disqus_blogger_current_url = "http://blog.python.org/2016/12/python-360-is-now-available.html";
+                if (!disqus_blogger_current_url.length) {
+                    disqus_blogger_current_url = "http://blog.python.org/2016/12/python-360-is-now-available.html";
+                }
+                var disqus_blogger_homepage_url = "http://blog.python.org/";
+                var disqus_blogger_canonical_homepage_url = "http://blog.python.org/";
+            </script>
+<style type='text/css'>
+                    #comments {display:none;}
+                </style>
+<script type='text/javascript'>
+                    (function() {
+                        var bloggerjs = document.createElement('script');
+                        bloggerjs.type = 'text/javascript';
+                        bloggerjs.async = true;
+                        bloggerjs.src = 'http://'+disqus_shortname+'.disqus.com/blogger_item.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bloggerjs);
+                    })();
+                </script>
+<style type='text/css'>
+                    .post-comment-link { visibility: hidden; }
+                </style>
+<script type='text/javascript'>
+                (function() {
+                    var bloggerjs = document.createElement('script');
+                    bloggerjs.type = 'text/javascript';
+                    bloggerjs.async = true;
+                    bloggerjs.src = 'http://'+disqus_shortname+'.disqus.com/blogger_index.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(bloggerjs);
+                })();
+                </script>
+</div></div>
+</section>
+</div>
+<aside id='cside'>
+<div class='wshad' id='sidebar1'>
+<div class='section' id='sidebar-right-1'><div class='widget HTML' data-version='1' id='HTML1'>
+<h2 class='title'>Subscribe</h2>
+<div class='widget-content'>
+Subscribe to Python Insider via <a href="http://feeds.feedburner.com/PythonInsider">RSS</a>, <a href="http://feedburner.google.com/fb/a/mailverify?uri=PythonInsider&amp;loc=en_US">Email</a>, or <a href="http://twitter.com/PythonInsider">Twitter</a>
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=HTML&widgetId=HTML1&action=editWidget&sectionId=sidebar-right-1' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML1"));' target='configHTML1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div><div class='widget LinkList' data-version='1' id='LinkList1'>
+<h2>Related Links</h2>
+<div class='widget-content'>
+<ul>
+<li><a href='http://www.python.org/'>python.org</a></li>
+<li><a href='http://mail.python.org/mailman/listinfo/python-dev'>Python-Dev mailing list</a></li>
+<li><a href='http://docs.python.org/devguide/'>Python Developer's Guide</a></li>
+</ul>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=LinkList&widgetId=LinkList1&action=editWidget&sectionId=sidebar-right-1' onclick='return _WidgetManager._PopupConfig(document.getElementById("LinkList1"));' target='configLinkList1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div>
+</div><div class='widget LinkList' data-version='1' id='LinkList2'>
+<h2>Translations</h2>
+<div class='widget-content'>
+<ul>
+<li><a href='http://blog-cn.python.org/'>Chinese (Simplified)</a></li>
+<li><a href='http://blog-tw.python.org/'>Chinese (Traditional)</a></li>
+<li><a href='http://blog-fr.python.org/'>French</a></li>
+<li><a href='http://blog-de.python.org/'>German</a></li>
+<li><a href='http://blog-ja.python.org/'>Japanese</a></li>
+<li><a href='http://blog-ko.python.org/'>Korean</a></li>
+<li><a href='http://blog-pt.python.org/'>Portuguese</a></li>
+<li><a href='http://blog-ro.python.org/'>Romanian</a></li>
+<li><a href='http://blog-ru.python.org/'>Russian</a></li>
+<li><a href='http://blog-es.python.org/'>Spanish</a></li>
+</ul>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=LinkList&widgetId=LinkList2&action=editWidget&sectionId=sidebar-right-1' onclick='return _WidgetManager._PopupConfig(document.getElementById("LinkList2"));' target='configLinkList2' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div>
+</div><div class='widget BlogList' data-version='1' id='BlogList1'>
+<h2 class='title'>Python-Dev Blogs</h2>
+<div class='widget-content'>
+<div class='blog-list-container' id='BlogList1_container'>
+<ul id='BlogList1_blogs'>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://eli.thegreenplace.net/' target='_blank'>
+Eli Bendersky</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='http://eli.thegreenplace.net/2017/right-and-left-folds-primitive-recursion-patterns-in-python-and-haskell/' target='_blank'>
+Right and left folds, primitive recursion patterns in Python and Haskell
+</a>
+</span>
+<div class='item-time'>
+1 week ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://morepypy.blogspot.com/' target='_blank'>
+PyPy Status Blog</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='http://feedproxy.google.com/~r/PyPyStatusBlog/~3/UaGUXhjeS0c/lets-remove-global-interpreter-lock.html' target='_blank'>
+Let's remove the Global Interpreter Lock
+</a>
+</span>
+<div class='item-time'>
+1 week ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://ramblings.timgolden.me.uk' target='_blank'>
+Tim Golden</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='http://ramblings.timgolden.me.uk/2017/05/31/helping-educators/' target='_blank'>
+Helping educators
+</a>
+</span>
+<div class='item-time'>
+2 months ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://blog.ziade.org' target='_blank'>
+Tarek Ziadé</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='http://blog.ziade.org/2016/05/16/consistent-load-balancing/' target='_blank'>
+Consistent Load Balancing
+</a>
+</span>
+<div class='item-time'>
+1 year ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://www.wefearchange.org/' target='_blank'>
+Pumpichank</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='http://www.wefearchange.org/2015/04/creating-python-snaps.html' target='_blank'>
+Creating Python Snaps
+</a>
+</span>
+<div class='item-time'>
+2 years ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://www.bitdance.com/blog' target='_blank'>
+R. David Murray</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='http://www.bitdance.com/blog/2014/09/30_01_asycio_overview' target='_blank'>
+Asyncio Implementation Overview
+</a>
+</span>
+<div class='item-time'>
+2 years ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://www.voidspace.org.uk/python/weblog/index.shtml' target='_blank'>
+The Voidspace Techie Blog</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='http://feedproxy.google.com/~r/voidspace/~3/-liSpOmgsVc/arch_d7_2012_03_24.shtml' target='_blank'>
+unittest.mock and mock 1.0 alpha 1
+</a>
+</span>
+<div class='item-time'>
+5 years ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='https://rhettinger.wordpress.com' target='_blank'>
+Deep Thoughts by Raymond Hettinger</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<a href='https://rhettinger.wordpress.com/2011/05/26/super-considered-super/' target='_blank'>
+Python&#8217;s super() considered super!
+</a>
+</span>
+<div class='item-time'>
+6 years ago
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://feeds.feedburner.com/CoderWhoSaysPy' target='_blank'>
+Brett Cannon</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<!--Can't find substitution for tag [item.itemTitle]-->
+</span>
+<div class='item-time'>
+<!--Can't find substitution for tag [item.timePeriodSinceLastUpdate]-->
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://jessenoller.com/feed/' target='_blank'>
+Jesse Noller</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<!--Can't find substitution for tag [item.itemTitle]-->
+</span>
+<div class='item-time'>
+<!--Can't find substitution for tag [item.timePeriodSinceLastUpdate]-->
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://www.boredomandlaziness.org/feeds/posts/default' target='_blank'>
+Boredom & Laziness</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<!--Can't find substitution for tag [item.itemTitle]-->
+</span>
+<div class='item-time'>
+<!--Can't find substitution for tag [item.timePeriodSinceLastUpdate]-->
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://blog.briancurtin.com/feed/' target='_blank'>
+Brian Curtin</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<!--Can't find substitution for tag [item.itemTitle]-->
+</span>
+<div class='item-time'>
+<!--Can't find substitution for tag [item.timePeriodSinceLastUpdate]-->
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+<li style='display: block;'>
+<div class='blog-icon'>
+</div>
+<div class='blog-content'>
+<div class='blog-title'>
+<a href='http://www.uthcode.com/blog/feeds/atom.xml' target='_blank'>
+Senthil Kumaran</a>
+</div>
+<div class='item-content'>
+<span class='item-title'>
+<!--Can't find substitution for tag [item.itemTitle]-->
+</span>
+<div class='item-time'>
+<!--Can't find substitution for tag [item.timePeriodSinceLastUpdate]-->
+</div>
+</div>
+</div>
+<div style='clear: both;'></div>
+</li>
+</ul>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=BlogList&widgetId=BlogList1&action=editWidget&sectionId=sidebar-right-1' onclick='return _WidgetManager._PopupConfig(document.getElementById("BlogList1"));' target='configBlogList1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div>
+</div>
+</div><div class='widget BlogArchive' data-version='1' id='BlogArchive1'>
+<h2>Blog Archive</h2>
+<div class='widget-content'>
+<div id='ArchiveList'>
+<div id='BlogArchive1_ArchiveList'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2017/'>
+2017
+</a>
+<span class='post-count' dir='ltr'>(9)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2017/08/'>
+August
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2017/07/'>
+July
+</a>
+<span class='post-count' dir='ltr'>(3)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2017/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2017/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2017/01/'>
+January
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate expanded'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy toggle-open'>
+
+        &#9660;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/'>
+2016
+</a>
+<span class='post-count' dir='ltr'>(18)</span>
+<ul class='hierarchy'>
+<li class='archivedate expanded'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy toggle-open'>
+
+        &#9660;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/12/'>
+December
+</a>
+<span class='post-count' dir='ltr'>(5)</span>
+<ul class='posts'>
+<li><a href='http://blog.python.org/2016/12/python-360-is-now-available.html'>Python 3.6.0 is now available!</a></li>
+<li><a href='http://blog.python.org/2016/12/python-2713-released.html'>Python 2.7.13 released</a></li>
+<li><a href='http://blog.python.org/2016/12/python-360-release-candidate-2-is-now.html'>Python 3.6.0 release candidate 2 is now available</a></li>
+<li><a href='http://blog.python.org/2016/12/python-360-release-candidate-is-now.html'>Python 3.6.0 release candidate is now available</a></li>
+<li><a href='http://blog.python.org/2016/12/python-2713-release-candidate-1.html'>Python 2.7.13 release candidate 1 available</a></li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/10/'>
+October
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/09/'>
+September
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/08/'>
+August
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/07/'>
+July
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(5)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2016/05/'>
+May
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/'>
+2015
+</a>
+<span class='post-count' dir='ltr'>(14)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/12/'>
+December
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/09/'>
+September
+</a>
+<span class='post-count' dir='ltr'>(3)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/08/'>
+August
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/07/'>
+July
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/05/'>
+May
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2015/01/'>
+January
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2014/'>
+2014
+</a>
+<span class='post-count' dir='ltr'>(8)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2014/12/'>
+December
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2014/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2014/05/'>
+May
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2014/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(3)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2014/02/'>
+February
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2013/'>
+2013
+</a>
+<span class='post-count' dir='ltr'>(5)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2013/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2013/10/'>
+October
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2013/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2013/02/'>
+February
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/'>
+2012
+</a>
+<span class='post-count' dir='ltr'>(9)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/12/'>
+December
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/10/'>
+October
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/08/'>
+August
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/05/'>
+May
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2012/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2011/'>
+2011
+</a>
+<span class='post-count' dir='ltr'>(25)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2011/08/'>
+August
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2011/07/'>
+July
+</a>
+<span class='post-count' dir='ltr'>(3)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2011/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2011/05/'>
+May
+</a>
+<span class='post-count' dir='ltr'>(7)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2011/04/'>
+April
+</a>
+<span class='post-count' dir='ltr'>(7)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='http://blog.python.org/2011/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(5)</span>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=BlogArchive&widgetId=BlogArchive1&action=editWidget&sectionId=sidebar-right-1' onclick='return _WidgetManager._PopupConfig(document.getElementById("BlogArchive1"));' target='configBlogArchive1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div>
+</div><div class='widget Profile' data-version='1' id='Profile1'>
+<h2>Contributors</h2>
+<div class='widget-content'>
+<ul>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/14971120963699387108' style='background-image: url(//www.blogger.com/img/logo-16.png);'>A.M. Kuchling</a></li>
+<li><a class='profile-name-link g-profile' href='https://plus.google.com/105172091805567849283' style='background-image: url(//www.google.com/images/icons/ui/gprofile_button-16.png);'>Alfonso de la Guarda Reyes</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/03855116138400732464' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Anthony Scopatz</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/08838587997498042260' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Antoine P.</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/06955536323236904839' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Benjamin</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/14604644394514192040' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Brian Curtin</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/14913018830568213369' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Davidmh</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/03794667532189865209' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Donald Stufft</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/01892352754222143463' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Doug Hellmann</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/06795605825443412201' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Ezio Melotti</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/14973145408214215809' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Georg Brandl</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/07543015027323408421' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Jesse</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/17574962105063127018' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Kelsey Hightower</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/13232068831778121461' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Larry Hastings</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/07757697862303956313' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Mathieu Leduc-Hamel</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/08761481986934375758' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Michael Markert</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/06351908417200979114' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Mike Driscoll</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/17112379650586333719' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Ned Deily</a></li>
+<li><a class='profile-name-link g-profile' href='https://plus.google.com/105644937960330777422' style='background-image: url(//www.google.com/images/icons/ui/gprofile_button-16.png);'>Nick Coghlan</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/17557923197983461835' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Paul Moore</a></li>
+<li><a class='profile-name-link g-profile' href='https://plus.google.com/116670685619813088895' style='background-image: url(//www.google.com/images/icons/ui/gprofile_button-16.png);'>Paulo Nuin</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/17437958274873977298' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Philip Jenvey</a></li>
+<li><a class='profile-name-link g-profile' href='https://plus.google.com/103916922127569633396' style='background-image: url(//www.google.com/images/icons/ui/gprofile_button-16.png);'>engelbert gruber</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/14658404449913582628' style='background-image: url(//www.blogger.com/img/logo-16.png);'>haypo</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/07627402554307001461' style='background-image: url(//www.blogger.com/img/logo-16.png);'>tp</a></li>
+<li><a class='profile-name-link g-profile' href='https://www.blogger.com/profile/10522887977715879728' style='background-image: url(//www.blogger.com/img/logo-16.png);'>Éric Araujo</a></li>
+</ul>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=Profile&widgetId=Profile1&action=editWidget&sectionId=sidebar-right-1' onclick='return _WidgetManager._PopupConfig(document.getElementById("Profile1"));' target='configProfile1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div>
+</div><div class='widget HTML' data-version='1' id='HTML3'>
+<h2 class='title'>Copyright</h2>
+<div class='widget-content'>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">Python Insider</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.python.org/" property="cc:attributionName" rel="cc:attributionURL">the Python Core Developers</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://blog.python.org/" rel="dct:source">blog.python.org</a>.
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=HTML&widgetId=HTML3&action=editWidget&sectionId=sidebar-right-1' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML3"));' target='configHTML3' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div></div>
+<div id='attribution1'>
+<div class='section' id='attribution'><div class='widget Attribution' data-version='1' id='Attribution1'>
+<div class='widget-content' style='text-align: center;'>
+Powered by <a href='https://www.blogger.com' target='_blank'>Blogger</a>.
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=3941553907430899163&widgetType=Attribution&widgetId=Attribution1&action=editWidget&sectionId=attribution' onclick='return _WidgetManager._PopupConfig(document.getElementById("Attribution1"));' target='configAttribution1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div></div>
+</div>
+</div>
+</aside>
+<div style='clear:both'>&nbsp;</div>
+</div>
+<script src='https://apis.google.com/js/plusone.js' type='text/javascript'></script>
+<!--Es liegt in deiner Verantwortung, deine Besucher \xfcber die in deinem Blog verwendeten Cookies zu informieren. Weitere Informationen findest du hier http://www.blogger.com/go/cookiechoices.-->
+<script defer='' src='/js/cookiechoices.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+      window.cookieChoices && cookieChoices.showCookieConsentBar && cookieChoices.showCookieConsentBar(
+          (window.cookieOptions && cookieOptions.msg) || 'Diese Website verwendet Cookies von Google, um ihre Dienste bereitzustellen, Anzeigen zu personalisieren und Zugriffe zu analysieren. Informationen dar\xfcber, wie du die Website verwendest, werden an Google weitergegeben. Durch die Nutzung dieser Website erkl\xe4rst du dich damit einverstanden, dass sie Cookies verwendet.',
+          (window.cookieOptions && cookieOptions.close) || 'OK',
+          (window.cookieOptions && cookieOptions.learn) || 'Weitere Informationen',
+          (window.cookieOptions && cookieOptions.link) || 'https://www.blogger.com/go/blogspot-cookies');
+    });
+  </script>
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/2345592501-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AOuZoY4UyTB70H9gxvmg5D4gtXDRylBMSw:1503666843093';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d3941553907430899163','//blog.python.org/2016/12/python-360-is-now-available.html','3941553907430899163');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '3941553907430899163', 'title': 'Python Insider', 'url': 'http://blog.python.org/2016/12/python-360-is-now-available.html', 'canonicalUrl': 'http://blog.python.org/2016/12/python-360-is-now-available.html', 'homepageUrl': 'http://blog.python.org/', 'searchUrl': 'http://blog.python.org/search', 'canonicalHomepageUrl': 'http://blog.python.org/', 'blogspotFaviconUrl': 'http://blog.python.org/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': false, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': '', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Python Insider - Atom\x22 href\x3d\x22http://blog.python.org/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22Python Insider - RSS\x22 href\x3d\x22http://blog.python.org/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Python Insider - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/3941553907430899163/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Python Insider - Atom\x22 href\x3d\x22http://blog.python.org/feeds/3969073602705017876/comments/default\x22 /\x3e\n', 'meTag': '', 'openIdOpTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'ieCssRetrofitLinks': '\x3c!--[if IE]\x3e\x3cscript type\x3d\x22text/javascript\x22 src\x3d\x22https://www.blogger.com/static/v1/jsbin/1122417787-ieretrofit.js\x22\x3e\x3c/script\x3e\n\x3c![endif]--\x3e', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/66f57160f4e8453b', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Google+', 'key': 'googlePlus', 'shareMessage': 'Share to Google+', 'target': 'googleplus'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'googlePlusShareButtonWidth': 300, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '3969073602705017876', 'pageName': 'Python 3.6.0 is now available!', 'pageTitle': 'Python Insider: Python 3.6.0 is now available!'}}, {'name': 'features', 'data': {'lazy_images': 'false', 'unsupported_browser_message': 'false', 'lightbox_img_parsing': 'false', 'video_theatre_support': 'false', 'sharing_get_link_dialog': 'false'}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'Python 3.6.0 is now available!', 'description': 'Python 3.6.0 is now available! &#160; Python 3.6.0 is the newest major release of the Python language, and it contains many new features and opti...', 'url': 'http://blog.python.org/2016/12/python-360-is-now-available.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 3969073602705017876}}]);
+_WidgetManager._RegisterWidget('_NavbarView', new _WidgetInfo('Navbar1', 'navbar', null, document.getElementById('Navbar1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'header', null, document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'main', null, document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/2692485528-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/368954415-lightbox_bundle.css'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML2', 'main', null, document.getElementById('HTML2'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML1', 'sidebar-right-1', null, document.getElementById('HTML1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList1', 'sidebar-right-1', null, document.getElementById('LinkList1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LinkListView', new _WidgetInfo('LinkList2', 'sidebar-right-1', null, document.getElementById('LinkList2'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogListView', new _WidgetInfo('BlogList1', 'sidebar-right-1', null, document.getElementById('BlogList1'), {'numItemsToShow': 0, 'totalItems': 13}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1', 'sidebar-right-1', null, document.getElementById('BlogArchive1'), {'languageDirection': 'ltr', 'loadingMessage': 'Loading\x26hellip;'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_ProfileView', new _WidgetInfo('Profile1', 'sidebar-right-1', null, document.getElementById('Profile1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML3', 'sidebar-right-1', null, document.getElementById('HTML3'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_AttributionView', new _WidgetInfo('Attribution1', 'attribution', null, document.getElementById('Attribution1'), {}, 'displayModeFull'));
+</script>
+</body>
+</html>
