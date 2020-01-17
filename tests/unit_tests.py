@@ -66,9 +66,16 @@ def test_meta():
     assert meta_returned.sitename == 'My first site'
 
 
+def test_categories():
+    '''Test extraction of categories'''
+    meta_returned = scrape('<html><body><p class="entry-categories"><a href="https://example.org/category/cat1/">Cat1</a>, <a href="https://example.org/category/cat2/">Cat2</a></p></body></html>')
+    assert meta_returned.categories == ['Cat1', 'Cat2']
+
+
 if __name__ == '__main__':
     test_titles()
     test_authors()
     test_dates()
     test_meta()
     test_url()
+    test_categories()

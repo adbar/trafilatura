@@ -12,6 +12,9 @@ from htmldate import find_date
 from htmldate.utils import load_html
 from lxml import etree, html
 
+from .xpaths import categories_xpaths
+
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -71,7 +74,7 @@ def examine_meta(tree):
         title, author, url, description, site_name = extract_opengraph(tree)
         # test if all return values have been assigned
         if all((title, author, url, description, site_name)):  # if they are all defined
-            return (title, author, url, description, site_name, None)
+            return (title, author, url, description, site_name, None, None)
     for elem in tree.xpath('//head/meta'):
         # safeguard
         if len(elem.attrib) < 1:
@@ -108,7 +111,7 @@ def examine_meta(tree):
                 pass  # e.g. charset=UTF-8
             else:
                 print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
-    return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None)
+    return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None)
 
 
 def extract_title(tree):
@@ -156,10 +159,27 @@ def extract_url(tree):
     return None
 
 
+def extract_cats(metatype, tree):
+    '''Find category information'''
+    results = list()
+    regexpr = '/' + metatype + '/'
+    #if tree.find(expr) is not None:
+    #     # expr = expr + '/a'
+    for catexpr in categories_xpaths:
+        target_elements = tree.xpath(catexpr)
+        if len(target_elements) > 0:  # if something has been found
+            for elem in target_elements:
+                if 'href' in elem.attrib:
+                    match = re.search(regexpr, elem.attrib['href'])
+                    if match:
+                        results.append(elem.text_content())
+            return results
+
+
 def scrape(filecontent, url=None):
     '''Main process for metadata extraction'''
     # create named tuple
-    Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date'])
+    Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'categories', 'date'])
     Metadata.__new__.__defaults__ = (None,) * len(Metadata._fields)
     # load contents
     tree = load_html(filecontent)
@@ -179,5 +199,7 @@ def scrape(filecontent, url=None):
     # date
     # if getattr(mymeta, 'date') is None:
     mymeta = mymeta._replace(date=extract_date(tree, url=mymeta.url))
+    # categories
+    mymeta = mymeta._replace(categories=extract_cats('category', tree))
     # return
     return mymeta
