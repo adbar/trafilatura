@@ -31,3 +31,14 @@ categories_xpaths = [
 '//div[@class="tags"]//a',
 "//div[starts-with(@class, 'meta')]//a",
 ]
+
+tags_xpaths = [
+"//p[starts-with(@class, 'entry-tags')]//a",
+'//div[@class="row"]//a',
+'//div[@class="jp-relatedposts"]//a',
+"//div[starts-with(@class, 'tag')]//a",
+'//div[@class="entry-utility"]//a',
+"//div[starts-with(@class, 'meta')]//a",
+'//*[@class="entry-meta"]//a'
+]
+# , "//div[starts-with(@class, 'postmeta')]//a"

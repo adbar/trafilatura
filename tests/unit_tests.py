@@ -66,10 +66,12 @@ def test_meta():
     assert meta_returned.sitename == 'My first site'
 
 
-def test_categories():
-    '''Test extraction of categories'''
+def test_catstags():
+    '''Test extraction of categories and tags'''
     meta_returned = scrape('<html><body><p class="entry-categories"><a href="https://example.org/category/cat1/">Cat1</a>, <a href="https://example.org/category/cat2/">Cat2</a></p></body></html>')
     assert meta_returned.categories == ['Cat1', 'Cat2']
+    meta_returned = scrape('<html><body><p class="entry-tags"><a href="https://example.org/tags/tag1/">Tag1</a>, <a href="https://example.org/tags/tag2/">Tag2</a></p></body></html>')
+    assert meta_returned.tags == ['Tag1', 'Tag2']
 
 
 if __name__ == '__main__':
@@ -78,4 +80,4 @@ if __name__ == '__main__':
     test_dates()
     test_meta()
     test_url()
-    test_categories()
+    test_catstags()
