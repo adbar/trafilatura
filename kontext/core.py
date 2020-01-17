@@ -105,8 +105,8 @@ def examine_meta(tree):
         # other types
         else:
             if elem.get('itemprop') == 'author':
-                if len(elem.text_content()) > 0:
-                    author = elem.text_content()
+                if elem.get('content') is not None:
+                    author = elem.get('content')
             elif elem.get('charset') is not None:
                 pass  # e.g. charset=UTF-8
             else:

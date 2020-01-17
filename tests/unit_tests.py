@@ -28,6 +28,8 @@ def test_titles():
 
 def test_authors():
     '''Test the extraction of author names'''
+    meta_returned = scrape('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>')
+    assert meta_returned.author == 'Jenny Smith'
     meta_returned = scrape('<html><body><a href="" rel="author">Jenny Smith</a></body></html>')
     assert meta_returned.author == 'Jenny Smith'
     meta_returned = scrape('<html><body><span class="author">Jenny Smith</span></body></html>')
@@ -64,6 +66,10 @@ def test_meta():
     assert meta_returned.author == 'Jenny Smith'
     assert meta_returned.description == 'This is an Open Graph description'
     assert meta_returned.sitename == 'My first site'
+    meta_returned = scrape('<html><head><meta name="dc.title" content="Open Graph Title"/><meta name="dc.creator" content="Jenny Smith"/><meta name="dc.description" content="This is an Open Graph description"/></head><body></body></html>')
+    assert meta_returned.title == 'Open Graph Title'
+    assert meta_returned.author == 'Jenny Smith'
+    assert meta_returned.description == 'This is an Open Graph description'
 
 
 def test_catstags():
