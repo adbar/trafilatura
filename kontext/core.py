@@ -12,7 +12,7 @@ from htmldate import find_date
 from htmldate.utils import load_html
 from lxml import etree, html
 
-from .xpaths import author_xpaths, categories_xpaths, tags_xpaths
+from .xpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
 
 
 LOGGER = logging.getLogger(__name__)
@@ -114,31 +114,28 @@ def examine_meta(tree):
     return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None, None)
 
 
+def extract_metainfo(tree, expressions):
+    '''Extract meta information'''
+    result = None
+    for expression in expressions:
+        target_elements = tree.xpath(expression)
+        if len(target_elements) > 0:
+            result = target_elements[0].text
+            if len(target_elements) > 1:
+                print('more than one result:', expression, len(target_elements))
+            break
+    return trim(result)
+
+
 def extract_title(tree):
     '''Extract the document title'''
-    title = None
-    # extract from first h1
-    if tree.find('//h1') is not None:
-        title = tree.xpath('//h1')[0].text  #text_content()
-    # try from title element
-    elif tree.find('//head/title') is not None:
-        title = tree.find('//head/title').text
-    # take first h2 tag
-    elif tree.find('//h2') is not None:
-        title = tree.xpath('//h2')[0].text
+    title = extract_metainfo(tree, title_xpaths)
     return trim(title)
 
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    author = None
-    for expression in author_xpaths:
-        result = tree.xpath(expression)
-        if len(result) == 1:
-            author = result[0].text
-            break
-        elif len(result) > 1:
-            print('more than one result:', expression, len(result))
+    author = extract_metainfo(tree, author_xpaths)
     return trim(author)
 
 

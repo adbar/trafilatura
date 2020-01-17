@@ -51,3 +51,9 @@ tags_xpaths = [
 '//*[@class="entry-meta"]//a'
 ]
 # , "//div[starts-with(@class, 'postmeta')]//a"
+
+title_xpaths = [
+'//h1',
+'//head/title',
+'//h2',
+]
