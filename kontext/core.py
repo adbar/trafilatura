@@ -12,7 +12,7 @@ from htmldate import find_date
 from htmldate.utils import load_html
 from lxml import etree, html
 
-from .xpaths import categories_xpaths, tags_xpaths
+from .xpaths import author_xpaths, categories_xpaths, tags_xpaths
 
 
 LOGGER = logging.getLogger(__name__)
@@ -132,16 +132,13 @@ def extract_title(tree):
 def extract_author(tree):
     '''Extract the document author(s)'''
     author = None
-    if tree.find('//a[@rel="author"]') is not None:  # rel="me"
-        author = tree.find('//a[@rel="author"]').text
-    elif tree.find('//a[@class="author"]') is not None:  # rel="me"
-        author = tree.find('//a[@class="author"]').text
-    elif tree.find('//span[@class="author"]') is not None:
-        author = tree.find('//span[@class="author"]').text
-    elif tree.find('//address[@class="author"]') is not None:
-        author = tree.find('//address[@class="author"]').text
-    elif tree.find('//author') is not None:
-        author = tree.find('//author').text
+    for expression in author_xpaths:
+        result = tree.xpath(expression)
+        if len(result) == 1:
+            author = result[0].text
+            break
+        elif len(result) > 1:
+            print('more than one result:', expression, len(result))
     return trim(author)
 
 

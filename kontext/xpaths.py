@@ -6,6 +6,15 @@ File containing XPath expressions to extract metadata.
 # under GNU GPLv3+ license
 
 
+author_xpaths = [
+'//a[@rel="author"]',
+'//a[@class="author"]',
+'//span[@class="author"]',
+'//address[@class="author"]',
+'//author',
+]
+# rel="me"
+
 categories_xpaths = [
 "//div[starts-with(@class, 'post-info')]//a",
 "//div[starts-with(@class, 'postinfo')]//a",
