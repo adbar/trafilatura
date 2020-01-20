@@ -70,7 +70,8 @@ DISCARD_XPATH = [
     './/*[@class="meta" or contains(@class, "meta-") or contains(@class, "-meta")]',
     # |.//footer
     '''.//*[(self::div or self::p or self::section)][contains(@id, "header") or
-    contains(@class, "header") or contains(@id, "footer") or contains(@class, "footer")]''',
+    contains(@class, "header") or contains(@id, "footer") or contains(@class, "footer") or
+    contains(@id, "bottom") or contains(@class, "bottom")]''',
     '''.//*[(self::a or self::div or self::p or self::section or self::ul)][contains(@id, "tags")
     or contains(@class, "tags")]''',
     # news outlets
@@ -85,8 +86,8 @@ DISCARD_XPATH = [
     or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or
     contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]''',
     # related posts
-    '''.//*[(self::div or self::section)][contains(@id, "related") or contains(@class, "related")
-    or contains(@id, "viral") or contains(@class, "viral")]''',
+    '''.//*[(self::div or self::section or self::ul)][contains(@id, "related") or
+    contains(@class, "related") or contains(@id, "viral") or contains(@class, "viral")]''',
     # sharing jp-post-flair jp-relatedposts
     '''.//*[(self::div or self::section or self::ul)][starts-with(@id, "shar") or
     starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social")
@@ -105,12 +106,15 @@ DISCARD_XPATH = [
     contains(@class, "user-info") or contains(@class, "user-profile") or
     contains(@class, "-ad-") or contains(@class, "-icon") or contains(@class, "navbox")
     or contains(@class, "submeta")]''',
+    '''.//*[(self::div or self::p or self::ul)][contains(@class, "byline") or
+    contains(@class, 'Byline')]''',
 ]
 # optional?
 # *[contains(@class, "article-infos")  or contains(@class, "author")
 # div/section[contains(@class, "clearfix")
 # conflicts: './/aside', contains(@class, "hidden")
 #  or contains(@id, "menu") or contains(@class, "menu")
+# class contains cats
 
 
 COMMENTS_DISCARD_XPATH = [
