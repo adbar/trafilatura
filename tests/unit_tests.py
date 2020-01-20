@@ -37,6 +37,7 @@ from trafilatura import cli, utils, xml
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 MOCK_PAGES = {
+'http://exotic_tags': 'exotic_tags.html',
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': 'die-partei.net.luebeck.html',
 'https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html': 'bmjv.de.konsum.html',
 'http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/': 'kulinariaathome.com.mandelplätzchen.html',
@@ -120,10 +121,11 @@ MOCK_PAGES = {
 'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': 'lemire.me.json.html',
 'https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission': 'zeit.de.zugverkehr.html',
 'https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020': 'franceculture.fr.idees.html',
-'http://exotic_tags': 'exotic_tags.html',
+'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/': 'wikimediafoundation.org.turkey.html',
+'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': 'reuters.com.parasite.html',
+'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': 'vancouversun.com.microsoft.html',
 }
 # '': '', \
-
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -489,6 +491,15 @@ def test_extract(xmloutput=False):
 
     result = load_mock_page('https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020', xmloutput)
     assert 'Performativité' in result and 'Les individus productifs communiquent' in result and 'de nos espoirs et de nos désirs.' in result and 'A la tribune je monterai' not in result and 'À découvrir' not in result and 'Le fil culture' not in result
+
+    result = load_mock_page('https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/', xmloutput)
+    assert 'Bu yazının Türkçe’sini buradan okuyabilirsiniz' in result and 'as further access is restored.' and 'Read further in the pursuit of knowledge' not in result and 'Here’s what that means.' not in result and 'Stay up-to-date on our work.' not in result and 'Photo credits' not in result
+
+    result = load_mock_page('https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH', xmloutput)
+    assert '4 Min Read' not in result and 'The Thomson Reuters Trust Principles' not in result and 'Factbox: Key winners' not in result and 'Despite an unknown cast,' in result and 'Additional reporting by' in result
+
+    #result = load_mock_page('https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2', xmloutput)
+    #assert 'turns CO2 into soap' not in result and 'Microsoft Corp said on Thursday' in result and 'Postmedia is committed' in result
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
