@@ -30,7 +30,14 @@ MOCK_PAGES = {
 'https://en.blog.wordpress.com/2019/06/19/want-to-see-a-more-diverse-wordpress-contributor-community-so-do-we/': 'blog.wordpress.com.diverse.html',
 'https://netzpolitik.org/2016/die-cider-connection-abmahnungen-gegen-nutzer-von-creative-commons-bildern/': 'netzpolitik.org.abmahnungen.html',
 'https://www.befifty.de/home/2017/7/12/unter-uns-montauk': 'befifty.montauk.html',
+'https://www.soundofscience.fr/1927': 'soundofscience.fr.1927.html',
+'https://laviedesidees.fr/L-evaluation-et-les-listes-de.html': 'laviedesidees.fr.evaluation.html',
+'https://www.theguardian.com/education/2020/jan/20/thousands-of-uk-academics-treated-as-second-class-citizens': 'theguardian.com.academics.html',
 }
+# 
+# 
+
+
 
 
 def load_mock_page(url):
@@ -151,6 +158,31 @@ def test_pages():
     assert meta_returned.description == 'Ein Strand, ist ein Strand, ist ein Strand Ein Strand, ist ein Strand, ist ein Strand. Von wegen! In Italien ist alles wohl organisiert, Handtuch an Handtuch oder Liegestuhl an Liegestuhl. In der Karibik liegt man unter Palmen im Sand und in Marbella dominieren Beton und eine kerzengerade Promenade'
     assert meta_returned.sitename == 'BeFifty'
     assert meta_returned.categories == ['Travel', 'Amerika']
+    meta_returned = scrape(load_mock_page('https://www.soundofscience.fr/1927'))
+    assert meta_returned.title == 'Une candidature collective à la présidence du HCERES'
+    # assert meta_returned.author == 'Martin Clavey'
+    assert meta_returned.description.startswith('En réaction à la candidature du conseiller recherche')
+    assert meta_returned.sitename == 'The Sound Of Science'
+    assert meta_returned.categories == ['Politique scientifique française']
+    # assert meta_returned.tags == ['évaluation', 'HCERES']
+    meta_returned = scrape(load_mock_page('https://laviedesidees.fr/L-evaluation-et-les-listes-de.html'))
+    assert meta_returned.title == 'L’évaluation et les listes de revues'
+    assert meta_returned.author == 'Florence Audier'
+    assert meta_returned.description.startswith("L'évaluation, et la place")
+    assert meta_returned.sitename == 'La Vie des idées'
+    # assert meta_returned.categories == ['Essai', 'Économie']
+    assert meta_returned.tags == None
+    # <meta property="og:type" content="article" />
+    # <meta name="DC:type" content="journalArticle">
+    meta_returned = scrape(load_mock_page('https://www.theguardian.com/education/2020/jan/20/thousands-of-uk-academics-treated-as-second-class-citizens'))
+    print(meta_returned)
+    assert meta_returned.title == "Thousands of UK academics 'treated as second-class citizens'"
+    # assert meta_returned.author == 'Richard Adams'
+    assert meta_returned.description.startswith('Report claims higher education institutions')
+    assert meta_returned.sitename == 'the Guardian'
+    assert meta_returned.categories == []
+    assert meta_returned.tags == []
+    # meta name="keywords"
 
 
 if __name__ == '__main__':
