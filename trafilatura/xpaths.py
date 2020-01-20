@@ -80,10 +80,11 @@ DISCARD_XPATH = [
     or contains(@id, "cookie") or contains(@class, "cookie")]''',
     #'.//*[(self::div or self::p or self::section)][]',
     # navigation
-    '''.//*[(self::div or self::ol or self::section or self::ul)][starts-with(@id, "nav-")
-    or starts-with(@class, "nav-") or starts-with(@id, "nav ") or starts-with(@class, "nav ")
-    or starts-with(@class, "post-nav") or starts-with(@id, "breadcrumbs")
-    or contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or
+    '''.//*[(self::div or self::ol or self::section or self::ul)][contains(@id, "menu") or
+    contains(@class, "menu") or starts-with(@id, "nav-") or starts-with(@class, "nav-") or
+    starts-with(@id, "nav ") or starts-with(@class, "nav ") or
+    starts-with(@class, "post-nav") or starts-with(@id, "breadcrumbs") or
+    contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or
     contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]''',
     # related posts
     '''.//*[(self::div or self::section or self::ul)][contains(@id, "related") or
@@ -105,15 +106,13 @@ DISCARD_XPATH = [
     '''.//*[contains(@class, "attachment") or contains(@class, "timestamp") or
     contains(@class, "user-info") or contains(@class, "user-profile") or
     contains(@class, "-ad-") or contains(@class, "-icon") or contains(@class, "navbox")
-    or contains(@class, "submeta")]''',
+    or contains(@class, "submeta") or contains(@class, "article-infos")]''',
     '''.//*[(self::div or self::p or self::ul)][contains(@class, "byline") or
     contains(@class, 'Byline')]''',
 ]
-# optional?
-# *[contains(@class, "article-infos")  or contains(@class, "author")
-# div/section[contains(@class, "clearfix")
-# conflicts: './/aside', contains(@class, "hidden")
-#  or contains(@id, "menu") or contains(@class, "menu")
+# conflicts:
+# './/aside', contains(@class, "hidden")
+# './/*[(self::div or self::section)][contains(@class, "clearfix")]',
 # class contains cats
 
 
