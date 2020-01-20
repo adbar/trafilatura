@@ -97,7 +97,7 @@ def examine_meta(tree):
                 if description is None:
                     description = elem.get('content')
             # site name
-            elif elem.get('name') in ('publisher', 'twitter:site'):
+            elif elem.get('name') in ('publisher', 'DC.publisher'):  # in ('publisher', 'twitter:site'):
                 if site_name is None:
                     site_name = elem.get('content')
             # url
@@ -199,6 +199,10 @@ def scrape(filecontent, url=None):
         return None
     # meta tags
     mymeta = Metadata._make(examine_meta(tree))
+    # correction: author not a name
+    #if mymeta.author is not None:
+    #    if ' ' not in mymeta.author or mymeta.author.startswith('http'):
+    #        mymeta = mymeta._replace(author=None)
     # title
     if getattr(mymeta, 'title') is None:
         mymeta = mymeta._replace(title=extract_title(tree))

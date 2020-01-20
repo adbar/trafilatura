@@ -11,18 +11,18 @@ author_xpaths = [
 '//*[@rel="author" or @class="author" or rel="me"]',
 '//author',
 '//a[contains(@class, "author")]',
+'//span[contains(@class, "authors") or contains(@class, "author")]',
+'//span[contains(@class, "byline") or contains(@itemprop, "author")]',
 ]
 # json author
 # '//address[@class="author"]',
 # screenname
-# @class, 'byline'
 
 
 categories_xpaths = [
 """//div[starts-with(@class, 'post-info') or starts-with(@class, 'postinfo') or
     starts-with(@class, 'post-meta') or starts-with(@class, 'postmeta') or
     starts-with(@class, 'meta')]//a""",
-
 '//div[@class="row"]//a',
 """//div[starts-with(@class, 'entry-meta') or starts-with(@class, 'entry-info') or
     starts-with(@class, 'entry-utility')]//a""",
@@ -38,6 +38,7 @@ categories_xpaths = [
 ]
 # "//div[contains(@class, 'byline')]",
 # "//p[contains(@class, 'byline')]",
+# span class cat-links
 
 
 tags_xpaths = [
@@ -48,7 +49,7 @@ tags_xpaths = [
     starts-with(@class, 'meta')]//a''',
 '//*[@class="entry-meta"]//a'
 ]
-
+# span class tag-links
 
 title_xpaths = [
 '//h1',
