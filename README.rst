@@ -29,7 +29,7 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 
 |
 
-.. image:: trafilatura-demo.gif
+.. image:: docs/trafilatura-demo.gif
     :alt: Demo as GIF image
     :align: center
     :width: 85%
