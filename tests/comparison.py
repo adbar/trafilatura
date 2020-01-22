@@ -5,6 +5,8 @@ Compare extraction results with other libraries of the same kind.
 import logging
 import os
 import sys
+import time
+
 
 from lxml import etree, html
 
@@ -260,11 +262,11 @@ def calculate_f_score(mydict):
     return precision, recall, fscore
 
     
-everything = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
-nothing = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
-trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
-justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
-goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
+everything = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+nothing = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 
 
 for item in EVAL_PAGES:
@@ -281,21 +283,27 @@ for item in EVAL_PAGES:
     everything['true negatives'] += tn
     everything['false negatives'] += fn
     # trafilatura
+    start = time.time()
     result = run_trafilatura(htmlstring)
+    trafilatura_result['time'] += time.time() - start
     tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
     trafilatura_result['true positives'] += tp
     trafilatura_result['false positives'] += fp
     trafilatura_result['true negatives'] += tn
     trafilatura_result['false negatives'] += fn
     # justext
+    start = time.time()
     result = run_justext(htmlstring)
+    justext_result['time'] += time.time() - start
     tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
     justext_result['true positives'] += tp
     justext_result['false positives'] += fp
     justext_result['true negatives'] += tn
     justext_result['false negatives'] += fn
-    # justext
+    # goose
+    start = time.time()
     result = run_goose(htmlstring)
+    goose_result['time'] += time.time() - start
     tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
     goose_result['true positives'] += tp
     goose_result['false positives'] += fp
