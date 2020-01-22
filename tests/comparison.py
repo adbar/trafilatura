@@ -14,7 +14,7 @@ except ImportError:
     import chardet
 
 import justext
-
+from goose3 import Goose
 from trafilatura import extract
 
 
@@ -217,10 +217,16 @@ def run_justext(htmlstring):
     paragraphs = justext.justext(htmlstring, justext.get_stoplist("German"))
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
-            print(paragraph.text)
             valid.append(paragraph.text)
     result = ' '.join(valid)
     return result
+
+
+def run_goose(htmlstring):
+    '''try with the goose justext'''
+    g = Goose()
+    article = g.extract(raw_html=htmlstring)
+    return article.cleaned_text
 
 
 def evaluate_result(result, EVAL_PAGES, item):
@@ -258,6 +264,7 @@ everything = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'f
 nothing = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
 trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
 justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
+goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
 
 
 for item in EVAL_PAGES:
@@ -282,12 +289,18 @@ for item in EVAL_PAGES:
     trafilatura_result['false negatives'] += fn
     # justext
     result = run_justext(htmlstring)
-    print(result)
     tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
     justext_result['true positives'] += tp
     justext_result['false positives'] += fp
     justext_result['true negatives'] += tn
     justext_result['false negatives'] += fn
+    # justext
+    result = run_goose(htmlstring)
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    goose_result['true positives'] += tp
+    goose_result['false positives'] += fp
+    goose_result['true negatives'] += tn
+    goose_result['false negatives'] += fn
 
 print(nothing)
 # print(calculate_f_score(nothing))
@@ -297,3 +310,5 @@ print(trafilatura_result)
 print(calculate_f_score(trafilatura_result))
 print(justext_result)
 print(calculate_f_score(justext_result))
+print(goose_result)
+print(calculate_f_score(goose_result))
