@@ -26,32 +26,6 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 MOCK_PAGES = {
-'http://exotic_tags': 'exotic_tags.html',
-'https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/': 'piratenpartei-mv.de.grundeinkommen.html',
-'https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/': 'spektrum.de.engelbart.html',
-'https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975': 'sueddeutsche.de.genderdebatte.html',
-'https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html': 'rnz.de.witzel.html',
-'https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg': 'austria.info.radfahren.html',
-'https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/': 'buchperlen.wordpress.com.html',
-'https://www.fairkom.eu/about': 'fairkom.eu.about.html',
-'https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461': 'futurezone.at.lyft.html',
-'http://www.hundeverein-kreisunna.de/unserverein.html': 'hundeverein-kreisunna.de.html',
-'https://viehbacher.com/de/steuerrecht': 'viehbacher.com.steuerrecht.html',
-'http://www.jovelstefan.de/2011/09/11/gefallt-mir/': 'jovelstefan.de.gefallt.html',
-'https://www.stuttgart.de/item/show/132240/1': 'stuttgart.de.html',
-'https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/': 'modepilot.de.duschkopf.html',
-'https://www.otto.de/twoforfashion/strohtasche/': 'otto.de.twoforfashion.html',
-'http://iloveponysmag.com/2018/05/24/barbour-coastal/': 'iloveponysmag.com.barbour.html',
-'https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/': 'moritz-meyer.net.vreni.html',
-'http://www.womencantalksports.com/top-10-women-talking-sports/': 'womencantalksports.com.top10.html',
-'https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html': 'plentylife.blogspot.pamela-reif.html',
-'https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html': 'luxuryhaven.co.hyatt.html',
-'https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/': 'luxuriousmagazine.com.polo.html',
-'https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5': 'chip.de.tests.html',
-'https://www.gruen-digital.de/2015/01/digitalpolitisches-jahrestagung-2015-der-heinrich-boell-stiftung-baden-wuerttemberg/': 'gruen-digital.de.jahrestagung.html',
-'https://www.rechtambild.de/2011/10/bgh-marions-kochbuch-de/': 'rechtambild.de.kochbuch.html',
-'http://www.internet-law.de/2011/07/verstost-der-ausschluss-von-pseudonymen-bei-google-gegen-deutsches-recht.html': 'internet-law.de.pseudonymen.html',
-'https://www.telemedicus.info/article/2766-Rezension-Haerting-Internetrecht,-5.-Auflage-2014.html': 'telemedicus.info.rezension.html',
 'https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen': 'cnet.de.schutz.html',
 'https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage': 'correctiv.org.zusage.html',
 'https://www.sueddeutsche.de/wirtschaft/bahn-flixbus-flixtrain-deutschlandtakt-fernverkehr-1.4445845': 'sueddeutsche.de.flixtrain.html',
@@ -154,7 +128,7 @@ EVAL_PAGES = {
 },
 'http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html': {
     'file': 'simplyscience.ch.erdoel.html',
-    'with': ['Erdöl bildet nach Millionen', 'Plankton zersetzt sich', 'in unserem Artikel "Warum wird das Erdöl knapp?".', 'Sehr cooles Thema!'],  # → comments
+    'with': ['Erdöl bildet nach Millionen', 'Plankton zersetzt sich', 'in unserem Artikel "Warum wird das Erdöl knapp?".'],  # → comments: 'Sehr cooles Thema!'
     'without': ['TebNad/Shutterstock.com', 'Empfiehl dies deinen Freunden.', 'Die Natur ist aus chemischen Elementen aufgebaut'],
 },
 'http://www.shingon-reiki.de/reiki-und-schamanismus/': {
@@ -164,7 +138,7 @@ EVAL_PAGES = {
 },
 'http://love-hina.ch/news/0409.html': {
     'file': 'love-hina.ch.0409.html',
-    'with': ['Kapitel 121 ist', 'Danke für dieses Kapitel'],  # → comments
+    'with': ['Kapitel 121 ist'],  # comments: 'Danke für dieses Kapitel'
     'without': ['Kommentare schreiben', '19:49'],
 },
 'http://www.cdu-fraktion-erfurt.de/inhalte/aktuelles/entwicklung-der-waldorfschule-ermoeglicht/index.html': {
@@ -179,11 +153,142 @@ EVAL_PAGES = {
 },
 'https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/': {
     'file': 'de.creativecommons.org.endlich.html',
-    'with': ['das letzte Wort sein kann.', 'Das LG Köln hat einfach keine Ahnung'],  # → comments
-    'without': ['Ähnliche Beiträge', 'Michael Blahm', 'OERde14'],
+    'with': ['das letzte Wort sein kann.'],  # comments: 'Das LG Köln hat einfach keine Ahnung'
+    'without': ['Ähnliche Beiträge', 'OERde14'], # 'Michael Blahm',
+},
+'https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/': {
+    'file': 'piratenpartei-mv.de.grundeinkommen.html',
+    'with': ['Unter diesem Motto findet am 14. September', 'Volksinitiative Schweiz zum Grundeinkommen.'], 
+    'without': ['getaggt mit:', 'Was denkst du?'],
+},
+'https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/': {
+    'file': 'spektrum.de.engelbart.html',
+    'with': ['Zweitens wird der Genderstern', 'alldem leider – nichts.'], 
+    'without': ['Originalbeitrag', 'Spektrum.de Newsletter'],  # comments: 'Ich sperre nur Kommentare,'
+},
+'https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975': {
+    'file': 'sueddeutsche.de.genderdebatte.html',
+    'with': ['Es ist erstaunlich:', 'Damaris Nübling ist Professorin'], 
+    'without': ['Der Fall Weinstein', 'Leser empfehlen'],
+},
+'https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html': {
+    'file': 'rnz.de.witzel.html',
+    'with': ['Für einen Roman', 'Auszeichnung der Branche.'], 
+    'without': ['Ihre RNZ.', 'WHATSAPP'],
+},
+'https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg': {
+    'file': 'austria.info.radfahren.html',
+    'with': ['Salzburg liebt seine Radfahrer.', 'Puls einsaugen zu lassen.', 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt'], 
+    'without': ['Das könnte Sie auch interessieren ...', 'So macht Radfahren sonst noch Spaß'],
+},
+'https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/': {
+    'file': 'buchperlen.wordpress.com.html',
+    'with': ['Dann sollten Sie erst recht', 'als saure Gürkchen entlarvte Ex-Boyfriends.'], 
+    'without': ['US-Musiker Lou Reed'],
+},
+'https://www.fairkom.eu/about': {
+    'file': 'fairkom.eu.about.html',
+    'with': ['ein gemeinwohlorientiertes Partnerschaftsnetzwerk', 'Stimmberechtigung bei der Generalversammlung.'], 
+    'without': ['Sicher, ökologisch und fair.', 'Gemeinwohlpunkten'],
+},
+'https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461': {
+    'file': 'futurezone.at.lyft.html',
+    'with': ['Einige Kunden des Fahrdienst-Vermittler Lyft', 'zeitweise rund vier Prozent.'], 
+    'without': ['Allgemeine Nutzungsbedingungen'],  # 'Waymo bittet Autohersteller um Geld'
+},
+'http://www.hundeverein-kreisunna.de/unserverein.html': {
+    'file': 'hundeverein-kreisunna.de.html',
+    'with': ['Beate und Norbert Olschewski', 'ein Familienmitglied und unser Freund.'], 
+    'without': ['zurück zur Startseite'],
+},
+'https://viehbacher.com/de/steuerrecht': {
+    'file': 'viehbacher.com.steuerrecht.html',
+    'with': ['und wirtschaftlich orientierte Privatpersonen', 'rund um die Uhr.', 'Mensch im Mittelpunkt.'], 
+    'without': ['Was sind Cookies?'],
+},
+'http://www.jovelstefan.de/2011/09/11/gefallt-mir/': {
+    'file': 'jovelstefan.de.gefallt.html',
+    'with': ['Manchmal überrascht einen', 'kein Meisterwerk war!'], 
+    'without': ['Pingback von', 'Kommentare geschlossen'],
+},
+'https://www.stuttgart.de/item/show/132240/1': {
+    'file': 'stuttgart.de.html',
+    'with': ['Das Bohnenviertel entstand', 'sich herrlich entspannen.'], 
+    'without': ['Nützliche Links'],  # 'Mehr zum Thema'
+},
+'https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/': {
+    'file': 'modepilot.de.duschkopf.html',
+    'with': ['Allerdings sieht es wie ein Dildo aus,', 'gibt Bescheid, ne?'], 
+    'without': ['Ähnliche Beiträge', 'Deine E-Mail (bleibt natürlich unter uns)'],
+},
+'https://www.otto.de/twoforfashion/strohtasche/': {
+    'file': 'otto.de.twoforfashion.html',
+    'with': ['Ob rund oder kastenförmig, ob dezent oder auffällig', 'XX, Die Redaktion'], 
+    'without': ['Kommentieren', 'Dienstag, 4. Juni 2019'],
+},
+'http://iloveponysmag.com/2018/05/24/barbour-coastal/': {
+    'file': 'iloveponysmag.com.barbour.html',
+    'with': ['Eine meiner besten Entscheidungen bisher:', 'Verlassenes Gewächshaus meets versteckter Deich', 'Der Hundestrand in Stein an der Ostsee'], 
+    'without': ['Tags: Barbour,', 'Bitte (noch) mehr Bilder von Helle', 'Hinterlasse einen Kommentar'],
+},
+'https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/': {
+    'file': 'moritz-meyer.net.vreni.html',
+    'with': ['Das ist alles nicht gekennzeichnet, wie soll ich wissen', 'Instagramshops machen es Abmahnanwälten leicht', 'Ich bin der Ansicht, abwarten und Tee trinken.'],   # comments: 'Danke für dein Feedback. Auch zum Look meiner Seite.'
+    'without': ['Diese Geschichte teilen', 'Diese Website verwendet Akismet, um Spam zu reduzieren.'],  # 'Ähnliche Beiträge'
+},
+'http://www.womencantalksports.com/top-10-women-talking-sports/': {
+    'file': 'womencantalksports.com.top10.html',
+    'with': ['3.Charlotte Jones Anderson', 'Keep Talking Sports!', ], 
+    'without': ['Category: Blog Popular', 'Copyright Women Can Talk Sports.'],
+},
+'https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html': {
+    'file': 'plentylife.blogspot.pamela-reif.html',
+    'with': ['Schönheit kommt für Pamela von Innen und Außen', 'Die Workout Übungen kannte ich bereits'],  # comments: 'Great post, I like your blog' # 'Vielen Dank an den den Verlag'
+    'without': ['Links zu diesem Post', 'mehr über mich', 'Bitte beachte auch die Datenschutzerklärung von Google.'],
+},
+'https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html': {
+    'file': 'luxuryhaven.co.hyatt.html',
+    'with': ['Grounded in sustainable architecture and refined Vietnamese craftsmanship,', 'and Carmelo Resort', 'Dining and Drinking'],  # comments: 'OMG what a beautiful place to stay! '
+    'without': ['Food Advertising by', 'A lovely note makes a beautiful day!', 'Reply'],
+},
+'https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/': {
+    'file': 'luxuriousmagazine.com.polo.html',
+    'with': ['Argentina, the birthplace of polo.', 'Simon Wittenberg travels to the Eternal City in Italy'], 
+    'without': ['Luxury and lifestyle articles', 'Pinterest'],
+},
+'https://www.gruen-digital.de/2015/01/digitalpolitisches-jahrestagung-2015-der-heinrich-boell-stiftung-baden-wuerttemberg/': {
+    'file': 'gruen-digital.de.jahrestagung.html',
+    'with': ['Prof. Dr. Caja Thimm', 'zur Anmeldung.'], 
+    'without': ['Next post', 'Aus den Ländern'],
+},
+'https://www.rechtambild.de/2011/10/bgh-marions-kochbuch-de/': {
+    'file': 'rechtambild.de.kochbuch.html',
+    'with': ['Leitsätze des Gerichts', 'III. Die Revision der Beklagten'],
+    'without': ['twittern', 'Ähnliche Beiträge', 'd.toelle[at]rechtambild.de'],
+},
+'http://www.internet-law.de/2011/07/verstost-der-ausschluss-von-pseudonymen-bei-google-gegen-deutsches-recht.html': {
+    'file': 'internet-law.de.pseudonymen.html',
+    'with': ['Wann Blogs einer Impressumspflicht unterliegen,'], 
+    'without': ['Über mich', 'Gesetzes- und Rechtsprechungszitate werden automatisch'],
+},
+'https://www.telemedicus.info/article/2766-Rezension-Haerting-Internetrecht,-5.-Auflage-2014.html': {
+    'file': 'telemedicus.info.rezension.html',
+    'with': ['Aufbau und Inhalt', 'Verlag Dr. Otto Schmidt'], 
+    'without': ['Handbuch', 'Drucken'],  # 'Ähnliche Artikel', 'Kommentar schreiben'
 },
 }
+#'': {
+#    'file': '',
+#    'with': [], 
+#    'without': [],
+#},
 #'http://exotic_tags': 'exotic_tags.html',
+# overview page: result is None
+# 'https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5': {
+#    'file': 'chip.de.tests.html',
+#    'with': [], 
+#    'without': [],
+#},
 
 
 def load_document(filename):
@@ -209,7 +314,7 @@ def load_document(filename):
 
 def run_trafilatura(htmlstring):
     '''run trafilatura (without fallback) on content'''
-    result = extract(htmlstring, no_fallback=True)
+    result = extract(htmlstring, no_fallback=True, include_comments=False)
     return result
 
 
@@ -226,7 +331,7 @@ def run_justext(htmlstring):
 
 def run_trafilatura_justext(htmlstring):
     '''run trafilatura (without fallback) on content'''
-    result = extract(htmlstring, no_fallback=False)
+    result = extract(htmlstring, no_fallback=False, include_comments=False)
     return result
 
 
@@ -326,6 +431,8 @@ for item in EVAL_PAGES:
     goose_result['true negatives'] += tn
     goose_result['false negatives'] += fn
 
+
+print(len(EVAL_PAGES))
 print(nothing)
 # print(calculate_f_score(nothing))
 print(everything)
