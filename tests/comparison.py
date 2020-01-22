@@ -13,7 +13,10 @@ try:
 except ImportError:
     import chardet
 
+import justext
+
 from trafilatura import extract
+
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -208,6 +211,18 @@ def run_trafilatura(htmlstring):
     return result
 
 
+def run_justext(htmlstring):
+    '''try with the generic algorithm justext'''
+    valid = list()
+    paragraphs = justext.justext(htmlstring, justext.get_stoplist("German"))
+    for paragraph in paragraphs:
+        if not paragraph.is_boilerplate:
+            print(paragraph.text)
+            valid.append(paragraph.text)
+    result = ' '.join(valid)
+    return result
+
+
 def evaluate_result(result, EVAL_PAGES, item):
     '''evaluate result contents'''
     true_positives = false_negatives = false_positives = true_negatives = 0
@@ -241,32 +256,44 @@ def calculate_f_score(mydict):
     
 everything = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
 nothing = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
-traf_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
+trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
+justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0}
 
 
 for item in EVAL_PAGES:
     htmlstring = load_document(EVAL_PAGES[item]['file'])
-    result = run_trafilatura(htmlstring)
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
-    traf_result['true positives'] += tp
-    traf_result['false positives'] += fp
-    traf_result['true negatives'] += tn
-    traf_result['false negatives'] += fn
-    tp, fn, fp, tn = evaluate_result(htmlstring, EVAL_PAGES, item)
-    everything['true positives'] += tp
-    everything['false positives'] += fp
-    everything['true negatives'] += tn
-    everything['false negatives'] += fn
+    # null hypotheses
     tp, fn, fp, tn = evaluate_result('', EVAL_PAGES, item)
     nothing['true positives'] += tp
     nothing['false positives'] += fp
     nothing['true negatives'] += tn
     nothing['false negatives'] += fn
+    tp, fn, fp, tn = evaluate_result(htmlstring, EVAL_PAGES, item)
+    everything['true positives'] += tp
+    everything['false positives'] += fp
+    everything['true negatives'] += tn
+    everything['false negatives'] += fn
+    # trafilatura
+    result = run_trafilatura(htmlstring)
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    trafilatura_result['true positives'] += tp
+    trafilatura_result['false positives'] += fp
+    trafilatura_result['true negatives'] += tn
+    trafilatura_result['false negatives'] += fn
+    # justext
+    result = run_justext(htmlstring)
+    print(result)
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    justext_result['true positives'] += tp
+    justext_result['false positives'] += fp
+    justext_result['true negatives'] += tn
+    justext_result['false negatives'] += fn
 
-
-print(traf_result)
-print(calculate_f_score(traf_result))
-print(everything)
-print(calculate_f_score(everything))
 print(nothing)
 # print(calculate_f_score(nothing))
+print(everything)
+print(calculate_f_score(everything))
+print(trafilatura_result)
+print(calculate_f_score(trafilatura_result))
+print(justext_result)
+print(calculate_f_score(justext_result))
