@@ -224,6 +224,12 @@ def run_justext(htmlstring):
     return result
 
 
+def run_trafilatura_justext(htmlstring):
+    '''run trafilatura (without fallback) on content'''
+    result = extract(htmlstring, no_fallback=False)
+    return result
+
+
 def run_goose(htmlstring):
     '''try with the goose justext'''
     g = Goose()
@@ -266,6 +272,7 @@ everything = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'f
 nothing = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+trafilatura_justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 
 
@@ -300,6 +307,15 @@ for item in EVAL_PAGES:
     justext_result['false positives'] += fp
     justext_result['true negatives'] += tn
     justext_result['false negatives'] += fn
+    # trafilatura + justext
+    start = time.time()
+    result = run_trafilatura_justext(htmlstring)
+    trafilatura_justext_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    trafilatura_justext_result['true positives'] += tp
+    trafilatura_justext_result['false positives'] += fp
+    trafilatura_justext_result['true negatives'] += tn
+    trafilatura_justext_result['false negatives'] += fn
     # goose
     start = time.time()
     result = run_goose(htmlstring)
@@ -318,5 +334,7 @@ print(trafilatura_result)
 print(calculate_f_score(trafilatura_result))
 print(justext_result)
 print(calculate_f_score(justext_result))
+print(trafilatura_justext_result)
+print(calculate_f_score(trafilatura_justext_result))
 print(goose_result)
 print(calculate_f_score(goose_result))
