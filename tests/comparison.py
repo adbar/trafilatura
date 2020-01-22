@@ -2,7 +2,7 @@
 Compare extraction results with other libraries of the same kind.
 """
 
-import logging
+# import logging
 import os
 import sys
 import time
@@ -20,7 +20,7 @@ from goose3 import Goose
 from trafilatura import extract
 
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+# logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -104,23 +104,23 @@ MOCK_PAGES = {
 EVAL_PAGES = {
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': {
     'file': 'die-partei.net.luebeck.html',
-    'with': ['Die GEMA dreht völlig am Zeiger!'],
-    'without': ['Impressum'],
+    'with': ['Die GEMA dreht völlig am Zeiger!', 'http://www.openpetition.de'],
+    'without': ['31. Mai', 'Impressum', 'Steuerdarling'],
 },
 'https://www.bmjv.de/DE/Verbraucherportal/KonsumImAlltag/TransparenzPreisanpassung/TransparenzPreisanpassung_node.html': {
     'file': 'bmjv.de.konsum.html',
-    'with': ['Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol'],
-    'without': ['Impressum'],
+    'with': ['Auch hier gilt der Grundsatz,', 'Anbieter von Fernwärme haben innerhalb ihres Leitungsnetzes ein Monopol', '(Billigkeitskontrolle nach § 315 BGB)'],
+    'without': ['Impressum', 'Weitere Informationen', 'Transparenz bei Preisanpassungen', 'Twitter'],
 },
 'http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/': {
     'file': 'kulinariaathome.com.mandelplätzchen.html',
-    'with': ['zu einem glatten Teig verarbeiten.', 'goldbraun sind.', '200 g Zucker', 'Ein Backblech mit Backpapier auslegen.'],
-    'without': ['Sei der Erste', 'Gefällt mir', 'Trotz sorgfältiger inhaltlicher Kontrolle'],
+    'with': ['(+ 15 Minuten backen)', '200 g Zucker', 'zu einem glatten Teig verarbeiten.', 'Ein Backblech mit Backpapier auslegen.'],
+    'without': ['Sharen mit', 'Creative Commons', 'Trotz sorgfältiger inhaltlicher Kontrolle'],
 },
 'https://denkanstoos.wordpress.com/2012/04/11/denkanstoos-april-2012/': {
     'file': 'denkanstoos.com.2012.html',
-    'with': ['Two or three 10-15 min', 'What type? Etc. (30 mins)'],
-    'without': ['Dieser Eintrag wurde veröffentlicht', 'Mit anderen Teillen'],
+    'with': ['Moderator: Hass Chapman', 'Two or three 10-15 min', 'What type? Etc. (30 mins)'],
+    'without': ['Dieser Eintrag wurde veröffentlicht', 'Mit anderen Teillen', 'In "DenkanStoos-Treffen"'],
 },
 'https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft': {
     'file': 'demokratiewebstatt.at.luft.html',
@@ -129,23 +129,23 @@ EVAL_PAGES = {
 },
 'http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html': {
     'file': 'toralin.de.schmierfett.html',
-    'with': ['künftig das XADO-Schutzfett verwenden.', 'bis zu 50% Verschleiß.', 'Die Lebensdauer von Bauteilen erhöht sich beträchtlich.'],
-    'without': ['Newsletter', 'Sie könnten auch an folgenden Artikeln interessiert sein'],
+    'with': ['Die Lebensdauer von Bauteilen erhöht sich beträchtlich.', 'bis zu 50% Verschleiß.', 'Li-Seifen/Mineralöl'],
+    'without': ['Newsletter', 'Wie bewerten Sie diesen Artikel?', 'Meander 151'],
 },
 'https://www.ebrosia.de/beringer-zinfandel-rose-stone-cellars-lieblich-suess': {
     'file': 'ebrosia.de.zinfandel.html',
-    'with': ['Das Bukett präsentiert sich', 'Besonders gut passt er zu asiatischen Gerichten'],
-    'without': ['Kunden kauften auch', 'Gutschein sichern'],
+    'with': ['Das Bukett präsentiert sich', 'Besonders gut passt er zu asiatischen Gerichten', 'Details zum Artikel', 'Dekantieren nicht notwendig'],
+    'without': ['Kunden kauften auch', 'Gutschein sichern', 'wurde erfolgreich hinzugefügt.', 'Bitte geben Sie die Zahlenfolge'],
 },
 'https://www.landwirt.com/Precision-Farming-Moderne-Sensortechnik-im-Kuhstall,,4229,,Bericht.html': {
     'file': 'landwirt.com.sensortechnik.html',
-    'with': ['Überwachung der somatischen Zellen', 'tragbaren Ultraschall-Geräten', 'Kotkonsistenz'],
-    'without': ['Anzeigentarife', 'Aktuelle Berichte aus dieser Kategorie'],
+    'with': ['b) Überwachung der somatischen Zellen', 'Wiederkauverhalten und Kotkonsistenz.', 'Köllitsch (D)'],
+    'without': ['Anzeigentarife', 'weiterempfehlen', 'New Holland T6050'],
 },
 'http://schleifen.ucoz.de/blog/briefe/2010-10-26-18': {
     'file': 'schleifen.ucoz.de.briefe.html',
-    'with': ['Es war gesagt,', 'Symbol auf dem Finger haben'],
-    'without': ['Aufrufe:'],
+    'with': ['Es war gesagt,', 'Jedes Mädchen träumt von Justin', 'Symbol auf dem Finger haben'],
+    'without': ['3:59 PM', 'Aufrufe:', 'Kommentare insgesamt:'],
 },
 'http://www.rs-ingenieure.de/de/hochbau/leistungen/tragwerksplanung': {
     'file': 'rs-ingenieure.de.tragwerksplanung.html',
@@ -154,33 +154,33 @@ EVAL_PAGES = {
 },
 'http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html': {
     'file': 'simplyscience.ch.erdoel.html',
-    'with': ['Erdöl bildet nach Millionen', 'in unserem Artikel "Warum wird das Erdöl knapp?".'],
-    'without': ['Die Natur ist aus chemischen Elementen aufgebaut'],
+    'with': ['Erdöl bildet nach Millionen', 'Plankton zersetzt sich', 'in unserem Artikel "Warum wird das Erdöl knapp?".', 'Sehr cooles Thema!'],  # → comments
+    'without': ['TebNad/Shutterstock.com', 'Empfiehl dies deinen Freunden.', 'Die Natur ist aus chemischen Elementen aufgebaut'],
 },
 'http://www.shingon-reiki.de/reiki-und-schamanismus/': {
     'file': 'shingon-reiki.de.schamanismus.html',
-    'with': ['Heut geht es', 'Ich komme dann zu dir vor Ort.'],
-    'without': ['Catch Evolution', 'und gekennzeichnet mit'],
+    'with': ['神道', 'War Mikao Usui Schamane?', 'Reiki und Runen'],
+    'without': ['Hinterlasse eine Antwort', 'Catch Evolution', 'und gekennzeichnet mit'],
 },
 'http://love-hina.ch/news/0409.html': {
     'file': 'love-hina.ch.0409.html',
-    'with': ['Kapitel 121 ist'],
-    'without': ['Besucher online', 'Kommentare schreiben'],
+    'with': ['Kapitel 121 ist', 'Danke für dieses Kapitel'],  # → comments
+    'without': ['Kommentare schreiben', '19:49'],
 },
 'http://www.cdu-fraktion-erfurt.de/inhalte/aktuelles/entwicklung-der-waldorfschule-ermoeglicht/index.html': {
     'file': 'cdu-fraktion-erfurt.de.waldorfschule.html',
-    'with': ['der steigenden Nachfrage gerecht zu werden.'],
+    'with': ['Ein positives Signal gab', 'der steigenden Nachfrage gerecht zu werden.'],
     'without': ['Zurück zur Übersicht', 'Erhöhung für Zoo-Eintritt'],
 },
 'http://www.wehranlage-horka.de/veranstaltung/887/': {
     'file': 'wehranlage-horka.de.887.html',
-    'with': ['In eine andere Zeit', 'Während Sie über den Markt schlendern'],
+    'with': ['Görlitzer Str. 45', 'Während Sie über den Markt schlendern', 'Konzert bei Kerzenschein'],
     'without': ['Infos zum Verein', 'nach oben', 'Datenschutzerklärung'],
 },
 'https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/': {
     'file': 'de.creativecommons.org.endlich.html',
-    'with': ['das letzte Wort sein kann.'],
-    'without': ['Ähnliche Beiträge', 'Michael Blahm'],
+    'with': ['das letzte Wort sein kann.', 'Das LG Köln hat einfach keine Ahnung'],  # → comments
+    'without': ['Ähnliche Beiträge', 'Michael Blahm', 'OERde14'],
 },
 }
 #'http://exotic_tags': 'exotic_tags.html',
