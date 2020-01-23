@@ -27,56 +27,6 @@ from trafilatura import extract
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
-MOCK_PAGES = {
-'https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen': 'cnet.de.schutz.html',
-'https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage': 'correctiv.org.zusage.html',
-'https://www.sueddeutsche.de/wirtschaft/bahn-flixbus-flixtrain-deutschlandtakt-fernverkehr-1.4445845': 'sueddeutsche.de.flixtrain.html',
-'https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/': 'adac.de.kindersitze.html',
-'https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/': 'caktusgroup.com.django.html',
-'https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/': 'computerbase.de.htc.html',
-'http://www.chineselyrics4u.com/2011/07/zhi-neng-xiang-nian-ni-jam-hsiao-jing.html': 'chineselyrics4u.com.zhineng.html',
-'https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/': 'basicthinking.de.tweets.html',
-'https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/': 'meedia.de.freenet.html',
-'https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/': 'incurvy.de.wellness.html',
-'https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843': 'dw.com.uncork.html',
-'https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html': 'jolie.de.adele.html',
-'https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx': 'speicherguide.de.schwierige.html',
-'https://novalanalove.com/ear-candy/': 'novalanalove.com.ear-candy.html',
-'http://www.franziska-elea.de/2019/02/10/das-louis-vuitton-missgeschick/': 'franziska-elea.de.vuitton.html',
-'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html': 'gofeminin.de.abnehmen.html',
-'https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html': 'brigitte.de.ikigai.html',
-'https://www.changelog.blog/zwischenbilanz-jan-kegelberg-ueber-tops-und-flops-bei-der-transformation-von-sportscheck/': 'changelog.blog.zwischenbilanz.html',
-'https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/': 'threatpost.com.android.html',
-'https://www.vice.com/en_uk/article/d3avvm/the-amazon-is-on-fire-and-the-smoke-can-be-seen-from-space': 'vice.com.amazon.html',
-'https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html': 'heise.de.lithium.html',
-'https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact': 'theverge.com.ios13.html',
-'https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/': 'crazy-julia.de.tipps.html',
-'https://www.politische-bildung-brandenburg.de/themen/land-und-leute/homo-brandenburgensis': 'brandenburg.de.homo-brandenburgensis.html',
-'https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html': 'skateboardmsm.de.dormhagen.html',
-'https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/': 'knowtechie.com.rally.html',
-'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html': 'boingboing.net.millenials.html',
-'https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding': 'en.wikipedia.org.tsne.html',
-'https://mixed.de/vrodo-deals-vr-taugliches-notebook-fuer-83215-euro-99-cent-leihfilme-bei-amazon-psvr/': 'mixed.de.vrodo.html',
-'http://www.spreeblick.com/blog/2006/07/29/aus-aus-alles-vorbei-habeck-macht-die-stahnke/': 'spreeblick.com.habeck.html',
-'https://majkaswelt.com/top-5-fashion-must-haves-2018-werbung/': 'majkaswelt.com.fashion.html',
-'https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/': 'erp-news.info.interview.html',
-'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/': 'github.blog.spiceland.html',
-'https://lady50plus.de/2019/06/19/sekre-mystery-bag/': 'lady50plus.de.sekre.html',
-'https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer': 'sonntag-sachsen.de.emanuel.html',
-'https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite': 'psl.eu.luniversite.html',
-'https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html': 'chip.de.beef.html',
-'http://www.sauvonsluniversite.fr/spip.php?article8532': 'sauvonsluniversite.com.spip.html',
-'https://www.spiegel.de/spiegel/print/d-161500790.html': 'spiegel.de.albtraum.html',
-'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': 'lemire.me.json.html',
-'https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission': 'zeit.de.zugverkehr.html',
-'https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020': 'franceculture.fr.idees.html',
-'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/': 'wikimediafoundation.org.turkey.html',
-'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': 'reuters.com.parasite.html',
-'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': 'vancouversun.com.microsoft.html',
-}
-# '': '', \
-
-
 EVAL_PAGES = {
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': {
     'file': 'die-partei.net.luebeck.html',
@@ -156,7 +106,7 @@ EVAL_PAGES = {
 'https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/': {
     'file': 'de.creativecommons.org.endlich.html',
     'with': ['das letzte Wort sein kann.'],  # comments: 'Das LG Köln hat einfach keine Ahnung'
-    'without': ['Ähnliche Beiträge', 'OERde14'], # 'Michael Blahm',
+    'without': ['Ähnliche Beiträge', 'OERde14'],
 },
 'https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/': {
     'file': 'piratenpartei-mv.de.grundeinkommen.html',
@@ -196,7 +146,7 @@ EVAL_PAGES = {
 'https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461': {
     'file': 'futurezone.at.lyft.html',
     'with': ['Einige Kunden des Fahrdienst-Vermittler Lyft', 'zeitweise rund vier Prozent.'], 
-    'without': ['Allgemeine Nutzungsbedingungen'],  # 'Waymo bittet Autohersteller um Geld'
+    'without': ['Allgemeine Nutzungsbedingungen', 'Waymo bittet Autohersteller um Geld'],  # 
 },
 'http://www.hundeverein-kreisunna.de/unserverein.html': {
     'file': 'hundeverein-kreisunna.de.html',
@@ -216,7 +166,7 @@ EVAL_PAGES = {
 'https://www.stuttgart.de/item/show/132240/1': {
     'file': 'stuttgart.de.html',
     'with': ['Das Bohnenviertel entstand', 'sich herrlich entspannen.'], 
-    'without': ['Nützliche Links'],  # 'Mehr zum Thema'
+    'without': ['Nützliche Links', 'Mehr zum Thema'],
 },
 'https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/': {
     'file': 'modepilot.de.duschkopf.html',
@@ -236,7 +186,7 @@ EVAL_PAGES = {
 'https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/': {
     'file': 'moritz-meyer.net.vreni.html',
     'with': ['Das ist alles nicht gekennzeichnet, wie soll ich wissen', 'Instagramshops machen es Abmahnanwälten leicht', 'Ich bin der Ansicht, abwarten und Tee trinken.'],   # comments: 'Danke für dein Feedback. Auch zum Look meiner Seite.'
-    'without': ['Diese Geschichte teilen', 'Diese Website verwendet Akismet, um Spam zu reduzieren.'],  # 'Ähnliche Beiträge'
+    'without': ['Diese Geschichte teilen', 'Diese Website verwendet Akismet, um Spam zu reduzieren.', 'Ähnliche Beiträge'],  # 
 },
 'http://www.womencantalksports.com/top-10-women-talking-sports/': {
     'file': 'womencantalksports.com.top10.html',
@@ -276,7 +226,59 @@ EVAL_PAGES = {
 'https://www.telemedicus.info/article/2766-Rezension-Haerting-Internetrecht,-5.-Auflage-2014.html': {
     'file': 'telemedicus.info.rezension.html',
     'with': ['Aufbau und Inhalt', 'Verlag Dr. Otto Schmidt'], 
-    'without': ['Handbuch', 'Drucken'],  # 'Ähnliche Artikel', 'Kommentar schreiben'
+    'without': ['Handbuch', 'Drucken', 'Ähnliche Artikel', 'Kommentar schreiben'],
+},
+'https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen': {
+    'file': 'cnet.de.schutz.html',
+    'with': ['Auch der Verweis auf ehrverletzende Bewertungen'], 
+    'without': ['Anja Schmoll-Trautmann', 'Fanden Sie diesen Artikel nützlich?', 'Aktuell', 'Kommentar hinzufügen', 'Zu seinen Tätigkeitsfeldern zählen'],
+},
+'https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage': {
+    'file': 'correctiv.org.zusage.html',
+    'with': ['Vorweg: Die beteiligten AfD-Politiker', 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal'], 
+    'without': ['Alle Artikel zu unseren Recherchen', 'Wir informieren Sie regelmäßig zum Thema Neue Rechte', 'Kommentar verfassen', 'weiterlesen'],
+},
+'https://www.sueddeutsche.de/wirtschaft/bahn-flixbus-flixtrain-deutschlandtakt-fernverkehr-1.4445845': {
+    'file': 'sueddeutsche.de.flixtrain.html',
+    'with': ['Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt', 'auch der Bus ein klimafreundliches Verkehrsmittel sei'], 
+    'without': ['05:28 Uhr', 'ICE im S-Bahn-Takt', 'Diskussion zu diesem Artikel auf', 'Berater-Affäre bringt Bahnchef Lutz in Bedrängnis'],
+},
+'https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/': {
+    'file': 'adac.de.kindersitze.html',
+    'with': ['in punkto Sicherheit, Bedienung, Ergonomie', 'Elf Modelle sind empfehlenswert', 'Jané Koos i-Size', 'Grenzwert der Richtlinie 2014/79/EU', 'Besonders bei Babyschalen sollte geprüft werden'], 
+    'without': ['23.10.2018', 'Rund ums Fahrzeug', 'Diesel-Umtauschprämien', 'Dieses Video wird über YouTube'],
+},
+'https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/': {
+    'file': 'caktusgroup.com.django.html',
+    'with': ['Was I losing my mind?', 'being cached after their first access.', 'Finding a Fix', 'from django.conf import settings', 'Clear the cache versions'], 
+    'without': ['Mark Lavin ', 'New Call-to-action', 'Get tips, see case studies'],
+},
+'https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/': {
+    'file': 'computerbase.de.htc.html',
+    'with': ['Vor knapp zwei Wochen', 'gibt es in der dazugehörigen Vorstellungs-News.'], 
+    'without': ['Themen:', 'bis Januar 2009 Artikel für ComputerBase verfasst.', '71 Kommentare'],
+},
+'http://www.chineselyrics4u.com/2011/07/zhi-neng-xiang-nian-ni-jam-hsiao-jing.html': {
+    'file': 'chineselyrics4u.com.zhineng.html',
+    'with': ['就放心去吧', 'Repeat Chorus'], 
+    'without': ['Posted by K A', 'Older post', 'Thank you for your support!', 'Follower'],
+},
+'https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/': {
+    'file': 'basicthinking.de.tweets.html',
+    'with': ['Frank Thelen, Investor', 'Meine Mutter ist jederzeit', 'Female founders must constantly consider', 'Thema des öffentlichen Interesses'],
+    'without': ['Nach langjähriger Tätigkeit im Ausland', 'Mit Absendung des Formulars willige ich', 'Kommentieren', 'Wir tun jeden Tag, was wir lieben.'],
+},
+# comments: 'Schaut man ganz genau hin, ist der Habeck-Kommentar'
+'https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/': {
+    'file': 'meedia.de.freenet.html',
+    'with': ['Welche Werbeeinnahmen erwarten Sie hier langfristig?', 'wir haben keinerlei Pläne, das zu verändern.'],
+    'without': ['Nachrichtenüberblick abonnieren', 'über alle aktuellen Entwicklungen auf dem Laufenden.', 'Schlagworte', 'Dauerzoff um drohenden UKW-Blackout'],
+},
+# comments:  'Mobilcom Debitel has charged me for third party'
+'https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/': {
+    'file': 'incurvy.de.wellness.html',
+    'with': ['Zeit für Loslassen und Entspannung.', 'Erfrischende, abschwellende Augencreme Phyto Contour', 'Wie sieht dein Alltag aus?', 'Vielen Dank Anja für deine Tipps rund um Beauty'], 
+    'without': ['Betreiberin von incurvy Plus Size', 'Wir verwenden Cookies'],
 },
 }
 #'': {
@@ -291,6 +293,48 @@ EVAL_PAGES = {
 #    'with': [], 
 #    'without': [],
 #},
+
+
+
+MOCK_PAGES = {
+'https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843': 'dw.com.uncork.html',
+'https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html': 'jolie.de.adele.html',
+'https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx': 'speicherguide.de.schwierige.html',
+'https://novalanalove.com/ear-candy/': 'novalanalove.com.ear-candy.html',
+'http://www.franziska-elea.de/2019/02/10/das-louis-vuitton-missgeschick/': 'franziska-elea.de.vuitton.html',
+'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html': 'gofeminin.de.abnehmen.html',
+'https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html': 'brigitte.de.ikigai.html',
+'https://www.changelog.blog/zwischenbilanz-jan-kegelberg-ueber-tops-und-flops-bei-der-transformation-von-sportscheck/': 'changelog.blog.zwischenbilanz.html',
+'https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/': 'threatpost.com.android.html',
+'https://www.vice.com/en_uk/article/d3avvm/the-amazon-is-on-fire-and-the-smoke-can-be-seen-from-space': 'vice.com.amazon.html',
+'https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html': 'heise.de.lithium.html',
+'https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact': 'theverge.com.ios13.html',
+'https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/': 'crazy-julia.de.tipps.html',
+'https://www.politische-bildung-brandenburg.de/themen/land-und-leute/homo-brandenburgensis': 'brandenburg.de.homo-brandenburgensis.html',
+'https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html': 'skateboardmsm.de.dormhagen.html',
+'https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/': 'knowtechie.com.rally.html',
+'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html': 'boingboing.net.millenials.html',
+'https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding': 'en.wikipedia.org.tsne.html',
+'https://mixed.de/vrodo-deals-vr-taugliches-notebook-fuer-83215-euro-99-cent-leihfilme-bei-amazon-psvr/': 'mixed.de.vrodo.html',
+'http://www.spreeblick.com/blog/2006/07/29/aus-aus-alles-vorbei-habeck-macht-die-stahnke/': 'spreeblick.com.habeck.html',
+'https://majkaswelt.com/top-5-fashion-must-haves-2018-werbung/': 'majkaswelt.com.fashion.html',
+'https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/': 'erp-news.info.interview.html',
+'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/': 'github.blog.spiceland.html',
+'https://lady50plus.de/2019/06/19/sekre-mystery-bag/': 'lady50plus.de.sekre.html',
+'https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer': 'sonntag-sachsen.de.emanuel.html',
+'https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite': 'psl.eu.luniversite.html',
+'https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html': 'chip.de.beef.html',
+'http://www.sauvonsluniversite.fr/spip.php?article8532': 'sauvonsluniversite.com.spip.html',
+'https://www.spiegel.de/spiegel/print/d-161500790.html': 'spiegel.de.albtraum.html',
+'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': 'lemire.me.json.html',
+'https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission': 'zeit.de.zugverkehr.html',
+'https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020': 'franceculture.fr.idees.html',
+'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/': 'wikimediafoundation.org.turkey.html',
+'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': 'reuters.com.parasite.html',
+'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': 'vancouversun.com.microsoft.html',
+}
+# '': '', \
+
 
 
 def load_document(filename):
@@ -466,20 +510,28 @@ for item in EVAL_PAGES:
     goose_result['false negatives'] += fn
 
 
-print(len(EVAL_PAGES))
+print('number of documents:', len(EVAL_PAGES))
+print('nothing')
 print(nothing)
 # print(calculate_f_score(nothing))
+print('everything')
 print(everything)
 print(calculate_f_score(everything))
+print('inscriptis')
 print(inscriptis_result)
 print(calculate_f_score(inscriptis_result))
+print('trafilatura')
 print(trafilatura_result)
 print(calculate_f_score(trafilatura_result))
+print('justext')
 print(justext_result)
 print(calculate_f_score(justext_result))
+print('trafilatura + justext')
 print(trafilatura_justext_result)
 print(calculate_f_score(trafilatura_justext_result))
+print('readability')
 print(readability_result)
 print(calculate_f_score(readability_result))
+print('goose')
 print(goose_result)
 print(calculate_f_score(goose_result))
