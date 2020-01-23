@@ -17,6 +17,7 @@ except ImportError:
 
 import justext
 from goose3 import Goose
+from readability import Document
 from trafilatura import extract
 
 
@@ -336,10 +337,16 @@ def run_trafilatura_justext(htmlstring):
 
 
 def run_goose(htmlstring):
-    '''try with the goose justext'''
+    '''try with the goose algorithm'''
     g = Goose()
     article = g.extract(raw_html=htmlstring)
     return article.cleaned_text
+
+
+def run_readability(htmlstring):
+    '''try with the Python3 port of readability.js'''
+    doc = Document(htmlstring)
+    return doc.summary()
 
 
 def evaluate_result(result, EVAL_PAGES, item):
@@ -379,6 +386,7 @@ trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives
 justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 trafilatura_justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+readability_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 
 
 for item in EVAL_PAGES:
@@ -430,6 +438,15 @@ for item in EVAL_PAGES:
     goose_result['false positives'] += fp
     goose_result['true negatives'] += tn
     goose_result['false negatives'] += fn
+    # readability
+    start = time.time()
+    result = run_readability(htmlstring)
+    readability_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    readability_result['true positives'] += tp
+    readability_result['false positives'] += fp
+    readability_result['true negatives'] += tn
+    readability_result['false negatives'] += fn
 
 
 print(len(EVAL_PAGES))
@@ -443,5 +460,7 @@ print(justext_result)
 print(calculate_f_score(justext_result))
 print(trafilatura_justext_result)
 print(calculate_f_score(trafilatura_justext_result))
+print(readability_result)
+print(calculate_f_score(readability_result))
 print(goose_result)
 print(calculate_f_score(goose_result))
