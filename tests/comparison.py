@@ -17,6 +17,7 @@ except ImportError:
 
 import justext
 from goose3 import Goose
+from inscriptis import get_text
 from readability import Document
 from trafilatura import extract
 
@@ -349,6 +350,12 @@ def run_readability(htmlstring):
     return doc.summary()
 
 
+def run_inscriptis(htmlstring):
+    '''try with the inscriptis module'''
+    text = get_text(htmlstring)
+    return text
+
+
 def evaluate_result(result, EVAL_PAGES, item):
     '''evaluate result contents'''
     true_positives = false_negatives = false_positives = true_negatives = 0
@@ -387,6 +394,7 @@ justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0
 trafilatura_justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 readability_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+inscriptis_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 
 
 for item in EVAL_PAGES:
@@ -402,6 +410,15 @@ for item in EVAL_PAGES:
     everything['false positives'] += fp
     everything['true negatives'] += tn
     everything['false negatives'] += fn
+    # inscriptis
+    start = time.time()
+    result = run_inscriptis(htmlstring)
+    inscriptis_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    inscriptis_result['true positives'] += tp
+    inscriptis_result['false positives'] += fp
+    inscriptis_result['true negatives'] += tn
+    inscriptis_result['false negatives'] += fn
     # trafilatura
     start = time.time()
     result = run_trafilatura(htmlstring)
@@ -429,15 +446,6 @@ for item in EVAL_PAGES:
     trafilatura_justext_result['false positives'] += fp
     trafilatura_justext_result['true negatives'] += tn
     trafilatura_justext_result['false negatives'] += fn
-    # goose
-    start = time.time()
-    result = run_goose(htmlstring)
-    goose_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
-    goose_result['true positives'] += tp
-    goose_result['false positives'] += fp
-    goose_result['true negatives'] += tn
-    goose_result['false negatives'] += fn
     # readability
     start = time.time()
     result = run_readability(htmlstring)
@@ -447,6 +455,15 @@ for item in EVAL_PAGES:
     readability_result['false positives'] += fp
     readability_result['true negatives'] += tn
     readability_result['false negatives'] += fn
+    # goose
+    start = time.time()
+    result = run_goose(htmlstring)
+    goose_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    goose_result['true positives'] += tp
+    goose_result['false positives'] += fp
+    goose_result['true negatives'] += tn
+    goose_result['false negatives'] += fn
 
 
 print(len(EVAL_PAGES))
@@ -454,6 +471,8 @@ print(nothing)
 # print(calculate_f_score(nothing))
 print(everything)
 print(calculate_f_score(everything))
+print(inscriptis_result)
+print(calculate_f_score(inscriptis_result))
 print(trafilatura_result)
 print(calculate_f_score(trafilatura_result))
 print(justext_result)
