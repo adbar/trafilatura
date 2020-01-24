@@ -1,5 +1,11 @@
 ## History / Changelog
 
+### 0.3.1
+- support for Python 3.4 reactivated
+- bugs in XML output and discarding sections solved
+- new tests and documentation
+
+
 ### 0.3.0
 - code base re-structured for clarity and readability
 - streamlined HTML processing and conversion
