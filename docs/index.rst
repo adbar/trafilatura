@@ -179,7 +179,7 @@ You can also pipe a HTML document (and response body) to trafilatura:
     $ cat myfile.html | trafilatura # use the contents of an already existing file
     $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura # use a custom download
 
-The ``-i/--inputfile`` option allows for bulk download and processing of a list of URLs from a file listing one link per line. Beware that there should be a tacit scraping etiquette and that a server may block you after the download a certain number of pages from the same website/domain in a short period of time. In addition, some website may block the requests `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
+The ``-i/--inputfile`` option allows for bulk download and processing of a list of URLs from a file listing one link per line. Beware that there should be a tacit scraping etiquette and that a server may block you after the download of a certain number of pages from the same website/domain in a short period of time. In addition, some website may block the requests `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
 
 For all usage instructions see ``trafilatura -h``:
 
@@ -213,6 +213,8 @@ Going further
 -------------
 
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
+
+In order to gather web documents it can be useful to download the portions of a website programmatically, here is `how to use sitemaps to crawl websites <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
 
 Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_.
 
@@ -260,17 +262,11 @@ Kudos to the following software libraries:
 -  `lxml <http://lxml.de/>`_, `jusText <https://github.com/miso-belica/jusText>`_, `cchardet <https://github.com/PyYoshi/cChardet>`_
 
 
-Alternatives
-~~~~~~~~~~~~
+Evaluation and alternatives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Most corresponding Python packages are not actively maintained, the following alternatives exist:
+For first experimental results see the `evaluation page <evaluation.html>`_.
 
-- `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires many dependencies as well as extensive tuning
-- `goose <https://github.com/goose3/goose3>`_ can extract information for embedded content but doesn't preserve markup and is not maintained
-- `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
-- `inscriptis <https://github.com/weblyzard/inscriptis>`_ converts HTML to text with a particular emphasis on nested tables
-- `newspaper <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction.
-- `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
 
 
 Further documentation
@@ -280,6 +276,7 @@ Further documentation
    :maxdepth: 2
    
    corefunctions
+   evaluation
 
 
 Indices and tables
