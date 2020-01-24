@@ -7,7 +7,6 @@ import os
 import sys
 import time
 
-
 from lxml import etree, html
 
 try:
@@ -15,9 +14,11 @@ try:
 except ImportError:
     import chardet
 
+import html2text
 import justext
 from goose3 import Goose
 from inscriptis import get_text
+from newspaper import fulltext
 from readability import Document
 from trafilatura import extract
 
@@ -56,7 +57,7 @@ EVAL_PAGES = {
 'http://www.toralin.de/schmierfett-reparierend-verschlei-y-910.html': {
     'file': 'toralin.de.schmierfett.html',
     'with': ['Die Lebensdauer von Bauteilen erhöht sich beträchtlich.', 'bis zu 50% Verschleiß.', 'Li-Seifen/Mineralöl'],
-    'without': ['Newsletter', 'Wie bewerten Sie diesen Artikel?', 'Meander 151'],
+    'without': ['Newsletter', 'Wie bewerten Sie diesen Artikel?', 'Meander 151', 'Sie könnten auch an folgenden Artikeln interessiert sein'],
 },
 'https://www.ebrosia.de/beringer-zinfandel-rose-stone-cellars-lieblich-suess': {
     'file': 'ebrosia.de.zinfandel.html',
@@ -66,7 +67,7 @@ EVAL_PAGES = {
 'https://www.landwirt.com/Precision-Farming-Moderne-Sensortechnik-im-Kuhstall,,4229,,Bericht.html': {
     'file': 'landwirt.com.sensortechnik.html',
     'with': ['b) Überwachung der somatischen Zellen', 'Wiederkauverhalten und Kotkonsistenz.', 'Köllitsch (D)'],
-    'without': ['Anzeigentarife', 'weiterempfehlen', 'New Holland T6050'],
+    'without': ['Anzeigentarife', 'weiterempfehlen', 'New Holland T6050', 'Aktuelle Berichte aus dieser Kategorie'],
 },
 'http://schleifen.ucoz.de/blog/briefe/2010-10-26-18': {
     'file': 'schleifen.ucoz.de.briefe.html',
@@ -80,8 +81,9 @@ EVAL_PAGES = {
 },
 'http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html': {
     'file': 'simplyscience.ch.erdoel.html',
-    'with': ['Erdöl bildet nach Millionen', 'Plankton zersetzt sich', 'in unserem Artikel "Warum wird das Erdöl knapp?".'],  # → comments: 'Sehr cooles Thema!'
+    'with': ['Erdöl bildet nach Millionen', 'Plankton zersetzt sich', 'in unserem Artikel "Warum wird das Erdöl knapp?".'],
     'without': ['TebNad/Shutterstock.com', 'Empfiehl dies deinen Freunden.', 'Die Natur ist aus chemischen Elementen aufgebaut'],
+    'comments': ['Sehr cooles Thema!'],
 },
 'http://www.shingon-reiki.de/reiki-und-schamanismus/': {
     'file': 'shingon-reiki.de.schamanismus.html',
@@ -90,8 +92,9 @@ EVAL_PAGES = {
 },
 'http://love-hina.ch/news/0409.html': {
     'file': 'love-hina.ch.0409.html',
-    'with': ['Kapitel 121 ist'],  # comments: 'Danke für dieses Kapitel'
+    'with': ['Kapitel 121 ist'],
     'without': ['Kommentare schreiben', '19:49'],
+    'comments': ['Danke für dieses Kapitel'],
 },
 'http://www.cdu-fraktion-erfurt.de/inhalte/aktuelles/entwicklung-der-waldorfschule-ermoeglicht/index.html': {
     'file': 'cdu-fraktion-erfurt.de.waldorfschule.html',
@@ -105,8 +108,9 @@ EVAL_PAGES = {
 },
 'https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/': {
     'file': 'de.creativecommons.org.endlich.html',
-    'with': ['das letzte Wort sein kann.'],  # comments: 'Das LG Köln hat einfach keine Ahnung'
-    'without': ['Ähnliche Beiträge', 'OERde14'],
+    'with': ['das letzte Wort sein kann.'],
+    'without': ['Ähnliche Beiträge', 'OERde14', 'Michael Blahm'],
+    'comments': ['Das LG Köln hat einfach keine Ahnung'],
 },
 'https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/': {
     'file': 'piratenpartei-mv.de.grundeinkommen.html',
@@ -116,7 +120,8 @@ EVAL_PAGES = {
 'https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/': {
     'file': 'spektrum.de.engelbart.html',
     'with': ['Zweitens wird der Genderstern', 'alldem leider – nichts.'], 
-    'without': ['Originalbeitrag', 'Spektrum.de Newsletter'],  # comments: 'Ich sperre nur Kommentare,'
+    'without': ['Originalbeitrag', 'Spektrum.de Newsletter', 'Beitragsbild'],
+    'comments': ['Ich sperre nur Kommentare,'],
 },
 'https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975': {
     'file': 'sueddeutsche.de.genderdebatte.html',
@@ -185,8 +190,9 @@ EVAL_PAGES = {
 },
 'https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/': {
     'file': 'moritz-meyer.net.vreni.html',
-    'with': ['Das ist alles nicht gekennzeichnet, wie soll ich wissen', 'Instagramshops machen es Abmahnanwälten leicht', 'Ich bin der Ansicht, abwarten und Tee trinken.'],   # comments: 'Danke für dein Feedback. Auch zum Look meiner Seite.'
-    'without': ['Diese Geschichte teilen', 'Diese Website verwendet Akismet, um Spam zu reduzieren.', 'Ähnliche Beiträge'],  # 
+    'with': ['Das ist alles nicht gekennzeichnet, wie soll ich wissen', 'Instagramshops machen es Abmahnanwälten leicht', 'Ich bin der Ansicht, abwarten und Tee trinken.'],
+    'without': ['Diese Geschichte teilen', 'Diese Website verwendet Akismet, um Spam zu reduzieren.', 'Ähnliche Beiträge'],
+    'comments': ['Danke für dein Feedback. Auch zum Look meiner Seite.'],
 },
 'http://www.womencantalksports.com/top-10-women-talking-sports/': {
     'file': 'womencantalksports.com.top10.html',
@@ -195,13 +201,15 @@ EVAL_PAGES = {
 },
 'https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html': {
     'file': 'plentylife.blogspot.pamela-reif.html',
-    'with': ['Schönheit kommt für Pamela von Innen und Außen', 'Die Workout Übungen kannte ich bereits'],  # comments: 'Great post, I like your blog' # 'Vielen Dank an den den Verlag'
+    'with': ['Schönheit kommt für Pamela von Innen und Außen', 'Die Workout Übungen kannte ich bereits'],
     'without': ['Links zu diesem Post', 'mehr über mich', 'Bitte beachte auch die Datenschutzerklärung von Google.'],
+    'comments': ['Great post, I like your blog', 'Vielen Dank an den den Verlag'],
 },
 'https://www.luxuryhaven.co/2019/05/nam-nghi-phu-quoc-unbound-collection-by-hyatt-officially-opens.html': {
     'file': 'luxuryhaven.co.hyatt.html',
-    'with': ['Grounded in sustainable architecture and refined Vietnamese craftsmanship,', 'and Carmelo Resort', 'Dining and Drinking'],  # comments: 'OMG what a beautiful place to stay! '
+    'with': ['Grounded in sustainable architecture and refined Vietnamese craftsmanship,', 'and Carmelo Resort', 'Dining and Drinking'],
     'without': ['Food Advertising by', 'A lovely note makes a beautiful day!', 'Reply'],
+    'comments': ['OMG what a beautiful place to stay!'],
 },
 'https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/': {
     'file': 'luxuriousmagazine.com.polo.html',
@@ -221,12 +229,13 @@ EVAL_PAGES = {
 'http://www.internet-law.de/2011/07/verstost-der-ausschluss-von-pseudonymen-bei-google-gegen-deutsches-recht.html': {
     'file': 'internet-law.de.pseudonymen.html',
     'with': ['Wann Blogs einer Impressumspflicht unterliegen,'], 
-    'without': ['Über mich', 'Gesetzes- und Rechtsprechungszitate werden automatisch'],
+    'without': ['Über mich', 'Gesetzes- und Rechtsprechungszitate werden automatisch', 'Comment by'],
+    'comments': ['Mit Verlaub, ich halte das für groben Unsinn.'],
 },
 'https://www.telemedicus.info/article/2766-Rezension-Haerting-Internetrecht,-5.-Auflage-2014.html': {
     'file': 'telemedicus.info.rezension.html',
     'with': ['Aufbau und Inhalt', 'Verlag Dr. Otto Schmidt'], 
-    'without': ['Handbuch', 'Drucken', 'Ähnliche Artikel', 'Kommentar schreiben'],
+    'without': ['Anzeige:', 'Handbuch', 'Drucken', 'Ähnliche Artikel', 'Kommentar schreiben'],
 },
 'https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen': {
     'file': 'cnet.de.schutz.html',
@@ -251,7 +260,7 @@ EVAL_PAGES = {
 'https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/': {
     'file': 'caktusgroup.com.django.html',
     'with': ['Was I losing my mind?', 'being cached after their first access.', 'Finding a Fix', 'from django.conf import settings', 'Clear the cache versions'], 
-    'without': ['Mark Lavin ', 'New Call-to-action', 'Get tips, see case studies'],
+    'without': ['Mark Lavin', 'New Call-to-action', 'You might also like:', 'Get tips, see case studies'],
 },
 'https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/': {
     'file': 'computerbase.de.htc.html',
@@ -266,19 +275,19 @@ EVAL_PAGES = {
 'https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/': {
     'file': 'basicthinking.de.tweets.html',
     'with': ['Frank Thelen, Investor', 'Meine Mutter ist jederzeit', 'Female founders must constantly consider', 'Thema des öffentlichen Interesses'],
-    'without': ['Nach langjähriger Tätigkeit im Ausland', 'Mit Absendung des Formulars willige ich', 'Kommentieren', 'Wir tun jeden Tag, was wir lieben.'],
+    'without': ['Nach langjähriger Tätigkeit im Ausland', 'Mit Absendung des Formulars willige ich', 'Auch interessant' 'Kommentieren', 'Wir tun jeden Tag, was wir lieben.'],
+    'comments': ['Schaut man ganz genau hin, ist der Habeck-Kommentar'],
 },
-# comments: 'Schaut man ganz genau hin, ist der Habeck-Kommentar'
 'https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/': {
     'file': 'meedia.de.freenet.html',
     'with': ['Welche Werbeeinnahmen erwarten Sie hier langfristig?', 'wir haben keinerlei Pläne, das zu verändern.'],
     'without': ['Nachrichtenüberblick abonnieren', 'über alle aktuellen Entwicklungen auf dem Laufenden.', 'Schlagworte', 'Dauerzoff um drohenden UKW-Blackout'],
+    'comments': ['Mobilcom Debitel has charged me for third party'],
 },
-# comments:  'Mobilcom Debitel has charged me for third party'
 'https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/': {
     'file': 'incurvy.de.wellness.html',
     'with': ['Zeit für Loslassen und Entspannung.', 'Erfrischende, abschwellende Augencreme Phyto Contour', 'Wie sieht dein Alltag aus?', 'Vielen Dank Anja für deine Tipps rund um Beauty'], 
-    'without': ['Betreiberin von incurvy Plus Size', 'Wir verwenden Cookies'],
+    'without': ['Das Thema könnte dich auch interessieren:', 'Betreiberin von incurvy Plus Size', 'Wir verwenden Cookies'],
 },
 }
 #'': {
@@ -293,7 +302,6 @@ EVAL_PAGES = {
 #    'with': [], 
 #    'without': [],
 #},
-
 
 
 MOCK_PAGES = {
@@ -333,8 +341,6 @@ MOCK_PAGES = {
 'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': 'reuters.com.parasite.html',
 'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': 'vancouversun.com.microsoft.html',
 }
-# '': '', \
-
 
 
 def load_document(filename):
@@ -400,6 +406,21 @@ def run_inscriptis(htmlstring):
     return text
 
 
+def run_html2text(htmlstring):
+    '''try with the html2text module'''
+    text = html2text.html2text(htmlstring)
+    return text
+
+
+def run_newspaper(htmlstring):
+    '''try with the inscriptis module'''
+    try:
+        text = fulltext(htmlstring)
+    except AttributeError:
+        return ''
+    return text
+
+
 def evaluate_result(result, EVAL_PAGES, item):
     '''evaluate result contents'''
     true_positives = false_negatives = false_positives = true_negatives = 0
@@ -439,6 +460,8 @@ trafilatura_justext_result = {'true positives': 0, 'false positives': 0, 'true n
 goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 readability_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 inscriptis_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+newspaper_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+html2text_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 
 
 for item in EVAL_PAGES:
@@ -454,6 +477,15 @@ for item in EVAL_PAGES:
     everything['false positives'] += fp
     everything['true negatives'] += tn
     everything['false negatives'] += fn
+    # html2text
+    start = time.time()
+    result = run_html2text(htmlstring)
+    html2text_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    html2text_result['true positives'] += tp
+    html2text_result['false positives'] += fp
+    html2text_result['true negatives'] += tn
+    html2text_result['false negatives'] += fn
     # inscriptis
     start = time.time()
     result = run_inscriptis(htmlstring)
@@ -508,7 +540,15 @@ for item in EVAL_PAGES:
     goose_result['false positives'] += fp
     goose_result['true negatives'] += tn
     goose_result['false negatives'] += fn
-
+    # newspaper
+    start = time.time()
+    result = run_newspaper(htmlstring)
+    newspaper_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    newspaper_result['true positives'] += tp
+    newspaper_result['false positives'] += fp
+    newspaper_result['true negatives'] += tn
+    newspaper_result['false negatives'] += fn
 
 print('number of documents:', len(EVAL_PAGES))
 print('nothing')
@@ -516,22 +556,28 @@ print(nothing)
 # print(calculate_f_score(nothing))
 print('everything')
 print(everything)
-print(calculate_f_score(everything))
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(everything)))
+print('html2text')
+print(html2text_result)
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(html2text_result)))
 print('inscriptis')
 print(inscriptis_result)
-print(calculate_f_score(inscriptis_result))
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(inscriptis_result)))
 print('trafilatura')
 print(trafilatura_result)
-print(calculate_f_score(trafilatura_result))
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(trafilatura_result)))
 print('justext')
 print(justext_result)
-print(calculate_f_score(justext_result))
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(justext_result)))
 print('trafilatura + justext')
 print(trafilatura_justext_result)
-print(calculate_f_score(trafilatura_justext_result))
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(trafilatura_justext_result)))
 print('readability')
 print(readability_result)
-print(calculate_f_score(readability_result))
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(readability_result)))
 print('goose')
 print(goose_result)
-print(calculate_f_score(goose_result))
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(goose_result)))
+print('newspaper')
+print(newspaper_result)
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(newspaper_result)))
