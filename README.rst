@@ -23,12 +23,6 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 
 |
 
-:Code:           https://github.com/adbar/trafilatura
-:Documentation:  https://trafilatura.readthedocs.io/
-:Issue tracker:  https://github.com/adbar/trafilatura/issues
-
-|
-
 .. image:: docs/trafilatura-demo.gif
     :alt: Demo as GIF image
     :align: center
@@ -83,7 +77,7 @@ Evaluation and alternatives
 For first experimental results see the `evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_.
 
 =============================== =========  ========== ========= ========
-2020-01-24 -- 50 documents, 123 positive and 142 negative segments
+2020-01-24 – 50 documents, 123 positive and 142 negative segments
 ------------------------------------------------------------------------
 Python Package                  Precision  Recall     F-Score   Time
 =============================== =========  ========== ========= ========

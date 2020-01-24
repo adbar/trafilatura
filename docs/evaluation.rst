@@ -30,7 +30,7 @@ Description
 
 **Roadmap**: further evaluations coming up, including further tools and languages. I couldn't get the *newspaper* module to work without errors on every HTML file in the test set. Comment extraction still has to be evaluated, although most libraries don't offer this functionality.
 
-The evaluation script is available on the project repository: `tests/comparison.py <https://github.com/adbar/htmldate/blob/master/tests/comparison.py>`_.
+The evaluation script is available on the project repository: `tests/comparison.py <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_.
 
 
 Results (2020-01-24)
