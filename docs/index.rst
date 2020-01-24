@@ -51,7 +51,6 @@ On the command-line:
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
 
-|
 
 Description
 -----------

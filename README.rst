@@ -77,6 +77,27 @@ Features
 -  Optional language detection on the extracted content
 
 
+Evaluation and alternatives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For first experimental results see the `evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_.
+
+=============================== =========  ========== ========= ========
+2020-01-24 -- 50 documents, 123 positive and 142 negative segments
+------------------------------------------------------------------------
+Python Package                  Precision  Recall     F-Score   Time
+=============================== =========  ========== ========= ========
+*everything with markup*        0.481      0.902      0.627     0
+inscriptis 1.0 (html to txt)    0.494      **0.992**  0.659     0.44
+newspaper3k 0.2.8               0.893      0.545      0.677     2.53
+justext 2.2.0                   0.880      0.593      0.709     1.21
+goose3 3.1.6                    **0.915**  0.610      0.732     3.88
+readability-lxml 0.7.1          0.873      0.724      0.791     1.15
+trafilatura 0.3.1 (rule-based)  0.853      0.894      0.873     0.86
+trafilatura 0.3.1 (+ fallback)  0.873      0.951      **0.911** 1.09
+=============================== =========  ========== ========= ========
+
+
 Installation
 ------------
 
@@ -214,12 +235,15 @@ Going further
 
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
+In order to gather web documents it can be useful to download the portions of a website programmatically, here is `how to use sitemaps to crawl websites <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
+
 Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_.
 
 Tutorials in German by Noah Bubenhofer: `Download von Web-Daten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_wwwdownload.html>`_ & `Daten aufbereiten und verwalten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_aufbereitenXML.html>`_.
 
 
-**Roadmap**
+Roadmap
+~~~~~~~
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
@@ -227,6 +251,23 @@ Tutorials in German by Noah Bubenhofer: `Download von Web-Daten <https://www.bub
 -  [-] Language detection on the extracted content
 -  [-] Preservation of in-line text formatting (bold, italic, etc.)
 -  [ ] Configuration and extraction parameters
+
+
+Contributing
+~~~~~~~~~~~~
+
+`Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome!
+
+Feel free to file bug reports on the `issues page <https://github.com/adbar/htmldate/issues>`_.
+
+Thanks to these contributors who submitted features and bugfixes:
+
+-  `DerKozmonaut <https://github.com/DerKozmonaut>`_
+-  `vbarbaresi <https://github.com/vbarbaresi>`_
+
+Kudos to the following software libraries:
+
+-  `lxml <http://lxml.de/>`_, `jusText <https://github.com/miso-belica/jusText>`_, `cchardet <https://github.com/PyYoshi/cChardet>`_
 
 
 Author
@@ -242,32 +283,3 @@ This effort is part of methods to derive information from web documents in order
 
 You can contact me via my `contact page <http://adrien.barbaresi.eu/contact.html>`_ or `GitHub <https://github.com/adbar>`_.
 
-
-Contributing
-------------
-
-Thanks to these contributors who submitted features and bugfixes:
-
--  `DerKozmonaut <https://github.com/DerKozmonaut>`_
--  `vbarbaresi <https://github.com/vbarbaresi>`_
-
-`Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome!
-
-Feel free to file bug reports on the `issues page <https://github.com/adbar/htmldate/issues>`_.
-
-Kudos to the following software libraries:
-
--  `lxml <http://lxml.de/>`_, `jusText <https://github.com/miso-belica/jusText>`_, `cchardet <https://github.com/PyYoshi/cChardet>`_
-
-
-Alternatives
-~~~~~~~~~~~~
-
-Most corresponding Python packages are not actively maintained, the following alternatives exist:
-
-- `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires many dependencies as well as extensive tuning
-- `goose <https://github.com/goose3/goose3>`_ can extract information for embedded content but doesn't preserve markup and is not maintained
-- `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language and thus keeps the structure, though it doesn't focus on main text extraction
-- `inscriptis <https://github.com/weblyzard/inscriptis>`_ converts HTML to text with a particular emphasis on nested tables
-- `newspaper <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction.
-- `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup but is mostly geared towards news texts
