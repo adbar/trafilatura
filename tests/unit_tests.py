@@ -430,7 +430,7 @@ def test_extract(xmloutput=False):
     assert 'Die Ökobilanz von Elektroautos' in result and 'Nur die Folie bleibt zurück' in result and 'TR 7/2019' not in result and 'Forum zum Thema:' not in result # and 'Highlights aus dem Heft:' not in result
 
     result = load_mock_page('https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact', xmloutput)
-    assert 'Normally, video calls tend to' in result and 'across both the eyes and nose.' in result and 'Added ARKit explanation and tweet.' and 'Singapore’s public health program' not in result and 'Command Line delivers daily updates' not in result
+    assert 'Normally, video calls tend to' in result and 'across both the eyes and nose.' in result and 'Added ARKit explanation and tweet.' in result and 'Singapore’s public health program' not in result and 'Command Line delivers daily updates' not in result
 
     result = load_mock_page('https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/', xmloutput)
     assert 'in keinem Braut-Beauty-Programm fehlen darf?' in result and 'nicht nur vor der Hochzeit ein absolutes Muss.' in result and 'Gesundes, glänzendes Haar' in result and 'Neue Wandbilder von Posterlounge' not in result and 'mit meinen Texten und mit meinen Gedanken.' not in result and 'Erforderliche Felder sind mit * markiert.' not in result
@@ -493,13 +493,13 @@ def test_extract(xmloutput=False):
     assert 'Performativité' in result and 'Les individus productifs communiquent' in result and 'de nos espoirs et de nos désirs.' in result and 'A la tribune je monterai' not in result and 'À découvrir' not in result and 'Le fil culture' not in result
 
     result = load_mock_page('https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/', xmloutput)
-    assert 'Bu yazının Türkçe’sini buradan okuyabilirsiniz' in result and 'as further access is restored.' and 'Read further in the pursuit of knowledge' not in result and 'Here’s what that means.' not in result and 'Stay up-to-date on our work.' not in result and 'Photo credits' not in result
+    assert 'Bu yazının Türkçe’sini buradan okuyabilirsiniz' in result and 'as further access is restored.' in result and 'Read further in the pursuit of knowledge' not in result and 'Here’s what that means.' not in result and 'Stay up-to-date on our work.' not in result and 'Photo credits' not in result
 
     result = load_mock_page('https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH', xmloutput)
     assert '4 Min Read' not in result and 'The Thomson Reuters Trust Principles' not in result and 'Factbox: Key winners' not in result and 'Despite an unknown cast,' in result and 'Additional reporting by' in result
 
-    #result = load_mock_page('https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2', xmloutput)
-    #assert 'turns CO2 into soap' not in result and 'Microsoft Corp said on Thursday' in result and 'Postmedia is committed' in result
+    result = load_mock_page('https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2', xmloutput)
+    assert 'Reuters files' not in result and 'Microsoft Corp said on Thursday' in result and 'Postmedia is committed' in result and 'I consent to receiving' not in result and 'It was not immediately clear if' in result # 'turns CO2 into soap' not in result and
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result
