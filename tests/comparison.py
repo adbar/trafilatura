@@ -15,8 +15,11 @@ except ImportError:
 
 import html2text
 import justext
+from boilerpy3 import extractors
+from dragnet import extract_content #, extract_content_and_comments
 from goose3 import Goose
 from inscriptis import get_text
+# from libextract.api import extract as lib_extract
 from newspaper import fulltext
 from readability import Document
 from trafilatura import extract
@@ -25,6 +28,8 @@ from trafilatura import extract
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+
+boilerpipe_extractor = extractors.DefaultExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
 
 
 EVAL_PAGES = {
@@ -564,12 +569,36 @@ def run_html2text(htmlstring):
 
 
 def run_newspaper(htmlstring):
-    '''try with the inscriptis module'''
+    '''try with the newspaper module'''
     try:
         text = fulltext(htmlstring)
     except AttributeError:
         return ''
     return text
+
+
+def run_dragnet(htmlstring):
+    '''try with the dragnet module'''
+    content = extract_content(htmlstring)
+    return content
+
+
+def run_boilerpipe(htmlstring):
+    '''try with the boilerpipe algorithm'''
+    try:
+        content = boilerpipe_extractor.get_content(htmlstring)
+    except:
+        content = ''
+    return content
+
+
+#def run_libextract(htmlstring):
+#    '''try with the libextract module'''
+#    textlist = list()
+#    for textnode in list(lib_extract(htmlstring)):
+#        textlist.append(textnode.text_content())
+#    textcontent = '\n'.join(textlist)
+#    return contextcontenttent
 
 
 def evaluate_result(result, EVAL_PAGES, item):
@@ -603,16 +632,20 @@ def calculate_f_score(mydict):
     return precision, recall, fscore
 
 
-everything = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-trafilatura_justext_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-goose_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-readability_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-inscriptis_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-newspaper_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-html2text_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
+everything, nothing, trafilatura_result, justext_result, trafilatura_justext_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+everything.update(template_dict)
+nothing.update(template_dict)
+trafilatura_result.update(template_dict)
+justext_result.update(template_dict)
+trafilatura_justext_result.update(template_dict)
+goose_result.update(template_dict)
+readability_result.update(template_dict)
+inscriptis_result.update(template_dict)
+newspaper_result.update(template_dict)
+html2text_result.update(template_dict)
+dragnet_result.update(template_dict)
+boilerpipe_result.update(template_dict)
 
 
 for item in EVAL_PAGES:
@@ -700,6 +733,25 @@ for item in EVAL_PAGES:
     newspaper_result['false positives'] += fp
     newspaper_result['true negatives'] += tn
     newspaper_result['false negatives'] += fn
+    # dragnet
+    start = time.time()
+    result = run_dragnet(htmlstring)
+    dragnet_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    dragnet_result['true positives'] += tp
+    dragnet_result['false positives'] += fp
+    dragnet_result['true negatives'] += tn
+    dragnet_result['false negatives'] += fn
+    # boilerpipe
+    start = time.time()
+    result = run_boilerpipe(htmlstring)
+    boilerpipe_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    boilerpipe_result['true positives'] += tp
+    boilerpipe_result['false positives'] += fp
+    boilerpipe_result['true negatives'] += tn
+    boilerpipe_result['false negatives'] += fn
+
 
 print('number of documents:', len(EVAL_PAGES))
 print('nothing')
@@ -732,3 +784,9 @@ print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(goose_re
 print('newspaper')
 print(newspaper_result)
 print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(newspaper_result)))
+print('dragnet')
+print(dragnet_result)
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(dragnet_result)))
+print('boilerpipe')
+print(boilerpipe_result)
+print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(boilerpipe_result)))
