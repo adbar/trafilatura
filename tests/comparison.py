@@ -4,7 +4,6 @@ Compare extraction results with other libraries of the same kind.
 
 # import logging
 import os
-import sys
 import time
 
 from lxml import etree, html
@@ -114,78 +113,78 @@ EVAL_PAGES = {
 },
 'https://piratenpartei-mv.de/blog/2013/09/12/grundeinkommen-ist-ein-menschenrecht/': {
     'file': 'piratenpartei-mv.de.grundeinkommen.html',
-    'with': ['Unter diesem Motto findet am 14. September', 'Volksinitiative Schweiz zum Grundeinkommen.'], 
+    'with': ['Unter diesem Motto findet am 14. September', 'Volksinitiative Schweiz zum Grundeinkommen.'],
     'without': ['getaggt mit:', 'Was denkst du?'],
 },
 'https://scilogs.spektrum.de/engelbart-galaxis/die-ablehnung-der-gendersprache/': {
     'file': 'spektrum.de.engelbart.html',
-    'with': ['Zweitens wird der Genderstern', 'alldem leider – nichts.'], 
+    'with': ['Zweitens wird der Genderstern', 'alldem leider – nichts.'],
     'without': ['Originalbeitrag', 'Spektrum.de Newsletter', 'Beitragsbild'],
     'comments': ['Ich sperre nur Kommentare,'],
 },
 'https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975': {
     'file': 'sueddeutsche.de.genderdebatte.html',
-    'with': ['Es ist erstaunlich:', 'Damaris Nübling ist Professorin'], 
+    'with': ['Es ist erstaunlich:', 'Damaris Nübling ist Professorin'],
     'without': ['Der Fall Weinstein', 'Leser empfehlen'],
 },
 'https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html': {
     'file': 'rnz.de.witzel.html',
-    'with': ['Für einen Roman', 'Auszeichnung der Branche.'], 
+    'with': ['Für einen Roman', 'Auszeichnung der Branche.'],
     'without': ['Ihre RNZ.', 'WHATSAPP'],
 },
 'https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg': {
     'file': 'austria.info.radfahren.html',
-    'with': ['Salzburg liebt seine Radfahrer.', 'Puls einsaugen zu lassen.', 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt'], 
+    'with': ['Salzburg liebt seine Radfahrer.', 'Puls einsaugen zu lassen.', 'Radfahren in der Fußgängerzone der Innenstadt ist erlaubt'],
     'without': ['Das könnte Sie auch interessieren ...', 'So macht Radfahren sonst noch Spaß'],
 },
 'https://buchperlen.wordpress.com/2013/10/20/leandra-lou-der-etwas-andere-modeblog-jetzt-auch-zwischen-buchdeckeln/': {
     'file': 'buchperlen.wordpress.com.html',
-    'with': ['Dann sollten Sie erst recht', 'als saure Gürkchen entlarvte Ex-Boyfriends.'], 
+    'with': ['Dann sollten Sie erst recht', 'als saure Gürkchen entlarvte Ex-Boyfriends.'],
     'without': ['US-Musiker Lou Reed'],
 },
 'https://www.fairkom.eu/about': {
     'file': 'fairkom.eu.about.html',
-    'with': ['ein gemeinwohlorientiertes Partnerschaftsnetzwerk', 'Stimmberechtigung bei der Generalversammlung.'], 
+    'with': ['ein gemeinwohlorientiertes Partnerschaftsnetzwerk', 'Stimmberechtigung bei der Generalversammlung.'],
     'without': ['Sicher, ökologisch und fair.', 'Gemeinwohlpunkten'],
 },
 'https://futurezone.at/digital-life/uber-konkurrent-lyft-startet-mit-waymo-robotertaxis-in-usa/400487461': {
     'file': 'futurezone.at.lyft.html',
-    'with': ['Einige Kunden des Fahrdienst-Vermittler Lyft', 'zeitweise rund vier Prozent.'], 
-    'without': ['Allgemeine Nutzungsbedingungen', 'Waymo bittet Autohersteller um Geld'],  # 
+    'with': ['Einige Kunden des Fahrdienst-Vermittler Lyft', 'zeitweise rund vier Prozent.'],
+    'without': ['Allgemeine Nutzungsbedingungen', 'Waymo bittet Autohersteller um Geld'],  #
 },
 'http://www.hundeverein-kreisunna.de/unserverein.html': {
     'file': 'hundeverein-kreisunna.de.html',
-    'with': ['Beate und Norbert Olschewski', 'ein Familienmitglied und unser Freund.'], 
+    'with': ['Beate und Norbert Olschewski', 'ein Familienmitglied und unser Freund.'],
     'without': ['zurück zur Startseite'],
 },
 'https://viehbacher.com/de/steuerrecht': {
     'file': 'viehbacher.com.steuerrecht.html',
-    'with': ['und wirtschaftlich orientierte Privatpersonen', 'rund um die Uhr.', 'Mensch im Mittelpunkt.'], 
+    'with': ['und wirtschaftlich orientierte Privatpersonen', 'rund um die Uhr.', 'Mensch im Mittelpunkt.'],
     'without': ['Was sind Cookies?'],
 },
 'http://www.jovelstefan.de/2011/09/11/gefallt-mir/': {
     'file': 'jovelstefan.de.gefallt.html',
-    'with': ['Manchmal überrascht einen', 'kein Meisterwerk war!'], 
+    'with': ['Manchmal überrascht einen', 'kein Meisterwerk war!'],
     'without': ['Pingback von', 'Kommentare geschlossen'],
 },
 'https://www.stuttgart.de/item/show/132240/1': {
     'file': 'stuttgart.de.html',
-    'with': ['Das Bohnenviertel entstand', 'sich herrlich entspannen.'], 
+    'with': ['Das Bohnenviertel entstand', 'sich herrlich entspannen.'],
     'without': ['Nützliche Links', 'Mehr zum Thema'],
 },
 'https://www.modepilot.de/2019/05/21/geht-euch-auch-so-oder-auf-reisen-nie-ohne-meinen-duschkopf/': {
     'file': 'modepilot.de.duschkopf.html',
-    'with': ['Allerdings sieht es wie ein Dildo aus,', 'gibt Bescheid, ne?'], 
+    'with': ['Allerdings sieht es wie ein Dildo aus,', 'gibt Bescheid, ne?'],
     'without': ['Ähnliche Beiträge', 'Deine E-Mail (bleibt natürlich unter uns)'],
 },
 'https://www.otto.de/twoforfashion/strohtasche/': {
     'file': 'otto.de.twoforfashion.html',
-    'with': ['Ob rund oder kastenförmig, ob dezent oder auffällig', 'XX, Die Redaktion'], 
+    'with': ['Ob rund oder kastenförmig, ob dezent oder auffällig', 'XX, Die Redaktion'],
     'without': ['Kommentieren', 'Dienstag, 4. Juni 2019'],
 },
 'http://iloveponysmag.com/2018/05/24/barbour-coastal/': {
     'file': 'iloveponysmag.com.barbour.html',
-    'with': ['Eine meiner besten Entscheidungen bisher:', 'Verlassenes Gewächshaus meets versteckter Deich', 'Der Hundestrand in Stein an der Ostsee'], 
+    'with': ['Eine meiner besten Entscheidungen bisher:', 'Verlassenes Gewächshaus meets versteckter Deich', 'Der Hundestrand in Stein an der Ostsee'],
     'without': ['Tags: Barbour,', 'Bitte (noch) mehr Bilder von Helle', 'Hinterlasse einen Kommentar'],
 },
 'https://moritz-meyer.net/blog/vreni-frost-instagram-abmahnung/': {
@@ -196,7 +195,7 @@ EVAL_PAGES = {
 },
 'http://www.womencantalksports.com/top-10-women-talking-sports/': {
     'file': 'womencantalksports.com.top10.html',
-    'with': ['3.Charlotte Jones Anderson', 'Keep Talking Sports!', ], 
+    'with': ['3.Charlotte Jones Anderson', 'Keep Talking Sports!', ],
     'without': ['Category: Blog Popular', 'Copyright Women Can Talk Sports.'],
 },
 'https://plentylife.blogspot.com/2017/05/strong-beautiful-pamela-reif-rezension.html': {
@@ -213,12 +212,12 @@ EVAL_PAGES = {
 },
 'https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/': {
     'file': 'luxuriousmagazine.com.polo.html',
-    'with': ['Argentina, the birthplace of polo.', 'Simon Wittenberg travels to the Eternal City in Italy'], 
+    'with': ['Argentina, the birthplace of polo.', 'Simon Wittenberg travels to the Eternal City in Italy'],
     'without': ['Luxury and lifestyle articles', 'Pinterest'],
 },
 'https://www.gruen-digital.de/2015/01/digitalpolitisches-jahrestagung-2015-der-heinrich-boell-stiftung-baden-wuerttemberg/': {
     'file': 'gruen-digital.de.jahrestagung.html',
-    'with': ['Prof. Dr. Caja Thimm', 'zur Anmeldung.'], 
+    'with': ['Prof. Dr. Caja Thimm', 'zur Anmeldung.'],
     'without': ['Next post', 'Aus den Ländern'],
 },
 'https://www.rechtambild.de/2011/10/bgh-marions-kochbuch-de/': {
@@ -228,48 +227,48 @@ EVAL_PAGES = {
 },
 'http://www.internet-law.de/2011/07/verstost-der-ausschluss-von-pseudonymen-bei-google-gegen-deutsches-recht.html': {
     'file': 'internet-law.de.pseudonymen.html',
-    'with': ['Wann Blogs einer Impressumspflicht unterliegen,'], 
+    'with': ['Wann Blogs einer Impressumspflicht unterliegen,'],
     'without': ['Über mich', 'Gesetzes- und Rechtsprechungszitate werden automatisch', 'Comment by'],
     'comments': ['Mit Verlaub, ich halte das für groben Unsinn.'],
 },
 'https://www.telemedicus.info/article/2766-Rezension-Haerting-Internetrecht,-5.-Auflage-2014.html': {
     'file': 'telemedicus.info.rezension.html',
-    'with': ['Aufbau und Inhalt', 'Verlag Dr. Otto Schmidt'], 
+    'with': ['Aufbau und Inhalt', 'Verlag Dr. Otto Schmidt'],
     'without': ['Anzeige:', 'Handbuch', 'Drucken', 'Ähnliche Artikel', 'Kommentar schreiben'],
 },
 'https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen': {
     'file': 'cnet.de.schutz.html',
-    'with': ['Auch der Verweis auf ehrverletzende Bewertungen'], 
+    'with': ['Auch der Verweis auf ehrverletzende Bewertungen'],
     'without': ['Anja Schmoll-Trautmann', 'Fanden Sie diesen Artikel nützlich?', 'Aktuell', 'Kommentar hinzufügen', 'Zu seinen Tätigkeitsfeldern zählen'],
 },
 'https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage': {
     'file': 'correctiv.org.zusage.html',
-    'with': ['Vorweg: Die beteiligten AfD-Politiker', 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal'], 
+    'with': ['Vorweg: Die beteiligten AfD-Politiker', 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal'],
     'without': ['Alle Artikel zu unseren Recherchen', 'Wir informieren Sie regelmäßig zum Thema Neue Rechte', 'Kommentar verfassen', 'weiterlesen'],
 },
 'https://www.sueddeutsche.de/wirtschaft/bahn-flixbus-flixtrain-deutschlandtakt-fernverkehr-1.4445845': {
     'file': 'sueddeutsche.de.flixtrain.html',
-    'with': ['Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt', 'auch der Bus ein klimafreundliches Verkehrsmittel sei'], 
+    'with': ['Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt', 'auch der Bus ein klimafreundliches Verkehrsmittel sei'],
     'without': ['05:28 Uhr', 'ICE im S-Bahn-Takt', 'Diskussion zu diesem Artikel auf', 'Berater-Affäre bringt Bahnchef Lutz in Bedrängnis'],
 },
 'https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/': {
     'file': 'adac.de.kindersitze.html',
-    'with': ['in punkto Sicherheit, Bedienung, Ergonomie', 'Elf Modelle sind empfehlenswert', 'Jané Koos i-Size', 'Grenzwert der Richtlinie 2014/79/EU', 'Besonders bei Babyschalen sollte geprüft werden'], 
+    'with': ['in punkto Sicherheit, Bedienung, Ergonomie', 'Elf Modelle sind empfehlenswert', 'Jané Koos i-Size', 'Grenzwert der Richtlinie 2014/79/EU', 'Besonders bei Babyschalen sollte geprüft werden'],
     'without': ['23.10.2018', 'Rund ums Fahrzeug', 'Diesel-Umtauschprämien', 'Dieses Video wird über YouTube'],
 },
 'https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/': {
     'file': 'caktusgroup.com.django.html',
-    'with': ['Was I losing my mind?', 'being cached after their first access.', 'Finding a Fix', 'from django.conf import settings', 'Clear the cache versions'], 
+    'with': ['Was I losing my mind?', 'being cached after their first access.', 'Finding a Fix', 'from django.conf import settings', 'Clear the cache versions'],
     'without': ['Mark Lavin', 'New Call-to-action', 'You might also like:', 'Get tips, see case studies'],
 },
 'https://www.computerbase.de/2007-06/htc-touch-bald-bei-o2-als-xda-nova/': {
     'file': 'computerbase.de.htc.html',
-    'with': ['Vor knapp zwei Wochen', 'gibt es in der dazugehörigen Vorstellungs-News.'], 
+    'with': ['Vor knapp zwei Wochen', 'gibt es in der dazugehörigen Vorstellungs-News.'],
     'without': ['Themen:', 'bis Januar 2009 Artikel für ComputerBase verfasst.', '71 Kommentare'],
 },
 'http://www.chineselyrics4u.com/2011/07/zhi-neng-xiang-nian-ni-jam-hsiao-jing.html': {
     'file': 'chineselyrics4u.com.zhineng.html',
-    'with': ['就放心去吧', 'Repeat Chorus'], 
+    'with': ['就放心去吧', 'Repeat Chorus'],
     'without': ['Posted by K A', 'Older post', 'Thank you for your support!', 'Follower'],
 },
 'https://www.basicthinking.de/blog/2018/12/05/erfolgreiche-tweets-zutaten/': {
@@ -286,61 +285,213 @@ EVAL_PAGES = {
 },
 'https://www.incurvy.de/trends-grosse-groessen/wellness-gesichtsbehandlung-plaisir-daromes/': {
     'file': 'incurvy.de.wellness.html',
-    'with': ['Zeit für Loslassen und Entspannung.', 'Erfrischende, abschwellende Augencreme Phyto Contour', 'Wie sieht dein Alltag aus?', 'Vielen Dank Anja für deine Tipps rund um Beauty'], 
+    'with': ['Zeit für Loslassen und Entspannung.', 'Erfrischende, abschwellende Augencreme Phyto Contour', 'Wie sieht dein Alltag aus?', 'Vielen Dank Anja für deine Tipps rund um Beauty'],
     'without': ['Das Thema könnte dich auch interessieren:', 'Betreiberin von incurvy Plus Size', 'Wir verwenden Cookies'],
 },
-}
+'https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843': {
+    'file': 'dw.com.uncork.html',
+    'with': ['No grape variety invites as much intrigue', 'With just 0.9 hectares'],
+    'without': ['Related Subjects', 'Audios and videos on the topic', 'But boozers in Berlin'],
+},
+'https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html': {
+    'file': 'jolie.de.adele.html',
+    'with': ['Adele feierte ausgelassen mit den Spice Girls', 'wie sich Adele weiterentwickelt.'],
+    'without': ['Sommerzeit ist Urlaubszeit,', 'Lade weitere Inhalte'],
+},
+'https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx': {
+    'file': 'speicherguide.de.schwierige.html',
+    'with': ['Konflikte mag keiner.', 'Gespräche meistern können.'],
+    'without': ['Weiterführender Link', 'Flexible Wege in die'],
+},
+'https://novalanalove.com/ear-candy/': {
+    'file': 'novalanalove.com.ear-candy.html',
+    'with': ['Earcuff: Zoeca', 'mit längeren Ohrringen (:', 'Kreole: Stella Hoops'],
+    'without': ['Jetzt heißt es schnell sein:', 'Diese Website speichert Cookies', 'VON Sina Giebel'],
+},
+'http://www.franziska-elea.de/2019/02/10/das-louis-vuitton-missgeschick/': {
+    'file': 'franziska-elea.de.vuitton.html',
+    'with': ['Zuerst dachte ich, ich könnte das', 'x Franzi', 'Flauschjacke: Bershka'],
+    'without': ['Palm Springs Mini (links)', 'Diese Website verwendet Akismet', 'New York, New York'],
+},
+'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html': {
+    'file': 'gofeminin.de.abnehmen.html',
+    'with': ['Crash-Diäten ziehen meist den Jojo-Effekt', 'Die Psyche spielt eine nicht unerhebliche Rolle', '2. Satt essen bei den Mahlzeiten'],
+    'without': ['Sportskanone oder Sportmuffel', 'PINNEN', 'Bringt die Kilos zum Purzeln!'],
+},
+'https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html': {
+    'file': 'brigitte.de.ikigai.html',
+    'with': ['Glücks-Trend Konkurrenz', 'Praktiziere Dankbarkeit', 'dein Ikigai schon gefunden?', '14,90 Euro.'],
+    'without': ['Neu in Liebe', 'Erfahre mehr', 'Erfahrung mit privater Arbeitsvermittlung?'],
+},
+'https://www.changelog.blog/zwischenbilanz-jan-kegelberg-ueber-tops-und-flops-bei-der-transformation-von-sportscheck/': {
+    'file': 'changelog.blog.zwischenbilanz.html',
+    'with': ['Gibt es weitere Top-Maßnahmen für Multi-Channel?', 'Vielen Dank für das interessante Interview!'],
+    'without': ['Annette Henkel', 'akzeptiere die Datenschutzbestimmungen', 'Diese Beiträge solltest du nicht verpassen'],
+},
+'https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/': {
+    'file': 'threatpost.com.android.html',
+    'with': ['These messages include links to the ransomware', 'using novel techniques to exfiltrate data.'],
+    'without': ['Share this article:', 'Write a comment', 'Notify me when new comments are added.', 'uses Akismet to reduce spam.'],
+},
+'https://www.vice.com/en_uk/article/d3avvm/the-amazon-is-on-fire-and-the-smoke-can-be-seen-from-space': {
+    'file': 'vice.com.amazon.html',
+    'with': ['Brazil went dark.', 'the highest number of deforestation warnings.”'],
+    'without': ['Tagged:', 'to the VICE newsletter.', 'Watch this next'],
+},
+'https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html': {
+    'file': 'heise.de.lithium.html',
+    'with': ['Die Ökobilanz von Elektroautos', 'Nur die Folie bleibt zurück'],
+    'without': ['TR 7/2019', 'Forum zum Thema:', 'Highlights aus dem Heft:'],
+},
+'https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact': {
+    'file': 'theverge.com.ios13.html',
+    'with': ['Normally, video calls tend to', 'across both the eyes and nose.', 'Added ARKit explanation and tweet.'],
+    'without': ['Singapore’s public health program', 'Command Line delivers daily updates'],
+},
+'https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/': {
+    'file': 'crazy-julia.de.tipps.html',
+    'with': ['in keinem Braut-Beauty-Programm fehlen darf?', 'nicht nur vor der Hochzeit ein absolutes Muss.', 'Gesundes, glänzendes Haar'],
+    'without': ['Neue Wandbilder von Posterlounge', 'mit meinen Texten und mit meinen Gedanken.', 'Erforderliche Felder sind mit * markiert.'],
+},
+'https://www.politische-bildung-brandenburg.de/themen/land-und-leute/homo-brandenburgensis': {
+    'file': 'brandenburg.de.homo-brandenburgensis.html',
+    'with': ['Stilles Rackern, statt lautem Deklamieren.', 'Watt jibt’s n hier zu lachen?', 'Das Brandenbuch. Ein Land in Stichworten.'],
+    'without': ['Bürgerbeteiligung', 'Anmelden', 'Foto: Timur', 'Schlagworte', 'Zeilenumbrüche und Absätze werden automatisch erzeugt.'],
+},
+'https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html': {
+    'file': 'skateboardmsm.de.dormhagen.html',
+    'with': ['Wakebeach 257', 'Be there or be square!', 'Hier geht’s zur Facebook Veranstaltung', 'Blue Tomato präsentiert die dritte'],
+    'without': ['More from News', 'von Redaktion MSM', 'add yours.'],
+},
+'https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/': {
+    'file': 'knowtechie.com.rally.html',
+    'with': ['Rocket Pass 4 will begin at 10:00 a.m. PDT', 'Let us know down below in the comments', 'Holy shit, Mortal Kombat 11'],  # title: 'what to do with thousands of crates tho'
+    'without': ['Related Topics', 'You can keep up with me on Twitter', 'Hit the track today with Mario Kart Tour'],
+},
+'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html': {
+    'file': 'boingboing.net.millenials.html',
+    'with': ['Click through for the whole thing.', 'The generation we love to dump on'],
+    'without': ['GET THE BOING BOING NEWSLETTER', 'happy mutants', 'Patti Smith and Stewart Copeland'],
+},
+'https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding': {
+    'file': 'en.wikipedia.org.tsne.html',
+    'with': ['Given a set of high-dimensional objects', 'Herein a heavy-tailed Student t-distribution'],
+    'without': ['Categories:', 'Conditional random field'],
+},
+'https://mixed.de/vrodo-deals-vr-taugliches-notebook-fuer-83215-euro-99-cent-leihfilme-bei-amazon-psvr/': {
+    'file': 'mixed.de.vrodo.html',
+    'with': ['Niedlicher Roboter-Spielkamerad: Anki Cozmo', 'Empfehlungen von Dennis:'],
+    'without': ['Unterstütze unsere Arbeit', 'Deepfake-Hollywood', 'Avengers', 'Katzenschreck'],
+},
+'http://www.spreeblick.com/blog/2006/07/29/aus-aus-alles-vorbei-habeck-macht-die-stahnke/': {
+    'file': 'spreeblick.com.habeck.html',
+    'with': ['Hunderttausende von jungen Paaren', 'wie flatterhaft das Mädl ist? :)'],
+    'without': ['Malte Welding', 'YouTube und die Alten', 'Autokorrektur'],
+},
+'https://majkaswelt.com/top-5-fashion-must-haves-2018-werbung/': {
+    'file': 'majkaswelt.com.fashion.html',
+    'with': ['Rüschen und Volants.', 'ihr jedes Jahr tragen könnt?', 'mein Lieblingskleid vereint'],
+    'without': ['Das könnte dich auch interessieren', 'Catherine Classic Lac 602'],
+},
+'https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/': {
+    'file': 'erp-news.info.interview.html',
+    'with': ['Einblicke in die Vision zukünftiger', 'Frage 4: Welche Rolle spielt Big Data', 'von The unbelievable Machine Company (*um)'],
+    'without': ['Matthias Weber ist ERP-Experte mit langjähriger Berufserfahrung.', 'Die Top 5 digitalen Trends für den Mittelstand', ', leading edge,', 'Lesen Sie hier einen weiteren'],
+},
+'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/': {
+    'file': 'github.blog.spiceland.html',
+    'with': ['Erin Spiceland is a Software Engineer for SpaceX.', 'make effective plans and goals for the future', 'looking forward to next?', 'Research Consultant at Adelard LLP'],
+    'without': ['Related posts', 'Jeremy Epling', 'Missed the main event?', 'Privacy'],
+},
+'https://lady50plus.de/2019/06/19/sekre-mystery-bag/': {
+    'file': 'lady50plus.de.sekre.html',
+    'with': ['ist eine echte Luxushandtasche', 'Insgesamt 160 weibliche „Designerinnen“', 'Sei herzlich gegrüßt', 'Ein Mann alleine hätte niemals', 'in den Bann ziehen!'],
+    'without': ['Erforderliche Felder sind mit', 'Benachrichtige mich', 'Reisen ist meine große Leidenschaft', 'Styling Tipps für Oktober'],
+},
+'https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer': {
+    'file': 'sonntag-sachsen.de.emanuel.html',
+    'with': ['Neuer Geschäftsführender Leiter', 'nach Leipzig wechseln.'],
+    'without': ['Mehr zum Thema', 'Folgen Sie uns auf Facebook und Twitter', 'Aktuelle Ausgabe'],
+},
+'https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite': {
+    'file': 'psl.eu.luniversite.html',
+    'with': ['Le décret n°2019-1130 validant', 'restructurant à cet effet ».'],
+    'without': [' utilise des cookies pour', 'En savoir plus', 'CNRS, Inserm, Inria.'],
+},
+'https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html': {
+    'file': 'chip.de.beef.html',
+    'with': ['Starke Hitze nur in der Mitte', 'ca. 35,7×29,4 cm', 'Wir sind im Steak-Himmel!'],
+    'without': ['Samsung Galaxy S10 128GB', 'Für Links auf dieser Seite', 'Inga Buller ist Head of Social'],
+},
+'http://www.sauvonsluniversite.fr/spip.php?article8532': {
+    'file': 'sauvonsluniversite.com.spip.html',
+    'with': ['L’AG Éducation Île-de-France inter-degrés', 'Grève et mobilisation pour le climat', 'suivi.reformes.blanquer@gmail.com'],
+    'without': ['Sauvons l’Université !', 'La semaine de SLU'],
+},
+'https://www.spiegel.de/spiegel/print/d-161500790.html': {
+    'file': 'spiegel.de.albtraum.html',
+    'with': ['Wie konnte es dazu kommen?', 'Die Geschichte beginnt am 26. Oktober', 'Es stützt seine Version.'],
+    'without': ['und Vorteile sichern!', 'Verschickt', 'Die digitale Welt der Nachrichten.', 'Vervielfältigung nur mit Genehmigung'],
+},
+'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': {
+    'file': 'lemire.me.json.html',
+    'with': ['I use a Skylake processor with GNU GCC 8.3.', 'gsoc-2018', '0.091 GB/s', 'version 0.2 on vcpkg.'],
+    'without': ['Leave a Reply', 'Science and Technology links', 'Proudly powered by WordPress'],
+},
+'https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission': {
+    'file': 'zeit.de.zugverkehr.html',
+    'with': ['36 Stunden.', 'Nationale Egoismen', 'Deutschland kaum beschleunigt.', 'geprägte Fehlentscheidung.', 'horrende Preise für miserablen Service bezahlen?'],
+    'without': ['Durchgehende Tickets fehlen', 'Bitte melden Sie sich an, um zu kommentieren.'],
+},
+'https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020': {
+    'file': 'franceculture.fr.idees.html',
+    'with': ['Performativité', 'Les individus productifs communiquent', 'de nos espoirs et de nos désirs.'],
+    'without': ['A la tribune je monterai', 'À découvrir', 'Le fil culture'],
+},
+'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/': {
+    'file': 'wikimediafoundation.org.turkey.html',
+    'with': ['Bu yazının Türkçe’sini buradan okuyabilirsiniz', 'as further access is restored.'],
+    'without': ['Read further in the pursuit of knowledge', 'Here’s what that means.', 'Stay up-to-date on our work.', 'Photo credits'],
+},
+'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': {
+    'file': 'reuters.com.parasite.html',
+    'with': ['Despite an unknown cast,', 'Additional reporting by'],
+    'without': ['4 Min Read', 'The Thomson Reuters Trust Principles', 'Factbox: Key winners'],
+},
+'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': {
+    'file': 'vancouversun.com.microsoft.html',
+    'with': ['Microsoft Corp said on Thursday', 'It was not immediately clear if'],
+    'without': ['Reuters files', 'turns CO2 into soap', 'I consent to receiving'],
+    'comments': ['Postmedia is committed'],
+},
 #'': {
 #    'file': '',
 #    'with': [], 
+#    'without': [],
+#},
+#'': {
+#    'file': '',
+#    'with': [],
+#    'without': [],
+#},
+#'': {
+#    'file': '',
+#    'with': [],
+#    'without': [],
+#},
+}
+#'': {
+#    'file': '',
+#    'with': [],
 #    'without': [],
 #},
 #'http://exotic_tags': 'exotic_tags.html',
 # overview page: result is None
 # 'https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5': {
 #    'file': 'chip.de.tests.html',
-#    'with': [], 
+#    'with': [],
 #    'without': [],
 #},
-
-
-MOCK_PAGES = {
-'https://www.dw.com/en/uncork-the-mystery-of-germanys-fr%C3%BChburgunder/a-16863843': 'dw.com.uncork.html',
-'https://www.jolie.de/stars/adele-10-kilo-abgenommen-sie-zeigt-sich-schlanker-denn-je-200226.html': 'jolie.de.adele.html',
-'https://www.speicherguide.de/digitalisierung/faktor-mensch/schwierige-gespraeche-so-gehts-24376.aspx': 'speicherguide.de.schwierige.html',
-'https://novalanalove.com/ear-candy/': 'novalanalove.com.ear-candy.html',
-'http://www.franziska-elea.de/2019/02/10/das-louis-vuitton-missgeschick/': 'franziska-elea.de.vuitton.html',
-'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html': 'gofeminin.de.abnehmen.html',
-'https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html': 'brigitte.de.ikigai.html',
-'https://www.changelog.blog/zwischenbilanz-jan-kegelberg-ueber-tops-und-flops-bei-der-transformation-von-sportscheck/': 'changelog.blog.zwischenbilanz.html',
-'https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/': 'threatpost.com.android.html',
-'https://www.vice.com/en_uk/article/d3avvm/the-amazon-is-on-fire-and-the-smoke-can-be-seen-from-space': 'vice.com.amazon.html',
-'https://www.heise.de/newsticker/meldung/Lithium-aus-dem-Schredder-4451133.html': 'heise.de.lithium.html',
-'https://www.theverge.com/2019/7/3/20680681/ios-13-beta-3-facetime-attention-correction-eye-contact': 'theverge.com.ios13.html',
-'https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/': 'crazy-julia.de.tipps.html',
-'https://www.politische-bildung-brandenburg.de/themen/land-und-leute/homo-brandenburgensis': 'brandenburg.de.homo-brandenburgensis.html',
-'https://skateboardmsm.de/news/the-captains-quest-2017-contest-auf-schwimmender-miniramp-am-19-august-in-dormagen.html': 'skateboardmsm.de.dormhagen.html',
-'https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/': 'knowtechie.com.rally.html',
-'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html': 'boingboing.net.millenials.html',
-'https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding': 'en.wikipedia.org.tsne.html',
-'https://mixed.de/vrodo-deals-vr-taugliches-notebook-fuer-83215-euro-99-cent-leihfilme-bei-amazon-psvr/': 'mixed.de.vrodo.html',
-'http://www.spreeblick.com/blog/2006/07/29/aus-aus-alles-vorbei-habeck-macht-die-stahnke/': 'spreeblick.com.habeck.html',
-'https://majkaswelt.com/top-5-fashion-must-haves-2018-werbung/': 'majkaswelt.com.fashion.html',
-'https://erp-news.info/erp-interview-mit-um-digitale-assistenten-und-kuenstliche-intelligenz-ki/': 'erp-news.info.interview.html',
-'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/': 'github.blog.spiceland.html',
-'https://lady50plus.de/2019/06/19/sekre-mystery-bag/': 'lady50plus.de.sekre.html',
-'https://www.sonntag-sachsen.de/emanuel-scobel-wird-thomanerchor-geschaeftsfuehrer': 'sonntag-sachsen.de.emanuel.html',
-'https://www.psl.eu/actualites/luniversite-psl-quand-les-grandes-ecoles-font-universite': 'psl.eu.luniversite.html',
-'https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html': 'chip.de.beef.html',
-'http://www.sauvonsluniversite.fr/spip.php?article8532': 'sauvonsluniversite.com.spip.html',
-'https://www.spiegel.de/spiegel/print/d-161500790.html': 'spiegel.de.albtraum.html',
-'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': 'lemire.me.json.html',
-'https://www.zeit.de/mobilitaet/2020-01/zugverkehr-christian-lindner-hochgeschwindigkeitsstrecke-eu-kommission': 'zeit.de.zugverkehr.html',
-'https://www.franceculture.fr/emissions/le-journal-des-idees/le-journal-des-idees-emission-du-mardi-14-janvier-2020': 'franceculture.fr.idees.html',
-'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/': 'wikimediafoundation.org.turkey.html',
-'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': 'reuters.com.parasite.html',
-'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': 'vancouversun.com.microsoft.html',
-}
 
 
 def load_document(filename):
@@ -451,7 +602,7 @@ def calculate_f_score(mydict):
     fscore = (2*tp)/(2*tp + fp + fn)  # 2*((precision*recall)/(precision+recall))
     return precision, recall, fscore
 
-    
+
 everything = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 nothing = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
 trafilatura_result = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
