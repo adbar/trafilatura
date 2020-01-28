@@ -589,9 +589,9 @@ def test_formatting():
     # wild div
     my_document = html.fromstring('<html><body><article><div><strong>Wild text</strong></div></article></body></html>')
     my_result = extract(my_document, xml_output=True, include_formatting=True)
-    assert '<p>' in my_result and 'Wild text' in my_result  # no rend so far
+    assert '<p>' in my_result and '<hi>Wild text</hi>' in my_result  # no rend so far
     my_result = extract(my_document)
-    assert my_result == 'Wild text\n'
+    assert my_result == 'Wild text'
 
 
 def test_filters():

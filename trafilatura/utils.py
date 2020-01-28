@@ -160,17 +160,23 @@ def remove_control_characters(string):
 def sanitize(text):
     '''Convert text and discard incompatible unicode and invalid XML characters'''
     text = remove_control_characters(text)
+    # HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
+    text = text.replace('&#13;', '\r')
+    text = text.replace('&#10;', '\n')
+    # line endings
     text = text.replace('\r\n', '\n')
-    text = text.replace('&#13;', '')
-    text = text.replace('&#10;', '')
+    # unwanted characters
+    text = text.replace('\N{SOFT HYPHEN}', '')
+    # spaces
+    text = text.replace('\u00A0', ' ')  # non-breaking spaces
     text = UNICODE_WHITESPACE.sub('', text)
     # filter out empty lines
-    returntext = ''
+    returnlines = list()
     for line in text.splitlines():
         line = trim(line)
         if not re.match(r'[\s\t]*$', line):
-            returntext += line + '\n'
-    return returntext
+            returnlines.append(line)
+    return '\n'.join(returnlines)
 
 
 def trim(string):
