@@ -227,13 +227,6 @@ def test_pages():
     assert metadata.categories == []
     assert metadata.tags == []
     # meta name="keywords"
-    
-    assert metadata.title == ''
-    assert metadata.author == ''
-    assert metadata.description == ''
-    assert metadata.sitename == ''
-    assert metadata.categories == ['Archaeology', 'Fossils']
-    
 
     metadata = scrape(load_mock_page('https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'))
     assert metadata.title == 'Flint flake tool partially covered by birch tar adds to evidence of Neanderthal complex thinking'
