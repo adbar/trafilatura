@@ -21,6 +21,7 @@ from goose3 import Goose
 from inscriptis import get_text
 # from libextract.api import extract as lib_extract
 from newspaper import fulltext
+from newsplease import NewsPlease
 from readability import Document
 from trafilatura import extract
 
@@ -592,6 +593,12 @@ def run_boilerpipe(htmlstring):
     return content
 
 
+def run_newsplease(htmlstring):
+   '''try with newsplease'''
+   article = NewsPlease.from_html(htmlstring, url=None)
+   return article.maintext
+
+
 #def run_libextract(htmlstring):
 #    '''try with the libextract module'''
 #    textlist = list()
@@ -623,17 +630,18 @@ def evaluate_result(result, EVAL_PAGES, item):
     return true_positives, false_negatives, false_positives, true_negatives
 
 
-def calculate_f_score(mydict):
+def calculate_scores(mydict):
     '''output weighted result score'''
     tp, fn, fp, tn = mydict['true positives'], mydict['false negatives'], mydict['false positives'], mydict['true negatives']
     precision = tp/(tp+fp)
     recall = tp/(tp+fn)
+    accuracy = (tp+tn)/(tp+tn+fp+fn)
     fscore = (2*tp)/(2*tp + fp + fn)  # 2*((precision*recall)/(precision+recall))
-    return precision, recall, fscore
+    return precision, recall, accuracy, fscore
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-everything, nothing, trafilatura_result, justext_result, trafilatura_justext_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+everything, nothing, trafilatura_result, justext_result, trafilatura_justext_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 everything.update(template_dict)
 nothing.update(template_dict)
 trafilatura_result.update(template_dict)
@@ -646,6 +654,7 @@ newspaper_result.update(template_dict)
 html2text_result.update(template_dict)
 dragnet_result.update(template_dict)
 boilerpipe_result.update(template_dict)
+newsplease_result.update(template_dict)
 
 
 for item in EVAL_PAGES:
@@ -751,6 +760,15 @@ for item in EVAL_PAGES:
     boilerpipe_result['false positives'] += fp
     boilerpipe_result['true negatives'] += tn
     boilerpipe_result['false negatives'] += fn
+    # newsplease
+    start = time.time()
+    result = run_newsplease(htmlstring)
+    newsplease_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    newsplease_result['true positives'] += tp
+    newsplease_result['false positives'] += fp
+    newsplease_result['true negatives'] += tn
+    newsplease_result['false negatives'] += fn
 
 
 print('number of documents:', len(EVAL_PAGES))
@@ -759,34 +777,37 @@ print(nothing)
 # print(calculate_f_score(nothing))
 print('everything')
 print(everything)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(everything)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(everything)))
 print('html2text')
 print(html2text_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(html2text_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
 print('inscriptis')
 print(inscriptis_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(inscriptis_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(inscriptis_result)))
 print('trafilatura')
 print(trafilatura_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(trafilatura_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_result)))
 print('justext')
 print(justext_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(justext_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(justext_result)))
 print('trafilatura + justext')
 print(trafilatura_justext_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(trafilatura_justext_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_justext_result)))
 print('readability')
 print(readability_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(readability_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
 print('goose')
 print(goose_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(goose_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(goose_result)))
 print('newspaper')
 print(newspaper_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(newspaper_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newspaper_result)))
 print('dragnet')
 print(dragnet_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(dragnet_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(dragnet_result)))
 print('boilerpipe')
 print(boilerpipe_result)
-print("precision: %.3f recall: %.3f f-score: %.3f" % (calculate_f_score(boilerpipe_result)))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(boilerpipe_result)))
+print('newsplease')
+print(newsplease_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newsplease_result)))
