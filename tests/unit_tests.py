@@ -229,27 +229,82 @@ def test_pages():
     # meta name="keywords"
 
     metadata = scrape(load_mock_page('https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'))
+    assert metadata.title == 'Flint flake tool partially covered by birch tar adds to evidence of Neanderthal complex thinking'
+    assert metadata.author == 'Bob Yirka'
+    assert metadata.description == 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.'
+    assert metadata.sitename == 'Phy'
+    assert metadata.categories == ['Archaeology', 'Fossils']
 
     metadata = scrape(load_mock_page('https://gregoryszorc.com/blog/2020/01/13/mercurial%27s-journey-to-and-reflections-on-python-3/'))
-
+    assert metadata.title == 'Mercurial's Journey to and Reflections on Python 3'
+    assert metadata.author == 'Gregorys Zorc'
+    assert metadata.description == 'Description of the experience of making Mercurial work with Python 3'
+    assert metadata.sitename == 'gregoryszorc'
+    assert metadata.categories == ['Python', 'Programming']
+    
     metadata = scrape(load_mock_page('https://www.pluralsight.com/tech-blog/managing-python-environments/'))
-
+    assert metadata.title == 'Managing Python Environments'
+    assert metadata.author == 'John Walk '
+    assert metadata.description == 'pros and cons of available tools for python setup'
+    assert metadata.sitename == 'Pluralsight'
+    assert metadata.categories == ['Python', 'Programming']
+    
     metadata = scrape(load_mock_page('https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'))
-
+    assert metadata.title == 'What is Rust and why is it so popular?'
+    assert metadata.author == 'Jake Goulding'
+    assert metadata.description == 'Description of the Programming Language Rust'
+    assert metadata.sitename == 'Stack Overflow'
+    assert metadata.categories == ['Rust', 'Programming']
+    
     metadata = scrape(load_mock_page('https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'))
-
+    assert metadata.title == 'Berlin confronts Germany's colonial past with new initiative'
+    assert metadata.author == 'Ben Knight'
+    assert metadata.description == 'The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy.'
+    assert metadata.sitename == 'DW - Deutsche Welle'
+    assert metadata.categories == ['Colonialism', 'History', 'Germany']
+    
     metadata = scrape(load_mock_page('https://www.theplanetarypress.com/2020/01/management-of-intact-forestlands-by-indigenous-peoples-key-to-protecting-climate/'))
-
+    assert metadata.title == 'Management of Intact Forestlands by Indigenous Peoples Key to Protecting Climate'
+    assert metadata.author == 'Julie Mollins'
+    assert metadata.description == 'Advantages of Management of Intact Forestlands by Indigenous Peoples for the Climate'
+    assert metadata.sitename == 'The Planetary Press'
+    assert metadata.categories == ['Indigenous People', 'Environment']
+    
     metadata = scrape(load_mock_page('https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/'))
-
+    assert metadata.title == 'Access to Wikipedia restored in Turkey after more than two and a half years'
+    assert metadata.author == 'Wikimedia Foundation'
+    assert metadata.description == 'Report about the restored accessibility of Wikipedia in Turkey'
+    assert metadata.sitename == 'Wikimedia Foundation'
+    assert metadata.categories == ['Politics', 'Turkey'. 'Wikipedia']
+    
     metadata = scrape(load_mock_page('https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH'))
+    assert metadata.title == ''Parasite' scores historic upset at SAG awards, boosting Oscar chances'
+    assert metadata.author == 'Jill Serjeant'
+    assert metadata.description == '“Parasite,” the Korean language social satire about the wealth gap in South Korea, was the first film in a foreign language to win the top prize of best cast ensemble in the 26 year-history of the SAG awards.'
+    assert metadata.sitename == 'Reuters'
+    assert metadata.categories == ['Parasite', 'SAG awards', 'Cinema']
     
     metadata = scrape(load_mock_page('https://www.nationalgeographic.co.uk/environment-and-conservation/2020/01/ravenous-wild-goats-ruled-island-over-century-now-its-being'))
-
+    assert metadata.title == 'Ravenous wild goats ruled this island for over a century. Now, it's being reborn.'
+    assert metadata.author == 'Michael Hingston'
+    assert metadata.description == 'The rocky island of Redonda, once stripped of its flora and fauna by invasive species, makes an astonishingly quick comeback. What’s the secret to its recovery?'
+    assert metadata.sitename == 'National Geographic'
+    assert metadata.categories == ['Goats', 'Environment', 'Redonda']
+    
     metadata = scrape(load_mock_page('https://www.nature.com/articles/d41586-019-02790-3'))
-
+    assert metadata.title == 'Gigantic Chinese telescope opens to astronomers worldwide'
+    assert metadata.author == 'Elizabeth Gibney'
+    assert metadata.description == 'FAST has superior sensitivity to detect cosmic phenomena, including fast radio bursts and pulsars.'
+    assert metadata.sitename == 'Nature'
+    assert metadata.categories == ['Astronomy', 'Telescope', 'China']
+    
     metadata = scrape(load_mock_page('https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'))
-
+    assert metadata.title == 'Despite everything, U.S. emissions dipped in 2019'
+    assert metadata.author == 'Nathanael Johnson'
+    assert metadata.description == 'Coal has been in a slow-motion death spiral over the past ten years'
+    assert metadata.sitename == 'Salon'
+    assert metadata.categories == ['Coal', 'Emmisions', 'Climate']
+    
 '''
 'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html'
 'https://crazy-julia.de/beauty-tipps-die-jede-braut-kennen-sollte/'
