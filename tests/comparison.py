@@ -470,28 +470,7 @@ EVAL_PAGES = {
     'without': ['Reuters files', 'turns CO2 into soap', 'I consent to receiving'],
     'comments': ['Postmedia is committed'],
 },
-#'': {
-#    'file': '',
-#    'with': [], 
-#    'without': [],
-#},
-#'': {
-#    'file': '',
-#    'with': [],
-#    'without': [],
-#},
-#'': {
-#    'file': '',
-#    'with': [],
-#    'without': [],
-#},
 }
-#'': {
-#    'file': '',
-#    'with': [],
-#    'without': [],
-#},
-#'http://exotic_tags': 'exotic_tags.html',
 # overview page: result is None
 # 'https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5': {
 #    'file': 'chip.de.tests.html',
@@ -500,15 +479,178 @@ EVAL_PAGES = {
 #},
 
 
-def load_document(filename):
+EXTRA_PAGES = {
+'https://www.ahlen.de/start/aktuelles/aktuelle/information/nachricht/aus-ahlen/reparaturcafe-am-31-januar/': {
+    'file': 'ahlen.de.reparaturcafe.html',
+    'author': '',
+    'title': 'Reparaturcafé am 31. Januar',
+    'date': '2020-01-27',
+    'description': 'Jede Menge Spaß bereitet es den ehrenamtlichen Experten im Reparaturcafé, wenn sie defekte Hausgeräte wieder flott bekommen. Die regelmäßigen Besucherinnen und Besucher wissen das schon lange. Gelegenheit zu einem Besuch im Reparaturcafé bietet sich am Freitag, 31. Januar, in der Zeit von 15.00 bis 18.00 Uhr in den Räumen des Gruppenergänzenden Dienstes des St. Vinzenz am Park (Kampstraße 13-15).',
+    'categories': ['Soziales & Gesundheit'],
+    'tags': [''],
+    'with': ['Jede Menge Spaß bereitet es den', 'Das Projekt ist eine Kooperationsveranstaltung', 'althausa@stadt.ahlen.de'],
+    'without': ['Stadtverwaltung Ahlen Rechnungseingang', 'Internetredaktion Stadt Ahlen', 'Allgemeine Sprechstunden der Verwaltung'],
+    'comments': [''],
+    'license': '',
+    'region': 'DE',
+},
+'https://www.travanto.de/ferienhaus/lierfeld/40222/ferienhaus-feinen.php': {
+    'file': 'travanto.de.ferienhaus-feinen.php',
+    'author': '',
+    'title': 'Ferienhaus Feinen',
+    'date': '',
+    'description': '',
+    'categories': [''],
+    'tags': [''],
+    'with': ['Wir haben unser altes Bauernhaus zu einem', 'Das idyllische Eifeldörfchen Lierfeld liegt', 'Kinder unter 4 Jahren werden nicht als'],
+    'without': ['Travanto Buchungshotline', 'tolle Gewinnspiele', ' TrustScore 4.2 580 Bewertungen'],
+    'comments': [''],
+    'license': '',
+    'region': 'DE',
+},
+'https://rete-mirabile.net/notizen/15-jahre-rete-mirabile/': {
+    'file': 'rete-mirabile.net.15jahre.html',
+    'author': 'Andreas Kalt',
+    'title': '15 Jahre rete-mirabile.net',
+    'date': '2019-07-28',
+    'description': 'Diesen Blog gibt es seit 15 Jahren – ein Rückblick.',
+    'categories': ['Notizen'],
+    'tags': ['reflexion', 'blogs', 'digitalisierung', 'inspiration', 'internet'],
+    'with': ['Im Trubel des Alltags', 'Vor zehn Jahren war Twitter', 'Aktuell fallen mir wieder mehr Themen ein'],
+    'without': ['Deine E-Mail-Adresse wird nicht veröffentlicht', 'Logo von Jonathas Mello', 'Gedanken über Lernen und Schule'],
+    'comments': ['Vielen Dank für die netten Worte', 'Danke für Deine guten', 'Ich gehe also davon aus'],
+    'license': 'CC BY-SA 4.0',
+    'region': 'DE',
+},
+'https://shop.nmb-media.de/eBay-Template-Datenschutz-Google-Fonts-Fontawesome': {
+    'file': 'nmb-media.de.ebay.html',
+    'author': '',
+    'title': 'Datenschutztechnische Anpassung der eBay-Verkaufsvorlagen',
+    'date': '2018-06-22',
+    'description': 'eBay-Auktionsvorlagen für JTL Wawi / Eazyauction, Magnalister und Afterbuy.',
+    'categories': ['News'],
+    'tags': [''],
+    'with': ['Aus datenschutzrechtlichen Gründen wird', 'Aufgrund der derzeitigen, datenschutzrechtlichen', 'Die IP-Adressen werden'],
+    'without': ['Die Beratung zu den von uns angebotenen', 'Fernwartung nach Absprache per AnyDesk', 'Bitte laden Sie sich über Ihr '],
+    'comments': [''],
+    'license': '',
+    'region': 'DE',
+},
+'https://viertausendhertz.de/ddg48/': {
+    'file': 'viertausendhertz.de.ddg48.html',
+    'author': '',
+    'title': 'Mit Musiker Voodoo Jürgens in Wien',
+    'date': '2019-12-16',
+    'description': '"Mit Christian Möller ist Musiker David Öllerer aka Voodoo Jürgens durch Wien spaziert – vom Friedhof, wo er selbst mal gearbeitet hat, bis in sein Stammcafé, Gulaschsuppe essen.',
+    'categories': [''],
+    'tags': [''],
+    'with': ['Im Dialekt zu singen', 'Mit seinen Songs über Glücksspiel', 'Stammcafé, Gulaschsuppe essen'],
+    'without': ['Foto: Ingo Pertramer', 'Mehr Episoden anzeigen', 'Mit dem Cartoonisten Tobias Vogel in Krefeld'],
+    'comments': [''],
+    'license': '',
+    'region': 'DE',
+},
+'http://www.bibliothek2null.de/2014/05/18/alles-neue-mach-der-mai/': {
+    'file': 'bibliothek2null.de.mai.html',
+    'author': 'Patrick Danowski',
+    'title': 'Alles Neue mach der Mai…',
+    'date': '05-18',
+    'description': 'Innovative Ideen für Bibliotheken,  Freie Inhalte und Interessantes aus dem Web',
+    'categories': ['Uncategorized'],
+    'tags': ['Uncategorized'],
+    'with': ['Nachdem ich mein Blog', 'Der Anfang ist gemacht', 'Ich hoffe euch gefällt der Relaunch.'],
+    'without': ['Deine E-Mail-Adresse wird', 'bei Informationspraxis- ein neues', 'Permalink'],
+    'comments': ['ich bin schon ganz gespannt'],
+    'license': 'CC BY 2.0 DE',
+    'region': 'DE',
+},
+'http://www.helge.at/2014/03/warum-wien-zu-blod-fur-eine-staufreie-mahu-ist/': {
+    'file': 'helge.at.mahu.html',
+    'author': 'Helge Fahrnberger',
+    'title': 'Warum Wien zu blöd für eine staufreie Mahü ist',
+    'date': '2014-03-05',
+    'description': 'Die &#8220;Krone&#8221; zitiert heute meinen Tweet &#8220;Wien ist zu blöd für eine staufreie Mahü. Muss man so hinnehmen.&#8221; (Hier die Online-Version.) Warum ich glaube, dass Wien (beachte: nicht wie die Krone behauptet &#8220;alle Wiener&#8221;) zu blöd ist für eine staufreie Mariahilfer Straße (oder fast, falls die Abstimmung doch für die Verkehrsberuhigung ausgeht): 1. Die rot-grüne &hellip;',
+    'categories': ['Politics'],
+    'tags': [''],
+    'with': ['Die “Krone” zitiert heute meinen', 'die rote Personalvertretung der Wiener Linien', 'Blöd sind also nicht die Wiener'],
+    'without': ['Warum Michel Reimon nach Brüssel muss', "Helge Fahrnberger's personal pages", 'Provider information '],
+    'comments': ['Es war ein wunderbarer Beschluss'],
+    'license': '',
+    'region': 'AT',
+},
+'http://www.nalas-loewenseiten.info/loewen-lexikon/?letter=M': {
+    'file': 'nalas-loewenseiten.info.m.html',
+    'author': '',
+    'title': 'M wie Mähnenlöwe',
+    'date': '',
+    'description': 'Nalas LöwenseitenLöwisch gute Unterhaltung wünscht die Nala',
+    'categories': ['Lexikon'],
+    'tags': [''],
+    'with': ['Nur die Löwenmännchen haben eine', 'Aber es gibt eben nicht nur diese tollen Schnuckllöwen', 'Und nicht nur dass, wie Peyton West'],
+    'without': ['Nala Löwenkönigin', 'Prankentausch', 'Lexikon'],
+    'comments': [''],
+    'license': '',
+    'region': '',
+},
+'https://blogoff.de/2015/11/12/i-htm/': {
+    'file': 'blogoff.de.i-htm.html',
+    'author': '',
+    'title': '3 verrückte Orte in Berlin',
+    'date': '2015-11-12',
+    'description': '',
+    'categories': [''],
+    'tags': [''],
+    'with': ['In Berlin lebe ich nun', 'Vielen Dank an die S-Bahn', 'Base Flying'],
+    'without': ['I ♥ BLOG OFF!', 'Was passiert hier eigentlich noch?', 'powdered by wordpress'],
+    'comments': [''], 
+    'license': 'CC BY-NC-SA 2.0 DE',
+    'region': 'DE',
+},
+'https://de.globalvoices.org/2019/04/30/ein-jahr-voller-proteste-nicaraguaner-wollen-nicht-mehr-nur-den-rucktritt-ortegas-sondern-einen-neuanfang/': {
+    'file': 'de.globalvoices.org.nicaragua.html',
+    'author': 'Elisa Marvena',
+    'title': 'Ein Jahr voller Proteste: Nicaraguaner wollen nicht mehr nur den Rücktritt Ortegas, sondern einen Neuanfang',
+    'date': '2019-04-30',
+    'description': '[Wir müssen] Autoritarismus, Sexismus, Alleinherrschaft einzelner und andere Übel, die in die politische Kultur dieses Landes Einzug gehalten haben, beseitigen.',
+    'categories': ['Lateinamerika', 'Nicaragua', 'Bürgermedien', 'Kriege & Konflikte', 'Meinungsfreiheit', 'Menschenrechte', 'Politik', 'Protest'],
+    'tags': [''],
+    'with': ['Seit dem Ausbruch der Massenproteste gegen', 'Laut der niedrigsten Schätzung', 'Ich sah, wie eine Freundin von der Universität'],
+    'without': ['@globalvoices verdient einen Preis für die', 'Italiano', 'Name (Pflichtfeld)'],
+    'comments': [''],
+    'license': 'CC BY 3.0',
+    'region': 'DE',
+},
+'http://www.heiko-adams.de/laufen-im-winter-von-baeh-zu-yeah-in-12-monaten/': {
+    'file': 'heiko-adams.de.laufen.html',
+    'author': 'Heiko',
+    'title': 'Laufen im Winter: Von „bäh!“ zu „yeah!“ in 12 Monaten.',
+    'date': '2019-02-10',
+    'description': '',
+    'categories': ['Privat', 'Sport'],
+    'tags': ['dunkel', 'Dunkelheit', 'Laufen', 'Running', 'Training', 'Winter'],
+    'with': ['Heute, 12 Monate später,', 'das gefällt mir 😉'],
+    'without': ['Einfach laufen lassen', "Heiko's Activity"],
+    'comments': [''],
+    'license': '',
+    'region': 'DE',
+},
+}
+
+
+
+def load_document(filename, evaluation=False):
     '''load mock page from samples'''
+    if evaluation is True:
+        dirname = 'eval'
+    else:
+        dirname = 'cache'
     try:
-        with open(os.path.join(TEST_DIR, 'cache', filename), 'r') as inputf:
+        with open(os.path.join(TEST_DIR, dirname, filename), 'r') as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
         # read as binary
-        with open(os.path.join(TEST_DIR, 'cache', filename), 'rb') as inputf:
+        with open(os.path.join(TEST_DIR, dirname, filename), 'rb') as inputf:
             htmlbinary = inputf.read()
         guessed_encoding = chardet.detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
@@ -771,7 +913,121 @@ for item in EVAL_PAGES:
     newsplease_result['false negatives'] += fn
 
 
-print('number of documents:', len(EVAL_PAGES))
+for item in EXTRA_PAGES:
+    htmlstring = load_document(EXTRA_PAGES[item]['file'], evaluation=True)
+    # null hypotheses
+    tp, fn, fp, tn = evaluate_result('', EXTRA_PAGES, item)
+    nothing['true positives'] += tp
+    nothing['false positives'] += fp
+    nothing['true negatives'] += tn
+    nothing['false negatives'] += fn
+    tp, fn, fp, tn = evaluate_result(htmlstring, EXTRA_PAGES, item)
+    everything['true positives'] += tp
+    everything['false positives'] += fp
+    everything['true negatives'] += tn
+    everything['false negatives'] += fn
+    # html2text
+    start = time.time()
+    result = run_html2text(htmlstring)
+    html2text_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    html2text_result['true positives'] += tp
+    html2text_result['false positives'] += fp
+    html2text_result['true negatives'] += tn
+    html2text_result['false negatives'] += fn
+    # inscriptis
+    start = time.time()
+    result = run_inscriptis(htmlstring)
+    inscriptis_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    inscriptis_result['true positives'] += tp
+    inscriptis_result['false positives'] += fp
+    inscriptis_result['true negatives'] += tn
+    inscriptis_result['false negatives'] += fn
+    # trafilatura
+    start = time.time()
+    result = run_trafilatura(htmlstring)
+    trafilatura_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    trafilatura_result['true positives'] += tp
+    trafilatura_result['false positives'] += fp
+    trafilatura_result['true negatives'] += tn
+    trafilatura_result['false negatives'] += fn
+    # justext
+    start = time.time()
+    result = run_justext(htmlstring)
+    justext_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    justext_result['true positives'] += tp
+    justext_result['false positives'] += fp
+    justext_result['true negatives'] += tn
+    justext_result['false negatives'] += fn
+    # trafilatura + justext
+    start = time.time()
+    result = run_trafilatura_justext(htmlstring)
+    trafilatura_justext_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    trafilatura_justext_result['true positives'] += tp
+    trafilatura_justext_result['false positives'] += fp
+    trafilatura_justext_result['true negatives'] += tn
+    trafilatura_justext_result['false negatives'] += fn
+    # readability
+    start = time.time()
+    result = run_readability(htmlstring)
+    readability_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    readability_result['true positives'] += tp
+    readability_result['false positives'] += fp
+    readability_result['true negatives'] += tn
+    readability_result['false negatives'] += fn
+    # goose
+    start = time.time()
+    result = run_goose(htmlstring)
+    goose_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    goose_result['true positives'] += tp
+    goose_result['false positives'] += fp
+    goose_result['true negatives'] += tn
+    goose_result['false negatives'] += fn
+    # newspaper
+    start = time.time()
+    result = run_newspaper(htmlstring)
+    newspaper_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    newspaper_result['true positives'] += tp
+    newspaper_result['false positives'] += fp
+    newspaper_result['true negatives'] += tn
+    newspaper_result['false negatives'] += fn
+    # dragnet
+    start = time.time()
+    result = run_dragnet(htmlstring)
+    dragnet_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    dragnet_result['true positives'] += tp
+    dragnet_result['false positives'] += fp
+    dragnet_result['true negatives'] += tn
+    dragnet_result['false negatives'] += fn
+    # boilerpipe
+    start = time.time()
+    result = run_boilerpipe(htmlstring)
+    boilerpipe_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    boilerpipe_result['true positives'] += tp
+    boilerpipe_result['false positives'] += fp
+    boilerpipe_result['true negatives'] += tn
+    boilerpipe_result['false negatives'] += fn
+    # newsplease
+    start = time.time()
+    result = run_newsplease(htmlstring)
+    newsplease_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    newsplease_result['true positives'] += tp
+    newsplease_result['false positives'] += fp
+    newsplease_result['true negatives'] += tn
+    newsplease_result['false negatives'] += fn
+
+
+print('number of documents:', len(EVAL_PAGES) + len(EXTRA_PAGES))
 print('nothing')
 print(nothing)
 # print(calculate_f_score(nothing))
