@@ -635,4 +635,4 @@ if __name__ == '__main__':
     test_download()
     test_tei()
     test_exotic_tags()
-    test_txttocsv()
+    # test_txttocsv()
