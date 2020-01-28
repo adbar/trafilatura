@@ -1,10 +1,10 @@
 ## How to contribute
 
-Thank you for considering contributing to htmldate!
+Thank you for considering contributing to trafilatura!
 
 Here are some important resources:
 
-  * [List of currently open issues](https://github.com/adbar/htmldate/issues) (no pretention to exhaustivity!)
+  * [List of currently open issues](https://github.com/adbar/trafilatura/issues) (no pretention to exhaustivity!)
   * [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
 
 There are many ways to contribute, you could:
@@ -17,12 +17,11 @@ There are many ways to contribute, you could:
 
 ## Submitting changes
 
-Please send a [GitHub Pull Request to htmldate](https://github.com/adbar/htmldate/pull/new/master) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)).
+Please send a [GitHub Pull Request to trafilatura](https://github.com/adbar/trafilatura/pull/new/master) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)).
 
-**Working on your first Pull Request?** You can learn how from this series: [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github) 
+**Working on your first Pull Request?** See this tutorial: [How To Create a Pull Request on GitHub](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github)
 
-For further questions you can contact me on [GitHub issues](), [Twitter](https://twitter.com/adbarbaresi) or by [E-Mail](http://adrien.barbaresi.eu/contact.html)
-
+For further questions you can contact me by way of [GitHub issues](https://github.com/adbar/trafilatura/issues), [Twitter](https://twitter.com/adbarbaresi) or [E-Mail](http://adrien.barbaresi.eu/contact.html).
 
 Thanks,
 
