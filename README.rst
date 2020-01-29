@@ -74,22 +74,25 @@ Features
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For first experimental results see the `evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_.
+For experimental results see the `evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
-=============================== =========  ========== ========= ========
-2020-01-24 – 50 documents, 123 positive and 142 negative segments
-------------------------------------------------------------------------
-Python Package                  Precision  Recall     F-Score   Time
-=============================== =========  ========== ========= ========
-*everything with markup*        0.481      0.902      0.627     0
-inscriptis 1.0 (html to txt)    0.494      **0.992**  0.659     0.44
-newspaper3k 0.2.8               0.893      0.545      0.677     2.53
-justext 2.2.0                   0.880      0.593      0.709     1.21
-goose3 3.1.6                    **0.915**  0.610      0.732     3.88
-readability-lxml 0.7.1          0.873      0.724      0.791     1.15
-trafilatura 0.3.1 (rule-based)  0.853      0.894      0.873     0.86
-trafilatura 0.3.1 (+ fallback)  0.873      0.951      **0.911** 1.09
-=============================== =========  ========== ========= ========
+=============================== =========  ========== ========= ========= =====
+100 documents, 266 text and 294 boilerplate segments
+-------------------------------------------------------------------------------
+Python Package                  Precision  Recall     Accuracy  F-Score   Time
+=============================== =========  ========== ========= ========= =====
+*everything with markup*        0.492      0.902      0.511     0.637     0
+inscriptis 1.0 (html to txt)    0.504      **0.989**  0.532     0.668     0.87
+justext 2.2.0                   0.886      0.553      0.754     0.681     2.22
+goose3 3.1.6                    **0.935**  0.594      0.787     0.726     7.64
+newspaper3k 0.2.8               0.920      0.609      0.789     0.733     5.34
+boilerpy3 1.0.2                 0.767      0.756      0.775     0.761     1.89
+dragnet 2.0.4                   0.904      0.673      0.811     0.772     1.25
+readability-lxml 0.7.1          0.894      0.699      0.818     0.785     2.34
+news-please 1.4.25              0.900      0.714      0.827     0.797     22.99
+trafilatura 0.3.1 (rule-based)  0.872      0.895      0.887     0.883     1.87
+trafilatura 0.3.1 (+ justext)   0.889      0.936      **0.914** **0.912** 2.19
+=============================== =========  ========== ========= ========= =====
 
 
 Installation
