@@ -634,6 +634,62 @@ EXTRA_PAGES = {
     'license': '',
     'region': 'DE',
 },
+'https://www.wbf.admin.ch/wbf/de/home/dokumentation/nsb-news_list.msg-id-14093.html': {
+    'file': 'wbf.admin.ch.14093.html',
+    'author': '',
+    'title': '',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['beim SP-Städtegipfel', 'Dies führt dazu, dass die Sozialpolitik', 'wie in der Nationalhymne,'],
+    'without': ['Kommunikationsdienst', 'Letzte Änderung', 'Informiert bleiben'],
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CH',  # if obvious: DE, CH, AT
+},
+'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html': {
+    'file': 'faz.net.streaming.html',
+    'author': '',
+    'title': '',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['„Die Liste der Künstler', 'nicht bloß um höhere Einkünfte', 'Der Wandel der Musikbranche'],
+    'without': ['Etwa 100 deutsche Reisende', 'Abonnieren Sie unsere', 'Joe Kaeser deutet vage', 'Redakteur in der Wirtschaft.'],
+    'comments': ['keinen Bock auf solche Buchhalter', 'Verklagt eure Labels', 'Zur Verdeutlichung ein Extrembeispiel:'],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make': {
+    'file': 'toptal.com.python.html',
+    'author': '',
+    'title': '',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['and code reuse.', 'bar is optional', 'What the $%#!&??', 'And you then tried to do', 'Familiarizing oneself with the key'],
+    'without': ['Martin has worked as', 'delivered weekly.', 'MCMC Methods:'],
+    'comments': ['for common mistake #6', 'This is a fairer comparison', 'I liked the article.'],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.reddit.com/r/Python/comments/1bbbwk/whats_your_opinion_on_what_to_include_in_init_py/': {
+    'file': 'reddit.com.init.html',
+    'author': '',
+    'title': '',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Considering a package', 'Import key functions', 'EDIT: Thanks a lot'],
+    'without': ['news about the dynamic', 'All rights reserved', 'I see your minesweeper'],
+    'comments': ['I do similar things.', 'from foo.bar import x, y, z', 'IMO it makes things'],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
 }
 
 

@@ -1,0 +1,1013 @@
+<!DOCTYPE html><html lang="en"><head>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","errorBeacon":"bam.nr-data.net","licenseKey":"e3359cee6b","applicationID":"48777225","transactionName":"JV0NEUYJCQkARxgVEwReCgYbBAkKAhpHChUSQUwWXAkS","queueTime":0,"applicationTime":46,"agent":""}</script>
+<script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VgcEVlJaGwcIU1ZVBQMC",licenseKey:"e3359cee6b",applicationID:"48777225"};window.NREUM||(NREUM={}),__nr_require=function(t,n,e){function r(e){if(!n[e]){var o=n[e]={exports:{}};t[e][0].call(o.exports,function(n){var o=t[e][1][n];return r(o||n)},o,o.exports)}return n[e].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<e.length;o++)r(e[o]);return r}({1:[function(t,n,e){function r(t){try{s.console&&console.log(t)}catch(n){}}var o,i=t("ee"),a=t(20),s={};try{o=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(s.console=!0,o.indexOf("dev")!==-1&&(s.dev=!0),o.indexOf("nr_dev")!==-1&&(s.nrDev=!0))}catch(c){}s.nrDev&&i.on("internal-error",function(t){r(t.stack)}),s.dev&&i.on("fn-err",function(t,n,e){r(e.stack)}),s.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(s,function(t,n){return t}).join(", ")))},{}],2:[function(t,n,e){function r(t,n,e,r,s){try{p?p-=1:o(s||new UncaughtException(t,n,e),!0)}catch(f){try{i("ierr",[f,c.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,n,e){this.message=t||"Uncaught error with no additional information",this.sourceURL=n,this.line=e}function o(t,n){var e=n?null:c.now();i("err",[t,e])}var i=t("handle"),a=t(21),s=t("ee"),c=t("loader"),f=t("gos"),u=window.onerror,d=!1,l="nr@seenError",p=0;c.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(9),t(8),"addEventListener"in window&&t(5),c.xhrWrappable&&t(10),d=!0)}s.on("fn-start",function(t,n,e){d&&(p+=1)}),s.on("fn-err",function(t,n,e){d&&!e[l]&&(f(e,l,function(){return!0}),this.thrown=!0,o(e))}),s.on("fn-end",function(){d&&!this.thrown&&p>0&&(p-=1)}),s.on("internal-error",function(t){i("ierr",[t,c.now(),!0])})},{}],3:[function(t,n,e){t("loader").features.ins=!0},{}],4:[function(t,n,e){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var o=t("ee"),i=t("handle"),a=t(9),s=t(8),c="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",l="resource",p="-start",h="-end",m="fn"+p,w="fn"+h,v="bstTimer",g="pushState",y=t("loader");y.features.stn=!0,t(7),"addEventListener"in window&&t(5);var x=NREUM.o.EV;o.on(m,function(t,n){var e=t[0];e instanceof x&&(this.bstStart=y.now())}),o.on(w,function(t,n){var e=t[0];e instanceof x&&i("bst",[e,n,this.bstStart,y.now()])}),a.on(m,function(t,n,e){this.bstStart=y.now(),this.bstType=e}),a.on(w,function(t,n){i(v,[n,this.bstStart,y.now(),this.bstType])}),s.on(m,function(){this.bstStart=y.now()}),s.on(w,function(t,n){i(v,[n,this.bstStart,y.now(),"requestAnimationFrame"])}),o.on(g+p,function(t){this.time=y.now(),this.startPath=location.pathname+location.hash}),o.on(g+h,function(t){i("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+c]?window.performance[f](u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["c"+c]()},!1):window.performance[f]("webkit"+u,function(t){i(d,[window.performance.getEntriesByType(l)]),window.performance["webkitC"+c]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],5:[function(t,n,e){function r(t){for(var n=t;n&&!n.hasOwnProperty(u);)n=Object.getPrototypeOf(n);n&&o(n)}function o(t){s.inPlace(t,[u,d],"-",i)}function i(t,n){return t[1]}var a=t("ee").get("events"),s=t("wrap-function")(a,!0),c=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";n.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(o(window),o(f.prototype)),a.on(u+"-start",function(t,n){var e=t[1],r=c(e,"nr@wrapped",function(){function t(){if("function"==typeof e.handleEvent)return e.handleEvent.apply(e,arguments)}var n={object:t,"function":e}[typeof e];return n?s(n,"fn-",null,n.name||"anonymous"):e});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],6:[function(t,n,e){function r(t,n,e){var r=t[n];"function"==typeof r&&(t[n]=function(){var t=i(arguments),n={};o.emit(e+"before-start",[t],n);var a;n[m]&&n[m].dt&&(a=n[m].dt);var s=r.apply(this,t);return o.emit(e+"start",[t,a],s),s.then(function(t){return o.emit(e+"end",[null,t],s),t},function(t){throw o.emit(e+"end",[t],s),t})})}var o=t("ee").get("fetch"),i=t(21),a=t(20);n.exports=o;var s=window,c="fetch-",f=c+"body-",u=["arrayBuffer","blob","json","text","formData"],d=s.Request,l=s.Response,p=s.fetch,h="prototype",m="nr@context";d&&l&&p&&(a(u,function(t,n){r(d[h],n,f),r(l[h],n,f)}),r(s,"fetch",c),o.on(c+"end",function(t,n){var e=this;if(n){var r=n.headers.get("content-length");null!==r&&(e.rxSize=r),o.emit(c+"done",[null,n],e)}else o.emit(c+"done",[t],e)}))},{}],7:[function(t,n,e){var r=t("ee").get("history"),o=t("wrap-function")(r);n.exports=r;var i=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;i&&i.pushState&&i.replaceState&&(a=i),o.inPlace(a,["pushState","replaceState"],"-")},{}],8:[function(t,n,e){var r=t("ee").get("raf"),o=t("wrap-function")(r),i="equestAnimationFrame";n.exports=r,o.inPlace(window,["r"+i,"mozR"+i,"webkitR"+i,"msR"+i],"raf-"),r.on("raf-start",function(t){t[0]=o(t[0],"fn-")})},{}],9:[function(t,n,e){function r(t,n,e){t[0]=a(t[0],"fn-",null,e)}function o(t,n,e){this.method=e,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,e)}var i=t("ee").get("timer"),a=t("wrap-function")(i),s="setTimeout",c="setInterval",f="clearTimeout",u="-start",d="-";n.exports=i,a.inPlace(window,[s,"setImmediate"],s+d),a.inPlace(window,[c],c+d),a.inPlace(window,[f,"clearImmediate"],f+d),i.on(c+u,r),i.on(s+u,o)},{}],10:[function(t,n,e){function r(t,n){d.inPlace(n,["onreadystatechange"],"fn-",s)}function o(){var t=this,n=u.context(t);t.readyState>3&&!n.resolved&&(n.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,g,"fn-",s)}function i(t){y.push(t),h&&(b?b.then(a):w?w(a):(E=-E,O.data=E))}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function s(t,n){return n}function c(t,n){for(var e in t)n[e]=t[e];return n}t(5);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),l=NREUM.o,p=l.XHR,h=l.MO,m=l.PR,w=l.SI,v="readystatechange",g=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];n.exports=u;var x=window.XMLHttpRequest=function(t){var n=new p(t);try{u.emit("new-xhr",[n],n),n.addEventListener(v,o,!1)}catch(e){try{u.emit("internal-error",[e])}catch(r){}}return n};if(c(p,x),x.prototype=p.prototype,d.inPlace(x.prototype,["open","send"],"-xhr-",s),u.on("send-xhr-start",function(t,n){r(t,n),i(n)}),u.on("open-xhr-start",r),h){var b=m&&m.resolve();if(!w&&!m){var E=1,O=document.createTextNode(E);new h(a).observe(O,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===v||a()})},{}],11:[function(t,n,e){function r(t){if(!i(t))return null;var n=window.NREUM;if(!n.loader_config)return null;var e=(n.loader_config.accountID||"").toString()||null,r=(n.loader_config.agentID||"").toString()||null,s=(n.loader_config.trustKey||"").toString()||null;if(!e||!r)return null;var c=a.generateCatId(),f=a.generateCatId(),u=Date.now(),d=o(c,f,u,e,r,s);return{header:d,guid:c,traceId:f,timestamp:u}}function o(t,n,e,r,o,i){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var s={v:[0,1],d:{ty:"Browser",ac:r,ap:o,id:t,tr:n,ti:e}};return i&&r!==i&&(s.d.tk=i),btoa(JSON.stringify(s))}function i(t){var n=!1,e=!1,r={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(r=NREUM.init.distributed_tracing,e=!!r.enabled),e)if(t.sameOrigin)n=!0;else if(r.allowed_origins instanceof Array)for(var o=0;o<r.allowed_origins.length;o++){var i=s(r.allowed_origins[o]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){n=!0;break}}return e&&n}var a=t(18),s=t(13);n.exports={generateTracePayload:r,shouldGenerateTrace:i}},{}],12:[function(t,n,e){function r(t){var n=this.params,e=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<p;r++)t.removeEventListener(l[r],this.listener,!1);n.aborted||(e.duration=s.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==n.status&&(n.status=0):a(this,t),e.cbTime=this.cbTime,d.emit("xhr-done",[t],t),c("xhr",[n,e,this.startTime]))}}function o(t,n){var e=t.responseType;if("json"===e&&null!==n)return n;var r="arraybuffer"===e||"blob"===e||"json"===e?t.response:t.responseText;return w(r)}function i(t,n){var e=f(n),r=t.params;r.host=e.hostname+":"+e.port,r.pathname=e.pathname,t.parsedOrigin=f(n),t.sameOrigin=t.parsedOrigin.sameOrigin}function a(t,n){t.params.status=n.status;var e=o(n,t.lastSize);if(e&&(t.metrics.rxSize=e),t.sameOrigin){var r=n.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var s=t("loader");if(s.xhrWrappable){var c=t("handle"),f=t(13),u=t(11).generateTracePayload,d=t("ee"),l=["load","error","abort","timeout"],p=l.length,h=t("id"),m=t(16),w=t(15),v=window.XMLHttpRequest;s.features.xhr=!0,t(10),t(6),d.on("new-xhr",function(t){var n=this;n.totalCbs=0,n.called=0,n.cbTime=0,n.end=r,n.ended=!1,n.xhrGuids={},n.lastSize=null,n.loadCaptureCalled=!1,t.addEventListener("load",function(e){a(n,t)},!1),m&&(m>34||m<10)||window.opera||t.addEventListener("progress",function(t){n.lastSize=t.loaded},!1)}),d.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),d.on("open-xhr-end",function(t,n){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&n.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var e=u(this.parsedOrigin);e&&e.header&&(n.setRequestHeader("newrelic",e.header),this.dt=e)}),d.on("send-xhr-start",function(t,n){var e=this.metrics,r=t[0],o=this;if(e&&r){var i=w(r);i&&(e.txSize=i)}this.startTime=s.now(),this.listener=function(t){try{"abort"!==t.type||o.loadCaptureCalled||(o.params.aborted=!0),("load"!==t.type||o.called===o.totalCbs&&(o.onloadCalled||"function"!=typeof n.onload))&&o.end(n)}catch(e){try{d.emit("internal-error",[e])}catch(r){}}};for(var a=0;a<p;a++)n.addEventListener(l[a],this.listener,!1)}),d.on("xhr-cb-time",function(t,n,e){this.cbTime+=t,n?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof e.onload||this.end(e)}),d.on("xhr-load-added",function(t,n){var e=""+h(t)+!!n;this.xhrGuids&&!this.xhrGuids[e]&&(this.xhrGuids[e]=!0,this.totalCbs+=1)}),d.on("xhr-load-removed",function(t,n){var e=""+h(t)+!!n;this.xhrGuids&&this.xhrGuids[e]&&(delete this.xhrGuids[e],this.totalCbs-=1)}),d.on("addEventListener-end",function(t,n){n instanceof v&&"load"===t[0]&&d.emit("xhr-load-added",[t[1],t[2]],n)}),d.on("removeEventListener-end",function(t,n){n instanceof v&&"load"===t[0]&&d.emit("xhr-load-removed",[t[1],t[2]],n)}),d.on("fn-start",function(t,n,e){n instanceof v&&("onload"===e&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=s.now()))}),d.on("fn-end",function(t,n){this.xhrCbStart&&d.emit("xhr-cb-time",[s.now()-this.xhrCbStart,this.onload,n],n)}),d.on("fetch-before-start",function(t){var n,e=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url&&(n=t[0].url),n&&(this.parsedOrigin=f(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var r=u(this.parsedOrigin);if(r&&r.header){var o=r.header;if("string"==typeof t[0]){var i={};for(var a in e)i[a]=e[a];i.headers=new Headers(e.headers||{}),i.headers.set("newrelic",o),this.dt=r,t.length>1?t[1]=i:t.push(i)}else t[0]&&t[0].headers&&(t[0].headers.append("newrelic",o),this.dt=r)}})}},{}],13:[function(t,n,e){var r={};n.exports=function(t){if(t in r)return r[t];var n=document.createElement("a"),e=window.location,o={};n.href=t,o.port=n.port;var i=n.href.split("://");!o.port&&i[1]&&(o.port=i[1].split("/")[0].split("@").pop().split(":")[1]),o.port&&"0"!==o.port||(o.port="https"===i[0]?"443":"80"),o.hostname=n.hostname||e.hostname,o.pathname=n.pathname,o.protocol=i[0],"/"!==o.pathname.charAt(0)&&(o.pathname="/"+o.pathname);var a=!n.protocol||":"===n.protocol||n.protocol===e.protocol,s=n.hostname===document.domain&&n.port===e.port;return o.sameOrigin=a&&(!n.hostname||s),"/"===o.pathname&&(r[t]=o),o}},{}],14:[function(t,n,e){function r(){}function o(t,n,e){return function(){return i(t,[f.now()].concat(s(arguments)),n?null:this,e),n?void 0:this}}var i=t("handle"),a=t(20),s=t(21),c=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",p=l+"ixn-";a(d,function(t,n){u[n]=o(l+n,!0,"api")}),u.addPageAction=o(l+"addPageAction",!0),u.setCurrentRouteName=o(l+"routeName",!0),n.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,n){var e={},r=this,o="function"==typeof n;return i(p+"tracer",[f.now(),t,e],r),function(){if(c.emit((o?"":"no-")+"fn-start",[f.now(),r,o],e),o)try{return n.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],e),t}finally{c.emit("fn-end",[f.now()],e)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,n){h[n]=o(p+n)}),newrelic.noticeError=function(t,n){"string"==typeof t&&(t=new Error(t)),i("err",[t,f.now(),!1,n])}},{}],15:[function(t,n,e){n.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(n){return}}}},{}],16:[function(t,n,e){var r=0,o=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);o&&(r=+o[1]),n.exports=r},{}],17:[function(t,n,e){function r(t,n){var e=t.getEntries();e.forEach(function(t){"first-paint"===t.name?a("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&a("timing",["fcp",Math.floor(t.startTime)])})}function o(t){if(t instanceof c&&!u){var n,e=Math.round(t.timeStamp);n=e>1e12?Date.now()-e:s.now()-e,u=!0,a("timing",["fi",e,{type:t.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var i,a=t("handle"),s=t("loader"),c=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){i=new PerformanceObserver(r);try{i.observe({entryTypes:["paint"]})}catch(f){}}if("addEventListener"in document){var u=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(t){document.addEventListener(t,o,!1)})}}},{}],18:[function(t,n,e){function r(){function t(){return n?15&n[e++]:16*Math.random()|0}var n=null,e=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(n=r.getRandomValues(new Uint8Array(31)));for(var o,i="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",s=0;s<i.length;s++)o=i[s],"x"===o?a+=t().toString(16):"y"===o?(o=3&t()|8,a+=o.toString(16)):a+=o;return a}function o(){function t(){return n?15&n[e++]:16*Math.random()|0}var n=null,e=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&Uint8Array&&(n=r.getRandomValues(new Uint8Array(31)));for(var o=[],i=0;i<16;i++)o.push(t().toString(16));return o.join("")}n.exports={generateUuid:r,generateCatId:o}},{}],19:[function(t,n,e){function r(t,n){if(!o)return!1;if(t!==o)return!1;if(!n)return!0;if(!i)return!1;for(var e=i.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==e[a])return!1;return!0}var o=null,i=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var s=navigator.userAgent,c=s.match(a);c&&s.indexOf("Chrome")===-1&&s.indexOf("Chromium")===-1&&(o="Safari",i=c[1])}n.exports={agent:o,version:i,match:r}},{}],20:[function(t,n,e){function r(t,n){var e=[],r="",i=0;for(r in t)o.call(t,r)&&(e[i]=n(r,t[r]),i+=1);return e}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],21:[function(t,n,e){function r(t,n,e){n||(n=0),"undefined"==typeof e&&(e=t?t.length:0);for(var r=-1,o=e-n||0,i=Array(o<0?0:o);++r<o;)i[r]=t[n+r];return i}n.exports=r},{}],22:[function(t,n,e){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,n,e){function r(){}function o(t){function n(t){return t&&t instanceof r?t:t?c(t,s,i):i()}function e(e,r,o,i){if(!l.aborted||i){t&&t(e,r,o);for(var a=n(o),s=m(e),c=s.length,f=0;f<c;f++)s[f].apply(a,r);var d=u[y[e]];return d&&d.push([x,e,r,a]),a}}function p(t,n){g[t]=m(t).concat(n)}function h(t,n){var e=g[t];if(e)for(var r=0;r<e.length;r++)e[r]===n&&e.splice(r,1)}function m(t){return g[t]||[]}function w(t){return d[t]=d[t]||o(e)}function v(t,n){f(t,function(t,e){n=n||"feature",y[e]=n,n in u||(u[n]=[])})}var g={},y={},x={on:p,addEventListener:p,removeEventListener:h,emit:e,get:w,listeners:m,context:n,buffer:v,abort:a,aborted:!1};return x}function i(){return new r}function a(){(u.api||u.feature)&&(l.aborted=!0,u=l.backlog={})}var s="nr@context",c=t("gos"),f=t(20),u={},d={},l=n.exports=o();l.backlog=u},{}],gos:[function(t,n,e){function r(t,n,e){if(o.call(t,n))return t[n];var r=e();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,n,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return t[n]=r,r}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(t,n,e){function r(t,n,e,r){o.buffer([t],r),o.emit(t,n,e)}var o=t("ee").get("handle");n.exports=r,r.ee=o},{}],id:[function(t,n,e){function r(t){var n=typeof t;return!t||"object"!==n&&"function"!==n?-1:t===window?0:a(t,i,function(){return o++})}var o=1,i="nr@id",a=t("gos");n.exports=r},{}],loader:[function(t,n,e){function r(){if(!E++){var t=b.info=NREUM.info,n=p.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&n))return u.abort();f(y,function(n,e){t[n]||(t[n]=e)}),c("mark",["onload",a()+b.offset],null,"api");var e=p.createElement("script");e.src="https://"+t.agent,n.parentNode.insertBefore(e,n)}}function o(){"complete"===p.readyState&&i()}function i(){c("mark",["domContent",a()+b.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(s=Math.max((new Date).getTime(),s))-b.offset}var s=(new Date).getTime(),c=t("handle"),f=t(20),u=t("ee"),d=t(19),l=window,p=l.document,h="addEventListener",m="attachEvent",w=l.XMLHttpRequest,v=w&&w.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:w,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var g=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1158.min.js"},x=w&&v&&v[h]&&!/CriOS/.test(navigator.userAgent),b=n.exports={offset:s,now:a,origin:g,features:{},xhrWrappable:x,userAgent:d};t(14),t(17),p[h]?(p[h]("DOMContentLoaded",i,!1),l[h]("load",r,!1)):(p[m]("onreadystatechange",o),l[m]("onload",r)),c("mark",["firstbyte",s],null,"api");var E=0,O=t(22)},{}],"wrap-function":[function(t,n,e){function r(t){return!(t&&t instanceof Function&&t.apply&&!t[a])}var o=t("ee"),i=t(21),a="nr@original",s=Object.prototype.hasOwnProperty,c=!1;n.exports=function(t,n){function e(t,n,e,o){function nrWrapper(){var r,a,s,c;try{a=this,r=i(arguments),s="function"==typeof e?e(r,a):e||{}}catch(f){l([f,"",[r,a,o],s])}u(n+"start",[r,a,o],s);try{return c=t.apply(a,r)}catch(d){throw u(n+"err",[r,a,d],s),d}finally{u(n+"end",[r,a,c],s)}}return r(t)?t:(n||(n=""),nrWrapper[a]=t,d(t,nrWrapper),nrWrapper)}function f(t,n,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<n.length;c++)s=n[c],a=t[s],r(a)||(t[s]=e(a,f?s+o:o,i,s))}function u(e,r,o){if(!c||n){var i=c;c=!0;try{t.emit(e,r,o,n)}catch(a){l([a,e,r,o])}c=i}}function d(t,n){if(Object.defineProperty&&Object.keys)try{var e=Object.keys(t);return e.forEach(function(e){Object.defineProperty(n,e,{get:function(){return t[e]},set:function(n){return t[e]=n,n}})}),n}catch(r){l([r])}for(var o in t)s.call(t,o)&&(n[o]=t[o]);return n}function l(n){try{t.emit("internal-error",n)}catch(e){}}return t||(t=o),e.inPlace=f,e.flag=a,e}},{}]},{},["loader",2,12,4,3]);</script><script type="application/ld+json">{"@context":"http://schema.org","type":"Article","url":"https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make","name":"Buggy Python Code: The 10 Most Common Mistakes That Python Developers Make","datePublished":"Thu, 08 May 2014 14:04:53 -0400","headline":"Buggy Python Code: The 10 Most Common Mistakes That Python Developers Make","author":{"@type":"Person","name":"Martin Chikilian","image":"https://bs-uploads.toptal.io/blackfish-uploads/talent/profile/picture_file/picture/152998/retina_60x60_large_ffd59b17295c0dc796c0aada1d8d5ca6-3a463e96e68f7767b79fbe76d3e52047.png"},"image":"https://bs-uploads.toptal.io/blackfish-uploads/blog/common_mistakes_guide/content/cover_image_file/cover_image/14612/cover-top-10-mistakes-that-python-programmers-make-09b983479d8ad3850582627f73ca3c57.png","publisher":{"@type":"Organization","name":"Toptal","logo":{"@type":"ImageObject","width":32,"height":32,"url":"https://bs-assets.toptal.io/blackfish-assets/public/base/images/favicons/toptal-blog-favicon32x32_c2c2ba.png"}},"mainEntityOfPage":"https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make"}</script><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>The 10 Most Common Mistakes That Python Developers Make | Toptal</title><meta content="Test your Python knowledge by seeing how many of these 10 most common Python mistakes you&#39;ve mastered. " name="description" /><meta content="summary_large_image" name="twitter:card" /><meta content="Buggy Python Code: The 10 Most Common Mistakes That Python Developers Make" property="og:title" /><meta content="Test your Python knowledge by seeing how many of these 10 most common Python mistakes you&#39;ve mastered. " property="og:description" /><meta content="https://bs-uploads.toptal.io/blackfish-uploads/blog/post/seo/og_image_file/og_image/14611/top-10-mistakes-that-python-programmers-make-09b983479d8ad3850582627f73ca3c57.png" property="og:image" /><meta content="Toptal Engineering Blog" property="og:site_name" /><link href="https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make" rel="canonical" /><link rel="alternate" hreflang="es" href="https://www.toptal.com/python/codigo-buggy-python-los-10-errores-mas-comunes-que-cometen-los-desarrolladores-python"><link rel="alternate" hreflang="x-default" href="https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make"><link rel="alternate" hreflang="en" href="https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make"><link href="https://bs-assets.toptal.io/blackfish-assets/public/base/images/favicons/toptal-blog-favicon32x32_fd5e46.ico" rel="icon" sizes="32x32" /><link href="https://bs-assets.toptal.io/blackfish-assets/public/base/images/favicons/toptal-blog-favicon32x32_c2c2ba.png" rel="icon" sizes="32x32" /><link href="https://bs-assets.toptal.io/blackfish-assets/public/base/images/favicons/toptal-blog-favicon57x57_2ec58c.png" rel="apple-touch-icon" sizes="57x57" /><link href="https://bs-assets.toptal.io/blackfish-assets/public/base/images/favicons/toptal-blog-favicon72x72_7485f3.png" rel="apple-touch-icon" sizes="72x72" /><link href="https://bs-assets.toptal.io/blackfish-assets/public/base/images/favicons/toptal-blog-favicon114x114_01eb8c.png" rel="apple-touch-icon" sizes="114x114" /><script>
+//<![CDATA[
+window.gon={};gon.chameleon_current_experiments={"blog_hiring_ctas":{"google_analytics_dimension":null,"variant_key":"start_hiring"},"talent_acq_blog":{"google_analytics_dimension":"dimension24","variant_key":"sidebar_topcta"}};gon.env="production";gon.api_sessions_url="https://www.toptal.com/api/cms/sessions";gon.api_shorten_url="https://www.toptal.com/shorten_url";gon.geo_target_url="https://www.toptal.com/api/geo_target";gon.referrers_url="https://www.toptal.com/referrers";gon.flash={};gon.google_api_browser_key="AIzaSyDED9v55b-c1opDYMEDYBkOgDFGlBMICGY";gon.google_maps_api_browser_key="AIzaSyB-X6Stk7LlgQ9uRv3901GP-XVKXqtbY3w";gon.recaptcha_site_key="6LfgR1UUAAAAAJ8-zrjvTk18gKat-4CdBPSrUJoR";gon.recaptcha_url="https://www.google.com/recaptcha/api.js";gon.chameleon_participant_uuid="da5dfeaa-6335-4cb7-b776-ac2f6eac1de2";gon.url_share_counter=1443;gon.ga_settings={"group":"Blog posts"};gon.fullstory_rate=0;gon.fullstory_enabled=false;gon.fullstory_org_key="1YmX";gon.load_twitter_widgets=true;
+//]]>
+</script><script>
+//<![CDATA[
+/*! modernizr 3.6.0 (Custom Build) | MIT *
+ * https://modernizr.com/download/?-cssgradients-csspositionsticky-csstransforms-csstransitions-flexbox-flexboxlegacy-flexboxtweener-flexwrap-history-input-localstorage-objectfit-rgba-prefixed-setclasses !*/
+ !function(e,t,n){function r(e,t){return typeof e===t}function o(){var e,t,n,o,i,s,a;for(var l in x)if(x.hasOwnProperty(l)){if(e=[],t=x[l],t.name&&(e.push(t.name.toLowerCase()),t.options&&t.options.aliases&&t.options.aliases.length))for(n=0;n<t.options.aliases.length;n++)e.push(t.options.aliases[n].toLowerCase());for(o=r(t.fn,"function")?t.fn():t.fn,i=0;i<e.length;i++)s=e[i],a=s.split("."),1===a.length?Modernizr[a[0]]=o:(!Modernizr[a[0]]||Modernizr[a[0]]instanceof Boolean||(Modernizr[a[0]]=new Boolean(Modernizr[a[0]])),Modernizr[a[0]][a[1]]=o),C.push((o?"":"no-")+a.join("-"))}}function i(e){var t=w.className,n=Modernizr._config.classPrefix||"";if(S&&(t=t.baseVal),Modernizr._config.enableJSClass){var r=new RegExp("(^|\\s)"+n+"no-js(\\s|$)");t=t.replace(r,"$1"+n+"js$2")}Modernizr._config.enableClasses&&(t+=" "+n+e.join(" "+n),S?w.className.baseVal=t:w.className=t)}function s(e,t){return!!~(""+e).indexOf(t)}function a(){return"function"!=typeof t.createElement?t.createElement(arguments[0]):S?t.createElementNS.call(t,"http://www.w3.org/2000/svg",arguments[0]):t.createElement.apply(t,arguments)}function l(){var e=t.body;return e||(e=a(S?"svg":"body"),e.fake=!0),e}function f(e,n,r,o){var i,s,f,u,d="modernizr",c=a("div"),p=l();if(parseInt(r,10))for(;r--;)f=a("div"),f.id=o?o[r]:d+(r+1),c.appendChild(f);return i=a("style"),i.type="text/css",i.id="s"+d,(p.fake?p:c).appendChild(i),p.appendChild(c),i.styleSheet?i.styleSheet.cssText=e:i.appendChild(t.createTextNode(e)),c.id=d,p.fake&&(p.style.background="",p.style.overflow="hidden",u=w.style.overflow,w.style.overflow="hidden",w.appendChild(p)),s=n(c,e),p.fake?(p.parentNode.removeChild(p),w.style.overflow=u,w.offsetHeight):c.parentNode.removeChild(c),!!s}function u(e){return e.replace(/([A-Z])/g,function(e,t){return"-"+t.toLowerCase()}).replace(/^ms-/,"-ms-")}function d(t,n,r){var o;if("getComputedStyle"in e){o=getComputedStyle.call(e,t,n);var i=e.console;if(null!==o)r&&(o=o.getPropertyValue(r));else if(i){var s=i.error?"error":"log";i[s].call(i,"getComputedStyle returning null, its possible modernizr test results are inaccurate")}}else o=!n&&t.currentStyle&&t.currentStyle[r];return o}function c(t,r){var o=t.length;if("CSS"in e&&"supports"in e.CSS){for(;o--;)if(e.CSS.supports(u(t[o]),r))return!0;return!1}if("CSSSupportsRule"in e){for(var i=[];o--;)i.push("("+u(t[o])+":"+r+")");return i=i.join(" or "),f("@supports ("+i+") { #modernizr { position: absolute; } }",function(e){return"absolute"==d(e,null,"position")})}return n}function p(e){return e.replace(/([a-z])-([a-z])/g,function(e,t,n){return t+n.toUpperCase()}).replace(/^-/,"")}function g(e,t,o,i){function l(){u&&(delete k.style,delete k.modElem)}if(i=r(i,"undefined")?!1:i,!r(o,"undefined")){var f=c(e,o);if(!r(f,"undefined"))return f}for(var u,d,g,m,v,h=["modernizr","tspan","samp"];!k.style&&h.length;)u=!0,k.modElem=a(h.shift()),k.style=k.modElem.style;for(g=e.length,d=0;g>d;d++)if(m=e[d],v=k.style[m],s(m,"-")&&(m=p(m)),k.style[m]!==n){if(i||r(o,"undefined"))return l(),"pfx"==t?m:!0;try{k.style[m]=o}catch(y){}if(k.style[m]!=v)return l(),"pfx"==t?m:!0}return l(),!1}function m(e,t){return function(){return e.apply(t,arguments)}}function v(e,t,n){var o;for(var i in e)if(e[i]in t)return n===!1?e[i]:(o=t[e[i]],r(o,"function")?m(o,n||t):o);return!1}function h(e,t,n,o,i){var s=e.charAt(0).toUpperCase()+e.slice(1),a=(e+" "+T.join(s+" ")+s).split(" ");return r(t,"string")||r(t,"undefined")?g(a,t,o,i):(a=(e+" "+P.join(s+" ")+s).split(" "),v(a,t,n))}function y(e,t,r){return h(e,n,n,t,r)}var x=[],b={_version:"3.6.0",_config:{classPrefix:"",enableClasses:!0,enableJSClass:!0,usePrefixes:!0},_q:[],on:function(e,t){var n=this;setTimeout(function(){t(n[e])},0)},addTest:function(e,t,n){x.push({name:e,fn:t,options:n})},addAsyncTest:function(e){x.push({name:null,fn:e})}},Modernizr=function(){};Modernizr.prototype=b,Modernizr=new Modernizr;var C=[],w=t.documentElement,S="svg"===w.nodeName.toLowerCase(),_="Moz O ms Webkit",T=b._config.usePrefixes?_.split(" "):[];b._cssomPrefixes=T;var O={elem:a("modernizr")};Modernizr._q.push(function(){delete O.elem});var k={style:O.elem.style};Modernizr._q.unshift(function(){delete k.style});var P=b._config.usePrefixes?_.toLowerCase().split(" "):[];b._domPrefixes=P,b.testAllProps=h;var z=function(t){var r,o=E.length,i=e.CSSRule;if("undefined"==typeof i)return n;if(!t)return!1;if(t=t.replace(/^@/,""),r=t.replace(/-/g,"_").toUpperCase()+"_RULE",r in i)return"@"+t;for(var s=0;o>s;s++){var a=E[s],l=a.toUpperCase()+"_"+r;if(l in i)return"@-"+a.toLowerCase()+"-"+t}return!1};b.atRule=z;var A=b.prefixed=function(e,t,n){return 0===e.indexOf("@")?z(e):(-1!=e.indexOf("-")&&(e=p(e)),t?h(e,t,n):h(e,"pfx"))};b.testAllProps=y,Modernizr.addTest("flexbox",y("flexBasis","1px",!0)),Modernizr.addTest("flexboxlegacy",y("boxDirection","reverse",!0)),Modernizr.addTest("flexboxtweener",y("flexAlign","end",!0)),Modernizr.addTest("flexwrap",y("flexWrap","wrap",!0));var E=b._config.usePrefixes?" -webkit- -moz- -o- -ms- ".split(" "):["",""];b._prefixes=E,Modernizr.addTest("cssgradients",function(){for(var e,t="background-image:",n="gradient(linear,left top,right bottom,from(#9f9),to(white));",r="",o=0,i=E.length-1;i>o;o++)e=0===o?"to ":"",r+=t+E[o]+"linear-gradient("+e+"left top, #9f9, white);";Modernizr._config.usePrefixes&&(r+=t+"-webkit-"+n);var s=a("a"),l=s.style;return l.cssText=r,(""+l.backgroundImage).indexOf("gradient")>-1}),Modernizr.addTest("objectfit",!!A("objectFit"),{aliases:["object-fit"]}),Modernizr.addTest("csspositionsticky",function(){var e="position:",t="sticky",n=a("a"),r=n.style;return r.cssText=e+E.join(t+";"+e).slice(0,-e.length),-1!==r.position.indexOf(t)}),Modernizr.addTest("rgba",function(){var e=a("a").style;return e.cssText="background-color:rgba(150,255,150,.5)",(""+e.backgroundColor).indexOf("rgba")>-1}),Modernizr.addTest("csstransforms",function(){return-1===navigator.userAgent.indexOf("Android 2.")&&y("transform","scale(1)",!0)}),Modernizr.addTest("csstransitions",y("transition","all",!0)),Modernizr.addTest("history",function(){var t=navigator.userAgent;return-1===t.indexOf("Android 2.")&&-1===t.indexOf("Android 4.0")||-1===t.indexOf("Mobile Safari")||-1!==t.indexOf("Chrome")||-1!==t.indexOf("Windows Phone")||"file:"===location.protocol?e.history&&"pushState"in e.history:!1});var j=a("input"),L="autocomplete autofocus list placeholder max min multiple pattern required step".split(" "),N={};Modernizr.input=function(t){for(var n=0,r=t.length;r>n;n++)N[t[n]]=!!(t[n]in j);return N.list&&(N.list=!(!a("datalist")||!e.HTMLDataListElement)),N}(L),Modernizr.addTest("localstorage",function(){var e="modernizr";try{return localStorage.setItem(e,e),localStorage.removeItem(e),!0}catch(t){return!1}}),o(),i(C),delete b.addTest,delete b.addAsyncTest;for(var q=0;q<Modernizr._q.length;q++)Modernizr._q[q]();e.Modernizr=Modernizr}(window,document);
+
+//]]>
+</script><link rel="stylesheet" media="screen" href="https://bs-assets.toptal.io/blackfish-assets/public_blog_post_styles.ac40b87dafde596179081dc4918e0da1.css" /><script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-21104039-1"></script><script>var trackingId = 'UA-21104039-1'
+var anonymizeIp = true
+
+//Leave it available globally to be initialized when the google analytics widgets gets loaded
+window.googleAnalyticsTrackingId = trackingId
+
+window.dataLayer = window.dataLayer || []
+window.gtag = function () { dataLayer.push(arguments) }
+
+gtag('js', new Date())
+gtag('config', trackingId, Object.assign(
+  {
+    'anonymize_ip': anonymizeIp,
+    'content_group1': (window.gon && window.gon.ga_settings) ? gon.ga_settings.group : undefined,
+    'linker': ['www.toptal.com', 'staging.toptal.net'],
+    'custom_map': {
+      'dimension10': 'client_id'
+    }
+  },
+  (window.gon && gon.chameleon_current_experiments) ? buildChameleonExperiments() : {}
+))
+
+track15SecondsRead()
+
+/*
+* Parses Chameleon experiments and adds each applicable one to Google Analytics’ config.
+*
+* List of experiments comes from gon as an object.
+* We don't use the keys of this object, we destructure assign each object's value.
+*
+* An example of a gon.chameleon_current_experiments:
+*
+*  {
+*    new_global_nav: {google_analytics_dimension: 'dimension12', variant_key: 'disabled'},
+*    qualaroo_homepage: {google_analytics_dimension: null, variant_key: 'enabled'}
+*  }
+*
+*  Because `qualaroo_homepage` has `null` for its `google_analytics_dimension`, it will be ignored.
+*
+*  The result will be:
+*
+*  {'dimension12': 'disabled'}
+*
+*/
+function buildChameleonExperiments () {
+  return Object.entries(gon.chameleon_current_experiments).reduce((acc, experiment) => {
+    const {google_analytics_dimension, variant_key} = experiment[1]
+
+    if (google_analytics_dimension !== null) {
+      let configObject = {}
+      configObject[google_analytics_dimension] = variant_key
+
+      return Object.assign(acc, configObject)
+    }
+    return acc
+  }, {})
+}
+
+function track15SecondsRead(){
+  setTimeout(() => {
+    window.gtag('event', 'read', {'event_category': '15_seconds'})
+  }, 15000)
+}</script><script>var _rollbarConfig = {
+  accessToken: "572775c0ea0f4c7ebad139fc88eaafa8",
+  captureUncaught: true,
+  async: true,
+  captureUnhandledRejections: true,
+  payload: {
+    environment: "production",
+    client: {
+      javascript: {
+        code_version: "77e8f02efe5ce163ba72a503966e42a3cecf8331",
+        source_map_enabled: true
+      }
+    }
+  }
+};
+!function(r){function e(n){if(o[n])return o[n].exports;var t=o[n]={exports:{},id:n,loaded:!1};return r[n].call(t.exports,t,t.exports,e),t.loaded=!0,t.exports}var o={};return e.m=r,e.c=o,e.p="",e(0)}([function(r,e,o){"use strict";var n=o(1),t=o(4);_rollbarConfig=_rollbarConfig||{},_rollbarConfig.rollbarJsUrl=_rollbarConfig.rollbarJsUrl||"https://cdnjs.cloudflare.com/ajax/libs/rollbar.js/2.3.8/rollbar.min.js",_rollbarConfig.async=void 0===_rollbarConfig.async||_rollbarConfig.async;var a=n.setupShim(window,_rollbarConfig),l=t(_rollbarConfig);window.rollbar=n.Rollbar,a.loadFull(window,document,!_rollbarConfig.async,_rollbarConfig,l)},function(r,e,o){"use strict";function n(r){return function(){try{return r.apply(this,arguments)}catch(r){try{console.error("[Rollbar]: Internal error",r)}catch(r){}}}}function t(r,e){this.options=r,this._rollbarOldOnError=null;var o=s++;this.shimId=function(){return o},"undefined"!=typeof window&&window._rollbarShims&&(window._rollbarShims[o]={handler:e,messages:[]})}function a(r,e){if(r){var o=e.globalAlias||"Rollbar";if("object"==typeof r[o])return r[o];r._rollbarShims={},r._rollbarWrappedError=null;var t=new p(e);return n(function(){e.captureUncaught&&(t._rollbarOldOnError=r.onerror,i.captureUncaughtExceptions(r,t,!0),i.wrapGlobals(r,t,!0)),e.captureUnhandledRejections&&i.captureUnhandledRejections(r,t,!0);var n=e.autoInstrument;return e.enabled!==!1&&(void 0===n||n===!0||"object"==typeof n&&n.network)&&r.addEventListener&&(r.addEventListener("load",t.captureLoad.bind(t)),r.addEventListener("DOMContentLoaded",t.captureDomContentLoaded.bind(t))),r[o]=t,t})()}}function l(r){return n(function(){var e=this,o=Array.prototype.slice.call(arguments,0),n={shim:e,method:r,args:o,ts:new Date};window._rollbarShims[this.shimId()].messages.push(n)})}var i=o(2),s=0,d=o(3),c=function(r,e){return new t(r,e)},p=d.bind(null,c);t.prototype.loadFull=function(r,e,o,t,a){var l=function(){var e;if(void 0===r._rollbarDidLoad){e=new Error("rollbar.js did not load");for(var o,n,t,l,i=0;o=r._rollbarShims[i++];)for(o=o.messages||[];n=o.shift();)for(t=n.args||[],i=0;i<t.length;++i)if(l=t[i],"function"==typeof l){l(e);break}}"function"==typeof a&&a(e)},i=!1,s=e.createElement("script"),d=e.getElementsByTagName("script")[0],c=d.parentNode;s.crossOrigin="",s.src=t.rollbarJsUrl,o||(s.async=!0),s.onload=s.onreadystatechange=n(function(){if(!(i||this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState)){s.onload=s.onreadystatechange=null;try{c.removeChild(s)}catch(r){}i=!0,l()}}),c.insertBefore(s,d)},t.prototype.wrap=function(r,e,o){try{var n;if(n="function"==typeof e?e:function(){return e||{}},"function"!=typeof r)return r;if(r._isWrap)return r;if(!r._rollbar_wrapped&&(r._rollbar_wrapped=function(){o&&"function"==typeof o&&o.apply(this,arguments);try{return r.apply(this,arguments)}catch(o){var e=o;throw"string"==typeof e&&(e=new String(e)),e._rollbarContext=n()||{},e._rollbarContext._wrappedSource=r.toString(),window._rollbarWrappedError=e,e}},r._rollbar_wrapped._isWrap=!0,r.hasOwnProperty))for(var t in r)r.hasOwnProperty(t)&&(r._rollbar_wrapped[t]=r[t]);return r._rollbar_wrapped}catch(e){return r}};for(var u="log,debug,info,warn,warning,error,critical,global,configure,handleUncaughtException,handleUnhandledRejection,captureEvent,captureDomContentLoaded,captureLoad".split(","),f=0;f<u.length;++f)t.prototype[u[f]]=l(u[f]);r.exports={setupShim:a,Rollbar:p}},function(r,e){"use strict";function o(r,e,o){if(r){var t;"function"==typeof e._rollbarOldOnError?t=e._rollbarOldOnError:r.onerror&&!r.onerror.belongsToShim&&(t=r.onerror,e._rollbarOldOnError=t);var a=function(){var o=Array.prototype.slice.call(arguments,0);n(r,e,t,o)};a.belongsToShim=o,r.onerror=a}}function n(r,e,o,n){r._rollbarWrappedError&&(n[4]||(n[4]=r._rollbarWrappedError),n[5]||(n[5]=r._rollbarWrappedError._rollbarContext),r._rollbarWrappedError=null),e.handleUncaughtException.apply(e,n),o&&o.apply(r,n)}function t(r,e,o){if(r){"function"==typeof r._rollbarURH&&r._rollbarURH.belongsToShim&&r.removeEventListener("unhandledrejection",r._rollbarURH);var n=function(r){var o,n,t;try{o=r.reason}catch(r){o=void 0}try{n=r.promise}catch(r){n="[unhandledrejection] error getting `promise` from event"}try{t=r.detail,!o&&t&&(o=t.reason,n=t.promise)}catch(r){t="[unhandledrejection] error getting `detail` from event"}o||(o="[unhandledrejection] error getting `reason` from event"),e&&e.handleUnhandledRejection&&e.handleUnhandledRejection(o,n)};n.belongsToShim=o,r._rollbarURH=n,r.addEventListener("unhandledrejection",n)}}function a(r,e,o){if(r){var n,t,a="EventTarget,Window,Node,ApplicationCache,AudioTrackList,ChannelMergerNode,CryptoOperation,EventSource,FileReader,HTMLUnknownElement,IDBDatabase,IDBRequest,IDBTransaction,KeyOperation,MediaController,MessagePort,ModalWindow,Notification,SVGElementInstance,Screen,TextTrack,TextTrackCue,TextTrackList,WebSocket,WebSocketWorker,Worker,XMLHttpRequest,XMLHttpRequestEventTarget,XMLHttpRequestUpload".split(",");for(n=0;n<a.length;++n)t=a[n],r[t]&&r[t].prototype&&l(e,r[t].prototype,o)}}function l(r,e,o){if(e.hasOwnProperty&&e.hasOwnProperty("addEventListener")){for(var n=e.addEventListener;n._rollbarOldAdd&&n.belongsToShim;)n=n._rollbarOldAdd;var t=function(e,o,t){n.call(this,e,r.wrap(o),t)};t._rollbarOldAdd=n,t.belongsToShim=o,e.addEventListener=t;for(var a=e.removeEventListener;a._rollbarOldRemove&&a.belongsToShim;)a=a._rollbarOldRemove;var l=function(r,e,o){a.call(this,r,e&&e._rollbar_wrapped||e,o)};l._rollbarOldRemove=a,l.belongsToShim=o,e.removeEventListener=l}}r.exports={captureUncaughtExceptions:o,captureUnhandledRejections:t,wrapGlobals:a}},function(r,e){"use strict";function o(r,e){this.impl=r(e,this),this.options=e,n(o.prototype)}function n(r){for(var e=function(r){return function(){var e=Array.prototype.slice.call(arguments,0);if(this.impl[r])return this.impl[r].apply(this.impl,e)}},o="log,debug,info,warn,warning,error,critical,global,configure,handleUncaughtException,handleUnhandledRejection,_createItem,wrap,loadFull,shimId,captureEvent,captureDomContentLoaded,captureLoad".split(","),n=0;n<o.length;n++)r[o[n]]=e(o[n])}o.prototype._swapAndProcessMessages=function(r,e){this.impl=r(this.options);for(var o,n,t;o=e.shift();)n=o.method,t=o.args,this[n]&&"function"==typeof this[n]&&("captureDomContentLoaded"===n||"captureLoad"===n?this[n].apply(this,[t[0],o.ts]):this[n].apply(this,t));return this},r.exports=o},function(r,e){"use strict";r.exports=function(r){return function(e){if(!e&&!window._rollbarInitialized){r=r||{};for(var o,n,t=r.globalAlias||"Rollbar",a=window.rollbar,l=function(r){return new a(r)},i=0;o=window._rollbarShims[i++];)n||(n=o.handler),o.handler._swapAndProcessMessages(l,o.messages);window[t]=n,window._rollbarInitialized=!0}}}}]);</script><script>if(!window.appinfo) {
+  (function () {
+    // Setup handlers
+    var result;
+    var done = false;
+    var thens = [];
+    window.onAppInfoLoaded = {
+      then: function(callback) {
+        done ? callback(result) : thens.push(callback)
+        return this
+      }
+    };
+
+    function resolve() {
+      thens.forEach(function(callback) { callback(result) });
+    }
+
+    // Scrips callback, appinfo calls it internally
+    window.onAppinfoLoad = function() {
+      window.appinfo.grab('https://appinfo.toptal.com', {
+        data: gon['application_info_data'] || {},
+        withCredentials: false,
+        callback: function(response, error) {
+          done = true;
+          if (!error) {
+            result = {applicationInfo: response.data};
+          }
+          resolve();
+        }
+      })
+    };
+
+    // Load script
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.onerror = function() {
+      done = true;
+      resolve();
+    }
+    script.src = 'https://appinfo.toptal.com/script.js';
+    document.getElementsByTagName('head')[0].appendChild(script);
+  })();
+}</script></head><body><div class="notifications" data-cell="Notifications"></div><div class="cookie_banner is-gdpr" data-cell="CookieBanner" data-policy-type="gdpr" data-reload="true"><div class="cookie_banner-message">By clicking Accept Cookies, you agree to our use of cookies and other tracking technologies in accordance with our <a rel='nofollow' href='https://www.toptal.com/cookie-policy'>Cookie Policy</a>.</div><div class="cookie_banner-buttons_container"><button class="cookie_banner-btn_allow" data-role="allow">Accept Cookies</button></div></div><div class="blog_post-wrapper" data-cell="ArticleScroll" data-role="blog_post.wrapper"><div class="navbar" data-cell="Navbar" data-role="navbar" data-tae-top-banner="false" data-tae-top-cta="true"><div class="section has-standard_width"><div class="section-inner"><div class="navbar-inner"><div class="navbar-logo_wrapper is-emblem"><a class="navbar-logo" href="https://www.toptal.com/developers"><span class="navbar-logo_emblem"><svg height="32" viewbox="0 0 23 32" width="23" xmlns="http://www.w3.org/2000/svg"><g fill="currentColor" fill-rule="evenodd"><path d="M22.622 13.822L16.29 7.444l-.156-.155L8.844 0l-3.2 3.178 4.69 4.689L.043 18.133 6.4 24.49c.089.089.178.178.267.244l7.2 7.267 3.155-3.156-4.733-4.733 10.333-10.289zM9.444 20.6a.632.632 0 01-.288 0c-.09-.022-.178-.067-.334-.244l-1.866-1.867c-.156-.156-.223-.245-.245-.333a.632.632 0 010-.29c.022-.088.067-.177.245-.333l5.866-5.866c.156-.156.245-.223.334-.245a.632.632 0 01.288 0c.09.022.178.067.334.245l1.866 1.866c.156.156.223.245.245.334a.632.632 0 010 .289c-.022.088-.067.177-.245.333l-5.866 5.867c-.156.177-.245.222-.334.244z" /><path d="M16.867 2.889c0-.8.266-1.467.844-2.045A2.788 2.788 0 0119.733 0c.8 0 1.49.289 2.045.844.555.556.844 1.245.844 2.045 0 .8-.289 1.467-.844 2.022a2.802 2.802 0 01-2.045.845c-.8 0-1.466-.267-2.022-.845-.555-.555-.844-1.222-.844-2.022zm.489 0c0 .667.222 1.244.688 1.711a2.314 2.314 0 001.712.711c.666 0 1.244-.244 1.688-.711a2.35 2.35 0 00.712-1.711c0-.689-.245-1.245-.712-1.711-.466-.467-1.022-.711-1.688-.711-.667 0-1.245.244-1.69.71a2.314 2.314 0 00-.71 1.712zm3.066 1.578l-.778-1.378h-.51v1.378h-.467V1.31h1.289c.644 0 1 .378 1 .889 0 .444-.334.778-.778.867l.778 1.4h-.534zm-1.289-2.734v.956h.734c.4 0 .622-.156.622-.467 0-.333-.2-.489-.622-.489h-.734z" /></g></svg></span><span class="navbar-logo_wordmark"><svg height="32" width="116" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path d="M1.444.866h18.092v23.908H1.444z" id="a" /><path d="M1.241.673h5.574v5.572H1.24z" id="c" /></defs><g fill="none" fill-rule="evenodd"><g transform="translate(56.155 6.993)"><mask fill="#fff" id="b"><use xlink:href="#a" /></mask><path d="M10.36 4.72c1.406 0 2.596.528 3.535 1.57.968 1.007 1.462 2.327 1.457 3.928-.005 1.61-.484 3.055-1.475 4.107-.943 1.008-2.127 1.52-3.533 1.52-1.384 0-2.538-.506-3.527-1.53-.986-1.06-1.464-2.499-1.464-4.116.005-1.598.5-2.92 1.473-3.927.98-1.046 2.134-1.553 3.523-1.553h.012zm6.802-1.264c-1.565-1.713-3.518-2.59-5.81-2.59-2.208 0-4.4 1.543-5.748 3.067l.005-2.85-4.12-.005-.045 23.383v.307l4.142.007.018-7.313c1.25 1.405 3.232 2.23 5.434 2.236 2.425 0 4.463-.866 6.061-2.567 1.61-1.713 2.43-4.13 2.437-6.904.005-2.832-.792-5.11-2.374-6.771z" fill="#262D3D" mask="url(#b)" /></g><path d="M77.79 11.558l-.017 9.868c-.006 2.13.58 3.649 1.73 4.514.716.54 1.627.813 2.708.813.831 0 2.134-.335 2.134-.335l-.368-3.598s-.951.308-1.412-.021c-.44-.314-.654-.986-.654-1.992l.016-9.249 3.835.005.007-3.43-3.837-.007.012-4.928-4.138-.005-.011 4.928-3.472-.005 3.467 3.442zM43.832 2.93H23.43l-.005 4.087h8.155l-.034 19.076v.375l4.312.006-.017-19.45 7.991-.007z" fill="#262D3D" /><path d="M9.094 19.935a.457.457 0 01-.274 0c-.09-.028-.164-.069-.329-.232l-1.805-1.81c-.159-.16-.205-.24-.233-.33a.451.451 0 010-.273c.028-.091.068-.166.233-.33l5.686-5.674c.159-.16.238-.205.33-.228.092-.03.182-.03.273 0 .091.028.165.068.33.233l1.804 1.81c.16.159.205.238.228.33a.451.451 0 010 .273c-.028.09-.068.165-.233.33l-5.686 5.674c-.152.158-.233.2-.324.227zm12.765-6.568L15.72 7.21a6.435 6.435 0 00-.159-.154L8.52 0 5.416 3.09l4.537 4.548L0 17.558l6.14 6.151c.087.085.171.17.25.245l6.995 7.01 3.062-3.05-4.575-4.586 9.987-9.961z" fill="#204ECF" /><path d="M52.1 17.318c-.004 1.68-.5 3.067-1.48 4.125-.972 1.054-2.184 1.588-3.602 1.588-1.387-.005-2.59-.54-3.562-1.604-.95-1.036-1.434-2.43-1.434-4.132 0-1.702.49-3.09 1.445-4.126.973-1.052 2.174-1.587 3.57-1.587 1.41 0 2.622.54 3.595 1.605.98 1.057 1.473 2.446 1.468 4.13m1.304-6.761c-1.69-1.746-3.99-2.709-6.346-2.64-2.385 0-4.484.836-6.243 2.493-1.775 1.668-2.68 3.984-2.686 6.88-.004 2.896.894 5.213 2.665 6.886 1.757 1.662 3.863 2.509 6.248 2.516.09.005.181.005.274.005 2.23 0 4.438-.955 6.064-2.618 1.191-1.222 2.613-3.386 2.618-6.755.007-3.37-1.405-5.537-2.594-6.767M92.376 23.242c-1.49-.005-2.458-.854-2.453-2.157.006-1.355.95-2.146 2.971-2.488l4.137-.698v.04c-.011 3.123-1.917 5.303-4.637 5.303h-.018zm-1.906-8.77c0-1.052.551-3.37 3.602-3.37 1.082 0 1.696.365 2.213.798.5.415.751 1.439.751 2.288v.398l-5.035.784c-3.99.61-6.278 2.755-6.29 5.896-.005 1.629.587 3.023 1.713 4.047 1.11 1.007 2.63 1.543 4.423 1.548 2.26 0 3.956-.813 5.168-2.493.005.712.005 1.429.005 2.094h4.2l.028-12.063c.005-1.97-.638-3.876-1.906-4.923-1.254-1.031-2.892-1.56-5.265-1.566h-.033c-1.81 0-3.728.479-5.02 1.6-1.52 1.313-2.266 3.398-2.266 5.008l3.712-.046zM103.229 3.21l-.04 23.127v.103l3.716.011.04-23.134v-.102z" fill="#262D3D" /><g transform="translate(109.006 20.206)"><mask fill="#fff" id="d"><use xlink:href="#c" /></mask><path d="M3.436 2.35v.934h.714c.394 0 .592-.154.592-.46 0-.32-.198-.473-.592-.473h-.714zm1.25 2.645l-.745-1.328h-.505v1.328h-.46v-3.05h1.24c.614 0 .976.363.976.867 0 .427-.32.746-.747.834l.758 1.349h-.517zM1.703 3.471a2.3 2.3 0 00.668 1.666c.45.45.999.68 1.658.68.647 0 1.196-.23 1.645-.68.45-.46.68-1.01.68-1.666 0-.66-.23-1.208-.68-1.657a2.21 2.21 0 00-1.645-.692c-.647 0-1.196.231-1.647.692a2.25 2.25 0 00-.679 1.657zm-.462 0c0-.768.264-1.427.813-1.976A2.688 2.688 0 014.017.673c.768 0 1.437.274 1.976.822.548.549.822 1.208.822 1.976 0 .777-.274 1.427-.822 1.963-.549.549-1.208.811-1.976.811s-1.425-.262-1.963-.81A2.664 2.664 0 011.24 3.47z" fill="#262D3D" mask="url(#d)" /></g></g></svg></span><span class="navbar-title">Developers</span></a></div><span class="navbar-headline" data-ga-arguments="[&quot;ClickedOnHeaderHeadline&quot;]" data-ga-call="trackBlogAction" data-ga-listen="click"><span class="navbar-headline_original">Hiring? Toptal handpicks <a href="https://www.toptal.com/python">top Python developers</a> to suit your needs.</span></span><ul class="navbar-navigation"><li class="navbar-navigation_item"><a class="navbar-navigation_item_link " href="/top-3-percent">Top 3%</a></li><li class="navbar-navigation_item"><a class="navbar-navigation_item_link " href="/why">Why</a></li><li class="navbar-navigation_item"><a class="navbar-navigation_item_link " href="/clients">Clients</a></li><li class="navbar-navigation_item"><a class="navbar-navigation_item_link " href="/enterprise">Enterprise</a></li><li class="navbar-navigation_item"><a class="navbar-navigation_item_link " href="/community">Community</a></li><li class="navbar-navigation_item"><a class="navbar-navigation_item_link " href="/blog">Blog</a></li><li class="navbar-navigation_item"><a class="navbar-navigation_item_link " href="/about">About Us</a></li></ul><button class="navbar-toggle" type="button"><svg class="expand_icon" role="img" viewBox="0 0 24 19"><path class="expand_icon-path is-top" d="M1.5,0h21C23.3,0,24,0.7,24,1.5S23.3,3,22.5,3h-21C0.7,3,0,2.3,0,1.5S0.7,0,1.5,0z" fill="currentColor"></path><path class="expand_icon-path is-left" d="M1.5,8h21C23.3,8,24,8.7,24,9.5S23.3,11,22.5,11h-21C0.7,11,0,10.3,0,9.5S0.7,8,1.5,8z" fill="currentColor"></path><path class="expand_icon-path is-right" d="M1.5,8h21C23.3,8,24,8.7,24,9.5S23.3,11,22.5,11h-21C0.7,11,0,10.3,0,9.5S0.7,8,1.5,8z" fill="currentColor"></path><path class="expand_icon-path is-bottom" d="M1.5,16h21c0.8,0,1.5,0.7,1.5,1.5S23.3,19,22.5,19h-21C0.7,19,0,18.3,0,17.5S0.7,16,1.5,16z" fill="currentColor"></path><style type="text/css">.expand_icon-path {
+  transform: rotate(0);
+  transform-origin: 50% 50%;
+  transition: transform .2s ease-in;
+}
+
+.expand_icon-path.is-bottom,
+.expand_icon-path.is-top {
+  transform: scale(1);
+}
+
+.expand_icon.is-expanded .expand_icon-path.is-bottom,
+.expand_icon.is-expanded .expand_icon-path.is-top {
+  transform: scale(0);
+}
+
+.expand_icon.is-expanded .expand_icon-path.is-left {
+  transform: rotate(45deg);
+}
+
+.expand_icon.is-expanded .expand_icon-path.is-right {
+  transform: rotate(-45deg);
+}</style></svg></button><ul class="navbar-actions"><li class="navbar-action is-sticky is-tae-cta " data-role="show_for_logged_out" style="display: none"><a href="https://www.toptal.com/python/freelance-jobs" class="button is-highlight">Apply as a Freelancer</a></li><li class="navbar-action is-sticky  is-original-cta" data-role="show_for_logged_out"><a href="https://www.toptal.com/python" class="button is-highlight">Start Hiring</a></li><li class="navbar-action is-sticky  " data-role="show_for_logged_out"><a class="navbar-action_link" href="https://www.toptal.com/users/login">Log In</a></li><li class="navbar-action is-sticky  " data-role="show_for_logged_in"><a class="navbar-action_link" href="https://www.toptal.com/secure_redirect/default">Go to Your Profile</a></li></ul></div></div></div><progress class="navbar-reading_progress" data-role="navbar.reading_progress" max="100" value="0"></progress></div><div class="blog_menu" data-cell="BlogMenu"><div class="blog_menu-inner_wrapper"><div class="blog_menu-inner"><div class="blog_menu-inner_row has_search"><a class="blog_menu-dropdown has-theme-default" data-role="dropdown-trigger" href=""><span class="blog_menu-dropdown_closed">Engineering</span><span class="blog_menu-dropdown_opened">All Blogs</span><div class="blog_menu-dropdown_icon"><svg viewBox="0 0 5 8" xmlns="http://www.w3.org/2000/svg"><title>Icon Chevron</title><path d="M3 4L0 .9C0 .8 0 .7.1.6L.6.1c.1-.1.2-.1.3 0l3.6 3.8.1.1c0 .1 0 .1-.1.1L.9 7.9c-.1.1-.2.1-.3 0l-.5-.5c-.1-.1-.1-.2 0-.3L3 4z" fill="currentColor" fill-rule="nonzero"></path></svg></div></a><div class="blog_menu-search_trigger" data-role="search-trigger"><svg viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M 9 3 C 5.6759952 3 3 5.6759952 3 9 C 3 12.324005 5.6759952 15 9 15 C 10.481205 15 11.830584 14.465318 12.875 13.582031 L 18.292969 19 L 19 18.292969 L 13.582031 12.875 C 14.465318 11.830584 15 10.481205 15 9 C 15 5.6759952 12.324005 3 9 3 z M 9 4 C 11.770005 4 14 6.2299952 14 9 C 14 11.770005 11.770005 14 9 14 C 6.2299952 14 4 11.770005 4 9 C 4 6.2299952 6.2299952 4 9 4 z " fill="currentColor"></path></svg></div><form action="/blog/search" class="search is-gray blog_menu-search" data-action="/blog/search.json" data-cell="Search"><div class="search-input_wrapper"><input autocomplete="off" class="search-input" data-role="search-input" name="term" placeholder="What are you looking for?" /><div class="search-icon_search"><svg viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M 9 3 C 5.6759952 3 3 5.6759952 3 9 C 3 12.324005 5.6759952 15 9 15 C 10.481205 15 11.830584 14.465318 12.875 13.582031 L 18.292969 19 L 19 18.292969 L 13.582031 12.875 C 14.465318 11.830584 15 10.481205 15 9 C 15 5.6759952 12.324005 3 9 3 z M 9 4 C 11.770005 4 14 6.2299952 14 9 C 14 11.770005 11.770005 14 9 14 C 6.2299952 14 4 11.770005 4 9 C 4 6.2299952 6.2299952 4 9 4 z " fill="currentColor"></path></svg></div><button class="search-icon_close" data-role="search-close" type="button"><svg viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><title>Icon Close</title><g fill="transparent" stroke="currentColor"><path d="M.75.75l16.5 16.5M17.25.75L.75 17.25"></path></g></svg></button><button class="search-submit" data-role="search-submit" type="submit">Search</button></div><div class="search-popup" data-role="popup"><div class="search-filters_wrapper"><div class="search-filters_title">Filter by</div><div class="search-filters"><label class="search-filter_item is-checked" data-role="filter-item"><input checked="checked" name="filter" type="radio" value="" />All</label><label class="search-filter_item" data-role="filter-item"><input name="filter" type="radio" value="developers" />Engineering</label><label class="search-filter_item" data-role="filter-item"><input name="filter" type="radio" value="designers" />Design</label><label class="search-filter_item" data-role="filter-item"><input name="filter" type="radio" value="finance_experts" />Finance</label><label class="search-filter_item" data-role="filter-item"><input name="filter" type="radio" value="project_managers" />Projects</label><label class="search-filter_item" data-role="filter-item"><input name="filter" type="radio" value="product_managers" />Product</label><label class="search-filter_item" data-role="filter-item"><input name="filter" type="radio" value="insights" />Toptal Insights</label></div></div><div class="search-results"><span class="search-results_title" data-role="search-results-title"></span><div class="search-results_container" data-role="search-results-container"></div></div><div class="search-initial_results" data-role="search-initial-results"></div><div class="search-view_all_wrapper"><button class="search-view_all" data-role="search-view-all" type="submit">View all results</button></div></div><script data-role="search-results-item-template" type="text/template"><a class="search-results_item" data-role="search-results-item" href="${url}"><span class="search-results_item_title">${title}</span><span class="search-results_item_label">${label}</span></a></script></form></div><div class="blog_menu-inner_row blog_menu-categories"><div class="grid has-3_columns_on_desktop has-2_columns_on_tablet-xl has-0_column_gap has-0_row_gap_on_desktop has-0_row_gap_on_tablet-xl"><div class="grid-item"><div class="domain_card is-minimal"><a class="domain_card-inner" href="/developers/blog"><div class="domain_card-icon"><span data-cell="DeferredImage" data-cell-options="{&quot;image_placement&quot;:&quot;image&quot;,&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/blog/domain/content/icon_file/icon/10443/engineering-146168ba63ad8d24c415ceb21fb0d5d7.svg&quot;}" class="deferred_image" alt="developers"></span></div><div class="domain_card-title">Engineering</div></a></div></div><div class="grid-item"><div class="domain_card is-minimal"><a class="domain_card-inner" href="/designers/blog"><div class="domain_card-icon"><span data-cell="DeferredImage" data-cell-options="{&quot;image_placement&quot;:&quot;image&quot;,&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/blog/domain/content/icon_file/icon/10444/design-0b825816c47b2bfe1038febc7c35d988.svg&quot;}" class="deferred_image" alt="designers"></span></div><div class="domain_card-title">Design</div></a></div></div><div class="grid-item"><div class="domain_card is-minimal"><a class="domain_card-inner" href="/finance/blog"><div class="domain_card-icon"><span data-cell="DeferredImage" data-cell-options="{&quot;image_placement&quot;:&quot;image&quot;,&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/blog/domain/content/icon_file/icon/10445/finance-6ce5d02055ffb2963d43de69b4eeda1d.svg&quot;}" class="deferred_image" alt="finance_experts"></span></div><div class="domain_card-title">Finance</div></a></div></div><div class="grid-item"><div class="domain_card is-minimal"><a class="domain_card-inner" href="/project-managers/blog"><div class="domain_card-icon"><span data-cell="DeferredImage" data-cell-options="{&quot;image_placement&quot;:&quot;image&quot;,&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/blog/domain/content/icon_file/icon/10446/projects-66deb60b219896816b43bcec142c7a12.svg&quot;}" class="deferred_image" alt="project_managers"></span></div><div class="domain_card-title">Projects</div></a></div></div><div class="grid-item"><div class="domain_card is-minimal"><a class="domain_card-inner" href="/product-managers/blog"><div class="domain_card-icon"><span data-cell="DeferredImage" data-cell-options="{&quot;image_placement&quot;:&quot;image&quot;,&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/blog/domain/content/icon_file/icon/10447/products-73025514deb4b12e780e3c3d639c5bc2.svg&quot;}" class="deferred_image" alt="product_managers"></span></div><div class="domain_card-title">Product</div></a></div></div><div class="grid-item"><div class="domain_card is-minimal is-highlight"><a class="domain_card-inner" href="/insights"><div class="domain_card-icon"><span data-cell="DeferredImage" data-cell-options="{&quot;image_placement&quot;:&quot;image&quot;,&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/blog/domain/content/icon_file/icon/10448/insights-3a2ed43a337ac057be7cf3752e3d9c82.svg&quot;}" class="deferred_image" alt="insights"></span></div><div class="domain_card-title">Toptal Insights</div></a></div></div></div></div></div></div></div><article class="blog_post-article_wrapper"><div class="section has-full_size_width"><div class="section-inner"><div class="article_hero" data-cell="ArticleHero"><div class="article_hero-inner" data-position-from="top-top" data-position-to="bottom-top" data-role="article_hero.animate" data-var-from="-150px" data-var-prop="--margin-bottom" data-var-to="0"><span class="article_hero-img" data-position-from="top-top" data-position-to="bottom-top" data-role="article_hero.animate" data-var-from="0" data-var-prop="--ty" data-var-to="-100px" style="background-image: url(https://bs-uploads.toptal.io/blackfish-uploads/blog/common_mistakes_guide/content/cover_image_file/cover_image/14612/cover-top-10-mistakes-that-python-programmers-make-09b983479d8ad3850582627f73ca3c57.png);"></span><span class="article_hero-overlay" data-position-from="top-top" data-position-to="middle-top" data-role="article_hero.animate" data-var-from="0" data-var-prop="--opacity" data-var-to=".5"></span></div></div><div class="article_wrapper" data-role="article_hero.wrapper"><div class="article_bio"><div class="article_bio-info"><div class="article_bio-breadcrumb"><a class="article_bio-breadcrumb-link" href="https://www.toptal.com/developers/blog/technology">Technology</a></div><div class="article_bio-reading_time">12 minute read</div></div><h1 class="article_bio-title">Buggy Python Code: The 10 Most Common Mistakes That Python Developers Make</h1></div><div class="author_short_bio"><div class="author_short_bio-author_container"><div class="author_short_bio-author_photo_content"><span data-cell="DeferredImage" data-cell-options="{&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/talent/profile/picture_file/picture/152998/retina_60x60_large_ffd59b17295c0dc796c0aada1d8d5ca6-3a463e96e68f7767b79fbe76d3e52047.png&quot;}" class="author_short_bio-author_photo" alt="Martin Chikilian"></span></div><div class="author_short_bio-text-container"><div class="author_short_bio-name"><a class="author_short_bio-name_link" target="_blank" href="https://www.toptal.com/resume/martin-chikilian">Martin Chikilian</a></div><div class="author_short_bio-short-bio">Martin is a full-stack engineer and has worked as a professional Python developer since 2007.</div></div></div><div class="author_short_bio-content_wrapper"><div class="author_short_bio-content_inner"><div class="social_share is-open" data-cell="SocialShare" data-hashtags="Python" data-rss-url="" data-title="Buggy Python Code: The 10 Most Common Mistakes That Python Developers Make" data-url="https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make"><div class="social_share-inner"><div class="social_share-counter" data-role="social_share.counter_wrapper"><strong class="social_share-counter_number" data-role="counter"></strong><span class="social_share-counter_noun" data-role="counter_noun"></span></div><div class="social_share-button" data-role="toggle"><svg height="17" width="16" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><circle cx="13.5" cy="2.5" fill="currentColor" r="2.5" /><circle cx="13.5" cy="14.5" fill="currentColor" r="2.5" /><circle cx="2.5" cy="8.5" fill="currentColor" r="2.5" /><path d="M2.5 8.5l11-6M2.5 8.5l11 6" stroke="currentColor" /></g></svg><span class="social_share-button_text">SHARE</span></div><ul class="social_share-social_channels_list"><li class="social_share-social_channel"><a class="social_channel twitter-icon" title="Twitter" data-role="social_channel" data-type="twitter" data-track-click="SocialShareButtonClicked" data-track-default-data="{&quot;network&quot;:&quot;twitter&quot;}" href="#"><svg height="14" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M16 2h-2l2-1h-3a3 3 0 0 0-5 3C5 4 3 3 1 1v2l1 2H1c0 2 1 3 2 3a3 3 0 0 1-1 0c0 2 1 3 3 3a7 7 0 0 1-5 1l5 1c6 0 9-5 9-9l2-2z" fill="currentColor" fill-rule="evenodd" /></svg></a></li><li class="social_share-social_channel"><a class="social_channel facebook-icon" title="Facebook" data-role="social_channel" data-type="facebook" data-track-click="SocialShareButtonClicked" data-track-default-data="{&quot;network&quot;:&quot;facebook&quot;}" href="#"><svg height="16" width="10" xmlns="http://www.w3.org/2000/svg"><path d="M9 0H7C5 0 3 1 3 4v2H1v3h2v7h3V9h3V6H6V4l2-1h1V0z" fill="currentColor" fill-rule="evenodd" /></svg></a></li><li class="social_share-social_channel"><a class="social_channel linkedin-icon" title="Linkedin" data-role="social_channel" data-type="linkedin" data-track-click="SocialShareButtonClicked" data-track-default-data="{&quot;network&quot;:&quot;linkedin&quot;}" href="#"><svg height="16" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M3.635417 5.546131h-3.4375v10.322917h3.4375V5.54613zm.21875-3.1875C3.84375 1.348214 3.114583.577381 1.9375.577381.770833.577381 0 1.348214 0 2.358631c0 .989583.739583 1.78125 1.895833 1.78125h.020834c1.197916 0 1.947916-.791667 1.9375-1.78125zm5.104166 4.654741V5.546131H5.53125s.041667.96875 0 10.322917h3.427083V10.10863c0-.3125.03125-.614583.114584-.84375.25-.614583.8125-1.25 1.760416-1.25 1.239584 0 1.739584.947917 1.739584 2.333333v5.520834H16V9.95238c0-3.166667-1.6875-4.645833-3.947917-4.645833-1.825777 0-2.641541.999912-3.09375 1.706824z" fill="currentColor" fill-rule="evenodd" /></svg></a></li><li class="social_share-social_channel"><a class="social_channel pocket-icon" title="Pocket" data-role="social_channel" data-type="pocket" data-track-click="SocialShareButtonClicked" data-track-default-data="{&quot;network&quot;:&quot;pocket&quot;}" href="#"><svg height="14" width="16" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="nonzero"><path d="M7.774936 13.913044C3.478261 13.913044 0 10.434783 0 6.138107V1.185882C0 .53238.53197 0 1.185882 0H14.36399c.653504 0 1.185882.53197 1.185882 1.185882v4.952225c0 4.296676-3.47826 7.774937-7.774936 7.774937z" fill="currentColor" /><path d="M7.774936 9.820972c-.246343 0-.53197-.081842-.736573-.286445L3.150895 5.647059c-.409207-.409207-.409207-1.063939 0-1.432225.409207-.409207 1.063939-.409207 1.432225 0l3.191816 3.150895 3.150895-3.150895c.409207-.409207 1.063939-.409207 1.432225 0 .409207.409207.409207 1.06312 0 1.432225L8.470588 9.534527c-.163683.204603-.44931.286445-.695652.286445z" fill="#FFF" /></g></svg></a></li></ul></div></div></div></div></div></div></div></div><div class="section has-standard_width has-medium_padding"><div class="section-inner"><div class="blog_post-main_content"><main class="blog_post-body" data-role="navbar.progress_source"><div class="article_locales">Read the <a class="article_locales-link" href="https://www.toptal.com/python/codigo-buggy-python-los-10-errores-mas-comunes-que-cometen-los-desarrolladores-python">Spanish<img alt="es" width="20" src="https://bs-assets.toptal.io/blackfish-assets/public/base/images/country_flags/es_5cb0ce.png" /></a> version of this article translated by <b>Marisela Ordaz</b></div><div class="blog_post_body" data-cell="BlogPostBody"><h2 id="about-python">About Python</h2>
+
+<p><a href="https://www.python.org/">Python</a> is an interpreted, object-oriented, high-level programming language with dynamic semantics. Its high-level built in data structures, combined with dynamic typing and dynamic binding, make it very attractive for <a href="https://en.wikipedia.org/wiki/Rapid_application_development">Rapid Application Development</a>, as well as for use as a scripting or glue language to connect existing components or services. Python supports modules and packages, thereby encouraging program modularity and code reuse.</p>
+
+<h2 id="about-this-article">About this article</h2>
+
+<p>Python’s simple, easy-to-learn syntax can mislead <a href="https://www.toptal.com/python/job-description">Python developers</a> – especially those who are newer to the language – into missing some of its subtleties and underestimating the power of the <a href="https://www.toptal.com/python/why-are-there-so-many-pythons">diverse Python language</a>.</p>
+
+<p>With that in mind, this article presents a “top 10” list of somewhat subtle, harder-to-catch mistakes that can bite even some more <a href="https://www.toptal.com/python">advanced Python developers</a> in the rear.</p>
+
+<p><em>(Note:  This article is intended for a more advanced audience than <a href="http://www.onlamp.com/pub/a/python/2004/02/05/learn_python.html">Common Mistakes of Python Programmers</a>, which is geared more toward those who are newer to the language.)</em></p>
+
+<h2 id="common-mistake-1-misusing-expressions-as-defaults-for-function-arguments">Common Mistake #1: Misusing expressions as defaults for function arguments</h2>
+
+<p>Python allows you to specify that a function argument is <em>optional</em> by providing a <em>default value</em> for it.  While this is a great feature of the language, it can lead to some confusion when the default value is <em><a href="https://docs.python.org/2/reference/datamodel.html">mutable</a></em>.  For example, consider this Python function definition:</p>
+
+<pre><code>&gt;&gt;&gt; def foo(bar=[]):        # bar is optional and defaults to [] if not specified
+...    bar.append("baz")    # but this line could be problematic, as we'll see...
+...    return bar
+</code></pre>
+
+<p>A common mistake is to think that the optional argument will be set to the specified default expression <em>each time</em> the function is called without supplying a value for the optional argument.  In the above code, for example, one might expect that calling <code>foo()</code> repeatedly (i.e., without specifying a <code>bar</code> argument) would always return <code>'baz'</code>, since the assumption would be that <em>each time</em> <code>foo()</code> is called (without a <code>bar</code> argument specified) <code>bar</code> is set to <code>[]</code> (i.e., a new empty list).</p>
+
+<p>But let’s look at what actually happens when you do this:</p>
+
+<pre><code>&gt;&gt;&gt; foo()
+["baz"]
+&gt;&gt;&gt; foo()
+["baz", "baz"]
+&gt;&gt;&gt; foo()
+["baz", "baz", "baz"]
+</code></pre>
+
+<p>Huh?  Why did it keep appending the default value of <code>"baz"</code> to an <em>existing</em> list each time <code>foo()</code> was called, rather than creating a <em>new</em> list each time?</p>
+
+<p>The more advanced Python programming answer is that <em>the default value for a function argument is only evaluated once, at the time that the function is defined.</em>  Thus, the <code>bar</code> argument is initialized to its default (i.e., an empty list) only when <code>foo()</code> is first defined, but then calls to <code>foo()</code> (i.e., without a <code>bar</code> argument specified) will continue to use the same list to which <code>bar</code> was originally initialized.</p>
+
+<p>FYI, a common workaround for this is as follows:</p>
+
+<pre><code>&gt;&gt;&gt; def foo(bar=None):
+...    if bar is None:		# or if not bar:
+...        bar = []
+...    bar.append("baz")
+...    return bar
+...
+&gt;&gt;&gt; foo()
+["baz"]
+&gt;&gt;&gt; foo()
+["baz"]
+&gt;&gt;&gt; foo()
+["baz"]
+</code></pre>
+
+<h2 id="common-mistake-2-using-class-variables-incorrectly">Common Mistake #2: Using class variables incorrectly</h2>
+
+<p>Consider the following example:</p>
+
+<pre><code>&gt;&gt;&gt; class A(object):
+...     x = 1
+...
+&gt;&gt;&gt; class B(A):
+...     pass
+...
+&gt;&gt;&gt; class C(A):
+...     pass
+...
+&gt;&gt;&gt; print A.x, B.x, C.x
+1 1 1
+</code></pre>
+
+<p>Makes sense.</p>
+
+<pre><code>&gt;&gt;&gt; B.x = 2
+&gt;&gt;&gt; print A.x, B.x, C.x
+1 2 1
+</code></pre>
+
+<p>Yup, again as expected.</p>
+
+<pre><code>&gt;&gt;&gt; A.x = 3
+&gt;&gt;&gt; print A.x, B.x, C.x
+3 2 3
+</code></pre>
+
+<p>What the <em>$%#!&amp;</em>??  We only changed <code>A.x</code>.  Why did <code>C.x</code> change too?</p>
+
+<p>In Python, class variables are internally handled as dictionaries and follow what is often referred to as <a href="http://python-history.blogspot.com.ar/2010/06/method-resolution-order.html">Method Resolution Order (MRO)</a>. So in the above code, since the attribute <code>x</code> is not found in class <code>C</code>, it will be looked up in its base classes (only <code>A</code> in the above example, although Python supports multiple inheritances).  In other words, <code>C</code> doesn’t have its own <code>x</code> property, independent of <code>A</code>. Thus, references to <code>C.x</code> are in fact references to <code>A.x</code>. This causes a Python problem unless it’s handled properly. Learn more about <a href="https://www.toptal.com/python/python-class-attributes-an-overly-thorough-guide">class attributes in Python</a>.</p>
+
+<h2 id="common-mistake-3-specifying-parameters-incorrectly-for-an-exception-block">Common Mistake #3: Specifying parameters incorrectly for an exception block</h2>
+
+<p>Suppose you have the following code:</p>
+
+<pre><code>&gt;&gt;&gt; try:
+...     l = ["a", "b"]
+...     int(l[2])
+... except ValueError, IndexError:  # To catch both exceptions, right?
+...     pass
+...
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 3, in &lt;module&gt;
+IndexError: list index out of range
+</code></pre>
+
+<p>The problem here is that the <code>except</code> statement does <em>not</em> take a list of exceptions specified in this manner.  Rather, In Python 2.x, the syntax <code>except Exception, e</code> is used to bind the exception to the <em>optional</em> second parameter specified (in this case <code>e</code>), in order to make it available for further inspection.  As a result, in the above code, the <code>IndexError</code> exception is <em>not</em> being caught by the <code>except</code> statement; rather, the exception instead ends up being bound to a parameter named <code>IndexError</code>.</p>
+
+<p>The proper way to catch multiple exceptions in an <code>except</code> statement is to specify the first parameter as a <a href="https://docs.python.org/2/tutorial/datastructures.html#tut-tuples">tuple</a> containing all exceptions to be caught.  Also, for maximum portability, use the <code>as</code> keyword, since that syntax is supported by both Python 2 and Python 3:</p>
+
+<pre><code>&gt;&gt;&gt; try:
+...     l = ["a", "b"]
+...     int(l[2])
+... except (ValueError, IndexError) as e:  
+...     pass
+...
+&gt;&gt;&gt;
+</code></pre>
+
+<h2 id="common-mistake-4--misunderstanding-python-scope-rules">Common Mistake #4:  Misunderstanding Python scope rules</h2>
+
+<p>Python scope resolution is based on what is known as the <a href="https://blog.mozilla.org/webdev/2011/01/31/python-scoping-understanding-legb/">LEGB</a> rule, which is shorthand for <strong>L</strong>ocal, <strong>E</strong>nclosing, <strong>G</strong>lobal, <strong>B</strong>uilt-in.  Seems straightforward enough, right?  Well, actually, there are some subtleties to the way this works in Python, which brings us to the common more advanced Python programming problem below.  Consider the following:</p>
+
+<pre><code>&gt;&gt;&gt; x = 10
+&gt;&gt;&gt; def foo():
+...     x += 1
+...     print x
+...
+&gt;&gt;&gt; foo()
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "&lt;stdin&gt;", line 2, in foo
+UnboundLocalError: local variable 'x' referenced before assignment
+</code></pre>
+
+<p>What’s the problem?</p>
+
+<p>The above error occurs because, when you make an <em>assignment</em> to a variable in a scope, <em>that variable is automatically considered by Python to be local to that scope</em> and shadows any similarly named variable in any outer scope.</p>
+
+<p>Many are thereby surprised to get an <code>UnboundLocalError</code> in previously working code when it is modified by adding an assignment statement somewhere in the body of a function.  (You can read more about this <a href="https://docs.python.org/2/faq/programming.html#why-am-i-getting-an-unboundlocalerror-when-the-variable-has-a-value">here</a>.)</p>
+
+<p>It is particularly common for this to trip up developers when using <a href="https://docs.python.org/2/tutorial/datastructures.html">lists</a>.  Consider the following example:</p>
+
+<pre><code>&gt;&gt;&gt; lst = [1, 2, 3]
+&gt;&gt;&gt; def foo1():
+...     lst.append(5)   # This works ok...
+...
+&gt;&gt;&gt; foo1()
+&gt;&gt;&gt; lst
+[1, 2, 3, 5]
+
+&gt;&gt;&gt; lst = [1, 2, 3]
+&gt;&gt;&gt; def foo2():
+...     lst += [5]      # ... but this bombs!
+...
+&gt;&gt;&gt; foo2()
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "&lt;stdin&gt;", line 2, in foo
+UnboundLocalError: local variable 'lst' referenced before assignment
+</code></pre>
+
+<p>Huh?  Why did <code>foo2</code> bomb while <code>foo1</code> ran fine?</p>
+
+<p>The answer is the same as in the prior example problem but is admittedly more subtle.  <code>foo1</code> is not making an <em>assignment</em> to <code>lst</code>, whereas <code>foo2</code> is.  Remembering that <code>lst += [5]</code> is really just shorthand for <code>lst = lst + [5]</code>, we see that we are attempting to <em>assign</em> a value to <code>lst</code> (therefore presumed by Python to be in the local scope).  However, the value we are looking to assign to <code>lst</code> is based on <code>lst</code> itself (again, now presumed to be in the local scope), which has not yet been defined.  Boom.</p>
+
+<h2 id="common-mistake-5-modifying-a-list-while-iterating-over-it">Common Mistake #5: Modifying a list while iterating over it</h2>
+
+<p>The problem with the following code should be fairly obvious:</p>
+
+<pre><code>&gt;&gt;&gt; odd = lambda x : bool(x % 2)
+&gt;&gt;&gt; numbers = [n for n in range(10)]
+&gt;&gt;&gt; for i in range(len(numbers)):
+...     if odd(numbers[i]):
+...         del numbers[i]  # BAD: Deleting item from a list while iterating over it
+...
+Traceback (most recent call last):
+  	  File "&lt;stdin&gt;", line 2, in &lt;module&gt;
+IndexError: list index out of range
+</code></pre>
+
+<p>Deleting an item from a list or array while iterating over it is a Python problem that is well known to any experienced software developer.  But while the example above may be fairly obvious, even advanced developers can be unintentionally bitten by this in code that is much more complex.</p>
+
+<p>Fortunately, Python incorporates a number of elegant programming paradigms which, when used properly, can result in significantly simplified and streamlined code.  A side benefit of this is that simpler code is less likely to be bitten by the accidental-deletion-of-a-list-item-while-iterating-over-it bug.  One such paradigm is that of <a href="https://docs.python.org/2/tutorial/datastructures.html#tut-listcomps">list comprehensions</a>.  Moreover, list comprehensions are particularly useful for avoiding this specific problem, as shown by this alternate implementation of the above code which works perfectly:</p>
+
+<pre><code>&gt;&gt;&gt; odd = lambda x : bool(x % 2)
+&gt;&gt;&gt; numbers = [n for n in range(10)]
+&gt;&gt;&gt; numbers[:] = [n for n in numbers if not odd(n)]  # ahh, the beauty of it all
+&gt;&gt;&gt; numbers
+[0, 2, 4, 6, 8]
+</code></pre>
+
+<h2 id="common-mistake-6-confusing-how-python-binds-variables-in-closures">Common Mistake #6: Confusing how Python binds variables in closures</h2>
+
+<p>Considering the following example:</p>
+
+<pre><code>&gt;&gt;&gt; def create_multipliers():
+...     return [lambda x : i * x for i in range(5)]
+&gt;&gt;&gt; for multiplier in create_multipliers():
+...     print multiplier(2)
+...
+</code></pre>
+
+<p>You might expect the following output:</p>
+
+<pre><code>0
+2
+4
+6
+8
+</code></pre>
+
+<p>But you actually get:</p>
+
+<pre><code>8
+8
+8
+8
+8
+</code></pre>
+
+<p>Surprise!</p>
+
+<p>This happens due to Python’s <em>late binding</em> behavior which says that the values of variables used in closures are looked up at the time the inner function is called.  So in the above code, whenever any of the returned functions are called, the value of <code>i</code> is looked up <em>in the surrounding scope at the time it is called</em> (and by then, the loop has completed, so <code>i</code> has already been assigned its final value of 4).</p>
+
+<p>The solution to this common Python problem is a bit of a hack:</p>
+
+<pre><code>&gt;&gt;&gt; def create_multipliers():
+...     return [lambda x, i=i : i * x for i in range(5)]
+...
+&gt;&gt;&gt; for multiplier in create_multipliers():
+...     print multiplier(2)
+...
+0
+2
+4
+6
+8
+</code></pre>
+
+<p>Voilà! We are taking advantage of default arguments here to generate anonymous functions in order to achieve the desired behavior.  Some would call this elegant.  Some would call it subtle.  Some hate it.  But if you’re a Python developer, it’s important to understand in any case.</p>
+
+<h2 id="common-mistake-7-creating-circular-module-dependencies">Common Mistake #7: Creating circular module dependencies</h2>
+
+<p>Let’s say you have two files, <code>a.py</code> and <code>b.py</code>, each of which imports the other, as follows:</p>
+
+<p>In <code>a.py</code>:</p>
+
+<pre><code>import b
+
+def f():
+    return b.x
+	
+print f()
+</code></pre>
+
+<p>And in <code>b.py</code>:</p>
+
+<pre><code>import a
+
+x = 1
+
+def g():
+    print a.f()
+</code></pre>
+
+<p>First, let’s try importing <code>a.py</code>:</p>
+
+<pre><code>&gt;&gt;&gt; import a
+1
+</code></pre>
+
+<p>Worked just fine.  Perhaps that surprises you.  After all, we do have a circular import here which presumably should be a problem, shouldn’t it?</p>
+
+<p>The answer is that the mere <em>presence</em> of a circular import is not in and of itself a problem in Python.  If a module has already been imported, Python is smart enough not to try to re-import it.  However, depending on the point at which each module is attempting to access functions or variables defined in the other, you may indeed run into problems.</p>
+
+<p>So returning to our example, when we imported <code>a.py</code>, it had no problem importing <code>b.py</code>, since <code>b.py</code> does not require anything from <code>a.py</code> to be defined <em>at the time it is imported</em>.  The only reference in <code>b.py</code> to <code>a</code> is the call to <code>a.f()</code>.  But that call is in <code>g()</code> and nothing in <code>a.py</code> or <code>b.py</code> invokes <code>g()</code>.  So life is good.</p>
+
+<p>But what happens if we attempt to import <code>b.py</code> (without having previously imported <code>a.py</code>, that is):</p>
+
+<pre><code>&gt;&gt;&gt; import b
+Traceback (most recent call last):
+  	  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  	  File "b.py", line 1, in &lt;module&gt;
+    import a
+  	  File "a.py", line 6, in &lt;module&gt;
+	print f()
+  	  File "a.py", line 4, in f
+	return b.x
+AttributeError: 'module' object has no attribute 'x'
+</code></pre>
+
+<p>Uh-oh.  That’s not good!  The problem here is that, in the process of importing <code>b.py</code>, it attempts to import <code>a.py</code>, which in turn calls <code>f()</code>, which attempts to access <code>b.x</code>.  But <code>b.x</code> has not yet been defined.  Hence the <code>AttributeError</code> exception.</p>
+
+<p>At least one solution to this is quite trivial.  Simply modify <code>b.py</code> to import <code>a.py</code> <em>within</em> <code>g()</code>:</p>
+
+<pre><code>x = 1
+
+def g():
+    import a	# This will be evaluated only when g() is called
+    print a.f()
+</code></pre>
+
+<p>No when we import it, everything is fine:</p>
+
+<pre><code>&gt;&gt;&gt; import b
+&gt;&gt;&gt; b.g()
+1	# Printed a first time since module 'a' calls 'print f()' at the end
+1	# Printed a second time, this one is our call to 'g'
+</code></pre>
+
+<h2 id="common-mistake-8-name-clashing-with-python-standard-library-modules">Common Mistake #8: Name clashing with Python Standard Library modules</h2>
+
+<p>One of the beauties of Python is the wealth of library modules that it comes with “out of the box”.  But as a result, if you’re not consciously avoiding it, it’s not that difficult to run into a name clash between the name of one of your modules and a module with the same name in the standard library that ships with Python (for example, you might have a module named <code>email.py</code> in your code, which would be in conflict with the standard library module of the same name).</p>
+
+<p>This can lead to gnarly problems, such as importing another library which in turns tries to import the Python Standard Library version of a module but, since you have a module with the same name, the other package mistakenly imports your version instead of the one within the Python Standard Library.  This is where bad Python errors happen.</p>
+
+<p>Care should, therefore, be exercised to avoid using the same names as those in the Python Standard Library modules.  It’s way easier for you to change the name of a module within your package than it is to file a <a href="http://legacy.python.org/dev/peps/">Python Enhancement Proposal (PEP)</a> to request a name change upstream and to try and get that approved.</p>
+
+<h2 id="common-mistake-9-failing-to-address-differences-between-python-2-and-python-3">Common Mistake #9: Failing to address differences between Python 2 and Python 3</h2>
+
+<p>Consider the following file <code>foo.py</code>:</p>
+
+<pre><code>import sys
+
+def bar(i):
+    if i == 1:
+        raise KeyError(1)
+    if i == 2:
+        raise ValueError(2)
+
+def bad():
+    e = None
+    try:
+        bar(int(sys.argv[1]))
+    except KeyError as e:
+        print('key error')
+    except ValueError as e:
+        print('value error')
+    print(e)
+
+bad()
+</code></pre>
+
+<p>On Python 2, this runs fine:</p>
+
+<pre><code>$ python foo.py 1
+key error
+1
+$ python foo.py 2
+value error
+2
+</code></pre>
+
+<p>But now let’s give it a whirl on Python 3:</p>
+
+<pre><code>$ python3 foo.py 1
+key error
+Traceback (most recent call last):
+  File "foo.py", line 19, in &lt;module&gt;
+    bad()
+  File "foo.py", line 17, in bad
+    print(e)
+UnboundLocalError: local variable 'e' referenced before assignment
+</code></pre>
+
+<p>What has just happened here?  The “problem” is that, in Python 3, the exception object is not accessible beyond the scope of the <code>except</code> block. (The reason for this is that, otherwise, it would keep a reference cycle with the stack frame in memory until the garbage collector runs and purges the references from memory.  More technical detail about this is available <a href="https://docs.python.org/3/reference/compound_stmts.html#except">here</a>).</p>
+
+<p>One way to avoid this issue is to maintain a reference to the exception object <em>outside</em> the scope of the <code>except</code> block so that it remains accessible.  Here’s a version of the previous example that uses this technique, thereby yielding code that is both Python 2 and Python 3 friendly:</p>
+
+<pre><code>import sys
+
+def bar(i):
+    if i == 1:
+        raise KeyError(1)
+    if i == 2:
+        raise ValueError(2)
+
+def good():
+    exception = None
+    try:
+        bar(int(sys.argv[1]))
+    except KeyError as e:
+        exception = e
+        print('key error')
+    except ValueError as e:
+        exception = e
+        print('value error')
+    print(exception)
+
+good()
+</code></pre>
+
+<p>Running this on Py3k:</p>
+
+<pre><code>$ python3 foo.py 1
+key error
+1
+$ python3 foo.py 2
+value error
+2
+</code></pre>
+
+<p>Yippee!</p>
+
+<p>(Incidentally, our <a href="https://www.toptal.com/python#hiring-guide">Python Hiring Guide</a> discusses a number of other important differences to be aware of when migrating code from Python 2 to Python 3.)</p>
+
+<h2 id="common-mistake-10-misusing-the-del-method">Common Mistake #10: Misusing the <code>__del__</code> method</h2>
+
+<p>Let’s say you had this in a file called <code>mod.py</code>:</p>
+
+<pre><code>import foo
+
+class Bar(object):
+   	    ...
+    def __del__(self):
+        foo.cleanup(self.myhandle)
+</code></pre>
+
+<p>And you then tried to do this from <code>another_mod.py</code>:</p>
+
+<pre><code>import mod
+mybar = mod.Bar()
+</code></pre>
+
+<p>You’d get an ugly <code>AttributeError</code> exception.</p>
+
+<p>Why?  Because, as reported <a href="https://mail.python.org/pipermail/python-bugs-list/2009-January/069209.html">here</a>, when the interpreter shuts down, the module’s global variables are all set to <code>None</code>.  As a result, in the above example, at the point that <a href="https://docs.python.org/2/reference/datamodel.html#object.__del__"><code>__del__</code></a> is invoked, the name <code>foo</code> has already been set to <code>None</code>.</p>
+
+<p>A solution to this somewhat more advanced Python programming problem would be to use <a href="https://docs.python.org/2/library/atexit.html"><code>atexit.register()</code></a> instead.  That way, when your program is finished executing (when exiting normally, that is), your registered handlers are kicked off <em>before</em> the interpreter is shut down.</p>
+
+<p>With that understanding, a fix for the above <code>mod.py</code> code might then look something like this:</p>
+
+<pre><code>import foo
+import atexit
+
+def cleanup(handle):
+    foo.cleanup(handle)
+
+
+class Bar(object):
+    def __init__(self):
+        ...
+        atexit.register(cleanup, self.myhandle)
+</code></pre>
+
+<p>This implementation provides a clean and reliable way of calling any needed cleanup functionality upon normal program termination.  Obviously, it’s up to <code>foo.cleanup</code> to decide what to do with the object bound to the name <code>self.myhandle</code>, but you get the idea.</p>
+
+<h2 id="wrap-up">Wrap-up</h2>
+
+<p>Python is a powerful and flexible language with many mechanisms and paradigms that can greatly improve productivity.  As with any software tool or language, though, having a limited understanding or appreciation of its capabilities can sometimes be more of an impediment than a benefit, leaving one in the proverbial state of “knowing enough to be dangerous”.</p>
+
+<p>Familiarizing oneself with the key nuances of Python, such as (but by no means limited to) the moderately advanced programming problems raised in this article, will help optimize use of the language while avoiding some of its more common errors.</p>
+
+<p>You might also want to check out our <a href="https://www.toptal.com/python#hiring-guide">Insider’s Guide to Python Interviewing</a> for suggestions on interview questions that can help identify Python experts.</p>
+
+<p>We hope you’ve found the pointers in this article helpful and welcome your feedback.</p>
+</div><aside class="blog_post-aside"><div class="article_tags"><div class="tags_section is-inline"><p class="tags_section-title_inline">Tags</p><a class="tag-item" href="https://www.toptal.com/developers/blog/tags/python">Python</a></div></div><div id="blog_post-article-author"><div class="article_author"><div class="author_section"><div class="author_section-card"><div class="author_card"><div class="author_card-photo_content"><span data-cell="DeferredImage" data-cell-options="{&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/talent/profile/picture_file/picture/152998/retina_160x160_large_ffd59b17295c0dc796c0aada1d8d5ca6-3a463e96e68f7767b79fbe76d3e52047.png&quot;}" class="author_card-photo" alt="Martin Chikilian"></span><div class="author_card-watermark"><svg viewbox="0 0 18 25" xmlns="http://www.w3.org/2000/svg"><defs><path d="M22.22 0l-1.98 1.97 3.67 3.64L16 13.48l9.78 9.72 1.97-1.97-3.66-3.64L32 9.72 22.22 0zM20.4 13.83l5.88-5.85 1.21 1.2-5.88 5.85-1.21-1.2z" id="b"></path><filter filterunits="objectBoundingBox" height="117.2%" id="a" width="125%" x="-12.5%" y="-4.3%"><feoffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feoffset><fegaussianblur in="shadowOffsetOuter1" result="shadowBlurOuter1" stddeviation=".5"></fegaussianblur><fecolormatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"></fecolormatrix></filter></defs><g fill="none" fill-rule="evenodd" transform="translate(-15)"><use fill="#000" filter="url(#a)" xlink:href="#b"></use><use fill="#F5F6F7" xlink:href="#b"></use></g></svg></div></div><div class="author_card-content"><p class="author_card-name">Martin Chikilian</p><p class="author_card-job_title">Python Software Engineer</p></div></div></div><div class="author_section-content"><p class="author_section-title">About the author</p><p class="author_section-description">Martin has worked as a professional Python developer since 2007, although his career in IT began in 2001. He is a full-stack engineer, having administered operating systems and networks for so many years. His recent interests are web-development and Python (namely with Django).</p><div class="author_section-hire" data-ga-arguments="[&quot;ClickedOnHireTheAuthor_bottom&quot;]" data-ga-call="trackBlogAction" data-ga-listen="click"><a href="https://www.toptal.com/hire?interested_in=developers&amp;skill=python" class="button is-highlight">Hire Martin</a></div></div></div></div></div><div class="comments_section"><div id="disqus_thread_container"><div id="disqus_thread"><div class="d-noscript-comments"><h2>Comments</h2><div class="comment"><div class="comment-author">sumathi s</div><div class="comment-body">It’s great to come across a blog every once in a while, that isn’t the same out of date rehashed material. Fantastic read.
+http://fireandsafetycoursesinchennai.in/industrial-courses-safety-in-chennai</div></div><div class="comment"><div class="comment-author">Leop0ld</div><div class="comment-body">That&#39;s good. May I possibly translate this article into Korean?</div></div><div class="comment"><div class="comment-author">naayak</div><div class="comment-body">very good information shared by you guys thanks for this.
+
+for mistake #1 
+&gt;&gt;&gt; import random
+&gt;&gt;&gt; def foo(bar={}):
+...     bar[random.randint(1,100)]=&quot;hii&quot;
+...     print bar
+...
+&gt;&gt;&gt; foo()
+{76: &#39;hii&#39;}
+&gt;&gt;&gt; foo()
+{76: &#39;hii&#39;, 85: &#39;hii&#39;}
+&gt;&gt;&gt; foo()
+{76: &#39;hii&#39;, 85: &#39;hii&#39;, 30: &#39;hii&#39;}
+&gt;&gt;&gt; foo()
+{1: &#39;hii&#39;, 76: &#39;hii&#39;, 85: &#39;hii&#39;, 30: &#39;hii&#39;}
+&gt;&gt;&gt; foo()
+{1: &#39;hii&#39;, 90: &#39;hii&#39;, 76: &#39;hii&#39;, 85: &#39;hii&#39;, 30: &#39;hii&#39;}
+&gt;&gt;&gt; foo()
+{1: &#39;hii&#39;, 71: &#39;hii&#39;, 76: &#39;hii&#39;, 85: &#39;hii&#39;, 90: &#39;hii&#39;, 30: &#39;hii&#39;}
+&gt;&gt;&gt; foo()
+{1: &#39;hii&#39;, 71: &#39;hii&#39;, 76: &#39;hii&#39;, 84: &#39;hii&#39;, 85: &#39;hii&#39;, 90: &#39;hii&#39;, 30: &#39;hii&#39;}
+
+
+
+
+
+
+
+string is immutable so it never behaves like list and dictionaries as we have seen above 
+
+&gt;&gt;&gt; def foo(bar=&#39;&#39;):
+...     bar+=&quot;hii&quot;
+...     print bar
+...
+&gt;&gt;&gt; foo()
+hii
+&gt;&gt;&gt; foo()
+hii
+&gt;&gt;&gt; foo()
+hii
+&gt;&gt;&gt; foo()
+hii
+&gt;&gt;&gt; foo()
+hii
+&gt;&gt;&gt; foo()
+hii
+&gt;&gt;&gt; foo()
+hii
+&gt;&gt;&gt; foo()
+hii</div></div><div class="comment"><div class="comment-author">Yaw</div><div class="comment-body">Lambda has rare use lately.
+P.S. Your correction should rather be
+&lt;code&gt;numbers = [ n for n in range(10) if not odd(n) ]&lt;/code&gt;
+You forgot `n`. :)</div></div><div class="comment"><div class="comment-author">Guest</div><div class="comment-body">Common Mistake #0: Programming in Python</div></div><div class="comment"><div class="comment-author">Guest</div><div class="comment-body">For Common Mistake #3, you should be using the `as` syntax for capturing exceptions, as it&#39;s both Python2.6+ &amp; Python3+ compatible:
+
+https://docs.python.org/3/howto/pyporting.html#capturing-the-currently-raised-exception</div></div><div class="comment"><div class="comment-author">not me</div><div class="comment-body">Common Mistake #-1: Being a programmer</div></div><div class="comment"><div class="comment-author">Oskar Olsson</div><div class="comment-body">So brave.</div></div><div class="comment"><div class="comment-author">Alex Writing</div><div class="comment-body">so common, very python</div></div><div class="comment"><div class="comment-author">Adam Hitchcock</div><div class="comment-body">Why not Python? What alternative would you propose? And why is it specifically better than Python?</div></div><div class="comment"><div class="comment-author">cocoflunchy</div><div class="comment-body">Any reason why you&#39;re using a slice here?
+&gt;&gt;&gt; numbers[:] = [n for n in numbers if not odd(n)]
+I&#39;m thinking that doing 
+&gt;&gt;&gt; numbers = [n for n in numbers if not odd(n)]
+wouldn&#39;t be a problem since the assignment is executed after the computation of the list comprehension.</div></div><div class="comment"><div class="comment-author">Andres Moreno</div><div class="comment-body">for common mistake #6 you can replace the list comprehension with a generator (substitute the square brackets for parentheses) and the code will work fine....
+
+In [6]: def create_multipliers():
+
+   ...:     return (lambda x: x*i for i in range(5))
+
+   ...: 
+
+In [7]: for multiplies in create_multipliers():
+
+   ...:     print multiplies(2)
+
+   ...:     
+
+0
+
+2
+
+4
+
+6
+
+8</div></div><div class="comment"><div class="comment-author">Kim Scheibel</div><div class="comment-body">Re. #1: If you&#39;re mutating arguments that have been passed by reference, and you&#39;re surprised that this has sideeffects, then you have problems more generally than just when handling defaulted arguments. For example, what happens when the client actually does pass in a list (which in Python is always a reference) and your function blithely changes it?  I know this is a minority view, but I don&#39;t think that the solution is to do the &quot;if arg is None&quot; dance (notwithstanding the Google style guide, etc). The solution is for the implementor of any function to understand that changing an argument that was passed in by reference, generally, has sideeffects, and that this should only be done very deliberately, and then only when the function is named to make it obvious that it&#39;s going to mess with its arguments.</div></div><div class="comment"><div class="comment-author">Adam Hitchcock</div><div class="comment-body">I found the &lt;code&gt;numbers[:]&lt;/code&gt; an odd way of doing that assignment. So I looked it up. It looks like it keeps the same object.
+
+&lt;pre&gt;&lt;code class=Python&gt;
+&gt;&gt;&gt; odd = lambda x : bool(x % 2)
+&gt;&gt;&gt; numbers = [n for n in range(10)]
+&gt;&gt;&gt; id(numbers)
+4424446032
+&gt;&gt;&gt; numbers = [n for n in numbers if not odd(n)] # ahh, the beauty of it all
+&gt;&gt;&gt; id(numbers)
+4424505176
+&gt;&gt;&gt; numbers
+[0, 2, 4, 6, 8]
+&gt;&gt;&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; odd = lambda x : bool(x % 2)
+&gt;&gt;&gt; numbers = [n for n in range(10)]
+&gt;&gt;&gt; id(numbers)
+4424446032
+&gt;&gt;&gt; numbers[:] = [n for n in numbers if not odd(n)] # ahh, the beauty of it all
+&gt;&gt;&gt; id(numbers)
+4424446032
+&gt;&gt;&gt; numbers
+[0, 2, 4, 6, 8]
+&lt;/code&gt;&lt;/pre&gt;
+
+Cool, it looks like it keeps the same id/object. What do we get out of this though?
+
+&lt;pre&gt;&lt;code class=Python&gt;
+&gt;&gt;&gt; from timeit import timeit
+&gt;&gt;&gt;
+&gt;&gt;&gt; setup = &quot;&quot;&quot;
+... odd = lambda x : bool(x % 2)
+... numbers = [n for n in range(10)]
+... &quot;&quot;&quot;
+&gt;&gt;&gt; stmnt_1 = &quot;numbers[:] = [n for n in numbers if not odd(n)]&quot;
+&gt;&gt;&gt; stmnt_2 = &quot;numbers = [n for n in numbers if not odd(n)]&quot;
+&gt;&gt;&gt;
+&gt;&gt;&gt; timeit(stmnt_1, setup, number=1000000)
+1.7668359279632568
+&gt;&gt;&gt; timeit(stmnt_1, setup, number=10000000)
+17.681034088134766
+&gt;&gt;&gt; timeit(stmnt_2, setup, number=1000000)
+1.7781000137329102
+&gt;&gt;&gt; timeit(stmnt_2, setup, number=10000000)
+17.093994855880737
+&gt;&gt;&gt; # to account for nutrinos:
+&gt;&gt;&gt; s = [(timeit(stmnt_1, setup, number=1000000), timeit(stmnt_2, setup, number=1000000)) for _ in range(10)]
+&gt;&gt;&gt; s
+[(1.7270538806915283, 1.7055668830871582), (1.7197210788726807, 1.672379970550537), (1.7634928226470947, 1.6488819122314453), (1.717656135559082, 1.7615430355072021), (1.8057420253753662, 1.690622091293335), (1.7476260662078857, 1.7099308967590332), (1.8953900337219238, 1.6794281005859375), (1.8406779766082764, 1.839482069015503), (1.8078999519348145, 1.8191499710083008), (1.7242348194122314, 1.8715410232543945)]
+&gt;&gt;&gt; [a - b for a, b in s]
+[0.021486997604370117, 0.047341108322143555, 0.11461091041564941, -0.04388689994812012, 0.11511993408203125, 0.03769516944885254, 0.21596193313598633, 0.0011959075927734375, -0.011250019073486328, -0.14730620384216309]
+&lt;/code&gt;&lt;/pre&gt;
+
+
+Weird, it actually seems (a very very small amount) slower. Any other reasons the [:] syntax could be beneficial?</div></div><div class="comment"><div class="comment-author">Adam Hitchcock</div><div class="comment-body">You mean mistake #0.</div></div><div class="comment"><div class="comment-author">Guest</div><div class="comment-body">A sense of humor, perhaps.</div></div><div class="comment"><div class="comment-author">Adam Hitchcock</div><div class="comment-body">see my analysis here: http://www.toptal.com/python/top-10-mistakes-that-python-programmers-make#comment-1375427290</div></div><div class="comment"><div class="comment-author">Adam Hitchcock</div><div class="comment-body">Oh, sorry, I left that at home today. To heavy to carry on bike to work day.</div></div><div class="comment"><div class="comment-author">H. Singer</div><div class="comment-body">Good point!  We updated this accordingly.  Thanks for the input.
+
+[Toptal blog editor]</div></div><div class="comment"><div class="comment-author">Martin Chikilian</div><div class="comment-body">As you correctly pointed out the form without the empty slice `numbers = ...` creates a new list and binds it to a new `numbers` name whereas using the `numbers[:] = ...` version modifies the already existent object. Code in this example wasn&#39;t written taking performance into consideration and the use of the empty slice notation is only to reflect that the same list as before has been modified (&#39;[n for n in range(10)]&#39;)</div></div><div class="comment"><div class="comment-author">Martin Chikilian</div><div class="comment-body">Very nice one!</div></div><div class="comment"><div class="comment-author">Mario Campos</div><div class="comment-body">I noticed something strange about common mistake #5. You used &lt;pre&gt;&lt;code class=&quot;python&quot;&gt;numbers = [n for n in range(10)]&lt;/code&gt;&lt;/pre&gt; as opposed to just &lt;pre&gt;&lt;code class=&quot;python&quot;&gt;numbers = range(10)&lt;/code&gt;&lt;/pre&gt;. Curiously, I wanted to see what difference this made:
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+&gt;&gt;&gt; from timeit import timeit
+&gt;&gt;&gt; timeit(&quot;&quot;&quot;n = [x for x in range(10)]&quot;&quot;&quot;, number=1000000)
+1.0391340255737305
+&gt;&gt;&gt; timeit(&quot;&quot;&quot;n = range(10)&quot;&quot;&quot;, number=1000000)
+0.27240204811096191
+&gt;&gt;&gt; timeit(&quot;&quot;&quot;n = [x for x in range(10)]&quot;&quot;&quot;, number=10000000)
+10.304471969604492
+&gt;&gt;&gt; timeit(&quot;&quot;&quot;n = range(10)&quot;&quot;&quot;, number=10000000)
+2.7591819763183594
+&lt;/code&gt;&lt;/pre&gt;
+
+Quite the difference! A whole factor of 5!</div></div><div class="comment"><div class="comment-author">Martin Chikilian</div><div class="comment-body">Good comment, glad that you bring this up! Actually doing just `numbers = range(10)` doesn&#39;t make a lot of sense in Python 3 as `range` produces (initializes) a different kind of object than a list in this version (object `range` to be more specific) so the intention behind writing down with list comprehension syntax here was for readability.</div></div><div class="comment"><div class="comment-author">Martin Chikilian</div><div class="comment-body">Good point! As I explained to @NorthIsUp:disqus here the reason is to make it clear we were modifying (and deleting) the previous list, performance hasn&#39;t been considered (although the difference in time is quite minimal across multiple executions of the same block). Thanks for asking!</div></div><div class="comment"><div class="comment-author">Eli Collins</div><div class="comment-body">For mistake #4, might want to point out that Python 3 added the `nonlocal` keyword, which indicates that a variable should be shared with the enclosing scope rather than shadow it.
+
+PEP 3104 -- http://legacy.python.org/dev/peps/pep-3104/</div></div><div class="comment"><div class="comment-author">killermonkey</div><div class="comment-body">For #5 you should just do:
+
+numbers = [n for n in range(10) if not odd(n)]
+
+Your common mistake contained a common mistake... that is doing more work than is necessary in your program to achieve the same result. Plus this 1 line of code is much more readable.</div></div><div class="comment"><div class="comment-author">Yaw</div><div class="comment-body">For lists, &lt;code&gt;+=&lt;/code&gt; is not a shorthand for &lt;code&gt;lst = lst + iterable&lt;/code&gt;. The longer version creates a new object (with a different &lt;code&gt;id&lt;/code&gt;). Also unlike the shorthand, it only accepts lists as operands of the &lt;code&gt;+&lt;/code&gt; operator.</div></div><div class="comment"><div class="comment-author">Jamis Johnson</div><div class="comment-body">I felt #5 could be slightly cleaned up. I made sure the same IndexError still occurred.
+
+https://gist.github.com/jamiis/9075c95477d4becd49c9
+
+&lt;pre&gt;&lt;code&gt;
+odd = lambda x : bool(x % 2)
+numbers = range(10)
+for i in numbers:
+    if odd(numbers[i]):
+        del numbers[i]
+&lt;/code&gt;&lt;/pre&gt;</div></div><div class="comment"><div class="comment-author">jimbobx</div><div class="comment-body">Was #6 (and maybe #1) stolen from http://docs.python-guide.org/en/latest/writing/gotchas/#late-binding-closures ? The examples date from 2012 and I don&#39;t see any attribution as required under their creative commons Attribution-NonCommercial-ShareAlike license. ( 
+http://creativecommons.org/licenses/by-nc-sa/3.0/ )</div></div><div class="comment"><div class="comment-author">Mihai Caraman</div><div class="comment-body">Also list() is just a bit faster.
+```python
+&gt;&gt;&gt; timeit(&quot;&quot;&quot;n = [x for x in range(10)]&quot;&quot;&quot;, number=10000000)
+8.42811918258667
+&gt;&gt;&gt; timeit(&quot;&quot;&quot;n = list(range(10))&quot;&quot;&quot;, number=10000000)
+5.411137104034424
+```</div></div><div class="comment"><div class="comment-author">Martin Chikilian</div><div class="comment-body">I don&#39;t necessarily agree with you on the statement &quot;Lambda has rare use lately&quot;, most people used to style their code according to the functional programming paradigm use it and the rest of the people too (maybe less frequently). Although personally I prefer not to use them in favor of named functions, people coming from other languages and used to functional programming too will feel at home when they see Python has support for anonymous functions.</div></div><div class="comment"><div class="comment-author">Martin Chikilian</div><div class="comment-body">Good point! Although I&#39;d write the code on any program just like you did, the intention behind separating it out into two lines in the example was to make it more readable (when you first see the two separate lines you know exactly what&#39;s going on with `numbers`).</div></div><div class="comment"><div class="comment-author">lcfseth</div><div class="comment-body">Mistake #0: Python is not an interpreted language but a compiled one (yep, compiled).</div></div><div class="comment"><div class="comment-author">Alexei Martchenko</div><div class="comment-body">Cool. i&#39;m glad i&#39;m not making any of these...</div></div><div class="comment"><div class="comment-author">Uri Laserson</div><div class="comment-body">Great list! For #8, PEP 328 largely addresses the issue.</div></div><div class="comment"><div class="comment-author">Pooya Eghbali</div><div class="comment-body">You can replace:
+    if bar is None: bar = []
+with:
+    bar = bar or []</div></div><div class="comment"><div class="comment-author">Myautsai</div><div class="comment-body">
+Common Mistake #11:
+
+    for each in (STR_CONST1, STR_CONST2):...
+
+But one day we do not need STR_CONSTS2 anymore:
+
+    for each in (STR_CONST1):... #wrong
+    for each in (STR_CONST1, ):... #right</div></div><div class="comment"><div class="comment-author">introom</div><div class="comment-body">#!/usr/bin/env python3
+import sys
+
+def bar(i):
+    if i == 1:
+        raise KeyError(1)
+    if i == 2:
+        raise ValueError(2)
+
+def bad():
+    a = None
+    try:
+        bar(int(1))
+    except KeyError as e:
+        a = e
+        print(&#39;key error&#39;)
+    except ValueError as e:
+        print(&#39;value error&#39;)
+    print(a)
+
+bad()
+
+Sorry, indentation is not preserved. Paste link here: http://sprunge.us/SSPR
+
+One question. In the above code, watch the assignment a = e changes the final print(a) outcome. So we can guess the scope 
+inside except as KeyError as e is the same as the function scope. However, as discussed in the article, the name e is only accessible
+in that except scope. How to explain this phenomenon?</div></div><div class="comment"><div class="comment-author">Ruitao Xu</div><div class="comment-body">In #2，why is B.x still 2 ?</div></div><div class="comment"><div class="comment-author">Udi Oron</div><div class="comment-body">.</div></div><div class="comment"><div class="comment-author">Udi Oron</div><div class="comment-body">Regarding #6, although the solution below is much longer, I find it the easiest to grasp, and I will tend to use it if I will need this in my real life code:
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+def create_multiplier(i):
+    def f(x):
+        return x * i
+
+    return f
+
+def create_multipliers():
+    return [create_multiplier(i) for i in range(5)]
+
+for multiplier in create_multipliers():
+    print multiplier(2)
+
+&lt;/code&gt;&lt;/pre&gt;</div></div><div class="comment"><div class="comment-author">Udi Oron</div><div class="comment-body">Regarding circular imports and #7:
+
+The main problem in importing is when using the &lt;code class=&quot;python&quot;&gt;from mymodule import mysymbol&lt;/code&gt;.
+
+You have solved this issue properly by using &lt;code class=&quot;python&quot;&gt;import mymodule&lt;/code&gt;, although this might cause some more problem if your design is wrong. What you introduce here is a design problem. Calling &lt;code class=&quot;python&quot;&gt;f()&lt;/code&gt; from the module (library) code itself is a very bad idea.  Instead one should do this:
+
+a.py:
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+import b
+
+def f():
+    return b.x
+&lt;/code&gt;&lt;/pre&gt;
+
+b.py:
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+import a
+
+x = 1
+
+def g():
+    print a.f()
+&lt;/code&gt;&lt;/pre&gt;
+
+main.py:
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+import a
+
+a.f()
+&lt;/code&gt;&lt;/pre&gt;</div></div><div class="comment"><div class="comment-author">Udi Oron</div><div class="comment-body">Regarding name clashing (#8):  Hopefully your code (modules) are already in packages.  To avoid name clashing (in packages) use absolute imports or explicit relative imports as suggested by &lt;a href=&quot;http://legacy.python.org/dev/peps/pep-0008/#imports&quot;&gt;PEP8&lt;/a&gt;, which also states:
+
+ &gt; Implicit relative imports should never be used and have been removed in Python 3.
+
+i.e., one should use one of
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+from mypkg import email
+from . import email
+import mypkg.email
+#or:
+from .email import foo()
+from ..email import foo()
+&lt;/code&gt;&lt;/pre&gt;
+
+
+etc.</div></div><div class="comment"><div class="comment-author"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046f65706d7777774463697c2a6061">[email&#160;protected]</a></div><div class="comment-body">&gt;&gt;&gt; def foo(bar=None):
+...    if bar is None:		# or if not bar:
+...        bar = []
+
+How about 
+
+bar=bar or []
+
+Shorter and easier to read?</div></div><div class="comment"><div class="comment-author">Laurent</div><div class="comment-body">One reason where I would see a use of [:] is if you have other names pointing to the array, and you want them to see the change.</div></div><div class="comment"><div class="comment-author">Wittawat</div><div class="comment-body">About common mintake #6: the binding in lambda expressions. Apart from using the generator, another way:
+
+&lt;pre&gt;&lt;code&gt;
+def create_multipliers():
+    def make_lambda(i):
+        return lambda x: i*x;
+    return [make_lambda(i) for i in range(5)]
+
+for multiplier in create_multipliers():
+    print multiplier(2)
+&lt;/code&gt;&lt;/pre&gt;</div></div><div class="comment"><div class="comment-author">TheKestrel</div><div class="comment-body">In terms of scripting languages, Python is better than Ruby, but I would say Javascript is the best of the bunch if for no other reason because it is so much more widely used that it has forced folks to confront more of the gremlins - either by language enhancements or libraries such as Underscore and Backbone.  Also, it&#39;s variable scoping, while containing a gotcha or two, is generally better - especially when &#39;use strict&#39; is applied so that all declarations are explicit.  If we&#39;re including non-scripting languages, there are a few candidates - C# has the best data querying syntax I&#39;ve seen in any language courtesy of LINQ, and now that it supports dynamically typed variables it has the ability to do virtually everything Python can, with the (in my humble opinion) much wiser choice to make dynamic typing the 1% use-case and static typing the 99%.</div></div><div class="comment"><div class="comment-author">Yaw</div><div class="comment-body">You know, Python is not Haskell or for that matter any other programming language. Past experience in one language is not a license to write forgotten Python. You&#39;re better served discussing the state of &lt;code&gt;lambda&lt;/code&gt; in #python.</div></div><div class="comment"><div class="comment-author">introom</div><div class="comment-body">OK. In case it confuses someone like me. The except clause doesn&#39;t introduce a new scope. It just deletes the name &#39;e&#39; after its execution. It is documented on the website.</div></div><div class="comment"><div class="comment-author">Tetsuya Morimoto</div><div class="comment-body">No. The boolean value is able to change with a special method if bar is a custom object.
+ - py2: __nonzero__
+ - py3:__bool__</div></div><div class="comment"><div class="comment-author">Tetsuya Morimoto</div><div class="comment-body">Good article! Can I translate this article into Japanese?</div></div><div class="comment"><div class="comment-author">Abhishek Anurag</div><div class="comment-body">Good point.
+Also, I&#39;m not sure if going by the suggestion  &quot;#or not bar&quot; works correctly in all cases, I tried that with a list in the code below and it does not work as is explained.
+
+def inorder(self, inorder_opt=None):
+    if inorder_opt is None:    #if not bar doesn&#39;t work correctly here, get&#39;s reinitialized again in recursive calls
+   inorder_opt = []
+
+    if (self.left != None):
+    self.left.inorder(inorder_opt)
+
+if (self.key != None):
+    inorder_opt.append(self.key)
+
+  if (self.right != None):
+    self.right.inorder(inorder_opt)
+
+        return inorder_opt</div></div><div class="comment"><div class="comment-author">Yaw</div><div class="comment-body">I prefer &lt;code&gt;if bar is None: ...&lt;/code&gt;. There&#39;s a lot of Python values that coerce to false including the empty list.</div></div><div class="comment"><div class="comment-author">Adelin</div><div class="comment-body">Makes sense.</div></div><div class="comment"><div class="comment-author">Ionel Cristian Mărieș</div><div class="comment-body">I&#39;m a bit surprised (and disappointed) there&#39;s nothing here about &#39;too broad exception handling&#39;.
+
+Ever did a bare &lt;code&gt;except:&lt;/code&gt; ? How about &lt;code&gt;except: pass&lt;/code&gt; ? That&#39;s a fairly common mistake - still rampaging today ...</div></div><div class="comment"><div class="comment-author">Meep Johnston</div><div class="comment-body">Assigning to B.x in the example directly above gives B its own name x and thusly detaches it from A.x. Had B.x not been assigned directly first, B.x and C.x would both reflect the new value of A.x</div></div><div class="comment"><div class="comment-author">Vaquero de Oro</div><div class="comment-body">This post should be renamed &quot;Top 10 Mistakes Made in Python&#39;s Design&quot; (which most often confuse sensible people), IMO.</div></div><div class="comment"><div class="comment-author">Hupyeong Lee</div><div class="comment-body">#6: another way.
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+def create_multipliers():
+    for i in range(5):
+        yield lambda x : i * x
+
+for multiplier in create_multipliers():
+    print(multiplier(2))
+
+&lt;/code&gt;&lt;/pre&gt;</div></div><div class="comment"><div class="comment-author">Jürgen Erhard</div><div class="comment-body">Yeah, with Python, one of the first things you really have to understand, nay, to grok, is &quot;mutable vs immutable&quot;.  And all kinds of &quot;weird behavior&quot; then become clear.</div></div><div class="comment"><div class="comment-author">HR Interview Questions and Ans</div><div class="comment-body">Why are you looking for another job (or why did you leave your previous job)? On the surface this appears to be a simple question, yet it is easy to slip. I would suggest not mentioning money at this stage as you may come across as totally mercenary. If you are currently in employment you can say it&#39;s about developing your career and yourself as an individual. If you are in the unfortunate position of having been downsized stay positive and keep it brief. If you were fired you should have a solid explanation. Whatever your circumstances do not go into the drama and detail and stay positive.</div></div><div class="comment"><div class="comment-author">Ruitao Xu</div><div class="comment-body">thanks，got it</div></div><div class="comment"><div class="comment-author">Vasudev Ram</div><div class="comment-body">Seeing the post only some months after it was written, due to someone mentioning it to me; anyway, adding my 2c:
+
+For Common Mistake #5, the line:
+
+&gt;&gt;&gt; for i in range(len(numbers)):
+
+can be replaced by:
+
+&gt;&gt;&gt; for i, v in enumerate(numbers):
+
+which gives access to both the index and the value at that index in the list.
+(You don&#39;t need to use the v if you don&#39;t want to.)
+
+Also, what someone else already pointed out, at least in Python v2, no need for this:
+
+&gt;&gt;&gt; numbers = [n for n in range(10)]
+
+Instead use:
+
+&gt;&gt;&gt; numbers = range(10) 
+
+since range returns a list already.</div></div><div class="comment"><div class="comment-author">Any</div><div class="comment-body">for common mistake #5,  why you use list comprehensive to generate `numbers`?  range(10) will generate a list, numbers = range(10), it is more clear.  using [n for n in range(10)] is making an unnecessary move actually.</div></div><div class="comment"><div class="comment-author">Amy Nguyen</div><div class="comment-body">Thank you for putting this list together. As someone new to python, I found it extremely helpful.
+
+One note I wanted to contribute to #3:
+One can also use multiple except clauses like so:
+try:
+    l = [&quot;a&quot;, &quot;b&quot;]
+    int(l[2])
+except ValueError:
+    pass
+except IndexError:
+    pass</div></div><div class="comment"><div class="comment-author">Tathagat Nawadia</div><div class="comment-body">nice article :)</div></div><div class="comment"><div class="comment-author">Rael Gugelmin Cunha</div><div class="comment-body">Article title should be &quot;Blowing Least Surprise Principle&quot;.</div></div><div class="comment"><div class="comment-author">Ron Barak</div><div class="comment-body">Erratum:
+No when we import it, everything is fine: -&gt; Now when we import it, everything is fine:</div></div><div class="comment"><div class="comment-author">FatalMojo</div><div class="comment-body">Great list, made me go &quot;wtf&quot; a few times</div></div><div class="comment"><div class="comment-author">john smith</div><div class="comment-body">Hi,
+Thanks for writing about &quot;top ten mistakes that python programmers make&quot;
+Regards,
+John,
+&lt;a href=&quot;http://www.catchexperts.com/python-online-training&quot;&gt;Python Geek&lt;/a&gt;</div></div><div class="comment"><div class="comment-author">christy</div><div class="comment-body">The above information about the &lt;a href=” http://www.traininginannanagar.in/python-training-in-chennai.html”&gt;python&lt;/a&gt; is really very informative...Thanks for updating these types of informative...</div></div><div class="comment"><div class="comment-author">christy</div><div class="comment-body">Very nice &lt;a href=” http://www.traininginannanagar.in/python-training-in-chennai.html”&gt;informative &lt;/a&gt;...Thanks for     your sharing....</div></div><div class="comment"><div class="comment-author">Radek</div><div class="comment-body">range in python 3 is same as xrange in python 2</div></div><div class="comment"><div class="comment-author">Radek</div><div class="comment-body">http://www.tiobe.com/tiobe-index/</div></div><div class="comment"><div class="comment-author">Radek</div><div class="comment-body">py source code is first compiled to byte code as .pyc. This byte code can be interpreted (official CPython), or JIT compiled (PyPy). Python source code (.py) can be compiled to different byte code also like IronPython (.Net) or Jython (JVM).</div></div><div class="comment"><div class="comment-author">Radek</div><div class="comment-body">I&#39;m surprised that there is no mention of floats. However, floats can be cumbersome in any language.
+
+&gt;&gt;&gt; round(1.45, 1)
+1.4 
+
+Rounds down eh? :)</div></div><div class="comment"><div class="comment-author">NunoAndre</div><div class="comment-body">Another common mistake is to forget the boolean coercion. You needn&#39;t to convert an expression to a boolean object.
+
+#5 could be simpler and more efficient, changing
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+    odd = lambda x : bool(x % 2)
+    numbers = [n for n in range(10)]
+    numbers[:] = [n for n in numbers if not odd(n)]
+&lt;/code&gt;&lt;/pre&gt;
+
+for 
+
+&lt;pre&gt;&lt;code class=&quot;python&quot;&gt;
+    numbers = [n for n in range(10)]
+    numbers[:] = [n for n in numbers if not (n % 2)] 
+&lt;/code&gt;&lt;/pre&gt;</div></div><div class="comment"><div class="comment-author">Tiago Silva</div><div class="comment-body">Great article! Although I need to disagree when it comes to python being an interpreted language. Python is also a compiled language. 
+
+https://www.paypal-engineering.com/2014/12/10/10-myths-of-enterprise-python/
+Myth number 2.
+
+Besides this small observation of mine, and apologies for that, the article is great :-).
+
+
+Thanks,
+Tiago</div></div><div class="comment"><div class="comment-author">David Howell</div><div class="comment-body">This is a fairer comparison as n is a list in both tests. I&#39;ve just tried it on python3.6 and I am getting 6.0 and 4.3 so it&#39;s still faster to convert the range to a list rather than the list comprehension. I wonder if this is a possible performance enhancement to be made because they could both resolve to the same bytecode in theory.</div></div><div class="comment"><div class="comment-author">Manju Gupta</div><div class="comment-body">Very Impressive Python tutorial. The content seems to be pretty exhaustive and excellent and will definitely help in learning Python. I&#39;m also a learner taken up Python training and I think your content has cleared some concepts of mine. While browsing for Python tutorials on YouTube i found this fantastic video on Python. Do check it out if you are interested to know more.:-https://www.youtube.com/watch?v=qgOXopu4n7c&amp;</div></div><div class="comment"><div class="comment-author">JCS</div><div class="comment-body">I knew most of these, but some I didn&#39;t know why. Others were new to me. #1 is one I&#39;ve had problems finding a good solution for. Thanks!</div></div><div class="comment"><div class="comment-author">Phani V</div><div class="comment-body">Excellent article on the nitty gritty of common mistakes made by Python programmers. Wrote some more nuances of Python programming in my blog https://honingds.com/blog/intro-to-python-for-data-science , please go through it.</div></div><div class="comment"><div class="comment-author">Dev Arya</div><div class="comment-body">Good Post. I like your blog. Thanks for Sharing
+&lt;a href=&quot;https://pythontutorialclass.webs.com/&quot;&gt;Python Training in Gurgaon&lt;/a&gt;</div></div><div class="comment"><div class="comment-author">Mir Hossein</div><div class="comment-body">I liked the article. This an almost complete list of python gotchas.
+Thanks.</div></div><div class="comment"><div class="comment-author">Nihal Singh</div><div class="comment-body">Nice article to verify the mistake in python programming and the lots of information  for the computer science students. Thanks for the useful article.</div></div><div class="comment"><div class="comment-author">Sam Watt</div><div class="comment-body">Thanks for this  Nice and very informative post on common mistakes that most of the &lt;a href=&quot;https://www.botreetechnologies.com/&quot; rel=&quot;follow&quot;&gt;python&lt;/a&gt;  developers do.</div></div><div class="comment"><div class="comment-author">Gocht Guerrero</div><div class="comment-body">About Mistake #5: Why use `numbers[:] = ...` instead of `numbers = ...`</div></div></div></div></div><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>function disqus_config() {
+  function notifyAboutNewComment() {
+    var url = '/disqus_comments.json?authenticity_token=PhtyURLOmiSuQGDdSWr%2FRj4zPQXoTt55Dt1Qu3Leq6JFu1jkk6DSZ1sDqyrDVwOEAmlNNh0yN04AdPee1Z7cGQ%3D%3D';
+    window.fetch(url, {method: 'POST'});
+  }
+
+  this.page.url = 'https://www.toptal.com/python/top-10-mistakes-that-python-programmers-make';
+  this.page.identifier = 'python/top-10-mistakes-that-python-programmers-make';
+  this.callbacks.onNewComment = [notifyAboutNewComment];
+}
+
+var disqus_shortname = 'toptal';
+
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><a class="dsq-brlink" href="https://disqus.com">comments powered by <span class="logo-disqus">Disqus</span></a></div></aside></main><aside class="blog_post-sidebar" data-role="blog_post.sidebar"><div class="tae_sidebar is-hidden" data-cell="TaeSidebar"><div class="tae_sidebar-content"><p class="tae_sidebar-title">Are you a Python developer?</p><p class="tae_sidebar-text">Work with vetted clients, from anywhere, on your terms.</p></div><div class="tae_sidebar-cta"><a href="https://www.toptal.com/python/freelance-jobs" class="button is-highlight">Find out more</a></div></div><div class="blog_post-sidebar_section is-subscription"><div class="article_aside_subscription"><div class="subscribe_card is-compact" data-cell="SubscribeForm" data-placement="side_bar"><div class="subscribe_card-inner"><p class="subscribe_card-title">World-class articles, delivered weekly.</p><div class="subscribe_card-content"><form action="https://www.toptal.com/blog/subscription" class="subscribe_card-form" data-recaptcha="invisible" method="post"><input class="subscribe_card-input" name="blog_subscription[email]" placeholder="Enter your email" role="subscribe_email" type="text" /><input name="blog_subscription[vertical]" type="hidden" /><button name="button" type="submit" class="form_button is-highlight">Get great content</button></form><p class="subscribe_card-disclaimer">Subscription implies consent to our <a href="/privacy">privacy policy</a></p></div></div><div class="subscribe_card-post_roll"><span class="checkmark"></span><p class="subscribe_card-post_roll_text">Thank you!<br />Check out your inbox to confirm your invite.</p></div><button aria-label="Close" class="subscribe_card-hide" data-role="subscribe_section.hide"></button></div></div></div><div class="blog_post-sidebar_section is-trending_articles"><div class="trending_articles_section"><h2 class="trending_articles_section-title">Trending Articles</h2><div class="trending_articles_section-content"><div class="trending_articles_section-item"><div class="blog_post_card is-plain-text"><div class="blog_post_card__breadcrumbs"><a href="https://www.toptal.com/developers/blog" class="blog_post_card__breadcrumbs-domain">Engineering</a><svg viewBox="0 0 5 8" xmlns="http://www.w3.org/2000/svg"><title>Icon Chevron</title><path d="M3 4L0 .9C0 .8 0 .7.1.6L.6.1c.1-.1.2-.1.3 0l3.6 3.8.1.1c0 .1 0 .1-.1.1L.9 7.9c-.1.1-.2.1-.3 0l-.5-.5c-.1-.1-.1-.2 0-.3L3 4z" fill="currentColor" fill-rule="nonzero"></path></svg><a href="https://www.toptal.com/developers/blog/mobile" class="blog_post_card__breadcrumbs-topic">Mobile</a></div><div class="blog_post_card__title"><h3 class="blog_post_card__title-topic"><a class="blog_post_card__title-link" href="https://www.toptal.com/mobile/native-vs-hybrid-apps-pros-and-cons">Write Once, Deploy Everywhere: When to Go Native?</a></h3></div></div></div><div class="trending_articles_section-item"><div class="blog_post_card is-plain-text"><div class="blog_post_card__breadcrumbs"><a href="https://www.toptal.com/developers/blog" class="blog_post_card__breadcrumbs-domain">Engineering</a><svg viewBox="0 0 5 8" xmlns="http://www.w3.org/2000/svg"><title>Icon Chevron</title><path d="M3 4L0 .9C0 .8 0 .7.1.6L.6.1c.1-.1.2-.1.3 0l3.6 3.8.1.1c0 .1 0 .1-.1.1L.9 7.9c-.1.1-.2.1-.3 0l-.5-.5c-.1-.1-.1-.2 0-.3L3 4z" fill="currentColor" fill-rule="nonzero"></path></svg><a href="https://www.toptal.com/developers/blog/back-end" class="blog_post_card__breadcrumbs-topic">Back-end</a></div><div class="blog_post_card__title"><h3 class="blog_post_card__title-topic"><a class="blog_post_card__title-link" href="https://www.toptal.com/javascript/language-server-protocol-tutorial">Language Server Protocol Tutorial: From VSCode to Vim</a></h3></div></div></div><div class="trending_articles_section-item"><div class="blog_post_card is-plain-text"><div class="blog_post_card__breadcrumbs"><a href="https://www.toptal.com/developers/blog" class="blog_post_card__breadcrumbs-domain">Engineering</a><svg viewBox="0 0 5 8" xmlns="http://www.w3.org/2000/svg"><title>Icon Chevron</title><path d="M3 4L0 .9C0 .8 0 .7.1.6L.6.1c.1-.1.2-.1.3 0l3.6 3.8.1.1c0 .1 0 .1-.1.1L.9 7.9c-.1.1-.2.1-.3 0l-.5-.5c-.1-.1-.1-.2 0-.3L3 4z" fill="currentColor" fill-rule="nonzero"></path></svg><a href="https://www.toptal.com/developers/blog/back-end" class="blog_post_card__breadcrumbs-topic">Back-end</a></div><div class="blog_post_card__title"><h3 class="blog_post_card__title-topic"><a class="blog_post_card__title-link" href="https://www.toptal.com/web/encrypted-safe-with-esni-doh-dot">Keep It Encrypted, Keep It Safe: Working with ESNI, DoH, and DoT</a></h3></div></div></div><div class="trending_articles_section-item"><div class="blog_post_card is-plain-text"><div class="blog_post_card__breadcrumbs"><a href="https://www.toptal.com/developers/blog" class="blog_post_card__breadcrumbs-domain">Engineering</a><svg viewBox="0 0 5 8" xmlns="http://www.w3.org/2000/svg"><title>Icon Chevron</title><path d="M3 4L0 .9C0 .8 0 .7.1.6L.6.1c.1-.1.2-.1.3 0l3.6 3.8.1.1c0 .1 0 .1-.1.1L.9 7.9c-.1.1-.2.1-.3 0l-.5-.5c-.1-.1-.1-.2 0-.3L3 4z" fill="currentColor" fill-rule="nonzero"></path></svg><a href="https://www.toptal.com/developers/blog/data-science-and-databases" class="blog_post_card__breadcrumbs-topic">Data Science and Databases</a></div><div class="blog_post_card__title"><h3 class="blog_post_card__title-topic"><a class="blog_post_card__title-link" href="https://www.toptal.com/algorithms/metropolis-hastings-bayesian-inference">MCMC Methods: Metropolis-Hastings and Bayesian Inference</a></h3></div></div></div></div></div></div><div class="blog_post-sidebar_section is-related_talent"><div class="related_talent_section"><div class="tags_section"><p class="tags_section-title_stacked">See our related talent</p><a class="tag-item" href="https://www.toptal.com/python">Python</a><a class="tag-item" href="https://www.toptal.com/software">Software Developers</a><a class="tag-item" href="https://www.toptal.com/back-end">Back-end</a></div></div></div><div class="blog_post-sidebar_section is-author_card" data-role="blog_post.scroll_animate"><div class="author_card_section"><p class="author_card_section-title">Hire the author</p><a class="scroll-to-wrapper" data-cell="ScrollTo" data-cell-options="{&quot;selector&quot;:&quot;#blog_post-article-author&quot;}" href="#blog_post-article-author"><div class="author_card is-clickable"><div class="author_card-photo_content"><span data-cell="DeferredImage" data-cell-options="{&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/talent/profile/picture_file/picture/152998/retina_160x160_large_ffd59b17295c0dc796c0aada1d8d5ca6-3a463e96e68f7767b79fbe76d3e52047.png&quot;}" class="author_card-photo" alt="Martin Chikilian"></span><div class="author_card-watermark"><svg viewbox="0 0 18 25" xmlns="http://www.w3.org/2000/svg"><defs><path d="M22.22 0l-1.98 1.97 3.67 3.64L16 13.48l9.78 9.72 1.97-1.97-3.66-3.64L32 9.72 22.22 0zM20.4 13.83l5.88-5.85 1.21 1.2-5.88 5.85-1.21-1.2z" id="b"></path><filter filterunits="objectBoundingBox" height="117.2%" id="a" width="125%" x="-12.5%" y="-4.3%"><feoffset dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feoffset><fegaussianblur in="shadowOffsetOuter1" result="shadowBlurOuter1" stddeviation=".5"></fegaussianblur><fecolormatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"></fecolormatrix></filter></defs><g fill="none" fill-rule="evenodd" transform="translate(-15)"><use fill="#000" filter="url(#a)" xlink:href="#b"></use><use fill="#F5F6F7" xlink:href="#b"></use></g></svg></div></div><div class="author_card-content"><p class="author_card-name">Martin Chikilian</p><p class="author_card-job_title">Python Software Engineer</p></div></div></a></div></div><div class="blog_post-sidebar_section is-read_next" data-role="blog_post.sidebar_sticky" data-sticky-percentage="0.7"><div class="read_next"><h2 class="read_next-title">Read Next</h2><div class="blog_post_card"><div class="blog_post_card-inner"><a class="blog_post_card__cover" href="https://www.toptal.com/machine-learning/semi-supervised-image-classification" style="background-image: url(https://bs-uploads.toptal.io/blackfish-uploads/blog/article/content/cover_image_file/cover_image/169336/0115_Semi_Supervised_Lina_Newsletter-ce66f4631350b73ba158964210135bba.png);"></a><div class="blog_post_card-content"><div class="blog_post_card__breadcrumbs"><a href="https://www.toptal.com/developers/blog" class="blog_post_card__breadcrumbs-domain">Engineering</a><svg viewBox="0 0 5 8" xmlns="http://www.w3.org/2000/svg"><title>Icon Chevron</title><path d="M3 4L0 .9C0 .8 0 .7.1.6L.6.1c.1-.1.2-.1.3 0l3.6 3.8.1.1c0 .1 0 .1-.1.1L.9 7.9c-.1.1-.2.1-.3 0l-.5-.5c-.1-.1-.1-.2 0-.3L3 4z" fill="currentColor" fill-rule="nonzero"></path></svg><a href="https://www.toptal.com/developers/blog/data-science-and-databases" class="blog_post_card__breadcrumbs-topic">Data Science and Databases</a></div><div class="blog_post_card__title"><h3 class="blog_post_card__title-topic"><a class="blog_post_card__title-link" href="https://www.toptal.com/machine-learning/semi-supervised-image-classification">Semi-supervised Image Classification with Unlabeled Data</a></h3></div></div></div></div></div></div></aside></div></div></div></article><div class="section has-full_size_width"><div class="section-inner"><div class="blog_post-footer"><div class="blog_post-footer_section is-subscription" data-role="blog_post.footer_subscription"><div class="section has-standard_width is-primary-background"><div class="section-inner"><div class="subscribe_card is-full_width" data-cell="SubscribeForm" data-placement="bottom_banner"><div class="subscribe_card-inner"><p class="subscribe_card-title">World-class articles, delivered weekly.</p><div class="subscribe_card-content"><form action="https://www.toptal.com/blog/subscription" class="subscribe_card-form" data-recaptcha="invisible" method="post"><input class="subscribe_card-input" name="blog_subscription[email]" placeholder="Enter your email" role="subscribe_email" type="text" /><input name="blog_subscription[vertical]" type="hidden" /><button name="button" type="submit" class="form_button is-highlight">Sign Me Up</button></form><p class="subscribe_card-disclaimer">Subscription implies consent to our <a href="/privacy">privacy policy</a></p></div></div><div class="subscribe_card-post_roll"><span class="checkmark"></span><p class="subscribe_card-post_roll_text">Thank you!<br />Check out your inbox to confirm your invite.</p></div><button aria-label="Close" class="subscribe_card-hide" data-role="subscribe_section.hide"></button></div></div></div></div><div class="blog_post-footer_section is-subscription is-sticky" data-role="blog_post.footer_subscription_sticky"><div class="section has-standard_width is-primary-background"><div class="section-inner"><div class="subscribe_card is-full_width" data-cell="SubscribeForm" data-placement="bottom_banner_sticky"><div class="subscribe_card-inner"><p class="subscribe_card-title">World-class articles, delivered weekly.</p><div class="subscribe_card-content"><form action="https://www.toptal.com/blog/subscription" class="subscribe_card-form" data-recaptcha="invisible" method="post"><input class="subscribe_card-input" name="blog_subscription[email]" placeholder="Enter your email" role="subscribe_email" type="text" /><input name="blog_subscription[vertical]" type="hidden" /><button name="button" type="submit" class="form_button is-highlight">Sign Me Up</button></form><p class="subscribe_card-disclaimer">Subscription implies consent to our <a href="/privacy">privacy policy</a></p></div></div><div class="subscribe_card-post_roll"><span class="checkmark"></span><p class="subscribe_card-post_roll_text">Thank you!<br />Check out your inbox to confirm your invite.</p></div><button aria-label="Close" class="subscribe_card-hide" data-role="subscribe_section.hide"></button></div></div></div></div><div class="blog_post-footer_section"><div class="section has-standard_width has-medium_padding_top"><div class="section-inner"><div class="skill_list is-wide"><h2 class="skill_list-title">Toptal Developers</h2><nav class="skill_list-items"><ul><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/android">Android Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/angular-js">AngularJS Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/back-end">Back-End Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/c-plus-plus">C++ Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/data-analysis">Data Analysts</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/data-engineer">Data Engineers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/data-science">Data Scientists</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/devops">DevOps Engineers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/freelance">Freelance Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/front-end">Front-End Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/full-stack">Full-Stack Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/html5">HTML5 Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/ios">iOS Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/java">Java Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/machine-learning">Machine Learning Engineers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/magento">Magento Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/mixed-reality">Mixed Reality Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/app">Mobile App Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/dot-net">.NET Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/nodejs">Node.js Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/php">PHP Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/python">Python Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/react">React.js Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/ruby">Ruby Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/ruby-on-rails">Ruby on Rails Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/salesforce">Salesforce Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/scala">Scala Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/software-architect">Software Architects</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/software">Software Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/unity-unity3d">Unity or Unity3D Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/virtual-reality">Virtual Reality Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/web">Web Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link" href="https://www.toptal.com/wordpress">WordPress Developers</a></li><li class="skill_list-item"><a class="skill_list-item_link is-highlighted" href="/developers/all">View more</a></li></ul></nav></div></div></div></div><div class="blog_post-footer_section"><div class="section has-standard_width"><div class="section-inner"><div class="join_cta"><p class="join_cta-title">Join the Toptal<sup>®</sup> community.
+</p><div class="join_cta-buttons"><a href="/hire?interested_in=developers" class="button is-big is-highlight">Hire a Developer</a><span>OR</span><a href="/developers/join" class="button is-big is-highlight">Apply as a Developer</a></div></div></div></div></div><div class="blog_post-footer_section"><div class="section has-full_size_width is-gray-background"><div class="section-inner"><div class="section has-standard_width has-medium_padding_top has-small_padding_bottom"><div class="section-inner"><footer class="footer"><div class="footer-wrapper"><div class="footer-inner"><div class="footer-column"><h3 class="footer-column_header">Most In-Demand Talent</h3><ul class="footer-column_links"><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/ios">iOS Developers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/front-end">Front-End Developers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/designers/ux">UX Designers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/designers/ui">UI Designers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/finance/financial-modeling">Financial Modeling Consultants</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/finance/interim-cfos">Interim CFOs</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/project-managers/digital">Digital Project Managers</a></li></ul></div><div class="footer-column"><h3 class="footer-column_header">About</h3><ul class="footer-column_links"><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/top-3-percent">Top 3%</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/clients">Clients</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/developers">Freelance Developers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/designers">Freelance Designers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/finance">Freelance Finance Experts</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/project-managers">Freelance Project Managers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/product-managers">Freelance Product Managers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/services/all">Specialized Services</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/about">About Us</a></li></ul></div><div class="footer-column"><h3 class="footer-column_header">Contact</h3><ul class="footer-column_links"><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/contact">Contact Us</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/press-center">Press Center</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/careers">Careers</a></li><li class="footer-column_links-item"><a class="footer-column_links-item_link" href="/faq">FAQ</a></li></ul></div><div class="footer-column"><h3 class="footer-column_header is-social">Social</h3><ul class="footer-column_social"><li class="footer-column_social-item"><a class="footer-column_social-item_link" title="LinkedIn" href="https://www.linkedin.com/company/toptal"><span data-cell="DeferredImage" data-cell-options="{&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/components/footer_section/social_link/content/icon_file/icon/57564/linkedin-78d88914e52b4b16caa0e49c691136a9.svg&quot;}" class="deferred_image" alt="LinkedIn"></span></a></li><li class="footer-column_social-item"><a class="footer-column_social-item_link" title="Twitter" href="https://twitter.com/toptal"><span data-cell="DeferredImage" data-cell-options="{&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/components/footer_section/social_link/content/icon_file/icon/57565/twitter-77a108f885ef8b01346ed954cfcca763.svg&quot;}" class="deferred_image" alt="Twitter"></span></a></li><li class="footer-column_social-item"><a class="footer-column_social-item_link" title="Facebook" href="https://www.facebook.com/toptal"><span data-cell="DeferredImage" data-cell-options="{&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/components/footer_section/social_link/content/icon_file/icon/57566/facebook-0425e11f23cf64bf05a97f9fec941e17.svg&quot;}" class="deferred_image" alt="Facebook"></span></a></li><li class="footer-column_social-item"><a class="footer-column_social-item_link" title="Instagram" href="https://www.instagram.com/toptal/"><span data-cell="DeferredImage" data-cell-options="{&quot;src&quot;:&quot;https://bs-uploads.toptal.io/blackfish-uploads/components/footer_section/social_link/content/icon_file/icon/57567/instagram-c5ad49dd6f92fa3fe6d2dc43dbaedac9.svg&quot;}" class="deferred_image" alt="Instagram"></span></a></li></ul></div></div></div><div class="footer-wrapper"><div class="footer-inner is-copyright"><div class="footer-logo_wrapper"><a class="footer-logo" href="/"><svg viewbox="0 0 105 29" xmlns="http://www.w3.org/2000/svg"><defs><path d="M1.308.785h16.396v21.667H1.308z" id="a" /><path d="M1.125.61h5.05v5.05h-5.05z" id="c" /></defs><g fill="none" fill-rule="evenodd"><g transform="translate(50.89 6.337)"><path d="M9.39 4.277c1.273 0 2.351.479 3.203 1.423.877.913 1.324 2.11 1.32 3.56-.005 1.459-.439 2.769-1.337 3.722-.854.913-1.928 1.377-3.201 1.377-1.255 0-2.3-.458-3.198-1.386-.893-.96-1.326-2.264-1.326-3.73.005-1.449.454-2.646 1.335-3.56.888-.947 1.934-1.406 3.193-1.406h.01zm6.163-1.145C14.134 1.58 12.365.785 10.288.785c-2.002 0-3.988 1.398-5.21 2.78L5.084.98 1.35.976l-.04 21.192v.278l3.753.006.017-6.628c1.133 1.274 2.929 2.021 4.924 2.027 2.198 0 4.045-.784 5.493-2.326 1.46-1.552 2.202-3.743 2.208-6.256.005-2.567-.717-4.631-2.15-6.137z" fill="currentColor" /></g><path d="M70.497 10.474l-.015 8.944c-.006 1.929.526 3.306 1.567 4.09.65.49 1.475.737 2.455.737.753 0 1.934-.304 1.934-.304l-.334-3.26s-.862.278-1.28-.02c-.398-.284-.592-.893-.592-1.805l.015-8.382 3.475.005.006-3.109-3.477-.006.01-4.466-3.749-.005-.01 4.467-3.147-.005 3.142 3.12zM39.723 2.656h-18.49l-.004 3.703h7.39l-.03 17.288v.34l3.907.005-.015-17.627 7.242-.006z" fill="currentColor" /><path d="M8.241 18.067a.414.414 0 01-.248 0c-.08-.026-.148-.063-.298-.212l-1.636-1.64c-.144-.144-.186-.217-.211-.3a.409.409 0 010-.246c.025-.083.061-.15.211-.3l5.153-5.141c.144-.145.216-.186.3-.207a.387.387 0 01.247 0c.082.026.15.062.3.211l1.634 1.64c.145.145.185.216.206.3a.409.409 0 010 .247c-.025.083-.061.15-.21.3L8.534 17.86c-.138.144-.211.181-.294.207zm11.569-5.953l-5.565-5.58a5.831 5.831 0 00-.144-.14L7.721 0 4.91 2.8 9.02 6.923l-9.02 8.99 5.564 5.575c.078.076.154.154.226.221l6.339 6.354 2.775-2.765-4.146-4.156 9.051-9.027z" fill="currentColor" /><path d="M47.216 15.694c-.004 1.522-.453 2.78-1.341 3.74-.882.954-1.98 1.437-3.265 1.437-1.257-.004-2.346-.489-3.228-1.453-.86-.938-1.3-2.202-1.3-3.745 0-1.542.444-2.8 1.31-3.739.882-.953 1.97-1.438 3.235-1.438 1.278 0 2.377.49 3.258 1.455.888.958 1.336 2.216 1.331 3.743m1.181-6.128c-1.531-1.582-3.615-2.454-5.75-2.392-2.162 0-4.064.758-5.658 2.26-1.61 1.51-2.43 3.61-2.434 6.235-.005 2.624.81 4.724 2.414 6.24 1.593 1.505 3.501 2.273 5.662 2.28.083.004.165.004.249.004 2.02 0 4.022-.865 5.496-2.373 1.08-1.107 2.368-3.068 2.372-6.121.006-3.054-1.273-5.018-2.351-6.133M83.715 21.063c-1.35-.005-2.227-.774-2.222-1.955.006-1.227.86-1.944 2.692-2.254l3.75-.633v.036c-.01 2.83-1.738 4.806-4.203 4.806h-.017zm-1.727-7.948c0-.953.5-3.053 3.265-3.053.98 0 1.537.33 2.005.723.454.375.681 1.303.681 2.073v.36l-4.563.711c-3.617.553-5.69 2.497-5.7 5.344-.005 1.476.531 2.739 1.552 3.667 1.006.913 2.383 1.398 4.008 1.402 2.048 0 3.585-.736 4.684-2.258.004.645.004 1.294.004 1.898h3.807l.025-10.933c.004-1.785-.578-3.513-1.727-4.462-1.136-.934-2.621-1.413-4.772-1.419h-.03c-1.64 0-3.378.434-4.549 1.45-1.377 1.19-2.053 3.08-2.053 4.539l3.363-.042zM93.551 2.909l-.036 20.959v.093l3.368.01.036-20.965v-.093z" fill="currentColor" /><g transform="translate(98.787 18.311)"><path d="M3.114 2.13v.846h.646c.358 0 .538-.14.538-.418 0-.288-.18-.428-.538-.428h-.646zm1.133 2.397l-.675-1.204h-.458v1.204h-.418V1.762H3.82c.557 0 .885.33.885.786 0 .388-.289.677-.677.756l.687 1.223h-.468zM1.544 3.145c0 .587.197 1.093.604 1.51a2.04 2.04 0 001.503.617c.587 0 1.084-.208 1.491-.617a2.08 2.08 0 00.617-1.51 2.04 2.04 0 00-.617-1.501 2.003 2.003 0 00-1.49-.627c-.588 0-1.084.21-1.493.627a2.039 2.039 0 00-.615 1.501zm-.42 0c0-.696.24-1.293.737-1.79A2.436 2.436 0 013.641.61c.696 0 1.302.248 1.79.745.497.497.745 1.094.745 1.79 0 .705-.248 1.293-.745 1.78a2.432 2.432 0 01-1.79.735c-.696 0-1.292-.238-1.78-.735a2.414 2.414 0 01-.736-1.78z" fill="currentColor" /></g></g></svg></a><span class="footer-logo_title">Hire the top 3% of freelance talent</span></div><div class="footer-legal">Copyright 2010 - 2020 Toptal, LLC<ul class="footer-legal_links"><li class="footer-legal_links-item"><a class="footer-legal_links-item_link" rel="nofollow" href="/privacy">Privacy Policy</a></li><li class="footer-legal_links-item"><a class="footer-legal_links-item_link" rel="nofollow" href="/tos">Website Terms</a></li></ul></div></div></div></footer></div></div></div></div></div></div></div></div></div><script src="https://bs-assets.toptal.io/blackfish-assets/public_blog_post_js.3c0ed23a21a6d6571b11.js"></script><div class="vendor_scripts"></div></body></html>
