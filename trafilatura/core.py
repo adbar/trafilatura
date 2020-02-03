@@ -139,7 +139,6 @@ def handle_other_elements(element, result_body, potential_tags):
         # LOGGER.debug('discarding: %s %s', element.tag, element.text)
         return result_body
     if element.tag == 'div':
-        LOGGER.warning('processing other element: %s', element.tag)
         processed_element = handle_textnode(element, comments_fix=False)
         if processed_element is not None:
             processed_element.attrib.clear()
