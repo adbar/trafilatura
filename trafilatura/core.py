@@ -466,7 +466,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     if len(temp_text) < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s %s', record_id, url)
     if len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
-        LOGGER.warning('not enough comments %s %s', record_id, url)
+        LOGGER.info('not enough comments %s %s', record_id, url)
     if len(temp_text) < MIN_EXTRACTED_SIZE and len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('text and comments not long enough: %s %s', len(temp_text), len(temp_comments))
         return None
