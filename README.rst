@@ -98,7 +98,7 @@ trafilatura 0.3.1 (+ justext)   0.889      0.936      **0.914** **0.912** 2.19
 Installation
 ------------
 
-This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.5 upwards (see `install Python guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_). It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
+This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.4 upwards (see `install Python guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_). It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
 
 .. code-block:: bash
 

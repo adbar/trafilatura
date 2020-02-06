@@ -82,7 +82,7 @@ For first experimental results see the `evaluation page <evaluation.html>`_.
 Installation
 ------------
 
-This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.5 upwards (see `install Python guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_). It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
+This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.4 upwards (see `install Python guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_). It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
 
 .. code-block:: bash
 
