@@ -19,11 +19,16 @@ from boilerpy3 import extractors
 from dragnet import extract_content #, extract_content_and_comments
 from goose3 import Goose
 from inscriptis import get_text
+from jparser import PageModel
 # from libextract.api import extract as lib_extract
 from newspaper import fulltext
 from newsplease import NewsPlease
 from readability import Document
 from trafilatura import extract
+## add to tests?
+# https://github.com/nikitautiu/learnhtml
+# https://github.com/intohole/sixgod
+# https://github.com/fancyspeed/sf-extractor
 
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -797,6 +802,17 @@ def run_newsplease(htmlstring):
    return article.maintext
 
 
+def run_jparser(htmlstring):
+   '''try with jparser'''
+   pm = PageModel(htmlstring)
+   result = pm.extract()
+   mylist = list()
+   for x in result['content']:
+       if x['type'] in ('text', 'html'):
+           mylist.append(str(x['data']))
+   return ' '.join(mylist)
+
+
 #def run_libextract(htmlstring):
 #    '''try with the libextract module'''
 #    textlist = list()
@@ -839,7 +855,7 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-everything, nothing, trafilatura_result, justext_result, trafilatura_justext_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+everything, nothing, trafilatura_result, justext_result, trafilatura_justext_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 everything.update(template_dict)
 nothing.update(template_dict)
 trafilatura_result.update(template_dict)
@@ -853,6 +869,7 @@ html2text_result.update(template_dict)
 dragnet_result.update(template_dict)
 boilerpipe_result.update(template_dict)
 newsplease_result.update(template_dict)
+jparser_result.update(template_dict)
 
 
 for item in EVAL_PAGES:
@@ -967,7 +984,16 @@ for item in EVAL_PAGES:
     newsplease_result['false positives'] += fp
     newsplease_result['true negatives'] += tn
     newsplease_result['false negatives'] += fn
-
+    # jparser
+    start = time.time()
+    result = run_jparser(htmlstring)
+    jparser_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES, item)
+    jparser_result['true positives'] += tp
+    jparser_result['false positives'] += fp
+    jparser_result['true negatives'] += tn
+    jparser_result['false negatives'] += fn
+    
 
 for item in EXTRA_PAGES:
     htmlstring = load_document(EXTRA_PAGES[item]['file'], evaluation=True)
@@ -1081,6 +1107,15 @@ for item in EXTRA_PAGES:
     newsplease_result['false positives'] += fp
     newsplease_result['true negatives'] += tn
     newsplease_result['false negatives'] += fn
+    # jparser
+    start = time.time()
+    result = run_jparser(htmlstring)
+    jparser_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
+    jparser_result['true positives'] += tp
+    jparser_result['false positives'] += fp
+    jparser_result['true negatives'] += tn
+    jparser_result['false negatives'] += fn
 
 
 print('number of documents:', len(EVAL_PAGES) + len(EXTRA_PAGES))
@@ -1123,3 +1158,6 @@ print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_s
 print('newsplease')
 print(newsplease_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newsplease_result)))
+print('jparser')
+print(jparser_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
