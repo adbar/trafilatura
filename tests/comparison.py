@@ -27,8 +27,6 @@ from readability import Document
 from trafilatura import extract
 ## add to tests?
 # https://github.com/nikitautiu/learnhtml
-# https://github.com/intohole/sixgod
-# https://github.com/fancyspeed/sf-extractor
 
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -475,16 +473,6 @@ EVAL_PAGES = {
     'without': ['Reuters files', 'turns CO2 into soap', 'I consent to receiving'],
     'comments': ['Postmedia is committed'],
 },
-}
-# overview page: result is None
-# 'https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5': {
-#    'file': 'chip.de.tests.html',
-#    'with': [],
-#    'without': [],
-#},
-
-
-EXTRA_PAGES = {
 'https://www.ahlen.de/start/aktuelles/aktuelle/information/nachricht/aus-ahlen/reparaturcafe-am-31-januar/': {
     'file': 'ahlen.de.reparaturcafe.html',
     'author': '',
@@ -559,7 +547,7 @@ EXTRA_PAGES = {
     'file': 'bibliothek2null.de.mai.html',
     'author': 'Patrick Danowski',
     'title': 'Alles Neue mach der Mai…',
-    'date': '05-18',
+    'date': '2014-05-18',
     'description': 'Innovative Ideen für Bibliotheken,  Freie Inhalte und Interessantes aus dem Web',
     'categories': ['Uncategorized'],
     'tags': ['Uncategorized'],
@@ -657,7 +645,7 @@ EXTRA_PAGES = {
     'file': 'faz.net.streaming.html',
     'author': '',
     'title': '',
-    'date': '',
+    'date': '2020-01-28',
     'description': '',  # in HTML source
     'categories': [''],
     'tags': [''],
@@ -696,22 +684,26 @@ EXTRA_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 }
+# overview page: result is None
+# 'https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5': {
+#    'file': 'chip.de.tests.html',
+#    'with': [],
+#    'without': [],
+#},
 
 
-
-def load_document(filename, evaluation=False):
+def load_document(filename):
     '''load mock page from samples'''
-    if evaluation is True:
-        dirname = 'eval'
-    else:
-        dirname = 'cache'
+    mypath = os.path.join(TEST_DIR, 'cache', filename)
+    if not os.path.isfile(mypath):
+        mypath = os.path.join(TEST_DIR, 'eval', filename)
     try:
-        with open(os.path.join(TEST_DIR, dirname, filename), 'r') as inputf:
+        with open(mypath, 'r') as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
         # read as binary
-        with open(os.path.join(TEST_DIR, dirname, filename), 'rb') as inputf:
+        with open(mypath, 'rb') as inputf:
             htmlbinary = inputf.read()
         guessed_encoding = chardet.detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
@@ -993,132 +985,9 @@ for item in EVAL_PAGES:
     jparser_result['false positives'] += fp
     jparser_result['true negatives'] += tn
     jparser_result['false negatives'] += fn
-    
-
-for item in EXTRA_PAGES:
-    htmlstring = load_document(EXTRA_PAGES[item]['file'], evaluation=True)
-    # null hypotheses
-    tp, fn, fp, tn = evaluate_result('', EXTRA_PAGES, item)
-    nothing['true positives'] += tp
-    nothing['false positives'] += fp
-    nothing['true negatives'] += tn
-    nothing['false negatives'] += fn
-    tp, fn, fp, tn = evaluate_result(htmlstring, EXTRA_PAGES, item)
-    everything['true positives'] += tp
-    everything['false positives'] += fp
-    everything['true negatives'] += tn
-    everything['false negatives'] += fn
-    # html2text
-    start = time.time()
-    result = run_html2text(htmlstring)
-    html2text_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    html2text_result['true positives'] += tp
-    html2text_result['false positives'] += fp
-    html2text_result['true negatives'] += tn
-    html2text_result['false negatives'] += fn
-    # inscriptis
-    start = time.time()
-    result = run_inscriptis(htmlstring)
-    inscriptis_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    inscriptis_result['true positives'] += tp
-    inscriptis_result['false positives'] += fp
-    inscriptis_result['true negatives'] += tn
-    inscriptis_result['false negatives'] += fn
-    # trafilatura
-    start = time.time()
-    result = run_trafilatura(htmlstring)
-    trafilatura_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    trafilatura_result['true positives'] += tp
-    trafilatura_result['false positives'] += fp
-    trafilatura_result['true negatives'] += tn
-    trafilatura_result['false negatives'] += fn
-    # justext
-    start = time.time()
-    result = run_justext(htmlstring)
-    justext_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    justext_result['true positives'] += tp
-    justext_result['false positives'] += fp
-    justext_result['true negatives'] += tn
-    justext_result['false negatives'] += fn
-    # trafilatura + justext
-    start = time.time()
-    result = run_trafilatura_justext(htmlstring)
-    trafilatura_justext_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    trafilatura_justext_result['true positives'] += tp
-    trafilatura_justext_result['false positives'] += fp
-    trafilatura_justext_result['true negatives'] += tn
-    trafilatura_justext_result['false negatives'] += fn
-    # readability
-    start = time.time()
-    result = run_readability(htmlstring)
-    readability_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    readability_result['true positives'] += tp
-    readability_result['false positives'] += fp
-    readability_result['true negatives'] += tn
-    readability_result['false negatives'] += fn
-    # goose
-    start = time.time()
-    result = run_goose(htmlstring)
-    goose_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    goose_result['true positives'] += tp
-    goose_result['false positives'] += fp
-    goose_result['true negatives'] += tn
-    goose_result['false negatives'] += fn
-    # newspaper
-    start = time.time()
-    result = run_newspaper(htmlstring)
-    newspaper_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    newspaper_result['true positives'] += tp
-    newspaper_result['false positives'] += fp
-    newspaper_result['true negatives'] += tn
-    newspaper_result['false negatives'] += fn
-    # dragnet
-    start = time.time()
-    result = run_dragnet(htmlstring)
-    dragnet_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    dragnet_result['true positives'] += tp
-    dragnet_result['false positives'] += fp
-    dragnet_result['true negatives'] += tn
-    dragnet_result['false negatives'] += fn
-    # boilerpipe
-    start = time.time()
-    result = run_boilerpipe(htmlstring)
-    boilerpipe_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    boilerpipe_result['true positives'] += tp
-    boilerpipe_result['false positives'] += fp
-    boilerpipe_result['true negatives'] += tn
-    boilerpipe_result['false negatives'] += fn
-    # newsplease
-    start = time.time()
-    result = run_newsplease(htmlstring)
-    newsplease_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    newsplease_result['true positives'] += tp
-    newsplease_result['false positives'] += fp
-    newsplease_result['true negatives'] += tn
-    newsplease_result['false negatives'] += fn
-    # jparser
-    start = time.time()
-    result = run_jparser(htmlstring)
-    jparser_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EXTRA_PAGES, item)
-    jparser_result['true positives'] += tp
-    jparser_result['false positives'] += fp
-    jparser_result['true negatives'] += tn
-    jparser_result['false negatives'] += fn
 
 
-print('number of documents:', len(EVAL_PAGES) + len(EXTRA_PAGES))
+print('number of documents:', len(EVAL_PAGES))
 print('nothing')
 print(nothing)
 # print(calculate_f_score(nothing))
