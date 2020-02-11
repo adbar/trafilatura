@@ -1,0 +1,1164 @@
+
+
+<!-- SELECT id, region_description, region_map, region_map_copyright from ws_regions WHERE region_url="d_o_ca_-rioja"  -->
+
+<!-- select producer_title, producer_url, region_title, region_url, country_title, country_url, count(ws_bottles.id) as anzflaschen FROM ws_producers left outer join ws_regions on ws_producers.region_id=ws_regions.id  left outer join ws_countries on ws_producers.country_id=ws_countries.id 
+												left outer join ws_wines on ws_producers.id=ws_wines.producer_id 
+												left outer join ws_bottles on ws_wines.id=ws_bottles.wine_id 
+												where stock!=0 and ws_regions.region_url="d_o_ca_-rioja" group by ws_producers.id order by country_sort, region_sort, producer_sort -->
+<!doctype html>
+<html lang="de-DE">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>D.O.Ca. Rioja, Spanien - Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico</title>
+<meta charset="utf-8">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="description" content="Alle Weine aus D.O.Ca. Rioja, Spanien, ">
+<meta name="keywords" content="Vinos Y Tapas, Wein, Spanischer Wein, Spanische Weine, Spanische Spezialitäten, Direktimport, Berlin, Drakestraße, Weinshop, Weinladen, Internetshop, Onlineshop, Weinverkauf, Weinladen, Lebensmittel, Sherry, Sherrys, Port, Portwein, Portweine, Spirituosen, Fassreife, Cosecha, Joven, Crianza, Reserva, Gran Reserva, D.O.Ca. Rioja, Spanien, ">
+<meta name="author" content="Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico">
+<meta name="copyright" content="(C) 2020 by Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico">
+<meta name="date" content="2020-02-11">
+<meta name="reply to" content="info@vinosytapas.de">
+<meta name="revisit-after" content="10 Days">
+<meta http-equiv="content-language" content="de-DE">
+<meta name="google-site-verification" content="PlcseiXcW6EeZj9zHUhcrr6EWh_T2bJCPzPwimZ8ah8" />
+<meta name="msvalidate.01" content="B3D4660A146869FEB1FBE2D5F8843C39" />
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.vinosytapas.de/wein/herkunft/spanien/d_o_ca_-rioja/">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+ 
+<link href="/_data/inc/css/style.css" rel="stylesheet" type="text/css"/>
+<link href="/_data/inc/css/navi.css" rel="stylesheet" type="text/css"/>
+
+
+<script type="text/javascript" src="/_data/inc/js/weinshop.js"></script>
+<script type="text/javascript" src="/_data/inc/js/login.js"></script>
+<script type="text/javascript" src="/_data/inc/js/jquery.socialshareprivacy.min.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-30511927-1', 'auto');
+  ga('require', 'linkid', 'linkid.js');
+  ga('send', 'pageview');
+
+</script>
+</head>
+<body>
+	<a name="oben"></a>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header right">
+		  <a class="navbar-brand" href="/"><img src="/_img/sys/VI Logo h200.png" title="Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico - Startseite"></a>
+        </div>
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+		  <div class="mobtitelzeile">Iberische Weine in Berlin</div>
+		  <a class="navbar-brand" href="/"><img src="/_img/sys/VYT Logo h200.png" title="Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico - Startseite"></a>
+        </div>
+		<div class="navbar-before-nav">
+			<div class="titelzeile">Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico</div>
+			 <span class="titeltext">Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico sind ein auf spanische und portugiesische Weine und Lebensmittel spezialisierter Familienbetrieb. Bei uns finden Sie einen Querschnitt der kulinarischen Schätze Spaniens und Portugals. Sherry und Portweine, kräftige Rotweine, Weißweine aus Galizien, Vinho Verde aus Portugal, würzigen Manchegokäse aus Toledo, Patanegra-Schinken aus Kastilien, Olivenöle! Sind Sie neugierig? Wir freuen uns auf Sie!</span>
+		</div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/wein/typ/rotwein/" title="Rotwein">Rot</a></li>
+            <li><a href="/wein/typ/weisswein/" title="Weißwein">Weiß</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Cava, Winzersekt, Sekt, Schaumwein">Cava <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/wein/typ/cava/" title="Cava">Cava</a></li>
+                <li><a href="/wein/typ/winzersekt/" title="Winzersekt">Winzersekt</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Alle Regionen">Herkunft <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+<li class="dropdown-header">Besonders gefragt</li>
+<li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Artikel aus D.O.Ca. Rioja, Spanien">D.O.Ca. Rioja (Spanien)</a></li>
+<li><a href="/wein/herkunft/spanien/d_o_ca_-priorat/" title="Artikel aus D.O.Ca. Priorat, Spanien">D.O.Ca. Priorat (Spanien)</a></li>
+<li><a href="/wein/herkunft/spanien/d_o_-navarra/" title="Artikel aus D.O. Navarra, Spanien">D.O. Navarra (Spanien)</a></li>
+<li><a href="/wein/herkunft/spanien/mallorca/" title="Artikel aus Mallorca, Spanien">Mallorca (Spanien)</a></li>
+<li class="divider"></li>
+<!-- select country_title, country_url, count(ws_bottles.id) as anzflaschen FROM ws_countries  left outer join ws_wines on ws_countries.id=ws_wines.country_id left outer join ws_bottles on ws_wines.id=ws_bottles.wine_id where stock!=0 group by ws_countries.id order by country_sort -->
+<li class="dropdown-header">Länder</li>
+<li><a href="/wein/herkunft/spanien/" title="Artikel aus Spanien">Spanien</a></li>
+<li><a href="/wein/herkunft/portugal/" title="Artikel aus Portugal">Portugal</a></li>
+<li class="divider"></li>
+				
+                <li class="dropdown-header">Alle Regionen</li>
+				<li><a href="/wein/herkunft/" title="Alle Regionen in der Übersicht">Regionenübersicht aller Länder</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Sherry, Portwein, Likör, Generoso, Süsswein, Vermut">Mehr... <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Unsere Spezialitäten</li>
+				<li><a href="/wein/typ/rotwein/" title="Rotwein">Rotwein</a></li>
+				<li><a href="/wein/typ/weisswein/" title="Weißwein">Weißwein</a></li>
+				<li><a href="/wein/typ/rosewein/" title="Roséwein">Roséwein</a></li>
+				<li><a href="/wein/typ/cava/" title="Cava">Cava</a></li>
+				<li><a href="/wein/typ/winzersekt/" title="Winzersekt">Winzersekt</a></li>
+				<li><a href="/wein/typ/sherry/" title="Sherry">Sherry</a></li>
+                <li><a href="/wein/typ/portwein/" title="Portwein">Portwein</a></li>
+                <li><a href="/wein/typ/sueesswein/" title="Süsswein">Süsswein</a></li>
+                <li><a href="/wein/typ/likoer/" title="Likör">Likör</a></li>
+                <li><a href="/wein/typ/generoso/" title="Generoso">Generoso</a></li>
+                <li><a href="/wein/typ/vermut/" title="Vermut">Vermut</a></li>
+				<li class="divider"></li>
+                <li class="dropdown-header">Alle Artikel in Kategorien und Sortierungen</li>
+				<li><a href="/wein/herkunft/" title="Herkunft des Weins oder der Spirituose" >Herkunft / Region</a></li>
+                <li><a href="/wein/ausbau/" title="Ausbau des Weins, bspw. Crianza, Reserva etc.">Ausbau</a></li>
+                <li><a href="/wein/typ/" title="Typ des Getränks, bspw. Rotwein, Cava, Sherry etc.">Typ</a></li>
+                <li><a href="/wein/rebsorten/" title="Im Wein enthaltene Rebsorten">Rebsorten</a></li>
+                <li><a href="/wein/auszeichnung/" title="Weine mit Auszeichnungen, bspw. von Robert Parker etc.">Auszeichnung</a></li>
+                <li><a href="/wein/geschmack/" title="Im jeweiligen Getränk vertretene Geschmäcker">Geschmack</a></li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Unser Service für Sie: Impressum, AGB, Versandkosten und mehr">Service <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Service</li>
+                <li><a href="/service/warenkorb.php" title="Warenkorb" rel="nofollow">Warenkorb</a></li>
+                <li><a href="/service/merkzettel.php" title="Merkzettel" rel="nofollow">Merkzettel</a></li>
+                <li><a href="/versand.php" title="Unsere Versandkosten"rel="nofollow">Versandkosten</a></li>
+                <li><a href="/agb.php" title="Unsere allgemeinen Geschäftsbedingungen" rel="nofollow">AGB</a></li>
+                <li><a href="/datenschutzerklaerung.php" title="Datenschutzerklärung" rel="nofollow">Datenschutzerklärung</a></li>
+                <li><a href="/impressum.php" title="Impressum" rel="nofollow">Impressum</a></li>
+              </ul>
+            </li>
+            <li><a target="laden" href="http://laden.vinosytapas.de" title="Unser Ladengeschäft in Lichterfelde-West, Berlin"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Weinläden</a></li>
+			
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+		<div class="starter-template">
+			<div class="row">
+				<!-- BOF Content -->
+				<div class="col-md-9">
+					<div id="breadcrumb"><div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+  <a href="https://www.vinosytapas.de/wein/herkunft/" itemprop="url">
+	<span itemprop="title">Herkunft</span>
+  </a> 
+ > </div>  	
+<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+  <a href="https://www.vinosytapas.de/wein/herkunft/spanien/" itemprop="url">
+	<span itemprop="title">Spanien</span>
+  </a> 
+ > </div>  	
+<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+  <a href="https://www.vinosytapas.de/wein/herkunft/spanien/d_o_ca_-rioja/" itemprop="url">
+	<span itemprop="title">D.O.Ca. Rioja</span>
+  </a> 
+</div>  	
+</div>
+<div  role="alert" id="messages" area-hidden="true"></div><div class="page-header"><h1>D.O.Ca. Rioja, Spanien</h1></div>
+<div class="beschreibung"><div style="width:33%;float:right;margin:0px 0px 10px 10px;" class="bs-callout bs-callout-muted"><a title="Karte vergrößert öffnen" data-target="#modal_infos" data-id="35" data-infos="region" href="#"><img src="http://upload.wikimedia.org/wikipedia/commons/1/1a/DOCa_Rioja_location.svg" style="width:100%;" title="Karte der Region D.O.Ca. Rioja"></a>
+<br><br><small>&copy; By Té y kriptonita (Own work) [<a target="_blank" href="http://www.gnu.org/copyleft/fdl.html">GFDL</a> or <a target="_blank" href="http://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA-3.0</a>], <a target="_blank" href="http://commons.wikimedia.org/wiki/File%3ADOCa_Rioja_location.svg">via Wikimedia Commons</a></small></div>
+Die Region D.O.Ca. Rioja (<span class=&quot;st&quot;>Denominaci&oacute;n de Origen Calificada) liegt im Norden Spanien am Mittellauf des Ebro. Sie hat eine ungef&auml;hre Gr&ouml;&szlig;e von 120 x 40 km. Der Name Rioja stammt von einem der Nebenfl&uuml;sse des Ebro, dem </span>R&iacute;o  Oja.<br />
+<br />
+Die Region D.O.Ca. Rioja unterteilt sich in die drei Untergebiete Rioja Alta, Rioja Alavesa und Rioja Baja (nach der Gr&ouml;&szlig;e der Anbaufl&auml;chen abnehmend sortiert. W&auml;hrend Rioja Alta und Rioja Alavesa klimatisch vom Einfluss des Atlantik gepr&auml;gt sind, hat Rioja Baja eher mediterrane Bedingungen.<br />
+<br />
+Die Bestimmungen der D.O.Ca. Rioja erlauben vier rote und drei wei&szlig;e Rebsorten anzubauen. Der Kenner w&uuml;rde sofort Tempranillo und Garnacha nennen, aber auch die beiden anderen roten Rebsorten, Graciano und Mazuelo haben einen wohlklingenden Namen und nat&uuml;rlich auch Geschmack. Bei den wei&szlig;en Rebsorten sind Viura, Malvas&iacute;a udn Garnacha Blanca gestattet.<br />
+<br />
+F&uuml;r die Qualit&auml;tsstufen der Weine aus der  D.O.Ca. Rioja gibt es folgende Bestimmungen:<br />
+<table class='table'>
+    <tbody>
+        <tr>
+            <th>&nbsp;</th>
+            <th>Vino de Crianza</th>
+            <th>Reserva</th>
+            <th>Gran Reserva</th>
+        </tr>
+        <tr>
+            <th>Mindestlagerzeit Rotwein</th>
+            <td>24 Monate</td>
+            <td>36 Monate</td>
+            <td>60 Monate</td>
+        </tr>
+        <tr>
+            <th>davon mindestens im Fass</th>
+            <td>12 Monate</td>
+            <td>12 Monate</td>
+            <td>24 Monate</td>
+        </tr>
+        <tr>
+            <th>Mindestlagerzeit Wei&szlig;wein</th>
+            <td>24 Monate</td>
+            <td>24 Monate</td>
+            <td>48 Monate</td>
+        </tr>
+        <tr>
+            <th>davon mindestens im Fass</th>
+            <td>6 Monate</td>
+            <td>6 Monate</td>
+            <td>6 Monate</td>
+        </tr>
+    </tbody>
+</table></div>
+<div class="page-header clearfix"></div>
+<h2>Erzeugerübersicht</h2>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/vina-bujanda/" title="Artikel von Viña Bujanda, D.O.Ca. Rioja, Spanien (1 verschiedene Artikel verfügbar)">Viña Bujanda<small> (1)</small></a></div>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-artuke/" title="Artikel von Bodegas Artuke, D.O.Ca. Rioja, Spanien (1 verschiedene Artikel verfügbar)">Bodegas Artuke<small> (1)</small></a></div>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/" title="Artikel von Bodega La Encina, D.O.Ca. Rioja, Spanien (2 verschiedene Artikel verfügbar)">Bodega La Encina<small> (2)</small></a></div>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja//" title="Artikel von Bodegas Finca Allende, D.O.Ca. Rioja, Spanien (1 verschiedene Artikel verfügbar)">Bodegas Finca Allende<small> (1)</small></a></div>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/" title="Artikel von Bodegas Valdemar, D.O.Ca. Rioja, Spanien (4 verschiedene Artikel verfügbar)">Bodegas Valdemar<small> (4)</small></a></div>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-ostatu/" title="Artikel von Bodegas Ostatu, D.O.Ca. Rioja, Spanien (7 verschiedene Artikel verfügbar)">Bodegas Ostatu<small> (7)</small></a></div>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/finca-allende/" title="Artikel von Finca Allende, D.O.Ca. Rioja, Spanien (2 verschiedene Artikel verfügbar)">Finca Allende<small> (2)</small></a></div>
+<div class="col-md-4 col-xs-6"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/finca-valpiedra/" title="Artikel von Finca Valpiedra, D.O.Ca. Rioja, Spanien (1 verschiedene Artikel verfügbar)">Finca Valpiedra<small> (1)</small></a></div>
+<div class="page-header clearfix"></div>
+<div><span class="pull-left"><ul class="nav navbar-nav"><li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Typ">Herkunft auswählen <span class="caret"></span></a><ul class="dropdown-menu" role="menu"><li><a href="/wein/herkunft/spanien/" >Spanien</a></li>
+<li><a href="/wein/herkunft/spanien/andalusien/">Spanien -> Andalusien</a></li><li><a href="/wein/herkunft/spanien/andalusien/jose-gallego-gongora--s_a_/">Spanien -> Andalusien -> José Gallego Góngora, S.A.</a><li><li><a href="/wein/herkunft/spanien/cordoba/">Spanien -> Cordoba</a></li><li><a href="/wein/herkunft/spanien/cordoba/bodegas-gomez-nevado--s_l_/">Spanien -> Cordoba -> Bodegas Gómez Nevado, S.L.</a><li><li><a href="/wein/herkunft/spanien/d_o_-bierzo/">Spanien -> D.O. Bierzo</a></li><li><a href="/wein/herkunft/spanien/d_o_-bierzo/mencia-de-dos--s_l_/">Spanien -> D.O. Bierzo -> Mencía De-Dos, S.L.</a><li><li><a href="/wein/herkunft/spanien/d_o_-bierzo/vinedos-y-bod_-dominio-de-tares/">Spanien -> D.O. Bierzo -> Viñedos y Bod. Dominio de Tares</a><li><li><a href="/wein/herkunft/spanien/d_o_-cava/">Spanien -> D.O. Cava</a></li><li><a href="/wein/herkunft/spanien/d_o_-cava/giro-ribot/">Spanien -> D.O. Cava -> Giró Ribot</a><li><li><a href="/wein/herkunft/spanien/d_o_-cava/pere-llopart-vilaros/">Spanien -> D.O. Cava -> Pere Llopart Vilaros</a><li><li><a href="/wein/herkunft/spanien/d_o_-emporda/">Spanien -> D.O. Empordà</a></li><li><a href="/wein/herkunft/spanien/d_o_-emporda/empordalia/">Spanien -> D.O. Empordà -> Empordalia</a><li><li><a href="/wein/herkunft/spanien/d_o_-jerez/">Spanien -> D.O. Jerez</a></li><li><a href="/wein/herkunft/spanien/d_o_-jerez/bodegas-gutierrez-colosia/">Spanien -> D.O. Jerez -> Bodegas Gutiérrez Colosía</a><li><li><a href="/wein/herkunft/spanien/d_o_-jerez/emilio-lustau/">Spanien -> D.O. Jerez -> Emilio Lustau</a><li><li><a href="/wein/herkunft/spanien/d_o_-jerez/herederos-de-argueeso--s_a_/">Spanien -> D.O. Jerez -> Herederos de Argüeso, S.A.</a><li><li><a href="/wein/herkunft/spanien/d_o_-jumilla/">Spanien -> D.O. Jumilla</a></li><li><a href="/wein/herkunft/spanien/d_o_-jumilla/casa-castillo/">Spanien -> D.O. Jumilla -> Casa Castillo</a><li><li><a href="/wein/herkunft/spanien/d_o_-montilla-moriles/">Spanien -> D.O. Montilla Moriles</a></li><li><a href="/wein/herkunft/spanien/d_o_-montilla-moriles/bodegas-toro-albala/">Spanien -> D.O. Montilla Moriles -> Bodegas Toro Albalá</a><li><li><a href="/wein/herkunft/spanien/d_o_-montsant/">Spanien -> D.O. Montsant</a></li><li><a href="/wein/herkunft/spanien/d_o_-montsant//">Spanien -> D.O. Montsant -> </a><li><li><a href="/wein/herkunft/spanien/d_o_-montsant/celler-de-capcanes/">Spanien -> D.O. Montsant -> Celler de Capçanes</a><li><li><a href="/wein/herkunft/spanien/d_o_-navarra/">Spanien -> D.O. Navarra</a></li><li><a href="/wein/herkunft/spanien/d_o_-navarra/bodegas-macaya/">Spanien -> D.O. Navarra -> Bodegas Macaya</a><li><li><a href="/wein/herkunft/spanien/d_o_-navarra/bodegas-maximo-abete/">Spanien -> D.O. Navarra -> Bodegas Máximo Abete</a><li><li><a href="/wein/herkunft/spanien/d_o_-navarra/bodegas-ochoa--s_a_/">Spanien -> D.O. Navarra -> Bodegas Ochoa, S.A.</a><li><li><a href="/wein/herkunft/spanien/d_o_-penedes/">Spanien -> D.O. Penedés</a></li><li><a href="/wein/herkunft/spanien/d_o_-penedes/giro-ribot--s_a_/">Spanien -> D.O. Penedés -> Giró Ribot, S.A.</a><li><li><a href="/wein/herkunft/spanien/d_o_-penedes/oriol-rossell/">Spanien -> D.O. Penedés -> Oriol Rossell</a><li><li><a href="/wein/herkunft/spanien/d_o_-pla-i-llevant/">Spanien -> D.O. Pla i Llevant</a></li><li><a href="/wein/herkunft/spanien/d_o_-pla-i-llevant/armero-i-adrover/">Spanien -> D.O. Pla i Llevant -> Armero I Adrover</a><li><li><a href="/wein/herkunft/spanien/d_o_-rias-baixas/">Spanien -> D.O. Rias Baixas</a></li><li><a href="/wein/herkunft/spanien/d_o_-rias-baixas/bodegas-del-palacio-de-fefinanes/">Spanien -> D.O. Rias Baixas -> Bodegas del Palacio de Fefiñanes</a><li><li><a href="/wein/herkunft/spanien/d_o_-rias-baixas/bodegas-zarate/">Spanien -> D.O. Rias Baixas -> Bodegas Zarate</a><li><li><a href="/wein/herkunft/spanien/d_o_-ribeira-sacra/">Spanien -> D.O. Ribeira Sacra</a></li><li><a href="/wein/herkunft/spanien/d_o_-ribeira-sacra/guimaro/">Spanien -> D.O. Ribeira Sacra -> Guímaro</a><li><li><a href="/wein/herkunft/spanien/d_o_-ribera-del-duero/">Spanien -> D.O. Ribera del Duero</a></li><li><a href="/wein/herkunft/spanien/d_o_-ribera-del-duero/arrocal/">Spanien -> D.O. Ribera del Duero -> Arrocal</a><li><li><a href="/wein/herkunft/spanien/d_o_-ribera-del-duero/bodega-abadia-de-acon/">Spanien -> D.O. Ribera del Duero -> Bodega Abadía de Acón</a><li><li><a href="/wein/herkunft/spanien/d_o_-ribera-del-duero/bodegas-lopez-cristobal--s_l_/">Spanien -> D.O. Ribera del Duero -> Bodegas López Cristóbal, S.L.</a><li><li><a href="/wein/herkunft/spanien/d_o_-ribera-del-duero/bodegas-penalba-lopez/">Spanien -> D.O. Ribera del Duero -> Bodegas Peñalba López</a><li><li><a href="/wein/herkunft/spanien/d_o_-ribera-del-duero/dominio-de-bornos/">Spanien -> D.O. Ribera del Duero -> Dominio de Bornos</a><li><li><a href="/wein/herkunft/spanien/d_o_-rueda/">Spanien -> D.O. Rueda</a></li><li><a href="/wein/herkunft/spanien/d_o_-rueda/bodegas-de-crianza-de-castilla-la-vieja/">Spanien -> D.O. Rueda -> Bodegas de Crianza de Castilla la Vieja</a><li><li><a href="/wein/herkunft/spanien/d_o_-rueda/terna-bodegas/">Spanien -> D.O. Rueda -> Terna Bodegas</a><li><li><a href="/wein/herkunft/spanien/d_o_-terra-alta/">Spanien -> D.O. Terra Alta</a></li><li><a href="/wein/herkunft/spanien/d_o_-terra-alta/somdinou/">Spanien -> D.O. Terra Alta -> Somdinou</a><li><li><a href="/wein/herkunft/spanien/d_o_-tierra-de-leon/">Spanien -> D.O. Tierra de Leon</a></li><li><a href="/wein/herkunft/spanien/d_o_-tierra-de-leon/bodegas-pardevalles/">Spanien -> D.O. Tierra de Leon -> Bodegas Pardevalles</a><li><li><a href="/wein/herkunft/spanien/d_o_-toro/">Spanien -> D.O. Toro</a></li><li><a href="/wein/herkunft/spanien/d_o_-toro/valpiculata-s_l_/">Spanien -> D.O. Toro -> Valpiculata S.L.</a><li><li><a href="/wein/herkunft/spanien/d_o_-valencia/">Spanien -> D.O. Valencia</a></li><li><a href="/wein/herkunft/spanien/d_o_-valencia/bodegas-los-frailes/">Spanien -> D.O. Valencia -> Bodegas  Los Frailes</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-priorat/">Spanien -> D.O.Ca. Priorat</a></li><li><a href="/wein/herkunft/spanien/d_o_ca_-priorat/portal-del-priorat/">Spanien -> D.O.Ca. Priorat -> PORTAL DEL PRIORAT</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/">Spanien -> D.O.Ca. Rioja</a></li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/">Spanien -> D.O.Ca. Rioja -> Bodega La Encina</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-artuke/">Spanien -> D.O.Ca. Rioja -> Bodegas Artuke</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja//">Spanien -> D.O.Ca. Rioja -> Bodegas Finca Allende</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-ostatu/">Spanien -> D.O.Ca. Rioja -> Bodegas Ostatu</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/">Spanien -> D.O.Ca. Rioja -> Bodegas Valdemar</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/finca-allende/">Spanien -> D.O.Ca. Rioja -> Finca Allende</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/finca-valpiedra/">Spanien -> D.O.Ca. Rioja -> Finca Valpiedra</a><li><li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/vina-bujanda/">Spanien -> D.O.Ca. Rioja -> Viña Bujanda</a><li><li><a href="/wein/herkunft/spanien/extremadura/">Spanien -> Extremadura</a></li><li><a href="/wein/herkunft/spanien/extremadura/bodegas-j_f_-coloma/">Spanien -> Extremadura -> Bodegas J.F. Coloma</a><li><li><a href="/wein/herkunft/spanien/katalonien/">Spanien -> Katalonien</a></li><li><a href="/wein/herkunft/spanien/katalonien/bodegas-yzaguirre/">Spanien -> Katalonien -> Bodegas Yzaguirre</a><li><li><a href="/wein/herkunft/spanien/utiel/">Spanien -> Utiel</a></li><li><a href="/wein/herkunft/spanien/utiel/bodegas-mustiguillo/">Spanien -> Utiel -> Bodegas Mustiguillo</a><li><li><a href="/wein/herkunft/spanien/vino-de-la-tierra-de-castilla/">Spanien -> Vino de la Tierra de Castilla</a></li><li><a href="/wein/herkunft/spanien/vino-de-la-tierra-de-castilla/cosecheros-y-criadores/">Spanien -> Vino de la Tierra de Castilla -> Cosecheros Y Criadores</a><li><li><a href="/wein/herkunft/spanien/vino-de-la-tierra-de-castilla/encomienda-de-cervera/">Spanien -> Vino de la Tierra de Castilla -> Encomienda de Cervera</a><li><li><a href="/wein/herkunft/spanien/vino-de-la-tierra-de-castilla-y-leon/">Spanien -> Vino de la Tierra de Castilla y León</a></li><li><a href="/wein/herkunft/spanien/vino-de-la-tierra-de-castilla-y-leon/bodegas-ribera-del-duraton/">Spanien -> Vino de la Tierra de Castilla y León -> Bodegas Ribera del Duratón</a><li><li><a href="/wein/herkunft/portugal/" >Portugal</a></li>
+<li><a href="/wein/herkunft/portugal/doc-alentejo/">Portugal -> D.O.C. Alentejo</a></li><li><a href="/wein/herkunft/portugal/doc-alentejo/herdade-da-candeeira/">Portugal -> D.O.C. Alentejo -> Herdade da Candeeira</a><li><li><a href="/wein/herkunft/portugal/doc-alentejo/herdade-dos-lagos/">Portugal -> D.O.C. Alentejo -> Herdade dos Lagos</a><li><li><a href="/wein/herkunft/portugal/doc-alentejo/herdade-penedo-gordo/">Portugal -> D.O.C. Alentejo -> Herdade Penedo Gordo</a><li><li><a href="/wein/herkunft/portugal/doc-alentejo/herdade-penedo-gordo/">Portugal -> D.O.C. Alentejo -> Herdade Penedo Gordo</a><li><li><a href="/wein/herkunft/portugal/doc-alentejo/joana-roquevale/">Portugal -> D.O.C. Alentejo -> Joana Roquevale</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/">Portugal -> D.O.C. Douro</a></li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/alves-de-sousa/">Portugal -> D.O.C. Douro -> Alves de Sousa</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/aneto-wines/">Portugal -> D.O.C. Douro -> Aneto Wines</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/quinta-da-barca/">Portugal -> D.O.C. Douro -> Quinta da Barca</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/quinta-da-prelada/">Portugal -> D.O.C. Douro -> Quinta da Prelada</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/quinta-de-la-rosa/">Portugal -> D.O.C. Douro -> Quinta de la Rosa</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/quinta-do-infantado/">Portugal -> D.O.C. Douro -> Quinta do Infantado</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-douro/quinta-tourais/">Portugal -> D.O.C. Douro -> Quinta Tourais</a><li><li><a href="/wein/herkunft/portugal/d_o_c_-porto/">Portugal -> D.O.C. Porto</a></li><li><a href="/wein/herkunft/portugal/d_o_c_-porto/quinta-do-infantado/">Portugal -> D.O.C. Porto -> Quinta do Infantado</a><li><li><a href="/wein/herkunft/portugal/peninsula-de-setubal/">Portugal -> Península de Setúbal</a></li><li><a href="/wein/herkunft/portugal/peninsula-de-setubal/casa-acricola-assis-lobo/">Portugal -> Península de Setúbal -> Casa Acricola Assis Lobo</a><li><li><a href="/wein/herkunft/portugal/doc-vinho-verde/">Portugal -> DOC Vinho Verde</a></li><li><a href="/wein/herkunft/portugal/doc-vinho-verde/quinta-do-homem/">Portugal -> DOC Vinho Verde -> Quinta  do Homem</a><li><li><a href="/wein/herkunft/portugal/doc-vinho-verde/quinta-das-arcas/">Portugal -> DOC Vinho Verde -> Quinta das Arcas</a><li><li><a href="/wein/herkunft/portugal/do_-dao/">Portugal -> DO. Dao</a></li><li><a href="/wein/herkunft/portugal/do_-dao/alvaro-castro/">Portugal -> DO. Dao -> Alvaro Castro</a><li><li><a href="/wein/herkunft/portugal/do_-dao/quinta-dos-roques/">Portugal -> DO. Dao -> Quinta dos Roques</a><li><li><a href="/wein/herkunft/portugal/do-bairrada/">Portugal -> DO Bairrada</a></li><li><a href="/wein/herkunft/portugal/do-bairrada/quinta-das-bageiras/">Portugal -> DO Bairrada -> Quinta das Bageiras</a><li><li><a href="/wein/herkunft/portugal/vinho-regional-lisboa/">Portugal -> Vinho Regional Lisboa</a></li><li><a href="/wein/herkunft/portugal/vinho-regional-lisboa/paulo-da-silva/">Portugal -> Vinho Regional Lisboa -> Paulo da Silva</a><li><li><a href="/wein/herkunft/portugal/vinho-regional-lisboa/quinta-do-carneiro/">Portugal -> Vinho Regional Lisboa -> Quinta do Carneiro</a><li><li><a href="/wein/herkunft/portugal/vinho-regional-lisboa/quinta-do-gradil/">Portugal -> Vinho Regional Lisboa -> Quinta do Gradil</a><li><li><a href="/wein/herkunft/portugal/vinho-regional-lisboa/vale-da-capucha/">Portugal -> Vinho Regional Lisboa -> Vale da Capucha</a><li><li><a href="/wein/herkunft/portugal/vinho-regional-tejo/">Portugal -> Vinho Regional Tejo</a></li><li><a href="/wein/herkunft/portugal/vinho-regional-tejo/quinta-da-alorna/">Portugal -> Vinho Regional Tejo -> Quinta da Alorna</a><li><li><a href="/wein/herkunft/portugal/vinho-regional-penisula-setubal/">Portugal -> Vinho Regional Penisula Setubal</a></li><li><a href="/wein/herkunft/portugal/vinho-regional-penisula-setubal/casa-agricola-asiss-lobo/">Portugal -> Vinho Regional Penisula Setubal -> Casa Agricola Asiss Lobo</a><li><li><a href="/wein/herkunft/portugal/do-alenquer/">Portugal -> DO Alenquer</a></li><li><a href="/wein/herkunft/portugal/do-alenquer/quinta-do-carneiro/">Portugal -> DO Alenquer -> Quinta do Carneiro</a><li><li><a href="/wein/herkunft/portugal/do-bairrada/">Portugal -> DO Bairrada</a></li><li><a href="/wein/herkunft/portugal/do-bairrada/quinta-das-bageiras/">Portugal -> DO Bairrada -> Quinta das Bageiras</a><li><li><a href="/wein/herkunft/portugal/vinho-regional-alentejano/">Portugal -> Vinho Regional Alentejano</a></li><li><a href="/wein/herkunft/portugal/vinho-regional-alentejano/monte-da-capela/">Portugal -> Vinho Regional Alentejano -> Monte da Capela</a><li><li><a href="/wein/herkunft/portugal/doc-dao/">Portugal -> DOC Dao</a></li><li><a href="/wein/herkunft/portugal/doc-dao/parras-vinhos/">Portugal -> DOC Dao -> Parras Vinhos</a><li><li><a href="/wein/herkunft/portugal/doc-dao/quinta-da-pellada/">Portugal -> DOC Dao -> Quinta da Pellada</a><li><li><a href="/wein/herkunft/portugal/doc-dao/quinta-dos-roques/">Portugal -> DOC Dao -> Quinta dos Roques</a><li><li><a href="/wein/herkunft/portugal/do-douro/">Portugal -> DO Douro</a></li><li><a href="/wein/herkunft/portugal/do-douro//">Portugal -> DO Douro -> </a><li><li><a href="/wein/herkunft/portugal/do-douro/aneto-wines/">Portugal -> DO Douro -> Aneto Wines</a><li></ul></li></ul></span><span class="pull-right">
+
+<ul class="nav navbar-nav">
+<li class="dropdown">
+<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" title="Typ">Sortierung <span class="caret"></span></a>
+<ul class="dropdown-menu" role="menu" id="sort_herkunft">
+<li><a href="#" data-sort-what="bottle_listprice" data-sort-direction="asc">Preis aufsteigend</a></li>
+<li><a href="#" data-sort-what="bottle_listprice" data-sort-direction="desc">Preis absteigend</a></li>
+<li><a href="#" data-sort-what="bottle_review_average" data-sort-direction="desc">Bewertung absteigend</a></li>
+<li><a href="#" data-sort-what="bottle_review_average" data-sort-direction="asc">Bewertung aufsteigend</a></li>
+<li><a href="#" data-sort-what="wine_title" data-sort-direction="asc">Artikelname aufsteigend</a></li>
+<li><a href="#" data-sort-what="wine_title" data-sort-direction="desc">Artikelname absteigend</a></li>
+<li><a href="#" data-sort-what="bottle_volperc" data-sort-direction="asc" data-sort-ignore-empty="1">Vol.% aufsteigend</a></li>
+<li><a href="#" data-sort-what="bottle_volperc" data-sort-direction="desc" data-sort-ignore-empty="1">Vol.% absteigend</a></li>
+<li><a href="#" data-sort-what="bottle_vintage" data-sort-direction="asc" data-sort-ignore-empty="1">Jahrgang aufsteigend</a></li>
+<li><a href="#" data-sort-what="bottle_vintage" data-sort-direction="desc" data-sort-ignore-empty="1">Jahrgang absteigend</a></li>
+<li><a href="#" data-sort-what="bottle_volume" data-sort-direction="asc">Menge aufsteigend</a></li>
+<li><a href="#" data-sort-what="bottle_volume" data-sort-direction="desc">Menge absteigend</a></li>
+<li><a href="#" data-sort-what="type_title" data-sort-direction="asc">Artikelntyp aufsteigend</a></li>
+<li><a href="#" data-sort-what="type_title" data-sort-direction="desc">Artikeltyp absteigend</a></li>
+<li><a href="#" data-sort-what="herkunft" data-sort-direction="asc">Herkunft aufsteigend</a></li>
+<li><a href="#" data-sort-what="herkunft" data-sort-direction="desc">Herkunft absteigend</a></li>
+</ul></li></ul></nav>
+
+</span></div><div class="clearfix"></div><nav>  <ul class="pager">    <li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=0&anzahl=10">10</a> - <a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=0&anzahl=25">25</a> - <a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=0&anzahl=50">50</a> Artikel pro Seite    </li>    <li class="next"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=10" rel="next">nächste Seite <span aria-hidden="true">&rarr;</span></a></li>  </ul></nav><div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-artuke/2016-artuke-joven.php" title="2016 Artuke Joven">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_2014_artuke_joven_von_bodegas_artuke__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-artuke/2016-artuke-joven.php" title="2016 Artuke Joven">2016 Artuke Joven</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-artuke/" title="Alle Weine des Erzeugers Bodegas Artuke anzeigen" >Bodegas Artuke</a> 
+ <a href="#" data-infos="producer" data-id="108" data-target="#modal_infos" title="Weitere Informationen zu Bodegas Artuke"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_92" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Joven</h4>
+</div>
+<div class="modal-body">
+Jungwein, der bereits im ersten Jahr nach der Weinlese vermarktet wird und nur kurz (maximal sechs Monate) oder &uuml;berhaupt nicht (sin crianza) im Fass gereift ist.<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12 Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger, verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine. Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/joven/" title="Alle Weine, die den Ausbau Joven haben, anzeigen" >Joven</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_92" titel="Weitere Informationen zum Ausbau Joven"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo (100%)</a></div>
+<div class="col-md-4  col-xs-12 artikeldetails_label">Geschmack: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/geschmack/rote-fruechte/" title="Alle Weine, die den Geschmack Rote Früchte haben, anzeigen" >Rote Früchte</a>, 
+<a class="info" href="/wein/geschmack/fruchtig/" title="Alle Weine, die den Geschmack Fruchtig haben, anzeigen" >Fruchtig</a>, 
+<a class="info" href="/wein/geschmack/ohne-holz/" title="Alle Weine, die den Geschmack Ohne Holz haben, anzeigen" >Ohne Holz</a>, 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13,5 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-artuke/2016-artuke-joven.php" title="Weitere Informationen zu 2016 Artuke Joven">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">8,25 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">11,00 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="559" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="8.25" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="559" anzahl="1" watchlist="1" flaschentitel="2016 Artuke Joven">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/vina-bujanda/2014-vina-bujanda_-tinto-crianza.php" title="2014 Viña Bujanda. Tinto Crianza">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_2013_vina_bujanda._tinto_crianza_von_vina_bujanda__d.o.ca._rioja__spanien_1.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/vina-bujanda/2014-vina-bujanda_-tinto-crianza.php" title="2014 Viña Bujanda. Tinto Crianza">2014 Viña Bujanda. Tinto Crianza</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/vina-bujanda/" title="Alle Weine des Erzeugers Viña Bujanda anzeigen" >Viña Bujanda</a> 
+ <a href="#" data-infos="producer" data-id="117" data-target="#modal_infos" title="Weitere Informationen zu Viña Bujanda"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_93" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Crianza</h4>
+</div>
+<div class="modal-body">
+Mindestens zwei Jahre gereift, davon geringstenfalls sechs Monate in Eichenf&auml;ssern (in manchen D.O.-Gebieten mindestens ein Jahr).&nbsp;<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen  k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich  verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12  Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit  vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger,  verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine.  Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und  f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem  R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig  von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und  Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/crianza/" title="Alle Weine, die den Ausbau Crianza haben, anzeigen" >Crianza</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_93" titel="Weitere Informationen zum Ausbau Crianza"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4  col-xs-12 artikeldetails_label">Geschmack: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/geschmack/feinwuerzig/" title="Alle Weine, die den Geschmack Feinwürzig haben, anzeigen" >Feinwürzig</a>, 
+<a class="info" href="/wein/geschmack/dunkle-beerenfruechte/" title="Alle Weine, die den Geschmack Dunkle Beerenfrüchte haben, anzeigen" >Dunkle Beerenfrüchte</a>, 
+<a class="info" href="/wein/geschmack/kirsch/" title="Alle Weine, die den Geschmack Kirsch haben, anzeigen" >Kirsch</a>, 
+<a class="info" href="/wein/geschmack/wenig-holz/" title="Alle Weine, die den Geschmack wenig Holz haben, anzeigen" >wenig Holz</a>, 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/vina-bujanda/2014-vina-bujanda_-tinto-crianza.php" title="Weitere Informationen zu 2014 Viña Bujanda. Tinto Crianza">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">9,50 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">12,67 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="583" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="9.50" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="583" anzahl="1" watchlist="1" flaschentitel="2014 Viña Bujanda. Tinto Crianza">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/2007-leukade.php" title="2007 Leukade">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_2007_leukade_von_bodega_la_encina__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/2007-leukade.php" title="2007 Leukade">2007 Leukade</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/" title="Alle Weine des Erzeugers Bodega La Encina anzeigen" >Bodega La Encina</a> 
+ <a href="#" data-infos="producer" data-id="53" data-target="#modal_infos" title="Weitere Informationen zu Bodega La Encina"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_96" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Cosecha</h4>
+</div>
+<div class="modal-body">
+Weine dieser Grundstufe (&uuml;bersetzt: Jahrgang) m&uuml;ssen aus Lesegut stammen, das innerhalb der DO(Ca)-Grenzen geerntet wurde. Mindestlagerzeiten sind nicht vorgegeben. Verschnitte verschiedener Regionen sind nicht zul&auml;ssig.
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/cosecha/" title="Alle Weine, die den Ausbau Cosecha haben, anzeigen" >Cosecha</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_96" titel="Weitere Informationen zum Ausbau Cosecha"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo (100%)</a></div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13,8 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/2007-leukade.php" title="Weitere Informationen zu 2007 Leukade">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">27,00 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">36,00 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="208" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="27.00" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="208" anzahl="1" watchlist="1" flaschentitel="2007 Leukade">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/2009-tobelos-garnacha.php" title="2009 Tobelos Garnacha">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_2009_tobelos_garnacha_von_bodega_la_encina__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/2009-tobelos-garnacha.php" title="2009 Tobelos Garnacha">2009 Tobelos Garnacha</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/" title="Alle Weine des Erzeugers Bodega La Encina anzeigen" >Bodega La Encina</a> 
+ <a href="#" data-infos="producer" data-id="53" data-target="#modal_infos" title="Weitere Informationen zu Bodega La Encina"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_93" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Crianza</h4>
+</div>
+<div class="modal-body">
+Mindestens zwei Jahre gereift, davon geringstenfalls sechs Monate in Eichenf&auml;ssern (in manchen D.O.-Gebieten mindestens ein Jahr).&nbsp;<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen  k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich  verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12  Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit  vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger,  verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine.  Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und  f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem  R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig  von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und  Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/crianza/" title="Alle Weine, die den Ausbau Crianza haben, anzeigen" >Crianza</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_93" titel="Weitere Informationen zum Ausbau Crianza"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13,7 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodega-la-encina/2009-tobelos-garnacha.php" title="Weitere Informationen zu 2009 Tobelos Garnacha">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">17,00 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">22,67 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="434" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="17.00" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="434" anzahl="1" watchlist="1" flaschentitel="2009 Tobelos Garnacha">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja//1997-aurus.php" title="1997 Aurus">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_1997_aurus_von_bodegas_finca_allende__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja//1997-aurus.php" title="1997 Aurus">1997 Aurus</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja//" title="Alle Weine des Erzeugers Bodegas Finca Allende anzeigen" >Bodegas Finca Allende</a> 
+ <a href="#" data-infos="producer" data-id="56" data-target="#modal_infos" title="Weitere Informationen zu Bodegas Finca Allende"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_93" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Crianza</h4>
+</div>
+<div class="modal-body">
+Mindestens zwei Jahre gereift, davon geringstenfalls sechs Monate in Eichenf&auml;ssern (in manchen D.O.-Gebieten mindestens ein Jahr).&nbsp;<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen  k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich  verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12  Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit  vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger,  verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine.  Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und  f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem  R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig  von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und  Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/crianza/" title="Alle Weine, die den Ausbau Crianza haben, anzeigen" >Crianza</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_93" titel="Weitere Informationen zum Ausbau Crianza"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo</a></div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja//1997-aurus.php" title="Weitere Informationen zu 1997 Aurus">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">75,00 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">100,00 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="219" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="75.00" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="219" anzahl="1" watchlist="1" flaschentitel="1997 Aurus">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1970-bmb-gran-reserva.php" title="1970 BMB Gran Reserva">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_1970_bmb_gran_reserva_von_bodegas_valdemar__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1970-bmb-gran-reserva.php" title="1970 BMB Gran Reserva">1970 BMB Gran Reserva</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/" title="Alle Weine des Erzeugers Bodegas Valdemar anzeigen" >Bodegas Valdemar</a> 
+ <a href="#" data-infos="producer" data-id="57" data-target="#modal_infos" title="Weitere Informationen zu Bodegas Valdemar"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_95" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Gran Reserva</h4>
+</div>
+<div class="modal-body">
+Spitzenrotweine, die mindestens f&uuml;nf Jahre gereift&nbsp; sind, davon 18 Monate in Eichenf&auml;ssern und den Rest der Zeit in der Flasche. Ros&eacute;- und Wei&szlig;weine mit Mindestreifezeit von vier Jahren, wobei mindestens sechs Monate im Eichenholz zu absolvieren sind.&nbsp;<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen  k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich  verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12  Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit  vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger,  verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine.  Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und  f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem  R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig  von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und  Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/gran-reserva/" title="Alle Weine, die den Ausbau Gran Reserva haben, anzeigen" >Gran Reserva</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_95" titel="Weitere Informationen zum Ausbau Gran Reserva"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo</a>, 
+<a class="info" href="/wein/rebsorten/mazuelo/" title="Alle Weine, die die Rebsorte Mazuelo enthalten, anzeigen" >Mazuelo</a></div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1970-bmb-gran-reserva.php" title="Weitere Informationen zu 1970 BMB Gran Reserva">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">95,00 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">126,67 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="220" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="95.00" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="220" anzahl="1" watchlist="1" flaschentitel="1970 BMB Gran Reserva">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1973-bmb-gran-reserva.php" title="1973 BMB Gran Reserva">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_1973_bmb_gran_reserva_von_bodegas_valdemar__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1973-bmb-gran-reserva.php" title="1973 BMB Gran Reserva">1973 BMB Gran Reserva</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/" title="Alle Weine des Erzeugers Bodegas Valdemar anzeigen" >Bodegas Valdemar</a> 
+ <a href="#" data-infos="producer" data-id="57" data-target="#modal_infos" title="Weitere Informationen zu Bodegas Valdemar"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_95" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Gran Reserva</h4>
+</div>
+<div class="modal-body">
+Spitzenrotweine, die mindestens f&uuml;nf Jahre gereift&nbsp; sind, davon 18 Monate in Eichenf&auml;ssern und den Rest der Zeit in der Flasche. Ros&eacute;- und Wei&szlig;weine mit Mindestreifezeit von vier Jahren, wobei mindestens sechs Monate im Eichenholz zu absolvieren sind.&nbsp;<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen  k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich  verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12  Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit  vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger,  verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine.  Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und  f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem  R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig  von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und  Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/gran-reserva/" title="Alle Weine, die den Ausbau Gran Reserva haben, anzeigen" >Gran Reserva</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_95" titel="Weitere Informationen zum Ausbau Gran Reserva"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo</a>, 
+<a class="info" href="/wein/rebsorten/mazuelo/" title="Alle Weine, die die Rebsorte Mazuelo enthalten, anzeigen" >Mazuelo</a></div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1973-bmb-gran-reserva.php" title="Weitere Informationen zu 1973 BMB Gran Reserva">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">80,00 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">106,67 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="221" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="80.00" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="221" anzahl="1" watchlist="1" flaschentitel="1973 BMB Gran Reserva">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1975-bmb-gran-reserva.php" title="1975 BMB Gran Reserva">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_1975_bmb_gran_reserva_von_bodegas_valdemar__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1975-bmb-gran-reserva.php" title="1975 BMB Gran Reserva">1975 BMB Gran Reserva</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/" title="Alle Weine des Erzeugers Bodegas Valdemar anzeigen" >Bodegas Valdemar</a> 
+ <a href="#" data-infos="producer" data-id="57" data-target="#modal_infos" title="Weitere Informationen zu Bodegas Valdemar"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_95" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Gran Reserva</h4>
+</div>
+<div class="modal-body">
+Spitzenrotweine, die mindestens f&uuml;nf Jahre gereift&nbsp; sind, davon 18 Monate in Eichenf&auml;ssern und den Rest der Zeit in der Flasche. Ros&eacute;- und Wei&szlig;weine mit Mindestreifezeit von vier Jahren, wobei mindestens sechs Monate im Eichenholz zu absolvieren sind.&nbsp;<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen  k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich  verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12  Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit  vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger,  verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine.  Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und  f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem  R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig  von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und  Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/gran-reserva/" title="Alle Weine, die den Ausbau Gran Reserva haben, anzeigen" >Gran Reserva</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_95" titel="Weitere Informationen zum Ausbau Gran Reserva"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo</a>, 
+<a class="info" href="/wein/rebsorten/mazuelo/" title="Alle Weine, die die Rebsorte Mazuelo enthalten, anzeigen" >Mazuelo</a></div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1975-bmb-gran-reserva.php" title="Weitere Informationen zu 1975 BMB Gran Reserva">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">70,00 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">93,33 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="222" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="70.00" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="222" anzahl="1" watchlist="1" flaschentitel="1975 BMB Gran Reserva">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1976-bmb-gran-reserva.php" title="1976 BMB Gran Reserva">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_1976_bmb_gran_reserva_von_bodegas_valdemar__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1976-bmb-gran-reserva.php" title="1976 BMB Gran Reserva">1976 BMB Gran Reserva</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/" title="Alle Weine des Erzeugers Bodegas Valdemar anzeigen" >Bodegas Valdemar</a> 
+ <a href="#" data-infos="producer" data-id="57" data-target="#modal_infos" title="Weitere Informationen zu Bodegas Valdemar"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_95" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Gran Reserva</h4>
+</div>
+<div class="modal-body">
+Spitzenrotweine, die mindestens f&uuml;nf Jahre gereift&nbsp; sind, davon 18 Monate in Eichenf&auml;ssern und den Rest der Zeit in der Flasche. Ros&eacute;- und Wei&szlig;weine mit Mindestreifezeit von vier Jahren, wobei mindestens sechs Monate im Eichenholz zu absolvieren sind.&nbsp;<br />
+<br />
+<u>Hinweis:</u> Diese Normen sind Mindestnormen. Einzelne D.O.-Regionen  k&ouml;nnen die national geltenden Zeitr&auml;ume f&uuml;r ihren Geltungsbereich  verl&auml;ngern. So sind f&uuml;r einige D.O.-&nbsp; Gebiete f&uuml;r Crianza-Weine 12  Monate Holzlagerung und f&uuml;r Gran Reserva-Weine 24&nbsp; Monate Lagerzeit  vorgeschrieben. Einige, vor allem traditionell arbeitende Erzeuger,  verl&auml;ngern diese Fristen entsprechend dem gew&uuml;nschten Stil ihrer Weine.  Andere Erzeuger richten sich gar nicht nach diesem Reifungssystem und  f&uuml;llen alle ihre Weine, auch ihre hochwertigsten, grunds&auml;tzlich mit&nbsp; dem  R&uuml;ckenetikett der Joven-Weine ab. In diesem Fall sind sie unabh&auml;ngig  von den offiziellen Vorschriften &uuml;ber die Dauer der Reifung in Fass und  Flasche.&nbsp;
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/gran-reserva/" title="Alle Weine, die den Ausbau Gran Reserva haben, anzeigen" >Gran Reserva</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_95" titel="Weitere Informationen zum Ausbau Gran Reserva"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo</a>, 
+<a class="info" href="/wein/rebsorten/mazuelo/" title="Alle Weine, die die Rebsorte Mazuelo enthalten, anzeigen" >Mazuelo</a></div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">13 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-valdemar/1976-bmb-gran-reserva.php" title="Weitere Informationen zu 1976 BMB Gran Reserva">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">85,00 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">113,33 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="223" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="85.00" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="223" anzahl="1" watchlist="1" flaschentitel="1976 BMB Gran Reserva">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<div class="bs-callout bs-callout-muted artikel">
+<div class="col-md-2 col-xs-4">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-ostatu/2010-seleccion-ostatu.php" title="2010 Selección Ostatu">
+<img class="artikelbild_klein img-responsive" src="/_data/inc/thumbs_ohne_quadrat.php?name=/_img/artikel/rotwein_2009_seleccion_2008_ostatu_von_bodegas_ostatu__d.o.ca._rioja__spanien.jpg&amp;size=250" >
+</a>
+</div>
+<div class="col-md-7 col-xs-8">
+<h2><a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-ostatu/2010-seleccion-ostatu.php" title="2010 Selección Ostatu">2010 Selección Ostatu</a> <small>(Rotwein)</small></h2>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Herkunft: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/" title="Alle Weine aus D.O.Ca. Rioja, Spanien anzeigen" >D.O.Ca. Rioja</a>
+ <a href="#" data-infos="region" data-id="35" data-target="#modal_infos" title="Karte mit der Lage des Erzeugers öffnen"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></a>
+, <a class="info" href="/wein/herkunft/spanien" title="Alle Weine aus Spanien anzeigen" >Spanien</a> 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Erzeuger: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-ostatu/" title="Alle Weine des Erzeugers Bodegas Ostatu anzeigen" >Bodegas Ostatu</a> 
+ <a href="#" data-infos="producer" data-id="59" data-target="#modal_infos" title="Weitere Informationen zu Bodegas Ostatu"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+</div>
+<div class="modal fade aging_modal" id="aging_modal_96" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+<h4 class="modal-title">Cosecha</h4>
+</div>
+<div class="modal-body">
+Weine dieser Grundstufe (&uuml;bersetzt: Jahrgang) m&uuml;ssen aus Lesegut stammen, das innerhalb der DO(Ca)-Grenzen geerntet wurde. Mindestlagerzeiten sind nicht vorgegeben. Verschnitte verschiedener Regionen sind nicht zul&auml;ssig.
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Ausbau: </div><div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/ausbau/cosecha/" title="Alle Weine, die den Ausbau Cosecha haben, anzeigen" >Cosecha</a>
+ <a href="#" data-toggle="modal" data-target="#aging_modal_96" titel="Weitere Informationen zum Ausbau Cosecha"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Rebsorten: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/rebsorten/tempranillo/" title="Alle Weine, die die Rebsorte Tempranillo enthalten, anzeigen" >Tempranillo (80%)</a>, 
+<a class="info" href="/wein/rebsorten/graciano/" title="Alle Weine, die die Rebsorte Graciano enthalten, anzeigen" >Graciano (20%)</a></div>
+<div class="col-md-4  col-xs-12 artikeldetails_label">Geschmack: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">
+<a class="info" href="/wein/geschmack/dunkle-waldfruechte/" title="Alle Weine, die den Geschmack Dunkle Waldfrüchte haben, anzeigen" >Dunkle Waldfrüchte</a>, 
+<a class="info" href="/wein/geschmack/wenig-holz/" title="Alle Weine, die den Geschmack wenig Holz haben, anzeigen" >wenig Holz</a>, 
+</div>
+<div class="col-md-4 col-xs-12 artikeldetails_label">Alkoholgehalt: </div>
+<div class="col-md-8 col-xs-12 artikeldetails_content">14 Vol.%</div>
+<div class="col-md-12 col-xs-12 rechts">
+<a href="/wein/herkunft/spanien/d_o_ca_-rioja/bodegas-ostatu/2010-seleccion-ostatu.php" title="Weitere Informationen zu 2010 Selección Ostatu">mehr...</a>
+</div>
+</div>
+<div class="col-md-3 col-xs-12">
+<div class="artikel_price">
+<div class="h2">17,50 € </div><b>pro 0,75 l</b><br>
+(entspricht <span class="nowrap">23,33 € / l)</span>
+<br><span class="artikelversand">(inkl. Mwst. zzgl. <a href="#" class="show_vkinfo">Versand</a>)</span><br><br>
+<form class="inwarenkorb">
+<input type="hidden" name="bottle_id"  value="463" />
+<input type="hidden" name="stock"  value="-1" />
+<input type="hidden" name="preis"  value="17.50" />
+<span class="bold">Anzahl: </span><input type="text" size="2" name="anzahl"  value="6" />
+<br><span class="inwarenkorb_submit"><input type="submit" value="in den Warenkorb"  class="sub alert alert-success bold"/></span>
+</form>
+<div class="sub merkzettel alert alert-success "><a href="#" bottle_id="463" anzahl="1" watchlist="1" flaschentitel="2010 Selección Ostatu">auf Merkzettel</a></div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+<div class="clearfix"></div>
+<br class="clearall" >
+<hr >Es werden die Weine 1 bis 10 von insgesamt 19 angezeigt!<br><nav>  <ul class="pager">    <li><a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=0&anzahl=10">10</a> - <a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=0&anzahl=25">25</a> - <a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=0&anzahl=50">50</a> Artikel pro Seite    </li>    <li class="next"><a href="/wein/herkunft/spanien/d_o_ca_-rioja/?start=10" rel="next">nächste Seite <span aria-hidden="true">&rarr;</span></a></li>  </ul></nav><br /><br />
+			  <br class="clearall" >
+
+			  <br class="clearall">
+				
+				</div>
+				<!-- EOF Content -->
+				<!-- BOF  Servicespalte -->
+				<div class="col-md-3">
+										<div class="panel panel-primary warenkorb">
+						<div class="panel-heading">
+							<h3 class="panel-title"><a href="/service/benutzerkonto.php" rel="nofollow"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Ihr Benutzerkonto</a></h3>
+						</div>
+						<div class="panel-body aktbenutzerkonto"> 
+								<span id="userdata">
+<a href="#" id="user_login" title="Benutzer anmelden oder registrieren" rel="nofollow"><span class="glyphicon glyphicon-user pull-right grau" aria-hidden="true"></span> Jetzt anmelden.</a>								</span>
+						</div>
+					</div>
+															<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title"><a href="/suche/" rel="nofollow"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Suche</a></h3>
+						</div>
+						<div class="panel-body"> 
+							<form id="indexsearchform" method="post" action="/suche/">
+							<input id="index_search_word" type="text" class="col-md-10 col-xs-10" value="" name="index_search_word">
+							<a class="ok" href="#">&nbsp;&nbsp;<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+							</a>
+							</form>
+						</div>
+					</div>
+															<div class="panel panel-primary warenkorb">
+						<div class="panel-heading">
+							<h3 class="panel-title"><a href="/service/warenkorb.php" rel="nofollow"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Ihr Warenkorb</a>
+							
+							</h3>
+						</div>
+						<div class="panel-body aktwarenkorb"> 
+<a href="/service/warenkorb.php"  rel="nofollow">Ihr Warenkorb ist leer<br><br></a>							
+						</div>
+					</div>
+															<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-euro" aria-hidden="true"></span> Unsere Konditionen für Sie</h3>
+						</div>
+						<div class="panel-body"> 
+							<h4 style="text-align:center">
+								<span class="label label-primary">Versandkostenfrei ab 60 €</span><br><br>
+								<a href="/versand.php" rel="nofollow">Unsere Versand- und Lieferbedingungen</a>
+							</h4>
+						</div>
+					</div>
+															<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Social Media</h3>
+						</div>
+						<div class="panel-body"> 
+							<div id="socialshareprivacy"></div>
+						</div>
+					</div>
+					
+					
+					
+										<ul class="list-group"><li class="list-group-item active"><a href="/veranstaltungen/"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Veranstaltungen</a></li><li class="list-group-item"><span class="datum">29.02.2020 18:00 Uhr</span> <span class="titel"><a class="link" href="/veranstaltungen/140">Portugal vs Spanien. eine Blindprobe mit Tapas !</a></span>
+</li><li class="list-group-item"><span class="datum">04.04.2020 18:00 Uhr</span> <span class="titel"><a class="link" href="/veranstaltungen/132">Tempranillo, die Rebsorte Spaniens+ Tapasmenue !</a></span>
+</li><li class="list-group-item"><span class="datum">09.05.2020 18:00 Uhr</span> <span class="titel"><a class="link" href="/veranstaltungen/142">Atlantik Weine+ Tapasmenue</a></span>
+</li></ul>
+															<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title"><a href="/impressum.php" rel="nofollow"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Kontakt</a></h3>
+						</div>
+						<div class="panel-body"> 
+							<b>Iberische Weine in Berlin - Vinos Y Tapas und Vinho Iberico</b><br>
+							Inh. André Hartmann
+							<hr>
+							<!--<b>Vinos Y Tapas</b><br>
+							Drakestr. 21<br>
+							12205 Berlin<br><br>
+							<span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> <a href="tel:+49308338459" target="_blank">+49 30 833 84 59</a><br>
+							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <a href="info@vinosytapas.de" target="_blank">info@vinosytapas.de</a><br><hr>-->
+	
+							<b>Vinho Iberico</b><br>
+							Königstraße 18<br>
+							14109 Berlin<br><br>
+							<span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span> <a href="tel:+493025817265" target="_blank">+49 30 25 81 72 65</a><br>
+							<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> <a href="mail@vinho-iberico" target="_blank">mail@vinho-iberico</a><br><hr>
+							<b>Öffnungszeiten unserer <br><a target="laden" href="http://laden.vinosytapas.de" title="Unsere Ladengeschäft in Lichterfelde-West und Wannsee, Berlin"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span> Ladengeschäfte</a></b><br><br>
+							Montag bis Freitag 12 – 19 Uhr<br>
+							Samstags 10 – 15 Uhr<br><br>
+							<small>Zu diesen Zeiten stehen wir Ihnen auch telefonisch mit Rat und Tat zur Seite.</small>
+						</div>
+					</div>
+									</div>
+				<!-- EOF linke Servicespalte -->
+			</div>
+		</div>
+    </div> <!-- /container -->
+
+
+	<div id="footerline" class="line">
+	  <div class="item" id="footer">
+	    <div class="sap-content">
+        <p><a href="/impressum.php" rel="nofollow">Impressum</a> | <a href="/datenschutzerklaerung.php" rel="nofollow">Datenschutzerklärung</a> - Powered by <a href="http://www.stableweb.de" target="_blank">StableWeb Weinshop</a></p>
+			    </div>
+	  </div>
+	</div>
+
+
+<div id="footernavi" class="col-md-12 col-xs-12 pull-right">
+	<a href="/suche/" title="Suche" rel="nofollow"><img src="/_img/sys/suche.svg" ></a>
+	<a href="/service/warenkorb.php" title="Warenkorb" rel="nofollow"><img src="/_img/sys/warenkorb.svg" ></a>
+	<a href="#oben" title="Nach oben" rel="nofollow"><img src="/_img/sys/nachoben.svg" ></a>
+</div>
+
+<div id="infobox">
+</div>
+
+<div id="noscript">
+Dieser Shop setzt voraus, dass Sie JavaScript aktivieren haben. Bitte aktivieren Sie JavaScript und laden Sie die Seite erneut.
+</div>
+<div id="vkinfo">
+<div class="close" data-what="vkinfo">Schließen [X]</div>
+<h3>Versandkosten und Lieferung</h3>
+<p align="left">Unsere Lieferungen kommen per UPS oder einem anderen Transportdienstleister zu Ihnen. Sofern nicht anders abgesprochen, erfolgt die
+Lieferung frei Haus Deutschland ab einem Warenwert von &euro; 60, unterhalb eines Warenwertes von &euro; 60
+berechnen wir Ihnen Versandkosten in Höhe von &euro; 8. Wir behalten uns das Recht auf Teillieferungen vor, wobei Ihnen
+keine zusätzlichen Kosten entstehen. Sollten Sie eine Teillieferung wünschen, so behandeln wir jede Teillieferung wie
+eine  gesonderte Bestellung.<br><br>
+
+Bei größeren Bestellmengen behalten wir uns das Recht vor, eine Spedition zu beauftragen.<br>
+Bei Versand per Nachnahme fallen zusätzlich immer Nachnahmegebühren in Höhe von &euro; 3,58 an.<br>
+Lieferungen innerhalb Berlins erfolgen nach unserer Wahl per Boten oder UPS.<br>
+Wenn Sie Ihre Bestellung in unserem Ladengeschäft abholen möchten, bitten wir Sie um vorherige
+Benachrichtigung, damit wir die Weine für Sie bereitstellen können und Sie
+nicht warten müssen.<br><br>
+<b>Lieferungen nach Österreich:</b>
+Für Lieferungen nach Österreich fallen bis zu einem Gewicht von 30 KG Versandkosten von &euro; 9,99 an. Je weitere angefangene 30 KG Gewicht fallen weitere &euro; 9,99 an.<br>Für Lieferungen in andere Länder kontaktieren Sie uns bitte direkt.
+</p></div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal_login" tabindex="-1" role="dialog" aria-labelledby="modal_login_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
+        <h4 class="modal-title" id="myModalLabel">Login oder Anlage eines Benutzerkontos</h4>
+      </div>
+      <div class="modal-body">
+		  <div id="modal_login_text"></div>
+		  <div class="form-group">
+			<label for="login_email">E-Mail-Adresse</label>
+			<input type="email" class="form-control" id="login_email" placeholder="Bitte geben Sie Ihre E-Mail-Adresse ein">
+		  </div>
+		  <div class="form-group">
+			<label for="login_password">Passwort</label>
+			<input type="password" class="form-control" id="login_password" placeholder="Bitte geben Sie Ihr (neues) Passwort ein">
+		  </div>
+		  <div class="checkbox">
+			<label>
+			  <input type="checkbox" id="login_remember"> Möchten Sie eingeloggt bleiben? (Es wird ein Cookie gesetzt.)
+			</label>
+		  </div>			
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Schließen ohne speichern</button>
+        <button type="button" class="btn btn-primary" id="modal_login_do_login">Login</button>
+        <button type="button" class="btn btn-primary" id="modal_login_new_user">Neues Benutzerkonto anlegen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_watchlist" tabindex="-1" role="dialog" aria-labelledby="modal_watchlist_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
+        <h4 class="modal-title" id="myModalLabel">Notiz zu <span id="modal_watchlist_flaschentitel"></span></h4>
+      </div>
+      <div class="modal-body">
+		  <div>Sie können sich für jeden Artikel, den Sie auf Ihren Merkzettel packen, eine Notiz machen, um sich später erinnern zu können, warum sie diesen Artikel auf den Merkzettel gepackt haben.<br><br>
+		  Sofern Sie ein Benutzerkonto bei Vinos Y Tapas haben oder eines während Ihres Besuchs anlegen, werden diese Angaben für Sie gespeichert, bis Sie den Artikel vom Merkzettel löschen.<br><br>Zum Anlegen eines Benutzerkontos genügt übrigens eine E-Mail-Adresse und ein Passwort. Wir wollen keine weiteren Daten von Ihnen, so lange Sie nicht eine Bestellung auslösen.</div>
+		  <div class="form-group">
+			<label for="watchlist_notiz">Notiz</label>
+			<textarea class="form-control" id="watchlist_notiz" placeholder="Hier können Sie Ihre Notizen eintragen..." rows="5"></textarea>
+		  </div>
+		  <input type="hidden" id="watchlist_bottle_id">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" id="modal_watchlist_dismiss">Nicht auf den Merkzettel packen</button>
+        <button type="button" class="btn btn-primary" id="modal_watchlist_save">Auf den Merkzettel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_infos" tabindex="-1" role="dialog" aria-labelledby="modal_infos_label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
+        <h4 class="modal-title" id="modal_infos_title"></h4>
+      </div>
+      <div class="modal-body" id="modal_infos_content">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_lightbox" tabindex="-1" role="dialog" aria-labelledby="modal_lightbox_label" aria-hidden="true">
+  <div class="modal-dialog max-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Schließen</span></button>
+        <h4 class="modal-title" id="modal_lightbox_title"></h4>
+      </div>
+      <div class="modal-body" id="modal_lightbox_content">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" >Schließen</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="height:80px;"></div>
+</body></html>
+<!--AI-->
+

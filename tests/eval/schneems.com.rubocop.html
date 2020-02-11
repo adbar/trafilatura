@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Pair With Me: Rubocop Cop that Detects Duplicate Array Allocations
+    
+  </title>
+
+  <meta name="description" content="You might know rubocop as the linter that helps enforce your code styles, but did you know you can use it to make your code faster? In this post, we’ll look ...">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/application-2f2c5b9b10fba3838987ae243eef5103ea9b307d3b57e275c0a7fcd9b1aa46ae.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700">
+  <script src="/assets/application-8083fa87927fb04d9c7ad9526cb8109ed40bd75594914becc5c4e0e4457501fc.js" async></script>
+
+
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/assets/favicon-016badb18008fe242f2c8be1a558de3a8da779b2e39143f1f81396ea380a7659.ico">
+
+  <!-- Feed -->
+  <link rel="alternate" type="application/atom+xml" href="/feed.xml" title="Atom feed">
+  <!--
+  <script src="//load.sumome.com/" data-sumo-site-id="a658207c92bb7cb45c1d7827aad47e57786f057648b1e4abc330fd37129f4c8c" async="async"></script>
+  -->
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-26526218-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="Schneems"/>
+  <meta name="twitter:description" content="You might know rubocop as the linter that helps enforce your code styles, but did you know you can use it to make your code faster? In this post, we’ll look ..." />
+  <meta property="og:description" content="You might know rubocop as the linter that helps enforce your code styles, but did you know you can use it to make your code faster? In this post, we’ll look ..."/>
+
+  
+    <meta property="twitter:title" content="Pair With Me: Rubocop Cop that Detects Duplicate Array Allocations" />
+    <meta property="og:title" content="Pair With Me: Rubocop Cop that Detects Duplicate Array Allocations" />
+  
+
+  
+    <meta name="twitter:image" content="" />
+    <meta property="og:image" content="" />
+  
+</head>
+
+
+  <body>
+
+    <div class="flexbox-container" >
+      <div class="sidebar">
+  <div>
+    <a href="/" class="">
+      <svg version="1.0" xmlns="https://www.w3.org/2000/svg"
+ viewBox="0 0 1969.000000 1791.000000"
+ preserveAspectRatio="xMidYMid meet" class='logo'>
+<g transform="translate(0.000000,1791.000000) scale(0.100000,-0.100000)"
+fill="#fff" stroke="none">
+<path d="M9185 15253 c-1231 -36 -2459 -182 -3645 -434 -366 -78 -518 -117
+-571 -145 -90 -50 -175 -148 -221 -255 l-23 -54 -3 -862 -3 -863 -2152 -2
+-2152 -3 -49 -24 c-53 -26 -101 -90 -112 -149 -4 -20 8 -146 30 -306 286
+-2133 286 -4187 0 -6280 -41 -298 -40 -325 13 -394 56 -74 -100 -55 2264 -276
+l2154 -201 5 -695 c5 -684 5 -696 27 -748 61 -148 168 -251 308 -296 28 -8
+1092 -254 2366 -546 l2317 -530 2338 535 c2597 595 2431 551 2540 662 64 66
+120 173 134 258 6 34 10 333 10 703 0 507 3 642 13 642 6 0 1002 94 2213 209
+2418 230 2251 209 2308 284 52 68 53 96 12 393 -165 1214 -237 2460 -208 3627
+24 986 82 1713 208 2653 22 163 34 284 30 305 -11 60 -58 124 -112 150 l-49
+24 -2207 3 -2208 2 0 818 c0 545 -4 838 -11 878 -26 142 -126 277 -253 339
+-53 26 -132 49 -311 89 -1476 333 -3007 501 -4500 494 -225 -1 -450 -3 -500
+-5z m1130 -463 c1145 -37 2193 -155 3280 -371 329 -65 658 -140 683 -155 l22
+-14 0 -805 0 -805 -25 0 -25 0 0 795 c0 437 -3 795 -8 795 -4 0 -107 22 -230
+50 -1185 265 -2426 419 -3692 460 -1607 51 -3339 -117 -4917 -476 l-163 -37 0
+-794 0 -793 -25 0 -25 0 0 805 0 805 23 14 c25 17 462 114 807 180 1417 271
+2903 391 4295 346z m-2758 -1074 l52 -103 83 -12 c46 -7 98 -15 116 -18 l34
+-6 -83 -83 -83 -83 18 -112 c10 -61 15 -113 13 -116 -3 -2 -50 20 -105 49
+l-100 53 -102 -54 c-56 -29 -103 -51 -105 -49 -3 2 4 53 14 114 l19 109 -85
+87 -86 86 49 7 c27 4 81 12 119 19 l70 11 50 102 c28 56 52 102 55 102 3 1 29
+-46 57 -103z m1147 -4 l49 -99 86 -12 c47 -6 101 -14 119 -18 l34 -6 -85 -86
+-85 -86 19 -109 c10 -61 17 -112 14 -114 -2 -2 -49 20 -105 49 l-102 54 -100
+-53 c-55 -29 -102 -51 -105 -49 -2 3 3 55 13 116 l18 112 -83 83 -83 83 34 6
+c18 3 70 11 116 18 l83 12 52 103 c28 56 53 101 56 99 4 -2 28 -48 55 -103z
+m1150 0 l49 -99 120 -18 120 -17 -88 -82 -88 -81 20 -118 c11 -64 18 -117 16
+-117 -2 0 -49 23 -105 51 l-102 51 -103 -51 c-57 -28 -105 -51 -107 -51 -1 0
+6 53 17 117 l20 118 -88 81 -88 82 120 17 120 18 52 104 c28 57 55 102 59 99
+4 -2 29 -49 56 -104z m1278 -111 c46 -7 98 -15 116 -18 l34 -6 -83 -83 -83
+-83 18 -112 c10 -61 16 -113 13 -115 -2 -3 -50 19 -105 48 l-100 53 -102 -54
+c-56 -29 -103 -51 -105 -49 -3 2 4 53 14 114 l19 109 -85 86 -85 86 34 6 c18
+4 72 12 119 18 l86 12 53 106 52 106 54 -106 53 -107 83 -11z m1013 116 l50
+-102 70 -11 c39 -7 92 -15 119 -19 l49 -7 -86 -86 -85 -87 19 -109 c10 -61 17
+-112 14 -114 -2 -2 -49 20 -105 49 l-102 54 -100 -53 c-55 -29 -102 -51 -105
+-49 -2 3 3 55 13 116 l18 112 -83 83 -83 83 34 6 c18 3 70 11 116 18 l83 12
+52 103 c28 57 54 104 57 103 3 0 28 -46 55 -102z m6930 -1359 c-15 -68 -92
+-695 -124 -1018 -80 -796 -113 -1480 -113 -2320 0 -947 43 -1728 148 -2650 26
+-231 80 -647 89 -687 l5 -23 -9285 0 -9285 0 5 23 c9 40 63 456 89 687 104
+920 148 1701 148 2645 0 835 -33 1532 -113 2325 -32 323 -109 950 -124 1018
+l-5 22 9285 0 9285 0 -5 -22z m-12898 -6999 c87 -23 219 -54 293 -70 l135 -29
+-125 5 c-155 8 -530 39 -779 65 -215 23 -218 23 -205 11 13 -13 418 -143 592
+-191 126 -34 402 -99 482 -113 62 -11 -136 -6 -311 8 -223 18 -690 62 -734 70
+-113 20 171 -79 485 -170 102 -29 255 -69 340 -88 85 -20 184 -42 220 -50 l65
+-15 -90 5 c-235 12 -931 72 -1020 88 -119 22 192 -87 510 -178 161 -46 326
+-87 555 -135 l45 -10 -45 -1 c-69 -2 -421 26 -759 59 -167 17 -306 28 -308 26
+-7 -7 404 -139 587 -189 154 -42 308 -79 460 -111 l65 -14 -65 -1 c-85 -1
+-393 23 -754 59 -160 16 -292 28 -294 26 -7 -8 456 -155 645 -206 103 -27 260
+-66 348 -85 l160 -35 -110 6 c-163 8 -446 31 -738 60 -142 14 -263 24 -270 21
+-17 -5 396 -138 613 -197 102 -28 257 -66 345 -85 l160 -35 -130 5 c-139 6
+-614 46 -830 70 -71 8 -139 15 -150 14 -19 0 -19 -1 1 -9 64 -26 840 -172
+1214 -230 2229 -340 4431 -299 6645 125 300 58 531 108 518 112 -6 2 -98 -5
+-205 -16 -401 -43 -963 -83 -893 -65 11 3 94 21 185 41 278 60 949 258 913
+270 -7 3 -128 -7 -270 -21 -292 -29 -575 -52 -738 -60 l-110 -6 160 35 c239
+52 510 126 767 211 126 42 228 77 226 79 -2 3 -112 -7 -243 -20 -361 -36 -575
+-54 -730 -59 -153 -6 -158 -8 83 45 73 16 208 50 300 75 187 51 596 183 589
+190 -2 2 -141 -9 -308 -26 -334 -33 -689 -60 -759 -59 -33 0 -2 10 115 35 88
+18 251 59 363 89 217 59 602 183 602 194 0 3 -120 -6 -267 -21 -254 -25 -603
+-53 -778 -62 l-80 -4 65 15 c36 8 135 30 220 50 254 57 840 234 840 252 0 4
+-120 -5 -267 -20 -345 -34 -660 -59 -743 -58 -62 0 -55 2 125 43 249 57 413
+103 673 187 202 67 264 97 170 84 -160 -21 -737 -71 -933 -80 l-120 -5 135 29
+c74 16 206 47 293 70 l158 41 380 0 379 0 0 -825 0 -824 -37 -10 c-186 -49
+-797 -172 -1168 -235 -877 -148 -1703 -233 -2615 -267 -346 -13 -1343 -7
+-1645 11 -1029 58 -1889 163 -2805 341 -185 36 -679 142 -722 155 -17 5 -18
+53 -18 830 l0 824 394 0 395 0 158 -41z m2191 -164 c100 -30 155 -108 168
+-238 l7 -67 -87 0 -86 0 0 35 c0 89 -50 137 -121 116 -43 -13 -59 -43 -59
+-113 0 -78 28 -123 160 -255 95 -95 126 -134 150 -185 55 -117 50 -256 -11
+-352 -49 -78 -170 -120 -282 -97 -131 28 -195 110 -205 266 l-5 85 85 0 86 0
+4 -71 c3 -63 7 -74 31 -95 37 -32 87 -32 124 0 25 22 28 30 27 88 0 41 -6 75
+-18 98 -10 19 -74 92 -142 162 -154 157 -177 199 -182 335 -5 115 14 179 69
+234 64 64 179 86 287 54z m2369 -13 c51 -26 96 -78 117 -134 15 -38 17 -89 14
+-443 -3 -390 -4 -401 -25 -441 -27 -52 -80 -98 -130 -115 -63 -21 -179 -17
+-240 10 -28 12 -60 32 -72 44 -33 36 -63 116 -69 184 l-5 63 87 0 86 0 0 -40
+c0 -46 21 -95 45 -104 9 -3 32 -6 50 -6 81 0 95 29 102 209 l5 136 -31 -33
+c-39 -41 -87 -62 -146 -62 -60 0 -103 19 -142 63 -46 53 -55 111 -51 332 3
+210 10 236 77 299 69 66 234 85 328 38z m622 12 c67 -20 134 -80 158 -142 13
+-35 18 -75 18 -152 0 -90 -3 -112 -24 -153 -13 -26 -36 -58 -52 -69 l-28 -21
+38 -42 c56 -61 66 -99 66 -250 0 -114 -3 -136 -23 -180 -48 -104 -125 -148
+-257 -148 -132 0 -209 44 -257 148 -20 44 -23 66 -23 180 0 151 10 189 66 250
+l38 42 -28 21 c-52 38 -75 104 -76 212 0 121 17 179 69 236 69 77 195 104 315
+68z m-3444 -79 l0 -80 -157 -3 -158 -3 0 -159 0 -160 125 0 125 0 0 -80 0 -80
+-125 0 -125 0 0 -170 0 -170 160 0 160 0 0 -80 0 -80 -250 0 -250 0 0 568 c0
+313 3 572 7 576 4 3 115 5 247 4 l241 -3 0 -80z m1235 0 l0 -85 -95 0 -95 0 0
+-490 0 -490 -90 0 -90 0 0 490 0 490 -95 0 -95 0 0 85 0 85 280 0 280 0 0 -85z
+m970 -490 l0 -575 -90 0 -90 0 0 440 0 440 -70 0 -70 0 0 58 0 58 59 12 c48
+10 65 20 95 52 19 22 38 51 42 65 6 23 10 25 65 25 l59 0 0 -575z m2010 185
+l0 -390 45 0 45 0 0 -79 0 -80 -42 -3 -43 -3 -3 -102 -3 -103 -89 0 -90 0 0
+105 0 105 -170 0 -170 0 0 85 0 85 163 385 162 385 98 0 97 0 0 -390z m-2830
+-675 l0 -85 -85 0 -85 0 0 85 0 85 85 0 85 0 0 -85z"/>
+<path d="M1191 12005 c-113 -35 -208 -139 -237 -258 -15 -61 -15 -78 10 -323
+48 -484 77 -875 96 -1309 5 -132 13 -294 16 -361 l6 -120 65 -29 c42 -18 89
+-50 129 -88 242 -226 183 -614 -117 -766 l-74 -38 -7 -284 c-13 -592 -46
+-1115 -109 -1763 -31 -310 -31 -320 -15 -380 31 -109 90 -181 196 -237 l45
+-24 8570 0 8570 0 55 26 c101 48 179 149 200 261 8 39 5 98 -10 238 -59 557
+-103 1208 -115 1720 -3 129 -8 285 -11 346 l-6 112 -41 16 c-64 24 -149 97
+-195 166 -163 244 -73 569 192 694 l53 25 7 183 c20 541 56 1073 106 1576 32
+315 31 351 -12 436 -31 60 -105 133 -167 163 l-56 28 -8550 2 c-7228 1 -8557
+0 -8594 -12z m1659 -984 c282 -96 434 -299 511 -680 26 -129 38 -381 18 -382
+-8 0 -141 -12 -296 -27 l-282 -27 -5 50 c-3 27 -8 93 -11 146 -9 166 -62 313
+-132 366 -31 24 -46 28 -102 28 -54 0 -72 -5 -100 -24 -100 -72 -142 -358 -81
+-555 50 -161 126 -293 390 -681 384 -563 518 -808 596 -1085 22 -81 27 -121
+31 -272 4 -111 1 -214 -6 -273 -53 -419 -250 -677 -586 -766 -106 -29 -380
+-32 -493 -6 -386 88 -576 346 -631 859 -10 84 -16 326 -8 329 12 4 583 56 588
+53 3 -2 9 -77 12 -166 13 -360 109 -539 288 -538 75 1 160 65 195 148 28 66
+44 170 45 285 0 95 -4 125 -26 197 -54 171 -149 338 -395 695 -382 554 -507
+791 -591 1115 -37 141 -46 285 -30 429 52 444 270 725 626 807 41 9 110 13
+220 11 150 -3 166 -6 255 -36z m1885 15 c287 -80 485 -319 561 -676 12 -57 17
+-160 21 -422 l5 -348 -285 0 -285 0 -4 333 c-5 316 -6 335 -28 391 -53 138
+-173 193 -290 134 -53 -27 -103 -102 -119 -180 -8 -33 -11 -467 -11 -1337 0
+-1410 -3 -1335 59 -1434 46 -72 80 -89 172 -85 65 3 81 7 113 32 51 38 87 118
+97 215 4 42 8 199 8 349 l1 272 286 0 286 0 -5 -347 c-7 -433 -21 -514 -126
+-718 -37 -73 -64 -108 -141 -185 -107 -108 -188 -157 -317 -192 -113 -31 -354
+-30 -467 0 -268 73 -456 281 -544 600 l-27 97 -3 1367 c-2 1348 -2 1369 18
+1469 41 198 127 369 249 489 100 99 198 151 351 186 79 18 346 12 425 -10z
+m12553 8 c388 -79 588 -393 627 -981 7 -96 6 -103 -11 -104 -11 0 -145 -12
+-299 -27 l-280 -27 -12 145 c-14 170 -33 253 -76 334 -42 80 -93 116 -161 116
+-138 0 -207 -122 -210 -370 -2 -233 56 -359 411 -888 285 -424 378 -574 472
+-762 124 -250 164 -408 164 -645 0 -617 -241 -957 -716 -1016 -105 -13 -273
+-6 -376 16 -328 69 -522 286 -600 671 -25 121 -41 287 -41 416 0 93 1 98 23
+102 12 3 128 14 257 26 129 11 253 23 276 26 l41 6 6 -154 c6 -173 17 -240 53
+-349 50 -145 116 -204 229 -204 146 0 219 102 246 339 13 123 6 195 -32 310
+-56 168 -118 273 -475 803 -293 434 -375 583 -459 836 -68 203 -78 259 -78
+437 1 232 50 437 144 596 76 129 244 271 379 320 128 46 351 58 498 28z
+m-10988 -884 l0 -860 235 0 235 0 2 858 3 857 305 0 305 0 3 -2077 2 -2078
+-310 0 -310 0 0 905 0 905 -235 0 -235 0 0 -905 0 -905 -305 0 -305 0 0 2080
+0 2080 305 0 305 0 0 -860z m2223 350 c76 -278 221 -806 322 -1175 138 -506
+187 -671 199 -673 15 -3 16 103 16 1177 l0 1181 280 0 280 0 0 -2080 0 -2080
+-269 0 -269 0 -11 33 c-5 17 -148 536 -316 1152 -168 616 -310 1131 -314 1145
+-4 14 -15 26 -24 28 -16 3 -17 -80 -17 -1177 l0 -1181 -280 0 -280 0 0 2080 0
+2080 272 -2 272 -3 139 -505z m2957 195 l0 -315 -395 0 -395 0 0 -545 0 -545
+283 -2 282 -3 3 -332 2 -333 -285 0 -285 0 0 -575 0 -575 395 0 395 0 0 -310
+0 -310 -700 0 -700 0 0 2080 0 2080 700 0 700 0 0 -315z m1740 0 l0 -315 -395
+0 -395 0 0 -545 0 -545 283 -2 282 -3 3 -332 2 -333 -285 0 -285 0 0 -575 0
+-575 395 0 395 0 0 -310 0 -310 -700 0 -700 0 0 2080 0 2080 700 0 700 0 0
+-315z m1268 -642 c101 -527 187 -998 193 -1048 18 -153 23 -152 44 6 13 87
+304 1638 366 1947 l10 52 375 0 374 0 0 -2080 0 -2080 -285 0 -285 0 0 1395
+c0 1225 -2 1395 -15 1395 -18 0 -13 29 -80 -435 -32 -214 -123 -831 -204
+-1370 l-146 -980 -133 -3 c-85 -2 -132 1 -132 8 0 5 -85 580 -189 1277 -105
+698 -197 1319 -206 1382 -8 63 -17 117 -20 119 -2 3 -11 2 -20 -1 -13 -6 -15
+-153 -15 -1397 l0 -1390 -280 0 -280 0 0 2080 0 2080 373 0 373 0 182 -957z"/>
+<path d="M10531 5014 c-19 -25 -21 -39 -21 -180 0 -164 7 -195 47 -213 33 -15
+58 -14 93 4 40 21 45 45 45 212 0 128 -2 144 -21 170 -17 23 -30 29 -71 31
+-45 3 -53 0 -72 -24z"/>
+<path d="M11221 5042 c-37 -11 -61 -52 -68 -114 -13 -130 20 -198 97 -198 23
+0 50 5 62 11 61 33 66 237 6 286 -19 17 -67 24 -97 15z"/>
+<path d="M11191 4543 c-27 -22 -41 -77 -41 -163 0 -133 27 -180 104 -180 80 0
+106 44 106 180 0 92 -14 144 -43 165 -29 21 -99 19 -126 -2z"/>
+<path d="M11859 4630 l-86 -205 85 -3 c46 -2 86 -1 88 1 3 2 3 96 2 208 l-3
+204 -86 -205z"/>
+</g>
+</svg>
+
+    </a>
+
+    <nav class="sidebar-nav closed-when-mobile">
+      <p class="hide-in-mobile">
+I created CodeTriage.com, <a href='https://www.codetriage.com'>a platform for contributing to Open Source</a>. To date we've helped over 50,000 developers get started on their Open Source Journey. I code for <a href="https://www.heroku.com">Heroku</a> &amp; I'm married to Ruby, literally.
+</p>
+
+<div class="sidebar-links">
+  <a class="sidebar-nav-item" href="/mailinglist"><span class="emoji">✉️ </span> Join my mailing List</a>
+  <a class="sidebar-nav-item" href="https://twitter.com/schneems"><span class="emoji">🐣</span> @-me on Twitter</a>
+  <a class="sidebar-nav-item" href="/feed.xml"><span class="emoji">✨</span> Subscribe to my RSS</a>
+  <a class="sidebar-nav-item" href="/talks.html"><span class="emoji">🎤</span> Watch my Conf Talks</a>
+  <a class="sidebar-nav-item" href="https://github.com/schneems"><span class="emoji">🐙</span> Fork me on GitHub</a>
+  <a class="sidebar-nav-item" href="/about"><span class="emoji">🤠</span> About me</a>
+</div>
+
+<p class="hide-in-mobile">
+<hr />
+❶ I'm in the top 50 contributors to <a href="https://contributors.rubyonrails.org">Ruby on Rails</a>.<br /><br />
+❷ I help maintain the <a href="http://rubygems.org/users/schneems">Puma webserver and Sprockets asset library</a>.<br /><br />
+❸ My pick for 2020 presidential primary is <a href="https://elizabethwarren.com/">Elizabeth Warren</a>.<br /><br />
+</p>
+
+<div class='copyright hide-in-mobile'>
+  <p>
+  © Richard Schneeman
+  </p>
+</div>
+    </nav>
+
+    <nav class="sidebar-nav-mobile">
+      <a href="#" class="hamburger"><?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg height="22px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="22px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z" fill="white"/>
+</svg>
+</a>
+    </nav>
+  </div>
+</div>
+
+
+      <div class="content container">
+        <div class="post">
+  <h1 class="post-title">Pair With Me: Rubocop Cop that Detects Duplicate Array Allocations</h1>
+  <span class="post-date">
+    09 Oct 2018
+  </span>
+  <div class="socialmobile only-mobile">
+    <!-- icons from https://github.com/edent/SuperTinySocialIcons/tree/master/tiny -->
+<div class="social">
+
+  <!-- twitter -->
+  <a
+  
+    href="https://twitter.com/intent/tweet/?text=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations;hashtags=ruby;via=schneems;url=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/"
+  
+    target="_blank" aria-label="Twitter">
+    <div class="button">
+      <div class="icon">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="m456 133c-14 7-31 11-47 13 17-10 30-27 37-46-15 10-34 16-52 20-61-62-157-7-141 75-68-3-129-35-169-85-22 37-11 86 26 109-13 0-26-4-37-9 0 39 28 72 65 80-12 3-25 4-37 2 10 33 41 57 77 57-42 30-77 38-122 34 170 111 378-32 359-208 16-11 30-25 41-42z" fill="#FF1168"/>
+        </svg>
+      </div>
+      <span class='social-name'>Twitter</span>
+    </div>
+  </a>
+
+  <!-- reddit -->
+  <a href="https://reddit.com/submit/?url=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/&title=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations" target="_blank">
+    <div class="button">
+      <div class="icon">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#ff4500">
+          <ellipse cx="256" cy="305" rx="177" ry="123" fill="#FF1168"/>
+          <path d="m199 347c35 29 79 29 114 0l12 11c-42 35-96 35-138 0z" fill="#fff"/>
+          <circle cx="315" cy="285" r="28" fill="#fff"/>
+          <circle cx="197" cy="285" r="28" fill="#fff"/>
+          <g fill="none" stroke="#FF1168">
+            <circle cx="390" cy="125" r="28" stroke-width="25"/>
+            <path d="m87 282c-45-22-5-92 40-50m298 50c45-22 5-92-40-50m-127-45 24-83 80 16" stroke-width="22"/>
+          </g>
+        </svg>
+      </div>
+      <span class='social-name'>Reddit</span>
+    </div>
+  </a>
+
+
+  <!-- lobsters -->
+
+  <a
+  
+    href="https://lobste.rs/stories/new?url=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/&title=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations"
+  
+  target="_blank">
+    <div class="button">
+      <div class="icon">
+        <!-- This lobster icon by Created by Baboon designs from the Noun Project -->
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 29.58 37.432500000000005" style="enable-background:new 0 0 29.58 29.946;" xml:space="preserve" fill="#FF1168"><g><path d="M17.837,11.817c-1.17-1.171-4.95,0.756-8.56,4.114c-1.551,1.443-2.53,2.579-3.243,3.636l4.176,4.174   c1.029-0.736,2.119-1.736,3.521-3.368C17.064,16.494,18.907,12.888,17.837,11.817z"/><path d="M8.255,22.968l-1.301-1.303l-1.179-1.179c-0.226-0.227-0.673-0.151-0.939,0.114c-0.266,0.266-0.335,0.709-0.108,0.936   l1.152,1.145c0.01,0.011,0.015,0.022,0.024,0.033l2.489,2.47c0.226,0.227,0.667,0.159,0.933-0.106   c0.267-0.268,0.332-0.708,0.106-0.933L8.255,22.968z"/><path d="M4.6,22.843c-0.229-0.229-0.674-0.152-0.941,0.114c-0.266,0.266-0.334,0.706-0.108,0.934l2.488,2.471   c0.227,0.228,0.666,0.159,0.934-0.106c0.266-0.269,0.334-0.706,0.105-0.934L4.6,22.843z"/><path d="M5.651,27.274c0.077-0.206,0.026-0.41-0.119-0.557L3.203,24.39c-0.146-0.146-0.35-0.197-0.555-0.123   c-0.018-0.019-0.023-0.052-0.042-0.071c-0.532-0.53-1.463-0.461-2.086,0.163c-0.623,0.623-0.696,1.558-0.164,2.087   c0.189,0.191,0.435,0.301,0.697,0.339c-0.063,0.604,0.175,1.266,0.546,1.639c0.342,0.341,0.98,0.571,1.583,0.557   c0.047,0.229,0.155,0.443,0.324,0.613c0.531,0.53,1.468,0.455,2.091-0.168c0.624-0.623,0.698-1.56,0.167-2.091   C5.736,27.307,5.683,27.3,5.651,27.274z"/><path d="M5.458,15.063c0.038,0.456-0.005,1.173,0.032,1.604c0,0,0.098,0.344,0.54,0.172c0.459-0.18,1.165-0.725,1.165-0.725   c0.365-0.277,0.836-0.564,0.835-0.883c0,0,0,0-0.147-0.516C7.737,14.2,7.405,11.807,7.48,11.292   c0.072-0.515,0.403-1.289,1.397-1.325c0.994-0.037,3.424-0.186,5.008-1.177c0,0,0.515-0.296,0.993-0.333   c0.449-0.034,3.413-0.327,4.936-2.358c0.199-0.237-0.04-0.377-0.337-0.354c-1.09,0.147-3.324,0.43-4.304,0.43   c0,0-0.194-0.029-0.282-0.134c-0.138-0.168-0.15-0.452,0.171-0.566c0.86-0.3,2.817-0.529,2.817-0.529   c0.455-0.052,0.614-0.405,0.355-0.78c0,0-2.325-3.366-9.247,0.756c0,0-3.754,2.652-2.171,4.604c0,0,0.14,0.157,0.134,0.308   c-0.012,0.248-0.256,0.524-0.944,0.354c-0.886-0.215-0.995,0.258-0.919,0.774C5.159,11.476,5.458,15.063,5.458,15.063z"/><path d="M25.467,11.495c-0.377-0.261-0.729-0.101-0.782,0.354c0,0-0.229,1.958-0.528,2.817c-0.113,0.323-0.396,0.309-0.563,0.173   c-0.106-0.089-0.137-0.283-0.137-0.283c0.001-0.982,0.283-3.213,0.43-4.306c0.026-0.297-0.117-0.536-0.354-0.336   c-2.031,1.523-2.324,4.487-2.357,4.936c-0.037,0.479-0.332,0.994-0.332,0.994c-0.994,1.583-1.141,4.013-1.178,5.008   c-0.038,0.994-0.811,1.324-1.326,1.398c-0.515,0.073-2.907-0.258-3.422-0.404c-0.516-0.148-0.516-0.148-0.516-0.148   c-0.318,0-0.605,0.47-0.883,0.835c0,0-0.546,0.709-0.725,1.167c-0.171,0.439,0.171,0.539,0.171,0.539   c0.432,0.038,1.147-0.006,1.604,0.033c0,0,3.587,0.299,4.101,0.371c0.517,0.075,0.99-0.035,0.773-0.922   c-0.167-0.689,0.108-0.932,0.356-0.944c0.149-0.005,0.307,0.135,0.307,0.135c1.952,1.585,4.603-2.169,4.603-2.169   C28.832,13.819,25.467,11.495,25.467,11.495z"/><path d="M29.299,8.676c-5.203-2.603-9.901,1.98-10.28,2.366c-0.006,0.005-0.351,0.353-0.082,0.66   c0.237,0.276,0.581-0.005,0.581-0.005c-0.001-0.002,4.535-4.731,9.403-2.252c0,0,0.35,0.188,0.58-0.135   C29.755,8.956,29.314,8.681,29.299,8.676z"/><path d="M17.884,10.063c0,0-0.282,0.345-0.006,0.583c0.308,0.268,0.657-0.078,0.662-0.081c0.384-0.382,4.969-5.08,2.365-10.283   c-0.004-0.015-0.28-0.456-0.636-0.203c-0.323,0.231-0.135,0.581-0.135,0.581C22.614,5.527,17.885,10.065,17.884,10.063z"/></g>
+        </svg>
+      </div>
+      <span class='social-name'>Lobste.rs</span>
+    </div>
+  </a>
+
+
+  <!-- hn -->
+  <a
+  
+    href="https://news.ycombinator.com/submitlink?u=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/&t=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations"
+  
+  >
+    <div class="button">
+      <div class="icon hn-padding">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+         <path d="m101 56h61l94 192 94-192h61l-129 255v145h-52v-145" fill="#FF1168"/>
+        </svg>
+      </div>
+      <span class='social-name'>Hacker News</span>
+    </div>
+  </a>
+</div>
+
+    <hr class='tophr' />
+  </div>
+
+  <div class="flexbox-container" >
+    <div class="postcontent">
+      <p>You might know <a href="https://github.com/rubocop-hq/rubocop">rubocop</a> as the linter that helps enforce your code styles, but did you know you can use it to make your code faster? In this post, we’ll look at static performance analysis and then at the end there’s a video of me live coding a PR that introduces a new performance cop to rubocop.</p>
+
+<h2 id="static-performance-analysis">Static Performance Analysis</h2>
+
+<p>Most performance improvements are made by “hotspot” analysis. You find some code and a benchmarking tool. Run the code, find the “hotspots” and then either speed up those sections or reduce the number of times that they need to be called. Concerning finding the most significant gains, nothing beats hotspot analysis, but what if you could detect code that is inefficient and re-write it without changing behavior. The code might be critical and the performance gain huge, or it might be tiny. Static performance analysis can tell you where your code can be faster, but it cannot tell you if that performance improvement will be meaningful in any kind of a real way.</p>
+
+<h2 id="for-example">For example</h2>
+
+<p>You may have seen Juanito’s awesome <a href="https://github.com/JuanitoFatas/fast-ruby">fast-ruby</a> repo that includes a bunch of “do this, not that” style of performance micro-optimizations. Here’s an example, instead of writing this code:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="kp">true</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="kp">false</span><span class="p">].</span><span class="nf">select</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">item</span> <span class="p">}.</span><span class="nf">first</span>
+</code></pre>
+</div>
+
+<p>You can use this code:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="p">[</span><span class="kp">true</span><span class="p">,</span> <span class="kp">false</span><span class="p">,</span> <span class="kp">false</span><span class="p">].</span><span class="nf">detect</span> <span class="p">{</span> <span class="o">|</span><span class="n">item</span><span class="o">|</span> <span class="n">item</span> <span class="p">}</span>
+</code></pre>
+</div>
+
+<p>In the second example, Ruby will stop iterating after it hits the first element to return true, so it does less work and is faster.</p>
+
+<h2 id="performance-analysis-with-rubocop">Performance analysis with Rubocop</h2>
+
+<p>While it’s good to know that one of those pieces of code is faster than another, it’s tedious to search your whole codebase for these patterns manually. Instead, you can configure rubocop to find some of these issues for you. To detect the above example, you can enable the <code class="highlighter-rouge">Performance/Detect</code> cop. Here’s a <a href="https://rubocop.readthedocs.io/en/latest/cops_performance/#performancedetect">link to the documentation</a>.</p>
+
+<p>There’s also another library called <a href="https://github.com/DamirSvrtan/fasterer">fasterer</a>. I’m not sure if they have feature parity, but they’re two approaches to the same problem.</p>
+
+<h2 id="uses">Uses</h2>
+
+<p>Since we don’t know how useful these performance cops will be to your actual code, it’s not a great idea to enable them all, and force all the code in your main Rails app to follow all the conventions. While some of the perf optimizations are as clean as the one above, many more require modifying your code in sometimes less readable ways.</p>
+
+<p>While it might not be a great idea on a project level, I think it’s a good idea for library maintainers to add rubocop to their projects and enable performance cops:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">Performance</span><span class="pi">:</span>
+  <span class="s">enabled</span><span class="pi">:</span> <span class="s">true</span>
+</code></pre>
+</div>
+
+<p>It’s also a good idea to tell rubocop what version of Ruby you’re on. For example, newer rubies have <code class="highlighter-rouge">String#match?</code> for matching regular expressions which is faster than <code class="highlighter-rouge">String#=~.</code> Telling rubocop your minimum ruby version lets them maximize your optimizations:</p>
+
+<div class="language-yml highlighter-rouge"><pre class="highlight"><code><span class="s">AllCops</span><span class="pi">:</span>
+  <span class="s">DisabledByDefault</span><span class="pi">:</span> <span class="s">true</span>
+  <span class="s">TargetRubyVersion</span><span class="pi">:</span> <span class="s">2.5</span>
+</code></pre>
+</div>
+
+<h2 id="running-rubocop">Running rubocop</h2>
+
+<p>You can run rubocop from the command line:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ rubocop
+</code></pre>
+</div>
+
+<p>Some of the changes can be applied automatically, to do this run with <code class="highlighter-rouge">--auto-correct</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ rubocop --auto-correct
+</code></pre>
+</div>
+
+<p>You can also add a rake task and have it autorun before CI to ensure no perf issues creep in.</p>
+
+<h2 id="decreasing-array-allocations">Decreasing array allocations</h2>
+
+<p>Now that you know all about rubocop and it’s performance abilities, I want to tell you about a feature I introduced. In code it’s common to see array methods chained like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>array = ["a", "b", "c"]
+array.compact.flatten.map { |x| x.downcase }
+</code></pre>
+</div>
+
+<p>Each of these methods <code class="highlighter-rouge">compact</code>, <code class="highlighter-rouge">flatten,</code> and <code class="highlighter-rouge">map</code> will allocate a new array. However, some of them have mutating “cousins” that can be used instead. We can write this code to be faster:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">array</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"a"</span><span class="p">,</span> <span class="s2">"b"</span><span class="p">,</span> <span class="s2">"c"</span><span class="p">]</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">compact!</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">flatten!</span>
+<span class="n">array</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">.</span><span class="nf">downcase</span> <span class="p">}</span>
+<span class="n">array</span>
+</code></pre>
+</div>
+
+<blockquote>
+  <p>Note that the bang methods are not drop-in replacements and cannot be chained directly because sometimes they return <code class="highlighter-rouge">nil</code>.</p>
+</blockquote>
+
+<p>Here we can mutate our original array variable because we also created it and know that no one will be trying to use the original. If we were calling this on an array passed into a method, then we would want to make the first call use <code class="highlighter-rouge">compact</code> instead and rely on the behavior that it will return a new array that we can safely mutate. For example:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">my_method</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+  <span class="n">array</span> <span class="o">=</span> <span class="n">array</span><span class="p">.</span><span class="nf">compact</span> <span class="c1"># don't mutate incoming arguments, duplicate the original</span>
+  <span class="n">array</span><span class="p">.</span><span class="nf">flatten!</span>
+  <span class="n">array</span><span class="p">.</span><span class="nf">map!</span> <span class="p">{</span> <span class="o">|</span><span class="n">x</span><span class="o">|</span> <span class="n">x</span><span class="p">.</span><span class="nf">downcase</span> <span class="p">}</span>
+  <span class="n">array</span>
+<span class="k">end</span>
+</code></pre>
+</div>
+
+<p>That’s the general idea behind several performance patches that I’ve made. After finding this pattern manually a few times, I wondered if I could turn it into its cop.</p>
+
+<h2 id="video">Video</h2>
+
+<p>If you want to watch me live code this feature you can follow along here:</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/w4Uzy6XFzCY" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen=""></iframe>
+
+<blockquote>
+  <p>Note: I didn’t edit this, so you’re getting all my mistakes and “umms.” I recommend watching on at least 1.5x speed. As you’re watching pretend you’re pairing and try to find my mistakes before I do.</p>
+</blockquote>
+
+<h2 id="aftermath">Aftermath</h2>
+
+<p>I was eventually able to get all of this working and <a href="https://github.com/rubocop-hq/rubocop/pull/6234">submit a PR to rubocop</a>. I also ran it against rails and found this pattern being used about 100 times. However, as you can see from my <a href="https://github.com/rails/rails/pull/33806">will never be merged PR</a> that some of the code is pretty gnarly. Usually, this is the part of the post where I tell you I made things a billion times faster, but it looks like while there were one or two spots that were actually hotspots, most of those locations were not. Was all that work in making the cop worthless then? In the case of Rails, I’ve spent a ton of time doing “hotspot” analysis which had previously pointed out many other changes. Since Rails has already been reasonably well optimized, this blanket optimization didn’t show much improvement in my real world app <a href="https://www.codetriage.com">CodeTriage</a>. In other libraries that haven’t spent much time optimizing there might be more significant gains. I did have one person report a reasonably huge savings within their actual Rails app where they were chaining methods on a massive array of active record objects. So while it’s not a magic performance bullet, it does have its uses.</p>
+
+<p>If you’re wondering “What about JIT? Can’t it do this for me eventually?” It turns out that yes, JIT can optimize this issue away through a concept called “loop fusion”, but unless you’re running Truffle ruby (not sure if JRuby does this or not), then you’re not going to be able to avoid this perf hotspot. Eventually, maybe MJIT will be able to do this, but until it can then we can see real-world gains by applying more efficient patterns to real-world ruby code</p>
+
+    </div>
+
+    <div class="socialsidebar closed-when-mobile">
+      <span class="social-prompt">Share on</span>
+      <!-- icons from https://github.com/edent/SuperTinySocialIcons/tree/master/tiny -->
+<div class="social">
+
+  <!-- twitter -->
+  <a
+  
+    href="https://twitter.com/intent/tweet/?text=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations;hashtags=ruby;via=schneems;url=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/"
+  
+    target="_blank" aria-label="Twitter">
+    <div class="button">
+      <div class="icon">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+          <path d="m456 133c-14 7-31 11-47 13 17-10 30-27 37-46-15 10-34 16-52 20-61-62-157-7-141 75-68-3-129-35-169-85-22 37-11 86 26 109-13 0-26-4-37-9 0 39 28 72 65 80-12 3-25 4-37 2 10 33 41 57 77 57-42 30-77 38-122 34 170 111 378-32 359-208 16-11 30-25 41-42z" fill="#FF1168"/>
+        </svg>
+      </div>
+      <span class='social-name'>Twitter</span>
+    </div>
+  </a>
+
+  <!-- reddit -->
+  <a href="https://reddit.com/submit/?url=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/&title=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations" target="_blank">
+    <div class="button">
+      <div class="icon">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill="#ff4500">
+          <ellipse cx="256" cy="305" rx="177" ry="123" fill="#FF1168"/>
+          <path d="m199 347c35 29 79 29 114 0l12 11c-42 35-96 35-138 0z" fill="#fff"/>
+          <circle cx="315" cy="285" r="28" fill="#fff"/>
+          <circle cx="197" cy="285" r="28" fill="#fff"/>
+          <g fill="none" stroke="#FF1168">
+            <circle cx="390" cy="125" r="28" stroke-width="25"/>
+            <path d="m87 282c-45-22-5-92 40-50m298 50c45-22 5-92-40-50m-127-45 24-83 80 16" stroke-width="22"/>
+          </g>
+        </svg>
+      </div>
+      <span class='social-name'>Reddit</span>
+    </div>
+  </a>
+
+
+  <!-- lobsters -->
+
+  <a
+  
+    href="https://lobste.rs/stories/new?url=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/&title=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations"
+  
+  target="_blank">
+    <div class="button">
+      <div class="icon">
+        <!-- This lobster icon by Created by Baboon designs from the Noun Project -->
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 29.58 37.432500000000005" style="enable-background:new 0 0 29.58 29.946;" xml:space="preserve" fill="#FF1168"><g><path d="M17.837,11.817c-1.17-1.171-4.95,0.756-8.56,4.114c-1.551,1.443-2.53,2.579-3.243,3.636l4.176,4.174   c1.029-0.736,2.119-1.736,3.521-3.368C17.064,16.494,18.907,12.888,17.837,11.817z"/><path d="M8.255,22.968l-1.301-1.303l-1.179-1.179c-0.226-0.227-0.673-0.151-0.939,0.114c-0.266,0.266-0.335,0.709-0.108,0.936   l1.152,1.145c0.01,0.011,0.015,0.022,0.024,0.033l2.489,2.47c0.226,0.227,0.667,0.159,0.933-0.106   c0.267-0.268,0.332-0.708,0.106-0.933L8.255,22.968z"/><path d="M4.6,22.843c-0.229-0.229-0.674-0.152-0.941,0.114c-0.266,0.266-0.334,0.706-0.108,0.934l2.488,2.471   c0.227,0.228,0.666,0.159,0.934-0.106c0.266-0.269,0.334-0.706,0.105-0.934L4.6,22.843z"/><path d="M5.651,27.274c0.077-0.206,0.026-0.41-0.119-0.557L3.203,24.39c-0.146-0.146-0.35-0.197-0.555-0.123   c-0.018-0.019-0.023-0.052-0.042-0.071c-0.532-0.53-1.463-0.461-2.086,0.163c-0.623,0.623-0.696,1.558-0.164,2.087   c0.189,0.191,0.435,0.301,0.697,0.339c-0.063,0.604,0.175,1.266,0.546,1.639c0.342,0.341,0.98,0.571,1.583,0.557   c0.047,0.229,0.155,0.443,0.324,0.613c0.531,0.53,1.468,0.455,2.091-0.168c0.624-0.623,0.698-1.56,0.167-2.091   C5.736,27.307,5.683,27.3,5.651,27.274z"/><path d="M5.458,15.063c0.038,0.456-0.005,1.173,0.032,1.604c0,0,0.098,0.344,0.54,0.172c0.459-0.18,1.165-0.725,1.165-0.725   c0.365-0.277,0.836-0.564,0.835-0.883c0,0,0,0-0.147-0.516C7.737,14.2,7.405,11.807,7.48,11.292   c0.072-0.515,0.403-1.289,1.397-1.325c0.994-0.037,3.424-0.186,5.008-1.177c0,0,0.515-0.296,0.993-0.333   c0.449-0.034,3.413-0.327,4.936-2.358c0.199-0.237-0.04-0.377-0.337-0.354c-1.09,0.147-3.324,0.43-4.304,0.43   c0,0-0.194-0.029-0.282-0.134c-0.138-0.168-0.15-0.452,0.171-0.566c0.86-0.3,2.817-0.529,2.817-0.529   c0.455-0.052,0.614-0.405,0.355-0.78c0,0-2.325-3.366-9.247,0.756c0,0-3.754,2.652-2.171,4.604c0,0,0.14,0.157,0.134,0.308   c-0.012,0.248-0.256,0.524-0.944,0.354c-0.886-0.215-0.995,0.258-0.919,0.774C5.159,11.476,5.458,15.063,5.458,15.063z"/><path d="M25.467,11.495c-0.377-0.261-0.729-0.101-0.782,0.354c0,0-0.229,1.958-0.528,2.817c-0.113,0.323-0.396,0.309-0.563,0.173   c-0.106-0.089-0.137-0.283-0.137-0.283c0.001-0.982,0.283-3.213,0.43-4.306c0.026-0.297-0.117-0.536-0.354-0.336   c-2.031,1.523-2.324,4.487-2.357,4.936c-0.037,0.479-0.332,0.994-0.332,0.994c-0.994,1.583-1.141,4.013-1.178,5.008   c-0.038,0.994-0.811,1.324-1.326,1.398c-0.515,0.073-2.907-0.258-3.422-0.404c-0.516-0.148-0.516-0.148-0.516-0.148   c-0.318,0-0.605,0.47-0.883,0.835c0,0-0.546,0.709-0.725,1.167c-0.171,0.439,0.171,0.539,0.171,0.539   c0.432,0.038,1.147-0.006,1.604,0.033c0,0,3.587,0.299,4.101,0.371c0.517,0.075,0.99-0.035,0.773-0.922   c-0.167-0.689,0.108-0.932,0.356-0.944c0.149-0.005,0.307,0.135,0.307,0.135c1.952,1.585,4.603-2.169,4.603-2.169   C28.832,13.819,25.467,11.495,25.467,11.495z"/><path d="M29.299,8.676c-5.203-2.603-9.901,1.98-10.28,2.366c-0.006,0.005-0.351,0.353-0.082,0.66   c0.237,0.276,0.581-0.005,0.581-0.005c-0.001-0.002,4.535-4.731,9.403-2.252c0,0,0.35,0.188,0.58-0.135   C29.755,8.956,29.314,8.681,29.299,8.676z"/><path d="M17.884,10.063c0,0-0.282,0.345-0.006,0.583c0.308,0.268,0.657-0.078,0.662-0.081c0.384-0.382,4.969-5.08,2.365-10.283   c-0.004-0.015-0.28-0.456-0.636-0.203c-0.323,0.231-0.135,0.581-0.135,0.581C22.614,5.527,17.885,10.065,17.884,10.063z"/></g>
+        </svg>
+      </div>
+      <span class='social-name'>Lobste.rs</span>
+    </div>
+  </a>
+
+
+  <!-- hn -->
+  <a
+  
+    href="https://news.ycombinator.com/submitlink?u=https://www.schneems.com/2018/10/09/pair-with-me-rubocop-cop-that-detects-duplicate-array-allocations/&t=Pair%20With%20Me:%20Rubocop%20Cop%20that%20Detects%20Duplicate%20Array%20Allocations"
+  
+  >
+    <div class="button">
+      <div class="icon hn-padding">
+        <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+         <path d="m101 56h61l94 192 94-192h61l-129 255v145h-52v-145" fill="#FF1168"/>
+        </svg>
+      </div>
+      <span class='social-name'>Hacker News</span>
+    </div>
+  </a>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<div class="related">
+  <!-- Begin MailChimp Signup Form -->
+
+<div class="flexbox-container">
+  <div class="face">
+    <img src="/assets/schneems-profile-5628a94c3255ce91a89850b8612970e9ded3f180701f23dd53a49f628f107723.png" />
+  </div>
+  <div id="mc_embed_signup">
+    <form action="//schneems.us3.list-manage.com/subscribe/post?u=a9095027126a1cf15c5062160&amp;id=17dc267687" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+        <div id="mc_embed_signup_scroll">
+      <h2>Subscribe to my Newsletter 😻 🤠</h2>
+      <p>Join the hundreds of developers who get new code, writing, and interesting programming links delivered to their inboxes every week.
+      </p>
+    <div class="mc-field-group">
+      <label for="mce-EMAIL"></label>
+      <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address">
+    </div>
+      <div id="mce-responses" class="clear">
+        <div class="response" id="mce-error-response" style="display:none"></div>
+        <div class="response" id="mce-success-response" style="display:none"></div>
+      </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+        <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_a9095027126a1cf15c5062160_17dc267687" tabindex="-1" value=""></div>
+        <div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+        </div>
+    </form>
+  </div>
+</div>
+
+  <hr />
+
+  <h2>Keep Reading 🚀</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2019/12/18/the-curious-case-of-the-tablelocking-update-query/">
+            The Curious Case of the Table-Locking UPDATE Query
+          </a>
+        </h3>
+        <p>I maintain an internal-facing service at Heroku that does metadata processing. It’s not real-time, so there’s plenty of slack for when things go wrong. Recently I discovered that the system was getting bogged down to the point where no jobs were being executed at all. After hours of debugging, I found the problem was an <code class="highlighter-rouge">UPDATE</code> on a single row on a single table was causing the entire table to lock, which caused a lock queue and ground the whole process to a halt. This post is a story about how the problem was debugged and fixed and why such a seemingly simple query caused so much harm.</p>
+
+
+        <p><a href="/2019/12/18/the-curious-case-of-the-tablelocking-update-query/">Read More</a></p>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2019/11/07/why-does-my-apps-memory-usage-grow-asymptotically-over-time/">
+            Why does my App's Memory Use Grow Over Time?
+          </a>
+        </h3>
+        <p>Why on earth does my memory consumption chart look like that? It’s a question I hear every week. To help answer that question, I wrote a <a href="https://github.com/schneems/simulate_ruby_web_memory_use">Web server request simulator</a> to model how Ruby uses memory over time, though it applies to other languages as well. We will use the output of that project to dissect why a web app’s memory would be expected to look like this:</p>
+
+
+        <p><a href="/2019/11/07/why-does-my-apps-memory-usage-grow-asymptotically-over-time/">Read More</a></p>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2019/07/12/puma-4-hammering-out-h13sa-debugging-story/">
+            Puma 4: Hammering Out H13s—A Debugging Story
+          </a>
+        </h3>
+        <p>For quite some time we’ve received reports from our larger customers about a mysterious <a href="https://devcenter.heroku.com/articles/error-codes#h13-connection-closed-without-response">H13 - Connection closed error</a> showing up for Ruby applications. Curiously it only ever happened around the time they were deploying or scaling their dynos. Even more peculiar, it only happened to relatively high scale applications. We couldn’t reproduce the behavior on an example app. This is a story about distributed coordination, the TCP API, and how we debugged and fixed a bug in Puma that only shows up at scale.</p>
+
+
+        <p><a href="/2019/07/12/puma-4-hammering-out-h13sa-debugging-story/">Read More</a></p>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2019/06/26/puma-4-new-io-4-your-server/">
+            Puma 4: New I/O 4 Your Server
+          </a>
+        </h3>
+        <p>Here’s the setup: You are a web server named Puma. You need to accept incoming connections and give them to your thread pool, but before we can get that far, you’ll have to make sure all of the request’s packets have been received so that it’s ready to be passed to a Rack app. This sounds like the job for a Reactor!</p>
+
+
+        <p><a href="/2019/06/26/puma-4-new-io-4-your-server/">Read More</a></p>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2018/10/26/blockwalk-for-beto-enter-to-win-my-technical-time/">
+            Blockwalk for Beto: Enter to win my Technical Time
+          </a>
+        </h3>
+        <p>Today I have an unusual proposition for you. I’m spending a bunch of time to try to get Beto elected to Texas Senate, so I’ve not been able to write as much technical content. Rather than slow down on my door knocking, I’m looking to pick up the pace, and I want you to do it with me. Starting today, I’m offering anyone who phone banks or “block walks” (knocks on doors) the opportunity to win some of my technical time. Here’s how it’s going to work.</p>
+
+
+        <p><a href="/2018/10/26/blockwalk-for-beto-enter-to-win-my-technical-time/">Read More</a></p>
+      </li>
+    
+  </ul>
+</div>
+
+      </div>
+    </div>
+  </body>
+</html>

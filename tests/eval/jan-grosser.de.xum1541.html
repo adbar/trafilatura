@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!-- <meta http-equiv="content-language" content="de" /> -->
+<meta name="author" content="Jan" />
+<meta name="description" content=" Fertiger XUM1541-Adapter zum Anschluß eines Commodore Disketten-Laufwerks über USB Es gibt verschiedene Möglichkeiten, Dateien zwischen einem über 30" />
+<meta name="keywords" lang="de" content="linux, c64, retro, 1541, diskette" />
+<meta name="date" content="2016-01-31T20:40:17+01:00" />
+<meta name="generator" content="PerlPress" />
+
+
+<!-- Dublin Core Metadata -->
+<meta name="DC.title" content="XUM1541: Dateien zwischen Linux und C64 austauschen" />
+<meta name="DC.author" content="Jan" />
+<meta name="DC.subject" content="linux, c64, retro, 1541, diskette" />
+<meta name="DC.description" content=" Fertiger XUM1541-Adapter zum Anschluß eines Commodore Disketten-Laufwerks über USB Es gibt verschiedene Möglichkeiten, Dateien zwischen einem über 30" />
+<meta name="DC.publisher" content="Jan" />
+<meta name="DC.date" content="2016-01-31T20:40:17+01:00" scheme="DCTERMS.W3CDTF" />
+<meta name="DC.language" content="de" scheme="DCTERMS.RFC3066" />
+<meta name="DC.rights" content="All rights reserved" />
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@zilpz" />
+<meta name="twitter:domain" content="jan-grosser.de" />
+<meta name="twitter:title" content="XUM1541: Dateien zwischen Linux und C64 austauschen" />
+<meta name="twitter:description" content=" Fertiger XUM1541-Adapter zum Anschluß eines Commodore Disketten-Laufwerks über USB Es gibt verschiedene Möglichkeiten, Dateien zwischen einem über 30" />
+<!-- <meta name="twitter:image" content="" /> -->
+
+<meta name="robots" content="all" />
+<meta http-equiv="expires" content="0" />
+
+
+<link rel="icon" href="../icons/small/comment.png" type="image/png" />
+<title>XUM1541: Dateien zwischen Linux und C64 austauschen</title>
+<link rel="stylesheet" href="../css/default.css" type="text/css" />
+</head>
+
+<body>
+
+<header>
+<div id="logo">
+<h1><a href="../index.html">jan-grosser.de</a></h1>
+<p class="sub_title">cat /dev/brain/ideas &gt;&gt; blog</p>
+</div>
+<div id="search">
+<!-- <iframe src="http://duckduckgo.com/search.html?width=200&duck=yes&site=jan-grosser.de&prefill=Blog durchsuchen" style="overflow:hidden;margin:0;padding:0;width:333px;height:60px;" frameborder="0"></iframe> -->
+<script>
+  (function() {
+    var cx = '014860647342176285271:j9l73to_io0';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:search></gcse:search>
+</div>
+<div id="cleaner">&nbsp;</div>
+<hr />
+</header>
+
+<nav>
+<p>
+
+[<a href="../index.html">Home</a>]&nbsp;
+
+[<a href="http://www.twitter.com/zilpz">@zilpz</a>]&nbsp;
+
+[<a href="344_impressum.html">Impressum</a>]&nbsp;
+
+</p>
+
+
+
+</nav>
+
+
+<article>
+<h3><a href="385_xum1541_dateien_zwischen_linux.html">XUM1541: Dateien zwischen Linux und C64 austauschen</a></h3>
+
+<p class="art_info" ><img class="icon" src="../icons/small/date.png" alt="Erstellt" />&nbsp;31.01.2016&emsp;
+<img class="icon" src="../icons/small/folder.png" alt="Kategorien" />
+
+&nbsp;<a href="../cat/3_hardware/index.html">Hardware</a>
+
+<!-- &emsp;<img class="icon" src="../icons/small/comment_add.png" alt="Kommentieren" /> <a href="#">Kommentieren</a>&emsp;<img class="icon" src="../icons/small/email_to_friend.png" alt="Empfehlen" /> <a href="#">Weiterempfehlen</a>&emsp;<img class="icon" src="../icons/small/twitter_1.png" alt="Twittern" /> <a href="#">Twittern</a> -->
+</p>
+
+<!-- <hr /> -->
+
+<figure>
+<img src="../img/xum1541_01.jpg" alt="Fertiger XUM1541-Adapter" />
+<figcaption>Fertiger XUM1541-Adapter zum Anschluß eines Commodore Disketten-Laufwerks über USB</figcaption>
+</figure>
+
+<p>Es gibt verschiedene Möglichkeiten, Dateien zwischen einem über 30 Jahre alten Commodore 64 (C64) und einem 
+modernen Linux-Computer auszutauschen. Ich möchte in diesem Artikel eine besonders einfache und preisgünstige 
+Variante vorstellen, die ich selbst zuhause realisiert habe. Sie besteht darin, mittels eines preisgünstigen 
+Mikrocontroller-Boards einen Adapter zu bauen, um ein Commodre 5.25&quot; Disketten-Laufwerk über USB an einen 
+modernen Linux-Computer anzuschließen. Solche USB-basierten Adapter sind unter der Bezeichnung XUM1541 
+bekannt.</p>
+
+
+<p><b>Ein paar Vorbemerkungen</b></p>
+
+<p>Die Disketten-Laufwerke von Commodore, wie das legendäre <a 
+href="http://www.c64-wiki.de/index.php/1541">VC-1541</a>, besitzen eine serielle Schnittstelle (<a 
+href="http://www.c64-wiki.de/index.php/IEC">IEC</a>) über welche die Kommunikation mit dem Commodore Computer 
+erfolgt. Als Stecker wird üblicherweise eine 6-polige DIN-Buchse verwendet. Diese serielle Schnittstelle ist 
+allerdings nicht kompatibel mit der seriellen RS232-Schnittstelle, wie sie im PC-Bereich verbreitet war. 
+Über ein kleines, preisgünstiges Mikrocontroller-Board wird nun eine Kommunikation zwischen Computer via 
+USB und dem VC-1541 via IEC hergestellt.</p>
+
+<p>Beim Mikrocontroller-Board habe ich mich für ein <a 
+href="https://www.pjrc.com/store/teensy.html">Teensy der Firma PJRC</a> entschieden, den man im Internet für 
+etwa 20 Euro bekommt. Auf dem Teensy werkelt ein Atmel Mega32U4 mit einer Hardware-USB-Schnittstelle. An den 
+Ports des Mikrocontrollers werden nun die Signale vom IEC angelegt, so daß eine Kommunikation mit dem 
+Commodore Disketten-Laufwerk möglich ist. Auf dem Teensy wird dann noch eine Software eingespielt, die 
+unter der Bezeichnung <a 
+href="http://rdist.root.org/2009/01/21/introducing-xum1541-the-fast-c64-floppy-usb-adapter/">XUM1541</a> 
+bekannt ist.</p>
+
+<p>Auch auf dem Linux-Rechner müssen wir tätig werden und eine Tool-Sammlung installieren: <a 
+href="http://opencbm.trikaliotis.net/opencbm.html">OpenCBM</a>. Diese Tool-Sammlung stellt Befehle bereit, 
+über die das Disketten-Laufwerk angesprochen, Dateien in beide Richtungen kopiert oder Disketten formatiert 
+werden können.</p>
+
+<p><b>Die Hardware für den XUM1541</b></p>
+
+<p>Die benötigte Hardware für den XUM1541 ist sehr überschaubar:</p>
+
+<ul>
+<li>1x Teensy2.0 mit ATMEGA32U4-Controller</li>
+<li>1x 6-poligen DIN-Stecker (DIN 45322). Von denen habe ich eine Hand voll bei eBay gekauft.</li>
+<li>1x mindestend 6-adrige Leitung. Ich habe ein Cat5-Kabel genommen.</li>
+<li>1x Taster zum Resetten des Teensy</li>
+<li>1x Low Current LED (2 mA) inklusive Vorwiderstand (1500 Ohm passen z.B. für eine grüne LED)</li>
+<li>1x Gehäuse (z.B. <a 
+href="http://www.pollin.de/shop/dt/MTk3OTM1OTk-/Bauelemente_Bauteile/Gehaeuse/Kunststoffgehaeuse_0021_002_203.html">Pollin 
+460 208</a>)</li>
+</ul>
+
+<p>Die Anschlußbelegung am DIN-Stecker, welcher in das Disketten-Laufwerk kommt, kann man <a 
+href="http://www.c64-wiki.de/index.php/IEC#Anschlussbelegung">auf dieser Webseite</a> sehen. Wie die Signale 
+der IEC-Schnittstelle an die Pins des Teensy anzulegen sind, hängt nun stark davon ab, wo man sich die 
+Firmware für den Teensy herholt. Ich habe mir das git-Repository
+<a href="https://github.com/thomask77/teensy-xum1541">https://github.com/thomask77/teensy-xum1541</a> 
+gezogen. In diesem Repo ist sowohl die Firmware für den Teensy als auch der Quellcode für OpenCBM vorhanden. 
+Die Belegung am Teensy findet man <a 
+href="https://github.com/thomask77/teensy-xum1541/blob/master/xum1541/README.txt">in dieser Datei</a>. 
+Demnach müssen die Signale an den mit &quot;F&quot; bezeichneten Port (das hatte ich zunächst falsch gemacht, 
+und den Port D verwendet).</p>
+
+<p>Bei mir steckt der Mikrocontroller in einem kleinen Gehäuse. Deshalb habe ich ich das Gehäuse noch zwei 
+Löcher gemacht. Durch eines schaut eine Low Current LED, welche an Pin D6 angeschlossen ist. So erhält man ein 
+optisches Feedback über die Aktivität des Teensy. Im zweiten Loch steckt ein Taster zum Resetten des Teensy 
+(zieht den Reset-Pin beim Drücken gegen Masse). Diesen benötigt man nur für den Fall, daß der Teensy neu 
+programmiert werden soll. Die Verdrahtung ist nicht besonders kompliziert, wie folgendes Schematic zeigt:</p>
+
+<figure>
+<img src="../img/xum1541-schem.png" alt="Schematics für XUM1541" />
+<figcaption>Schematics für den XUM1541. Bild des DIN-Steckers unter der Lizenz GPL FDL, 
+<a href="http://c64-wiki.de/">C64-Wiki.de</a></figcaption>
+</figure>
+
+<p>Das Innenleben des Gehäuses sieht bei mir so aus:</p>
+
+<figure>
+<img src="../img/xum1541_02.jpg" alt="Innenansicht des XUM1541-Adapters" />
+<figcaption>Innenansicht des XUM1541-Adapters</figcaption>
+</figure>
+
+<p><b>Programmieren des Teensy</b></p>
+
+<p>Das Programmieren des Teensy unter Linux ist nicht besonders aufwändig. Ich bin nicht gerade ein Freund 
+dieser &quot;Klicki-Bunti-Programme&quot; und habe ich mich daher für ein schlankes Konsolen-Programm 
+entschieden: <a href="https://github.com/PaulStoffregen/teensy_loader_cli">teensy_loader_cli</a>. Die einzige 
+signifikante Abhängigkeit ist, daß man libusb-dev installiert haben sollte. Dann ist das Bauen des Programms 
+kein Problem mehr:</p>
+
+<p><div class="terminal">
+$ sudo mkdir /usr/src/teensy_loader_cli<br />
+$ sudo mkdir chmod -R 777 /usr/src/teensy_loader_cli<br />
+$ cd /usr/src
+$ git clone https://github.com/PaulStoffregen/teensy_loader_cli.git<br />
+$ cd teensy_loader_cli<br />
+$ make<br />
+$ sudo make install
+</div></p>
+
+<p>Damit man den Teensy auch als nicht-root-User programmieren kann, kopiert man sich von der Hersteller-Seite 
+die passende <a href="https://www.pjrc.com/teensy/49-teensy.rules">udev-Regeldatei</a> herunter und kopiert 
+diese in das Verzeichnis /etc/udev/rules.d/. Mit einem
+</p>
+
+<p><div class="terminal">
+$ sudo udevadm control --reload-rules
+</div></p>
+
+<p>werden die neuen Regeln aktiviert.</p>
+
+<p> Im Auslieferzustand befindet sich auf dem Teensy eine Blink-Demo. Die LED auf dem Board wechselt jede 
+Sekunde von an auf aus und umgekehrt. Um den Teensy programmieren zu können, muß man den Reset-Pin auf Masse 
+ziehen (entweder den oben angelöteten Taster verwenden oder den kleinen DIP-Schalter auf dem Board). Nun wird 
+der Teensy als USB-Gerät erkannt:
+</p>
+
+<p><div class="terminal">
+$ lsusb<br />
+...<br />
+Bus 001 Device 006: ID 16c0:0478 Van Ooijen Technische Informatica Teensy Halfkay Bootloader<br />
+...
+</div></p>
+
+<p>Nun können wir die <a 
+href="https://github.com/thomask77/teensy-xum1541/blob/master/xum1541/xum1541-TEENSY2-v07.hex">XUM-1541 
+Firmware</a> herunterladen, uns noch einmal versichern, daß wir die passende Pin-Belegung am Teensy verwenden 
+und dann die Firmware auf den Teensy schieben:
+</p>
+
+<p><div class="terminal">
+teensy_loader_cli --mcu=atmega32u4 xum1541-TEENSY2-v07.hex
+</div></p>
+
+<p>Damit sind wir mit dem Adapter fertig!</p>
+
+<p><b>Installieren von OpenCBM</b></p>
+
+<p>Die letzte Etappe ist, die Tool-Sammlung OpenCBM zu installieren, die uns unter Linux die Befehle zur 
+Verfügung stellt, mittels des XUM1541-Adapters nun endlich Dateien zwischen Linux-Computer und dem Commodore 
+Laufwerk hin- und herzukopieren.
+</p>
+
+<p><div class="terminal">
+$ sudo mkdir /usr/src/teensy-xum1541<br />
+$ sudo chmod -R 777 /usr/src/teensy-xum1541<br />
+$ cd /usr/src<br />
+$ git clone https://github.com/thomask77/teensy-xum1541.git<br />
+$ cd teensy-xum1541/opencbm<br />
+$ make -f LINUX/Makefile<br />
+$ sudo make -f LINUX/Makefile install install-plugin-xum1541
+</div></p>
+
+<p>Bei mir gab es noch Probleme, die Programme unter /usr/bin/ auszuführen, da die OpenCBM-Bibliotheken nicht 
+gefunden werden konnten. Wenn das Euch auch passiert, könnt Ihr unter modernen Linux-Systemen ldconfig 
+verwenden, um die Bibliotheken zu konfigurieren. Wie das funktioniert, ist leider von Linux zu Linux 
+verschieden ... einfach mal die Suchmaschine Eures Vertrauens konsultieren.
+</p>
+
+<p>Wenn der Teensy nun mit der XUM1541-Firmware läuft, meldet er sich beim System über USB mit einer anderen ID 
+als wenn wir die Reset-Taste gedrückt hatten und der Halfkay-Bootloader aktiv ist zum Programmieren (siehe 
+oben). Ergo, benötigen wir für den XUM1541 eine separate udev-Regeldatei, damit auch nicht-root-User in den 
+Genuß kommen können, den XUM1541 zu verwenden. Gott-sei-Dank findet sich im git-Repo eine passende Datei, die 
+wir ins System kopieren:
+</p>
+
+<p><div class="terminal">
+$ sudo cp /usr/src/teensy-xum1541/xum1541/udev/45-opencbm-usb.rules /etc/udev/rules.d/.
+</div></p>
+
+<p>Ggf. ist in dieser Datei noch Hand anzulegen, da zunächst nur Benutzer in der Gruppe "cdrom" Zugriff auf den 
+XUM1541-Adapter haben. Entweder man ändert die Gruppe (bei mir "usb") oder erweitert z.B. die Rechte auf 
+"MODE=0666". Anschließend machen wir die neuen udev-Regeln aktiv mit dem udevadm-Befehl von oben.
+</p>
+
+<p><b>Installation testen</b></p>
+
+<p>Jetzt haben wir alles beisammen und können einen ersten Test unternehmen. Falls Ihr das Commodore 
+Disketten-Laufwerk am XUM1541-Adapter betreibt, trennt es ggf. vorher vom C64.
+</p>
+
+<p><div class="terminal">
+# Diskettenlaufwerk erkennen:<br />
+$ cbmctrl detect<br />
+&nbsp;8: 1541C<br />
+# Inhalt der Diskette anzeigen:<br />
+$ cbmctrl dir 8<br />
+...
+</div></p>
+
+<p>Ein D64 Disketten-Image kann man wie folgt auf eine Diskette im Laufwerk kopieren (alle Daten auf der 
+Diskette werden hierbei überschrieben!):</p>
+
+<p><div class="terminal">
+$ d64copy -v datei.d64 8&nbsp;# Die 8 ist die Laufwerksnummer
+</div></p>
+
+<p>Das Kopieren von etwas mehr als 200 Blöcken dauert bei mir knapp eine Minute.</p>
+
+
+<p class="art_tags"><img class="icon" src="../icons/small/tag_red.png" alt="Tags" />
+
+&nbsp;<a href="../tag/17_linux/index.html">linux</a>,
+
+&nbsp;<a href="../tag/1119_c64/index.html">c64</a>,
+
+&nbsp;<a href="../tag/1120_retro/index.html">retro</a>,
+
+&nbsp;<a href="../tag/1121_1541/index.html">1541</a>,
+
+&nbsp;<a href="../tag/1122_diskette/index.html">diskette</a>
+
+</p>
+
+</article>
+
+
+
+
+
+<footer>
+<hr />
+<p><a rel="license" href="http://creativecommons.org/licenses/by/2.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/2.0/88x31.png" /></a><br /> If not explicitly specified otherwise, this work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution 2.0 Generic License</a></p>
+<p>Free of PHP or JavaScript. Purely made with OpenSource Software.</p>
+</footer>
+
+</body>
+
+</html>

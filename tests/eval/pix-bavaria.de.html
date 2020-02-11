@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="generator" content="Piwigo (aka PWG), see piwigo.org">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Home">
+
+    <title>pix-bavaria</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./local/favicon.ico">
+    <link rel="icon" sizes="192x192" href="themes/bootstrapdefault/img/logo.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="themes/bootstrapdefault/img/logo.png">
+    <link rel="start" title="Home" href="/" >
+    <link rel="search" title="Search" href="search.php">
+    <link rel="canonical" href="/">
+
+<link rel="stylesheet" type="text/css" href="_data/combined/3fho3w.css">
+    <meta name="keywords" lang="en" content="Europe, Germany, Bavaria, Upper Bavaria, photo, photos, picture, pictures, image, images, shot, shots, exposure, exposures, panorama, panoramic, landscape, landscapes, spring, summer, autumn, advent, christmas, xmas, x-mas, winter, snow, journey, travel, holiday, holidays, vacation">
+<meta name="description" lang="en" content="Web gallery with photos from Bavaria and its neighbour regions.">
+<meta name="keywords" lang="de" content="Europa, Deutschland, Bayern, Oberbayern, Foto, Fotos, Bild, Bilder, Aufnahme, Aufnahmen, Panorama, Panoramas, Landschaft, Landschaften, Frühjahr, Fruehjahr, Sommer, Herbst, Advent, Weihnacht, Weihnachten, Weihnachtszeit, Winter, Schnee, Reise, Urlaub">
+<meta name="description" lang="de" content="Web-Galerie mit Fotos aus Bayern und benachbarten Regionen.">
+<meta name="keywords" lang="es" content="Europa, Alemania, Baviera, Alta Baviera, foto, fotos, imagen, imágenes, grabación, fotografía, panorámica, panorama, paisaje, primavera, verano, otoño, Adviento, Navidad, invierno, nieve, viaje, vacaciones">
+<meta name="description" lang="es" content="Galería web de fotos de Baviera y las regiones vecinas.">
+<meta name="keywords" lang="fr" content="Europe, Allemagne, Bavière, Haute-Bavière, photo, photos, image, photos, enregistrement, plans, panoramas, paysages, printemps, printemps, été, automne, avènement, Noël, Noël, Noël, hiver, neige, voyage, vacances">
+<meta name="description" lang="fr" content="Galerie-web avec des photos de la Bavière et des régions voisines.">
+<meta name="keywords" lang="ru" content="Европа, Германия, Бавария, Верхняя Бавария, фото, фото, фото, фотографии, запись, фотографий, панорамная, панорама, пейзаж, пейзаж, весна, лето, осень, Адвент, Рождество, зима, снег, путешествие, отдых">
+<meta name="description" lang="ru" content="Веб-галерея фотографий из Баварии и соседних регионов.">
+<meta name="keywords" lang="ar" content="أوروبا، إرتكاس، إلى العراء، الأفقي، الاناس لا، البؤرة الانتقائية، البنايات، البنايات، البناية، البنية بتصميم، التصوير، تساقط الثلج، ، رحلة، السفر، عطلة، العطل، عطلة">
+<meta name="description" lang="ar" content="معرض الويب مع الصور من بافاريا والمناطق المجاورة لها.">
+<meta name="keywords" lang="hi" content="यूरोप, जर्मनी, बवेरिया, अपर बवेरिया, फ़ोटो, फ़ोटोज़, तस्‍वीर, तस्‍वीरें, छवि, छवियाँ, शॉट, शॉट्स, एक्‍सपोज़र, एक्सपोज़र्स, पैनोरामा, पैनोरामिक, लैंडस्‍केप, लैंडस्‍केप्‍स, वसंत, ग्रीष्‍म, शिशिर, एडवेंट, क्रिस्‍मस, बड़ा दिन, सर्दियाँ, बर्फ़, यात्रा, घूमना, छुट्टी, छुट्टियाँ, अवकाश">
+<meta name="description" lang="hi" content="बवेरिया और पड़ोसी क्षेत्रों की तस्‍वीरों की वेब गैलरी.">
+<meta name="keywords" lang="zh" content="欧洲方面，德国巴伐利亚上巴伐利亚照片，照片，图片，照片，录音，摄影，全景，全景，景观，风景，春，夏，秋，问世，圣诞，冬天，雪，旅游，度假">
+<meta name="description" lang="zh" content="来自巴伐利亚州和邻近地区的照片网上画廊。">
+<style type="text/css">
+.thumbnailCategories .gdthumb { margin: 5px 5px 5px 5px !important; }</style>
+</head>
+
+<body id="theCategoryPage">
+    <div id="the_page">
+        <!-- Bootstrap navbar, moved to the header as variables are missing in menubar.tpl, actual menus remain in menubar.tpl -->
+        <nav class="navbar navbar-default navbar-main" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menubar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">pix-bavaria</a>
+                </div>
+                <div class="collapse navbar-collapse navbar-right" id="navbar-menubar">
+                <form class="navbar-form" role="search" action="qsearch.php" method="get" id="quicksearch" onsubmit="return this.q.value!='' && this.q.value!=qsearch_prompt;">
+                    <div class="form-group">
+                        <input type="text" name="q" id="qsearchInput" class="form-control" placeholder="Search" />
+                    </div>
+                </form>
+            <!-- Start of menubar.tpl -->
+            <ul class="nav navbar-nav">
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Albums <span class="caret"></span></a>
+    <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
+        <li >
+            <a href="index/category/square">medium format
+                <span class="badge" title="301 photos in 6 sub-albums">301</span>
+            </a>
+        </li>
+        <li >
+            <a href="index/category/panorama">panorama
+                <span class="badge" title="52 photos in 6 sub-albums">52</span>
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li><a href="#">353 photos</a></li>
+    </ul>
+</li>
+
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Specials <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+		<li><a href="index/recent_pics" title="display most recent photos">Recent photos</a></li>
+		<li><a href="index/most_visited" title="display most visited photos">Most visited</a></li>
+    </ul>
+</li>
+
+            </ul>
+            <!-- End of menubar.tpl -->
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="jumbotron">
+            <div class="container">
+                <div id="theHeader"><style type="text/css">
+  /* dimensions */
+  #jumbotronCarousel {
+    height: 100%;
+  }
+  #jumbotronCarousel .carousel-inner,
+  .carousel-fade .carousel-inner .item {
+    height: 100%;
+  }
+  #jumbotronCarousel .carousel-inner .item h1 {
+    margin-top: 0px;
+  }
+  #jumbotronCarousel .carousel-control {
+    width: 5%;
+  }
+  .jumbotron {
+    padding: 0 0 10px;
+  }
+  #theHeader {
+    height: 100%;
+  }
+</style>
+<div id="jumbotronCarousel" class="carousel slide carousel-fade" data-ride="carousel" data-interval="2500">
+  <div class="carousel-inner">
+    <div class="active item">
+      <h1>Boarische Buidl</h1>
+    </div>
+    <div class="item">
+      <h1>Bilder aus Bayern</h1>
+    </div>
+    <div class="item">
+      <h1>Bavarian pictures</h1>
+    </div>
+    <div class="item">
+      <h1>Imágenes de Baviera</h1>
+    </div>
+    <div class="item">
+      <h1>Photos de Bavière</h1>
+    </div>
+    <div class="item">
+      <h1>Изображения из Баварии</h1>
+    </div>
+    <div class="item">
+      <h1>صور من ولاية بايرن</h1>
+    </div>
+    <div class="item">
+      <h1>बवेरियन तस्‍वीरें</h1>
+    </div>
+    <div class="item">
+      <h1>巴伐利亚照片</h1>
+    </div>
+  </div>
+</div></div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- End of header.tpl -->
+
+<!-- Start of index.tpl -->
+
+
+
+<div id="navmenu-contextual" class="navmenu navmenu-default navmenu-fixed-right offcanvas" role="navigation"> <ul class="nav navmenu-nav"></ul> </div> <div class="nav-wrapper"> <nav class="navbar navbar-default navbar-contextual" role="navigation"> <div class="container"> <div class="navbar-header"> <div class="navbar-brand"><a href="/" title="Home"><i class="fa fa-home" aria-hidden="true"></i></a >            </div>
+        </div>
+        <div class="navbar-right navbar-collapse collapse" id="secondary-navbar">
+            <ul class="nav navbar-nav">
+<li id="languageSwitch" class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="pwg-icon langflag-en_UK">&nbsp;</span><span class="pwg-button-text">Language</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
+        <li>
+            <a href="index/categories?lang=de_DE">
+                <span class="pwg-icon langflag-de_DE">&nbsp;</span><span class="langflag-text-ltf">Deutsch </span>
+            </a>
+        <li>
+        <li class="active">
+            <a href="index/categories?lang=en_UK">
+                <span class="pwg-icon langflag-en_UK">&nbsp;</span><span class="langflag-text-ltf">English </span>
+            </a>
+        <li>
+        <li>
+            <a href="index/categories?lang=es_ES">
+                <span class="pwg-icon langflag-es_ES">&nbsp;</span><span class="langflag-text-ltf">Español </span>
+            </a>
+        <li>
+        <li>
+            <a href="index/categories?lang=fr_FR">
+                <span class="pwg-icon langflag-fr_FR">&nbsp;</span><span class="langflag-text-ltf">Français </span>
+            </a>
+        <li>
+        <li>
+            <a href="index/categories?lang=ru_RU">
+                <span class="pwg-icon langflag-ru_RU">&nbsp;</span><span class="langflag-text-ltf">Русский </span>
+            </a>
+        <li>
+        <li>
+            <a href="index/categories?lang=ar_SA">
+                <span class="pwg-icon langflag-ar_SA">&nbsp;</span><span class="langflag-text-ltf">العربية </span>
+            </a>
+        <li>
+        <li>
+            <a href="index/categories?lang=hi_IN">
+                <span class="pwg-icon langflag-hi_IN">&nbsp;</span><span class="langflag-text-ltf">हिंदी</span>
+            </a>
+        <li>
+        <li>
+            <a href="index/categories?lang=zh_CN">
+                <span class="pwg-icon langflag-zh_CN">&nbsp;</span><span class="langflag-text-ltf">简体中文 </span>
+            </a>
+        <li>
+    </ul>
+</li>
+
+
+
+
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+</div>
+
+
+
+
+<a name="content"></a>
+<div id="content-spacer" class="container">
+
+
+
+    <div id="content" class="row content-grid">
+
+    <!-- Start of categories -->
+<div class="loader"><img src="themes/default/images/ajax_loader.gif" alt=""></div>
+<ul class="thumbnailCategories thumbnails ">
+
+
+  <li class="gdthumb resize album">
+    <span class="thumbLegend bottom_static">
+      <span class="thumbName">
+        <span class="thumbTitle">medium format
+        </span>
+      </span>
+    </span>
+    <a href="index/category/square">
+      <img class="category thumbnail" src="_data/i/galleries/mf/winter/140-04-D-cu_s9999x299.jpg" alt="medium format" 
+        title="medium format" width="299" height="299">
+    </a>
+  </li>
+
+  <li class="gdthumb resize album">
+    <span class="thumbLegend bottom_static">
+      <span class="thumbName">
+        <span class="thumbTitle">panorama
+        </span>
+      </span>
+    </span>
+    <a href="index/category/panorama">
+      <img class="category thumbnail" src="_data/i/upload/2017/04/18/20170418154814-57d62861-cu_s9999x299.jpg" alt="panorama" 
+        title="panorama" width="946" height="299">
+    </a>
+  </li>
+
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- End of categories -->
+
+    </div>
+</div>
+
+
+
+<div class="container">
+</div>
+
+<div id="stuffs_block_1" class="container pwgstuffs-container">
+  <div class="row">
+<div class="personal_block">
+
+<div class="row">
+  <div class="col-md-4">
+    <p><b>Welcome</b></p>
+    <p>to Ingrid and Guido Haase's web gallery!</p>
+    <p>By our photos we would like to show you in which a fascinating region of Germany we are living. 
+       We also take a look at our neighbours Austria, South Tyrol and Switzerland.</p>
+    <p>Enjoy your visit and have a nice stay while browsing our „Bavarian picture book”.</p>
+    <p></br></p>
+  </div>
+  <div class="col-md-4">
+		<p><b>Terms of use</b></p>
+		<p>All photos are available in sizes up to 8,000x8,000 pixel (square) respectively 14,000x5,200 pixel (panorama). 
+                   The color depth is 48 bits.</p>
+		<p>In the reduced size shown here, they can be used according to the license described below.</p>
+		<p>If you need the higher resolution pictures, please <a href="mailto:info@pix-bavaria.com?subject=www.pix-bavaria.com">contact</a> us beforehand.</p>
+		<p></br></p>
+	</div>
+	<div class="col-md-4">
+		<p><b>Copyright</b></p>
+		<p>All photos are published under <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/de/deed.en" style="text-decoration:none" target="_blank"> Creative Commons License 3.0 Germany (CC BY-NC-ND 3.0 DE)</a></p>
+		<ul>
+			<li>Attribution</li>
+			<li>Noncommercial</li>
+			<li>No Derivative Works</li>
+		</ul>
+		<p>Any other kind-of-use requires our prior written <a href="mailto:info@pix-bavaria.com?subject=www.pix-bavaria.com">Agreement</a>.</p>
+	</div>
+</div>
+
+</div>
+
+  </div>
+</div>
+<!-- End of index.tpl -->
+        <!-- Start of footer.tpl -->
+        <div class="copyright container">
+            <div class="text-center">
+                
+                Powered by	<a href="http://piwigo.org" class="Piwigo">Piwigo</a>
+
+
+<span id="persofooter">
+♦ Copyright © <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/de/deed.en" style="text-decoration:none" target="_blank">CC BY-NC-ND 3.0 DE</a> ♦ <a href="mailto:info@pix-bavaria.com?subject=www.pix-bavaria.com">Contact</a> to pix-bavaria
+</span>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" src="_data/combined/nqowb0.js"></script>
+<script type="text/javascript">//<![CDATA[
+
+$(function() {
+  var big_thumb = null;
+  GDThumb.setup('resize', 299, 10, true, big_thumb, 1);
+});
+$(document).ready(function() {var stuffAboveContent = $('.navbar-default').next('.pwgstuffs-container');$(stuffAboveContent).insertBefore('#content-spacer');});
+<!-- Protected images by the "rightClick" plugin (version ): rightClick/template/rightClick_protect.tpl -->
+jQuery(document).ready(function() {
+  jQuery(document).on('contextmenu', '#theImage img,#theImage area,#akPicture,#colorbox,#sb-container,#prevnext,#theMainImage,#theImgHigh,.thumbnailCategory img,.thumbnails img,#thumbnails img,#myHomePage img,.fotorama__img,#theCategoryPage,#thePicturePage',  function() {
+    return false;
+  });
+	
+  jQuery(document).on('dragstart', '#theImage img,#theImage area,#akPicture,#colorbox,#sb-container,#prevnext,#theMainImage,#theImgHigh,.thumbnailCategory img,.thumbnails img,#thumbnails img,#myHomePage img,.fotorama__img,#theCategoryPage,#thePicturePage',  function() {
+    return false;
+  });
+});
+$(document).ready(function() {$('#languageSwitch').appendTo('#navbar-menubar>ul.nav');});
+if ($('.jumbotron').length > 0) {var $affix_height = $('.navbar-main').height() + $('.jumbotron').outerHeight();$('.navbar-contextual').affix({ offset: {top: $affix_height } });} else {$('.navbar-contextual').affix({ offset: {top: $('.navbar-main').height()} });}$('.navmenu').on('show.bs.offcanvas', function() {if ($('.navbar-contextual ul.navmenu-nav').contents().length === 0) {$($('.navbar-contextual ul.navbar-nav').contents()).appendTo('ul.navmenu-nav');$('ul.navmenu-nav').find('.dropdown-menu').addClass('dropdown-menu-right');$('ul.navmenu-nav').find('.dropdown-toggle').attr('aria-haspopup', 'true');}$('#the_page').on('touchmove.bs', function(e) {e.preventDefault();});if ($('.navbar-contextual.affix-top').length > 0 && $('.jumbotron').length > 0) {$('.navmenu').css('top', $('.navbar-main').height() + $('.jumbotron').outerHeight() - $(document).scrollTop());}$('.navbar-main .collapse').collapse('hide');});$('.navmenu').on('hidden.bs.offcanvas', function() {if ($('ul.navmenu-nav').contents().length > 0) {$('ul.navmenu-nav').find('.dropdown-menu-right').removeClass('dropdown-menu-right');$('ul.navmenu-nav').find('.dropdown-toggle').removeAttr('aria-haspopup');$($('ul.navmenu-nav').contents()).appendTo('.navbar-contextual ul.navbar-nav');}$('#the_page').off('touchmove.bs');});$('.navbar-contextual').on('affix.bs.affix', function() {$('.navmenu').css('top', '');});$('.navbar-contextual').on('affix-top.bs.affix', function() {var nav_top_offset = 0;if ($('.navbar-main')) {nav_top_offset = $('.navbar-main').height();}if ($('.jumbotron').length > 0) {nav_top_offset = nav_top_offset + $('.jumbotron').outerHeight();}$('.navmenu').css('top', nav_top_offset);});
+$(document).ready(function() {$(window).load(function(){$('#content .col-inner').equalHeights()})});var resizeTimer;$(window).on('resize', function() {clearTimeout(resizeTimer);resizeTimer = setTimeout(function() {if ($(window).innerWidth() < 768) {$('.col-inner').removeAttr('style');} else {$('.col-inner').equalHeights();}}, 250);});
+//]]></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Copy &amp; paste from tmux to system clipboard | FlowFX</title>
+<link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="alternate" type="application/rss+xml" title="RSS" hreflang="en" href="../../rss.xml">
+<link rel="canonical" href="https://flowfx.de/blog/copy-paste-from-tmux-to-system-clipboard/">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><link href="https://fonts.googleapis.com/css?family=Exo" rel="stylesheet" type="text/css">
+<link rel="apple-touch-icon" sizes="57x57" href="../../apple-touch-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="../../apple-touch-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../../apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="../../apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../../apple-touch-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="../../apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="../../apple-touch-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="../../apple-touch-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="../../favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="../../favicon-194x194.png" sizes="194x194">
+<link rel="icon" type="image/png" href="../../favicon-96x96.png" sizes="96x96">
+<link rel="icon" type="image/png" href="../../android-chrome-192x192.png" sizes="192x192">
+<link rel="icon" type="image/png" href="../../favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="../../manifest.json">
+<meta name="msapplication-TileColor" content="#d9230f">
+<meta name="msapplication-TileImage" content="/mstile-144x144.png">
+<meta name="theme-color" content="#fcfcfc">
+<meta property="og:image" content="https://flowfx.de/images/flowfx-200.jpg">
+<meta name="author" content="Florian Posdziech">
+<link rel="prev" href="../auf-gehts-freiburg-kampfen-und-siegen/" title="Auf geht's Freiburg, kämpfen und siegen!" type="text/html">
+<link rel="next" href="../how-to-get-rid-of-github-notifications/" title="How to get rid of GitHub notifications" type="text/html">
+<meta property="og:site_name" content="FlowFX">
+<meta property="og:title" content="Copy &amp; paste from tmux to system clipboard">
+<meta property="og:url" content="https://flowfx.de/blog/copy-paste-from-tmux-to-system-clipboard/">
+<meta property="og:description" content="For the first time in many years I am using a Linux machine for my work. In general I am extremely pleased with the system I've set up. But of course, there are things that don't &quot;just work&quot;.
+Like... ">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-01-16T18:20:33+01:00">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="tmux">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Menubar -->
+
+<nav class="navbar navbar-inverse navbar-static-top"><div class="container">
+<!-- This keeps the margins nice -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="https://flowfx.de/">
+
+                <span id="blog-title">FlowFX</span>
+            </a>
+        </div>
+<!-- /.navbar-header -->
+        <div class="collapse navbar-collapse" id="bs-navbar" aria-expanded="false">
+            <ul class="nav navbar-nav">
+<li>
+<a href="../../">Blog</a>
+                </li>
+<li>
+<a href="../../about/">About</a>
+                </li>
+<li>
+<a href="../../now/">Now</a>
+                </li>
+<li>
+<a href="../../contact/">Contact</a>
+
+                
+            </li>
+</ul>
+<ul class="nav navbar-nav navbar-right"></ul>
+</div>
+<!-- /.navbar-collapse -->
+    </div>
+<!-- /.container -->
+</nav><!-- End of Menubar --><div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        <div class="row">
+            
+            
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Copy &amp; paste from tmux to system clipboard</a></h1>
+
+        <div class="metadata">
+            <!-- <p class="byline author vcard"><span class="byline-name fn">
+                    Florian Posdziech
+            </span></p> -->
+            <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2020-01-16T18:20:33+01:00" itemprop="datePublished" title="2020-01-16">2020-01-16</time></a></p>
+            
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<p>For the first time in many years I am using a Linux machine for my work. In general I am extremely pleased with the system I've set up. But of course, there are things that don't "just work".</p>
+<p>Like... copy selected text from a tmux pane to the clipboard. </p>
+<p>As usual, <a href="https://unix.stackexchange.com/a/349020">StackOverflow</a> knows the answer. In short:</p>
+<pre class="code literal-block"><span></span><span class="c1"># .tmux.conf</span>
+set-option -g mouse on
+set-option -s set-clipboard off
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel <span class="s2">"xclip -se c -i"</span>
+</pre>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../../categories/linux/" rel="tag">linux</a></li>
+            <li><a class="tag p-category" href="../../categories/tmux/" rel="tag">tmux</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="../auf-gehts-freiburg-kampfen-und-siegen/" rel="prev" title="Auf geht's Freiburg, kämpfen und siegen!">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="../how-to-get-rid-of-github-notifications/" rel="next" title="How to get rid of GitHub notifications">Next post</a>
+            </li>
+        </ul></nav></aside></article>
+</div>
+        <!--End of body content-->
+
+        <footer id="footer"><a href="../../archive.html">Archive</a>
+– <a href="../../rss.xml">RSS</a>
+– <a href="../../contact/#impressum">Impressum</a> 
+– <a href="../../datenschutz">Datenschutz</a> 
+– 2009-2020 by <a href="../../contact/">Florian Posdziech</a> 
+– Powered by <a href="https://getnikola.com" rel="nofollow">Nikola</a><br><br>
+
+All content is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>,
+unless stated otherwise. Embedded YouTube videos are excempt for obvious reasons.
+<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png"></a>
+
+
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../../assets/js/all-nocdn.js"></script><!-- fancy dates --><script>
+    moment.locale("en");
+    fancydates(0, "YYYY-MM-DD HH:mm");
+    </script><!-- end fancy dates --><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

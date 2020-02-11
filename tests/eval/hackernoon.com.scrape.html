@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="https://hackernoon.com/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="canonical" href="https://hackernoon.com/how-to-scrape-google-with-python-bo7d2tal" />
+    
+
+    <title>How To Scrape Google With Python - By linksc</title>
+    <!-- <link rel="stylesheet" href="https://firebasestorage.googleapis.com/v0/b/hackernoon/o/story.css?alt=media&token=8adf3bd2-28b6-4122-89bf-f9f52a10294d" /> -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev"
+          crossorigin="anonymous">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@hackernoon" />
+    
+    <meta property="og:url" content="https://hackernoon.com/how-to-scrape-google-with-python-bo7d2tal" />
+    <meta property="og:title" content="How To Scrape Google With Python" />
+    <meta property="og:description" content="Ever since Google Web Search API deprecation in 2011, I've been searching for an alternative. I need a way to get links from Google search into my Python script. So I made my own, and here is a quick guide on scraping Google searches with requests and Beautiful Soup." />
+    
+      
+      <meta property="og:image" content="https://cdn.filestackcontent.com/88DuFCcSsCupshCcex2I" />
+    
+
+    
+    <link href="/story.css" rel="stylesheet">
+    
+    <link href="/base.css" rel="stylesheet">
+    <link href="/subscribe-form.css" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+    <script src="/content.js"></script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WGQVQ44');</script>
+    <!-- End Google Tag Manager -->
+  </head>
+
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGQVQ44"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div id="root">
+      <header id="header">
+        <nav>
+          <a href="https://hackernoon.com" class="logo"><img src="https://hackernoon.com/Devimg/logo-hn.png"/><img src="https://hackernoon.com/Devimg/hn-logo.png" class="mobile"/></a>
+          <div class="desktop-nav">
+            <div class="spacer"></div>
+            <div class="search-container" v-bind:class="{ active: searchFocus }">
+              <input ref="search" class="search-input" v-model="search" @keyup.enter="submitSearch" @blur="searchFocus=false" />
+              <i class="fas fa-search" @mousedown.stop.prevent="submitSearch"></i>
+            </div>
+            <a href="https://twitter.com/hackernoon" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.facebook.com/hackernoon" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.youtube.com/hackernoon" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="#subscribe-embed"><button class="outline">Subscribe</button></a>
+            <span v-cloak v-if="user && userLoaded">
+              <a :href="profileLink"><img :src="profileImage" class="profile" /></a>
+            </span>
+            <span v-cloak v-if="!user && userLoaded">
+              <a :href="loginLink"><button class="outline">Get Started</button></a>
+            </span>
+
+            <div
+              class="darkmode"
+              @click="darkMode = !darkMode"
+              :class="darkMode ? 'dark' : 'light'"
+            >
+              <i class="light fas fa-sun"></i>
+              <i class="dark fas fa-moon"></i>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <div id="top">
+        <button class="mobile-menu-toggle" :class="{ 'mobile-open': mobileMenuOpen }" @click="toggleMobileMenu"><i class="fas fa-bars"></i></button>
+        <div class="subnav" :class="{ 'mobile-open': mobileMenuOpen }" @mouseleave="!mobileMenuOpen && closeNav()" v-cloak v-if="nav">
+          <div class="mobile-back" :class="{ 'mobile-open': (mobileMenuOpen && activeNav !== '') }">
+            <button @click="activeNav = ''"><i class="fas fa-arrow-left"></i></button>
+          </div>
+          <a v-for="category in nav" :href="category.href"
+             :class="{ sponsor: category.sponsor }"
+             @mouseover="navHover(category, $event)"
+             @click="navClick(category, $event)">
+            {{category.text}}
+          </a>
+
+          <div class="dropdown" v-bind:class="{ active: activeNav!=='' }" @mouseover="closeNavReset">
+            <div class="category" v-for="category in nav" :key="category.name">
+              <div class="section" v-for="(section, idx) in category.sections" :key="idx" :class="{ active: activeNav === category.name }">
+                <div class="heading">
+                  <div class="line"></div>
+                  <a :href="section.heading.href">{{section.heading.text}}</a>
+                </div>
+
+                <ul class="links">
+                  <li v-for="(link, linkIdx) in section.links" :key="linkIdx">
+                    <a :href="link.href">{{link.text}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ads">
+          <a v-cloak v-if="ad" class="sponsor" @click="recordAdClick" :href="ad.link" target="_blank">
+            <img class="image" :src="ad.image" :alt="ad.companyName" />
+            {{ad.text}}
+          </a>
+        </div>
+      </div>
+
+      <div class="story story-container" :class="darkMode ? 'dark' : 'light'">
+        <div class="author">
+          <a href="/@zcnBZRCiyXXs4R"><div class="avatar" style="background-image: url('https://hackernoon.com/avatars/rA3osORmrxgApuCIzDhWsefaZG92.png')"></div></a>
+          <div class="name">
+            <a href="/@zcnBZRCiyXXs4R"><strong>linksc</strong></a>
+            <p>Creating Search Engine API</p>
+            <div class="links">
+              
+              
+              
+              
+            </div>
+            <div class="subscribe">
+              <button><i class="far fa-envelope"></i> Message</button>
+            </div>
+          </div>
+        </div>
+        <h1 class="title">How To Scrape Google With Python</h1>
+        <div class="story-meta">
+          <div class="date">
+            
+              December 29th 2019
+            
+          </div>
+          <div class="share">
+            
+            
+            
+            
+            <a class="twitter" target="_blank" rel="noopener noreferrer" href="https://twitter.com/intent/tweet?text=How%20To%20Scrape%20Google%20With%20Python&url=https%3A%2F%2Fhackernoon.com%2Fhow-to-scrape-google-with-python-bo7d2tal&hashtags=googlesearch,webscraping,python"><i class="fab fa-twitter"></i> Tweet This</a>
+          </div>
+        </div>
+
+        <div class="content" v-pre>
+          
+            
+            <img src="https://cdn.filestackcontent.com/88DuFCcSsCupshCcex2I" />
+          
+          
+          <div class="paragraph">Ever since Google Web Search API deprecation in 2011, I&#x27;ve been searching for an alternative. I need a way to get links from Google search into my Python script. So I made my own, and here is a quick guide on scraping Google searches with requests and Beautiful Soup.</div><div class="paragraph">First, let&#x27;s install the requirements. Save the following into a text file name <em>requirements.txt</em></div><div class="code-container"><pre style="display:block;overflow-x:auto;background:black;color:#eaeaea;padding:30px"><code>requests
+bs4</code></pre></div><div class="paragraph">Then run the <em>pip install -r requirements.txt </em>to install the requirements. Then import it into your script.</div><div class="code-container"><pre style="display:block;overflow-x:auto;background:black;color:#eaeaea;padding:30px"><code><span style="color:#c397d8">import</span> urllib
+<span style="color:#c397d8">import</span> requests
+<span style="color:#c397d8">from</span> bs4 <span style="color:#c397d8">import</span> BeautifulSoup</code></pre></div><div class="paragraph">To perform a search, Google expects the query to be in the parameters of the URL. Additionally, all spaces must be replace with a <pre><code>+</code></pre>. To build the URL, we properly format the query and put it into the q parameter.</div><div class="code-container"><pre style="display:block;overflow-x:auto;background:black;color:#eaeaea;padding:30px"><code>query = <span style="color:#b9ca4a">&quot;hackernoon How To Scrape Google With Python&quot;</span>
+query = query.replace(<span style="color:#b9ca4a">&#x27; &#x27;</span>, <span style="color:#b9ca4a">&#x27;+&#x27;</span>)
+URL = <span style="color:#b9ca4a">f&quot;https://google.com/search?q=<span class="hljs-subst">{query}</span>&quot;</span></code></pre></div><div class="paragraph">Google returns different search results for <em>mobile</em> vs. <em>desktop</em>. So depending on the use case, we need to specify appropriate user-agent.</div><div class="code-container"><pre style="display:block;overflow-x:auto;background:black;color:#eaeaea;padding:30px"><code><span style="color:#969896"># desktop user-agent</span>
+USER_AGENT = <span style="color:#b9ca4a">&quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0&quot;</span>
+<span style="color:#969896"># mobile user-agent</span>
+MOBILE_USER_AGENT = <span style="color:#b9ca4a">&quot;Mozilla/5.0 (Linux; Android 7.0; SM-G930V Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.125 Mobile Safari/537.36&quot;</span>
+</code></pre></div><div class="paragraph">Making the request is easy. However requests expects the user-agent to be in the headers. To properly set the headers, we must pass in a dictionary for the headers.</div><div class="code-container"><pre style="display:block;overflow-x:auto;background:black;color:#eaeaea;padding:30px"><code>headers = {<span style="color:#b9ca4a">&quot;user-agent&quot;</span> : MOBILE_USER_AGENT}
+resp = requests.get(URL, headers=headers)</code></pre></div><div class="paragraph">Now we need to check if the request was successfully. The easiest way is to check the status code. If it returns a <pre><code>200</code></pre>, then it was successfully. Then we need to put it into Beautiful Soup to parse the content.</div><div class="code-container"><pre style="display:block;overflow-x:auto;background:black;color:#eaeaea;padding:30px"><code><span style="color:#c397d8">if</span> resp.status_code == <span style="color:#e78c45">200</span>:
+    soup = BeautifulSoup(resp.content, <span style="color:#b9ca4a">&quot;html.parser&quot;</span>)</code></pre></div><div class="paragraph">Next is parsing the data and extracting all anchor links from the page. That is easy with Beautiful Soup. As we iterate through the anchors, we need to store the results into a list.</div><div class="code-container"><pre style="display:block;overflow-x:auto;background:black;color:#eaeaea;padding:30px"><code>results = []
+<span style="color:#c397d8">for</span> g <span style="color:#c397d8">in</span> soup.find_all(<span style="color:#b9ca4a">&#x27;div&#x27;</span>, class_=<span style="color:#b9ca4a">&#x27;r&#x27;</span>):
+    anchors = g.find_all(<span style="color:#b9ca4a">&#x27;a&#x27;</span>)
+    <span style="color:#c397d8">if</span> anchors:
+        link = anchors[<span style="color:#e78c45">0</span>][<span style="color:#b9ca4a">&#x27;href&#x27;</span>]
+        title = g.find(<span style="color:#b9ca4a">&#x27;h3&#x27;</span>).text
+        item = {
+            <span style="color:#b9ca4a">&quot;title&quot;</span>: title,
+            <span style="color:#b9ca4a">&quot;link&quot;</span>: link
+        }
+        results.append(item)
+print(results)</code></pre></div><div class="paragraph">That is it. This script is pretty simple and error-prone. But should get you started with your own Google Scraper. You can clone or download the entire script over at the <a href="https://github.com/getlinksc/scrape_google">git repo</a>.</div><div class="paragraph"></div><div class="image-container"><img src="https://hackernoon.com/photos/rA3osORmrxgApuCIzDhWsefaZG92-n662t50" alt=""/></div><div class="paragraph">There are also some caveats with scraping Google. If you perform too many requests over a short period, Google will start to throw captchas at you. This is annoying and will limit how much or how fast you scrape. </div><div class="paragraph">That is why we created a <a href="https://rapidapi.com/apigeek/api/google-search3">RapidAPI Google Search API </a>which lets you perform unlimited searches without worrying about captchas.</div>
+          
+          <h2 class="tags-header">Tags</h2>
+          <div class="archive-tags">
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/google-search">Google Search</a>
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/web-scraping">Web Scraping</a>
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/python">Python</a>
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/search-engine">Search Engine</a>
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/datascraping">Datascraping</a>
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/data-scraping">Data Scraping</a>
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/data-science">Data Science</a>
+            
+            
+            
+            <a class="tag" href="https://hackernoon.com/tagged/data">Data</a>
+            
+          </div>
+          
+
+          
+          <div class="divider-title comments">
+            <div class="divider"></div>
+            <h1 class="more-heading">Comments</h1>
+            <div class="divider"></div>
+          </div>
+          <div class="comments">
+            
+            
+            
+          </div>
+          
+
+          
+          <div class="twitter-discussion">
+            <a target="_blank" href="https://community.hackernoon.com/t/23102">Continue the Discussion <i class="fas fa-comments-alt"></i></a>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="more">
+        
+
+        <div id="subscribe-embed">
+          <!-- Begin Mailchimp Signup Form -->
+          <div id="mc_embed_signup">
+              <img class="signup-image" src="https://ucarecdn.com/57662ddc-da7c-407b-afcb-cb45184b2705/" alt="" />
+            <form action="https://hackernoon.us19.list-manage.com/subscribe/post?u=b48b0ec2173fecf2586c00e80&amp;id=fa796741e6" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+              <div class="subscribe-header">
+                <h2>Hackernoon Newsletter curates great stories by real tech professionals</h2>
+                  <p>Get solid gold sent to your inbox. Every week!</p>
+                  </div>
+            <div class="mc-field-group">
+            </label>
+              <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Email Address *">
+            </div>
+            <div class="fields-group">
+              <div class="mc-field-group">
+              <input type="text" value="" name="MMERGE1" class="" id="mce-MMERGE1" placeholder="First Name">
+            </div>
+            <div class="mc-field-group">
+              <input type="text" value="" name="MMERGE2" class="" id="mce-MMERGE2" placeholder="Last Name">
+            </div>
+                  </div>
+            <div class="mc-field-group input-group topics-list">
+                <strong>Topics of interest </strong>
+                <ul><li class="checkbox"><input checked type="checkbox" value="1" name="group[3757][1]" id="mce-group[3757]-3757-0"><label for="mce-group[3757]-3757-0">Software Development</label></li>
+            <li class="checkbox"><input checked type="checkbox" value="2" name="group[3757][2]" id="mce-group[3757]-3757-1"><label for="mce-group[3757]-3757-1">Blockchain Crypto</label></li>
+            <li class="checkbox"><input checked type="checkbox" value="4" name="group[3757][4]" id="mce-group[3757]-3757-2"><label for="mce-group[3757]-3757-2">General Tech</label></li>
+            <li class="checkbox"><input checked type="checkbox" value="8" name="group[3757][8]" id="mce-group[3757]-3757-3"><label for="mce-group[3757]-3757-3">Best of Hacker Noon</label></li>
+            </ul>
+            </div>
+              <div id="mce-responses" class="clear">
+                <div class="response" id="mce-error-response" style="display:none"></div>
+                <div class="response" id="mce-success-response" style="display:none"></div>
+              </div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+                <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_b48b0ec2173fecf2586c00e80_fa796741e6" tabindex="-1" value=""></div>
+                <div class="submit-btn"><input type="submit" value="Get great stories by email" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+            </form>
+          </div>
+          <!--End mc_embed_signup-->
+        </div>
+
+        
+      </div>
+    </div>
+
+    <div class="subnav footer">
+      <a href="https://www.hackernoon.com"><img class="footer__logo" src="/Devimg/hn-logo.png" width="45" height="45" /></a>
+      <div>
+        <div class="footer__links">
+          <a href="http://help.hackernoon.com">Help</a>
+          <a href="https://hackernoon.com/hacker-noon-faqs-with-six-word-answers-aw1ls3z1q">About</a>
+          <a href="https://community.hackernoon.com/session/sso?return_path=https%3A%2F%2Fapp.hackernoon.com">Start Writing</a>
+          <a class="footer__sponsor" href="http://sponsor.hackernoon.com">Sponsor:</a>
+          <a class="footer__sponsor-type" href="https://sponsor.hackernoon.com/#brandasauthor">Brand-as-Author</a>
+          <a class="footer__sponsor-type" href="https://sponsor.hackernoon.com/#billboard">Sitewide Billboard</a>
+        </div>
+        <div class="footer__privacy-links">
+          <a href="mailto:support@hackernoon.com">Contact Us</a>
+          <a href="http://privacy.hackernoon.com">Privacy</a>
+          <a href="http://terms.hackernoon.com">Terms</a>
+        </div>
+      </div>
+      <div>
+          <a href="https://twitter.com/hackernoon" rel="noopener noreferrer" target="_blank"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.facebook.com/hackernoon" rel="noopener noreferrer" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.linkedin.com/company/hackernoon/" rel="noopener noreferrer" target="_blank"><i class="fab fa-linkedin"></i></a>
+          <a href="https://www.youtube.com/hackernoon" rel="noopener noreferrer" target="_blank"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.4/firebase-firestore.js"></script>
+    <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCjRAcAgsxlffnuZNIr4zOGaIsEKKEaJCg",
+      authDomain: "hackernoon-app.firebaseapp.com",
+      databaseURL: "https://hackernoon-app.firebaseio.com",
+      projectId: "hackernoon-app",
+      storageBucket: "hackernoon-app.appspot.com",
+      messagingSenderId: "521962009898"
+    };
+    firebase.initializeApp(config);
+    </script>
+
+    <script src="/interact.js"></script>
+    <script src="/story.js"></script>
+
+    <script src="/services.js"></script>
+    <script sync src="https://platform.twitter.com/widgets.js"></script>
+    <script>
+    window.onload = (function(){
+      document.querySelectorAll('.tweet-container .tweet').forEach(function(tweet) {
+        let id = tweet.getAttribute("tweetid");
+        twttr.widgets.createTweet(id, tweet, {
+          linkColor: '#00ff00',
+          theme: 'dark'
+        })
+      });
+    });
+    </script>
+    <script>window.upsettings = {'api_key': '24b4421e-81ec-0b84b6a2'}</script><script>(function(){var w=window;var up=w.Upscribe;if(typeof up==="function"){up('reattach_activator');up('update',upsettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Upscribe=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://upscri.be/js/snippet.js';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);}if( w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})()</script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-65623566-4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+   gtag('js', new Date());
+
+   gtag('config', 'UA-65623566-4', { 'optimize_id': 'GTM-NR267TL'});
+  </script>
+  <script src="/subscribeform.js"></script>
+  <script async src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
+</body>
+</html>

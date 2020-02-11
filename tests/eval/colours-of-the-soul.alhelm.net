@@ -1,0 +1,1369 @@
+<br />
+<b>Deprecated</b>:  Assigning the return value of new by reference is deprecated in <b>/www/htdocs/w00a2ebd/wp-settings.php</b> on line <b>520</b><br />
+<br />
+<b>Deprecated</b>:  Assigning the return value of new by reference is deprecated in <b>/www/htdocs/w00a2ebd/wp-settings.php</b> on line <b>535</b><br />
+<br />
+<b>Deprecated</b>:  Assigning the return value of new by reference is deprecated in <b>/www/htdocs/w00a2ebd/wp-settings.php</b> on line <b>542</b><br />
+<br />
+<b>Deprecated</b>:  Assigning the return value of new by reference is deprecated in <b>/www/htdocs/w00a2ebd/wp-settings.php</b> on line <b>578</b><br />
+<br />
+<b>Deprecated</b>:  Function set_magic_quotes_runtime() is deprecated in <b>/www/htdocs/w00a2ebd/wp-settings.php</b> on line <b>18</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Page::start_lvl() should be compatible with Walker::start_lvl(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1199</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Page::end_lvl() should be compatible with Walker::end_lvl(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1199</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Page::start_el() should be compatible with Walker::start_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1199</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Page::end_el() should be compatible with Walker::end_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1199</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_PageDropdown::start_el() should be compatible with Walker::start_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1244</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Category::start_lvl() should be compatible with Walker::start_lvl(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1391</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Category::end_lvl() should be compatible with Walker::end_lvl(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1391</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Category::start_el() should be compatible with Walker::start_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1391</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Category::end_el() should be compatible with Walker::end_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1391</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_CategoryDropdown::start_el() should be compatible with Walker::start_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/classes.php</b> on line <b>1442</b><br />
+<br />
+<b>Strict Standards</b>:  Redefining already defined constructor for class wpdb in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>306</b><br />
+<br />
+<b>Strict Standards</b>:  Redefining already defined constructor for class WP_Object_Cache in <b>/www/htdocs/w00a2ebd/wp-includes/cache.php</b> on line <b>431</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Comment::start_lvl() should be compatible with Walker::start_lvl(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/comment-template.php</b> on line <b>1266</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Comment::end_lvl() should be compatible with Walker::end_lvl(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/comment-template.php</b> on line <b>1266</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Comment::start_el() should be compatible with Walker::start_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/comment-template.php</b> on line <b>1266</b><br />
+<br />
+<b>Strict Standards</b>:  Declaration of Walker_Comment::end_el() should be compatible with Walker::end_el(&$output) in <b>/www/htdocs/w00a2ebd/wp-includes/comment-template.php</b> on line <b>1266</b><br />
+<br />
+<b>Strict Standards</b>:  Redefining already defined constructor for class WP_Dependencies in <b>/www/htdocs/w00a2ebd/wp-includes/class.wp-dependencies.php</b> on line <b>31</b><br />
+<br />
+<b>Strict Standards</b>:  Redefining already defined constructor for class WP_Http in <b>/www/htdocs/w00a2ebd/wp-includes/http.php</b> on line <b>61</b><br />
+<br />
+<b>Strict Standards</b>:  Redefining already defined constructor for class nggdb in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/ngg-db.php</b> on line <b>60</b><br />
+<br />
+<b>Strict Standards</b>:  call_user_func_array() expects parameter 1 to be a valid callback, non-static method GoogleSitemapGeneratorLoader::Enable() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-includes/plugin.php</b> on line <b>339</b><br />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+<head profile="http://gmpg.org/xfn/11">
+
+<title>Gaby&#8217;s - Colours of the Soul  </title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="generator" content="WordPress 5204" /> <!-- leave this for stats -->
+
+<!-- Sidebar docking boxes (dbx) by Brothercake - http://www.brothercake.com/ -->
+<script type="text/javascript" src="http://www.colours-of-the-soul.alhelm.net/wp-content/themes/kerria/dbx.js"></script>
+<script type="text/javascript" src="http://www.colours-of-the-soul.alhelm.net/wp-content/themes/kerria/dbx-key.js"></script>
+<link rel="stylesheet" type="text/css" href="http://www.colours-of-the-soul.alhelm.net/wp-content/themes/kerria/dbx.css" media="screen, projection" />
+
+<!--[if  lte IE 6]>
+<link rel="stylesheet" href="http://www.colours-of-the-soul.alhelm.net/wp-content/themes/kerria/ie6.css" type="text/css" />
+<![endif]-->
+<!--[if  lt IE 6]>
+<link rel="stylesheet" href="http://www.colours-of-the-soul.alhelm.net/wp-content/themes/kerria/ie55.css" type="text/css" />
+<![endif]-->
+
+<link rel="shortcut icon" href="http://www.colours-of-the-soul.alhelm.net/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="http://www.colours-of-the-soul.alhelm.net/wp-content/themes/kerria/style.css" />
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.colours-of-the-soul.alhelm.net/feed/" />
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://www.colours-of-the-soul.alhelm.net/feed/rss/" />
+<link rel="pingback" href="http://www.colours-of-the-soul.alhelm.net/xmlrpc.php" />
+<link rel="stylesheet" href="http://www.colours-of-the-soul.alhelm.net/wp-content/themes/kerria/print.css"
+type="text/css" media="print" />
+
+	<link rel='archives' title='Februar 2009' href='http://www.colours-of-the-soul.alhelm.net/2009/02/' />
+	<link rel='archives' title='Januar 2009' href='http://www.colours-of-the-soul.alhelm.net/2009/01/' />
+	<link rel='archives' title='Dezember 2008' href='http://www.colours-of-the-soul.alhelm.net/2008/12/' />
+	<link rel='archives' title='November 2008' href='http://www.colours-of-the-soul.alhelm.net/2008/11/' />
+	<link rel='archives' title='August 2008' href='http://www.colours-of-the-soul.alhelm.net/2008/08/' />
+	<link rel='archives' title='Juli 2008' href='http://www.colours-of-the-soul.alhelm.net/2008/07/' />
+	<link rel='archives' title='Februar 2008' href='http://www.colours-of-the-soul.alhelm.net/2008/02/' />
+	<link rel='archives' title='Januar 2008' href='http://www.colours-of-the-soul.alhelm.net/2008/01/' />
+	<link rel='archives' title='Dezember 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/12/' />
+	<link rel='archives' title='November 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/11/' />
+	<link rel='archives' title='Oktober 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/10/' />
+	<link rel='archives' title='September 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/09/' />
+	<link rel='archives' title='August 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/08/' />
+	<link rel='archives' title='Juli 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/07/' />
+	<link rel='archives' title='Juni 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/06/' />
+	<link rel='archives' title='Mai 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/05/' />
+	<link rel='archives' title='März 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/03/' />
+	<link rel='archives' title='Januar 2007' href='http://www.colours-of-the-soul.alhelm.net/2007/01/' />
+	<link rel='archives' title='Dezember 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/12/' />
+	<link rel='archives' title='September 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/09/' />
+	<link rel='archives' title='August 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/08/' />
+	<link rel='archives' title='Juli 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/07/' />
+	<link rel='archives' title='Juni 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/06/' />
+	<link rel='archives' title='Mai 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/05/' />
+	<link rel='archives' title='April 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/04/' />
+	<link rel='archives' title='März 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/03/' />
+	<link rel='archives' title='Februar 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/02/' />
+	<link rel='archives' title='Januar 2006' href='http://www.colours-of-the-soul.alhelm.net/2006/01/' />
+
+<link rel='stylesheet' href='http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/nextgen-gallery/css/nggallery.css?ver=1.0.0' type='text/css' media='screen' />
+<link rel='stylesheet' href='http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/nextgen-gallery/shutter/shutter-reloaded.css?ver=1.3.0' type='text/css' media='screen' />
+<script type='text/javascript' src='http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/countdown-timer/fergcorp_countdownTimer_java.js?ver=2.3.1'></script>
+<script type='text/javascript' src='http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/countdown-timer/webtoolkit.sprintf.js?ver=2.3.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+	shutterSettings = {
+		msgLoading: "B I T T E &nbsp;&nbsp;W A R T E N",
+		msgClose: "Klicken zum Schliessen ",
+		imageCount: "1"
+	}
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/nextgen-gallery/shutter/shutter-reloaded.js?ver=1.3.0'></script>
+<script type='text/javascript' src='http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/nextgen-gallery/admin/js/swfobject.js?ver=2.1'></script>
+<script type='text/javascript' src='http://www.colours-of-the-soul.alhelm.net/wp-includes/js/jquery/jquery.js?ver=1.2.6'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+	ngg_ajax = {
+		path: "http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/nextgen-gallery/",
+		loading: "lade..."
+	}
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/nextgen-gallery/js/ngg.js?ver=5204'></script>
+
+
+<!-- Start Of Script Generated By WP-PageNavi 2.40 -->
+<link rel="stylesheet" href="http://www.colours-of-the-soul.alhelm.net/wp-content/plugins/wp-pagenavi/pagenavi-css.css" type="text/css" media="screen" />
+<!-- End Of Script Generated By WP-PageNavi 2.40 -->
+
+<meta name='NextGEN' content='1.3.3' />
+
+	<!-- Generated by Simple Tags 1.6.6 - http://wordpress.org/extend/plugins/simple-tags -->
+	<meta name="keywords" content="WordPress, WP-Update, Blog-News, Fotos, Persönliches, Rheuma, Projekt52, Projekt, Winter, Test, trnd, Lesestoff, Wetter, Schnee, Eis, Frost, Buch, Antivirus, Abschied, Erinnerungen, Gewinn, beta version, Grafik, Scrapbook, Freebies, Layouts, Template, Hashimoto Thyreoiditis, Autoimmun" />
+<!-- wpscanner --><style type="text/css">.recentcomments a{display:inline !important;padding: 0 !important;margin: 0 !important;}</style>
+
+
+</head>
+<body>
+
+<div id="wrapper">
+
+<div id="kopf">
+
+<h1><a href="http://www.colours-of-the-soul.alhelm.net" title="Gaby&#8217;s - Colours of the Soul">Gaby&#8217;s - Colours of the Soul</a></h1>
+<p>Kunterbuntes</p>
+
+</div><!--Ende Kopf-->
+
+<div class="dbx-group" id="sidebar">
+
+<div id="suche" class="dbx-box">
+<h2 class="dbx-handle">Suche</h2>
+<div class="dbx-content">
+
+<form method="get" id="searchform" action="/index.php">
+<div>
+<input type="text" name="s" id="s" size="15" value="" /><input type="submit" value="Suchen" />
+</div>
+
+</form>
+ 
+</div>
+</div>
+
+
+		<div id="text-177896171" class="dbx-box widget_text">			<h2 class="dbx-handle">meine Feeds nutzen ?</h2><div class="dbx-content">			<div class="textwidget"><center>Dann würde ich mich darüber freuen, wenn Du meine neuesten Artikel abonnierst: <br />
+<br />
+<img src="http://www.colours-of-the-soul.alhelm.net/wp-content/bilder/rss-48.png" alt="RSS feed"  />
+<br />
+<a href="http://www.colours-of-the-soul.alhelm.net/feed/"><big>RSS-Feed</big></a>
+<br />
+<a href="http://www.colours-of-the-soul.alhelm.net/comments/feed/"><big>Kommentar-Feed</big></a><br />
+<br />
+<!-- Seitzeichen -->
+<script type="text/javascript">var szu=encodeURIComponent(location.href); var szt=encodeURIComponent(document.title).replace(/\'/g,'`'); var szjsh=(window.location.protocol == 'https:'?'https://ssl.seitzeichen.de/':'http://w3.seitzeichen.de/'); document.write(unescape("%3Cscript src='" + szjsh + "w/b9/b2/widget_b9b27fad8e5ecf3eb3a73b49e3f50884.js' type='text/javascript'%3E%3C/script%3E"));</script>
+<!-- Seitzeichen -->
+<br />
+<a href="http://uckan.info/texte/was-ist-rss/"><small>'Was ist RSS'</small></a></center></div>
+		</div></div>		<div id="text-176702862" class="dbx-box widget_text">			<h2 class="dbx-handle">viel zu oft Gefühltes</h2><div class="dbx-content">			<div class="textwidget">...es gibt keine Seele, die nicht ihr Wattenmeer hätte, in dem zu Zeiten der Ebbe jedermann spazieren gehen kann...</div>
+		</div></div>	<div id="gdm-plm-1" class="dbx-box widget_page_link_manager">	<h2 class="dbx-handle">Seiten</h2><div class="dbx-content">	<ul>
+		<li class="page_item page-item-768"><a href="http://www.colours-of-the-soul.alhelm.net/datenschutz/" title="Datenschutz">Datenschutz</a></li>
+<li class="page_item page-item-15"><a href="http://www.colours-of-the-soul.alhelm.net/impressum/" title="Impressum">Impressum</a></li>
+<li class="page_item page-item-766"><a href="http://www.colours-of-the-soul.alhelm.net/blog-archiv/" title="Blog-Archiv">Blog-Archiv</a></li>
+<li class="page_item page-item-790"><a href="http://www.colours-of-the-soul.alhelm.net/kategorien/" title="Kategorie">Kategorie</a></li>
+<li class="page_item page-item-3601"><a href="http://www.colours-of-the-soul.alhelm.net/artikel-uebersicht/" title="Sitemap">Sitemap</a></li>
+<li class="page_item page-item-2212"><a href="http://www.colours-of-the-soul.alhelm.net/fotos/" title="Fotos">Fotos</a></li>
+<li class="page_item page-item-2557"><a href="http://www.colours-of-the-soul.alhelm.net/projekt52/" title="Projekt 52">Projekt 52</a></li>
+<li class="page_item page-item-885"><a href="http://www.colours-of-the-soul.alhelm.net/grafik/" title="Grafik">Grafik</a></li>
+<li class="page_item page-item-64"><a href="http://www.colours-of-the-soul.alhelm.net/tutorials/" title="Tutorials">Tutorials</a></li>
+<li class="page_item page-item-2490"><a href="http://www.colours-of-the-soul.alhelm.net/downloads/" title="Download">Download</a></li>
+<li class="page_item page-item-74"><a href="http://www.colours-of-the-soul.alhelm.net/adoptiertes/" title="Adoptiertes">Adoptiertes</a></li>
+<li class="page_item page-item-456"><a href="http://www.colours-of-the-soul.alhelm.net/meine-link-sammlung/" title="Link-Sammlung">Link-Sammlung</a></li>
+<li class="page_item page-item-102"><a href="http://www.colours-of-the-soul.alhelm.net/alte-plugin-tabelle/" title="alte Plugin-Tabelle mit Links zu den Berichten">alte Plugin-Tabelle mit Links zu den Berichten</a></li>
+	</ul>
+	</div></div>	<div id="ngg-images-296581581" class="dbx-box ngg_images"><h2 class="dbx-handle">in Szene Gesetztes</h2><div class="dbx-content">
+<div class="ngg-widget entry-content">
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/drachenfest-2004/valkenburgh.jpg" title="Infoschild: Windspiele von Robert Valkenburgh" class="shutterset_sidebar_296581581"><img src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/drachenfest-2004/thumbs/thumbs_valkenburgh.jpg" width="86" height="86" title="valkenburgh.jpg" alt="valkenburgh.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/garten/12-05-2008_1.jpg" title="Die Terrasse soll ein ganzes Stück größer werden." class="shutterset_sidebar_296581581"><img src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/garten/thumbs/thumbs_12-05-2008_1.jpg" width="86" height="86" title="12-05-2008_1.jpg" alt="12-05-2008_1.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/garten/28-04-2008.jpg" title="Der letzte Schnee ist weg, nun kann es mit dem Umbau los gehen." class="shutterset_sidebar_296581581"><img src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/garten/thumbs/thumbs_28-04-2008.jpg" width="86" height="86" title="28-04-2008.jpg" alt="28-04-2008.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/drachenfest-2004/megaray2.jpg" title="MegaRay - gleich geht es los" class="shutterset_sidebar_296581581"><img src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/drachenfest-2004/thumbs/thumbs_megaray2.jpg" width="86" height="86" title="megaray2.jpg" alt="megaray2.jpg" /></a>
+</div>
+</div></div>		<div id="recent-posts" class="dbx-box widget_recent_entries">			<h2 class="dbx-handle">zuletzt Notiertes</h2><div class="dbx-content">			<ul>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/">trnd-Projekt “G Data InternetSecurity 2009” </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/">P 52-09-W 05- Sinnesflut </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/ein-buch-gewinn/">ein Buch-Gewinn </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/urlaub-termine-und-wp-upgrade-271/">Urlaub, Termine und WP-Upgrade 2.7.1 </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/heute-morgen/">Heute Morgen&#8230; </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/kultiges-geknipst/">&#8216;Kultiges&#8217; geknipst </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/wordpress-271-steht-in-den-startloechern-und/">WordPress 2.7.1 steht in den Startl&#246;chern und&#8230; </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/abschied-von-soenke/">Abschied von S&#246;nke </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-04-kirche/">P 52-09-W 04- Kirche </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/bei-lastfm/">bei Last.fm </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/buchstoeckchen/">Buchst&#246;ckchen </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/ein-bilderstoeckchen/">ein Bilderst&#246;ckchen </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/stoeckchen-ergaenze/">St&#246;ckchen: Erg&#228;nze&#8230; </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-03-leblos/">P 52-09-W 03- Leblos </a></li>
+						<li><a href="http://www.colours-of-the-soul.alhelm.net/zusatz-zum-neuen-spam-plugin/">Zusatz zum neuen Spam-Plugin </a></li>
+						</ul>
+		</div></div>
+		<div id="recent-comments" class="dbx-box widget_recent_comments">			<h2 class="dbx-handle">dazu Gesagtes</h2><div class="dbx-content">			<ul id="recentcomments"><li class="recentcomments">Lexxy zu <a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/comment-page-1/#comment-24079">trnd-Projekt “G Data InternetSecurity 2009”</a></li><li class="recentcomments"><a href='http://www.grafikstube.de/wordpress/' rel='external' class='url'>Gucky</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/comment-page-1/#comment-23751">trnd-Projekt “G Data InternetSecurity 2009”</a></li><li class="recentcomments"><a href='http://Mooshexe.com' rel='external nofollow' class='url'>Moosi</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/comment-page-1/#comment-23681">trnd-Projekt “G Data InternetSecurity 2009”</a></li><li class="recentcomments"><a href='http://olli.blogmonster.de/' rel='external nofollow' class='url'>Olli</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/ein-buch-gewinn/comment-page-1/#comment-23575">ein Buch-Gewinn</a></li><li class="recentcomments"><a href='http://www.fotobuch-perfekt.com' rel='external nofollow' class='url'>karsten</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/heute-morgen/comment-page-2/#comment-23557">Heute Morgen&#8230;</a></li><li class="recentcomments">Chris zu <a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/comment-page-1/#comment-23546">trnd-Projekt “G Data InternetSecurity 2009”</a></li><li class="recentcomments"><a href='http://www.nachrichtenkammer.org' rel='external nofollow' class='url'>Christian</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/comment-page-2/#comment-23538">P 52-09-W 05- Sinnesflut</a></li><li class="recentcomments"><a href='http://www.an-drea.de' rel='external' class='url'>Andrea</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/comment-page-2/#comment-23490">P 52-09-W 05- Sinnesflut</a></li><li class="recentcomments"><a href='http://www.an-drea.de' rel='external' class='url'>Andrea</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/comment-page-2/#comment-23489">P 52-09-W 05- Sinnesflut</a></li><li class="recentcomments"><a href='http://oceanphoenix.com' rel='external' class='url'>Ocean</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/comment-page-2/#comment-23420">P 52-09-W 05- Sinnesflut</a></li><li class="recentcomments"><a href='http://www.fabella.de/blog' rel='external' class='url'>Fabella</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/comment-page-1/#comment-23414">trnd-Projekt “G Data InternetSecurity 2009”</a></li><li class="recentcomments"><a href='http://www.beate-bastelt.de' rel='external' class='url'>Beate</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/urlaub-termine-und-wp-upgrade-271/comment-page-1/#comment-23413">Urlaub, Termine und WP-Upgrade 2.7.1</a></li><li class="recentcomments"><a href='http://www.beate-bastelt.de' rel='external' class='url'>Beate</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/ein-buch-gewinn/comment-page-1/#comment-23412">ein Buch-Gewinn</a></li><li class="recentcomments"><a href='http://www.beate-bastelt.de' rel='external' class='url'>Beate</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/comment-page-2/#comment-23411">P 52-09-W 05- Sinnesflut</a></li><li class="recentcomments"><a href='http://www.beate-bastelt.de' rel='external' class='url'>Beate</a> zu <a href="http://www.colours-of-the-soul.alhelm.net/kultiges-geknipst/comment-page-2/#comment-23410">&#8216;Kultiges&#8217; geknipst</a></li></ul>
+		</div></div>		<div id="text-320215551" class="dbx-box widget_text">			<h2 class="dbx-handle">hier mache ich mit:</h2><div class="dbx-content">			<div class="textwidget"><br />
+<center><img src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/logobuttons/photoshopdesign_176x176.jpg" style="width:180; height:167; border:none;" alt="Photoshopdesign-Forum" /></a></center>
+<br />
+<center><a href="http://www.mondgras.de/sari02/index.php/projekt-52-allgemeine-informationen/" target="_blank"><img src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/logobuttons/projekt52_166x166.jpg" style="width:180; height:167; border:none;" alt="Projekt 52" /></a></center>
+<br /></div>
+		</div></div><div id="widget_stags-1" class="dbx-box widget_stags_cloud"><h2 class="dbx-handle">Stichwortartiges</h2><div class="dbx-content">
+<!-- Generated by Simple Tags 1.6.6 - http://wordpress.org/extend/plugins/simple-tags -->
+	<div class="st-tag-cloud">
+	<a href="http://www.colours-of-the-soul.alhelm.net/tag/wordpress/" id="tag-link-52" class="st-tags t10" title="67 topics" rel="tag" style="font-size:22pt; color:#d9b04e;">WordPress</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/wp-plugins/" id="tag-link-91" class="st-tags t4" title="27 topics" rel="tag" style="font-size:12.67pt; color:#d9b04e;">WP-Plugins</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/minipixel/" id="tag-link-95" class="st-tags t3" title="23 topics" rel="tag" style="font-size:11.11pt; color:#d9b04e;">Minipixel</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/geschenk/" id="tag-link-227" class="st-tags t3" title="22 topics" rel="tag" style="font-size:11.11pt; color:#d9b04e;">Geschenk</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/weihnachtszeit/" id="tag-link-147" class="st-tags t3" title="20 topics" rel="tag" style="font-size:11.11pt; color:#d9b04e;">Weihnachtszeit</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/wp-update/" id="tag-link-114" class="st-tags t2" title="17 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">WP-Update</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/feiertag/" id="tag-link-347" class="st-tags t2" title="16 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Feiertag</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/festtag/" id="tag-link-348" class="st-tags t2" title="16 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Festtag</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/scrapbook-freebies/" id="tag-link-352" class="st-tags t2" title="16 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Scrapbook-Freebies</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/tagebuch/" id="tag-link-239" class="st-tags t2" title="16 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Tagebuch</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/rezept/" id="tag-link-246" class="st-tags t2" title="15 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Rezept</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/goodies/" id="tag-link-219" class="st-tags t2" title="14 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Goodies</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/tipps/" id="tag-link-213" class="st-tags t2" title="13 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Tipps</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/advent/" id="tag-link-266" class="st-tags t2" title="12 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Advent</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/blog-news/" id="tag-link-292" class="st-tags t2" title="12 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Blog-News</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/fotos/" id="tag-link-361" class="st-tags t2" title="12 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Fotos</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/personliches/" id="tag-link-139" class="st-tags t2" title="11 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Persönliches</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/hashimoto/" id="tag-link-135" class="st-tags t2" title="11 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Hashimoto</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/rheuma/" id="tag-link-136" class="st-tags t2" title="11 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Rheuma</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/autoimmun/" id="tag-link-137" class="st-tags t2" title="11 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Autoimmun</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/challenge/" id="tag-link-154" class="st-tags t2" title="11 topics" rel="tag" style="font-size:9.56pt; color:#d9b04e;">Challenge</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/webschnipsel/" id="tag-link-11" class="st-tags t1" title="10 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Webschnipsel</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/stockchen/" id="tag-link-238" class="st-tags t1" title="10 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Stöckchen</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/layout/" id="tag-link-297" class="st-tags t1" title="9 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Layout</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/grafik/" id="tag-link-56" class="st-tags t1" title="9 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Grafik</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/herzhaft/" id="tag-link-70" class="st-tags t1" title="9 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Herzhaft</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/merry-christmas/" id="tag-link-349" class="st-tags t1" title="9 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Merry Christmas</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/frohe-weihnachten/" id="tag-link-351" class="st-tags t1" title="9 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Frohe Weihnachten</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/2006/" id="tag-link-377" class="st-tags t1" title="9 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">2006</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/projekt52/" id="tag-link-386" class="st-tags t1" title="8 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Projekt52</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/scrapbooking/" id="tag-link-142" class="st-tags t1" title="8 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Scrapbooking</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/photoshop/" id="tag-link-4" class="st-tags t1" title="7 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Photoshop</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/findlinge/" id="tag-link-121" class="st-tags t1" title="7 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Findlinge</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/signtag/" id="tag-link-126" class="st-tags t1" title="7 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Signtag</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/browser/" id="tag-link-131" class="st-tags t1" title="7 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Browser</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/musik/" id="tag-link-149" class="st-tags t1" title="7 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Musik</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/wp-anfang/" id="tag-link-175" class="st-tags t1" title="7 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">WP-Anfang</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/karte/" id="tag-link-303" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Karte</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/wp-themes/" id="tag-link-84" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">WP-Themes</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/adoption/" id="tag-link-96" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Adoption</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/neujahr/" id="tag-link-368" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Neujahr</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/neues-jahr/" id="tag-link-370" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">neues Jahr</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/new-year/" id="tag-link-371" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">New Year</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/postkarte/" id="tag-link-381" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Postkarte</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/jahreswechsel/" id="tag-link-152" class="st-tags t1" title="6 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Jahreswechsel</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/forum/" id="tag-link-54" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Forum</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/vegetarisch/" id="tag-link-76" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Vegetarisch</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/geburtstag/" id="tag-link-87" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Geburtstag</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/firefox/" id="tag-link-124" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Firefox</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/alltagliches/" id="tag-link-130" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Alltägliches</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/bremen/" id="tag-link-148" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Bremen</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/winter/" id="tag-link-151" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Winter</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/urlaub/" id="tag-link-232" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Urlaub</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/projekt/" id="tag-link-252" class="st-tags t1" title="5 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Projekt</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/lesestoff/" id="tag-link-107" class="st-tags t1" title="4 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Lesestoff</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/event/" id="tag-link-122" class="st-tags t1" title="4 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Event</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/fussball/" id="tag-link-127" class="st-tags t1" title="4 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Fussball</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/canon-powershot-s5is/" id="tag-link-396" class="st-tags t1" title="4 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Canon PowerShot S5IS</a>
+<a href="http://www.colours-of-the-soul.alhelm.net/tag/hamburg/" id="tag-link-171" class="st-tags t1" title="4 topics" rel="tag" style="font-size:8pt; color:#d9b04e;">Hamburg</a></div>
+
+</div></div>		<div id="text-176702861" class="dbx-box widget_text">			<h2 class="dbx-handle">Partnerlinks</h2><div class="dbx-content">			<div class="textwidget"><center><a href="http://www.all-inkl.com/index.php?partner=180849">
+<img src="http://www.all-inkl.com/banner/120x60_logo.gif" alt="ALL-INKL.COM Webhosting" /></a>
+Webhosting ab €1,95/Monat
+______________________<br />
+<br />
+<a href="http://www.trnd.com/empfehler.trnd?id=7391223367748690" target="_blank">
+<img src="http://www.trnd.com/banners/trnd_banner01_120_60.gif" width="120" height="60" border="1" alt="trnd" /></a>
+______________________<br />
+<br />
+<a href="http://www.4shared.com/ref/3094648/4"><img src="http://www.4shared.com/affiliate/images/b3.gif" alt="Join 4Shared Now!" /></a></center></div>
+		</div></div>		<div id="text-296561901" class="dbx-box widget_text">			<h2 class="dbx-handle">ich lese oder höre gerade:</h2><div class="dbx-content">			<div class="textwidget"><br />
+<center><a href="http://www.amazon.de/gp/product/355135894X/ref=olp_product_details?ie=UTF8&me=&seller="><img src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/sidebar_twilight_biss-zum-morgengrauen.jpg" style="width:180; height:242; border:none;" alt="Amok Spiel" /></a></center>
+<br />
+</div>
+		</div></div><div id="fergcorp_countdowntimer" class="dbx-box widget_fergcorp_countdown"><h2 class="dbx-handle">Counter</h2><div class="dbx-content">					<ul>
+						<li>rauchfrei:<br />
+<abbr title = "9 Apr 2003, 0:00:00" style="cursor:pointer; border-bottom:1px black dashed"><span id = 'xa7c55516dc45f957004948916bfef0be'>vor 16 Jahre, 10 Monaten, 2 Tagen</span></abbr></li>					</ul>
+				</div></div><div id="wp-stats" class="dbx-box widget_stats"><h2 class="dbx-handle">für Statistiker/innen ;)</h2><div class="dbx-content"><ul>
+<li><strong>Total Stats</strong>
+<ul>
+<li><strong>273</strong> Posts</li>
+<li><strong>236</strong> Tags</li>
+<li><strong>1.132</strong> Comments</li>
+<li><strong>62</strong> Links</li>
+<li><strong>53</strong> Post Categories</li>
+</ul>
+</li>
+</ul>
+</div></div>		<div id="text-249236241" class="dbx-box widget_text">			<h2 class="dbx-handle">Information</h2><div class="dbx-content">			<div class="textwidget"><center><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/de/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/2.0/de/88x31.png"/></a>
+______________________<br />
+<br />
+<a href="http://www.plagaware.de" title="Plagiate dieser Website werden automatisiert erfasst und verfolgt." target="_blank"><img border="0" src="http://www.plagaware.de/button/?style=4" alt="Plagiate dieser Website werden automatisiert erfasst und verfolgt." /></a>
+______________________<br />
+<br />
+<a href="http://www.qualidator.com/wqm/QualityButtons/RedirectToReport.aspx"> <img src="http://www.qualidator.com/wqm/QualityButtons/Default.aspx" alt="Quality monitored by qualidator.com" height="31" width="88" /> </a>
+______________________<br />
+<br />
+<a href="http://blogpingr.de" title="BlogPingR.de: Blog Ping-Dienst, Blogmonitor"><img src="http://blogpingr.de/track/blogtrack/buttons/3/" alt="BlogPingR.de - Blog Ping-Dienst, Blogmonitor" width="80" height="15" border="0" /></a></center></div>
+		</div></div>
+</div><!--Ende sidebar-->
+<div id="content">
+
+<div class="beitrag" id="post-3583">
+
+<div class="datum">
+<span class="monat">Feb</span> <span class="tag">18</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/" rel="bookmark" title="Permanent Link to trnd-Projekt “G Data InternetSecurity 2009”">trnd-Projekt “G Data InternetSecurity 2009”</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/trnd-projekte/" title="Alle Artikel in trnd-Projekte anzeigen" rel="category tag">trnd-Projekte</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-g-data-internetsecurity-2009/#comments" title="Kommentar zu trnd-Projekt “G Data InternetSecurity 2009”">12 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>594</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_image() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>597</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::capture() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>661</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>594</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_image() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>597</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::capture() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>661</b><br />
+<p>Bei dem n&#228;chsten <a href="http://g-data.trnd.com/">trnd-Projekt</a>, welches ich Euch noch gar nicht vorgestellt habe, ging es um die Software „G-Data InternetSecurity 2009“ von <a href="http://www.gdata.de/">G-Data</a>.<br />
+<br />
+Dabei hatte ich doch tats&#228;chlich wieder das Gl&#252;ck angenommen zu werden, obwohl ich geschrieben hatte, dass ich gerne einmal aussetzen m&#246;chte, weil ich ein gutes Anti-Viren-Programm benutze.<br />
+<br />
+Nun gefreut habe ich mich nat&#252;rlich trotzdem sehr, weil die Projekte von <a href="http://www.trnd.com/index.trnd">trnd.com</a> wirklich Spa&#223; machen und dieses versprach sehr interessant zu werden. Viele trnd-ler waren leider recht voreingenommen und schrieben schon im Vorfeld negativ &#252;ber die Software, aber ich wollte mir nun ein eigenes Bild machen.<br />
+<br />
+<img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_g-data.jpg' alt='trnd-Projekt G-Data' width=600 height=319 class='ngg-singlepic ngg-center' /><br />
+Das trnd-Projekt startete am 20.11.08, ein paar Tage sp&#228;ter traf das Paket bei mir zu Hause ein und der Inhalt setzte sich wie folgt zusammen:<br />
+<br />
+1 Projektfahrplan-Brosch&#252;re<br />
+1 Heft mit Marktforschungsunterlagen zum Befragen von Freunden, Kollegen und Bekannten<br />
+1 Vollversion der Software im Wert von 39,95 Euro<br />
+10 CDs mit einer 180-Tage-Testversion von G-Data<br />
+20 Informationsbrosch&#252;ren<br />
+<br />
+Die Testversionen und die Brosch&#252;ren hatte ich leider schon verteilt bevor ich das Foto oben geknipst habe, deshalb sind sie darauf nicht zu sehen.<br />
+<br />
+Die Software beinhaltet eine <em>Fingerprint-Technologie</em>: Das ist ein Modul, welches sich gescannte und unver&#228;nderte Dateien merkt. Dieses verhindert somit unn&#246;tige Rechenleistung und spart Zeit.<br />
+<br />
+Einen <em>Paralel-Scan</em>: Dieser nutzt die Dual- und QuadCore-Computer und verteilt die Rechenlast der Virensuche auf alle vorhandenen Prozessoren.<br />
+<br />
+Ein <em>Performance-Profil</em>: Bei der Installation von G Data wird ein individuelles Performance-Profil erstellt, das entsprechend der Rechner-Hardware einzelne Module auf Geschwindigkeit trimmt. Das soll auch bei langsamen PCs f&#252;r optimale Security-Performance sorgen.<br />
+<br />
+Und ein neues <em>User-Interface</em>: Gelegensheits-User sollen von der einfachen Bedienung ebenso begeistert sein wie Security-Profis. In den Profieinstellungen stehen den Anwendern umfangreiche Einstellm&#246;glichkeiten zur Verf&#252;gung.<br />
+<br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::render() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/core.php</b> on line <b>341</b><br />
+
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_g-data_14.jpg" title="trnd-Projekt 'G-Data'" class="shutterset_singlepic228" >
+	<img class="ngg-singlepic ngg-right" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/cache/228__300x300_ga_trnd_g-data_14.jpg" alt="ga_trnd_g-data_14.jpg" title="ga_trnd_g-data_14.jpg" />
+</a>
+Installiert habe ich die Software auf meinen, zwar immer wieder erneuerten, aber doch 6 Jahre alten PC mit einem XP Betriebssystem. Den benutzt G&#252;nther zwar jetzt, da ich nur noch meine beiden Laptops in Gebrauch habe, aber ich wollte die Software zuerst auch unter einem nicht so neuen Betriebssystem und einer nicht so neuen Peripherie testen, da das doch mehr der Realit&#228;t der Allgemeinheit entspricht. Zumindest bei uns im Bekannten- und Freundeskreis.<br />
+<br />
+Bis auf den Bootscan verlief die Installation reibungslos. Das alte Viren-Programm wurde von G-Data erkannt und vollst&#228;ndig deinstalliert. Viren wurden keine gefunden.<br />
+<br />
+Im t&#228;glichen Gebrauch verhielt sich die Software recht unkompliziert und kaum bemerkbar. Allerdings wirklich nur kaum, denn G&#252;nther beschwerte sich doch das eine oder andere Mal, dass es insgesamt etwas langsamer vorw&#228;rts ging als vorher. Egal ob beim Surfen im Internet oder beim Programmaufruf.<br />
+<br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::render() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/core.php</b> on line <b>341</b><br />
+
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_g-data_12.jpg" title="trnd-Projekt 'G-Data'" class="shutterset_singlepic229" >
+	<img class="ngg-singlepic ngg-left" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/cache/229__300x300_ga_trnd_g-data_12.jpg" alt="ga_trnd_g-data_12.jpg" title="ga_trnd_g-data_12.jpg" />
+</a>
+Daraufhin habe ich es auch auf meinem Laptop mit Vista-Betriebssystem ausprobiert und ich konnte keine Einschr&#228;nkungen der Geschwindigkeit feststellen. Alles lief wie vorher. Die Einstellungen sind fast intuitiv zu nutzen und stellen keine gro&#223;en Anforderungen an die Nutzer.<br />
+<br />
+Das Fazit aus meinem pers&#246;nlichen Tests war also, dass man schon ein etwas neueres System haben sollte, um die Software auch ungetr&#252;bt von Performance-Einbu&#223;en nutzen zu k&#246;nnen. Insgesamt hat man ein gutes, gesch&#252;tztes Gef&#252;hl und ich w&#252;rde die Anti-Viren-Software immer wieder gerne weiterempfehlen.<br />
+<br />
+Das Feedback der Leute, denen ich die 10 Testversionen gegeben hatte, war &#252;berwiegend positiv. Allerdings wurde auch hier immer wieder der Leistungsabfall bei &#228;lteren Systemen bem&#228;ngelt.<br />
+<br />
+Das Projekt war am 20.01.09 zu Ende und ich danke G-Data und dem trnd-Team f&#252;r die Erfahrung und den Spa&#223;, den es mit sich gebracht hat.<br />
+<br />
+Wer interessiert ist, die Software auszuprobieren, der findet hier die kostenlosen <a href="http://www.gdata.de/support/downloads/testversionen.html">Downloads </a>von G-Data. </p>
+<div class="ngg-related-gallery"><a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_g-data_14.jpg" title="trnd-Projekt 'G-Data'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="ga_trnd_g-data_14.jpg" alt="ga_trnd_g-data_14.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_ga_trnd_g-data_14.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_g-data.jpg" title="trnd-Projekt 'G-Data'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="ga_trnd_g-data.jpg" alt="ga_trnd_g-data.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_ga_trnd_g-data.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_pantene-pro-v.jpg" title="trnd-Projekt 'Pantene ProV'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="ga_trnd_pantene-pro-v.jpg" alt="ga_trnd_pantene-pro-v.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_ga_trnd_pantene-pro-v.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_besseratmen.jpg" title="trnd-Projekt 'BesserAtmen'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="ga_trnd_besseratmen.jpg" alt="ga_trnd_besseratmen.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_ga_trnd_besseratmen.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/gabya_trnd-danke_01.gif" title="Dankesch&#246;n f&#252;r Berichte 'Die Ofenfrische'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="gabya_trnd-danke_01.gif" alt="gabya_trnd-danke_01.gif" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_gabya_trnd-danke_01.gif" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ofenfrische-voher-nachher.jpg" title="trnd-Projekt 'Die Ofenfrische'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="ofenfrische-voher-nachher.jpg" alt="ofenfrische-voher-nachher.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_ofenfrische-voher-nachher.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/trnd-projekt01.jpg" title="trnd-Projekt 'Terra Activ'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="trnd-projekt01.jpg" alt="trnd-projekt01.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_trnd-projekt01.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/projekt_vorschau.jpg" title="Scrapbooking-Projekt" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="projekt_vorschau.jpg" alt="projekt_vorschau.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/thumbs/thumbs_projekt_vorschau.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ofenfrische.jpg" title="trnd-Projekt 'Die Ofenfrische'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="ofenfrische.jpg" alt="ofenfrische.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_ofenfrische.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/ga_trnd_g-data_12.jpg" title="trnd-Projekt 'G-Data'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="ga_trnd_g-data_12.jpg" alt="ga_trnd_g-data_12.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_ga_trnd_g-data_12.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/paket-ofenfrische.jpg" title="trnd-Projekt 'Die Ofenfrische'" class="shutterset_Verwandte Bilder von trnd-Projekt “G Data InternetSecurity 2009”" ><img title="paket-ofenfrische.jpg" alt="paket-ofenfrische.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/trndcom/thumbs/thumbs_paket-ofenfrische.jpg" /></a>
+</div>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-die-ofenfrische/" title="trnd-Projekt &#8216;Die Ofenfrische&#8217; (1. Dezember 2008)">trnd-Projekt &#8216;Die Ofenfrische&#8217;</a> (7)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/trnd-projekt-terra-active/" title="trnd-Projekt &#8220;Terra Active&#8221; (30. November 2008)">trnd-Projekt &#8220;Terra Active&#8221;</a> (3)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/trnd-kostenlose-produkte-testen/" title="trnd - kostenlose Produkte testen (29. November 2008)">trnd - kostenlose Produkte testen</a> (6)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/winterdesign-und-neues-projekt/" title="Winterdesign und neues Projekt (18. Dezember 2006)">Winterdesign und neues Projekt</a> (5)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/ein-neues-grafikprogramm-entdeckt/" title="ein neues Grafikprogramm entdeckt ? (13. Juni 2006)">ein neues Grafikprogramm entdeckt ?</a> (5)</li>
+</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+<div class="beitrag" id="post-3394">
+
+<div class="datum">
+<span class="monat">Feb</span> <span class="tag">17</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/" rel="bookmark" title="Permanent Link to P 52-09-W 05- Sinnesflut">P 52-09-W 05- Sinnesflut</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/fotografie/geknipstes/" title="Alle Artikel in Geknipstes anzeigen" rel="category tag">Geknipstes</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/projekt-52/" title="Alle Artikel in Projekt 52 anzeigen" rel="category tag">Projekt 52</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-05-sinnesflut/#comments" title="Kommentar zu P 52-09-W 05- Sinnesflut">15 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<p><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/logobuttons/projekt52_100x100.jpg' alt='projekt52' class='ngg-singlepic ngg-left' />Das Thema in der 5. Woche bei Sari hei&#223;t <a href="http://www.mondgras.de/sari02/index.php/2009/02/01/p52-09-05-wochenthema/">Sinnesflut</a>. Leider bin ich durch das Fieber und den Urlaub von G&#252;nther damit etwas in Verzug geraten, aber nun m&#246;chte ich Euch meine Gedanken und mein Foto dazu etwas n&#228;her bringen und zeigen.<br />
+<br />
+Dieses Thema betrifft, wie der Name schon so sch&#246;n sagt, die Sinne. Davon hat der Mensch normalerweise f&#252;nf: Riechen, Schmecken, F&#252;hlen, Sehen und H&#246;ren.<br />
+<br />
+Aber es gibt noch den Sinn, den man weder schmecken, f&#252;hlen, h&#246;ren, sehen oder riechen kann. Den w&#252;rde ich Intuition oder Bauchgef&#252;hl nennen. Dazu z&#228;hlen f&#252;r mich auch Gl&#252;cks-, Angstgef&#252;hle und Phobien. Davon gibt es nat&#252;rlich auch wieder verschiedene&#8230; Zum Beispiel Freude, erotische Gef&#252;hle, Vorahnungen, Verlustangst, Platzangst usw.<br />
+Sie alle kann man nat&#252;rlich in den Auswirkungen wieder unter die f&#252;nf Sinne einsortieren. Es ist also ein total komplexes Thema, welches mir wieder ein wenig Kopfarbeit beschert hatte. Denn wie setze ich es am Besten um und was nehme ich als Grundlage f&#252;r meine Interpretation ? In meinem Leben gab es schon so viele Sinnesfluten.<br />
+<br />
+Zum Beispiel habe ich den Schmerz und das Gl&#252;cksgef&#252;hl bei der Geburt meiner Tochter erleben d&#252;rfen, aber genauso auch die uns&#228;gliche Verlustangst und den Schmerz sie nach einem schweren Verkehrsunfall fast wieder zu verlieren.<br />
+Ich durfte, nach zwei gescheiterten Beziehungen, die Liebe auf dem ersten Blick erfahren und die damit verkn&#252;pften Gl&#252;cksgef&#252;hle, aber auch die Schmerzen, die einem der Partner mit Worten und Taten im Laufe der Jahre zuf&#252;gen kann.<br />
+Dann habe eine Krebserkrankung &#252;berlebt, die lange Jahre starke Schmerzen, aber auch Gl&#252;cksgef&#252;hle mitgebracht hatte. Auch Rheuma und Hashi hinterlassen ihre Sinnesfluten&#8230;<br />
+Es geh&#246;ren aber auch viele allt&#228;glichere Dinge dazu, zum Beispiel Live-Konzerte, gerade jetzt wieder das von Tina Turner. Diese erleben zu k&#246;nnen, hat auch eine gro&#223;e Flut der Sinne freigesetzt.<br />
+Oder auch einfach nur ein richtig leckeres Essen&#8230;<br />
+<br />
+All das sind Sinnesfluten, die man so gut wie nie wieder vergisst.<br />
+<br />
+Ich habe mich aber jetzt f&#252;r meine ganz profane Platzangst entschieden, die mit ganz viel Sinnesfluten, wie Rauschen in den Ohren, Taubheit der Haut, &#220;berreizung der Sehnerven, Geruchsirritationen usw. einhergeht.<br />
+<br />
+Deshalb m&#246;chte ich Euch jetzt ein Foto zeigen, welches ich im alten Elbtunnel geknipst habe. Ich hoffe, damit die Sinnesflut wiedergeben zu k&#246;nnen, die ich dort empfunden habe.<br />
+<br />
+Wir wollten einen kleinen Spaziergang in Hamburg machen, hatten auf unserer Seite  bei &#8216;Bloom &#038; Voss&#8217; geparkt und sind dann durch den alten Elbtunnel gelaufen um zu den Landungsbr&#252;cken zu gelangen.<br />
+<br />
+<a class="shutterset_" href='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo05-sinnesflut.jpg' title='alter Elbtunnel - R&#246;hre'><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo05-sinnesflut.jpg' alt='alter Elbtunnel - R&#246;hre' width=550 height=320 class='ngg-singlepic ngg-center' /></a><br /><center><small>(ein Klick auf das Bild &#246;ffnet die gr&#246;&#223;ere Ansicht)</small></center><br />
+<br />
+Mir bleibt in geschlossenen R&#228;umen, in denen ich nicht nach drau&#223;en schauen kann, sonst wegen Platzangst grunds&#228;tzlich fast die Luft weg, aber diesmal hatte ich meine Kamera dabei, war von dem Anblick der Geschichte, der Fahrst&#252;hle f&#252;r die Autos und der schmalen Fahrspur in der R&#246;hre fasziniert und dadurch ein wenig abgelenkt, somit hatte ich meine Platzangst etwas im Griff. Und&#8230; so lang wie der neue Elbtunnel ist er ja Gottseidank auch nicht.<br />
+<br />
+In dem habe ich immer das Gef&#252;hl, dass man nie durch ist und au&#223;erdem kommt jedesmal zus&#228;tzlich die Angst hoch wieder im Stau stecken zu bleiben. Vor Jahren, als ich immer im Hamburger Modezentrum eingekauft habe, ist mir das mal passiert und seitdem versuche ich ihn zu vermeiden wo es nur geht. Selbst dann, wenn ich daf&#252;r einen gr&#246;&#223;eren Umweg in Kauf nehmen muss.<br />
+<br />
+Die <a href="http://projekt52.blog.de/2009/02/08/woche-05-sinnesflut-5532544/">Slideshow </a>mit allen <a href="http://www.colours-of-the-soul.alhelm.net/tag/fotos/" class="st_tag internal_tag" rel="tag" title="Posts tagged with Fotos">Fotos</a> der Teilnehmer/innen. </p>
+<div class="ngg-related-gallery"><a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/projekt52_350x350.jpg" title="Logo" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="projekt52_350x350.jpg" alt="projekt52_350x350.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_projekt52_350x350.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo04-kirche.jpg" title="Projekt 52 - Woche 4 - 2009 -  Kirche - Taufstein" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_p52-wo04-kirche.jpg" alt="gabya_p52-wo04-kirche.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_p52-wo04-kirche.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/powershot_s5is.jpg" title="PowerShot S5 SI" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="powershot_s5is.jpg" alt="powershot_s5is.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/thumbs/thumbs_powershot_s5is.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/meine-stadt-p52-w01.jpg" title="Projekt 52 - Woche 1 - 2009 -  Deine Stadt - hinter Gitter" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="meine-stadt-p52-w01.jpg" alt="meine-stadt-p52-w01.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_meine-stadt-p52-w01.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/gabya_alter-elbtunnel_krebs.jpg" title="alter Elbtunnel - Krebs" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_alter-elbtunnel_krebs.jpg" alt="gabya_alter-elbtunnel_krebs.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/thumbs/thumbs_gabya_alter-elbtunnel_krebs.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_lastenkraene.jpg" title="Projekt 52 - Woche 1 - 2009 -  Deine Stadt - ein Blick auf die Lastenkr&#228;ne bei den Landungsbr&#252;cken in Hamburg" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_lastenkraene.jpg" alt="gabya_lastenkraene.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_lastenkraene.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo05-sinnesflut.jpg" title="alter Elbtunnel - R&#246;hre" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_p52-wo05-sinnesflut.jpg" alt="gabya_p52-wo05-sinnesflut.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_p52-wo05-sinnesflut.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_muehle-bremen-wallanlagen.jpg" title="Projekt 52 - Woche 1 - 2009 - Deine Stadt - M&#252;hle in den Bremer Wallanlagen" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_muehle-bremen-wallanlagen.jpg" alt="gabya_muehle-bremen-wallanlagen.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_muehle-bremen-wallanlagen.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo03-leblos.jpg" title="Projekt 52 - Woche 3 - 2009 -  Leblos - Stein und Moos" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_p52-wo03-leblos.jpg" alt="gabya_p52-wo03-leblos.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_p52-wo03-leblos.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/gabya_alter-elbtunnel_infotafel.jpg" title="alter Elbtunnel - Informationstafel" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_alter-elbtunnel_infotafel.jpg" alt="gabya_alter-elbtunnel_infotafel.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/thumbs/thumbs_gabya_alter-elbtunnel_infotafel.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/gabya_alter-elbtunnel_treppenhaus.jpg" title="alter Elbtunnel - Trepenhaus mit den Autoaufz&#252;gen" class="shutterset_Verwandte Bilder von P 52-09-W 05- Sinnesflut" ><img title="gabya_alter-elbtunnel_treppenhaus.jpg" alt="gabya_alter-elbtunnel_treppenhaus.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/thumbs/thumbs_gabya_alter-elbtunnel_treppenhaus.jpg" /></a>
+</div>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/projekt-52/" title="Foto - Projekt 52 (4. Januar 2009)">Foto - Projekt 52</a> (13)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/meine-kamera/" title="meine Kamera (15. Januar 2009)">meine Kamera</a> (16)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-02-zeit/" title="P 52-09-W 02- Zeit (18. Januar 2009)">P 52-09-W 02- Zeit</a> (14)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-01-meine-stadt/" title="P 52-09-W 01- meine Stadt (7. Januar 2009)">P 52-09-W 01- meine Stadt</a> (37)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/kultiges-geknipst/" title="&#8216;Kultiges&#8217; geknipst (8. Februar 2009)">&#8216;Kultiges&#8217; geknipst</a> (16)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/projekt52/" title="Projekt 52 (4. Januar 2009)">Projekt 52</a> (2)</li>
+</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+<div class="beitrag" id="post-3475">
+
+<div class="datum">
+<span class="monat">Feb</span> <span class="tag">16</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/ein-buch-gewinn/" rel="bookmark" title="Permanent Link to ein Buch-Gewinn">ein Buch-Gewinn</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/dit-und-dat/lesestoff-dit-und-dat/" title="Alle Artikel in Lesestoff anzeigen" rel="category tag">Lesestoff</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/persnliches/" title="Alle Artikel in Persönliches anzeigen" rel="category tag">Persönliches</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/ein-buch-gewinn/#comments" title="Kommentar zu ein Buch-Gewinn">10 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<p>In meinem ganzen Leben hatte ich noch nie etwas in einem Preisausschreiben gewonnen, aber jetzt. *freuh&#252;pf*<br />
+<br />
+<img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/gabya_buch-gewinn.gif' alt='Buch-Gewinn' width=550 height=451 class='ngg-singlepic ngg-center' /><br />
+In der Zeit, als ich auf Grund meiner Erkrankung so viel gewogen habe, dass ich kaum noch in normalen Gesch&#228;ften etwas Vern&#252;nftiges zum Anziehen einkaufen konnte, hatte ich mich mal bei Happy Size (Mode ab Gr&#246;&#223;e 42) angemeldet und etwas bestellt,  dann aber vers&#228;umt mich wieder abzumelden und so bekam ich im Dezember eine eMail mit der Mitteilung, dass dort ein Adventkalender zu finden ist.<br />
+Darin war ein Gewinnspiel, welches ich mitgemacht und dann nicht weiter daran gedacht habe.<br />
+<br />
+Deshalb war ich total &#252;berrascht, dass ich Ende Januar ein P&#228;ckchen bekommen habe und als ich es aufmachte war der Roman &#8216;Paare&#8217; von Alison Lurie darin. Hier einmal ein kleiner Ausschnitt vom Cover&#8230;</p>
+<blockquote><p>Alison Lurie, geboren 1926, ist bekannt f&#252;r ihre scharfsichtigen Gesellschaftssatiren.<br />
+<br />
+Nach Jahren gl&#252;cklicher Ehe erkennen Jane und Alan sich selbst kaum wieder. Als Delia und Henry auf dem Campus auftauchen, geht alles drunter und dr&#252;ber&#8230;</p></blockquote>
+<p>Meine Freude &#252;ber den Buch-Gewinn war riesengro&#223;, passt er doch zu einer Leseratte wie mir <img src='http://www.colours-of-the-soul.alhelm.net/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /> und ich danke <a href="http://www.happy-size.de/">Happy Size</a> und der &#8216;Gl&#252;cks-Fee&#8217; daf&#252;r ganz herzlich. </p>
+<div class="ngg-related-gallery"><a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/amok-spiel-fitzek.jpg" title="Amok Spiel von Sebastian Fitzek" class="shutterset_Verwandte Bilder von ein Buch-Gewinn" ><img title="amok-spiel-fitzek.jpg" alt="amok-spiel-fitzek.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/thumbs/thumbs_amok-spiel-fitzek.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/twilight_biss-zum-morgengrauen.jpg" title="Twilight - Bis(s) zum Morgengrauen" class="shutterset_Verwandte Bilder von ein Buch-Gewinn" ><img title="twilight_biss-zum-morgengrauen.jpg" alt="twilight_biss-zum-morgengrauen.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/thumbs/thumbs_twilight_biss-zum-morgengrauen.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/harrypotter-heiligtuemer.jpg" title="Heiligt&#252;mer des Todes - Harry Potter" class="shutterset_Verwandte Bilder von ein Buch-Gewinn" ><img title="harrypotter-heiligtuemer.jpg" alt="harrypotter-heiligtuemer.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/thumbs/thumbs_harrypotter-heiligtuemer.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/gabya_buch-gewinn.gif" title="Buch-Gewinn" class="shutterset_Verwandte Bilder von ein Buch-Gewinn" ><img title="gabya_buch-gewinn.gif" alt="gabya_buch-gewinn.gif" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/thumbs/thumbs_gabya_buch-gewinn.gif" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/buchstoeckchen.jpg" title="B&#252;cherst&#246;ckchen" class="shutterset_Verwandte Bilder von ein Buch-Gewinn" ><img title="buchstoeckchen.jpg" alt="buchstoeckchen.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/thumbs/thumbs_buchstoeckchen.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/buch_beedle-der-barde.jpg" title="Beedle der Barde" class="shutterset_Verwandte Bilder von ein Buch-Gewinn" ><img title="buch_beedle-der-barde.jpg" alt="buch_beedle-der-barde.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/buecher/thumbs/thumbs_buch_beedle-der-barde.jpg" /></a>
+</div>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/harry-potter/" title="Harry Potter&#8230; (15. Oktober 2007)">Harry Potter&#8230;</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/buchstoeckchen/" title="Buchst&#246;ckchen (22. Januar 2009)">Buchst&#246;ckchen</a> (12)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/es-ist-da/" title="Es ist da !!! (27. Oktober 2007)">Es ist da !!!</a> (3)</li>
+</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+<div class="beitrag" id="post-3428">
+
+<div class="datum">
+<span class="monat">Feb</span> <span class="tag">15</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/urlaub-termine-und-wp-upgrade-271/" rel="bookmark" title="Permanent Link to Urlaub, Termine und WP-Upgrade 2.7.1">Urlaub, Termine und WP-Upgrade 2.7.1</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/persnliches/hashi-rheuma/" title="Alle Artikel in Hashi und Rheuma anzeigen" rel="category tag">Hashi und Rheuma</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/wordpress/wp-update/" title="Alle Artikel in WP-Update anzeigen" rel="category tag">WP-Update</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/dit-und-dat/wetter-dit-und-dat/" title="Alle Artikel in Wetter anzeigen" rel="category tag">Wetter</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/urlaub-termine-und-wp-upgrade-271/#comments" title="Kommentar zu Urlaub, Termine und WP-Upgrade 2.7.1">10 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<p>Der Urlaub von G&#252;nther ist wieder vorbei und der Alltag hat mich fast wieder. <img src='http://www.colours-of-the-soul.alhelm.net/wp-includes/images/smilies/icon_wink.gif' alt=';)' class='wp-smiley' /><br />
+<br />
+So ganz fit bin ich zwar immer noch nicht, aber ich muss nun auch wieder ein paar Termine f&#252;r Routine-Untersuchungen &#252;ber mich ergehen lassen. Einige davon sind in Bremen und deshalb bin ich die n&#228;chsten Tage auch nicht ganz so regelm&#228;&#223;ig hier zu finden, aber ich versuche trotzdem zwischendurch mal meine ToDo-Liste abzuarbeiten. Da hat sich n&#228;mlich inzwischen schon wieder viel zu viel angesammelt.<br />
+<br />
+Das Upgrade auf <a href="http://www.colours-of-the-soul.alhelm.net/tag/wordpress/" class="st_tag internal_tag" rel="tag" title="Posts tagged with WordPress">WordPress</a> 2.7.1 ist auf &#8216;Colours&#8217; ohne Schwierigkeiten &#252;ber die B&#252;hne gegangen. Allerdings habe ich noch nicht die Zeit gefunden alle <a href="http://www.colours-of-the-soul.alhelm.net/kleine-macken-bei-der-taglichen-arbeit-mit-wordpress-27/">Unstimmigkeiten </a>zu &#252;berpr&#252;fen. Werde also sicher sp&#228;ter noch einmal berichten, ob alles wieder normal l&#228;uft oder ob immer noch <a href="http://www.colours-of-the-soul.alhelm.net/mit-der-uhrzeit/">Etwas </a>dabei ist, welches nicht ganz rund l&#228;uft.<br />
+<br />
+Jetzt w&#252;nsche ich Euch aber erst einmal mit der folgenden Collage einen sch&#246;nen Sonntagnachmittag. <img src='http://www.colours-of-the-soul.alhelm.net/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /><br />
+<br />
+<a class="shutterset_" href='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_winter-collage_02-2009.jpg' title='Winter-Collage 2009'><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_winter-collage_02-2009.jpg' alt='Winter-Collage 2009' width=550 height=450 class='ngg-singlepic ngg-center' /></a><br />
+<center><small>(ein Klick auf die Collage &#246;ffnet die gr&#246;&#223;ere Ansicht)</small></center><br />
+Die <a href="http://www.colours-of-the-soul.alhelm.net/tag/fotos/" class="st_tag internal_tag" rel="tag" title="Posts tagged with Fotos">Fotos</a> sind am Samstag mit der Canon durch die Fensterscheibe geknipst. Mir war es drau&#223;en definitiv zu nasskalt und ich kann und mag es langsam nicht mehr sehen und f&#252;hlen&#8230;</p>
+<div class="ngg-related-gallery"><a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_morgenansicht.jpg" title="2009 - Schnee - Morgens" class="shutterset_Verwandte Bilder von Urlaub, Termine und WP-Upgrade 2.7.1" ><img title="gabya_morgenansicht.jpg" alt="gabya_morgenansicht.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_morgenansicht.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vogelhaus.jpg" title="2009 - Schnee - Vogelhaus" class="shutterset_Verwandte Bilder von Urlaub, Termine und WP-Upgrade 2.7.1" ><img title="gabya_vogelhaus.jpg" alt="gabya_vogelhaus.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_vogelhaus.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/22-12-2007_02.jpg" title="Heilshorn 2007 - Eis" class="shutterset_Verwandte Bilder von Urlaub, Termine und WP-Upgrade 2.7.1" ><img title="22-12-2007_02.jpg" alt="22-12-2007_02.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_22-12-2007_02.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vormittags.jpg" title="2009 - Schnee - Vormittags" class="shutterset_Verwandte Bilder von Urlaub, Termine und WP-Upgrade 2.7.1" ><img title="gabya_vormittags.jpg" alt="gabya_vormittags.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_vormittags.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_winter-collage_02-2009.jpg" title="2009 - Winter-Collage" class="shutterset_Verwandte Bilder von Urlaub, Termine und WP-Upgrade 2.7.1" ><img title="gabya_winter-collage_02-2009.jpg" alt="gabya_winter-collage_02-2009.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_winter-collage_02-2009.jpg" /></a>
+</div>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/wordpress-232-veroffentlicht/" title="WordPress 2.3.2 ver&#246;ffentlicht (30. Dezember 2007)">WordPress 2.3.2 ver&#246;ffentlicht</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/wordpress-231-release/" title="WordPress 2.31 Release (27. Oktober 2007)">WordPress 2.31 Release</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/nachtrag-zum-wp-update/" title="wichtiger Nachtrag zum WP Update 2.03 (7. Juni 2006)">wichtiger Nachtrag zum WP Update 2.03</a> (4)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/kartengruss-von-antonietta/" title="Kartengruss von Antonietta (4. August 2006)">Kartengruss von Antonietta</a> (7)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/geschuetzte-berichte/" title="gesch&#252;tzte Berichte (24. Juli 2006)">gesch&#252;tzte Berichte</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/weise-weihnachten/" title="wei&#223;e Weihnachten? (22. Dezember 2007)">wei&#223;e Weihnachten?</a> (0)</li>
+</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+<div class="beitrag" id="post-3402">
+
+<div class="datum">
+<span class="monat">Feb</span> <span class="tag">10</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/heute-morgen/" rel="bookmark" title="Permanent Link to Heute Morgen&#8230;">Heute Morgen&#8230;</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/fotografie/geknipstes/" title="Alle Artikel in Geknipstes anzeigen" rel="category tag">Geknipstes</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/dit-und-dat/wetter-dit-und-dat/" title="Alle Artikel in Wetter anzeigen" rel="category tag">Wetter</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/heute-morgen/#comments" title="Kommentar zu Heute Morgen&#8230;">20 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<p>&#8230;war es total diesig und der Schnee hing sozusagen in der Luft. Man konnte kaum die B&#228;ume auf der anderen Stra&#223;enseite sehen.<br />
+<br />
+Ein Blick von oben aus dem Fenster:<br />
+<br />
+<a class="shutterset_" href='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_morgenansicht.jpg' title='Morgenansicht'><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_morgenansicht.jpg' alt='Morgenansicht' width=550 height=400 class='ngg-singlepic ngg-center' /></a><br />
+<center><small>(ein Klick auf das Bild &#246;ffnet die gr&#246;&#223;ere Ansicht)</small></center><br />
+<br />
+<a class="shutterset_" href='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vogelhaus.jpg' title='Vogelhaus'><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vogelhaus.jpg' alt='Vogelhaus' width=550 height=400 class='ngg-singlepic ngg-center' /></a><br />
+<center><small>(ein Klick auf das Bild &#246;ffnet die gr&#246;&#223;ere Ansicht)</small></center><br />
+<br />
+<a class="shutterset_" href='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vormittags.jpg' title='Vormittags'><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vormittags.jpg' alt='Vormittags' width=550 height=400 class='ngg-singlepic ngg-center' /></a><br />
+<center><small>(ein Klick auf das Bild &#246;ffnet die gr&#246;&#223;ere Ansicht)</small></center><br />
+<br />
+Das Schneien soll wohl bis Donnerstag anhalten und zum Wochenende soll es Frost mit Sonnenschein geben. W&#228;re ja mal sch&#246;n wenn es so eintrifft&#8230; wenigstens nicht so ein nasskaltes, graues Einerlei wie die letzte Zeit.<br />
+<br />
+Im Moment regnet es allerdings, mal schauen was von der Pracht &#252;ber bleibt. Auf alle F&#228;lle ist es hier wahnsinnig rutschig auf den Stra&#223;en&#8230; passt also gut auf Euch auf.</p>
+<div class="ngg-related-gallery"><a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_winter-collage_02-2009.jpg" title="2009 - Winter-Collage" class="shutterset_Verwandte Bilder von Heute Morgen&#8230;" ><img title="gabya_winter-collage_02-2009.jpg" alt="gabya_winter-collage_02-2009.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_winter-collage_02-2009.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_morgenansicht.jpg" title="2009 - Schnee - Morgens" class="shutterset_Verwandte Bilder von Heute Morgen&#8230;" ><img title="gabya_morgenansicht.jpg" alt="gabya_morgenansicht.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_morgenansicht.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vogelhaus.jpg" title="2009 - Schnee - Vogelhaus" class="shutterset_Verwandte Bilder von Heute Morgen&#8230;" ><img title="gabya_vogelhaus.jpg" alt="gabya_vogelhaus.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_vogelhaus.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/22-12-2007_02.jpg" title="Heilshorn 2007 - Eis" class="shutterset_Verwandte Bilder von Heute Morgen&#8230;" ><img title="22-12-2007_02.jpg" alt="22-12-2007_02.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_22-12-2007_02.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/gabya_vormittags.jpg" title="2009 - Schnee - Vormittags" class="shutterset_Verwandte Bilder von Heute Morgen&#8230;" ><img title="gabya_vormittags.jpg" alt="gabya_vormittags.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/naturereignisse/thumbs/thumbs_gabya_vormittags.jpg" /></a>
+</div>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/und-es-gibt-doch-einen-schneemann/" title="und es gibt doch einen Schneemann&#8230; (21. Dezember 2006)">und es gibt doch einen Schneemann&#8230;</a> (8)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/weihnachtsmuetzen/" title="Weihnachtsm&#252;tzen (5. Januar 2007)">Weihnachtsm&#252;tzen</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/weise-weihnachten/" title="wei&#223;e Weihnachten? (22. Dezember 2007)">wei&#223;e Weihnachten?</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/urlaub-termine-und-wp-upgrade-271/" title="Urlaub, Termine und WP-Upgrade 2.7.1 (15. Februar 2009)">Urlaub, Termine und WP-Upgrade 2.7.1</a> (10)</li>
+</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+<div class="beitrag" id="post-3231">
+
+<div class="datum">
+<span class="monat">Feb</span> <span class="tag">08</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/kultiges-geknipst/" rel="bookmark" title="Permanent Link to &#8216;Kultiges&#8217; geknipst">&#8216;Kultiges&#8217; geknipst</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/fotografie/geknipstes/" title="Alle Artikel in Geknipstes anzeigen" rel="category tag">Geknipstes</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/dit-und-dat/nachdenklich/" title="Alle Artikel in Nachdenklich anzeigen" rel="category tag">Nachdenklich</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/kultiges-geknipst/#comments" title="Kommentar zu &#8216;Kultiges&#8217; geknipst">16 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Only variables should be passed by reference in <b>/www/htdocs/w00a2ebd/wp-includes/wp-db.php</b> on line <b>785</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>736</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::i18n() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>737</b><br />
+<p><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/logobuttons/kultkrempel_mittel.jpg' alt='logo' width=99 height=129 class='ngg-singlepic ngg-left' />Bei Retronaut gibt es eine Mitmach-Aktion&#8230; &#8216;<a href="http://retropa.de/2009/01/20/knips-deinen-kult-krempel/">Knips Deinen KULT Krempel</a>&#8216;. <img src='http://www.colours-of-the-soul.alhelm.net/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /><br />
+Entdeckt habe ich diesen Beitrag und den dazugeh&#246;rigen Kultblog <a href="http://retropa.de/">Retropa </a>vor ca- zwei Wochen bei <a href="http://www.simanja.de/?p=478">Simanja</a>.<br />
+<br />
+Vieles habe ich vor und nach unserem letzten Umzug inzwischen aussortiert und verschenkt, verkauft bzw. entsorgt. Leider kann man sich ja schwer von etwas trennen, aber man muss es hin und wieder mal machen, sonst nimmt es &#220;berhand. &#220;ber das Eine oder Andere hat sich meine Tochter gefreut, so bleibt es in der Familie. <img src='http://www.colours-of-the-soul.alhelm.net/wp-includes/images/smilies/icon_wink.gif' alt=';)' class='wp-smiley' /><br />
+<br />
+Aber Dinge, welche an liebe Menschen erinnern, die w&#252;rde ich niemals weggeben&#8230; oder auch Schallplatten, die heute kaum noch zu bekommen sind und &#196;hnliches, deshalb hat sich in meinem Leben viel Liebgewonnenes, Geerbtes und wohl auch als kultig zu Bezeichnendes angesammelt.<br />
+Manche Sachen darunter m&#246;gen f&#252;r Andere kitschig sein oder keinen Wert haben, aber f&#252;r mich sind und bleiben sie Erinnerungsst&#252;cke.<br />
+<br />
+Da ich mich nicht entscheiden konnte, gibt es von mir drei  Gegenst&#228;nde zu sehen:<br />
+<br />
+<img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/gabya_garndose.gif' alt='Garndose' width=500 height=354 class='ngg-singlepic ngg-center' /><br />
+Diese <a href="http://www.colours-of-the-soul.alhelm.net/tag/fotos/" class="st_tag internal_tag" rel="tag" title="Posts tagged with Fotos">Fotos</a> zeigen einen handbemalten Beh&#228;lter in dem man fr&#252;her das d&#252;nne H&#228;kelgarn w&#228;hrend des H&#228;kelns aufbewahrt hat.<br />
+Diesen Beh&#228;lter haben meine Uroma und meine Oma jeweils lange Zeit benutzt und ich habe ihn vor &#252;ber 37 Jahren von meiner Oma bekommen, als ich selber mit dem Handarbeiten anfing. Leider ist er nun seit ca. 5 Jahren in Rente, weil ich dieses d&#252;nne Garn nicht mehr festhalten kann. Jetzt steht er in meinem Buffet in der Vitrine.<br />
+<br />
+<img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/gabya_oelbild.gif' alt='Bild' width=500 height=406 class='ngg-singlepic ngg-center' /><br />
+Das &#214;lbild ist mehrmals von Bedeutung f&#252;r mich. Einmal ist es von einem Kollegen von meinem Opa gemalt (den Blattgold-Rahmen hat mein Opa selbst gemacht, er war Tischler), das Jahr der Entstehung ist mein Geburtsjahr und meine verstorbene Oma hat es mir noch zu Lebzeiten vermacht. Somit ist es f&#252;r mich seit vielen, vielen Jahren eine lebhafte Erinnerung an meine innig geliebten Gro&#223;eltern. Es h&#228;ngt seit dem immer bei uns im Wohnzimmer.<br />
+<br />
+<img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/gabya_armreif.jpg' alt='Armreif' width=400 height=218 class='ngg-singlepic ngg-center' /><br />
+Das dritte Foto zeigt einen meiner Armreifen. Meine Oma erz&#228;hlte mir, dass sie diesen zur Verlobung von meinem Opa bekommen hatte. Als sie ihn mir gab war ich 17 und mein Opa starb kurz zuvor. Diesen Armreif habe ich gut zwei Jahrzehnte t&#228;glich in Erinnerung an ihn getragen. Jetzt nur noch zu besonderen Anl&#228;ssen, weil ich inzwischen Angst habe, dass er mir zerbricht.<br />
+<br />
+So k&#246;nnte ich eigentlich noch eine Weile weitermachen, aber einen so langen Artikel m&#246;chte ich Euch jetzt nicht zumuten. <img src='http://www.colours-of-the-soul.alhelm.net/wp-includes/images/smilies/icon_smile.gif' alt=':)' class='wp-smiley' /><br />
+F&#252;r mich sind all diese Dinge wichtige Erinnerungsst&#252;cke und kultig weil zeitlos, aber kein Krempel, um wieder auf die Aktion zur&#252;ckzukommen&#8230;</p>
+<div class="ngg-related-gallery"><a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo04-kirche.jpg" title="Projekt 52 - Woche 4 - 2009 -  Kirche - Taufstein" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_p52-wo04-kirche.jpg" alt="gabya_p52-wo04-kirche.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_p52-wo04-kirche.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/projekt52_350x350.jpg" title="Logo" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="projekt52_350x350.jpg" alt="projekt52_350x350.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_projekt52_350x350.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo03-leblos.jpg" title="Projekt 52 - Woche 3 - 2009 -  Leblos - Stein und Moos" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_p52-wo03-leblos.jpg" alt="gabya_p52-wo03-leblos.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_p52-wo03-leblos.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_p52-wo05-sinnesflut.jpg" title="alter Elbtunnel - R&#246;hre" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_p52-wo05-sinnesflut.jpg" alt="gabya_p52-wo05-sinnesflut.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_p52-wo05-sinnesflut.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/gabya_alter-elbtunnel_treppenhaus.jpg" title="alter Elbtunnel - Trepenhaus mit den Autoaufz&#252;gen" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_alter-elbtunnel_treppenhaus.jpg" alt="gabya_alter-elbtunnel_treppenhaus.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/thumbs/thumbs_gabya_alter-elbtunnel_treppenhaus.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/meine-stadt-p52-w01.jpg" title="Projekt 52 - Woche 1 - 2009 -  Deine Stadt - hinter Gitter" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="meine-stadt-p52-w01.jpg" alt="meine-stadt-p52-w01.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_meine-stadt-p52-w01.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/powershot_s5is.jpg" title="PowerShot S5 SI" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="powershot_s5is.jpg" alt="powershot_s5is.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/thumbs/thumbs_powershot_s5is.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_lastenkraene.jpg" title="Projekt 52 - Woche 1 - 2009 -  Deine Stadt - ein Blick auf die Lastenkr&#228;ne bei den Landungsbr&#252;cken in Hamburg" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_lastenkraene.jpg" alt="gabya_lastenkraene.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_lastenkraene.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/gabya_alter-elbtunnel_infotafel.jpg" title="alter Elbtunnel - Informationstafel" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_alter-elbtunnel_infotafel.jpg" alt="gabya_alter-elbtunnel_infotafel.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/hamburg-alter-elbtunnel/thumbs/thumbs_gabya_alter-elbtunnel_infotafel.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/gabya_muehle-bremen-wallanlagen.jpg" title="Projekt 52 - Woche 1 - 2009 - Deine Stadt - M&#252;hle in den Bremer Wallanlagen" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_muehle-bremen-wallanlagen.jpg" alt="gabya_muehle-bremen-wallanlagen.jpg" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/projekt52/thumbs/thumbs_gabya_muehle-bremen-wallanlagen.jpg" /></a>
+<a href="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/gabya_garndose.gif" title="Garndose" class="shutterset_Verwandte Bilder von &#8216;Kultiges&#8217; geknipst" ><img title="gabya_garndose.gif" alt="gabya_garndose.gif" src="http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/thumbs/thumbs_gabya_garndose.gif" /></a>
+</div>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-02-zeit/" title="P 52-09-W 02- Zeit (18. Januar 2009)">P 52-09-W 02- Zeit</a> (14)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/lichterspiele/" title="Lichterspiele (5. Januar 2009)">Lichterspiele</a> (20)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/projekt-52/" title="Foto - Projekt 52 (4. Januar 2009)">Foto - Projekt 52</a> (13)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/p-52-09-w-01-meine-stadt/" title="P 52-09-W 01- meine Stadt (7. Januar 2009)">P 52-09-W 01- meine Stadt</a> (37)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/fotos/" title="Fotos (16. Dezember 2008)">Fotos</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/ein-bilderstoeckchen/" title="ein Bilderst&#246;ckchen (21. Januar 2009)">ein Bilderst&#246;ckchen</a> (22)</li>
+</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+<div class="beitrag" id="post-3299">
+
+<div class="datum">
+<span class="monat">Feb</span> <span class="tag">03</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/wordpress-271-steht-in-den-startloechern-und/" rel="bookmark" title="Permanent Link to WordPress 2.7.1 steht in den Startl&#246;chern und&#8230;">WordPress 2.7.1 steht in den Startl&#246;chern und&#8230;</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/wordpress/blog-hinweise-wordpress/" title="Alle Artikel in Blog-Hinweise anzeigen" rel="category tag">Blog-Hinweise</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/persnliches/" title="Alle Artikel in Persönliches anzeigen" rel="category tag">Persönliches</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/wordpress/wp-update/" title="Alle Artikel in WP-Update anzeigen" rel="category tag">WP-Update</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/wordpress-271-steht-in-den-startloechern-und/#comments" title="Kommentar zu WordPress 2.7.1 steht in den Startl&#246;chern und&#8230;">8 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<p>&#8230; ein kleiner Hinweis in eigener Sache.<br />
+<br />
+Wie ich eben im Feedreader sehen konnte ist das Beta von 2.7.1 heraus und das finale Release soll nicht mehr lange auf sich warten lassen. Es bringt zwar keine neuen Funktionen, aber es sind bis jetzt 65 Tickets geschlossen worden.<br />
+Mal schauen, ob dann der <a href="http://www.colours-of-the-soul.alhelm.net/kleine-macken-bei-der-taglichen-arbeit-mit-wordpress-27/">eine </a>oder <a href="http://www.colours-of-the-soul.alhelm.net/mit-der-uhrzeit/">andere </a>Mangel auch behoben wurde.<br />
+Die <a href="http://blog.wordpress-deutschland.org/2009/01/31/wordpress-271-beta-1-ist-verfuegbar.html">Informationen </a>habe ich bei WPD gelesen. Dort sind auch weiterf&#252;hrende Links bez&#252;glich der Tickets oder des Downloads der Beta-Version zu finden.<br />
+<br />
+Nun noch etwas zu mir. *g*<br />
+<br />
+Wie ihr gemerkt habt, ist mein versprochener Artikel &#252;ber das Event und meine Besuche bei Euch seit dem Wochenende wieder ausgeblieben. Das hatte den Grund, dass ich mich mit dem <a href="http://www.colours-of-the-soul.alhelm.net/tina-turner-live-in-concert/">genialen Konzert</a> bei Tina Turner und der am Samstag folgenden Einladung absolut &#252;bernommen hatte.<br />
+<br />
+Das Fieber war wieder da und ich f&#252;hle mich vollkommen schlapp und kaum zum Denken f&#228;hig. Auch l&#228;sst der Rheuma-Schub trotz Cortison nicht nach. Deshalb werde ich jetzt noch ein paar Tage k&#252;rzer treten, damit ich nicht wieder ganz auf der Nase liege.<br />
+<br />
+Ich bitte Euch um Verst&#228;ndnis, wenn ich nicht wie gewohnt noch am gleichen Tage reagiere oder nicht alle Beitr&#228;ge bei Euch sofort kommentieren kann. Ich m&#246;chte einfach nicht wieder gar nichts mehr machen k&#246;nnen, wie zeitweilig in den letzten Jahren, und mein K&#246;rper hat mich jetzt gewarnt, also h&#246;re ich auf ihn&#8230; soweit ich es kann. <img src='http://www.colours-of-the-soul.alhelm.net/wp-includes/images/smilies/icon_wink.gif' alt=';)' class='wp-smiley' /> </p>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/vergesslichkeit/" title="Vergesslichkeit (15. November 2007)">Vergesslichkeit</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/verdacht-auf-herzinfarkt/" title="Verdacht auf Herzinfarkt (29. Mai 2007)">Verdacht auf Herzinfarkt</a> (0)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/translator-bericht/" title="Bericht &#252;ber das Translator Plugin (26. Juni 2006)">Bericht &#252;ber das Translator Plugin</a> (6)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/keywords-und-verwandte-beitraege/" title="Keywords und verwandte Beitr&#228;ge (28. August 2006)">Keywords und verwandte Beitr&#228;ge</a> (1)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/plugin-akismet/" title="Plugin Akismet (26. Mai 2006)">Plugin Akismet</a> (1)</li>
+	<li><a href="http://www.colours-of-the-soul.alhelm.net/keine-commentphp/" title="keine &#8216;comment.php&#8217; (19. Mai 2006)">keine &#8216;comment.php&#8217;</a> (0)</li>
+</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+<div class="beitrag" id="post-3274">
+
+<div class="datum">
+<span class="monat">Jan</span> <span class="tag">29</span><span class="jahr">2009</span>
+</div><!--Ende datum-->
+
+<div class="beitragskopf">
+<h2><a href="http://www.colours-of-the-soul.alhelm.net/abschied-von-soenke/" rel="bookmark" title="Permanent Link to Abschied von S&#246;nke">Abschied von S&#246;nke</a></h2>
+
+<div class="beitragsinfo">
+<span class="kat">Abgelegt unter: <a href="http://www.colours-of-the-soul.alhelm.net/category/dit-und-dat/nachdenklich/" title="Alle Artikel in Nachdenklich anzeigen" rel="category tag">Nachdenklich</a>, <a href="http://www.colours-of-the-soul.alhelm.net/category/persnliches/" title="Alle Artikel in Persönliches anzeigen" rel="category tag">Persönliches</a></span><span class="komm"><a href="http://www.colours-of-the-soul.alhelm.net/abschied-von-soenke/#comments" title="Kommentar zu Abschied von S&#246;nke">7 Kommentare</a></span>
+
+</div><!--Ende beitragsinfo-->
+
+</div><!--Ende beitragskopf-->
+
+<div class="text">
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>813</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggGallery::get_option() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>716</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggTags::find_images_for_tags() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/nggfunctions.php</b> on line <b>719</b><br />
+<br />
+<b>Strict Standards</b>:  Non-static method nggdb::find_images_in_list() should not be called statically in <b>/www/htdocs/w00a2ebd/wp-content/plugins/nextgen-gallery/lib/tags.php</b> on line <b>320</b><br />
+<p><img src='http://www.colours-of-the-soul.alhelm.net/bilder-galerie-alles/unsortiertes/ga_in-erinnerung.jpg' alt='ga_in-erinnerung.jpg' class='ngg-singlepic ngg-left' />Lieber S&#246;nke,<br />
+<br />
+seit wir uns vor ca. zehn Jahren &#252;ber Silvi kennen gelernt haben, begleiten Deine Gedanken, Worte und <a href="http://www.colours-of-the-soul.alhelm.net/tag/fotos/" class="st_tag internal_tag" rel="tag" title="Posts tagged with Fotos">Fotos</a> mich. Du hast mich damals, als ich kaum Kraft mehr aufbringen konnte, immer wieder aufgerichtet.<br />
+Danach hast Du mir immer wieder mit lieben Worten zur Seite gestanden und ich hatte oft das Gef&#252;hl, dass ich Dir das Alles niemals wieder zur&#252;ckgeben kann, aber Du bist ein Mensch, der von solchen Gedanken gar nichts wissen will, der selbstlos f&#252;r andere da war.<br />
+<br />
+Die Nachricht von Deinem Abschied hat mich fassungslos gemacht, aber Deine <a href="http://www.colours-of-the-soul.alhelm.net/tag/fotos/" class="st_tag internal_tag" rel="tag" title="Posts tagged with Fotos">Fotos</a> haben mir wieder einmal die Ruhe, Kraft und Geborgenheit gegeben. Ich wusste ja, wie krank Du warst, aber man m&#246;chte es nicht wahrhaben und man hofft, dass es gut wird.<br />
+<br />
+Du wirst in meinem Herzen immer Deinen Platz behalten. Es ist ein Geschenk Dich gekannt zu haben. Lebwohl und gute Reise. Irgendwann und Irgendwo in einem anderen Leben&#8230;<br />
+<br />
+Mein herzliches Beileid an Deine Familie. M&#246;ge es ein Trost f&#252;r sie sein, dass so viele Menschen Dich als Menschen geliebt haben und Dich nicht vergessen werden.<br />
+<br />
+Gaby<br />
+<br />
+PS: Ich hab noch etwas vergessen&#8230; Wie f&#252;hlen sich die Farben des Regenbogens an ? Warm oder kalt&#8230;</p>
+
+	<h4>Verwandte Artikel</h4>
+	<ul class="st-related-posts">
+	<li>Keine verwandten Artikel</li>
+	</ul>
+
+</div><!--Ende text-->
+
+<div class="bearbeiten"></div>
+
+</div><!--Ende beitrag-->
+
+
+
+<div class="navigation">
+<div class="wp-pagenavi">
+<span class="pages">&#8201;Seite 1 von 35&#8201;</span><span class="current">&#8201;1&#8201;</span><a href="http://www.colours-of-the-soul.alhelm.net/page/2/" title="2">&#8201;2&#8201;</a><a href="http://www.colours-of-the-soul.alhelm.net/page/3/" title="3">&#8201;3&#8201;</a><a href="http://www.colours-of-the-soul.alhelm.net/page/4/" title="4">&#8201;4&#8201;</a><a href="http://www.colours-of-the-soul.alhelm.net/page/5/" title="5">&#8201;5&#8201;</a><a href="http://www.colours-of-the-soul.alhelm.net/page/6/" title="6">&#8201;6&#8201;</a><a href="http://www.colours-of-the-soul.alhelm.net/page/7/" title="7">&#8201;7&#8201;</a><a href="http://www.colours-of-the-soul.alhelm.net/page/2/" >&raquo;</a><span class="extend">&#8201;...&#8201;</span><a href="http://www.colours-of-the-soul.alhelm.net/page/35/" title="Letzte &raquo;">&#8201;Letzte &raquo;&#8201;</a></div>
+
+<!--<div class="next"></div>
+<div class="prev"><a href="http://www.colours-of-the-soul.alhelm.net/page/2/" >&Auml;ltere  Eintr&auml;ge &raquo;</a></div>
+ -->
+
+</div><!--Ende navigation-->
+<br />
+
+</div><!--Ende content-->
+
+<div id="fuss">
+Gaby&#8217;s - Colours of the Soul l&auml;uft unter <a href="http://wordpress.org" title="Wordpress"><strong>Wordpress</strong> 5204<br /> </a> Anpassung und Design: <a href="http://www.gabis-wordpress-templates.de">Gabis Wordpress-Templates</a><br />
+
+146 Verweise - 0,633 Sekunden.
+
+<script type="text/javascript">
+<!--
+var getOptions = new Array();
+getOptions['showYear'] = 1;
+getOptions['showMonth'] = 1;
+getOptions['showWeek'] = 0;
+getOptions['showDay'] = 1;
+getOptions['showHour'] = 0;
+getOptions['showMinute'] = 0;
+getOptions['showSecond'] = 0;
+getOptions['stripZero'] = 1;
+var fergcorp_countdownTimer_js_language = new Array();
+fergcorp_countdownTimer_js_language['year'] = '%d Jahr,';
+fergcorp_countdownTimer_js_language['years'] = '%d Jahre,';
+fergcorp_countdownTimer_js_language['month'] = '%d Monat,';
+fergcorp_countdownTimer_js_language['months'] = '%d Monaten,';
+fergcorp_countdownTimer_js_language['week'] = '%d Woche,';
+fergcorp_countdownTimer_js_language['weeks'] = '%d Wochen,';
+fergcorp_countdownTimer_js_language['day'] = '%d Tag,';
+fergcorp_countdownTimer_js_language['days'] = '%d Tagen,';
+fergcorp_countdownTimer_js_language['hour'] = '%d Stunde,';
+fergcorp_countdownTimer_js_language['hours'] = '%d Stunden,';
+fergcorp_countdownTimer_js_language['minute'] = '%d Minute,';
+fergcorp_countdownTimer_js_language['minutes'] = '%d Minuten,';
+fergcorp_countdownTimer_js_language['second'] = '%d Sekunde,';
+fergcorp_countdownTimer_js_language['seconds'] = '%d Sekunden,';
+fergcorp_countdownTimer_js_language['ago'] = 'vor %s';
+fergcorp_countdownTimer_js_language['in'] = 'in %s';
+var fergcorp_countdownTimer_js_events = new Array();
+fergcorp_countdownTimer_js_events[0] = new Array()
+fergcorp_countdownTimer_js_events[0]['id'] 		= "xa7c55516dc45f957004948916bfef0be";
+fergcorp_countdownTimer_js_events[0]['targetDate'] 	= "1049842800";
+fergcorp_countdownTimer_js();
+//-->
+</script>
+
+</div><!--Ende Fuss-->
+
+</div><!--Ende Wrapper-->
+</body>
+</html>

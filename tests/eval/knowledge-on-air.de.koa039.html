@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="de-DE">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="de-DE">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="de-DE">
+<![endif]-->
+<!--[if !(IE 6) & !(IE 7) & !(IE 8)]><!-->
+<html lang="de-DE">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>KOA039 Live vom KnowledgeCamp 2019 | Knowledge on Air</title>
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="stylesheet" type="text/css" media="all" href="https://s2.wp.com/wp-content/themes/pub/twentyeleven/style.css" />
+<link rel="pingback" href="https://knowledge-on-air.de/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="https://s2.wp.com/wp-content/themes/pub/twentyeleven/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+<script type="text/javascript">
+  WebFontConfig = {"google":{"families":["Noto+Serif:r:latin,latin-ext","Noto+Sans:r,i,b,bi:latin,latin-ext"]}};
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = 'https://s0.wp.com/wp-content/plugins/custom-fonts/js/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+	})();
+</script><style id="jetpack-custom-fonts-css">.wf-active #site-title{font-family:"Noto Serif",serif;font-style:normal;font-weight:400}.wf-active #site-title a{font-weight:400;font-style:normal}@media print{.wf-active #site-title a{font-style:normal;font-weight:400}}.wf-active blockquote, .wf-active body{font-family:"Noto Sans",sans-serif}.wf-active body, .wf-active input, .wf-active textarea{font-family:"Noto Sans",sans-serif}.wf-active blockquote{font-family:"Noto Sans",sans-serif}.wf-active blockquote cite{font-family:"Noto Sans",sans-serif}.wf-active .gallery-caption, .wf-active .wp-caption .wp-caption-text{font-family:"Noto Sans",sans-serif}.wf-active .entry-header .comments-link .leave-reply{font-family:"Noto Sans",sans-serif}.wf-active h1, .wf-active h2, .wf-active h3, .wf-active h4, .wf-active h5, .wf-active h6{font-family:"Noto Serif",serif;font-style:normal;font-weight:400}.wf-active .page-title{font-weight:400;font-style:normal}.wf-active .entry-title{font-weight:400;font-style:normal}.wf-active .comment-content h1, .wf-active .comment-content h2, .wf-active .entry-content h1, .wf-active .entry-content h2{font-weight:400;font-style:normal}.wf-active .comment-content h3, .wf-active .entry-content h3{font-style:normal;font-weight:400}.wf-active #author-description h2{font-weight:400;font-style:normal}.wf-active .singular .entry-title{font-weight:400;font-style:normal}.wf-active .error404 .widgettitle{font-style:normal;font-weight:400}.wf-active h1.showcase-heading{font-weight:400;font-style:normal}.wf-active section.recent-posts .other-recent-posts .entry-title{font-style:normal;font-weight:400}.wf-active .widget-title{font-weight:400;font-style:normal}.wf-active .widget_twentyeleven_ephemera .widget-entry-title{font-weight:400;font-style:normal}.wf-active #comments-title{font-weight:400;font-style:normal}.wf-active #reply-title{font-weight:400;font-style:normal}@media print{.wf-active .entry-title, .wf-active .singular .entry-title{font-style:normal;font-weight:400}}</style>
+
+<!-- Async WordPress.com Remote Login -->
+<script id="wpcom_remote_login_js">
+var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.remove(); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[i].remove();
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '/remote-login.php?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+						+ '//' + window.location.hostname;
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly9rbm93bGVkZ2Utb24tYWlyLmRl"
+		+ "&wpcomid=57812531"
+		+ "&time=1581446509";
+	document.body.appendChild( iframe );
+}, false );
+</script>
+<link rel='dns-prefetch' href='//s2.wp.com' />
+<link rel='dns-prefetch' href='//s1.wp.com' />
+<link rel='dns-prefetch' href='//knowledgeonair.wordpress.com' />
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel="alternate" type="application/rss+xml" title="Knowledge on Air &raquo; Feed" href="https://knowledge-on-air.de/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Knowledge on Air &raquo; Kommentar-Feed" href="https://knowledge-on-air.de/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Knowledge on Air &raquo; KOA039 Live vom KnowledgeCamp&nbsp;2019 Kommentar-Feed" href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/feed/" />
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+			<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s0.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1573557586h&ver=5.3.2"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='all-css-0-1' href='https://s2.wp.com/_static/??-eJy1U9tS4zAM/aF1nDZpUh529ltsR3ENvmR8Idu/R44DhQKhA8NLItk60pF0TOeJCGcj2EhNIpNOUtlAPWgWYSCTC/HKq0QIf+jHMK0eINB7iBMTD2Tx3oU/x8qELgcv8cYD7aumqilPSg+Ua7fAuWf+TEM8a/h5mngCc0uaBXVpAh4xDMOTjYOb7c1srtJodnYpEunV8N0UnkVlZfguPCoDWln4Aj8mrUlQEQgMKhdcl0u75tB3x75ruRjH/bFno9hBM9QtdNCOfcOgrfd3TZfHLotUCgU6qBDpo4L506LCrWR31b6udmSehDMFVy6qQnrZ6y9SL6w11n1N/fp06wVkEeK5mVjMEQaZMNCoPBu3YLMaJOBLw5DVJhH+b0PyjAjnk4cQCH6NSoYsKn//6MoxnRKnccaDM3JCYT9P99bwZQtlOwWjqHVRISy8GFucJTiCFVHIzr5xyKiZ8ltQD1lXaMplSBd3C8RETs6Zv1i/qB6pHWeYIw8pP1PsTOCEmd1UTFZXaZ+GE/O5wfW/hQpOKKyFM3Bvnc92eWpXfjngn/m7OxzrY3PXNIf7J/O+ODs=?cssminify=yes' type='text/css' media='all' />
+<style id='wp-block-library-inline-css'>
+.has-text-align-justify {
+	text-align:justify;
+}
+</style>
+<style id='jetpack-global-styles-frontend-style-inline-css'>
+:root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+</style>
+<script>
+var related_posts_js_options = {"post_heading":"h4"};
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??-eJyFj9EOwiAMRX9Ihntw0wfjtyCrpAgFKbjo1wuJPrgsmjRpbnpy762co0DSrkzA0ta5FUiP9+osb+QvQHg0SWXoPNIH1oEyUG5sDJw9MCsDK1cfzuhAFIZUAco15hKWnC8iumKQWCZwNWoSzXWhVty/H0G6I8x/MQs5Kn0VCRifrfPJH/vd2B+24zDs7QszQHB9'></script>
+<link rel='stylesheet' id='all-css-0-2' href='https://s0.wp.com/wp-content/mu-plugins/highlander-comments/style.css?m=1530132353h&cssminify=yes' type='text/css' media='all' />
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://knowledgeonair.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='KOA038 Ulrich nutzt die ISO&nbsp;30401' href='https://knowledge-on-air.de/2019/06/29/koa038-ulrich-nutzt-die-iso-30401/' />
+<meta name="generator" content="WordPress.com" />
+<link rel="canonical" href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/" />
+<link rel='shortlink' href='https://wp.me/p3UzGb-6d' />
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fknowledge-on-air.de%2F2019%2F12%2F17%2Fkoa039-live-vom-knowledgecamp-2019%2F&amp;for=wpcom-auto-discovery" /><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fknowledge-on-air.de%2F2019%2F12%2F17%2Fkoa039-live-vom-knowledgecamp-2019%2F&amp;for=wpcom-auto-discovery" />
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="KOA039 Live vom KnowledgeCamp 2019" />
+<meta property="og:url" content="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/" />
+<meta property="og:description" content="Auch auf dem KnowledgeCamp 2019, das vom in Berlin stattfand, haben wir live gepodcastet. Zu Gast waren Prof. Peter Heisig und Dr. Manfred Bornemann, die über ihre Eindrücke vom Camp erzählen. Down…" />
+<meta property="article:published_time" content="2019-12-17T12:55:08+00:00" />
+<meta property="article:modified_time" content="2020-01-14T19:13:24+00:00" />
+<meta property="og:site_name" content="Knowledge on Air" />
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg" />
+<meta property="og:locale" content="de_DE" />
+<meta name="twitter:site" content="@wordpressdotcom" />
+<meta name="twitter:text:title" content="KOA039 Live vom KnowledgeCamp&nbsp;2019" />
+<meta name="twitter:card" content="summary" />
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom" />
+
+<!-- End Jetpack Open Graph Tags -->
+<link rel="shortcut icon" type="image/x-icon" href="https://s1.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48" />
+<link rel="icon" type="image/x-icon" href="https://s1.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48" />
+<link rel="apple-touch-icon-precomposed" href="https://s2.wp.com/i/webclip.png" />
+<link rel='openid.server' href='https://knowledge-on-air.de/?openidserver=1' />
+<link rel='openid.delegate' href='https://knowledge-on-air.de/' />
+<link rel="search" type="application/opensearchdescription+xml" href="https://knowledge-on-air.de/osd.xml" title="Knowledge on Air" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com" />
+<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>		<style type="text/css">
+			.recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+		</style>
+		<meta name="application-name" content="Knowledge on Air" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-tooltip" content="Unsere Mission: Professioneller Umgang mit Wissen - eine Selbstverständlichkeit" /><meta name="msapplication-task" content="name=Abonnieren;action-uri=https://knowledge-on-air.de/feed/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=Registriere dich für einen kostenlosen Blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com-Support;action-uri=http://support.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com-Foren;action-uri=http://forums.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="description" content="Auch auf dem KnowledgeCamp 2019, das vom in Berlin stattfand, haben wir live gepodcastet. Zu Gast waren Prof. Peter Heisig und Dr. Manfred Bornemann, die über ihre Eindrücke vom Camp erzählen. Download: mp3" />
+<link rel="amphtml" href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/amp/"></head>
+
+<body class="post-template-default single single-post postid-385 single-format-standard wp-embed-responsive customizer-styles-applied singular two-column right-sidebar highlander-enabled highlander-light">
+<div id="page" class="hfeed">
+	<header id="branding" role="banner">
+			<hgroup>
+				<h1 id="site-title"><span><a href="https://knowledge-on-air.de/" rel="home">Knowledge on Air</a></span></h1>
+				<h2 id="site-description">Unsere Mission: Professioneller Umgang mit Wissen &#8211; eine Selbstverständlichkeit</h2>
+			</hgroup>
+
+						<a href="https://knowledge-on-air.de/">
+									<img src="https://knowledgeonair.files.wordpress.com/2014/02/cropped-koa-coverart.png" width="1000" height="284" alt="" />
+							</a>
+			
+								<form method="get" id="searchform" action="https://knowledge-on-air.de/">
+		<label for="s" class="assistive-text">Suchen</label>
+		<input type="text" class="field" name="s" id="s" placeholder="Suchen" />
+		<input type="submit" class="submit" name="submit" id="searchsubmit" value="Suchen" />
+	</form>
+			
+			<nav id="access" role="navigation">
+				<h3 class="assistive-text">Hauptmenü</h3>
+								<div class="skip-link"><a class="assistive-text" href="#content">Zum Inhalt wechseln</a></div>
+												<div class="menu"><ul>
+<li ><a href="https://knowledge-on-air.de/">Startseite</a></li><li class="page_item page-item-106"><a href="https://knowledge-on-air.de/abonnieren/">Abonnieren</a></li>
+<li class="page_item page-item-51"><a href="https://knowledge-on-air.de/impressum/">Impressum</a></li>
+</ul></div>
+			</nav><!-- #access -->
+	</header><!-- #branding -->
+
+
+	<div id="main">
+
+		<div id="primary">
+			<div id="content" role="main">
+
+				
+					<nav id="nav-single">
+						<h3 class="assistive-text">Beitragsnavigation</h3>
+						<span class="nav-previous"><a href="https://knowledge-on-air.de/2019/06/29/koa038-ulrich-nutzt-die-iso-30401/" rel="prev"><span class="meta-nav">&larr;</span> Vorherige</a></span>
+						<span class="nav-next"></span>
+					</nav><!-- #nav-single -->
+
+					
+<article id="post-385" class="post-385 post type-post status-publish format-standard hentry category-podcast tag-berlin tag-gkc19">
+	<header class="entry-header">
+		<h1 class="entry-title">KOA039 Live vom KnowledgeCamp&nbsp;2019</h1>
+
+				<div class="entry-meta">
+						<span class="sep">Veröffentlicht am </span><a href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/" title="14:55" rel="bookmark"><time class="entry-date" datetime="2019-12-17T14:55:08+02:00">17. Dezember 2019</time></a><span class="by-author"> <span class="sep"> von </span> <span class="author vcard"><a class="url fn n" href="https://knowledge-on-air.de/author/simondueckert/" title="Zeige alle Beiträge von Simon Dückert" rel="author">Simon Dückert</a></span></span>		</div><!-- .entry-meta -->
+			</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p>Auch auf dem <a href="https://www.gfwm.de/knowledgecamp-2019/">KnowledgeCamp 2019</a>, das vom in Berlin stattfand, haben wir live gepodcastet. Zu Gast waren Prof. <a href="https://www.xing.com/profile/Peter_Heisig">Peter Heisig</a> und Dr. <a href="https://www.xing.com/profile/Manfred_Bornemann">Manfred Bornemann</a>, die über ihre Eindrücke vom Camp erzählen.</p>
+<p><!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+<audio class="wp-audio-shortcode" id="audio-385-1" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="https://knowledgeonair.files.wordpress.com/2019/12/koa039-live-vom-gkc19.mp3?_=1" /><a href="https://knowledgeonair.files.wordpress.com/2019/12/koa039-live-vom-gkc19.mp3">https://knowledgeonair.files.wordpress.com/2019/12/koa039-live-vom-gkc19.mp3</a></audio><br />
+Download: <a href="https://knowledgeonair.files.wordpress.com/2019/12/koa039-live-vom-gkc19.mp3">mp3</a></p>
+<p><!-- if9u3B8fj2r1vlfu38akn8zas5898RAjbueqrwro --></p>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Sharen mit:</h3><div class="sd-content"><ul><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-385" class="share-twitter sd-button share-icon" href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/?share=twitter" target="_blank" title="Klick, um über Twitter zu teilen"><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-385" class="share-facebook sd-button share-icon" href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/?share=facebook" target="_blank" title="Click to share on Facebook"><span>Facebook</span></a></li><li class="share-custom share-custom-flattr"><a rel="nofollow noopener noreferrer" data-shared="" class="share-custom share-custom-flattr sd-button share-icon" href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/?share=custom-1441985268" target="_blank" title="Zum Teilen auf Flattr klicken"><span style="background-image:url(&quot;https://flattr.com/_img/icons/flattr_logo_16.png&quot;);">Flattr</span></a></li><li class="share-end"></li></ul></div></div></div><div class='sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-unloaded' id='like-post-wrapper-57812531-385-5e42f56dab690' data-src='//widgets.wp.com/likes/index.html?ver=20190321#blog_id=57812531&amp;post_id=385&amp;origin=knowledgeonair.wordpress.com&amp;obj_id=57812531-385-5e42f56dab690&amp;domain=knowledge-on-air.de' data-name='like-post-frame-57812531-385-5e42f56dab690'><h3 class='sd-title'>Gefällt mir:</h3><div class='likes-widget-placeholder post-likes-widget-placeholder' style='height: 55px;'><span class='button'><span>Liken</span></span> <span class="loading">Lade&#160;&hellip;</span></div><span class='sd-text-color'></span><a class='sd-link-color'></a></div>
+<div id='jp-relatedposts' class='jp-relatedposts' >
+	<h3 class="jp-relatedposts-headline"><em>Ähnliche Beiträge</em></h3>
+</div></div>			</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+		Dieser Eintrag wurde veröffentlicht in <a href="https://knowledge-on-air.de/category/podcast/" rel="category tag">Podcast</a> und verschlagwortet mit <a href="https://knowledge-on-air.de/tag/berlin/" rel="tag">berlin</a>, <a href="https://knowledge-on-air.de/tag/gkc19/" rel="tag">gkc19</a> von <a href="https://knowledge-on-air.de/author/simondueckert/">Simon Dückert</a>. <a href="https://knowledge-on-air.de/2019/12/17/koa039-live-vom-knowledgecamp-2019/" title="Permanentlink für KOA039 Live vom KnowledgeCamp&nbsp;2019" rel="bookmark">Permanentlink</a>.		
+				<div id="author-info">
+			<div id="author-avatar">
+				<img alt='' src='https://2.gravatar.com/avatar/2a39db0cbfc99c9b18eabff230e1fcf0?s=68&#038;d=https%3A%2F%2F2.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D68&#038;r=G' class='avatar avatar-68' height='68' width='68' />			</div><!-- #author-avatar -->
+			<div id="author-description">
+				<h2>Über Simon Dückert</h2>
+				Scholarch der Cogneon Akademie. Von der Ausbildung Dipl.-Ing. Elektrotechnik mit Schwerpunkt Digitale Nachrichtentechnik. Ich brenne für Lernende Organisationen, Wissensmanagement, New Work und Lebenslanges Lernen. Mitglied in Corporate Learning Community, Gesellschaft für Wissensmanagement, Chaos Computer Club uvm. Weiterer Podcast unter http://knowledge-on-air.de.				<div id="author-link">
+					<a href="https://knowledge-on-air.de/author/simondueckert/" rel="author">
+						Zeige alle Beiträge von Simon Dückert <span class="meta-nav">&rarr;</span>					</a>
+				</div><!-- #author-link	-->
+			</div><!-- #author-description -->
+		</div><!-- #author-info -->
+			</footer><!-- .entry-meta -->
+</article><!-- #post-385 -->
+
+						<div id="comments">
+	
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Kommentar verfassen <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2019/12/17/koa039-live-vom-knowledgecamp-2019/#respond" style="display:none;">Antwort abbrechen</a></small></h3><form action="https://knowledge-on-air.de/wp-comments-post.php" method="post" id="commentform" class="comment-form"><input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="7bad9ef1ac" /><input type="hidden" name="_wp_http_referer" value="/2019/12/17/koa039-live-vom-knowledgecamp-2019/" />
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
+
+<div class="comment-form-field comment-textarea">
+	<label for="comment">Gib hier deinen Kommentar ein ...</label>
+	<div id="comment-form-comment"><textarea id="comment" name="comment" title="Gib hier deinen Kommentar ein ..."></textarea></div>
+</div>
+
+<div id="comment-form-identity">
+	<div id="comment-form-nascar">
+		<p>Trage deine Daten unten ein oder klicke ein Icon um dich einzuloggen:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" class="nascar-signin-link"
+                   title="Login via Gast">
+									</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" class="nascar-signin-link"
+                   title="Login via WordPress.com">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#0087be" d="M12.158 12.786l-2.698 7.84c.806.236 1.657.365 2.54.365 1.047 0 2.05-.18 2.986-.51-.024-.037-.046-.078-.065-.123l-2.762-7.57zM3.008 12c0 3.56 2.07 6.634 5.068 8.092L3.788 8.342c-.5 1.117-.78 2.354-.78 3.658zm15.06-.454c0-1.112-.398-1.88-.74-2.48-.456-.74-.883-1.368-.883-2.11 0-.825.627-1.595 1.51-1.595.04 0 .078.006.116.008-1.598-1.464-3.73-2.36-6.07-2.36-3.14 0-5.904 1.613-7.512 4.053.21.008.41.012.58.012.94 0 2.395-.114 2.395-.114.484-.028.54.684.057.74 0 0-.487.058-1.03.086l3.275 9.74 1.968-5.902-1.4-3.838c-.485-.028-.944-.085-.944-.085-.486-.03-.43-.77.056-.742 0 0 1.484.114 2.368.114.94 0 2.397-.114 2.397-.114.486-.028.543.684.058.74 0 0-.488.058-1.03.086l3.25 9.665.897-2.997c.456-1.17.684-2.137.684-2.907zm1.82-3.86c.04.286.06.593.06.924 0 .912-.17 1.938-.683 3.22l-2.746 7.94c2.672-1.558 4.47-4.454 4.47-7.77 0-1.564-.4-3.033-1.1-4.314zM12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></g></svg>				</a>
+			</li>
+			<li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" class="nascar-signin-link"
+                   title="Login via Twitter">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#1DA1F2" d="M22.23 5.924c-.736.326-1.527.547-2.357.646.847-.508 1.498-1.312 1.804-2.27-.793.47-1.67.812-2.606.996C18.325 4.498 17.258 4 16.078 4c-2.266 0-4.103 1.837-4.103 4.103 0 .322.036.635.106.935-3.41-.17-6.433-1.804-8.457-4.287-.353.607-.556 1.312-.556 2.064 0 1.424.724 2.68 1.825 3.415-.673-.022-1.305-.207-1.86-.514v.052c0 1.988 1.415 3.647 3.293 4.023-.344.095-.707.145-1.08.145-.265 0-.522-.026-.773-.074.522 1.63 2.038 2.817 3.833 2.85-1.404 1.1-3.174 1.757-5.096 1.757-.332 0-.66-.02-.98-.057 1.816 1.164 3.973 1.843 6.29 1.843 7.547 0 11.675-6.252 11.675-11.675 0-.178-.004-.355-.012-.53.802-.578 1.497-1.3 2.047-2.124z"/></g></svg>				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" class="nascar-signin-link"
+                   title="Login via Facebook">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#3B5998" d="M20.007 3H3.993C3.445 3 3 3.445 3 3.993v16.013c0 .55.445.994.993.994h8.62v-6.97H10.27V11.31h2.346V9.31c0-2.325 1.42-3.59 3.494-3.59.993 0 1.847.073 2.096.106v2.43h-1.438c-1.128 0-1.346.537-1.346 1.324v1.734h2.69l-.35 2.717h-2.34V21h4.587c.548 0 .993-.445.993-.993V3.993c0-.548-.445-.993-.993-.993z"/></g></svg>				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Gravatar" width="25" class="no-grav" />
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">E-Mail  <span class="required">(erforderlich)</span> <span class="nopublish">(Adresse wird niemals veröffentlicht)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(erforderlich)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="url" value="" /></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="WordPress.com-Logo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="" />
+						<p class="comment-form-posting-as pa-wordpress">
+			<strong></strong>
+			Du kommentierst mit Deinem WordPress.com-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#0087be" d="M12.158 12.786l-2.698 7.84c.806.236 1.657.365 2.54.365 1.047 0 2.05-.18 2.986-.51-.024-.037-.046-.078-.065-.123l-2.762-7.57zM3.008 12c0 3.56 2.07 6.634 5.068 8.092L3.788 8.342c-.5 1.117-.78 2.354-.78 3.658zm15.06-.454c0-1.112-.398-1.88-.74-2.48-.456-.74-.883-1.368-.883-2.11 0-.825.627-1.595 1.51-1.595.04 0 .078.006.116.008-1.598-1.464-3.73-2.36-6.07-2.36-3.14 0-5.904 1.613-7.512 4.053.21.008.41.012.58.012.94 0 2.395-.114 2.395-.114.484-.028.54.684.057.74 0 0-.487.058-1.03.086l3.275 9.74 1.968-5.902-1.4-3.838c-.485-.028-.944-.085-.944-.085-.486-.03-.43-.77.056-.742 0 0 1.484.114 2.368.114.94 0 2.397-.114 2.397-.114.486-.028.543.684.058.74 0 0-.488.058-1.03.086l3.25 9.665.897-2.997c.456-1.17.684-2.137.684-2.907zm1.82-3.86c.04.286.06.593.06.924 0 .912-.17 1.938-.683 3.22l-2.746 7.94c2.672-1.558 4.47-4.454 4.47-7.77 0-1.564-.4-3.033-1.1-4.314zM12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Google Foto" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" />
+						<p class="comment-form-posting-as pa-googleplus">
+			<strong></strong>
+			Du kommentierst mit Deinem Google-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" x="0px" y="0px" viewBox="0 0 60 60" ><path fill="#519bf7" d="M56.3,30c0,-1.6 -0.2,-3.4 -0.6,-5h-3.1H42.2H30v10.6h14.8C44,39.3 42,42 39.1,43.9l8.8,6.8C53,46 56.3,39 56.3,30z" /><path fill="#3db366" d="M30,57.5c6.7,0 13.1,-2.4 17.9,-6.8l-8.8,-6.8c-2.5,1.6 -5.6,2.4 -9.1,2.4c-7.2,0 -13.3,-4.7 -15.4,-11.2l-9.3,7.1C9.8,51.3 19.1,57.5 30,57.5z" /><path fill="#fdc600" d="M5.3,42.2l9.3,-7.1c-0.5,-1.6 -0.8,-3.3 -0.8,-5.1s0.3,-3.5 0.8,-5.1l-9.3,-7.1C3.5,21.5 2.5,25.6 2.5,30S3.5,38.5 5.3,42.2z" /><path fill="#f15b44" d="M40.1,17.4l8,-8C43.3,5.1 37,2.5 30,2.5C19.1,2.5 9.8,8.7 5.3,17.8l9.3,7.1c2.1,-6.5 8.2,-11.1 15.4,-11.1C33.9,13.7 37.4,15.1 40.1,17.4z" /></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Twitter-Bild" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
+						<p class="comment-form-posting-as pa-twitter">
+			<strong></strong>
+			Du kommentierst mit Deinem Twitter-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#1DA1F2" d="M22.23 5.924c-.736.326-1.527.547-2.357.646.847-.508 1.498-1.312 1.804-2.27-.793.47-1.67.812-2.606.996C18.325 4.498 17.258 4 16.078 4c-2.266 0-4.103 1.837-4.103 4.103 0 .322.036.635.106.935-3.41-.17-6.433-1.804-8.457-4.287-.353.607-.556 1.312-.556 2.064 0 1.424.724 2.68 1.825 3.415-.673-.022-1.305-.207-1.86-.514v.052c0 1.988 1.415 3.647 3.293 4.023-.344.095-.707.145-1.08.145-.265 0-.522-.026-.773-.074.522 1.63 2.038 2.817 3.833 2.85-1.404 1.1-3.174 1.757-5.096 1.757-.332 0-.66-.02-.98-.057 1.816 1.164 3.973 1.843 6.29 1.843 7.547 0 11.675-6.252 11.675-11.675 0-.178-.004-.355-.012-.53.802-.578 1.497-1.3 2.047-2.124z"/></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Facebook-Foto" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
+						<p class="comment-form-posting-as pa-facebook">
+			<strong></strong>
+			Du kommentierst mit Deinem Facebook-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#3B5998" d="M20.007 3H3.993C3.445 3 3 3.445 3 3.993v16.013c0 .55.445.994.993.994h8.62v-6.97H10.27V11.31h2.346V9.31c0-2.325 1.42-3.59 3.494-3.59.993 0 1.847.073 2.096.106v2.43h-1.438c-1.128 0-1.346.537-1.346 1.324v1.734h2.69l-.35 2.717h-2.34V21h4.587c.548 0 .993-.445.993-.993V3.993c0-.548-.445-.993-.993-.993z"/></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Abbrechen</a></div>
+		<p>Verbinde mit %s</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;"/> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Benachrichtigung bei weiteren Kommentaren per E-Mail senden.</label></p><p class="post-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto;"/> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog"  style="display: inline;">Informiere mich über neue Beiträge per E-Mail.</label></p></div>
+
+
+
+
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Kommentar absenden" /> <input type='hidden' name='comment_post_ID' value='385' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="85286e9178" /></p>
+<input type="hidden" name="genseq" value="1581446509" />
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="107"/></p></form>	</div><!-- #respond -->
+	<div style="clear: both"></div>
+</div><!-- #comments -->
+
+				
+			</div><!-- #content -->
+		</div><!-- #primary -->
+
+
+	</div><!-- #main -->
+
+	<footer id="colophon" role="contentinfo">
+
+			
+
+			<div id="site-generator">
+				 								<a href="https://wordpress.com/?ref=footer_blog" rel="nofollow">Bloggen auf WordPress.com.</a>
+			</div>
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<!--  -->
+<script src='//0.gravatar.com/js/gprofiles.js?ver=202007y'></script>
+<script>
+var WPGroHo = {"my_hash":""};
+</script>
+<script type='text/javascript' src='https://s1.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1380573781h'></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	<div class="grofile-hash-map-2a39db0cbfc99c9b18eabff230e1fcf0">
+	</div>
+	</div>
+<script>
+var HighlanderComments = {"loggingInText":"Anmelden \u2026","submittingText":"Sende Kommentar \u2026","postCommentText":"Kommentar absenden","connectingToText":"Verbinde mit %s","commentingAsText":"%1$s: Du kommentierst mit Deinem %2$s-Konto. ","logoutText":"Abmelden","loginText":"Anmelden","connectURL":"https:\/\/knowledgeonair.wordpress.com\/public.api\/connect\/?action=request&domain=knowledge-on-air.de","logoutURL":"https:\/\/knowledgeonair.wordpress.com\/wp-login.php?action=logout&_wpnonce=2abe202a5b","homeURL":"https:\/\/knowledge-on-air.de\/","postID":"385","gravDefault":"mystery","enterACommentError":"Bitte gib einen Kommentar ein","enterEmailError":"Bitte hier deine E-Mail-Adresse eingeben","invalidEmailError":"Ung\u00fcltige E-Mail-Adresse","enterAuthorError":"Bitte hier deinen Namen eingeben","gravatarFromEmail":"Dieses Bild wird angezeigt, wenn Du einen Kommentar hinterl\u00e4sst. Klicken, um es anzupassen.","logInToExternalAccount":"Melde dich an, um Details von einem dieser Konten zu verwenden.","change":"\u00c4ndern","changeAccount":"Konto \u00e4ndern","comment_registration":"","userIsLoggedIn":"","isJetpack":"","text_direction":"ltr"};
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??/wp-content/js/jquery/jquery.autoresize.js,/wp-content/mu-plugins/highlander-comments/script.js?m=1573483029j'></script>
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/knowledge-on-air.de\/2019\/12\/17\/koa039-live-vom-knowledgecamp-2019\/":385};
+	</script>
+				<link rel='stylesheet' id='all-css-0-3' href='https://s1.wp.com/_static/??-eJyFjMsKwjAQAH/IdFGw0YP4LelmDWk3D/Kg9O9doYXePA7DDKxZYYqNYoPM3flYwXXBiYpTEydcKszUssFFsdlSb8oVb2FXnyLxgLVeQE4+IndLUlQIZL0hpvBbnyHLhopicga3Ifj4Pxd35iN6h9f1rsebfjxHPX8B8flLwg==?cssminify=yes' type='text/css' media='all' />
+<script>
+var actionbardata = {"siteID":"57812531","siteName":"Knowledge on Air","siteURL":"https:\/\/knowledge-on-air.de","icon":"<img alt='' src='https:\/\/s2.wp.com\/i\/logo\/wpcom-gray-white.png' class='avatar avatar-50' height='50' width='50' \/>","canManageOptions":"","canCustomizeSite":"","isFollowing":"","themeSlug":"pub\/twentyeleven","signupURL":"https:\/\/wordpress.com\/start\/","loginURL":"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fknowledge-on-air.de%2F2019%2F12%2F17%2Fkoa039-live-vom-knowledgecamp-2019%2F&signup_flow=account&domain=knowledge-on-air.de","themeURL":"https:\/\/wordpress.com\/theme\/twentyeleven\/","xhrURL":"https:\/\/knowledge-on-air.de\/wp-admin\/admin-ajax.php","nonce":"6f1c984bbd","isSingular":"1","isFolded":"","isLoggedIn":"","isMobile":"","subscribeNonce":"<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"e2ed34aba0\" \/>","referer":"https:\/\/knowledge-on-air.de\/2019\/12\/17\/koa039-live-vom-knowledgecamp-2019\/","canFollow":"1","feedID":"15186638","statusMessage":"","customizeLink":"https:\/\/knowledgeonair.wordpress.com\/wp-admin\/customize.php?url=https%3A%2F%2Fknowledgeonair.wordpress.com%2F2019%2F12%2F17%2Fkoa039-live-vom-knowledgecamp-2019%2F","postID":"385","shortlink":"https:\/\/wp.me\/p3UzGb-6d","canEditPost":"","editLink":"https:\/\/wordpress.com\/post\/knowledge-on-air.de\/385","statsLink":"https:\/\/wordpress.com\/stats\/post\/385\/knowledge-on-air.de","i18n":{"view":"Webseite ansehen","follow":"Folgen","following":"Du folgst","edit":"Bearbeiten","login":"Anmelden","signup":"Registrieren","customize":"Anpassen","report":"Melde diesen Inhalt","themeInfo":"Theme herunterladen: Twenty Eleven","shortlink":"Kurzlink kopieren","copied":"Kopiert","followedText":"Neue Beitr\u00e4ge von dieser Website erscheinen nun in deinem <a href=\"https:\/\/wordpress.com\/\">Reader<\/a>.","foldBar":"Diese Leiste einklappen","unfoldBar":"Diese Leiste aufklappen","editSubs":"Abonnements verwalten","viewReader":"Website im Reader anzeigen","viewReadPost":"Beitrag im Reader lesen","subscribe":"Anmelden","enterEmail":"Gib deine E-Mail-Adresse ein","followers":"Schlie\u00dfe dich 32 Followern an","alreadyUser":"Du hast bereits ein WordPress.com-Konto? <a href=\"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fknowledge-on-air.de%2F2019%2F12%2F17%2Fkoa039-live-vom-knowledgecamp-2019%2F&signup_flow=account&domain=knowledge-on-air.de\">Melde dich jetzt an.<\/a>","stats":"Statistik"}};
+</script>
+<script>
+var _wpmejsSettings = {"pluginPath":"\/wp-includes\/js\/mediaelement\/","classPrefix":"mejs-","stretching":"responsive"};
+</script>
+<script>
+var sharing_js_options = {"lang":"de","counts":"1","is_stats_active":"1"};
+</script>
+<script type='text/javascript'>
+var mejsL10n = {"language":"de","strings":{"mejs.install-flash":"Du verwendest einen Browser, der nicht den Flash-Player aktiviert oder installiert hat. Bitte aktiviere dein Flash-Player-Plugin oder lade die neueste Version von https:\/\/get.adobe.com\/flashplayer\/ herunter.","mejs.fullscreen-off":"Vollbild beenden","mejs.fullscreen-on":"Vollbild einschalten","mejs.download-video":"Video herunterladen","mejs.fullscreen":"Vollbild","mejs.time-jump-forward":["1 Sekunde vorw\u00e4rts springen","%1 Sekunden vorspringen"],"mejs.loop":"Schleife umschalten","mejs.play":"Abspielen","mejs.pause":"Pause","mejs.close":"Schlie\u00dfen","mejs.time-slider":"Zeit-Schieberegler","mejs.time-help-text":"Benutze die Pfeiltasten Links\/Rechts, um 1 Sekunde vorzuspringen, und die Pfeiltasten Hoch\/Runter, um 10 Sekunden vorzuspringen.","mejs.time-skip-back":["Eine Sekunde zur\u00fcckspringen","%1 Sekunde(n) zur\u00fcck springen"],"mejs.captions-subtitles":"Untertitel","mejs.captions-chapters":"Kapitel","mejs.none":"Keine","mejs.mute-toggle":"Stumm schalten","mejs.volume-help-text":"Pfeiltasten Hoch\/Runter benutzen, um die Lautst\u00e4rke zu regeln.","mejs.unmute":"Laut schalten","mejs.mute":"Stumm","mejs.volume-slider":"Lautst\u00e4rkeregler","mejs.video-player":"Video-Player","mejs.audio-player":"Audio-Player","mejs.ad-skip":"Werbung \u00fcberspringen","mejs.ad-skip-info":["In einer Sekunde \u00fcberspringen","In %1 Sekunden \u00fcberspringen"],"mejs.source-chooser":"Quellen-Auswahl","mejs.stop":"Anhalten","mejs.speed-rate":"\u00dcbertragungsrate","mejs.live-broadcast":"Live-\u00dcbertragung","mejs.afrikaans":"Afrikaans","mejs.albanian":"Albanisch","mejs.arabic":"Arabisch","mejs.belarusian":"Wei\u00dfrussisch","mejs.bulgarian":"Bulgarisch","mejs.catalan":"Katalanisch","mejs.chinese":"Chinesisch","mejs.chinese-simplified":"Chinesisch (Vereinfacht)","mejs.chinese-traditional":"Chinesisch (Traditionell)","mejs.croatian":"Kroatisch","mejs.czech":"Tschechisch","mejs.danish":"D\u00e4nisch","mejs.dutch":"Niederl\u00e4ndisch","mejs.english":"Englisch","mejs.estonian":"Estl\u00e4ndisch","mejs.filipino":"Philippinisch","mejs.finnish":"Finnisch","mejs.french":"Franz\u00f6sisch","mejs.galician":"Galizisch","mejs.german":"Deutsch","mejs.greek":"Griechisch","mejs.haitian-creole":"Haitianisches Kreolisch","mejs.hebrew":"Hebr\u00e4isch","mejs.hindi":"Hindi","mejs.hungarian":"Ungarisch","mejs.icelandic":"Isl\u00e4ndisch","mejs.indonesian":"Indonesisch","mejs.irish":"Irisch","mejs.italian":"Italienisch","mejs.japanese":"Japanisch","mejs.korean":"Koreanisch","mejs.latvian":"Lettisch","mejs.lithuanian":"Litauisch","mejs.macedonian":"Mazedonisch","mejs.malay":"Malaiisch","mejs.maltese":"Maltesisch","mejs.norwegian":"Norwegisch","mejs.persian":"Persisch","mejs.polish":"Polnisch","mejs.portuguese":"Portugiesisch","mejs.romanian":"Rum\u00e4nisch","mejs.russian":"Russisch","mejs.serbian":"Serbisch","mejs.slovak":"Slowakisch","mejs.slovenian":"Slowenisch","mejs.spanish":"Spanisch","mejs.swahili":"Suaheli","mejs.swedish":"Schwedisch","mejs.tagalog":"Tagalog","mejs.thai":"Thail\u00e4ndisch","mejs.turkish":"T\u00fcrkisch","mejs.ukrainian":"Ukrainisch","mejs.vietnamese":"Vietnamesisch","mejs.welsh":"Walisisch","mejs.yiddish":"Jiddisch"}};
+</script>
+<script type='text/javascript' src='https://s2.wp.com/_static/??-eJyVUtlywjAM/KEaBxyS8NDpp3QcWwkiPlIfofx9lZYwmQ4w7ZMlr1ZaHfw8MuVdApf4KXINEyoYPzen+MJXkM1sNLlHF7nBASL/yJDhKJ02EJZgdMpkTSAlUt5aIrIAo7lsLLp7QRpj4hM47cMMjd5cOjRmHb4IWKp32RgWMQEDjQldf9XFK7Gvq6auylZ13a6pZae2IHRRQgVlVwsJZbE7iIq3xhPJxxQZmWq4qkA4P6rZZ3JbCP0PgaRDGqUaGExzi8pnl7Q/O36Ff30/maXU1CprZeBWxgSBLOYnCAHnCd3+/pkhBRIXn5FUQu9m0s26tx5LI5ZgwH7TVw6jvVMyeaHdP1jtY67FPsgEfyIStvbvHca6rQGjhcTEpuDvlJN3Ptgn8fMRsM5IDDweZaBjWl4ivdnX7b4pGnEQYn/6AjVTKs4='></script>
+<script type='text/javascript'>
+( 'fetch' in window ) || document.write( '<script src="https://s0.wp.com/wp-includes/js/dist/vendor/wp-polyfill-fetch.min.js?m=1573572739h&#038;ver=3.0.0"></scr' + 'ipt>' );( document.contains ) || document.write( '<script src="https://s1.wp.com/wp-includes/js/dist/vendor/wp-polyfill-node-contains.min.js?m=1540208548h&#038;ver=3.26.0-0"></scr' + 'ipt>' );( window.FormData && window.FormData.prototype.keys ) || document.write( '<script src="https://s1.wp.com/wp-includes/js/dist/vendor/wp-polyfill-formdata.min.js?m=1550600082h&#038;ver=3.0.12"></scr' + 'ipt>' );( Element.prototype.matches && Element.prototype.closest ) || document.write( '<script src="https://s2.wp.com/wp-includes/js/dist/vendor/wp-polyfill-element-closest.min.js?m=1540208548h&#038;ver=2.0.2"></scr' + 'ipt>' );
+</script>
+<script type='text/javascript'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+</script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script>		<iframe src='https://widgets.wp.com/likes/master.html?ver=20190321#ver=20190321&amp;lang=de' scrolling='no' id='likes-master' name='likes-master' style='display:none;'></iframe>
+		<div id='likes-other-gravatars'><div class="likes-text"><span>%d</span> Bloggern gefällt das:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+<script src="//stats.wp.com/w.js?60" type="text/javascript" async defer></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'57812531','blog_tz':'2','user_lang':'de','blog_lang':'de','user_id':'0'}]);
+_stq.push(['view', {'blog':'57812531','v':'wpcom','tz':'2','user_id':'0','post':'385','subd':'knowledgeonair'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1TaVhzUzFMbjdWNHpwZGhTayxPSUFCMGRVYVNrSFguN3FwSmQ5RGtNX3VQcj1yVzhiflM1THQtLGFdQ2toOXYlQjYrMC9LcVI/VlA0X254PXM/JT9JUys/ZDJtVzNNOD8zUlFxREhxQkd3VzNDTVl2K0lUbURLZ040fHZWU1YyVUhRRFVbM1l1cU9BaXBDRFtGTUNHJltEZGssWWR5TWJQLjFKaT8lW01KMX5Id1FjbFErQmNZQjJ0YVIyVksuSGJodkdbYndGV01lSWx8dnx1fHBaZS4sLkxmTFFWZWMvN0pPT2tWRz9zTHRYSEJwW3ZbSHk9bCwvfndIZERQfkxdRD0='}]);
+_stq.push([ 'clickTrackerInit', '57812531', '385' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+</body>
+</html>
