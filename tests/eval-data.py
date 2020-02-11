@@ -182,7 +182,6 @@ Like... ',  # in HTML source
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 }
-    EVAL_PAGES = {
 'www.colours-of-the-soul.alhelm.net': {
     'file': '',  # stays empty until download
     'author': '',
@@ -1250,17 +1249,4 @@ Like... ',  # in HTML source
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-'': {
-    'file': '',  # stays empty until download
-    'author': '',
-    'title': '',
-    'date': '',
-    'description': '',  # in HTML source
-    'categories': [''],
-    'tags': [''],
-    'with': ['', '', ''],  # 3 segments
-    'without': ['', '', ''],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
-},
+}
