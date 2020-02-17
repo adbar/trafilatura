@@ -15,6 +15,7 @@ import logging
 import re
 # third-party
 import justext
+##from readability import Document
 
 try:
     from htmldate import find_date
@@ -44,13 +45,12 @@ COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 JUSTEXT_STOPLIST = justext.get_stoplist(JUSTEXT_LANGUAGE)
 
 
-def try_justext(tree, url):
+def try_justext(htmlstring, url):
     '''Safety net: try with the generic algorithm justext'''
     result_body = etree.Element('body')
-    justtextstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
-    LOGGER.debug('raw length: %s (tostring) ', len(justtextstring))
+    LOGGER.debug('raw length: %s (tostring) ', len(htmlstring))
     try:
-        paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
+        paragraphs = justext.justext(htmlstring, JUSTEXT_STOPLIST)
     except ValueError as err:  # not an XML element: HtmlComment
         LOGGER.error('justext %s %s', err, url)
         result_body = None
@@ -62,6 +62,13 @@ def try_justext(tree, url):
                     elem.text = paragraph.text
                     result_body.append(elem)
     return result_body
+
+
+#def try_readability(htmlstring, url):
+#    '''Safety net: try with the generic algorithm readability'''
+#    doc = Document(htmlstring)
+#    newtree = html.fromstring(doc.summary())
+#    return newtree
 
 
 def handle_titles(element, result_body):
@@ -379,34 +386,54 @@ def extract_metadata(tree):
     return doctitle, docdate
 
 
-def compare_extraction(tree, url, temppost_hand, no_fallback):
+def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
     '''Decide whether to choose own or external (jusText) extraction
        based on a series of heuristics'''
     temp_text = ' '.join(temppost_hand.itertext())
-    if no_fallback is False and 0 <= len(temp_text) < 1500:  # was 300
-        # try with justext on cleaned_tree
-        temppost_algo = try_justext(tree, url)
-        # compare
-        temp_jt = ' '.join(temppost_algo.itertext())
-        LOGGER.info('extracted length: %s (jusText) %s (extraction)', len(temp_jt), len(temp_text))
-        # conditions to use justext # was 300 and 2x
-        if 0 <= len(temp_text) < 1500 and len(temp_jt) > 3*len(temp_text):
-            justext_flag = True
-        elif len(temppost_hand.xpath('//p')) == 0 and len(temp_jt) > 0:
-            justext_flag = True  # borderline case
+    justext_flag = False
+    # readability_flag = False
+    if no_fallback is False:
+        # speed-up based on input type
+        if isinstance(filecontent, str):
+            htmlstring = filecontent
+        elif isinstance(filecontent, (etree._ElementTree, html.HtmlElement)):
+            htmlstring = html.tostring(filecontent, pretty_print=False, encoding='utf-8')
         else:
-            justext_flag = False
-        if justext_flag is True:  # was len(temp_text) > 10
-            postbody = temppost_algo
+            htmlstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
+        # try with justext
+        temppost_justext = try_justext(htmlstring, url)
+        temp_jt = ' '.join(temppost_justext.itertext())  # trim()?
+        # lengths
+        len_text = len(temp_text)
+        len_algo = len(temp_jt)
+        # try with readability
+        # temppost_readability = try_readability(htmlstring, url)
+        # temp_read = trim(' '.join(temppost_readability.itertext()))
+        # compare
+        LOGGER.info('extracted length: %s (justext) %s (extraction)', len_algo, len_text)
+        # conditions to use alternative algorithms
+        if 0 <= len_text < 1500 and len_algo > 3*len_text:
+            justext_flag = True
+        #elif len_text >= 1000:
+        #    if 0.85*len_text < len(temp_read) < len_text:
+        #        readability_flag = True
+        elif len(temppost_hand.xpath('//p')) == 0 and len_algo > 0:
+            justext_flag = True  # borderline case
+        # apply decision
+        if justext_flag is True:  # was len_text > 10
+            postbody = temppost_justext
             LOGGER.info('using justext: %s', url)
+        #if readability_flag is True:
+        #    postbody = temppost_readability
+        #    LOGGER.info('using readability: %s', url)
         else:
             postbody = temppost_hand
             LOGGER.info('using custom extraction: %s', url)
     else:
-        LOGGER.info('extracted length: %s (extraction)', len(temp_text))
+        LOGGER.info('extracted length: %s (extraction)', len_text)
         postbody = temppost_hand
-        temp_jt = ''
-    return temp_text, temp_jt, postbody
+        len_algo = 0
+    return len_text, len_algo, postbody
 
 
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
@@ -450,10 +477,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     temppost_hand = extract_content(cleaned_tree, include_tables)
 
     # compare
-    temp_text, temp_jt, postbody = compare_extraction(tree, url, temppost_hand, no_fallback)
+    len_text, len_algo, postbody = compare_extraction(filecontent, tree, url, temppost_hand, no_fallback)
 
     # try to use original/dirty tree
-    if len(temp_text) == 0 and len(temp_jt) == 0:
+    if len_text == 0 and len_algo == 0:
         tree = convert_tags(tree)
         temppost_hand = extract_content(tree)
         temp_text = ' '.join(temppost_hand.itertext())
@@ -461,8 +488,8 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         postbody = temppost_hand
 
     # sanity check on length
-    temp_text = ' '.join(postbody.itertext())
-    temp_comments = ' '.join(commentsbody.itertext())
+    temp_text = ' '.join(postbody.itertext())  # trim()?
+    temp_comments = ' '.join(commentsbody.itertext())  # trim()?
     if len(temp_text) < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s %s', record_id, url)
     if len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
