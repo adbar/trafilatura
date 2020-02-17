@@ -277,10 +277,10 @@ def test_extract(xmloutput=False):
     assert 'In eine andere Zeit' in result and 'Während Sie über den Markt schlendern' in result and 'Infos zum Verein' not in result and 'nach oben' not in result and 'Datenschutzerklärung' not in result
 
     result = load_mock_page('https://www.demokratiewebstatt.at/thema/thema-umwelt-und-klima/woher-kommt-die-dicke-luft', xmloutput)
-    assert 'Eines der großen Probleme,' in result and 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result
+    assert 'Millionen Menschen fahren jeden Tag' in result and 'versteinerte Dinosaurierknochen.' in result and 'Clipdealer' not in result and 'Teste dein Wissen' not in result and 'Thema: Fußball' not in result # and 'Eines der großen Probleme,' in result
 
     result = load_mock_page('http://www.simplyscience.ch/teens-liesnach-archiv/articles/wie-entsteht-erdoel.html', xmloutput)
-    assert 'Erdöl bildet nach Millionen' in result and 'in unserem Artikel "Warum wird das Erdöl knapp?".' in result and 'Die Natur ist aus chemischen Elementen aufgebaut' not in result
+    assert 'Erdöl bildet nach Millionen' in result and 'Warum wird das Erdöl knapp?' in result and 'Die Natur ist aus chemischen Elementen aufgebaut' not in result
 
     result = load_mock_page('https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html', xmloutput)
     assert 'Für einen Roman' in result and 'Auszeichnung der Branche.' in result
@@ -317,7 +317,6 @@ def test_extract(xmloutput=False):
 
     # justext performs better here
     result = load_mock_page('http://schleifen.ucoz.de/blog/briefe/2010-10-26-18', xmloutput)
-    # print(result)
     assert 'Es war gesagt,' in result and 'Aufrufe:' not in result # and 'Symbol auf dem Finger haben' in result
 
     result = load_mock_page('https://www.austria.info/de/aktivitaten/radfahren/radfahren-in-der-weltstadt-salzburg', xmloutput)
@@ -345,7 +344,7 @@ def test_extract(xmloutput=False):
     assert 'Grounded in sustainable architecture and refined Vietnamese craftsmanship,' in result and 'and Carmelo Resort' in result and 'OMG what a beautiful place to stay! ' in result and 'Food Advertising by' not in result and 'Dining and Drinking' in result and 'A lovely note makes a beautiful day!' not in result # and 'Reply' not in result
 
     result = load_mock_page('https://www.luxuriousmagazine.com/2019/06/royal-salute-polo-rome/', xmloutput)
-    assert 'Argentina, the birthplace of polo.' in result and 'Simon Wittenberg travels to the Eternal City in Italy' in result and 'Luxury and lifestyle articles' not in result # and 'Pinterest' not in result
+    assert 'Argentina, the birthplace of polo.' in result and 'Simon Wittenberg travels to the Eternal City in Italy' in result and 'Luxury and lifestyle articles' not in result and 'Pinterest' not in result
 
     result = load_mock_page('https://www.chip.de/tests/akkuschrauber-werkzeug-co,82197/5', xmloutput)
     assert result is None
@@ -373,7 +372,7 @@ def test_extract(xmloutput=False):
     assert 'Alle Artikel zu unseren Recherchen' not in result and 'Vorweg: Die beteiligten AfD-Politiker' in result and 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal' in result and 'Wir informieren Sie regelmäßig zum Thema Neue Rechte' not in result and 'Kommentar verfassen' not in result and 'weiterlesen' not in result
 
     result = load_mock_page('https://www.sueddeutsche.de/wirtschaft/bahn-flixbus-flixtrain-deutschlandtakt-fernverkehr-1.4445845', xmloutput)
-    assert '05:28 Uhr' not in result and 'Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt' in result and 'ICE im S-Bahn-Takt' not in result and 'Diskussion zu diesem Artikel auf:' not in result and 'Berater-Affäre bringt Bahnchef Lutz in Bedrängnis' not in result # and 'auch der Bus ein klimafreundliches Verkehrsmittel sei' in result
+    assert '05:28 Uhr' not in result and 'Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt' in result and 'ICE im S-Bahn-Takt' not in result and 'Diskussion zu diesem Artikel auf:' not in result and 'Berater-Affäre bringt Bahnchef Lutz in Bedrängnis' not in result and 'auch der Bus ein klimafreundliches Verkehrsmittel sei' in result
 
     result = load_mock_page('https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/', xmloutput)
     assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Diesel-Umtauschprämien' not in result and 'Besonders bei Babyschalen sollte geprüft werden' in result
@@ -442,7 +441,7 @@ def test_extract(xmloutput=False):
     assert 'Wakebeach 257' in result and 'Be there or be square!' in result and 'Hier geht’s zur Facebook Veranstaltung' in result and 'More from News' not in result and 'von Redaktion MSM' not in result and 'add yours.' not in result # and 'Blue Tomato präsentiert die dritte' in result
 
     result = load_mock_page('https://knowtechie.com/rocket-pass-4-in-rocket-league-brings-with-it-a-new-rally-inspired-car/', xmloutput)
-    assert 'Rocket Pass 4 will begin at 10:00 a.m. PDT' in result and 'Let us know down below in the comments' in result and 'Holy shit, Mortal Kombat 11' in result and 'Related Topics' not in result and 'You can keep up with me on Twitter' not in result and 'Hit the track today with Mario Kart Tour' not in result # and 'what to do with thousands of crates tho' in result
+    assert 'Rocket Pass 4 will begin at 10:00 a.m. PDT' in result and 'Holy shit, Mortal Kombat 11' in result and 'Let us know down below in the comments' in result and 'Related Topics' not in result and 'You can keep up with me on Twitter' not in result and 'Hit the track today with Mario Kart Tour' not in result # and 'what to do with thousands of crates tho' in result
 
     result = load_mock_page('https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding', xmloutput)
     assert 'Given a set of high-dimensional objects' in result and 'Herein a heavy-tailed Student t-distribution' in result and 'Categories:' not in result and 'Conditional random field' not in result
