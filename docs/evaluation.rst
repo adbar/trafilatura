@@ -25,6 +25,8 @@ These packages focus on main text extraction:
 - `news-please <https://github.com/fhamborg/news-please>`_ is a news crawler that extracts structured information
 - `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup
 
+Last but not least, `trafilatura <https://github.com/adbar/trafilatura>`_ is the library documented here. It downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, XML & TEI-XML.
+
 
 Description
 -----------

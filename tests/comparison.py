@@ -4,6 +4,7 @@ Compare extraction results with other libraries of the same kind.
 
 # import logging
 import os
+import re
 import time
 
 from lxml import etree, html
@@ -812,7 +813,7 @@ EVAL_PAGES = {
     'file': 'buero-hoppe.de.baumgutachten.htm',  # stays empty until download
     'author': '',
     'title': 'Baumgutachten',
-    'date': '',
+    'date': '2006-12-16',
     'description': '&Uuml;bersicht: Baumgutachten, Baumkataster, Baumbeschreibungen',  # in HTML source
     'categories': [''],
     'tags': [''],
@@ -882,7 +883,7 @@ EVAL_PAGES = {
     'file': 'lernpfadprismen.wordpress.com.masse.html',  # stays empty until download
     'author': '',
     'title': 'Masse des Quaders',
-    'date': '',
+    'date': '2015-12-07',
     'description': 'Die Masse eines Körpers berechnest du, indem du das Volumen (V) mit der Dichte (ρ) multiplizierst. Siehe Kapitel Masse! Bevor du die Beispiele löst, schau dir die Videos mit den Erklärungen an.   A…',  # in HTML source
     'categories': [''],
     'tags': [''],
@@ -910,7 +911,7 @@ EVAL_PAGES = {
     'file': '2gewinnt.wordpress.com.uns.html',  # stays empty until download
     'author': '',
     'title': 'Über uns',
-    'date': '',
+    'date': '2012-06-30',
     'description': '',  # in HTML source
     'categories': [''],
     'tags': [''],
@@ -994,7 +995,7 @@ EVAL_PAGES = {
     'file': 'alexander-klier.net.zeitphilosophie.html',  # stays empty until download
     'author': 'Alexander Klier',
     'title': 'Zeitphilosophie',
-    'date': '',
+    'date': '2012-06-08',
     'description': '',  # in HTML source
     'categories': [''],
     'tags': [''],
@@ -1004,7 +1005,7 @@ EVAL_PAGES = {
     'license': 'CC-BY-SA',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-'http://www.villacc.de/ferienvilla/119/Villa-Galaxy-': {
+'http://www.villacc.de/ferienvilla/119/Villa-Galaxy': {
     'file': 'villacc.de.galaxy.html',  # stays empty until download
     'author': '',
     'title': 'Villa Galaxy',
@@ -1036,7 +1037,7 @@ EVAL_PAGES = {
     'file': 'resonator-podcast.de.res158.html',  # stays empty until download
     'author': '',
     'title': 'RES158 Sternfusion am Teilchenbeschleuniger',
-    'date': '',
+    'date': '2019-08-16',
     'description': '',  # in HTML source
     'categories': [''],
     'tags': ['Astronomie', 'Astrophysik', 'Sterne', 'Sonnensystem', 'GSI', 'Beschleuniger', 'Physik'],
@@ -1078,7 +1079,7 @@ EVAL_PAGES = {
     'file': 'herrpfleger.de.fuelcell.html',  # stays empty until download
     'author': 'Matthias',
     'title': 'New Balance: FuelCell Echo bringt Speed',
-    'date': '',
+    'date': '2019-10-01',
     'description': 'Die FuelCell-Familie von New Balance nimmt mit dem FuelCell Echo ein neues schnelles und stylisches Mitglied in seine Produktfamilie auf. Bei der FuelCell-Technologie von New Balance handelt es sich&#8230;',  # in HTML source
     'categories': ['Lifestyle', 'Sport'],
     'tags': ['FuelCell', 'Laufen', 'Laufschuh', 'New Balance', 'Running'],
@@ -1501,7 +1502,9 @@ def run_jparser(htmlstring):
    for x in result['content']:
        if x['type'] in ('text', 'html'):
            mylist.append(str(x['data']))
-   return ' '.join(mylist)
+   returnstring = re.sub(r'\s+', ' ', ' '.join(mylist))
+   returnstring = re.sub(r' ([.,;!?])', '\1', returnstring)
+   return returnstring
 
 
 #def run_libextract(htmlstring):
