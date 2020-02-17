@@ -48,7 +48,7 @@ JUSTEXT_STOPLIST = justext.get_stoplist(JUSTEXT_LANGUAGE)
 def try_justext(htmlstring, url):
     '''Safety net: try with the generic algorithm justext'''
     result_body = etree.Element('body')
-    LOGGER.debug('raw length: %s (tostring) ', len(htmlstring))
+    # LOGGER.debug('raw length: %s (tostring) ', len(htmlstring))
     try:
         paragraphs = justext.justext(htmlstring, JUSTEXT_STOPLIST)
     except ValueError as err:  # not an XML element: HtmlComment
@@ -390,7 +390,8 @@ def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
     '''Decide whether to choose own or external (jusText) extraction
        based on a series of heuristics'''
     temp_text = ' '.join(temppost_hand.itertext())
-    justext_flag = False
+    len_text = len(temp_text)
+    algo_flag = False
     # readability_flag = False
     if no_fallback is False:
         # speed-up based on input type
@@ -401,31 +402,24 @@ def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
         else:
             htmlstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
         # try with justext
-        temppost_justext = try_justext(htmlstring, url)
-        temp_jt = ' '.join(temppost_justext.itertext())  # trim()?
-        # lengths
-        len_text = len(temp_text)
-        len_algo = len(temp_jt)
+        temppost_algo = try_justext(htmlstring, url)
         # try with readability
-        # temppost_readability = try_readability(htmlstring, url)
-        # temp_read = trim(' '.join(temppost_readability.itertext()))
+        # temppost_algo = try_readability(htmlstring, url)
+        len_algo = len(' '.join(temppost_algo.itertext()))
         # compare
-        LOGGER.info('extracted length: %s (justext) %s (extraction)', len_algo, len_text)
+        LOGGER.info('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
         # conditions to use alternative algorithms
         if 0 <= len_text < 1500 and len_algo > 3*len_text:
-            justext_flag = True
+            algo_flag = True
         #elif len_text >= 1000:
         #    if 0.85*len_text < len(temp_read) < len_text:
-        #        readability_flag = True
+        #        algo_flag = True
         elif len(temppost_hand.xpath('//p')) == 0 and len_algo > 0:
-            justext_flag = True  # borderline case
+            algo_flag = True  # borderline case
         # apply decision
-        if justext_flag is True:  # was len_text > 10
-            postbody = temppost_justext
-            LOGGER.info('using justext: %s', url)
-        #if readability_flag is True:
-        #    postbody = temppost_readability
-        #    LOGGER.info('using readability: %s', url)
+        if algo_flag is True:  # was len_text > 10
+            postbody = temppost_algo
+            LOGGER.info('using generic algorithm: %s', url)
         else:
             postbody = temppost_hand
             LOGGER.info('using custom extraction: %s', url)
