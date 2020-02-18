@@ -910,7 +910,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.pamelaandersonfoundation.org/news/2018/12/4/yellow-vests-and-i': {
-    'file': '',  # stays empty until download
+    'file': 'pamelaandersonfoundation.org.yellow.html',  # stays empty until download
     'author': 'Pamela Anderson',
     'title': 'Yellow Vests and I',
     'date': '2018-12-04',
@@ -924,7 +924,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.dbjr.de/artikel/bundespraesident-wuerdigte-das-ehrenamtliche-engagement/': {
-    'file': '',  # stays empty until download
+    'file': 'dbjr.de.bundespraesident.html',  # stays empty until download
     'author': '',
     'title': 'Bundespräsident würdigte das ehrenamtliche Engagement',
     'date': '2020-01-23',
@@ -938,7 +938,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://achtundvierzig.hypotheses.org/822': {
-    'file': '',  # stays empty until download
+    'file': 'achtundvierzig.hypotheses.org.822.html',  # stays empty until download
     'author': 'karstenruppert',
     'title': 'Tagung: Institutionen revolutionärer Macht in den europäischen Revolutionen der ersten Hälfte des 19. Jahrhunderts (26. und 27. 2. 2015, Eichstätt)',
     'date': '2015-01-28',
@@ -952,7 +952,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'http://bayrische-bembel.de/bbr/modules/news/article.php?storyid=504': {
-    'file': '',  # stays empty until download
+    'file': 'bayrische-bembel.de.504.html',  # stays empty until download
     'author': 'Cooper',
     'title': 'Eintracht Frankfurt stellt Weichen für die Zukunft ',
     'date': '2015-08-25',
@@ -966,7 +966,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://ethify.org/content/vegetarier-zu-sein-bedarf-trend-oder-eigene-entscheidung': {
-    'file': '',  # stays empty until download
+    'file': 'ethify.org.vegetarier.html',  # stays empty until download
     'author': 'Margarita Koreneva',
     'title': 'Vegetarier zu sein. Bedarf, Trend oder eigene Entscheidung? ',
     'date': '2019-07-07',
@@ -980,7 +980,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://disfunctions.de/tutorials/podcasts-in-plex-einbinden/': {
-    'file': '',  # stays empty until download
+    'file': 'disfunctions.de.podcasts.html',  # stays empty until download
     'author': 'Fabian',
     'title': 'Podcasts in Plex einbinden',
     'date': '2014-05-06',
@@ -994,7 +994,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://von-der-see.de/design/': {
-    'file': '',  # stays empty until download
+    'file': 'von-der-see.de.design.html',  # stays empty until download
     'author': '',
     'title': 'Design',
     'date': '',
@@ -1008,7 +1008,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'http://archiv.krimiblog.de/?p=2895': {
-    'file': '',  # stays empty until download
+    'file': 'archiv.krimiblog.de.2895.html',  # stays empty until download
     'author': 'Krimiblogger',
     'title': 'Das vermutlich schwulste Musikvideo der Welt',
     'date': '2009-08-06',
@@ -1022,7 +1022,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://journal.3960.org/posts/2019-12-22-firefox-weniger-werbung-mehr-speed-unter-android/': {
-    'file': '',  # stays empty until download
+    'file': 'journal.3960.org.firefox.html',  # stays empty until download
     'author': 'Frank Boës',
     'title': 'Firefox – Weniger Werbung, mehr Speed unter Android',
     'date': '2019-12-22',
@@ -1036,7 +1036,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://beyssonmanagement.com/2014/07/15/was-ist-innovation/': {
-    'file': '',  # stays empty until download
+    'file': 'beyssonmanagement.com.innovation.html',  # stays empty until download
     'author': 'Guido Beyß',
     'title': 'Was ist Innovation?',
     'date': '2014-07-15',
@@ -1050,7 +1050,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://damianduchamps.wordpress.com/2019/08/03/office-365-hbdi-die-dritte/': {
-    'file': '',  # stays empty until download
+    'file': 'damianduchamps.wordpress.com.hbdi.html',  # stays empty until download
     'author': 'damianduchamps',
     'title': 'Office 365 – HBDI – die Dritte ',
     'date': '2019-08-03',
@@ -1064,7 +1064,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://sladisworld.wordpress.com/2019/12/10/was-wurde-eigentlich-aus-six-sigma/': {
-    'file': '',  # stays empty until download
+    'file': 'sladisworld.wordpress.com.sigma.html',  # stays empty until download
     'author': 'freeman1984',
     'title': 'Was wurde eigentlich aus Six Sigma?',
     'date': '2019-12-10',
@@ -1078,7 +1078,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.haenselblatt.com/chinese-money-plant-info': {
-    'file': '',  # stays empty until download
+    'file': 'haenselblatt.com.chinese.html',  # stays empty until download
     'author': '',
     'title': 'Chinese Money Plant Info: Erfahren Sie, wie man eine Pilea-Pflanze anbaut',
     'date': '',
@@ -1092,7 +1092,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.regiolanda.de/content/149-filmbuero-goettingen': {
-    'file': '',  # stays empty until download
+    'file': 'regiolanda.de.filmbuero.html',  # stays empty until download
     'author': 'Sven Schreivogel',
     'title': 'Filmbüro Göttingen',
     'date': '',
@@ -1106,7 +1106,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.piratenpartei-marburg.de/2019/09/21/wir-unterstuetzen-fridays-for-future/': {
-    'file': '',  # stays empty until download
+    'file': 'piratenpartei-marburg.de.fridays.html',  # stays empty until download
     'author': 'flerche',
     'title': 'Wir unterstützen Fridays for Future',
     'date': '2019-09-21',
@@ -1120,7 +1120,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.piratenpartei.at/volksbegehren-zum-bedingungslosen-grundeinkommen-bge/': {
-    'file': '',  # stays empty until download
+    'file': 'piratenpartei.at.grundeinkommen.html',  # stays empty until download
     'author': 'Harald Bauer',
     'title': 'Volksbegehren zum Bedingungslosen Grundeinkommen (BGE)!',
     'date': '2019-11-17',
@@ -1134,7 +1134,7 @@ EVAL_PAGES = {
     'region': 'AT',  # if obvious: DE, CH, AT
 },
 'https://www.dobszay.ch/2016-04-15/was-ist-der-unterschied-zwischen-privaten-und-staatlichen-geheimdiensten/': {
-    'file': '',  # stays empty until download
+    'file': 'dobszay.ch.geheimdiensten.html',  # stays empty until download
     'author': 'LD',
     'title': 'Was ist der Unterschied zwischen privaten und staatlichen Geheimdiensten?',
     'date': '2016-04-15',
@@ -1148,7 +1148,7 @@ EVAL_PAGES = {
     'region': 'CH',  # if obvious: DE, CH, AT
 },
 'https://www.unsere-zeitung.at/2020/02/02/ist-die-inklusion-im-kapitalismus-umsetzbar/': {
-    'file': '',  # stays empty until download
+    'file': 'unsere-zeitung.at.inklusion.html',  # stays empty until download
     'author': 'Alexander Roll',
     'title': 'Ist die Inklusion im Kapitalismus umsetzbar? ',
     'date': '2020-02-02',
@@ -1162,7 +1162,7 @@ EVAL_PAGES = {
     'region': 'AT',  # if obvious: DE, CH, AT
 },
 'http://www.sprechwaisen.com/sw082-82-gruende-zum-weiter-hoeren/': {
-    'file': '',  # stays empty until download
+    'file': 'sprechwaisen.com.sw082.html',  # stays empty until download
     'author': 'Realiberry', # unterschrieben als Heiko
     'title': 'SW082 – 82 Gründe zum weiter hören',
     'date': '2019-07-21',
@@ -1176,7 +1176,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.unterwegsinberlin.de/radtouren-berlin/radtour-durch-friedrichsfelde-karlshorst-und-schoeneweide/': {
-    'file': '',  # stays empty until download
+    'file': 'unterwegsinberlin.de.friedrichsfelde.html',  # stays empty until download
     'author': 'Tine',
     'title': 'Radtour durch Friedrichsfelde, Karlshorst und Schöneweide',
     'date': '2020-02-02',
@@ -1190,7 +1190,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.strafprozess.ch/rasende-polizisten/': {
-    'file': '',  # stays empty until download
+    'file': 'strafprozess.ch.polizisten.html',  # stays empty until download
     'author': '',
     'title': 'Rasende Polizisten',
     'date': '2020-02-04',
@@ -1204,7 +1204,7 @@ EVAL_PAGES = {
     'region': 'CH',  # if obvious: DE, CH, AT
 },
 'https://www.rent-a-salesman.eu/den-vertrieb-auslagern-anders-als-andere-oder-gut-zu-wissen': {
-    'file': '',  # stays empty until download
+    'file': 'rent-a-salesman.eu.auslagern.html',  # stays empty until download
     'author': 'Bernhard Sgoda',
     'title': 'Gut zu Wissen',
     'date': '',
@@ -1218,7 +1218,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://wolfgangschmale.eu/abgebrochene-forschung-eine-neue-studie-von-heinz-duchhardt/': {
-    'file': '',  # stays empty until download
+    'file': 'wolfgangschmale.eu.duchhardt.html',  # stays empty until download
     'author': 'Wolfgang Schmale',
     'title': '„Abgebrochene Forschung“ – Eine neue Studie von Heinz Duchhardt',
     'date': '2020-02-10',
@@ -1232,7 +1232,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://netzfueralle.blog.rosalux.de/2019/10/30/netzpolitik-als-us-wahlkampfthema/': {
-    'file': '',  # stays empty until download
+    'file': 'netzfueralle.blog.rosalux.de.netzpolitik.html',  # stays empty until download
     'author': '',
     'title': 'Netzpolitik als US-Wahlkampfthema',
     'date': '2019-10-30',
@@ -1246,7 +1246,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'http://www.creativecommons.ch/wie-funktionierts/': {
-    'file': '',  # stays empty until download
+    'file': 'creativecommons.ch.wie.html',  # stays empty until download
     'author': '',
     'title': '',
     'date': '',
@@ -1260,7 +1260,7 @@ EVAL_PAGES = {
     'region': 'CH',  # if obvious: DE, CH, AT
 },
 'https://arsnova.thm.de/mobile/': {
-    'file': '',  # stays empty until download
+    'file': 'arsnova.thm.de.mobile.html',  # stays empty until download
     'author': '',
     'title': 'ARSnova-Handbuch',
     'date': '',
@@ -1274,7 +1274,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.anchor.ch/gesellschaft/ein-tag-aus-dem-leben-eines-taugenichts-oder-die-leute-von-sri-lanka/': {
-    'file': '',  # stays empty until download
+    'file': 'anchor.ch.lanka.html',  # stays empty until download
     'author': 'Peter Addor',
     'title': 'Ein Tag aus dem Leben eines Taugenichts oder die Leute von Sri Lanka',
     'date': '2019-12-22',
@@ -1288,7 +1288,7 @@ EVAL_PAGES = {
     'region': 'CH',  # if obvious: DE, CH, AT
 },
 'https://www.ejwue.de/aktuell/news/faire-lieferketten/': {
-    'file': '',  # stays empty until download
+    'file': 'ejwue.de.lieferketten.html',  # stays empty until download
     'author': 'Eberhard Fuhr',
     'title': 'Faire Lieferketten',
     'date': '2020-02-05',
@@ -1302,7 +1302,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'http://pinup-fashion.de/korsetts-shops-designer-online-kaufen/': {
-    'file': '',  # stays empty until download
+    'file': 'pinup-fashion.de.korsetts.html',  # stays empty until download
     'author': '',
     'title': 'Korsetts – Shops, Designer, online kaufen',
     'date': '',
@@ -1316,7 +1316,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://thebigbone.wordpress.com/2017/04/13/die-ueberforderung-durch-ueberangebote/': {
-    'file': '',  # stays empty until download
+    'file': 'thebigbone.wordpress.com.ueberforderung.html',  # stays empty until download
     'author': 'www.koffergepackt.com',
     'title': 'Die Überforderung durch Überangebote',
     'date': '',
@@ -1330,7 +1330,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://ritinardo.wordpress.com/2017/11/26/bundesregierung-2017-btw17-groko/': {
-    'file': '',  # stays empty until download
+    'file': 'ritinardo.wordpress.com.btw17.html',  # stays empty until download
     'author': 'tlow',
     'title': 'Bundesregierung 2017 #btw17 #groko',
     'date': '2017-11-26',
@@ -1344,7 +1344,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'http://ohneq.de/ohneq/johannes/': {
-    'file': '',  # stays empty until download
+    'file': 'ohneq.de.johannes.html',  # stays empty until download
     'author': 'Johannes Wolf',
     'title': 'Johannes',
     'date': '',
@@ -1358,7 +1358,7 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://shabka.org/about-us/': {
-    'file': '',  # stays empty until download
+    'file': 'shabka.org.about.html',  # stays empty until download
     'author': '',
     'title': 'The strategic Think & Do Tank',
     'date': '',
@@ -1372,7 +1372,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.parallels.com/products/desktop/': {
-    'file': '',  # stays empty until download
+    'file': 'parallels.com.desktop.html',  # stays empty until download
     'author': '',
     'title': 'Parallels Desktop 15 for Mac',
     'date': '',
@@ -1386,7 +1386,7 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'http://www.qualisys.eu/gefahrstoff-service': {
-    'file': '',  # stays empty until download
+    'file': 'qualisys.eu.gefahrstoff.html',  # stays empty until download
     'author': '',
     'title': 'Gefahrstoffmanagement für Hersteller, Importeure und Alleinvertreter',
     'date': '2019-12-19',

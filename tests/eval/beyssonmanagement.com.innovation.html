@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="de-DE">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="de-DE">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="de-DE">
+<![endif]-->
+<!--[if !(IE 6) & !(IE 7) & !(IE 8)]><!-->
+<html lang="de-DE">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
+<title>Was ist Innovation? | BeyssOnManagement</title>
+<link rel="profile" href="http://gmpg.org/xfn/11" />
+<link rel="stylesheet" type="text/css" media="all" href="https://s2.wp.com/wp-content/themes/pub/twentyeleven/style.css" />
+<link rel="pingback" href="https://beyssonmanagement.com/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="https://s2.wp.com/wp-content/themes/pub/twentyeleven/js/html5.js" type="text/javascript"></script>
+<![endif]-->
+
+<!-- Async WordPress.com Remote Login -->
+<script id="wpcom_remote_login_js">
+var wpcom_remote_login_extra_auth = '';
+function wpcom_remote_login_remove_dom_node_id( element_id ) {
+	var dom_node = document.getElementById( element_id );
+	if ( dom_node ) { dom_node.remove(); }
+}
+function wpcom_remote_login_remove_dom_node_classes( class_name ) {
+	var dom_nodes = document.querySelectorAll( '.' + class_name );
+	for ( var i = 0; i < dom_nodes.length; i++ ) {
+		dom_nodes[i].remove();
+	}
+}
+function wpcom_remote_login_final_cleanup() {
+	wpcom_remote_login_remove_dom_node_classes( "wpcom_remote_login_msg" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_validate" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_js" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_iframe" );
+	wpcom_remote_login_remove_dom_node_id( "wpcom_request_access_styles" );
+}
+
+// Watch for messages back from the remote login
+window.addEventListener( "message", function( e ) {
+	if ( e.origin === "https://r-login.wordpress.com" ) {
+		var data = {};
+		try {
+			data = JSON.parse( e.data );
+		} catch( e ) {
+			wpcom_remote_login_final_cleanup();
+			return;
+		}
+
+		if ( data.msg === 'LOGIN' ) {
+			// Clean up the login check iframe
+			wpcom_remote_login_remove_dom_node_id( "wpcom_remote_login_key" );
+
+			var id_regex = new RegExp( /^[0-9]+$/ );
+			var token_regex = new RegExp( /^.*|.*|.*$/ );
+			if (
+				token_regex.test( data.token )
+				&& id_regex.test( data.wpcomid )
+			) {
+				// We have everything we need to ask for a login
+				var script = document.createElement( "script" );
+				script.setAttribute( "id", "wpcom_remote_login_validate" );
+				script.src = '/remote-login.php?wpcom_remote_login=validate'
+					+ '&wpcomid=' + data.wpcomid
+					+ '&token=' + encodeURIComponent( data.token )
+					+ '&host=' + window.location.protocol
+						+ '//' + window.location.hostname;
+				document.body.appendChild( script );
+			}
+
+			return;
+		}
+
+		// Safari ITP, not logged in, so redirect
+		if ( data.msg === 'LOGIN-REDIRECT' ) {
+			window.location = 'https://wordpress.com/log-in?redirect_to=' + window.location.href;
+			return;
+		}
+
+		// Safari ITP, storage access failed, remove the request
+		if ( data.msg === 'LOGIN-REMOVE' ) {
+			var css_zap = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } @media screen and ( max-width: 782px ) { html { margin-top: 0 !important; } * html body { margin-top: 0 !important; } }';
+			var style_zap = document.createElement( 'style' );
+			style_zap.type = 'text/css';
+			style_zap.appendChild( document.createTextNode( css_zap ) );
+			document.body.appendChild( style_zap );
+
+			var e = document.getElementById( 'wpcom_request_access_iframe' );
+			e.parentNode.removeChild( e );
+
+			document.cookie = 'wordpress_com_login_access=denied; path=/; max-age=31536000';
+
+			return;
+		}
+
+		// Safari ITP
+		if ( data.msg === 'REQUEST_ACCESS' ) {
+			console.log( 'request access: safari' );
+
+			// Check ITP iframe enable/disable knob
+			if ( wpcom_remote_login_extra_auth !== 'safari_itp_iframe' ) {
+				return;
+			}
+
+			// If we are in a "private window" there is no ITP.
+			var private_window = false;
+			try {
+				var opendb = window.openDatabase( null, null, null, null );
+			} catch( e ) {
+				private_window = true;
+			}
+
+			if ( private_window ) {
+				console.log( 'private window' );
+				return;
+			}
+
+			var iframe = document.createElement( 'iframe' );
+			iframe.id = 'wpcom_request_access_iframe';
+			iframe.setAttribute( 'scrolling', 'no' );
+			iframe.setAttribute( 'sandbox', 'allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-top-navigation-by-user-activation' );
+			iframe.src = 'https://r-login.wordpress.com/remote-login.php?wpcom_remote_login=request_access&origin=' + encodeURIComponent( data.origin ) + '&wpcomid=' + encodeURIComponent( data.wpcomid );
+
+			var css = 'html { -webkit-transition: margin-top 1s; transition: margin-top 1s; } /* 9001 */ html { margin-top: 46px !important; } * html body { margin-top: 46px !important; } @media screen and ( max-width: 660px ) { html { margin-top: 71px !important; } * html body { margin-top: 71px !important; } #wpcom_request_access_iframe { display: block; height: 71px !important; } } #wpcom_request_access_iframe { border: 0px; height: 46px; position: fixed; top: 0; left: 0; width: 100%; min-width: 100%; z-index: 99999; background: #23282d; } ';
+
+			var style = document.createElement( 'style' );
+			style.type = 'text/css';
+			style.id = 'wpcom_request_access_styles';
+			style.appendChild( document.createTextNode( css ) );
+			document.body.appendChild( style );
+
+			document.body.appendChild( iframe );
+		}
+
+		if ( data.msg === 'DONE' ) {
+			wpcom_remote_login_final_cleanup();
+		}
+	}
+}, false );
+
+// Inject the remote login iframe after the page has had a chance to load
+// more critical resources
+window.addEventListener( "DOMContentLoaded", function( e ) {
+	var iframe = document.createElement( "iframe" );
+	iframe.style.display = "none";
+	iframe.setAttribute( "scrolling", "no" );
+	iframe.setAttribute( "id", "wpcom_remote_login_key" );
+	iframe.src = "https://r-login.wordpress.com/remote-login.php"
+		+ "?wpcom_remote_login=key"
+		+ "&origin=aHR0cHM6Ly9iZXlzc29ubWFuYWdlbWVudC5jb20%3D"
+		+ "&wpcomid=42133000"
+		+ "&time=1582052492";
+	document.body.appendChild( iframe );
+}, false );
+</script>
+<link rel='dns-prefetch' href='//s2.wp.com' />
+<link rel='dns-prefetch' href='//s1.wp.com' />
+<link rel='dns-prefetch' href='//beyssonmanagement.wordpress.com' />
+<link rel='dns-prefetch' href='//s0.wp.com' />
+<link rel="alternate" type="application/rss+xml" title="BeyssOnManagement &raquo; Feed" href="https://beyssonmanagement.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="BeyssOnManagement &raquo; Kommentar-Feed" href="https://beyssonmanagement.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="BeyssOnManagement &raquo; Was ist Innovation? Kommentar-Feed" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/feed/" />
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+			<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s0.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1573557586h&ver=5.3.2"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='all-css-0-1' href='https://s0.wp.com/_static/??-eJy1VNtShDAM/SFL2YWF9cHxW9oSutVemF5k+HtTut5WxR0dX6AJOclJegKdJyKcjWAjNYlMOkllA50n4QwJRmlYLqxKhHBDv4Z50CzCQCYX4oW1BdPqEQJ9gDgx8UhW61P4S6xMaHLwEr94oH3VVDXlSemBcu1WOPfMLzTERcPf08QTmGvSrKi3JuAJwzA82Ti42V7N5iKNZotLkUivht+m8CwqK8Nv4VEZ0MrCD/gxaU2CikBgULng+XJp1xz67th3LRfjuD/2bBQ7aIa6hQ7asW8YtPX+tuny2GWRSqFABxUifVIwf1tUuDPZXbWvqx1ZdVpw5UNVSK/3+o/UC2uNdd9Tv/RubUAWIfrNxGKOMMiEgUbl2bgFK4vJ+eQhBIJPo5Ihq2Q/b1Bx0ylxGmd0LFgAVfoyqmvD15GWUReMotZFhbDwetjiLMERrIiqdPaDQUbNlN/+vWSR4FFSjHpnboGYyMk582+nf5SC1I4zzJGHlHcOOxM4YWY3rz9LpbRPw4n53OD5vYUKTiishTNwH43v7vLUnvnlgHtztzsc62Nz2zSHh2f67ToI?cssminify=yes' type='text/css' media='all' />
+<style id='wp-block-library-inline-css'>
+.has-text-align-justify {
+	text-align:justify;
+}
+</style>
+<style id='jetpack-global-styles-frontend-style-inline-css'>
+:root { --font-headings: unset; --font-base: unset; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+</style>
+<script>
+var related_posts_js_options = {"post_heading":"h4"};
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??-eJyFj9EOwiAMRX9Ihntw0wfjtyCrpAgFKbjo1wuJPrgsmjRpbnpy762co0DSrkzA0ta5FUiP9+osb+QvQHg0SWXoPNIH1oEyUG5sDJw9MCsDK1cfzuhAFIZUAco15hKWnC8iumKQWCZwNWoSzXWhVty/H0G6I8x/MQs5Kn0VCRifrfPJH/vd2B+24zDs7QszQHB9'></script>
+<link rel='stylesheet' id='all-css-0-2' href='https://s0.wp.com/wp-content/mu-plugins/highlander-comments/style.css?m=1530132353h&cssminify=yes' type='text/css' media='all' />
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s2.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://beyssonmanagement.wordpress.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Innovation: Aktueller Beitrag für Board Report&nbsp;erschienen' href='https://beyssonmanagement.com/2014/06/17/innovation-aktueller-beitrag-fuer-board-report-erschienen/' />
+<link rel='next' title='Innovation ist mehr als Forschung &amp;&nbsp;Entwicklung' href='https://beyssonmanagement.com/2014/08/15/innovation-ist-mehr-als-forschung-und-entwicklung/' />
+<meta name="generator" content="WordPress.com" />
+<link rel="canonical" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/" />
+<link rel='shortlink' href='https://wp.me/p2QMIw-9G' />
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fbeyssonmanagement.com%2F2014%2F07%2F15%2Fwas-ist-innovation%2F&amp;for=wpcom-auto-discovery" /><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fbeyssonmanagement.com%2F2014%2F07%2F15%2Fwas-ist-innovation%2F&amp;for=wpcom-auto-discovery" />
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Was ist Innovation?" />
+<meta property="og:url" content="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/" />
+<meta property="og:description" content="Am 14. Juni 2005 hielt Steve Jobs eine vielbeachtete Rede vor den Absolventen der Stanford University. Den Zuhörern erzählte er drei Geschichten, die für sein Leben wichtig waren. “The first story …" />
+<meta property="article:published_time" content="2014-07-15T10:00:29+00:00" />
+<meta property="article:modified_time" content="2014-08-25T10:19:16+00:00" />
+<meta property="og:site_name" content="BeyssOnManagement" />
+<meta property="og:image" content="https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg" />
+<meta property="og:image:width" content="584" />
+<meta property="og:image:height" content="168" />
+<meta property="og:locale" content="de_DE" />
+<meta name="twitter:site" content="@wordpressdotcom" />
+<meta name="twitter:text:title" content="Was ist Innovation?" />
+<meta name="twitter:image" content="https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg?w=640" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom" />
+
+<!-- End Jetpack Open Graph Tags -->
+<link rel="shortcut icon" type="image/x-icon" href="https://s1.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48" />
+<link rel="icon" type="image/x-icon" href="https://s1.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48" />
+<link rel="apple-touch-icon-precomposed" href="https://s2.wp.com/i/webclip.png" />
+<link rel='openid.server' href='https://beyssonmanagement.com/?openidserver=1' />
+<link rel='openid.delegate' href='https://beyssonmanagement.com/' />
+<link rel="search" type="application/opensearchdescription+xml" href="https://beyssonmanagement.com/osd.xml" title="BeyssOnManagement" />
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com" />
+<meta name="theme-color" content="#dedede" />
+	<style>
+		/* Link color */
+		a,
+		#site-title a:focus,
+		#site-title a:hover,
+		#site-title a:active,
+		.entry-title a:hover,
+		.entry-title a:focus,
+		.entry-title a:active,
+		.widget_twentyeleven_ephemera .comments-link a:hover,
+		section.recent-posts .other-recent-posts a[rel="bookmark"]:hover,
+		section.recent-posts .other-recent-posts .comments-link a:hover,
+		.format-image footer.entry-meta a:hover,
+		#site-generator a:hover {
+			color: #5566b9;
+		}
+		section.recent-posts .other-recent-posts .comments-link a:hover {
+			border-color: #5566b9;
+		}
+		article.feature-image.small .entry-summary p a:hover,
+		.entry-header .comments-link a:hover,
+		.entry-header .comments-link a:focus,
+		.entry-header .comments-link a:active,
+		.feature-slider a.active {
+			background-color: #5566b9;
+		}
+	</style>
+<meta name="application-name" content="BeyssOnManagement" /><meta name="msapplication-window" content="width=device-width;height=device-height" /><meta name="msapplication-tooltip" content="Strategie - Innovation - Produktion" /><meta name="msapplication-task" content="name=Abonnieren;action-uri=https://beyssonmanagement.com/feed/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=Registriere dich für einen kostenlosen Blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com-Support;action-uri=http://support.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="msapplication-task" content="name=WordPress.com-Foren;action-uri=http://forums.wordpress.com/;icon-uri=https://s1.wp.com/i/favicon.ico" /><meta name="description" content="Am 14. Juni 2005 hielt Steve Jobs eine vielbeachtete Rede vor den Absolventen der Stanford University. Den Zuhörern erzählte er drei Geschichten, die für sein Leben wichtig waren. “The first story is about connecting the dots”, so Jobs. Mit den “dots” meinte er die kleinen Bausteine, die Mosaiksteine, aus denen sich ein Leben zusammensetzt. Hierzu&hellip;" />
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #dedede; }
+</style>
+	<link rel="amphtml" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/amp/"></head>
+
+<body class="post-template-default single single-post postid-600 single-format-standard custom-background wp-embed-responsive customizer-styles-applied single-author singular two-column right-sidebar highlander-enabled highlander-light">
+<div id="page" class="hfeed">
+	<header id="branding" role="banner">
+			<hgroup>
+				<h1 id="site-title"><span><a href="https://beyssonmanagement.com/" rel="home">BeyssOnManagement</a></span></h1>
+				<h2 id="site-description">Strategie &#8211; Innovation &#8211; Produktion</h2>
+			</hgroup>
+
+						<a href="https://beyssonmanagement.com/">
+				<img width="1000" height="288" src="https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg?w=1000&amp;h=288&amp;crop=1" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg 1000w, https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg?w=150&amp;h=43&amp;crop=1 150w, https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg?w=300&amp;h=86&amp;crop=1 300w, https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg?w=768&amp;h=221&amp;crop=1 768w" sizes="(max-width: 1000px) 100vw, 1000px" data-attachment-id="150" data-permalink="https://beyssonmanagement.com/2012/10/29/reverse-innovation/02-innovation/" data-orig-file="https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg" data-orig-size="1000,288" data-comments-opened="1" data-image-meta="{&quot;aperture&quot;:&quot;2.8&quot;,&quot;credit&quot;:&quot;&quot;,&quot;camera&quot;:&quot;DMC-LX2&quot;,&quot;caption&quot;:&quot;&quot;,&quot;created_timestamp&quot;:&quot;1225024399&quot;,&quot;copyright&quot;:&quot;&quot;,&quot;focal_length&quot;:&quot;6.3&quot;,&quot;iso&quot;:&quot;200&quot;,&quot;shutter_speed&quot;:&quot;0.076923076923077&quot;,&quot;title&quot;:&quot;&quot;}" data-image-title="02 Innovation" data-image-description="" data-medium-file="https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg?w=300" data-large-file="https://beyssonmanagement.files.wordpress.com/2012/10/02-innovation.jpg?w=584" />			</a>
+			
+								<form method="get" id="searchform" action="https://beyssonmanagement.com/">
+		<label for="s" class="assistive-text">Suchen</label>
+		<input type="text" class="field" name="s" id="s" placeholder="Suchen" />
+		<input type="submit" class="submit" name="submit" id="searchsubmit" value="Suchen" />
+	</form>
+			
+			<nav id="access" role="navigation">
+				<h3 class="assistive-text">Hauptmenü</h3>
+								<div class="skip-link"><a class="assistive-text" href="#content">Zum Inhalt wechseln</a></div>
+												<div class="menu-b-o-m-menu-container"><ul id="menu-b-o-m-menu" class="menu"><li id="menu-item-58" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-58"><a href="https://beyssonmanagement.wordpress.com">Home</a></li>
+<li id="menu-item-213" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-213"><a href="https://beyssonmanagement.com/category/themen/">Themen</a>
+<ul class="sub-menu">
+	<li id="menu-item-23" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23"><a href="https://beyssonmanagement.com/category/themen/strategie/">Strategie</a></li>
+	<li id="menu-item-20" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-20"><a href="https://beyssonmanagement.com/category/themen/innovation/">Innovation</a></li>
+	<li id="menu-item-21" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-21"><a href="https://beyssonmanagement.com/category/themen/produktion/">Produktion</a></li>
+	<li id="menu-item-22" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-22"><a href="https://beyssonmanagement.com/category/themen/prozesse/">Prozesse</a></li>
+	<li id="menu-item-219" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-219"><a href="https://beyssonmanagement.com/category/themen/veranderung/">Veränderung</a></li>
+	<li id="menu-item-117" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-117"><a href="https://beyssonmanagement.com/category/themen/management/">Management</a></li>
+</ul>
+</li>
+<li id="menu-item-206" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-206"><a href="https://beyssonmanagement.com/category/subjects/">Subjects</a>
+<ul class="sub-menu">
+	<li id="menu-item-212" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-212"><a href="https://beyssonmanagement.com/category/subjects/strategy/">Strategy</a></li>
+	<li id="menu-item-220" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-220"><a href="https://beyssonmanagement.com/category/subjects/business-innovation/">Business Innovation</a></li>
+	<li id="menu-item-211" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-211"><a href="https://beyssonmanagement.com/category/subjects/production/">Production</a></li>
+	<li id="menu-item-210" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-210"><a href="https://beyssonmanagement.com/category/subjects/processes/">Processes</a></li>
+	<li id="menu-item-19" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19"><a href="https://beyssonmanagement.com/category/subjects/change/">Change</a></li>
+	<li id="menu-item-209" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-209"><a href="https://beyssonmanagement.com/category/subjects/general-management/">General Management</a></li>
+</ul>
+</li>
+<li id="menu-item-225" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-225"><a href="#">Autor/Author</a>
+<ul class="sub-menu">
+	<li id="menu-item-18" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18"><a href="https://beyssonmanagement.com/der-autor/">Deutsch</a></li>
+	<li id="menu-item-226" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-226"><a href="https://beyssonmanagement.com/the-author/">English</a></li>
+</ul>
+</li>
+<li id="menu-item-17" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17"><a href="https://beyssonmanagement.com/kontakt-impressum/">Kontakt/Impressum</a></li>
+</ul></div>			</nav><!-- #access -->
+	</header><!-- #branding -->
+
+
+	<div id="main">
+
+		<div id="primary">
+			<div id="content" role="main">
+
+				
+					<nav id="nav-single">
+						<h3 class="assistive-text">Beitragsnavigation</h3>
+						<span class="nav-previous"><a href="https://beyssonmanagement.com/2014/06/17/innovation-aktueller-beitrag-fuer-board-report-erschienen/" rel="prev"><span class="meta-nav">&larr;</span> Vorherige</a></span>
+						<span class="nav-next"><a href="https://beyssonmanagement.com/2014/08/15/innovation-ist-mehr-als-forschung-und-entwicklung/" rel="next">Nächste <span class="meta-nav">&rarr;</span></a></span>
+					</nav><!-- #nav-single -->
+
+					
+<article id="post-600" class="post-600 post type-post status-publish format-standard has-post-thumbnail hentry category-innovation tag-david-brier tag-innovation tag-rafa-galeano tag-steve-jobs">
+	<header class="entry-header">
+		<h1 class="entry-title">Was ist Innovation?</h1>
+
+				<div class="entry-meta">
+						<span class="sep">Veröffentlicht am </span><a href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/" title="11:00" rel="bookmark"><time class="entry-date" datetime="2014-07-15T11:00:29+01:00">15/07/2014</time></a><span class="by-author"> <span class="sep"> von </span> <span class="author vcard"><a class="url fn n" href="https://beyssonmanagement.com/author/beyssonmanagement/" title="Zeige alle Beiträge von Guido Beyss" rel="author">Guido Beyss</a></span></span>		</div><!-- .entry-meta -->
+			</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p>Am 14. Juni 2005 hielt <a title="Wiki Steve Jobs" href="http://de.wikipedia.org/wiki/Steve_Jobs" target="_blank">Steve Jobs</a> eine vielbeachtete <a title="Jobs' Stanford Commencement address" href="http://news.stanford.edu/news/2005/june15/jobs-061505.html" target="_blank">Rede vor den Absolventen der Stanford University</a>. Den Zuhörern erzählte er drei Geschichten, die für sein Leben wichtig waren. “The first story is about connecting the dots”, so Jobs. Mit den “dots” meinte er die kleinen Bausteine, die Mosaiksteine, aus denen sich ein Leben zusammensetzt. Hierzu führte er aus: “You can’t connect the dots looking forward. You can only connect them looking backwards, so you have to trust that the dots will somehow connect in your future. You have to trust in something—your gut, destiny, life, karma, whatever—because believing that the dots will connect down the road will give you the confidence to follow your heart, even when it leads you off the well-worn path, and that will make all the difference.”<span id="more-600"></span></p>
+<p><a title="David Brier" href="http://www.davidbrier.com/" target="_blank">David Brier</a>, international anerkannter Fachmann für Brand Identity Management, hat diesen Gedanken, Mosaiksteine zu verbinden, Zusammenhänge zu erkennen, aufgegriffen, als er sich mit der Frage beschäftigte, was eigentlich Innovation ist. Dazu schreibt er in einem <a title="D. Brier: What is innovation?" href="http://www.fastcompany.com/3020950/leadership-now/what-is-innovation" target="_blank">Beitrag für Fast Company</a>: “I concluded that this was the single difference between the innovator and the ordinary person: one saw the dots and connected them while others 1) didn’t see them or 2) if they did, they didn’t explore, question, or connect any of them.” Angeregt durch diesen Gedanken hat Brier einen Essay über Innovation geschrieben. An dessen Ende kam Brier zu folgender Conclusio: “So what is innovation? Those other dots. The ones others miss. And having the certainty to know that the dots you see are not only valid but necessary if the world is to move forward.”</p>
+<p>Gemeinsam mit dem Grafikdesigner <a title="Rafa Galeano" href="http://cargocollective.com/rafagaleano" target="_blank">Rafa Galeano</a> hat Brier diese verblüffend einfache Antwort auf der Frage, was Innovation ist, in einem Video dargestellt:</p>
+<div class="embed-vimeo" style="text-align: center;"><iframe src="https://player.vimeo.com/video/77911159" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>
+<p><a href="http://vimeo.com/77911159">What is innovation?</a> from <a href="http://vimeo.com/rafagaleano">Rafa Galeano</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+<p>Ein hilfreicher kleiner Film, der uns davor bewahrt, zu glauben, die Bausteine, die wir täglich sehen, seien die einzigen, die es gibt. Es gibt noch weitere Bausteine: die, die wir übersehen haben; die, die wir ignoriert haben; und die, die wir längst vergessen haben.<br />
+Es sind diese anderen Bausteine, die das Potential haben, alles zu verändern.</p>
+<div id="jp-post-flair" class="sharedaddy sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Teilen:</h3><div class="sd-content"><ul><li class="share-facebook"><a rel="nofollow noopener noreferrer" data-shared="sharing-facebook-600" class="share-facebook sd-button share-icon" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/?share=facebook" target="_blank" title="Click to share on Facebook"><span>Facebook</span></a></li><li class="share-twitter"><a rel="nofollow noopener noreferrer" data-shared="sharing-twitter-600" class="share-twitter sd-button share-icon" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/?share=twitter" target="_blank" title="Klick, um über Twitter zu teilen"><span>Twitter</span></a></li><li class="share-linkedin"><a rel="nofollow noopener noreferrer" data-shared="sharing-linkedin-600" class="share-linkedin sd-button share-icon" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/?share=linkedin" target="_blank" title="Klick, um auf LinkedIn zu teilen"><span>LinkedIn</span></a></li><li class="share-email"><a rel="nofollow noopener noreferrer" data-shared="" class="share-email sd-button share-icon" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/?share=email" target="_blank" title="Klicken, um dies einem Freund per E-Mail zu senden"><span>E-Mail</span></a></li><li class="share-print"><a rel="nofollow noopener noreferrer" data-shared="" class="share-print sd-button share-icon" href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/#print" target="_blank" title="Klicken zum Ausdrucken"><span>Drucken</span></a></li><li class="share-end"></li></ul></div></div></div>
+<div id='jp-relatedposts' class='jp-relatedposts' >
+	<h3 class="jp-relatedposts-headline"><em>Ähnliche Beiträge</em></h3>
+</div></div>			</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+		Dieser Eintrag wurde veröffentlicht in <a href="https://beyssonmanagement.com/tag/innovation/" rel="category tag">Innovation</a> und verschlagwortet mit <a href="https://beyssonmanagement.com/tag/david-brier/" rel="tag">David Brier</a>, <a href="https://beyssonmanagement.com/tag/innovation/" rel="tag">Innovation</a>, <a href="https://beyssonmanagement.com/tag/rafa-galeano/" rel="tag">Rafa Galeano</a>, <a href="https://beyssonmanagement.com/tag/steve-jobs/" rel="tag">Steve Jobs</a> von <a href="https://beyssonmanagement.com/author/beyssonmanagement/">Guido Beyss</a>. <a href="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/" title="Permanentlink für Was ist Innovation?" rel="bookmark">Permanentlink</a>.		
+			</footer><!-- .entry-meta -->
+</article><!-- #post-600 -->
+
+						<div id="comments">
+	
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Kommentar verfassen <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2014/07/15/was-ist-innovation/#respond" style="display:none;">Antwort abbrechen</a></small></h3><form action="https://beyssonmanagement.com/wp-comments-post.php" method="post" id="commentform" class="comment-form"><input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="45acab3d5a" /><input type="hidden" name="_wp_http_referer" value="/2014/07/15/was-ist-innovation/" />
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest" />
+
+<div class="comment-form-field comment-textarea">
+	<label for="comment">Gib hier deinen Kommentar ein ...</label>
+	<div id="comment-form-comment"><textarea id="comment" name="comment" title="Gib hier deinen Kommentar ein ..."></textarea></div>
+</div>
+
+<div id="comment-form-identity">
+	<div id="comment-form-nascar">
+		<p>Trage deine Daten unten ein oder klicke ein Icon um dich einzuloggen:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="#comment-form-guest" id="postas-guest" class="nascar-signin-link"
+                   title="Login via Gast">
+									</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:WordPress.com" id="postas-wordpress" class="nascar-signin-link"
+                   title="Login via WordPress.com">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#0087be" d="M12.158 12.786l-2.698 7.84c.806.236 1.657.365 2.54.365 1.047 0 2.05-.18 2.986-.51-.024-.037-.046-.078-.065-.123l-2.762-7.57zM3.008 12c0 3.56 2.07 6.634 5.068 8.092L3.788 8.342c-.5 1.117-.78 2.354-.78 3.658zm15.06-.454c0-1.112-.398-1.88-.74-2.48-.456-.74-.883-1.368-.883-2.11 0-.825.627-1.595 1.51-1.595.04 0 .078.006.116.008-1.598-1.464-3.73-2.36-6.07-2.36-3.14 0-5.904 1.613-7.512 4.053.21.008.41.012.58.012.94 0 2.395-.114 2.395-.114.484-.028.54.684.057.74 0 0-.487.058-1.03.086l3.275 9.74 1.968-5.902-1.4-3.838c-.485-.028-.944-.085-.944-.085-.486-.03-.43-.77.056-.742 0 0 1.484.114 2.368.114.94 0 2.397-.114 2.397-.114.486-.028.543.684.058.74 0 0-.488.058-1.03.086l3.25 9.665.897-2.997c.456-1.17.684-2.137.684-2.907zm1.82-3.86c.04.286.06.593.06.924 0 .912-.17 1.938-.683 3.22l-2.746 7.94c2.672-1.558 4.47-4.454 4.47-7.77 0-1.564-.4-3.033-1.1-4.314zM12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></g></svg>				</a>
+			</li>
+			<li>
+			<li>
+				<a href="#comment-form-load-service:Twitter" id="postas-twitter" class="nascar-signin-link"
+                   title="Login via Twitter">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#1DA1F2" d="M22.23 5.924c-.736.326-1.527.547-2.357.646.847-.508 1.498-1.312 1.804-2.27-.793.47-1.67.812-2.606.996C18.325 4.498 17.258 4 16.078 4c-2.266 0-4.103 1.837-4.103 4.103 0 .322.036.635.106.935-3.41-.17-6.433-1.804-8.457-4.287-.353.607-.556 1.312-.556 2.064 0 1.424.724 2.68 1.825 3.415-.673-.022-1.305-.207-1.86-.514v.052c0 1.988 1.415 3.647 3.293 4.023-.344.095-.707.145-1.08.145-.265 0-.522-.026-.773-.074.522 1.63 2.038 2.817 3.833 2.85-1.404 1.1-3.174 1.757-5.096 1.757-.332 0-.66-.02-.98-.057 1.816 1.164 3.973 1.843 6.29 1.843 7.547 0 11.675-6.252 11.675-11.675 0-.178-.004-.355-.012-.53.802-.578 1.497-1.3 2.047-2.124z"/></g></svg>				</a>
+			</li>
+			<li>
+				<a href="#comment-form-load-service:Facebook" id="postas-facebook" class="nascar-signin-link"
+                   title="Login via Facebook">
+					<svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#3B5998" d="M20.007 3H3.993C3.445 3 3 3.445 3 3.993v16.013c0 .55.445.994.993.994h8.62v-6.97H10.27V11.31h2.346V9.31c0-2.325 1.42-3.59 3.494-3.59.993 0 1.847.073 2.096.106v2.43h-1.438c-1.128 0-1.346.537-1.346 1.324v1.734h2.69l-.35 2.717h-2.34V21h4.587c.548 0 .993-.445.993-.993V3.993c0-.548-.445-.993-.993-.993z"/></g></svg>				</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Gravatar" width="25" class="no-grav" />
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">E-Mail  <span class="required">(erforderlich)</span> <span class="nopublish">(Adresse wird niemals veröffentlicht)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Name <span class="required">(erforderlich)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value="" /></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Website</label>
+					<div class="comment-form-input"><input id="url" name="url" type="url" value="" /></div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="WordPress.com-Logo" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="" />
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="" />
+						<p class="comment-form-posting-as pa-wordpress">
+			<strong></strong>
+			Du kommentierst mit Deinem WordPress.com-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'wordpress' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#0087be" d="M12.158 12.786l-2.698 7.84c.806.236 1.657.365 2.54.365 1.047 0 2.05-.18 2.986-.51-.024-.037-.046-.078-.065-.123l-2.762-7.57zM3.008 12c0 3.56 2.07 6.634 5.068 8.092L3.788 8.342c-.5 1.117-.78 2.354-.78 3.658zm15.06-.454c0-1.112-.398-1.88-.74-2.48-.456-.74-.883-1.368-.883-2.11 0-.825.627-1.595 1.51-1.595.04 0 .078.006.116.008-1.598-1.464-3.73-2.36-6.07-2.36-3.14 0-5.904 1.613-7.512 4.053.21.008.41.012.58.012.94 0 2.395-.114 2.395-.114.484-.028.54.684.057.74 0 0-.487.058-1.03.086l3.275 9.74 1.968-5.902-1.4-3.838c-.485-.028-.944-.085-.944-.085-.486-.03-.43-.77.056-.742 0 0 1.484.114 2.368.114.94 0 2.397-.114 2.397-.114.486-.028.543.684.058.74 0 0-.488.058-1.03.086l3.25 9.665.897-2.997c.456-1.17.684-2.137.684-2.907zm1.82-3.86c.04.286.06.593.06.924 0 .912-.17 1.938-.683 3.22l-2.746 7.94c2.672-1.558 4.47-4.454 4.47-7.77 0-1.564-.4-3.033-1.1-4.314zM12 22C6.486 22 2 17.514 2 12S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Google Foto" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="" />
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="" />
+						<p class="comment-form-posting-as pa-googleplus">
+			<strong></strong>
+			Du kommentierst mit Deinem Google-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'googleplus' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" x="0px" y="0px" viewBox="0 0 60 60" ><path fill="#519bf7" d="M56.3,30c0,-1.6 -0.2,-3.4 -0.6,-5h-3.1H42.2H30v10.6h14.8C44,39.3 42,42 39.1,43.9l8.8,6.8C53,46 56.3,39 56.3,30z" /><path fill="#3db366" d="M30,57.5c6.7,0 13.1,-2.4 17.9,-6.8l-8.8,-6.8c-2.5,1.6 -5.6,2.4 -9.1,2.4c-7.2,0 -13.3,-4.7 -15.4,-11.2l-9.3,7.1C9.8,51.3 19.1,57.5 30,57.5z" /><path fill="#fdc600" d="M5.3,42.2l9.3,-7.1c-0.5,-1.6 -0.8,-3.3 -0.8,-5.1s0.3,-3.5 0.8,-5.1l-9.3,-7.1C3.5,21.5 2.5,25.6 2.5,30S3.5,38.5 5.3,42.2z" /><path fill="#f15b44" d="M40.1,17.4l8,-8C43.3,5.1 37,2.5 30,2.5C19.1,2.5 9.8,8.7 5.3,17.8l9.3,7.1c2.1,-6.5 8.2,-11.1 15.4,-11.1C33.9,13.7 37.4,15.1 40.1,17.4z" /></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Twitter-Bild" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="" />
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="" />
+						<p class="comment-form-posting-as pa-twitter">
+			<strong></strong>
+			Du kommentierst mit Deinem Twitter-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'twitter' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#1DA1F2" d="M22.23 5.924c-.736.326-1.527.547-2.357.646.847-.508 1.498-1.312 1.804-2.27-.793.47-1.67.812-2.606.996C18.325 4.498 17.258 4 16.078 4c-2.266 0-4.103 1.837-4.103 4.103 0 .322.036.635.106.935-3.41-.17-6.433-1.804-8.457-4.287-.353.607-.556 1.312-.556 2.064 0 1.424.724 2.68 1.825 3.415-.673-.022-1.305-.207-1.86-.514v.052c0 1.988 1.415 3.647 3.293 4.023-.344.095-.707.145-1.08.145-.265 0-.522-.026-.773-.074.522 1.63 2.038 2.817 3.833 2.85-1.404 1.1-3.174 1.757-5.096 1.757-.332 0-.66-.02-.98-.057 1.816 1.164 3.973 1.843 6.29 1.843 7.547 0 11.675-6.252 11.675-11.675 0-.178-.004-.355-.012-.53.802-.578 1.497-1.3 2.047-2.124z"/></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="https://1.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=25" alt="Facebook-Foto" width="25" class="no-grav" />
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="" />
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="" />
+						<p class="comment-form-posting-as pa-facebook">
+			<strong></strong>
+			Du kommentierst mit Deinem Facebook-Konto.			<span class="comment-form-log-out">
+				(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( 'facebook' );">Abmelden</a>&nbsp;/&nbsp;
+				<a href="#" onclick="javascript:HighlanderComments.switchAccount();return false;">Ändern</a>&nbsp;)
+			</span>
+			<span class="pa-icon"><svg xmlns="http://www.w3.org/2000/svg" role="presentation" viewBox="0 0 24 24" ><rect x="0" fill="none" width="24" height="24"/><g><path fill="#3B5998" d="M20.007 3H3.993C3.445 3 3 3.445 3 3.993v16.013c0 .55.445.994.993.994h8.62v-6.97H10.27V11.31h2.346V9.31c0-2.325 1.42-3.59 3.494-3.59.993 0 1.847.073 2.096.106v2.43h-1.438c-1.128 0-1.346.537-1.346 1.324v1.734h2.69l-.35 2.717h-2.34V21h4.587c.548 0 .993-.445.993-.993V3.993c0-.548-.445-.993-.993-.993z"/></g></svg></span>
+		</p>
+					</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Abbrechen</a></div>
+		<p>Verbinde mit %s</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;"/> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Benachrichtigung bei weiteren Kommentaren per E-Mail senden.</label></p><p class="post-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto;"/> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog"  style="display: inline;">Informiere mich über neue Beiträge per E-Mail.</label></p></div>
+
+
+
+
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Kommentar absenden" /> <input type='hidden' name='comment_post_ID' value='600' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="5d10d8da47" /></p>
+<input type="hidden" name="genseq" value="1582052492" />
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="8"/></p></form>	</div><!-- #respond -->
+	<div style="clear: both"></div>
+</div><!-- #comments -->
+
+				
+			</div><!-- #content -->
+		</div><!-- #primary -->
+
+
+	</div><!-- #main -->
+
+	<footer id="colophon" role="contentinfo">
+
+			
+<div id="supplementary" class="three">
+		<div id="first" class="widget-area" role="complementary">
+		<aside id="nav_menu-2" class="widget widget_nav_menu"><h3 class="widget-title">Sitemap</h3><div class="menu-b-o-m-menu-container"><ul id="menu-b-o-m-menu-1" class="menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-58"><a href="https://beyssonmanagement.wordpress.com">Home</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-213"><a href="https://beyssonmanagement.com/category/themen/">Themen</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-23"><a href="https://beyssonmanagement.com/category/themen/strategie/">Strategie</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-20"><a href="https://beyssonmanagement.com/category/themen/innovation/">Innovation</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-21"><a href="https://beyssonmanagement.com/category/themen/produktion/">Produktion</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-22"><a href="https://beyssonmanagement.com/category/themen/prozesse/">Prozesse</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-219"><a href="https://beyssonmanagement.com/category/themen/veranderung/">Veränderung</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-117"><a href="https://beyssonmanagement.com/category/themen/management/">Management</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-206"><a href="https://beyssonmanagement.com/category/subjects/">Subjects</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-212"><a href="https://beyssonmanagement.com/category/subjects/strategy/">Strategy</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-220"><a href="https://beyssonmanagement.com/category/subjects/business-innovation/">Business Innovation</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-211"><a href="https://beyssonmanagement.com/category/subjects/production/">Production</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-210"><a href="https://beyssonmanagement.com/category/subjects/processes/">Processes</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-19"><a href="https://beyssonmanagement.com/category/subjects/change/">Change</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-209"><a href="https://beyssonmanagement.com/category/subjects/general-management/">General Management</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-225"><a href="#">Autor/Author</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18"><a href="https://beyssonmanagement.com/der-autor/">Deutsch</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-226"><a href="https://beyssonmanagement.com/the-author/">English</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17"><a href="https://beyssonmanagement.com/kontakt-impressum/">Kontakt/Impressum</a></li>
+</ul></div></aside>	</div><!-- #first .widget-area -->
+	
+		<div id="second" class="widget-area" role="complementary">
+		<aside id="archives-3" class="widget widget_archive"><h3 class="widget-title">Artikel-Archiv</h3>		<label class="screen-reader-text" for="archives-dropdown-3">Artikel-Archiv</label>
+		<select id="archives-dropdown-3" name="archive-dropdown">
+			
+			<option value="">Monat auswählen</option>
+				<option value='https://beyssonmanagement.com/2014/12/'> Dezember 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/11/'> November 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/10/'> Oktober 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/09/'> September 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/08/'> August 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/07/'> Juli 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/06/'> Juni 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/05/'> Mai 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/04/'> April 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/03/'> März 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/02/'> Februar 2014 </option>
+	<option value='https://beyssonmanagement.com/2014/01/'> Januar 2014 </option>
+	<option value='https://beyssonmanagement.com/2013/12/'> Dezember 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/11/'> November 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/10/'> Oktober 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/09/'> September 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/08/'> August 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/07/'> Juli 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/06/'> Juni 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/05/'> Mai 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/04/'> April 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/03/'> März 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/02/'> Februar 2013 </option>
+	<option value='https://beyssonmanagement.com/2013/01/'> Januar 2013 </option>
+	<option value='https://beyssonmanagement.com/2012/11/'> November 2012 </option>
+	<option value='https://beyssonmanagement.com/2012/10/'> Oktober 2012 </option>
+
+		</select>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+	var dropdown = document.getElementById( "archives-dropdown-3" );
+	function onSelectChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value !== '' ) {
+			document.location.href = this.options[ this.selectedIndex ].value;
+		}
+	}
+	dropdown.onchange = onSelectChange;
+})();
+/* ]]> */
+</script>
+
+		</aside><aside id="search-2" class="widget widget_search">	<form method="get" id="searchform" action="https://beyssonmanagement.com/">
+		<label for="s" class="assistive-text">Suchen</label>
+		<input type="text" class="field" name="s" id="s" placeholder="Suchen" />
+		<input type="submit" class="submit" name="submit" id="searchsubmit" value="Suchen" />
+	</form>
+</aside>	</div><!-- #second .widget-area -->
+	
+		<div id="third" class="widget-area" role="complementary">
+		<aside id="blog_subscription-2" class="widget widget_blog_subscription jetpack_subscription_widget"><h3 class="widget-title"><label for="subscribe-field">Abonnement via Email</label></h3>
+            <form action="https://subscribe.wordpress.com" method="post" accept-charset="utf-8"
+                  id="subscribe-blog">
+									<p>Bitte geben Sie Ihre E-Mail-Adresse ein, um diesem Blog zu folgen und Benachrichtigungen über neue Posts per E-Mail zu erhalten.</p>
+                    <p><input type="text" name="email" style="width: 95%; padding: 1px 2px"
+                              placeholder="Gib deine E-Mail-Adresse ein" value=""
+                              id="subscribe-field"/></p>
+				
+                <p>
+                    <input type="hidden" name="action" value="subscribe"/>
+                    <input type="hidden" name="blog_id" value="42133000"/>
+                    <input type="hidden" name="source" value="https://beyssonmanagement.com/2014/07/15/was-ist-innovation/"/>
+                    <input type="hidden" name="sub-type" value="widget"/>
+                    <input type="hidden" name="redirect_fragment" value="blog_subscription-2"/>
+					<input type="hidden" id="_wpnonce" name="_wpnonce" value="eedfa27972" />                    <button type="submit"
+	                    		                	                >
+	                    Abonnieren                    </button>
+                </p>
+            </form>
+			
+</aside><aside id="meta-2" class="widget widget_meta"><h3 class="widget-title">Meta</h3>			<ul>
+			<li><a href="https://wordpress.com/start/de?ref=wplogin">Registrieren</a></li>			<li><a href="https://beyssonmanagement.wordpress.com/wp-login.php">Anmelden</a></li>
+			<li><a href="https://beyssonmanagement.com/feed/">Feed der Einträge</a></li>
+			<li><a href="https://beyssonmanagement.com/comments/feed/">Kommentare-Feed</a></li>
+			<li><a href="https://wordpress.com/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.com</a></li>			</ul>
+			</aside>	</div><!-- #third .widget-area -->
+	</div><!-- #supplementary -->
+			<div id="site-generator">
+				 								<a href="https://wordpress.com/?ref=footer_blog" rel="nofollow">Bloggen auf WordPress.com.</a>
+			</div>
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<!--  -->
+<script src='//0.gravatar.com/js/gprofiles.js?ver=202008y'></script>
+<script>
+var WPGroHo = {"my_hash":""};
+</script>
+<script type='text/javascript' src='https://s1.wp.com/wp-content/mu-plugins/gravatar-hovercards/wpgroho.js?m=1380573781h'></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	</div>
+<script>
+var HighlanderComments = {"loggingInText":"Anmelden \u2026","submittingText":"Sende Kommentar \u2026","postCommentText":"Kommentar absenden","connectingToText":"Verbinde mit %s","commentingAsText":"%1$s: Du kommentierst mit Deinem %2$s-Konto. ","logoutText":"Abmelden","loginText":"Anmelden","connectURL":"https:\/\/beyssonmanagement.wordpress.com\/public.api\/connect\/?action=request&domain=beyssonmanagement.com","logoutURL":"https:\/\/beyssonmanagement.wordpress.com\/wp-login.php?action=logout&_wpnonce=b139723df5","homeURL":"https:\/\/beyssonmanagement.com\/","postID":"600","gravDefault":"mystery","enterACommentError":"Bitte gib einen Kommentar ein","enterEmailError":"Bitte hier deine E-Mail-Adresse eingeben","invalidEmailError":"Ung\u00fcltige E-Mail-Adresse","enterAuthorError":"Bitte hier deinen Namen eingeben","gravatarFromEmail":"Dieses Bild wird angezeigt, wenn Du einen Kommentar hinterl\u00e4sst. Klicken, um es anzupassen.","logInToExternalAccount":"Melde dich an, um Details von einem dieser Konten zu verwenden.","change":"\u00c4ndern","changeAccount":"Konto \u00e4ndern","comment_registration":"","userIsLoggedIn":"","isJetpack":"","text_direction":"ltr"};
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??/wp-content/js/jquery/jquery.autoresize.js,/wp-content/mu-plugins/highlander-comments/script.js?m=1573483029j'></script>
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/beyssonmanagement.com\/2014\/07\/15\/was-ist-innovation\/":600};
+	</script>
+					<div id="sharing_email" style="display: none;">
+		<form action="/2014/07/15/was-ist-innovation/" method="post">
+			<label for="target_email">An E-Mail-Adresse senden</label>
+			<input type="email" name="target_email" id="target_email" value="" />
+
+			
+				<label for="source_name">Dein Name</label>
+				<input type="text" name="source_name" id="source_name" value="" />
+
+				<label for="source_email">Deine E-Mail-Adresse</label>
+				<input type="email" name="source_email" id="source_email" value="" />
+
+						<input type="text" id="jetpack-source_f_name" name="source_f_name" class="input" value="" size="25" autocomplete="off" title="This field is for validation and should not be changed" />
+			
+			<div
+				class="g-recaptcha"
+				data-sitekey="6LcmyE0UAAAAALID28yVNg7pFCodGaArJzHitez_"
+				data-theme="light"
+				data-type="image"
+				data-tabindex="0"></div>
+			<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=de" async></script>
+			
+			<img style="float: right; display: none" class="loading" src="https://s2.wp.com/wp-content/mu-plugins/post-flair/sharing/images/loading.gif" alt="loading" width="16" height="16" />
+			<input type="submit" value="E-Mail senden" class="sharing_send" />
+			<a rel="nofollow" href="#cancel" class="sharing_cancel" role="button">Abbrechen</a>
+
+			<div class="errors errors-1" style="display: none;">
+				Beitrag nicht abgeschickt - E-Mail Adresse kontrollieren!			</div>
+
+			<div class="errors errors-2" style="display: none;">
+				E-Mail-Überprüfung fehlgeschlagen, bitte versuche es noch einmal			</div>
+
+			<div class="errors errors-3" style="display: none;">
+				Ihr Blog kann leider keine Beiträge per E-Mail teilen.			</div>
+		</form>
+	</div>
+<link rel='stylesheet' id='all-css-0-3' href='https://s2.wp.com/wp-content/plugins/gutenberg-blocks/jetpack-layout-grid/blocks/front.css?m=1576278967h&cssminify=yes' type='text/css' media='all' />
+<script>
+var actionbardata = {"siteID":"42133000","siteName":"BeyssOnManagement","siteURL":"https:\/\/beyssonmanagement.com","icon":"<img alt='' src='https:\/\/s2.wp.com\/i\/logo\/wpcom-gray-white.png' class='avatar avatar-50' height='50' width='50' \/>","canManageOptions":"","canCustomizeSite":"","isFollowing":"","themeSlug":"pub\/twentyeleven","signupURL":"https:\/\/wordpress.com\/start\/","loginURL":"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fbeyssonmanagement.com%2F2014%2F07%2F15%2Fwas-ist-innovation%2F&signup_flow=account&domain=beyssonmanagement.com","themeURL":"https:\/\/wordpress.com\/theme\/twentyeleven\/","xhrURL":"https:\/\/beyssonmanagement.com\/wp-admin\/admin-ajax.php","nonce":"9b6e162a5c","isSingular":"1","isFolded":"","isLoggedIn":"","isMobile":"","subscribeNonce":"<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"eedfa27972\" \/>","referer":"https:\/\/beyssonmanagement.com\/2014\/07\/15\/was-ist-innovation\/","canFollow":"1","feedID":"18227798","statusMessage":"","customizeLink":"https:\/\/beyssonmanagement.wordpress.com\/wp-admin\/customize.php?url=https%3A%2F%2Fbeyssonmanagement.wordpress.com%2F2014%2F07%2F15%2Fwas-ist-innovation%2F","postID":"600","shortlink":"https:\/\/wp.me\/p2QMIw-9G","canEditPost":"","editLink":"https:\/\/wordpress.com\/post\/beyssonmanagement.com\/600","statsLink":"https:\/\/wordpress.com\/stats\/post\/600\/beyssonmanagement.com","i18n":{"view":"Webseite ansehen","follow":"Folgen","following":"Du folgst","edit":"Bearbeiten","login":"Anmelden","signup":"Registrieren","customize":"Anpassen","report":"Melde diesen Inhalt","themeInfo":"Theme herunterladen: Twenty Eleven","shortlink":"Kurzlink kopieren","copied":"Kopiert","followedText":"Neue Beitr\u00e4ge von dieser Website erscheinen nun in deinem <a href=\"https:\/\/wordpress.com\/\">Reader<\/a>.","foldBar":"Diese Leiste einklappen","unfoldBar":"Diese Leiste aufklappen","editSubs":"Abonnements verwalten","viewReader":"Website im Reader anzeigen","viewReadPost":"Beitrag im Reader lesen","subscribe":"Anmelden","enterEmail":"Gib deine E-Mail-Adresse ein","followers":"","alreadyUser":"Du hast bereits ein WordPress.com-Konto? <a href=\"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fbeyssonmanagement.com%2F2014%2F07%2F15%2Fwas-ist-innovation%2F&signup_flow=account&domain=beyssonmanagement.com\">Melde dich jetzt an.<\/a>","stats":"Statistik"}};
+</script>
+<script>
+var sharing_js_options = {"lang":"de","counts":"1","is_stats_active":"1"};
+</script>
+<script type='text/javascript' src='https://s0.wp.com/_static/??-eJyVUdtugzAM/aGlpg0F+jDtU6aQONQlF5YLXf9+QStVNW1Ie4rjc459bMN1YtK7hC7BJYLCmSROn7tLfIEnyGY2mTyQi2BoxAgfGTOehVMGw0omJ01WBSyFpLe2CFnAydx2ltxvJEUxwYxO+bBAkzc3TcY801cDa3edjWGREjJUlMgNd1/Q8GPbdG1T91LrQ9cKLffIVVVjg7VuucC6Opx4A73xReRjiqyEcry7ILz+1XPI5dtjGL4FxTqmSciR4byMKH12Sfmrgzv8I72xS6HKqKwXAayICUOJmJ8xBFo29Mj9s0IKxVzcEslE3i2iR7TFHilaTIzvKngv5wPtg93gL7tl2ggKEM8ilButbxG92df9sas6fuL8ePkCNMLq+A=='></script>
+<script type='text/javascript'>
+( 'fetch' in window ) || document.write( '<script src="https://s0.wp.com/wp-includes/js/dist/vendor/wp-polyfill-fetch.min.js?m=1573572739h&#038;ver=3.0.0"></scr' + 'ipt>' );( document.contains ) || document.write( '<script src="https://s1.wp.com/wp-includes/js/dist/vendor/wp-polyfill-node-contains.min.js?m=1540208548h&#038;ver=3.26.0-0"></scr' + 'ipt>' );( window.FormData && window.FormData.prototype.keys ) || document.write( '<script src="https://s1.wp.com/wp-includes/js/dist/vendor/wp-polyfill-formdata.min.js?m=1550600082h&#038;ver=3.0.12"></scr' + 'ipt>' );( Element.prototype.matches && Element.prototype.closest ) || document.write( '<script src="https://s2.wp.com/wp-includes/js/dist/vendor/wp-polyfill-element-closest.min.js?m=1540208548h&#038;ver=2.0.2"></scr' + 'ipt>' );
+</script>
+<script type='text/javascript'>
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-facebook', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-twitter', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+var windowOpen;
+			jQuery( document.body ).on( 'click', 'a.share-linkedin', function() {
+				// If there's another sharing window open, close it.
+				if ( 'undefined' !== typeof windowOpen ) {
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery( this ).attr( 'href' ), 'wpcomlinkedin', 'menubar=1,resizable=1,width=580,height=450' );
+				return false;
+			});
+</script>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script><script src="//stats.wp.com/w.js?60" type="text/javascript" async defer></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'42133000','blog_tz':'1','user_lang':'de','blog_lang':'de','user_id':'0'}]);
+_stq.push(['view', {'blog':'42133000','v':'wpcom','tz':'1','user_id':'0','post':'600','subd':'beyssonmanagement'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1TaVhzUzFMbjdWNHpwZGhTayxPSUFCMGRVYVNrSFguN3FwSmQ5RGtNX3VQcj1yVzhiflM1THQtLGFdQ2toOXYlQjYrMC9LcVI/VlA0X254PXM/JT9JUys/ZDJtVzNNOD8zUlFxREhxQkd3VzNDTVl2K0lUbURLZ040fHZWU3oyejJ4Z3laeVZCcVIuZEhaK0d0Y0JDQVtxSXcsWXBLX1BvQisyPXVFaHRIZldQW3w4Nmk0TjdEZ2JuQTlrXzFlQS03PTY4JlhhZ1FfZH4vd3hIYXFddl1dSVA1aDd2MTQ3XT1ba3M/cG0yPW5hRnBIZENodEU3M3JBUjNWPXJnb1EwalRYWHhiRFt0U2dDPTBWUEE3bmdCT21kLTMsTFI='}]);
+_stq.push([ 'clickTrackerInit', '42133000', '600' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+</body>
+</html>
