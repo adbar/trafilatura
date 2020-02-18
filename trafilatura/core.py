@@ -43,9 +43,24 @@ COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 def try_readability(htmlstring, url):
     '''Safety net: try with the generic algorithm readability'''
-    doc = Document(htmlstring, min_text_length=25, retry_length=250)  # default values
-    newtree = html.fromstring(doc.summary())
+    doc = Document(htmlstring, url=url, min_text_length=25, retry_length=250)  # default values
+    newtree = html.fromstring(doc.summary(html_partial=True))  # don't wrap in html and body tags
     return newtree
+
+
+def sanitize_tree(tree):
+    '''Sanitize the output from the generic algorithm'''
+    # cleaned_tree = manual_cleaning(tree, True)
+    # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
+    etree.strip_tags(tree, 'div')
+    cleaned_tree = convert_tags(tree)
+    for elem in cleaned_tree:
+        elem.attrib.clear()
+        if elem.tag in ('del', 'head', 'hi', 'item', 'p', 'quote'):
+            if elem.text is None or elem.text.isspace():
+                elem.getparent().remove(elem)
+    cleaned_tree = prune_html(cleaned_tree)
+    return cleaned_tree
 
 
 def handle_titles(element, result_body):
@@ -368,7 +383,7 @@ def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
        based on a series of heuristics'''
     temp_text = trim(' '.join(temppost_hand.itertext()))
     len_text = len(temp_text)
-    algo_flag = False
+    # algo_flag = False
     # readability_flag = False
     if no_fallback is False:
         # speed-up based on input type
@@ -385,20 +400,28 @@ def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
         LOGGER.info('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
         # conditions to use alternative algorithms
         # if 0 <= len_text < 1500 and len_algo > 3*len_text:
-        if len_text == 0 and len_algo > 0:
+        if len_algo == 0 or len_algo == len_text:
+            algo_flag = False
+        elif len_text == 0 and len_algo > 0:
             algo_flag = True
-        elif len_algo > 2*len_text:  # len_text < 1000 and
+        elif len_text > 2*len_algo:
+            algo_flag = False
+        elif len_algo > 2*len_text:
             algo_flag = True
-        #elif 0.95*len_text < len_algo < len_text:
+        #elif len_text >= 500 and 0.9*len_text < len_algo < len_text:
         #    algo_flag = True
         #elif len_text >= 1000:
         #    if 0.85*len_text < len(temp_read) < len_text:
         #        algo_flag = True
         elif len(temppost_hand.xpath('//p')) == 0 and len_algo > 0:
             algo_flag = True  # borderline case
+        else:
+           # print(len_text, len_algo)
+           LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+           algo_flag = False
         # apply decision
-        if algo_flag is True:  # was len_text > 10
-            postbody = temppost_algo
+        if algo_flag is True:
+            postbody = sanitize_tree(temppost_algo)
             LOGGER.info('using generic algorithm: %s', url)
         else:
             postbody = temppost_hand
