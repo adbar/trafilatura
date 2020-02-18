@@ -271,6 +271,7 @@ def extract_content(tree, include_tables=False):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
+    sure_thing = False
     result_body = etree.Element('body')
     # iterate
     for expr in BODY_XPATH:
@@ -312,6 +313,7 @@ def extract_content(tree, include_tables=False):
                 result_body = handle_other_elements(element, result_body, potential_tags)
         # exit the loop if the result has children
         if len(result_body) > 0:
+            sure_thing = True
             LOGGER.debug(expr)
             break
     # try parsing wild <p> elements if nothing found or text too short
@@ -324,7 +326,7 @@ def extract_content(tree, include_tables=False):
     etree.strip_elements(result_body, 'done')
     etree.strip_tags(result_body, 'div')
     # return
-    return result_body
+    return result_body, sure_thing
 
 
 def extract_comments(tree, include_comments):
@@ -378,14 +380,14 @@ def extract_metadata(tree):
     return doctitle, docdate
 
 
-def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
-    '''Decide whether to choose own or external (jusText) extraction
+def compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fallback):
+    '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     temp_text = trim(' '.join(temppost_hand.itertext()))
     len_text = len(temp_text)
     # algo_flag = False
     # readability_flag = False
-    if no_fallback is False:
+    if no_fallback is False or sure_thing is False:
         # speed-up based on input type
         if isinstance(filecontent, str):
             htmlstring = filecontent
@@ -416,7 +418,7 @@ def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
         elif len(temppost_hand.xpath('//p')) == 0 and len_algo > 0:
             algo_flag = True  # borderline case
         else:
-           # print(len_text, len_algo)
+           # print(sure_thing, len_text, len_algo)
            LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
            algo_flag = False
         # apply decision
@@ -471,15 +473,15 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
 
     # extract content
-    temppost_hand = extract_content(cleaned_tree, include_tables)
+    temppost_hand, sure_thing = extract_content(cleaned_tree, include_tables)
 
     # compare
-    len_text, len_algo, postbody = compare_extraction(filecontent, tree, url, temppost_hand, no_fallback)
+    len_text, len_algo, postbody = compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fallback)
 
     # try to use original/dirty tree
     if len_text == 0 and len_algo == 0:
         tree = convert_tags(tree)
-        temppost_hand = extract_content(tree)
+        temppost_hand, sure_thing = extract_content(tree)
         temp_text = ' '.join(temppost_hand.itertext())
         LOGGER.debug('non-clean extracted length: %s (extraction)', len(temp_text))
         postbody = temppost_hand
