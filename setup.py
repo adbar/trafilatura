@@ -71,7 +71,7 @@ setup(
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[
-        'justext >= 2.2.0',
+        'readability-lxml == 0.7.1',
         'lxml == 4.3.5; python_version == "3.4"',
         'lxml >= 4.4.2; python_version > "3.4"',
         'requests == 2.21.0; python_version == "3.4"',

@@ -14,8 +14,7 @@ Module bundling all functions needed to extract the text in a webpage.
 import logging
 import re
 # third-party
-import justext
-##from readability import Document
+from readability import Document
 
 try:
     from htmldate import find_date
@@ -30,7 +29,7 @@ from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
                              prune_html, recursively_empty, discard_unwanted,
                              discard_unwanted_comments)
-from .settings import (HTML_CLEANER, JUSTEXT_LANGUAGE, MIN_EXTRACTED_SIZE,
+from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE,
                        MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
@@ -41,34 +40,12 @@ LOGGER = logging.getLogger(__name__)
 
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
-# justext
-JUSTEXT_STOPLIST = justext.get_stoplist(JUSTEXT_LANGUAGE)
 
-
-def try_justext(htmlstring, url):
-    '''Safety net: try with the generic algorithm justext'''
-    result_body = etree.Element('body')
-    # LOGGER.debug('raw length: %s (tostring) ', len(htmlstring))
-    try:
-        paragraphs = justext.justext(htmlstring, JUSTEXT_STOPLIST)
-    except ValueError as err:  # not an XML element: HtmlComment
-        LOGGER.error('justext %s %s', err, url)
-        result_body = None
-    else:
-        for paragraph in paragraphs:
-            if not paragraph.is_boilerplate:
-                if duplicate_test(paragraph) is not True:
-                    elem = etree.Element('p')
-                    elem.text = paragraph.text
-                    result_body.append(elem)
-    return result_body
-
-
-#def try_readability(htmlstring, url):
-#    '''Safety net: try with the generic algorithm readability'''
-#    doc = Document(htmlstring)
-#    newtree = html.fromstring(doc.summary())
-#    return newtree
+def try_readability(htmlstring, url):
+    '''Safety net: try with the generic algorithm readability'''
+    doc = Document(htmlstring, min_text_length=25, retry_length=250)  # default values
+    newtree = html.fromstring(doc.summary())
+    return newtree
 
 
 def handle_titles(element, result_body):
@@ -389,7 +366,7 @@ def extract_metadata(tree):
 def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
     '''Decide whether to choose own or external (jusText) extraction
        based on a series of heuristics'''
-    temp_text = ' '.join(temppost_hand.itertext())
+    temp_text = trim(' '.join(temppost_hand.itertext()))
     len_text = len(temp_text)
     algo_flag = False
     # readability_flag = False
@@ -401,16 +378,19 @@ def compare_extraction(filecontent, tree, url, temppost_hand, no_fallback):
             htmlstring = html.tostring(filecontent, pretty_print=False, encoding='utf-8')
         else:
             htmlstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
-        # try with justext
-        temppost_algo = try_justext(htmlstring, url)
         # try with readability
-        # temppost_algo = try_readability(htmlstring, url)
-        len_algo = len(' '.join(temppost_algo.itertext()))
+        temppost_algo = try_readability(htmlstring, url)
+        len_algo = len(trim(' '.join(temppost_algo.itertext())))
         # compare
         LOGGER.info('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
         # conditions to use alternative algorithms
-        if 0 <= len_text < 1500 and len_algo > 3*len_text:
+        # if 0 <= len_text < 1500 and len_algo > 3*len_text:
+        if len_text == 0 and len_algo > 0:
             algo_flag = True
+        elif len_algo > 2*len_text:  # len_text < 1000 and
+            algo_flag = True
+        #elif 0.95*len_text < len_algo < len_text:
+        #    algo_flag = True
         #elif len_text >= 1000:
         #    if 0.85*len_text < len(temp_read) < len_text:
         #        algo_flag = True
