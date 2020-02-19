@@ -540,9 +540,11 @@ def run_goose(htmlstring):
 
 def run_readability(htmlstring):
     '''try with the Python3 port of readability.js'''
-    doc = Document(htmlstring)
-    return doc.summary()
-
+    try:
+        doc = Document(htmlstring)
+        return doc.summary()
+    except:
+        return ''
 
 def run_inscriptis(htmlstring):
     '''try with the inscriptis module'''
@@ -581,22 +583,24 @@ def run_boilerpipe(htmlstring):
 
 
 def run_newsplease(htmlstring):
-   '''try with newsplease'''
-   article = NewsPlease.from_html(htmlstring, url=None)
-   return article.maintext
-
+    '''try with newsplease'''
+    try:
+        article = NewsPlease.from_html(htmlstring, url=None)
+        return article.maintext
+    except:
+        return ''
 
 def run_jparser(htmlstring):
-   '''try with jparser'''
-   pm = PageModel(htmlstring)
-   result = pm.extract()
-   mylist = list()
-   for x in result['content']:
-       if x['type'] in ('text', 'html'):
-           mylist.append(str(x['data']))
-   returnstring = re.sub(r'\s+', ' ', ' '.join(mylist))
-   returnstring = re.sub(r' ([.,;!?])', '\1', returnstring)
-   return returnstring
+    '''try with jparser'''
+    pm = PageModel(htmlstring)
+    result = pm.extract()
+    mylist = list()
+    for x in result['content']:
+        if x['type'] in ('text', 'html'):
+            mylist.append(str(x['data']))
+    returnstring = re.sub(r'\s+', ' ', ' '.join(mylist))
+    returnstring = re.sub(r' ([.,;!?])', '\1', returnstring)
+    return returnstring
 
 
 #def run_libextract(htmlstring):
