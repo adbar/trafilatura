@@ -16,6 +16,7 @@ import logging
 import re
 # third-party
 from readability import Document
+from readability.readability import Unparseable
 
 try:
     from htmldate import find_date
@@ -45,9 +46,12 @@ COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 def try_readability(htmlstring, url):
     '''Safety net: try with the generic algorithm readability'''
     # defaults min_text_length=25, retry_length=250
-    doc = Document(htmlstring, url=url, min_text_length=MIN_EXTRACTED_SIZE, retry_length=250)
-    newtree = html.fromstring(doc.summary(html_partial=True))  # don't wrap in html and body tags
-    return newtree
+    try:
+        doc = Document(htmlstring, url=url, min_text_length=MIN_EXTRACTED_SIZE, retry_length=250)
+        newtree = html.fromstring(doc.summary(html_partial=True))  # don't wrap in html and body tags
+        return newtree
+    except (etree.SerialisationError, Unparseable):
+        return etree.Element('div')
 
 
 def sanitize_tree(tree):
