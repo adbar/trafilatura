@@ -1399,4 +1399,214 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
+'http://www.xinhuanet.com/local/2020-02/19/c_1125597921.htm': {
+    'file': 'xinhuanet.com.c_1125597921.htm',  # stays empty until download
+    'author': '焦鹏',
+    'title': '武汉的声音：有英勇的你，才有英雄的城！',
+    'date': '2020-02-19',
+    'description': '武汉的声音：有英勇的你，才有英雄的城！\n---越是到疫情防控最为吃劲的时候，越是需要汇聚信心与力量。武汉“封城”27天后，湖北以外地区新冠肺炎每日确诊病例迎来15连降，湖北神农架林区确诊病例全部治愈。疫情虽在持续，但希望就在继续努力之中。正是有了英勇的你们，才有这座英雄的城！',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['2月17日', '能过关。', '萧海川'],  # 3 segments
+    'without': ['纠错', '关注新华网', '半月谈'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'http://www.banyuetan.org/jmcs/detail/20200102/1000200033136171577956287380194268_1.html': {
+    'file': 'banyuetan.org.1000200033136171577956287380194268_1.html',  # stays empty until download
+    'author': '孔德明',
+    'title': '益阳：“数字”是优长',
+    'date': '2020-01-02',
+    'description': '益阳近3年连续举办智慧乡村互联网大会，赋能农业无土栽培、立体种植、智能调控、四季生产……在益阳一个智慧农业园区里，作为益阳智慧医疗的组成部分。',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['高度认可……', '发现社会', '姚劲波说。'],  # 3 segments
+    'without': ['热门推荐', '理论应该', '杂志图书订阅'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://baike.baidu.com/item/%E8%94%A1%E5%81%A5%E9%9B%85': {
+    'file': 'baike.baidu.com.tanya.html',  # stays empty until download
+    'author': '',
+    'title': '蔡健雅_百度百科',
+    'date': '2020-02-14',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['1975年1月28日出生', '独立制作', '2000年在新加坡'],  # 3 segments
+    'without': ['原木渣男', '网友印象', '百科词'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.lastampa.it/cronaca/2020/02/19/news/temperature-in-calo-in-tutta-italia-attesa-neve-sull-appennino-1.38487954': {
+    'file': 'lastampa.it.temperature.html',  # stays empty until download
+    'author': '',
+    'title': 'Perturbazione polare al Centro e al Sud. Il Nord, scavalcato, mantiene temperature alte',
+    'date': '2020-02-19',
+    'description': 'Piogge, temporali e nevicate previste per oggi nelle regioni centrali e meridionali. Interessate Marche, Abruzzo, Molise, Umbria e Lazio. Neve sull’Appennino sopra i 1400 metri. Il bel tempo tornerà in poche ore',  # in HTML source
+    'categories': ['Cronaca'],
+    'tags': ['meteo', 'neve', 'caldo'],
+    'with': ['tornerà in poche ore', 'sopra i 1400 metri.', 'specialmente in Galles.'],  # 3 segments
+    'without': ['La grande sete', 'Argomenti', 'Ultima modifica'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://elpais.com/elpais/2020/02/18/ciencia/1582045946_459487.html': {
+    'file': 'elpais.com.ciencia.html',  # stays empty until download
+    'author': 'Nuño Domínguez',
+    'title': '¿Ha llegado realmente la Antártida a los 20 grados?',
+    'date': '2020-02-19',
+    'description': 'Los científicos cuestionan el reciente récord de temperatura y advierten de que lo más importante es la tendencia gradual al calentamiento que afecta al continente desde hace 60 años',  # in HTML source
+    'categories': ['Ciencia'],
+    'tags': ['Hielo', 'Aemet', 'Antártida', 'Altas temperaturas', 'Calor', 'Temperaturas', 'Calentamiento global', 'Cambio climático', 'Meteorología', 'Problemas ambientales'],
+    'with': ['Que en la Antártida se registren', 'Este mediodía la Base', 'y pasará a ser verde'],  # 3 segments
+    'without': ['Puede escribirnos', 'Un grupo de pingüinos', 'El portal de empleo InfoJobs'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.latimes.com/politics/story/2020-02-19/mike-bloomberg-democratic-debate-history': {
+    'file': 'latimes.com.bloomberg.html',  # stays empty until download
+    'author': 'Evan Halper',
+    'title': 'As his first debate nears, Bloomberg is having to answer about his past',
+    'date': '2020-02-19',
+    'description': 'Bloomberg&#x27;s debate debut on Wednesday comes as he faces intensifying questions about past statements and acts that critics say demeaned women and minorities and contradict Democratic values.',  # in HTML source
+    'categories': [''],
+    'tags': ['Campaign 2020'],
+    'with': ['a lot of explaining.', 'His opponents don’t lack for material to use.', 'floating above the fray'],
+    'without': ['The latest news, analysis and insights', 'writes about a broad range', 'California loosens its individual mandate'],
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.uusisuomi.fi/uutiset/sanna-marin-tapasi-angela-merkelin-myos-saksa-haluaa-pitaa-kiinni-maataloustuista-meidan-nakemyksiamme-suurimpana-nettomaksajana-ei-ole-otettu-riittavasti-huomioon/b29c11d3-9590-4045-8e2c-a568f9f24617': {
+    'file': 'uusisuomi.fi.angela.html',  # stays empty until download
+    'author': 'Tapio Nurminen',
+    'title': 'Sanna Marin tapasi Angela Merkelin: Myös Saksa haluaa pitää kiinni maataloustuista - ”Meidän näkemyksiämme suurimpana nettomaksajana ei ole otettu riittävästi huomioon”',
+    'date': '2019-02-19',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': ['Politiikka', 'EU'],
+    'with': ['ehdistötilaisuudessa Berliinissä.', 'Merkel korosti.', 'Charles Michels'],
+    'without': ['Kuva: ALEXANDER BECHER', 'Brexit kasvattaa maksuja', 'uudesta maahanmuuttolaista', 'hiilineutraaliuteen ilman vippaskonsteja'],
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://yle.fi/uutiset/3-11212601': {
+    'file': 'yle.fi.3-11212601.html',  # stays empty until download
+    'author': 'Markus Mäki',
+    'title': 'Leudot talvet tekevät meistä väsyneempiä – näillä keinoilla torjut kaamosoireita',
+    'date': '2019-02-19',
+    'description': 'Vuodenaikojen vaihtuminen vaikuttaa mielialaan ja käyttäytymiseen lähes kaikilla suomalaisilla. ',  # in HTML source
+    'categories': ['Kotimaa'],
+    'tags': [''],
+    'with': ['Vuodenaikojen vaihtuminen', 'Ilmastonmuutos vaikuttaa terveyteen', 'tuntuakin raskaalta.'],  # 3 segments
+    'without': ['Korkeasaaren karhut', 'Saat Ylen parhaat', 'Wuhanilainen'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.tofugu.com/travel/dezuka-suisan/': {
+    'file': 'tofugu.com.dezuka-suisan.html',  # stays empty until download
+    'author': 'Kanae Nakamine',
+    'title': 'Dezuka Suisan: Deep-Fried Fish Cakes, Hot and Fresh',
+    'date': '2020-02-04',
+    'description': 'Visit 出塚水産 (Dezuka Suisan), a local kamaboko fish cake factory/store in Monbetsu, Hokkaido and enjoy all the unique kinds of deep-fried fish cakes, hot and fresh',  # in HTML source
+    'categories': ['travel'],
+    'tags': ['Hokkaido prefecture', 'food', 'fish cakes', 'Monbestu', 'travel'],
+    'with': ['We picked out a couple of', 'While they were cooking', 'and everything was tasty.', '+81 158-23-2012'],
+    'without': ['Abashiri Prison Museum', '885 words', 'View larger map'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://blog.gaijinpot.com/tweet-of-the-week-67-dealing-with-chikan/': {
+    'file': 'blog.gaijinpot.com.chikan.html',  # stays empty until download
+    'author': 'Amelie Marie Nishizawa',
+    'title': 'Tweet of the Week #67: Dealing With Chikan',
+    'date': '2020-02-08',
+    'description': 'Follow these steps shared on Twitter to safely apprehend a train groper in Japan.',  # in HTML source
+    'categories': [''],
+    'tags': ['Study Japanese', 'Tweet of the Week'],
+    'with': ['fear of causing a fuss in public', '確保する。', 'help apprehend the culprit.', '@keizi666'],  # 3 segments
+    'without': ['Vegan food is notoriously hard', ' 5 min read', 'Student Placement Service'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://madame.lefigaro.fr/bien-etre/problemes-dintestin-quoi-manger-pour-aller-bien-110417-130897': {
+    'file': 'madame.lefigaro.fr.dintestin.html',  # stays empty until download
+    'author': 'Ophélie Ostermann',
+    'title': 'Les clés pour donner les bonnes bactéries à son intestin et aller bien',
+    'date': '2017-04-12',
+    'description': 'Pour aller bien «en haut», commençons par aller bien «en bas». Mode d&#039;emploi pour prendre soin de son ventre et faire du bien à son «second cerveau».',  # in HTML source
+    'categories': [''],
+    'tags': ['Santé', 'alimentation', 'Ventre plat', 'conseils'],
+    'with': ['Car oui, avec ses 200 millions de neurones', 'Travailler son stress', 'riches en prébiotiques et en probiotiques.'],  # 3 segments
+    'without': ['À lire aussi', 'dîne tard chez soi', 'Remportez le soin Time-Filler', 'veuillez vous connecter'],  # 3 segments
+    'comments': ['quel enfumage !'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.bondyblog.fr/societe/a-paris-8-un-peu-de-tension-beaucoup-d-actions/': {
+    'file': 'bondyblog.fr.paris-8.html',  # stays empty until download
+    'author': 'Kab Niang',
+    'title': 'A Paris-8, un peu de tension, beaucoup d’actions',
+    'date': '2020-02-17',
+    'description': 'A l’université Paris-8 de Saint-Denis, des centaines d’étudiants, enseignants et personnels sont en grève depuis plusieurs semaines pour protester contre les projets de réformes du gouvernement. Ils espèrent faire franchir un nouveau cap à leur mobilisation à compter du 5 mars.',  # in HTML source
+    'categories': ['Société'],
+    'tags': ['grève', 'lutte', 'mouvement social', 'paris 8', 'Saint-Denis', 'université'],
+    'with': ['Une grève reconductible à partir du 5 mars', 'Marie-Pierre ne fait plus de cours', 'Solidaires Étudiant-e-s Saint-Denis'],  # 3 segments
+    'without': ['Candidatures ouvertes pour le Prix', 'Intervenant à l’atelier', 'Le piquet de grève dans le hall'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'http://www.assabah.com.tn/article/164913/%D8%A7%D9%84%D9%86%D8%A7%D8%B4%D8%B7-%D8%A7%D9%84%D8%AD%D9%82%D9%88%D9%82%D9%8A-%D8%A7%D9%84%D8%B3%D9%88%D8%AF%D8%A7%D9%86%D9%8A-%D8%AE%D8%A7%D9%84%D8%AF-%D8%B9%D8%A8%D8%AF-%D8%A7%D9%84%D9%83%D8%B1%D9%8A%D9%85-%D9%85%D8%A7%D8%B3%D8%A7-%D9%84%D9%80%C2%AB%D8%A7%D9%84%D8%B5%D8%A8%D8%A7%D8%AD%C2%BB-%D9%83%D9%84-%D8%A7%D9%84%D8%B4%D8%B1%D9%88%D8%B7-%D9%85%D8%AA%D9%88%D9%81%D8%B1%D8%A9-%D9%84%D8%AB%D9%88%D8%B1%D8%A9': {
+    'file': 'assabah.com.tn.article.html',  # stays empty until download
+    'author': '',
+    'title': 'الناشط الحقوقي السوداني خالد عبد الكريم ماسا لـ«الصباح»:  كل الشروط متوفرة لثورة سودانية ولا حاجة لنستورد شيئا',
+    'date': '',
+    'description': 'حوار: آسيا العتروس مالذي يحدث في السودان؟ والى أين يتجه البلد الذي يقوده الرئيس عمر البشير منذ ثلاثين عاما؟ وماذا عن الوعود الرسمية بالاصلاحات السياسية وضمان الحريات؟ ما هي أفاق التحركات الشعبية المست',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['منذ بدء', 'كل المجالات' , 'وماذا عن حقيقة'],
+    'without': ['كورونا يقتل' ,'غائم جزئيا' ,'إضافة تعليق جديد'],
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://lapresse.tn/48915/parite-hommes-femmes-en-tunisie-au-dessous-de-la-moyenne-mondiale/': {
+    'file': 'lapresse.tn.parite.html',  # stays empty until download
+    'author': 'Chokri GHARBI',
+    'title': 'Parité hommes-femmes en Tunisie : Au-dessous de la moyenne mondiale',
+    'date': '2020-02-18',
+    'description': '',  # in HTML source
+    'categories': ['Société'],
+    'tags': ['femme', 'homme', 'parité'],
+    'with': ['Malgré les acquis législatifs', 'Des actions à entreprendre', 'assurer l’égalité des chances'],  # 3 segments
+    'without': ['Après une mise en quarantaine', 'des moments dans le parcours historique', 'partiellement nuageux'],  # 3 segments
+    'comments': ['La parité je veux bien'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal': {
+    'file': '',  # stays empty until download
+    'author': 'Jeanne Corriveau',
+    'title': 'La fin des trottinettes en libre-service à Montréal',
+    'date': '2020-02-19',
+    'description': 'L’administration Plante justifie sa décision par le taux élevé de délinquance chez les utilisateurs.',  # in HTML source
+    'categories': [''],
+    'tags': ['Valérie Plante', 'trottinette', 'trottinette électrique'],
+    'with': ['En raison du taux élevé de délinquance', 'D’autres détails suivront.'],  # 3 segments
+    'without': ['La GRC doit partir', 'des 4 articles gratuits', 'Du lundi au samedi'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
 }
