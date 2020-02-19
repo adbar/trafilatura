@@ -44,7 +44,8 @@ COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 def try_readability(htmlstring, url):
     '''Safety net: try with the generic algorithm readability'''
-    doc = Document(htmlstring, url=url, min_text_length=25, retry_length=250)  # default values
+    # defaults min_text_length=25, retry_length=250
+    doc = Document(htmlstring, url=url, min_text_length=MIN_EXTRACTED_SIZE, retry_length=250)
     newtree = html.fromstring(doc.summary(html_partial=True))  # don't wrap in html and body tags
     return newtree
 
@@ -333,7 +334,7 @@ def extract_content(tree, include_tables=False):
             LOGGER.debug(expr)
             break
     # try parsing wild <p> elements if nothing found or text too short
-    if len(result_body) == 0 or len(' '.join(result_body.itertext())) < 100:
+    if len(result_body) == 0 or len(' '.join(result_body.itertext())) < MIN_EXTRACTED_SIZE:
         result_body = recover_wild_paragraphs(tree, result_body)
     # parse tables
     if include_tables is True:
