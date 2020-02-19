@@ -11,6 +11,7 @@ Module bundling all functions needed to extract the text in a webpage.
 # text blacklist
 
 # standard
+#import concurrent.futures
 import logging
 import re
 # third-party
@@ -63,18 +64,18 @@ def sanitize_tree(tree):
     return cleaned_tree
 
 
-def handle_titles(element, result_body):
+def handle_titles(element):
     '''Process head elements (titles)'''
     element.text = trim(element.text)
-    if element.text and re.search(r'\w', element.text):
-        result_body.append(element)
     # maybe needs attention
     if element.tail and re.search(r'\w', element.tail):
         LOGGER.debug('tail in title: %s', element.tail)
-    return result_body
+    if element.text and re.search(r'\w', element.text):
+        return element
+    return None
 
 
-def handle_formatting(element, result_body):
+def handle_formatting(element):
     '''Process formatting elements (b, i, etc. converted to hi) found
        outside of paragraphs'''
     if element.text is not None or element.tail is not None:
@@ -84,11 +85,10 @@ def handle_formatting(element, result_body):
             processed_child.text = trim(element.text)
         if element.tail is not None:
             processed_child.tail = trim(element.tail)
-        result_body.append(processed_element)
-    return result_body
+    return processed_element
 
 
-def handle_lists(element, result_body):
+def handle_lists(element):
     '''Process lists elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
@@ -107,11 +107,11 @@ def handle_lists(element, result_body):
         # test if it has text
         teststring = ''.join(processed_element.itertext())
         if len(teststring) > 0 and re.search(r'[a-z]', teststring):
-            result_body.append(processed_element)
-    return result_body
+            return processed_element
+    return None
 
 
-def handle_quotes(element, result_body):
+def handle_quotes(element):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
@@ -127,16 +127,16 @@ def handle_quotes(element, result_body):
         # test if it has text
         teststring = ''.join(processed_element.itertext())
         if len(teststring) > 0 and re.search(r'[a-z]', teststring):
-            result_body.append(processed_element)
-    return result_body
+            return processed_element
+    return None
 
 
-def handle_other_elements(element, result_body, potential_tags):
+def handle_other_elements(element, potential_tags):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
     # delete unwanted
     if element.tag not in potential_tags:
         # LOGGER.debug('discarding: %s %s', element.tag, element.text)
-        return result_body
+        return None
     if element.tag == 'div':
         processed_element = handle_textnode(element, comments_fix=False)
         if processed_element is not None:
@@ -145,13 +145,13 @@ def handle_other_elements(element, result_body, potential_tags):
             if processed_element.tag == 'div':
                 processed_element.tag = 'p'
             # insert
-            result_body.append(processed_element)
+            return processed_element
     else:
         LOGGER.debug('processing other element: %s %s', element.tag, element.text)
-    return result_body
+    return None
 
 
-def handle_paragraphs(element, result_body, potential_tags):
+def handle_paragraphs(element, potential_tags):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
@@ -159,8 +159,8 @@ def handle_paragraphs(element, result_body, potential_tags):
     if len(element) == 0:
         processed_element = handle_textnode(element, comments_fix=False)
         if processed_element is not None:
-            result_body.append(processed_element)
-        return result_body
+            return processed_element
+        return None
     # children
     processed_element = etree.Element(element.tag)
     processed_element.text = ''
@@ -203,10 +203,9 @@ def handle_paragraphs(element, result_body, potential_tags):
         # clean trailing lb-elements
         if len(processed_element) > 0 and processed_element[-1].tag == 'lb' and processed_element[-1].tail is None:
             processed_element[-1].getparent().remove(processed_element[-1])
-        result_body.append(processed_element)
-    else:
-        LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
-    return result_body
+        return processed_element
+    LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
+    return None
 
 
 def handle_tables(tree, result_body):
@@ -263,8 +262,35 @@ def recover_wild_paragraphs(tree, result_body):
         # if processed_element is not None:
         #    processed_element.attrib.clear()
         #    processed_element.tail = ''
-        result_body = handle_paragraphs(element, result_body, potential_tags)
+        processed_element = handle_paragraphs(element, potential_tags)
+        if processed_element is not None:
+            result_body.append(processed_element)
     return result_body
+
+
+def handle_subtree(element, potential_tags=set(TAG_CATALOG)):
+    '''...'''
+    new_element = None
+    # bypass: nested elements
+    if element.tag == 'list':
+        new_element = handle_lists(element)
+    elif element.tag == 'quote':   # + 'code'?
+        new_element = handle_quotes(element)
+    elif element.tag == 'head':
+        new_element = handle_titles(element)
+    elif element.tag == 'p':
+        new_element = handle_paragraphs(element, potential_tags)
+    elif element.tag == 'lb':
+        if element.tail is not None and re.search(r'\w+', element.tail):
+            processed_element = etree.Element('p')
+            processed_element.text = handle_textnode(element, comments_fix=False).tail
+            return processed_element
+    elif element.tag == 'hi':
+        new_element = handle_formatting(element)
+    else:
+        # other elements (div, ??, ??)
+        new_element = handle_other_elements(element, potential_tags)
+    return new_element
 
 
 def extract_content(tree, include_tables=False):
@@ -291,26 +317,16 @@ def extract_content(tree, include_tables=False):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
-        for element in subtree.xpath('.//*'):  # .iter() .getchildren()
-            # bypass: nested elements
-            if element.tag == 'list':
-                result_body = handle_lists(element, result_body)
-            elif element.tag == 'quote':   # + 'code'?
-                result_body = handle_quotes(element, result_body)
-            elif element.tag == 'head':
-                result_body = handle_titles(element, result_body)
-            elif element.tag == 'p':
-                result_body = handle_paragraphs(element, result_body, potential_tags)
-            elif element.tag == 'lb':
-                if element.tail is not None and re.search(r'\w+', element.tail):
-                    processed_element = etree.Element('p')
-                    processed_element.text = handle_textnode(element, comments_fix=False).tail
-                    result_body.append(processed_element)
-            elif element.tag == 'hi':
-                result_body = handle_formatting(element, result_body)
-            else:
-                # other elements (div, ??, ??)
-                result_body = handle_other_elements(element, result_body, potential_tags)
+        #with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        #    future_content = {executor.submit(handle_subtree, element, potential_tags): element for element in subtree.xpath('.//*')}    # .iter() .getchildren()
+        #    for future in concurrent.futures.as_completed(future_content):
+        #        processed_elem = future.result()
+        #        if processed_elem is not None:
+        #            result_body.append(processed_elem)
+        for element in subtree.xpath('.//*'):
+            processed_elem = handle_subtree(element, potential_tags)
+            if processed_elem is not None:
+                result_body.append(processed_elem)
         # exit the loop if the result has children
         if len(result_body) > 0:
             sure_thing = True
@@ -329,6 +345,20 @@ def extract_content(tree, include_tables=False):
     return result_body, sure_thing
 
 
+def process_comments_node(elem, potential_tags):
+    '''...'''
+    if elem.tag in potential_tags:
+        # print(elem.tag, elem.text_content())
+        processed_element = handle_textnode(elem, comments_fix=True)
+        # test length and remove
+        if processed_element is not None and processed_element.text not in COMMENTS_BLACKLIST:
+            processed_element.attrib.clear()
+            # if textfilter(elem) is True: # ^Pingback
+            #    return None
+            return processed_element
+    return None
+
+
 def extract_comments(tree, include_comments):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
@@ -344,18 +374,16 @@ def extract_comments(tree, include_comments):
         # prune
         subtree = discard_unwanted_comments(subtree)
         # extract content
+        #with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        #    future_commentnode = {executor.submit(process_comments_node, elem, potential_tags): elem for elem in subtree.xpath('.//*')}
+        #    for future in concurrent.futures.as_completed(future_commentnode):
+        #        processed_elem = future.result()
+        #        if processed_elem is not None:
+        #            comments_body.append(processed_elem)
         for elem in subtree.xpath('.//*'):
-            if elem.tag in potential_tags:
-                # print(elem.tag, elem.text_content())
-                processed_element = handle_textnode(elem, comments_fix=True)
-                # test length and remove
-                if processed_element is None or processed_element.text in COMMENTS_BLACKLIST:
-                    # elem.getparent().remove(elem)
-                    continue
-                # if textfilter(elem) is True: # ^Pingback
-                #    continue
-                elem.attrib.clear()
-                comments_body.append(elem)
+            processed_elem = process_comments_node(elem, potential_tags)
+            if processed_elem is not None:
+                comments_body.append(processed_elem)
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)
@@ -418,9 +446,9 @@ def compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fal
         elif len(temppost_hand.xpath('//p')) == 0 and len_algo > 0:
             algo_flag = True  # borderline case
         else:
-           # print(sure_thing, len_text, len_algo)
-           LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
-           algo_flag = False
+            # print(sure_thing, len_text, len_algo)
+            LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+            algo_flag = False
         # apply decision
         if algo_flag is True:
             postbody = sanitize_tree(temppost_algo)
