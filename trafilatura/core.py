@@ -13,7 +13,7 @@ Module bundling all functions needed to extract the text in a webpage.
 # standard
 import logging
 import re
-# from copy import deepcopy
+from copy import deepcopy
 
 # third-party
 from lxml import etree, html
@@ -488,6 +488,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     cleaned_tree = prune_html(cleaned_tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
+
+    # backup (or not) for further processing
+    if no_fallback is True:
+        backup_tree = None
+    else:
+        backup_tree = deepcopy(cleaned_tree)
     # tree_cache[cleaned_tree] = list(cleaned_tree.iter())
     # bypass
     # cleaned_tree = tree
@@ -505,7 +511,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     temppost_hand, sure_thing = extract_content(cleaned_tree, include_tables)
 
     # compare
-    len_text, len_algo, postbody = compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fallback)
+    len_text, len_algo, postbody = compare_extraction(filecontent, backup_tree, url, temppost_hand, sure_thing, no_fallback)
 
     # try to use original/dirty tree
     if len_text == 0 and len_algo == 0:
