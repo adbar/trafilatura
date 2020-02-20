@@ -35,7 +35,7 @@ def put_in_cache(body):
     for element in body:
         try:
             teststring = ' '.join(element.itertext())
-        except AttributeError:  # justext Paragraph
+        except (AttributeError, ValueError):  # justext Paragraph / Html comment
             teststring = element.text
         cacheval = LRU_TEST.get(teststring)
         # if the value is already defined

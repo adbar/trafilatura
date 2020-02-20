@@ -31,8 +31,8 @@ from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
                              prune_html, recursively_empty, discard_unwanted,
                              discard_unwanted_comments)
-from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE,
-                       MIN_EXTRACTED_COMM_SIZE, TAG_CATALOG)
+from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
+                       MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
@@ -43,12 +43,23 @@ LOGGER = logging.getLogger(__name__)
 COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 
-def try_readability(htmlstring, url):
+class LXMLDocument(Document):
+    def __init__(self, input_, *args, **kwargs):
+        super().__init__(input_)
+        self.encoding = 'utf-8'
+    def _parse(self, input_):
+        return input_
+
+
+def try_readability(htmlinput, url):
     '''Safety net: try with the generic algorithm readability'''
     # defaults min_text_length=25, retry_length=250
     try:
-        doc = Document(htmlstring, url=url, min_text_length=MIN_EXTRACTED_SIZE, retry_length=250)
-        newtree = html.fromstring(doc.summary(html_partial=True))  # don't wrap in html and body tags
+        doc = LXMLDocument(htmlinput, url=url, min_text_length=MIN_EXTRACTED_SIZE, retry_length=250)
+        newtree = html.fromstring(doc.summary(html_partial=True), parser=html.HTMLParser(remove_blank_text=True, remove_comments=True))  # don't wrap in html and body tags
+        #for item in list(newtree):
+        #    if 'HtmlComment' in str(item.__class__):
+        #        item.getparent().remove(item)
         return newtree
     except (etree.SerialisationError, Unparseable):
         return etree.Element('div')
@@ -422,14 +433,14 @@ def compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fal
     # readability_flag = False
     if no_fallback is False or sure_thing is False:
         # speed-up based on input type
-        if isinstance(filecontent, str):
-            htmlstring = filecontent
-        elif isinstance(filecontent, (etree._ElementTree, html.HtmlElement)):
-            htmlstring = html.tostring(filecontent, pretty_print=False, encoding='utf-8')
-        else:
-            htmlstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
+        #if isinstance(filecontent, str):
+        #    htmlstring = filecontent
+        #elif isinstance(filecontent, (etree._ElementTree, html.HtmlElement)):
+        #    htmlstring = html.tostring(filecontent, pretty_print=False, encoding='utf-8')
+        #else:
+        #    htmlstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
         # try with readability
-        temppost_algo = try_readability(htmlstring, url)
+        temppost_algo = try_readability(tree, url)  # try_readability(tree, url)
         len_algo = len(trim(' '.join(temppost_algo.itertext())))
         # compare
         LOGGER.info('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
@@ -526,7 +537,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         LOGGER.error('not enough text %s %s', record_id, url)
     if len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
-    if len(temp_text) < MIN_EXTRACTED_SIZE and len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
+    if len(temp_text) < MIN_OUTPUT_SIZE and len(temp_comments) < MIN_OUTPUT_COMM_SIZE:
         LOGGER.info('text and comments not long enough: %s %s', len(temp_text), len(temp_comments))
         return None
 
