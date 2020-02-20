@@ -13,7 +13,10 @@ Module bundling all functions needed to extract the text in a webpage.
 # standard
 import logging
 import re
+# from copy import deepcopy
+
 # third-party
+from lxml import etree, html
 from readability import Document
 from readability.readability import Unparseable
 
@@ -23,7 +26,12 @@ try:
 except ImportError:
     DATE_FLAG = False
 
-from lxml import etree, html
+# try this option
+try:
+    from inscriptis import get_text
+except ImportError:
+    pass
+
 
 # own
 from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLACKLIST
@@ -59,6 +67,12 @@ def try_readability(htmlinput, url):
         return newtree
     except (etree.SerialisationError, Unparseable):
         return etree.Element('div')
+
+
+def run_inscriptis(htmlstring):
+    '''try with the inscriptis module'''
+    text = get_text(htmlstring)
+    return text
 
 
 def sanitize_tree(tree):
@@ -453,7 +467,7 @@ def compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fal
 
 
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
-            include_comments=True, csv_output=False, xml_output=False,
+            txt_fallback=False, include_comments=True, csv_output=False, xml_output=False,
             tei_output=False, tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False):
     '''Main process for text extraction'''
@@ -510,7 +524,15 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         LOGGER.info('not enough comments %s %s', record_id, url)
     if len(temp_text) < MIN_OUTPUT_SIZE and len(temp_comments) < MIN_OUTPUT_COMM_SIZE:
         LOGGER.info('text and comments not long enough: %s %s', len(temp_text), len(temp_comments))
-        return None
+        if txt_fallback is False or get_text is None:
+            return None
+        # additional fallback
+        rawtext = run_inscriptis(filecontent)
+        if len(rawtext) < MIN_OUTPUT_SIZE:
+            return None
+        postbody = etree.Element('p')
+        postbody.text = rawtext
+        temp_text = ' '.join(postbody.itertext())  # trim()?
 
     # sanity check on language
     if language_filter(temp_text, temp_comments, target_language, record_id, url) is True:
