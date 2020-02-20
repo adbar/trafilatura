@@ -11,9 +11,6 @@ import logging
 import re
 import socket
 import unicodedata
-
-from io import StringIO
-
 import urllib3
 
 try:
@@ -31,8 +28,8 @@ from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE
 LOGGER = logging.getLogger(__name__)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-# CUSTOM_HTMLPARSER = html.HTMLParser()
-# etree.HTMLParser() # remove_pis=True, collect_ids=False
+# collect_ids=False, default_doctype=False, huge_tree=True,
+HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
@@ -102,8 +99,8 @@ def load_html(htmlobject):
         return htmlobject
     if isinstance(htmlobject, str):
         try:
-            # parse # encoding=guessed_encoding # parser=CUSTOM_HTMLPARSER
-            tree = html.parse(StringIO(htmlobject))
+            # encoding=guessed_encoding
+            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
         except UnicodeDecodeError as err:
             LOGGER.error('unicode %s', err)
         except ValueError:

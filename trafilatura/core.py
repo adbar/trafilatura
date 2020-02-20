@@ -11,7 +11,6 @@ Module bundling all functions needed to extract the text in a webpage.
 # text blacklist
 
 # standard
-#import concurrent.futures
 import logging
 import re
 # third-party
@@ -27,26 +26,25 @@ except ImportError:
 from lxml import etree, html
 
 # own
-from .filters import duplicate_test, language_filter, put_in_cache
+from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLACKLIST
 from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
                              prune_html, recursively_empty, discard_unwanted,
                              discard_unwanted_comments)
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
-from .utils import load_html, sanitize, trim, txttocsv
+from .utils import load_html, sanitize, trim, txttocsv, HTML_PARSER
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
 
-COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
-
 
 class LXMLDocument(Document):
+    '''Sub-class of readability.Document accepting parsed trees as input'''
     def __init__(self, input_, *args, **kwargs):
         super().__init__(input_)
-        self.encoding = 'utf-8'
+
     def _parse(self, input_):
         return input_
 
@@ -56,10 +54,8 @@ def try_readability(htmlinput, url):
     # defaults min_text_length=25, retry_length=250
     try:
         doc = LXMLDocument(htmlinput, url=url, min_text_length=MIN_EXTRACTED_SIZE, retry_length=250)
-        newtree = html.fromstring(doc.summary(html_partial=True), parser=html.HTMLParser(remove_blank_text=True, remove_comments=True))  # don't wrap in html and body tags
-        #for item in list(newtree):
-        #    if 'HtmlComment' in str(item.__class__):
-        #        item.getparent().remove(item)
+        resultstring = doc.summary(html_partial=True)  # don't wrap in html and body tags
+        newtree = html.fromstring(resultstring, parser=HTML_PARSER)
         return newtree
     except (etree.SerialisationError, Unparseable):
         return etree.Element('div')
@@ -284,8 +280,8 @@ def recover_wild_paragraphs(tree, result_body):
     return result_body
 
 
-def handle_subtree(element, potential_tags=set(TAG_CATALOG)):
-    '''...'''
+def handle_textelem(element, potential_tags):
+    '''Process text element and determine how to deal with its content'''
     new_element = None
     # bypass: nested elements
     if element.tag == 'list':
@@ -333,14 +329,8 @@ def extract_content(tree, include_tables=False):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
-        #with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        #    future_content = {executor.submit(handle_subtree, element, potential_tags): element for element in subtree.xpath('.//*')}    # .iter() .getchildren()
-        #    for future in concurrent.futures.as_completed(future_content):
-        #        processed_elem = future.result()
-        #        if processed_elem is not None:
-        #            result_body.append(processed_elem)
         for element in subtree.xpath('.//*'):
-            processed_elem = handle_subtree(element, potential_tags)
+            processed_elem = handle_textelem(element, potential_tags)
             if processed_elem is not None:
                 result_body.append(processed_elem)
         # exit the loop if the result has children
@@ -362,7 +352,7 @@ def extract_content(tree, include_tables=False):
 
 
 def process_comments_node(elem, potential_tags):
-    '''...'''
+    '''Process comment node and determine how to deal with its content'''
     if elem.tag in potential_tags:
         # print(elem.tag, elem.text_content())
         processed_element = handle_textnode(elem, comments_fix=True)
@@ -390,12 +380,6 @@ def extract_comments(tree, include_comments):
         # prune
         subtree = discard_unwanted_comments(subtree)
         # extract content
-        #with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        #    future_commentnode = {executor.submit(process_comments_node, elem, potential_tags): elem for elem in subtree.xpath('.//*')}
-        #    for future in concurrent.futures.as_completed(future_commentnode):
-        #        processed_elem = future.result()
-        #        if processed_elem is not None:
-        #            comments_body.append(processed_elem)
         for elem in subtree.xpath('.//*'):
             processed_elem = process_comments_node(elem, potential_tags)
             if processed_elem is not None:
@@ -432,20 +416,12 @@ def compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fal
     # algo_flag = False
     # readability_flag = False
     if no_fallback is False or sure_thing is False:
-        # speed-up based on input type
-        #if isinstance(filecontent, str):
-        #    htmlstring = filecontent
-        #elif isinstance(filecontent, (etree._ElementTree, html.HtmlElement)):
-        #    htmlstring = html.tostring(filecontent, pretty_print=False, encoding='utf-8')
-        #else:
-        #    htmlstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
         # try with readability
-        temppost_algo = try_readability(tree, url)  # try_readability(tree, url)
+        temppost_algo = try_readability(tree, url)
         len_algo = len(trim(' '.join(temppost_algo.itertext())))
         # compare
         LOGGER.info('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
         # conditions to use alternative algorithms
-        # if 0 <= len_text < 1500 and len_algo > 3*len_text:
         if len_algo == 0 or len_algo == len_text:
             algo_flag = False
         elif len_text == 0 and len_algo > 0:
@@ -456,9 +432,6 @@ def compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fal
             algo_flag = True
         #elif len_text >= 500 and 0.9*len_text < len_algo < len_text:
         #    algo_flag = True
-        #elif len_text >= 1000:
-        #    if 0.85*len_text < len(temp_read) < len_text:
-        #        algo_flag = True
         elif len(temppost_hand.xpath('//p')) == 0 and len_algo > 0:
             algo_flag = True  # borderline case
         else:
@@ -488,7 +461,6 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     tree = load_html(filecontent)
     if tree is None:
         return None
-    # print(html.tostring(tree, pretty_print=False, encoding='unicode'))
 
     # Metadata here
     if csv_output is True or xml_output is True or tei_output is True:
@@ -505,7 +477,6 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     # tree_cache[cleaned_tree] = list(cleaned_tree.iter())
     # bypass
     # cleaned_tree = tree
-    # print(html.tostring(cleaned_tree, pretty_print=False, encoding='unicode'))
 
     # convert tags, the rest does not work without conversion
     cleaned_tree = convert_tags(cleaned_tree)

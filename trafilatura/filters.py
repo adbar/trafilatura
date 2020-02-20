@@ -16,6 +16,8 @@ except ImportError:
 from .lru import LRUCache
 from .settings import (DETECTION_LANGUAGES, LRU_SIZE,
                        MAX_REPETITIONS, MIN_DUPLCHECK_SIZE)
+from .utils import trim
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -27,16 +29,14 @@ if LANGID_FLAG is True:
 RE_FILTER = re.compile(r'\W*(Facebook|Twitter|Google|Linkedin|Whatsapp|Xing|Instagram|Pinterest|PDF|E-Mail|Drucken)$', flags=re.IGNORECASE)
 # |.hnliche Beitr| Instagram
 # (r'\W*(Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)', line) or
+COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
 
 
 def put_in_cache(body):
     '''Implement LRU cache'''
     global LRU_TEST
     for element in body:
-        try:
-            teststring = ' '.join(element.itertext())
-        except (AttributeError, ValueError):  # justext Paragraph / Html comment
-            teststring = element.text
+        teststring = trim(' '.join(element.itertext()))
         cacheval = LRU_TEST.get(teststring)
         # if the value is already defined
         if cacheval != -1:
@@ -50,7 +50,7 @@ def put_in_cache(body):
 def duplicate_test(element):
     '''Check for duplicate text'''
     try:
-        teststring = ' '.join(element.itertext())
+        teststring = trim(' '.join(element.itertext()))
     except AttributeError:  # justext Paragraph
         teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
