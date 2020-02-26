@@ -28,6 +28,7 @@ from readability import Document
 from trafilatura import extract
 ## add to tests?
 # https://github.com/nikitautiu/learnhtml
+## TODO: time, best of 3
 
 from evaldata import EVAL_PAGES as additional_data
 
@@ -525,9 +526,9 @@ def run_justext(htmlstring):
     return result
 
 
-def run_trafilatura_justext(htmlstring):
-    '''run trafilatura (without fallback) on content'''
-    result = extract(htmlstring, no_fallback=False, include_comments=False)
+def run_trafilatura_fallback(htmlstring):
+    '''run trafilatura (with fallback) on content'''
+    result = extract(htmlstring, no_fallback=False, include_comments=False, txt_fallback=False)
     return result
 
 
@@ -543,7 +544,8 @@ def run_readability(htmlstring):
     try:
         doc = Document(htmlstring)
         return doc.summary()
-    except:
+    except Exception as err:
+        print('Exception:', err)
         return ''
 
 def run_inscriptis(htmlstring):
@@ -587,7 +589,8 @@ def run_newsplease(htmlstring):
     try:
         article = NewsPlease.from_html(htmlstring, url=None)
         return article.maintext
-    except:
+    except Exception as err:
+        print('Exception:', err)
         return ''
 
 def run_jparser(htmlstring):
@@ -723,7 +726,7 @@ for item in EVAL_PAGES:
     justext_result['false negatives'] += fn
     # trafilatura + X
     start = time.time()
-    result = run_trafilatura_justext(htmlstring)
+    result = run_trafilatura_fallback(htmlstring)
     trafilatura_X_result['time'] += time.time() - start
     tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
     trafilatura_X_result['true positives'] += tp

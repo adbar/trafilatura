@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:my="mynames" lang="de"><!-- DEBUG start 17:51:51+01:00 page_id=4623 :: Schwerpunkt Fridays For Future--><!--
+		Content Management: openNewspaper www.opennewspaper.org based on TYPO3 www.typo3.org
+		Community Platform: Invsision Power Board www.invisionpower.com via ipbwi.com + manufactured PHP
+		Presentation Layer: XML, XSL, HTML, CSS, JS (+ toil, tears and sweat) webmaster@taz.de
+	--><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--
+			page_id :: 4623--><meta http-equiv="Content-Script-Type" content="text/javascript"></meta><meta name="robots" content="index,follow,noarchive"></meta><meta name="language" content="de"></meta><meta name="copyright" content="TAZ Verlags- und Vertriebs GmbH"></meta><title>Siemens und die Kohlemine Adani: Kaeser verarscht Neubauer - taz.de</title><meta name="author" content="Ingo Arzt"></meta><meta name="description" content="Siemens-Chef Joe Kaeser hat die Klimaaktivistin Luisa Neubauer über den Tisch gezogen. In der Logik des Konzerns lohnt sich das."></meta><meta name="keywords" content="Siemens, Luisa Neubauer, Joe Kaeser, Australien, Fridays For Future, Ökonomie, Öko, Schwerpunkt, taz, tageszeitung "></meta><meta name="taz:tag" content="Siemens" data-tag-id="5009186"></meta><meta name="taz:tag" content="Schwerpunkt Fridays For Future" data-tag-id="5571786" data-tag-category="Schwerpunkt"></meta><meta name="taz:tag" content="Luisa Neubauer" data-tag-id="5645372"></meta><meta name="taz:tag" content="Joe Kaeser" data-tag-id="5043433"></meta><meta name="taz:tag" content="Australien" data-tag-id="5008720"></meta><meta name="generator" content="tazxslt, 0.55; "></meta><meta property="fb:pages" content="171844246207985,162775943776229,136860635948,337939896245563,185657208283671,1141409319297464,255160261177600,1252816681448318,240508363106685,669240916596907"></meta><meta property="og:url" content="https://taz.de/!5655255/"></meta><meta property="og:locale" content="de_DE"></meta><meta property="og:type" content="article"></meta><meta name="twitter:card" content="summary_large_image"></meta><meta name="twitter:site" content="@tazgezwitscher"></meta><meta property="og:title" content="Siemens und die Kohlemine Adani: Kaeser verarscht Neubauer"></meta><meta property="fb:app_id" content="966242223397117"></meta><meta name="twitter:title" content="Siemens und die Kohlemine Adani: Kaeser verarscht Neubauer"></meta><meta property="og:description" content="Siemens-Chef Joe Kaeser hat die Klimaaktivistin Luisa Neubauer über den Tisch gezogen. In der Logik des Konzerns lohnt sich das."></meta><meta name="twitter:description" content=" Siemens-Chef Joe Kaeser hat die Klimaaktivistin Luisa Neubauer über den Tisch gezogen. In der Logik des Konzerns lohnt sich das."></meta><meta property="og:image" content="https://taz.de/picture/3905628/948/Neubauer-Kaeser-Siemens-Kohle-Australien-FFF-1.jpeg"></meta><meta name="twitter:image" content="https://taz.de/picture/3905628/948/Neubauer-Kaeser-Siemens-Kohle-Australien-FFF-1.jpeg"></meta><meta property="article:published_time" content="2020-01-13T18:54:00+01:00"></meta><meta property="article:modified_time" content="2020-01-14T09:13:22+01:00"></meta>
+<!-- piwik/matomo (init-0.5) --><script id="piwik-init" type="text/javascript">
+
+// ====================================================== taz piwik library === //
+window.patOtaz_de = window.patOtaz_de || new Object;
+window.patOtaz_de.piwik = window.patOtaz_de.piwik || new (function (debug) {
+    
+    // for a better readability
+    Array.prototype.clone = Array.prototype.slice;
+
+    // ES6 features
+    var hasHistoryApi = function() {
+        if ( history && history.replaceState instanceof Function )  return true;
+        return false;
+    };
+    
+    // === private static members
+    var version = "patOtaz_de.piwik-0.3",
+        debug   =  debug || false;
+    
+    // === logging in debug mode or from outside
+    var log = function(args) {
+        if ( debug && arguments.length ) {
+            var items = [];
+            Array.prototype.push.apply( items, arguments );
+            console.log( "PIWIK-LOG:", items );
+        }
+        return true;
+    };
+    
+    // === clean up strings with a whitelist
+    var removeCharsWithWhitelist = function(validChars, inputString) {
+        var regex = new RegExp( '[^'+ validChars +']', 'g' );
+        return inputString.replace( regex, '' );
+    };
+
+    // === clean up #matomo url fragment and return matomo part
+    var removeHashParam = function(fragment_key) {
+        if ( fragment_key === undefined )  return '';
+        var href          = location.href;
+        var href_base     = href.split('#')[0];
+        var fragment_pos  = href.indexOf('#');
+        var fragment_full = href.substring( fragment_pos +1 );
+        if ( fragment_pos >0  &&  fragment_key.length >0 ) {
+            var fragment_regex = new RegExp( '(.*?)#?'+ fragment_key +':([^#]+)#?(.*)' );
+            var fragment_match = fragment_full.match( fragment_regex );
+            if ( fragment_match ) {  
+                var fragment_this    = fragment_match[2];
+                var fragment_lhs     = fragment_match[1];
+                var fragment_rhs     = fragment_match[3];
+                var fragment_cleaned = ( fragment_lhs ? fragment_lhs : '' )+( fragment_lhs && fragment_rhs ? '#' : '' )+( fragment_rhs ? fragment_rhs : '' );
+                if ( fragment_this.length >0 ) {
+                    var new_href = href_base +( !fragment_lhs && !fragment_rhs ? '' : '#' )+ fragment_cleaned;
+                    if ( hasHistoryApi )  history.replaceState( {}, document.title, new_href );
+                    return fragment_this;
+                }
+            }
+        }
+        return '';
+    };
+    
+    // === track search results list page
+    var trackSiteSearch = function(keyword, category, count) {
+        var tmp = Array.prototype.clone.call( arguments );
+        tmp.unshift("trackSiteSearch");
+        _paq.push( tmp );
+        log( "search result", { keyword:keyword, category:category, count:count } );
+        return true;
+    };
+    
+    // === track funnels
+    var trackFunnel = function(funnel, category) {
+        if ( funnel.length ) {
+            _paq.push([ 'trackEvent', category, 'Funnel', funnel ]);
+            log( "goal event", { funnel:funnel, category:category } );
+        }
+        return true;
+    };
+    
+    // === track events
+    var trackEvent = function(category, action, name, value) {
+        var tmp = Array.prototype.clone.call( arguments );
+        tmp.unshift("trackEvent");
+        _paq.push( tmp );
+        log( "event", { category:category, action:action, name:name, value:value } );
+        return true;
+    }
+
+    // === debugging
+    log( version );
+    
+    // === public interface
+    this.log              =log;
+    this.removeHashParam  =removeHashParam;
+    this.trackSiteSearch  =trackSiteSearch;
+    this.trackFunnel      =trackFunnel;
+    this.trackEvent       =trackEvent;
+    // this.trackPageType    =trackPageType;
+
+})(false); // patOtaz_de.piwik
+
+
+// ====================================================== piwik bucket === //
+window._paq = window._paq || [];
+
+
+// ====================================================== piwik setup === //
+(function(){
+
+    // === private members
+    var p = patOtaz_de.piwik,
+        o = {
+            version               :"init-0.5" // String
+			, piwik_script        :"https://taz.de/stats/piwik.php" // String
+            , page_id_enc         :"5655255" // String
+            , page_title_enc      :"5655255: Siemens und die Kohlemine Adani: Kaeser verarscht Neubauer" // String
+			, directory_title_enc :"" // String
+            , custom_url_enc      :"/!5655255" // String
+            , channel             :"web" // String
+            , area                :"Redaktion" // String
+            , department          :"p4623" // String
+            , piwik_site_id       : 1  // Number
+			, is_tag              : false  // Boolean
+			, is_article          : true  // Boolean
+			, has_tags            : true  // Boolean
+    };
+    
+    // === url decode strings
+    o.page_id         =decodeURIComponent( o.page_id_enc    );
+    o.page_title      =decodeURIComponent( o.page_title_enc );
+    o.custom_url      =decodeURIComponent( o.custom_url_enc );
+	o.directory_title =decodeURIComponent( o.directory_title_enc );
+    
+	// === page title
+	!function(id, title) {
+		var content_title = "";
+		o.title = ( id.length >0 ? id : "ZOMBIE" ) +": ";
+		if ( title.indexOf(' - taz.de') >0 ) {
+			content_title = title.substr( 0, title.indexOf(' - taz.de') );
+		} else if ( title.indexOf(' - Schwerpunkt auf taz.de') >0  ) {
+			content_title = o.directory_title;
+		}
+		o.title += content_title.length >0 ? content_title : ( title.length >0 ? title : "ZOMBIE" );
+	} ( o.page_id.toString(), document.head.querySelector('title').innerHTML.toString() );
+
+	// === page url
+	o.url = location.href;
+    
+    // === process and clean #matomo fragment, if present
+    o.url_fragment = decodeURIComponent( p.removeHashParam('matomo') );
+    if ( o.url_fragment.length >0 )  o.custom_url += '#'+ o.url_fragment;
+	
+	// === track tags
+	if ( o.is_article && o.has_tags ) {
+		o.tag_list=[];
+		o.tag_list.toString = function() {
+			var string="";
+			this.forEach( function(tag) { string += tag.title +";" });
+			return string;
+		};
+		!function() {
+			var tag_list = document.head.querySelectorAll("meta[name='taz:tag']");
+			for (var tag of tag_list) {
+				o.tag_list.push({
+					title     :tag.getAttribute('content')
+					,id       :tag.getAttribute('data-tag-id')
+					,category :tag.getAttribute('data-tag-category')? tag.getAttribute('data-tag-category'): "TAG"
+				})
+			}
+			o.tag_list.string = o.tag_list.toString();
+		}();
+	}
+    
+    // === setup piwik bucket
+    _paq.push([ "setCustomUrl"       ,o.custom_url ]);
+    _paq.push([ "setDocumentTitle"   ,o.page_title ]);
+    _paq.push([ "setCustomVariable"  ,1 ,"channel"    ,o.channel    ,"page" ]);
+    _paq.push([ "setCustomVariable"  ,2 ,"area"       ,o.area       ,"page" ]);
+    _paq.push([ "setCustomVariable"  ,3 ,"department" ,o.department ,"page" ]);
+	if ( o.is_article && o.has_tags )  _paq.push([ "setCustomVariable", 4, "tag", o.tag_list.toString(), "page" ]);
+    _paq.push([ "trackPageView"      ]);
+    _paq.push([ "enableLinkTracking" ]);
+    
+    // === load and setup piwik tracking
+    (function() {
+        var d=document
+          , g=d.createElement("script")
+          , s=d.getElementById("piwik-init")
+          ;
+        _paq.push([ "setTrackerUrl" ,o.piwik_script  ]);
+        _paq.push([ "setSiteId"     ,o.piwik_site_id ]);
+        g.type   = "text/javascript";
+        g.id     = "piwik-loaded";
+        g.async  = true;
+        g.defer  = true;
+        g.src    = "https://taz.de/lib/share/js/piwik.js";
+        g.onload = function() { p.log( 'setup', o ) }
+        s.parentNode.insertBefore( g, s );
+    })();
+    
+	// === tag tracking
+	if ( o.is_article && o.has_tags ) {
+		o.tag_list.forEach( function(tag) {	p.trackEvent( "TAG", tag.category, "TAG - t"+ tag.id +": "+ tag.title ) });
+	}
+	if ( o.is_tag ) {
+		p.trackEvent( "TAG", "LIST", "TAG - "+ o.title );
+	}
+	
+    // === debugging
+    //p.log( _paq );
+
+})(); // piwik setup
+
+    </script><noscript><img src="https://taz.de/stats/piwik.php?idsite=1&amp;rec=1&amp;action_name=NOSCRIPT" style="border:0" alt=""></img></noscript><!-- end: piwik/matomo (init-0.5) -->
+<link rel="preload" href="/lib/share/fonts/AktivGroteskBold/AktivGrotesk_W_Bd.woff" as="font" type="font/woff" crossorigin="anonymous"></link><link rel="preload" href="/lib/ch/web/pix/tazze46.png" as="image" media="(min-width: 49px)"></link><link rel="canonical" href="https://taz.de/Siemens-und-die-Kohlemine-Adani/!5655255/"></link><link rel="alternate" type="application/rss+xml" title="taz.de - Ökonomie" href="/!p4623/rss.xml"></link><link rel="alternate" type="application/rss+xml" title="taz.de - Schlagzeilen" href="/rss.xml"></link><link rel="home" type="text/html" title="taz.de - Schlagzeilen" href="/"></link><link rel="copyright" type="text/html" title="Impressum" href="/6/impressum/"></link><link rel="stylesheet" type="text/css" media="screen, print" href="/lib/ch/web/css/news2020-01-07_09.css"></link><link href="/lib/ch/web/css/local/print.css" type="text/css" rel="stylesheet" media="print"></link><!--[if lte IE 6]> <link rel="stylesheet" type="text/css" href="/lib/style/ie6.css"> <![endif]--><!--[if lte IE 7]><style type="text/css">
+			ul.topbar                      >li      >a>span,
+			.secthead>ul[role='navigation']>li      >a>span	{  border-left: 1px solid; padding: 0px 4px;  }
+			ul.topbar                      >li.first>a>span,
+			.secthead>ul[role='navigation']>li.first>a>span	{  border:none; padding-left:0px;  }
+			ul.topbar                      >li      >a>span  {  border-color:white;    }
+			.secthead>ul[role='navigation']>li      >a>span  {  border-color:#888888;  }
+			.box h2 {  line-height:20px;  }
+			.author  {	display:inline;	float:none;	}
+			.sect_spb .sectbody {	padding-top:8px;	}
+			/* fil 2011-04-08 */
+			.sect_article >.sectfoot ul.toolbar >li,
+			#reward >ul.toolbar  {  height:28px;  }
+			.sect_article >.sectfoot ul.toolbar >li,
+			#reward ul.toolbar >li  {  float: left !important;  }
+			#reward >div  {  clear:both;  }
+			.sect_article >.sectfoot ul.toolbar  {  position:relative !important; top:0px; left:0px; height:24px;  }
+			#micropay ul.toolbar  {  height:52px;  }
+			.sect_article >.sectfoot {  padding-bottom:30px  }
+		</style><![endif]--><!--[if lte IE 8]><style type="text/css">
+			p.article,
+			.sect_article >.sectbody >h6,
+			p.caption,
+			.price-tag >.info,
+			.ad_badge,
+			li.tag >a,
+			.secthead > ul.toolbar,
+			.sect_meta,
+			.sect_service >.sectbody,
+			.head >.search >.frame >input,
+			.person >h5 {
+  			font-family: Verdana, DejaVu Sans, Bitstream Vera Sans, Helvetica, sans-serif;
+  		}
+		</style><![endif]--><script type="text/javascript">var abp;</script><script type="text/javascript" src="/lib/ch/web/js/px.js?ch=1"></script><script type="text/javascript" src="/lib/ch/web/js/px.js?ch=2"></script><script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script><script>
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    googletag.cmd.push(function() {
+        googletag.pubads().setTargeting('abp', [abp ? "on" : "off"]);
+        googletag.enableServices();
+        googletag.pubads().addEventListener('slotRenderEnded', function (e) {
+          if (!e.isEmpty) {
+              yl_decorate(e.slot.getSlotElementId(), e.size);
+          }
+      });
+    });
+    function yl_decorate(id, size) {
+        if (abp) {
+	//    parentTag = document.getElementById(id);
+	//    var node = document.createElement("div");
+	//    node.appendChild(document.createTextNode("Anzeige"));
+	//    node.className = "yl-ad-label";
+	//    parentTag.insertBefore(node, parentTag.firstChild);
+	//    parentTag.style.width = size[0];
+        }
+    } 
+
+</script><script>
+
+			if(! HTMLCollection.prototype.last ) HTMLCollection.prototype.last = function(){ return this[ this.length -1 ]; }; 
+			if(! document.getLatestElement ) document.getLatestElement = function(){ 
+				var scripts = document.getElementsByTagName("script"); var thisScript = scripts[scripts.length - 1];
+				return ( this.currentScript || thisScript ).previousSibling;
+				};
+    
+		</script><script type="text/javascript" src="/lib/ch/web/js/2020-01-07_09.js"></script><script type="text/javascript"> if( filOtaz_de && filOtaz_de.goMobile )  filOtaz_de.goMobile(); </script><!-- piwik/matomo (custom-0.2) --><script class="piwik-custom" type="text/javascript">
+
+// ====================================================== piwik customizing === //
+(function(){
+
+    // === private members
+    var p = patOtaz_de.piwik,
+        o = {
+            version           :"custom-0.2" // String
+            , page_id_enc     :"5655255" // String
+            , form_funnel     :"" // String
+            , search_term     :"" // String
+            , rootline        :"/Oeko/Oekonomie" // String
+            , is_article      : true  // Boolean
+            , is_corp         : false  // Boolean
+            , is_searchresult : false  // Boolean
+            , is_form         : false  // Boolean
+            , search_count    : NaN  // Number
+    };
+    
+    // === url decode strings
+    o.page_id = decodeURIComponent( o.page_id_enc );
+    
+    // === track search results
+    if ( o.is_searchresult )  p.trackSiteSearch( o.search_term, false, o.search_count );
+
+    // === track events
+    if ( window.jQuery ) {
+        $(document).ready(function(){
+
+            if ( $("#pages.news >.article").length ) { p.trackEvent( 'TZI', 'displayed', 'ARTIKELAUFRUF') };
+            if ( $("#pages.news >.article.longread").length ) { p.trackEvent( 'TZI', 'displayed', 'ARTIKELAUFRUF-LONGREAD') };
+            if ( $('.news.article ~ .full.page.news #xid721894').length) { p.trackEvent( 'TZI', 'displayed', 'ARTIKELAUFRUF-KLIMASCHWERP') };
+            if ( $("#pages.news >.article").length && $("#tzi-paywahl-fg").length ) { 
+            p.trackEvent( 'TZI', 'displayed', 'ARTIKELAUFRUF_mit_Layer') };
+            if ( $("#pages.news >.article").length && !$("#tzi-paywahl-fg").length ) { 
+            p.trackEvent( 'TZI', 'displayed', 'ARTIKELAUFRUF_ohne_Layer') };
+
+            if ( $("#tzi-paywahl-fg").length ) { p.trackEvent( 'TZI', 'displayed', 'LAYER');    
+                if (o.is_article){ 
+                                       p.trackEvent( 'TZI', 'user-stayed-in-article', 'LAYER<10-sek' );
+                setTimeout(function(){ p.trackEvent( 'TZI', 'user-stayed-in-article', 'LAYER-10-sek' ) }, 10000 )}
+            	};
+            if ( $("#tzi-shackle").length ){ p.trackEvent( 'TZI', 'displayed', 'LASCHE' ); 
+                if (o.is_article){ 
+                                        p.trackEvent( 'TZI', 'user-stayed-in-article', 'LASCHE<10-sek' );
+                setTimeout( function(){ p.trackEvent( 'TZI', 'user-stayed-in-article', 'LASCHE-10-sek' ) }, 10000 )}
+                };
+            $(document).on("click", "#tzi-paywahl-fg .tzi-paywahl__yes"        ,function(event){ p.trackEvent( 'TZI', 'clicked', 'LAYER-JA'            ) });
+            $(document).on("click", "#tzi-paywahl-fg .tzi-paywahl__close"      ,function(event){ p.trackEvent( 'TZI', 'clicked', 'LAYER-GERADE-NICHT'  ) });
+            $(document).on("click", "#tzi-paywahl-fg .tzi-paywahl__subscriber" ,function(event){ p.trackEvent( 'TZI', 'clicked', 'LAYER-SCHON-DABEI'   ) });
+            $(document).on("click", "#tzi-shackle    .tzi-shackle__yes"        ,function(event){ p.trackEvent( 'TZI', 'clicked', 'LASCHE-JA'           ) });
+
+            // 2. check for not closing overlay
+            if ( $("#tzi-paywahl-fg").length && "MutationObserver" in window ){
+                p.trackEvent( 'TZI', 'displayed', 'LAYER_SHOWN_OBSERVE_TEST');    
+                var paywahl = document.getElementById('tzi-paywahl-fg');
+                var observer = new MutationObserver(function(mutations) {
+                  p.trackEvent( 'TZI', 'displayed', 'LAYER_CLOSED_OBSERVE_TEST');    
+                  observer.disconnect();
+                });
+                observer.observe(paywahl, { 
+                    attributes: true, 
+                    attributeFilter: ['style'] 
+                });
+            }
+
+            $(document).on("click", ".sect_end a"                         ,function(event){ p.trackEvent( 'Element', 'clicked', 'ABBINDER'             ) });
+            $(document).on("click", "#mainFlyout a"                       ,function(event){ p.trackEvent( 'Element', 'clicked', 'FLYOUT'               ) });
+            $(document).on("click", "ul.navbar >li >a"                    ,function(event){ p.trackEvent( 'Element', 'clicked', 'NAVBAR'               ) });
+
+        // mar: reactivated for tracking of special menu
+            $(document).on("click", "ul.navbar.news.newsnavigation a "    ,function(event){ p.trackEvent( 'Navi', 'R_Desktop_MenuImHeader', $(this).find("span").text() ) });
+
+        /*  navi-tracking paused          
+            $(document).on("click", "ul.navbar.news.newsnavigation a "    ,function(event){ p.trackEvent( 'Navi', 'R_Desktop_MenuImHeader', $(this).find("span").text() ) });
+            $(document).on("click", "#mainFlyout .navigation.news a"      ,function(event){ p.trackEvent( 'Navi', 'R_Desktop_Flyout', $(this).find("span").text() )       });
+            $(document).on("click", "ul.navbar.corp.newsnavigation a "    ,function(event){ p.trackEvent( 'Navi', 'V_Desktop_MenuImHeader', $(".head >h1 a").text() + ' > ' + $(this).find("span").text() ) });
+            $(document).on("click", "#globalnavigation a"                 ,function(event){ p.trackEvent( 'Navi', 'V_Desktop_Schwarze_Navi', $(this).find("span").text() )});
+            $(document).on("click", "#mainFlyout .navigation.corp a"      ,function(event){ p.trackEvent( 'Navi', 'V_Desktop_Flyout_tazze', $(this).find("span").text() ) });
+            $(document).on("click", "#footer .sitemap > .news a"          ,function(event){ p.trackEvent( 'Navi', 'R_Desktop_Footer', $(this).find("span").text() ) });
+            $(document).on("click", "#footer .sitemap > .corp a"          ,function(event){ p.trackEvent( 'Navi', 'V_Desktop_Footer', $(this).find("span").text() ) });
+        */ 
+            $(document).on("click", "ul.navbar >li.more ul.flyout >li >a" ,function(event){ p.trackEvent( 'Element', 'clicked', 'NAVBARMORE'           ) });
+            $(document).on("click", ".insert.dep4534"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUB1'            ) });
+            $(document).on("click", ".insert.dep4536"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'TRENNER'              ) });
+            $(document).on("click", ".insert.dep4777"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUB2'            ) });
+            $(document).on("click", ".insert.dep4219"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUB3'            ) });
+            $(document).on("click", ".insert.dep5178"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'MOBEINSCHUB1'         ) });
+            $(document).on("click", ".insert.dep5179"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'MOBEINSCHUB2'         ) });
+            $(document).on("click", ".insert.dep5180"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'MOBEINSCHUB3'         ) });
+            $(document).on("click", ".insert.dep5181"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'MOBEINSCHUB4'         ) });
+            $(document).on("click", ".insert.dep4755"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBNORD'         ) });
+            $(document).on("click", ".insert.dep4828"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBOEKE'         ) });
+            $(document).on("click", ".insert.dep4832"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBPOLITIK'      ) });
+            $(document).on("click", ".insert.dep5013"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBSPORT'        ) });
+            $(document).on("click", ".insert.dep5020"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBGESELLSCHAFT' ) });
+            $(document).on("click", ".insert.dep4956"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBKULTUR'       ) });
+            $(document).on("click", ".insert.dep4939"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBPAYWAHL'      ) });
+            $(document).on("click", ".insert.dep4704"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'EINSCHUBBERLIN'       ) });
+            $(document).on("click", ".sect_seealso a"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'COMBOLINKBOX'         ) });
+            $(document).on("click", "#klimaschwerpunkt"                     ,function(event){ p.trackEvent( 'Element', 'clicked', 'klimaschwerpunktbutton'         ) });
+
+
+
+            // Themen des Tages  
+            $(document).on("click", ".sect_tdt >ul >li > a" ,function(event){ 
+                p.trackEvent( 'Element', 'clicked', 'THEMEN DES TAGES ' + parseInt( $(this).parent().index() + 1 )  ); 
+            });
+            // home page all news teaser
+
+            $(document).on("click", "#pages.news.home >.news.page a.nolead.objlink" ,function(event){ 
+                var teaserNr = parseInt(   $(this).parents( 'li.brief' ).index(  'li.brief'  ) + 1  );
+                p.trackEvent( 'Element', 'clicked', 'Home > Ressort: Newskamin Miniteaser Nr: ' + teaserNr  ); 
+            });
+
+
+// mar: tracking aller Startseiten-Teaser am 04.12. deaktiviert
+
+/* 
+            $(document).on("click", "#pages.news.home >.news.page a.article.objlink" ,function(event){ 
+                // newskamin or not
+                var ressortName = $(this).parents('.news.page').find(' .nose > h2 > a > span ').text() == '' ? 'Newskamin' : $(this).parents('.news.page').find(' .nose > h2 > a > span ').text();
+                var teaserNr = ressortName == 'Newskamin' ?  parseInt(   $(this).parents( 'li.article:not(.brief)' ).index(  'li.article:not(.brief)'  ) + 1 ) : parseInt(   $(this).parents( 'li.article' ).index() + 1 );
+                var schwerpName = $(this).parents('.sect_spb').find('.secthead > h2 > a > span ').text();
+                p.trackEvent( 'Element', 'clicked', 'Home > Ressort: ' +  ressortName + ' ' + schwerpName +  ', Nr: ' + teaserNr  ); 
+            });
+*/
+            $(document).on("click", ".longread.article .sect_related a"  ,function(event){ p.trackEvent( 'Element', 'clicked', 'WEITERE-ARTIKEL-LONGREAD' ) });
+	    $(document).on("click", ".longread.article .sect_mostread a"  ,function(event){ p.trackEvent( 'Element', 'clicked', 'MEISTGELESEN-LONGREAD' ) });
+	    $(document).on("click", ".news.article ~ .full.page.news #xid721894 a"  ,function(event){ p.trackEvent( 'Element', 'clicked', 'klima-clip' ) });
+
+            $(document).on("click", ".article .tail .sect_related a"  ,function(event){ p.trackEvent( 'Element', 'clicked', 'WEITERE-ARTIKEL' ) });
+
+            // temporary: tracking 'spaeter-lesen'
+            $(document).on("click", ".bookmark"                           ,function(event){ p.trackEvent( 'Element', 'clicked', 'SPAETER-LESEN'        ) });
+            $(document).on("click", ".tooltip .fa.help"                   ,function(event){ p.trackEvent( 'Element', 'clicked', 'SPAETER-LESEN-help'   ) });
+            $(document).one("mouseover", ".tooltip .fa.help"              ,function(event){ p.trackEvent( 'Element', 'hovered', 'SPAETER-LESEN-help'   ) });
+            $(document).on("click", ".tooltip li.shariff-button"          ,function(event){
+                p.trackEvent( 'Element', 'clicked', 'SOCIAL-MEDIA-BUTTON-SPAETER-LESEN', $(this).attr('class').split(" ")[1] ) });  
+            // end of temporary: tracking 'spaeter-lesen'
+
+            $(document).on("click", ".sect_service a", function(event){
+                p.trackEvent( 'Element', 'clicked', 'SERVICEBOX: ' + $(this).attr('href') ) });
+            $(document).on("click", ".sectfoot li.shariff-button", function(event){
+                p.trackEvent( 'Element', 'clicked', 'SOCIAL-MEDIA-BUTTON: ' + $(this).attr('class').split(" ")[1]  ) 
+                });  
+            var scrollingDetected = false; // count once
+            $(window).on('scroll', function() {
+                var scrElem = $('.shariff');
+                if (scrollingDetected == false && scrElem.length && (elemReached(scrElem)) ) {
+                    _paq.push([ 'trackEvent', 'Element', 'scrolled', 'zu Social Media Buttons gescrollt	' ]);
+	    if ( $("#pages.news >.article.longread").length ) { p.trackEvent( 'Element', 'scrolled', 'zu Social Media Buttons gescrollt LONGREAD') };
+
+	    if ( $('.news.article ~ .full.page.news #xid721894').length) { p.trackEvent( 'Element', 'scrolled', 'zu Social Btns gescrollt Klima Clip') }; 
+	    if ( $('#tzi-paywahl-fg').length){   _paq.push([ 'trackEvent', 'Element', 'scrolled', 'zu Social Btns gescrollt_layer_war_da' ]);
+                            } 
+                        else {   _paq.push([ 'trackEvent', 'Element', 'scrolled', 'zu Social Btns gescrollt_layer_war_nicht_da' ])  
+                            }
+                    scrollingDetected = true;
+
+                }
+            });
+    
+            function elemReached(scrElem) {
+                    var docViewTop = $(window).scrollTop(); var docViewBottom = docViewTop + $(window).height();
+                    var elemTop = $(scrElem).offset().top; return ((elemTop <= docViewBottom) && (elemTop >= docViewTop))
+                }
+
+        }); // $(document).ready()
+    } // track events
+
+    // === debugging
+    p.log( 'custom', o );
+    //console.log( "output _paq: ", _paq );
+
+})(); // piwik customizing
+
+    </script><!--IVW--><script type="text/javascript" src="https://script.ioam.de/iam.js"></script><script async="async" src="https://www.googletagservices.com/tag/js/gpt.js"></script><script type="text/javascript">
+		// Google Publisher Tag - https://developers.google.com/doubleclick-gpt/reference
+		var googletag = googletag || {}; googletag.cmd = googletag.cmd || []; 
+	(function(){
+		var adArea = 'Oeko';	//
+		googletag.cmd.push( function() {
+			var pa = googletag.pubads();
+			pa.setForceSafeFrame(true);
+			pa.collapseEmptyDivs();
+			pa.setTargeting('position', [ adArea ]);
+      //pa.setTargeting('test', ['fireplace']); //       * * * test only ! * * *
+      //pa.setTargeting('test', ['wallpaper']);   //       * * * test only ! * * *
+      pa.setTargeting('page_id', ['5655255']);
+			if( location.protocol =='https' )
+				pa.setTargeting('ssl', ['ja']);
+			googletag.enableServices();
+			});
+		})();
+	</script><script>
+		// expect jQuery already to be loaded
+	(function() {
+		if( !window.filOtaz_de )		window.filOtaz_de		= Object;
+		if( !window.filOtaz_de.ads )		window.filOtaz_de.ads		= Object;
+		if( !window.filOtaz_de.ads.gpt )	window.filOtaz_de.ads.gpt	= Object;
+
+        var sizes = {
+	           'artikel_medrec-1'    :[300,250]
+	          ,'artikel_medrec_mitte'  :[300,250]
+            ,'ros_sidebar-1'       :[300,250]
+            ,'ros_sidebar-2'       :[300,100]
+            ,'uebersicht_medrec-1' :[300,250]
+            ,'uebersicht_medrec-2' :[300,250]
+            ,'uebersicht_medrec-3' :[300,250]
+            ,'uebersicht_medrec-4' :[300,250]
+            ,'uebersicht_medrec-5' :[300,250]
+            ,'uebersicht_board-1'  :[624,150]
+            ,'ros_billboard-1'     :[870,250]
+            ,'mobile_banner-1'     :[[300,250],[320,50],[320,100]]
+            ,'mobile_banner-2'     :[[300,250],[320,50],[320,100]]
+            ,'mobile_banner-3'     :[[300,250],[320,50],[320,100]]
+            ,'mobile_banner-4'     :[[300,250],[320,50],[320,100]]
+            ,'ros_top-links'       :[[120,600],[160,600],[300,600]]
+            ,'ros_top-mitte'       :[[728,90],[800,250],[870,250],[970,90],[970,250]]
+            ,'ros_top-rechts'      :[[120,600],[160,600],[300,600]]
+            ,'ros_leaderboard-1'   :[728,90]
+            ,'fireplace-mitte'     :[[970,90],[728,90]]
+            ,'fireplace-links'     :[160,601]
+            ,'fireplace-rechts'    :[160,600]
+            ,'fireplace_bg'        :[1,1]
+            };
+        var roadblocks = {};
+  
+  
+      roadblocks = {
+         'ros_top-mitte'   :['fireplace_mitte']
+        ,'ros_top-rechts'  :['fireplace_mitte'] 
+      };
+    
+    
+		// general ad handling
+
+		// --> to be triggered for ad_zone if ad is (to be) delivered
+		filOtaz_de.ads.fitIn = function( container ) {	// make space for ad in layout
+			var container = $( container );
+//console.log('fit '+ container.attr('id') );
+			if( !container.is('.ad_zone') ) return;
+			var packing = container.parent('.ad_bin');
+			packing.addClass('shown');
+			container.addClass('ad_zone_shown');
+			if( container.hasClass('ad_zone_contentad') ) {
+				packing.prev('.sect_leads').addClass('aded_'+( container.height() >120 ?'big' :'small' ) );
+				var badge = container.hasClass('ad_zone_sold') ? 'Anzeige' : 'taz-Angebot';
+				container.before('<div class="ad_badge">'+ badge +'</div>');
+				}
+			container.trigger('TAZadInserted').trigger('TAZboxChange');
+			};
+
+		// --> to be triggered for ad_zone if no ad is (to be) delivered
+		// redundant?
+		filOtaz_de.ads.reclaim = function( container ) {	// remove whitespace from non-delivered ad
+			var container = $( container );
+//console.log('reclaim '+ container.attr('id') );
+			if( !container.is('.ad_zone') ) return;
+			var packing = container.parent('.ad_bin');
+			packing.removeClass('shown');
+			container.removeClass('ad_zone_shown');
+			if( container.hasClass('ad_zone_contentad') ) {
+				packing.prev('.sect_leads').removeClass('aded_big aded_small');
+				}
+			container.trigger('TAZadRemoved').trigger('TAZboxChange');
+			};
+    
+    
+
+		var fuzeAdFrame = function( frame ) {	// register frame for messages, fire if one is from our content
+console.log('legacy fuzeAdFrame', frame  );
+			};
+    
+    
+    // Hintergrund per Message
+    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+    window[eventMethod](messageEvent, function(e) {
+      if (e.data.toString().indexOf("color") != -1) {
+        $("#background").css("background-color", e.data.split(" ")[1]);
+        }
+      }, false);
+    
+    
+		// activate ad frame
+		var adZoneHandled = {};
+    
+    var get_id = function( name ) {
+      return $('div[name=' + name + ']').attr('id');
+      };
+    
+    var get_name = function( id ) {
+      return $('#'+ id ).attr('name');
+      };
+    
+    unblock = function( id, rb_id ) {
+      var name = get_name(id);
+      var index = roadblocks[name].indexOf(rb_id);
+      if ( index > -1 ) {
+        roadblocks[name].splice(index, 1);
+        }
+      if ( !roadblocks[name].length ) {
+        googletag.defineSlot( '/118803185/' + name, sizes[name], id ).addService( googletag.pubads() );
+        googletag.display( id );
+        }
+      };
+    
+    filOtaz_de.ads.gpt.activateAdFrame = function( id ) {  
+			if( !id ) return;
+			if( adZoneHandled[id] ) return; adZoneHandled[id] = true; // only one active zone per id
+ 
+			var packing   = $('#ad_bin_'+ id );
+			id = 'ad_zone_'+ id;
+			var container = packing.find('>#'+ id );
+  
+			var name = container.attr('name');
+			if( !name || !sizes[name] ) return;
+   
+			// handle custom ad load events
+			container.on('filOtaz_de.ads.gpt.noBanner',   function(){  return false;  });
+			container.on('filOtaz_de.ads.gpt.preBanner',  function(){
+				filOtaz_de.ads.fitIn( container );
+				return false;
+				});
+			container.on('filOtaz_de.ads.gpt.postBanner', function(){  return false;  });
+
+
+			// define content
+			googletag.cmd.push( function() {
+				var pa = googletag.pubads();
+        if ( roadblocks[name] ) {
+          pa.addEventListener('slotRenderEnded', function (e) {
+            for (var i=0; i<roadblocks[name].length; i++) {
+              if ( e.slot.getSlotElementId() == 'ad_zone_' + roadblocks[name][i] ) {
+                if ( e.isEmpty ) {
+                  unblock(id, roadblocks[name][i]);
+                  }
+                else {
+                  document.getElementById(id).style.display = 'none';
+                  for (var key in roadblocks) {
+                    if ( !roadblocks.hasOwnProperty(key) ) continue;
+                    for ( var j=0; j<roadblocks[key].length; j++ )
+                    if ( id == 'ad_zone_' + roadblocks[key][j] ) {
+                      unblock(get_id(key), roadblocks[key][j]);
+                      break;
+                      }
+                    }
+                  }
+                }
+              }
+            }); // pa.addEventListener
+          googletag.display(id);
+          }
+        else {
+          pa.display( '/118803185/'+ name, sizes[name], id );
+//console.log( 'asked for', '/118803185/'+ name, sizes[name], id );
+          }
+				pa.addEventListener('slotRenderEnded', function(e) {
+			    if( e.slot.getSlotElementId() != id )  return;	// not our slot
+			    container.trigger( e.isEmpty ? 'filOtaz_de.ads.gpt.noBanner' : 'filOtaz_de.ads.gpt.preBanner' );
+console.log( name +( e.isEmpty ? ' isEmpty' : '' ) );
+					});
+        });
+      }; //filOtaz_de.ads.gpt.activateAdFrame
+
+		// activate wallpaper combo add frame
+/*
+		filOtaz_de.ads.gpt.wallpaper = function() {
+			console.log('filOtaz_de.ads.gpt.wallpaper not yet supported');
+			};
+*/
+
+		})();
+	</script><link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"></link><link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png"></link><link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png"></link><link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png"></link><link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png"></link><link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png"></link><link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png"></link><link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png"></link><link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png"></link><link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png"></link><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"></link><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"></link><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"></link><link rel="manifest" href="/manifest.json"></link><meta name="msapplication-TileColor" content="#ffffff"></meta><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"></meta><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#d50d2e"></link><meta name="theme-color" content="#ffffff"></meta></head><body><script type="text/javascript">(function(){
+	var body = $(document.body);
+	body.addClass('js');
+	if( screen.width >=640 )	body.addClass('vga');	else body.addClass('novga');
+	if( screen.width >=800 )	body.addClass('svga');	else body.addClass('nosvga');
+	if( screen.width >=1024 )	body.addClass('xga');	else body.addClass('noxga');
+	if( screen.width >=1280 )	body.addClass('sxga');	else body.addClass('nosxga');
+	})();		</script><div class="topo_wit" id="counter"><!-- ================ begin: ivw (szm 2.0) ================ --><script xmlns="" type="text/javascript">
+            var iam_data = {
+                "st": "taz",
+                "cp": "Redaktion/Oeko/Oekonomie,Artikel",
+                "sv": "i2"
+            };
+            if ( typeof( iom ) !=='undefined' && iom.c ) iom.c(iam_data,1);
+        </script><!-- ================ end: ivw (szm 2.0) ================ --></div><div id="adOverlay" class="topo_lay"></div><div id="fake" class="topo_wit"></div><div id="background" class="topo_bin"><div id="skirt"></div><div id="centered"><script type="text/javascript">	// to be called inline early in #centered
+//console.log( $('#background') );
+//console.log( $('#centered') );
+//console.log( $('#pages') );
+		var checkHash = function() {
+			var hashURL = window.location.hash.slice(1);
+			if( hashURL.indexOf('!tom=')         ==0 ) new filOtaz_de.TomOL( hashURL.substr(5) );
+			if( hashURL.indexOf('!g')            ==0 ) new filOtaz_de.Gallery('/'+ hashURL );
+			if( hashURL.indexOf('!vimeo=')       ==0 ) new filOtaz_de.VimeoVideo('/'+ hashURL );
+			if( hashURL.indexOf('berlinfolgen')  ==0 ) new patOtaz_de.Berlinfolgen( hashURL );
+			if( hashURL.indexOf('!bbi')          ==0 ) new patOtaz_de.BbiFluglaermkarte();
+			if( hashURL.indexOf('!pwatch')       ==0 ) new patOtaz_de.ParteispendenWatch();
+			if( hashURL.indexOf('!ackerkartell') ==0 ) new patOtaz_de.Ackerkartell();
+			if( hashURL.indexOf('!wm2014')       ==0 ) new patOtaz_de.Wm2014();
+			if( hashURL.indexOf('!track=')        ==0 ) {
+				var tracking_key = hashURL.substr(7);
+				console.log( "DEBUG TRACKURL tracking_key="+ tracking_key );
+				window.location.hash = '';
+				
+				if ( tracking_key =="TZISOCIALMEDIA" ) {
+					_paq.push([ 'trackEvent', 'Verlag', 'Funnel', 'TZISOCIALMEDIA' ]);
+					console.log("DEBUG-piwik TZISOCIALMEDIA");
+				}
+				if ( tracking_key =="TZIANZEIGE1" ) {
+					_paq.push([ 'trackEvent', 'Verlag', 'Funnel', 'TZIANZEIGE1' ]);
+					console.log("DEBUG-piwik TZIANZEIGE1");
+				}
+				if ( tracking_key =="TZIANZEIGE2" ) {
+					_paq.push([ 'trackEvent', 'Verlag', 'Funnel', 'TZIANZEIGE2' ]);
+					console.log("DEBUG-piwik TZIANZEIGE2");
+				}
+				if ( tracking_key =="TZIEPAPER" ) {
+					_paq.push([ 'trackEvent', 'Verlag', 'Funnel', 'TZIEPAPER' ]);
+					console.log("DEBUG-piwik TZIEPAPER");
+				}
+			}
+			//if( hashURL.search(/^![0-9]/) ==0 )	new filOtaz_de.Wtf('/'+ hashURL );
+			};
+		checkHash();
+		$(window).hashchange( checkHash );
+	</script><span id="ad_bin_fireplace_bg" class="ad_bin"><div id="ad_zone_fireplace_bg" name="fireplace_bg" class="ad_zone"></div></span><span id="ad_bin_fireplace_mitte" class="ad_bin"><div id="ad_zone_fireplace_mitte" name="fireplace-mitte" class="ad_zone"></div></span><span id="ad_bin_fireplace_links" class="ad_bin"><div id="ad_zone_fireplace_links" name="fireplace-links" class="ad_zone"></div></span><span id="ad_bin_fireplace_rechts" class="ad_bin"><div id="ad_zone_fireplace_rechts" name="fireplace-rechts" class="ad_zone"></div></span><span id="ad_bin_fireplace_script" class="ad_bin"><div id="ad_zone_fireplace_script" name="fireplace-script" class="ad_zone"></div></span><script type="text/javascript">
+(function(){
+  var parent = $('#ad_bin_fireplace_rechts').parent();
+  if( !parent.is('.wing') || parent.is('.floating.wing') )  // for wings only run when already floating
+    filOtaz_de.ads.gpt.activateAdFrame('fireplace_rechts');
+  })(); 
+(function(){
+  var parent = $('#ad_bin_fireplace_bg').parent();
+  if( !parent.is('.wing') || parent.is('.floating.wing') )  // for wings only run when already floating
+    filOtaz_de.ads.gpt.activateAdFrame('fireplace_bg');
+  })(); 
+(function(){
+  var parent = $('#ad_bin_fireplace_mitte').parent();
+  if( !parent.is('.wing') || parent.is('.floating.wing') )  // for wings only run when already floating
+    filOtaz_de.ads.gpt.activateAdFrame('fireplace_mitte');
+  })(); 
+(function(){
+  var parent = $('#ad_bin_fireplace_links').parent();
+  if( !parent.is('.wing') || parent.is('.floating.wing') )  // for wings only run when already floating
+    filOtaz_de.ads.gpt.activateAdFrame('fireplace_links');
+  })(); 
+              </script><div id="adzone_wall" class=""><span id="ad_bin_ros_top_rechts" class="ad_bin"><div id="ad_zone_ros_top_rechts" name="ros_top-rechts" class="ad_zone"></div></span><script type="text/javascript"> (function(){
+		var domId = 'ros_top_rechts';
+		var parent = $( '#ad_bin_'+ domId ).parent();
+		if ( parent.is('.wing') ) {
+			filOtaz_de_float.promise.promise().done(function(){		
+				filOtaz_de.ads.gpt.activateAdFrame( domId );
+			});
+		} else {
+			filOtaz_de.ads.gpt.activateAdFrame( domId );				
+		}
+	})(); 
+	</script><span id="ad_bin_ros_top_mitte" class="ad_bin"><div id="ad_zone_ros_top_mitte" name="ros_top-mitte" class="ad_zone"></div></span><script type="text/javascript"> (function(){
+		var domId = 'ros_top_mitte';
+		var parent = $( '#ad_bin_'+ domId ).parent();
+		if ( parent.is('.wing') ) {
+			filOtaz_de_float.promise.promise().done(function(){		
+				filOtaz_de.ads.gpt.activateAdFrame( domId );
+			});
+		} else {
+			filOtaz_de.ads.gpt.activateAdFrame( domId );				
+		}
+	})(); 
+	</script></div><div id="pages" class="news"><ul role="navigation" id="globalnavigation" class="navbar"><li class="first odd trodd"><a href="/Abo/!p4209/" id="menu_p4209"><span>Abo</span></a></li><li class="even trodd"><a href="/Info/!p4206/" id="menu_p4206"><span>Info</span></a></li><li class="odd treven"><a href="/Genossenschaft/!p4271/" id="menu_p4271"><span>Genossenschaft</span></a></li><li class="even trodd"><a href="https://shop.taz.de/" target="_blank" id="menu_p4378"><span>Shop</span></a></li><li class="odd trodd"><a href="https://taz.de/!p4905/" id="menu_p5284"><span>taz lab 2020</span></a></li><li class="even treven"><a href="/Anzeigen/!p4288/" id="menu_p4288"><span>Anzeigen</span></a></li><li class="odd trodd"><a href="/taz-zahl-ich/!p4697/" id="menu_p5149"><span>taz zahl ich</span></a></li><li class="even trodd"><a href="/Podcast/!p5171/" id="menu_p5171"><span>Podcast</span></a></li><li class="odd treven"><a href="/Bewegung/!p4715/" id="menu_p4715"><span>Bewegung</span></a></li><li class="even trodd"><a href="/!p5099/" id="menu_p5106"><span>taz FUTURZWEI</span></a></li><li class="odd trodd"><a href="/!p4662/" id="menu_p5148"><span>taz am Wochenende</span></a></li><li class="even treven"><a href="/Nord/!p4962/" id="menu_p4962"><span>Nord</span></a></li><li class="odd trodd"><a href="/!p5021/" id="menu_p5277"><span>taz Salon</span></a></li><li class="even trodd"><a href="/!p5188/" id="menu_p5189"><span>40 Jahre taz</span></a></li><li class="odd treven"><a href="//blogs.taz.de/" id="menu_p4366"><span>Blogs</span></a></li><li class="even trodd"><a href="//blogs.taz.de/hausblog/" id="menu_p4718"><span>Hausblog</span></a></li><li class="odd trodd"><a href="/ePaper/!p4350/" id="menu_p4350"><span>ePaper</span></a></li><li class="even treven"><a href="/!p4233/" id="menu_p5239"><span>Veranstaltungen</span></a></li><li class="odd trodd"><a href="/Kantine/!p4237/" id="menu_p4237"><span>Kantine</span></a></li><li class="even trodd"><a href="/Panter-Stiftung/!p4258/" id="menu_p4258"><span>Panter Stiftung</span></a></li><li class="odd treven"><a href="/Reisen-in-die-Zivilgesellschaft/!p4310/" id="menu_p4310"><span>Reisen in die Zivilgesellschaft</span></a></li><li class="even trodd"><a href="/Recherchefonds-Ausland/!p5062/" id="menu_p5062"><span>Recherchefonds Ausland</span></a></li><li class="odd trodd"><a href="//monde-diplomatique.de/" id="menu_p4387"><span>LE MONDE diplomatique</span></a></li><li class="even treven"><a href="//www.kontextwochenzeitung.de/" id="menu_p4721"><span>KONTEXT: Wochenzeitung</span></a></li><li class="odd trodd"><a href="/Neubau/!p4820/" id="menu_p4820"><span>Neubau</span></a></li><li class="even trodd"><a href="/Archiv/!p4311/" id="menu_p4311"><span>Archiv</span></a></li><li class="last odd treven"><a href="/Hilfe/!p4591/" id="menu_p4591"><span>Hilfe</span></a></li></ul><div class="full news subjective commentary article page first odd first_page n1" itemscope="" itemtype="http://schema.org/NewsArticle"><div class="head" role="head"><ul role="navigation" class="news navbar newsnavigation"><li class="first odd trodd home selected"><a href="/" id="menu_p4608"><span>taz</span><div class="tazze logo"></div></a></li><li class="even trodd"><a href="/Politik/!p4615/" id="menu_p4615"><span>Politik</span></a></li><li class="odd treven selected"><a href="/Oeko/!p4610/" id="menu_p4610"><span>Öko</span></a></li><li class="even trodd"><a href="/Gesellschaft/!p4611/" id="menu_p4611"><span>Gesellschaft</span></a></li><li class="odd trodd"><a href="/Kultur/!p4639/" id="menu_p4639"><span>Kultur</span></a></li><li class="even treven"><a href="/Sport/!p4646/" id="menu_p4646"><span>Sport</span></a></li><li class="odd trodd"><a href="/Berlin/!p4649/" id="menu_p4649"><span>Berlin</span></a></li><li class="even trodd"><a href="/Nord/!p4650/" id="menu_p4650"><span>Nord</span></a></li><li class="last odd treven"><a href="/Wahrheit/!p4644/" id="menu_p4644"><span>Wahrheit</span></a></li></ul><script>
+		var liSelected = $(document.getLatestElement()).find('li.selected');
+		if ( liSelected.length > 1 ){ liSelected.first().removeClass('selected')};
+	</script><form class="search" role="search" action="/!s=/" method="POST"><div class="frame"><input type="text" class="text" name="s" value="suchen ..."></input><script type="text/javascript" language="javascript">filOtaz_de.searchslot();</script><input type="image" class="send" title="suche senden" alt="suche senden" name="ignore" src="/lib/ch/web/pix/redArrowsRight_d50d2e.png"></input></div></form></div><span class="body" role="main"><div class="main rack first_rack" id="xid819017">
+    
+	<div xmlns="" class="metadata" itemscope="">
+<a id="articleURL" href="/!5655255"></a><a id="speakingURL" href="/Siemens-und-die-Kohlemine-Adani/!5655255"></a><meta xmlns="http://www.w3.org/1999/xhtml" itemprop="cms-article-ID" content="5655255"></meta><meta xmlns="http://www.w3.org/1999/xhtml" itemprop="url-ID" content="5655255"></meta><meta xmlns="http://www.w3.org/1999/xhtml" itemprop="cms-obj-ID" content="3905628"></meta><meta xmlns="http://www.w3.org/1999/xhtml" itemprop="vgwort-counter-ID" content="03c70c830e8a4101a8f2febd104fbb09"></meta><span id="articleID"></span><span id="cmsArticleID">5655255</span><img src="//taz.met.vgwort.de/na/03c70c830e8a4101a8f2febd104fbb09" width="1" height="1" alt=""><img src="/count/vgwort/03c70c830e8a4101a8f2febd104fbb09.gif" width="1" height="1" alt="">
+</div>
+<div role="region" id="" class="odd sect sect_article news subjective commentary"><article class="sectbody" itemprop="articleBody"><h4 xmlns="">Siemens und die Kohlemine Adani</h4>
+<h1 xmlns="" itemprop="headline">Kaeser verarscht Neubauer</h1>
+<p xmlns="" itemprop="description" class="intro ">Siemens-Chef Joe Kaeser hat die Klimaaktivistin Luisa Neubauer über den Tisch gezogen. In der Logik des Konzerns lohnt sich das.</p>
+      
+      <a xmlns="" class="full picture" href="/picture/3905628/948/Neubauer-Kaeser-Siemens-Kohle-Australien-FFF-1.jpeg" target="fullImage" onclick="
+		var href = this.href;
+		vHWin=window.open( href , 'fullImage' , 'width=948,height=474' );
+		vHWin.focus();
+		return false;
+	" itemprop="image"><img src="/picture/3905628/624/Neubauer-Kaeser-Siemens-Kohle-Australien-FFF-1.jpeg" alt="Joe Kaeser steht hinter einer Reihe von Mikrofonen" title="Joe Kaeser steht hinter einer Reihe von Mikrofonen"></a><p xmlns="" class="caption">Nach dem Gespräch mit Luisa Neubauer: Joe Kaeser beantwortet Fragen von Journalist:innen <span class="credit"> Foto: Soeren Stache/dpa</span></p>
+    
+      <p xmlns="" class="article first odd Initial">Siemens-Chef Joe Kaeser hat die Klimaaktivistin Luisa Neubauer und die Fridays-for-Future-Bewegung maximal geschickt für seine Zwecke instrumentalisiert: Am Freitag noch traf er sich mit Neubauer, bot ihr gar einen <a target="_blank" href="/Fridays-for-Future/!5655137/">Job im Aufsichtsrat</a> des künftigen Unternehmens Siemens Energy, redete übers Klima. Das alles, um am Sonntag zu verkünden: Siemens wird sich nicht aus seinem Geschäft um die australische Kohlemine Adani zurückziehen.</p>
+      <p xmlns="" class="article even">Die <a target="_blank" href="/Siemens-haelt-an-Kohleprojekt-fest/!5655233/">Klimabewegung schäumt.</a> „Joe Kaeser macht einen unentschuldbaren Fehler“, sagte Neubauer. Warum um alles in der Welt erweckt Kaeser mit dem Treffen mit Neubauer erst die Erwartung, dass sein Konzern aus dem Projekt aussteigt – um dann genau das Gegenteil zu tun? Also, wie vorgesehen, Signaltechnik für eine 200 Kilometer lange Eisenbahnstrecke zu liefern, über die bald 60 Millionen Tonnen Kohle jährlich rollen sollen. Das entspricht dem jährlichen Verbrauch Deutschlands im Jahr 2016.</p>
+      
+      <span id="ad_bin_artikel_medrec_1" class="ad_bin sold contentad"><div id="ad_zone_artikel_medrec_1" name="artikel_medrec-1" class="ad_zone ad_zone_contentad ad_zone_badged ad_zone_sold"></div></span><script type="text/javascript"> (function(){
+		var domId = 'artikel_medrec_1';
+		var parent = $( '#ad_bin_'+ domId ).parent();
+		if ( parent.is('.wing') ) {
+			filOtaz_de_float.promise.promise().done(function(){		
+				filOtaz_de.ads.gpt.activateAdFrame( domId );
+			});
+		} else {
+			filOtaz_de.ads.gpt.activateAdFrame( domId );				
+		}
+	})(); 
+	</script>
+    
+      <p xmlns="" class="article odd">Aus Sicht von Siemens macht das alles sehr viel Sinn. Kaeser hat Neubauers Renommee als Klimaschützerin schlichtweg instrumentalisiert. Für ein Signal an Investor*innen und Auftragnehmer*innen. Die Rage des klimabewegten Teils der deutschen Öffentlichkeit nimmt er in Kauf. Weil er Siemens egal ist.</p>
+      <p xmlns="" class="article even">Ein paar Konsument*innen mögen vielleicht denken: Dann kaufe ich den nächsten Herd, den nächsten Staubsauger, den nächsten Kühlschrank aus Strafe eben nicht von Siemens. Aber damit strafen sie nur das Stuttgarter Unternehmen Bosch. Das verwendet den Markennamen Siemens für Konsumgüter, Kaeser hat damit nichts mehr zu tun. Den Leuchtmittelhersteller Osram hat Siemens auch längst verkauft. Kaeser muss also keine sinkenden Umsätze aufgrund von Boykottaufrufen fürchten.</p>
+      <h6 xmlns="">Privatkonsument*innen sind nicht gemeint</h6>
+      <p xmlns="" class="article odd">Im Gegenteil, Siemens verkauft Software für Gebäude oder Fabrikautomatisierung, Schienenfahrzeuge, Kraftwerke, Windräder und liefert vor allem die Infrastruktur für Öl- und Gasfirmen. Nicht eben Dinge, die man als Privatkonsument*in kauft.</p>
+      <p xmlns="" class="article even">Das Kraftwerksgeschäft soll zudem ausgegliedert werden und im Herbst an die Börse. Siemens wird weiter Anteile daran halten und kann deshalb vor allem eines nicht brauchen: Aufträge aus der Öl- und Gasindustrie verlieren, weil Geschäftspartner weltweit das Signal erhalten, der Konzern werde wegen ein paar wütender Schüler*innen vertragsbrüchig. Der Imageschaden bei potenziellen Kund*innen aus der fossilen Industrie ist für Siemens viel teurer als der Imageschaden daheim. Der kostet vorerst überhaupt nichts.</p>
+      
+      <span id="ad_bin_artikel_medrec_mitte" class="ad_bin sold contentad"><div id="ad_zone_artikel_medrec_mitte" name="artikel_medrec_mitte" class="ad_zone ad_zone_contentad ad_zone_badged ad_zone_sold"></div></span><script type="text/javascript"> (function(){
+		var domId = 'artikel_medrec_mitte';
+		var parent = $( '#ad_bin_'+ domId ).parent();
+		if ( parent.is('.wing') ) {
+			filOtaz_de_float.promise.promise().done(function(){		
+				filOtaz_de.ads.gpt.activateAdFrame( domId );
+			});
+		} else {
+			filOtaz_de.ads.gpt.activateAdFrame( domId );				
+		}
+	})(); 
+	</script>
+    
+      <p xmlns="" class="article odd">All das ist so offensichtlich, es ist Kaeser sicher nicht erst am Sonntag beim Frühstückskaffee aufgefallen. All das wusste er bereits, als er sich zum Treffen mit Neubauer verabredete. Kaeser hat die Klimaaktivistin auf gut Deutsch nach Strich und Faden verarscht.</p>
+      <p xmlns="" class="article even">Das Treffen mit Neubauer diente nur einem einzigen Zweck: Den Investoren zeigen, dass das Thema Klima Chefsache bei Siemens ist. Dass der Chef sich sorgt. Und künftig Besserung gelobt. Die Investoren, von denen hier die Rede ist, sind mächtige institutionelle Investoren wie Pensionsfonds, Kirchenfonds oder Versicherungsunternehmen. Weil sie langfristig denken, ist der Klimawandel für sie ein finanzielles Risiko – also pochen sie darauf, dass sich Unternehmen wie Siemens allmählich wandeln.</p>
+      <h6 xmlns="">Zirkus für die Investoren</h6>
+      <p xmlns="" class="article odd">Einige von ihnen, etwa Axa, Union Investment, der Pensionsfonds der Church of England oder der Caritas haben sich beispielsweise zur Allianz „ClimateAction 100“ zusammengeschlossen. Sie verwalten insgesamt 35 Billionen Dollar und halten in Deutschland Anteile an Siemens, BASF, HeidelbergCement, Daimler, BMW, Eon, RWE, VW und Thyssenkrupp.</p>
+      <p xmlns="" class="article last even">Für solche Investoren veranstaltet Kaeser den ganzen Zirkus. Ob sie sich damit zufrieden geben werden, ist noch offen. Würden sie <a target="_blank" href="/Carmichael-Kohlemine-in-Australien/!5654891/">ihr Kapital abziehen</a>, wäre das zwar ein klares öffentliches Signal, auch an andere Unternehmen, die Klimasauereien im Portfolio haben. Allerdings ist die Idee solcher Investoren eben gerade die, im Unternehmen zu bleiben, um ein Mitspracherecht zu haben. Ob sie es nutzen, wird sich bald zeigen: Am 5. Februar ist Hauptversammlung bei Siemens. Wird Kaeser dort wegen des Adani-Geschäftes gegrillt, wäre es doch noch ein Sieg für Neubauer und die Klimabewegung.</p>
+    </article></div>
+
+    
+  
+
+    
+  <div role="region" id="" class="odd sect "><div class="sectbody"><a xmlns="" id="reward" shape="rect">Einmal zahlen</a><script> filOtaz_de.flattr();</script></div></div>
+
+    
+	<div class="shariff">.</div>
+
+	</div><script> $(document.getLatestElement()).filter('.rack').trigger('TAZdomChange'); //
+			</script><script class="tziArticle" type="text/html"><article href="/tazde-als-alternative-Nachrichtenquelle-im-Internet/!163787/" ratioURL-ressource="163787" class="objlink nolead" role="link"><div role="region" id="" class="odd sect sect_article news subjective commentary"><div class="sectbody"><h4 xmlns="">taz.de als alternative Nachrichtenquelle im Internet.</h4>
+<h1 xmlns="" itemprop="headline">Eine Seite gegen die Einseitigkeit. </h1>
+  		<p xmlns="" class="article first odd">Wir wollen Informationen nicht einzäunen, alle Artikel auf taz.de sind deshalb frei zugänglich. Menschen sollen sich auf unabhängige Weise informieren können. Doch für diese Idee brauchen wir Ihre Hilfe:     
+</p>
+  		<p xmlns="" class="article even"><strong>  Unterstützen Sie den freien taz-Journalismus im Netz!</strong></p>
+  
+  		<p xmlns="" class="article last odd"></p>
+      	</div></div></article></script><script type="text/javascript" xml:space="preserve">
+          (function () {
+    	      var cookieName = '2019-5-27';
+            patOtaz_de.layer_tzi_paywahl({'campaign': cookieName, 
+            'relationDachzeile': 'Layer,abTest4,Klima1; Layer,abTest4,Klima2; Layer,abTest4,Klima3; Layer,abTest4,Klima4',
+            'background': '',
+            'color': 'black',
+            'h1Color': '',
+            'yesButtonBackground': '',
+            'yesButtonColor': '',
+            'yesButton': '',
+            'laterButton': '',
+            'contributorButton': '',
+            'src': '/uploads/images/300/logo-welt-brennt.png'
+            });
+          })();
+        </script><script class="tziArticle" type="text/html"><article href="/tazde-lebt-von-der-Unterstuetzung-der-LeserInnen/!163384/" ratioURL-ressource="163384" class="objlink nolead" role="link"><div role="region" id="" class="odd sect sect_article news subjective commentary"><div class="sectbody"><h4 xmlns="">taz.de lebt von der Unterstützung der LeserInnen.</h4>
+<h1 xmlns="" itemprop="headline">Wer für etwas steht, braucht eine feste Basis. </h1>
+  		<p xmlns="" class="article first odd">Unsere Artikel sollen alle lesen können – das geht nicht einfach so. Als unabhängiges und frei zugängliches Medium sind wir auf die Unterstützung unserer Leser*innen angewiesen, um die taz in digitalen Zeiten zu finanzieren und unsere Arbeit zu erhalten.   
+</p>
+  		<p xmlns="" class="article even"><strong>Unterstützen Sie die taz mit Ihrem Beitrag</strong></p>
+  
+  		<p xmlns="" class="article last odd"></p>
+      	</div></div></article></script><script type="text/javascript" xml:space="preserve">
+          (function () {
+    	      var cookieName = '2019-5-27';
+            patOtaz_de.layer_tzi_paywahl({'campaign': cookieName, 
+            'relationDachzeile': 'Layer,abTest4,Klima1; Layer,abTest4,Klima2; Layer,abTest4,Klima3; Layer,abTest4,Klima4',
+            'background': '',
+            'color': 'black',
+            'h1Color': '',
+            'yesButtonBackground': '',
+            'yesButtonColor': '',
+            'yesButton': '',
+            'laterButton': '',
+            'contributorButton': '',
+            'src': '/uploads/images/300/logo-welt-brennt.png'
+            });
+          })();
+        </script><script class="tziBottomArticle" type="text/html"><article href="/BottomabTest4Politik/!155790/" ratioURL-ressource="155790" class="objlink nolead" role="link"><div role="region" id="" class="odd sect sect_article news subjective commentary"><div class="sectbody"><h4 xmlns="">Bottom,abTest4,Politik</h4>
+<h1 xmlns="" itemprop="headline">Wir schreiben aus Überzeugung</h1>
+  		<p xmlns="" class="article first odd">In Zeiten von Rechtspopulismus, Falschmeldungen und Hetze im  Internet ist eine linke, kritische Stimme im Netz wichtiger denn je. Die taz schreibt, redet und diskutiert für Pluralismus und eine freie,  offene Gesellschaft. Unterstützen Sie diese Haltung. Ihr Beitrag stärkt die Stimme  der taz und sorgt dafür, dass es auch in Zukunft ein starkes linkes  Korrektiv in den wichtigen Debatten unserer Zeit gibt.</p>
+  
+  		<p xmlns="" class="article last even"></p>
+      	</div></div></article></script><script class="tziBottomArticle" type="text/html"><article href="/BottomabTest4Finanz/!155427/" ratioURL-ressource="155427" class="objlink nolead" role="link"><div role="region" id="" class="odd sect sect_article news subjective commentary"><div class="sectbody"><h4 xmlns="">Bottom,abTest4,Finanz</h4>
+<h1 xmlns="" itemprop="headline">Journalismus ist nicht umsonst</h1>
+  		<p xmlns="" class="article first odd">Hinter jedem Klick auf taz.de steckt journalistischer und technischer Aufwand. Wir wollen diesen nicht mit Bezahlschranken finanzieren, sondern fragen Sie, unsere Leser*innen, nach einer freiwilligen Unterstützung. Wenn Ihnen der taz-Journalismus im Netz wichtig ist und Sie öfter und gerne die Artikel auf taz.de lesen, dann würde es uns sehr freuen, wenn Sie einen regelmäßigen Beitrag dafür leisten. Wir brauchen Ihre finanzielle Unterstützung! Gerade weil wir von großen Medienkonzernen unabhängig bleiben wollen.</p>
+  
+  		<p xmlns="" class="article last even"></p>
+      	</div></div></article></script><!-- DEBUG belly: 0 extras here, 0 from directory Schwerpunkt Fridays For Future, thats 0 merged--></span><span class="wing" role="contentinfo"><div class="rack first_rack" id="xid459821">
+    
+	<!--template mode="layout" match="display[ @obj='descr' ]":start--><div role="region" id="" class="odd sect sect_description decorated focus directory no_body"><div class="secthead" role="heading"><h2><a name="Schwerpunkt Fridays For Future" href="/Schwerpunkt-Fridays-For-Future/!t5571786/"><span>Schwerpunkt Fridays For Future</span><img src="/picture/3236126/300/Schwerpunkt_FRidays_for_Future.jpg"></img></a></h2></div><div class="sectbody"></div></div>
+
+    
+	<div role="region" id="" class="even sect sect_meta "><div class="sectbody"><ul role="navigation" class="left rootline toolbar"><li class="first odd trodd selected"><a href="/Oeko/!p4610/" id="menu_p4610"><span>Öko</span></a></li><li class="last even trodd selected"><a href="/Oeko/Oekonomie/!p4623/" id="menu_p4623"><span>Ökonomie</span></a></li></ul><ul role="navigation" class="right toolbar"><li class="date" itemprop="datePublished" content="2020-01-13T18:54:00+01:00">13. 1. 2020</li><li itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization " style=" display:none; "><span itemprop="url" content="http://www.taz.de"></span><span itemprop="name" content="TAZ Verlags- und Vertriebs GmbH"></span><span itemprop="logo" itemscope="" itemtype="http://schema.org/ImageObject"><img itemprop="url" alt="taz logo" src="/lib/ch/web/pix/taz_logo_web.jpg"></img></span><span content="https://www.facebook.com/taz.kommune/" itemprop="sameAs"></span><span content="https://twitter.com/tazgezwitscher" itemprop="sameAs"></span><span content="https://www.instagram.com/taz.die_tageszeitung" itemprop="sameAs"></span><span content="https://flipboard.com/@taz_de" itemprop="sameAs"></span><span content="https://www.reddit.com/user/dietageszeitung" itemprop="sameAs"></span><span content="https://pod.geraspora.de/u/taz" itemprop="sameAs"></span></li><meta itemprop="dateModified" content="2020-01-14T09:13:22+01:00"></meta></ul></div></div>
+
+    
+	<div role="region" id="" class="odd sect sect_profile big pictured "><div class="secthead" role="heading"><h2><a name="Kommentar von"><span>Kommentar von</span></a></h2></div><div class="sectbody" itemscope="itemscope" itemtype="http://schema.org/Person" itemprop="author"><a rel="author" class="big pictured 
+        
+	
+        
+
+		
+			
+	        
+	
+			author 
+		
+		community 
+		
+        
+                
+		        
+		                
+		
+	        
+	        
+                
+
+				
+		
+
+        person objlink" itemprop="url" href="/Ingo-Arzt/!a132/"><h4 itemprop="name">Ingo Arzt</h4><h5 itemprop="jobTitle">Redakteur für Wirtschaft und Umwelt</h5><img itemprop="image" src="/kommune/files/images/profile/138x138/132.png" alt="Ingo Arzt" title="Ingo Arzt"></img></a><ul class="contact"><li><a itemprop="email" class="email" href="mailto:Ingo Arzt &lt;arzt@taz.de&gt;"><img src="/lib/ch/web/pix/icons/email.png" class="icon"></img></a></li><li><a itemprop="sameAs" class="remote microblog" target="_blank" href="http://twitter.com/@Ingo_Arzt"><img src="/lib/ch/web/pix/icons/microblog.png" class="icon" alt="microblog" title="Ingo Arzt's microblog"></img></a></li></ul></div></div><div role="region" id="" class="odd sect sect_profile-descr "><p class="sectbody"><!--0-->Schreibt seit 2008 für die taz. Beschäftigt sich mit der Frage, ob Kapitalismus auch öko kann. War Korrespondent in Baden-Württemberg, gründete erfolglos ein Magazin und besuchte eine Journalistenschule. Ist außerdem Elektroingenieur.</p></div>
+
+    
+	<div role="region" id="" class="even sect sect_tags "><div class="secthead" role="heading"><h2><a name="Themen"><span>Themen</span></a></h2></div><ul role="directory" class="news directory sectbody"><li class="first odd trodd tag"><a role="link" href="/!t5009186/" class="tag dirlink"><span>Siemens</span></a></li><li class="odd treven tag"><a role="link" href="/!t5645372/" class="tag dirlink"><span>Luisa Neubauer</span></a></li><li class="even trodd tag"><a role="link" href="/!t5043433/" class="tag dirlink"><span>Joe Kaeser</span></a></li><li class="last odd trodd tag"><a role="link" href="/!t5008720/" class="tag dirlink"><span>Australien</span></a></li></ul></div>
+
+    
+	
+
+    
+	<!-- DEBUG label: 0 extras here, 0 from directory Schwerpunkt Fridays For Future, thats 0 merged-->
+
+	</div><script> $(document.getLatestElement()).filter('.rack').trigger('TAZdomChange'); //
+			</script><span id="ad_bin_ros_sidebar_1" class="ad_bin sold contentad"><div id="ad_zone_ros_sidebar_1" name="ros_sidebar-1" class="ad_zone ad_zone_contentad ad_zone_badged ad_zone_sold"></div></span><script type="text/javascript"> (function(){
+		var domId = 'ros_sidebar_1';
+		var parent = $( '#ad_bin_'+ domId ).parent();
+		if ( parent.is('.wing') ) {
+			filOtaz_de_float.promise.promise().done(function(){		
+				filOtaz_de.ads.gpt.activateAdFrame( domId );
+			});
+		} else {
+			filOtaz_de.ads.gpt.activateAdFrame( domId );				
+		}
+	})(); 
+	</script><!-- DEBUG wing: 0 extras here, 0 from directory Schwerpunkt Fridays For Future, thats 0 merged--></span><script> $(document.getLatestElement()).filter('.wing').on( 'TAZdomChange', function(){
+					$(this).find('.rack').removeClass('first first_rack').first().addClass('first first_rack');
+					}); //</script><span class="tail" role="complementary"><!-- DEBUG tail: 0 extras here, 0 from directory Schwerpunkt Fridays For Future, thats 0 merged--><div class="rack" id="xid761594">
+    
+	<div role="region" id="" class="first odd sect sect_tags "><div class="secthead" role="heading"><h2><a name="mehr auf taz.de zu …"><span>mehr auf taz.de zu …</span></a></h2></div><ul role="directory" class="news directory sectbody"><li class="first odd trodd tag"><a role="link" href="/!t5009186/" class="tag dirlink"><span>Siemens</span></a></li><li class="odd treven tag"><a role="link" href="/!t5645372/" class="tag dirlink"><span>Luisa Neubauer</span></a></li><li class="even trodd tag"><a role="link" href="/!t5043433/" class="tag dirlink"><span>Joe Kaeser</span></a></li><li class="last odd trodd tag"><a role="link" href="/!t5008720/" class="tag dirlink"><span>Australien</span></a></li></ul></div>
+
+    
+	<div role="region" id="" class="last even sect sect_related style_related "><div class="secthead" role="heading"><h2><a name="Mehr zum Thema"><span>Mehr zum Thema</span></a></h2><ul class="toolbar" role="toolbar"></ul></div><ul role="directory" class="sectbody   directory"><li class=" first odd trodd    subjective column article"><a href="/Neubauer-vs-Siemens/!5654384/" ratioURL-ressource="5654384" class="objlink subjective column article" role="link"><h4>Neubauer vs. Siemens</h4><h3>In welchen Arsch wir treten müssen</h3><span class="category_and_name"><span>Kolumne<b> Die eine Frage </b></span><span class="author"><p>von <b>Peter Unfried</b> </p></span></span></a></li><li class=" even trodd    report article"><a href="/Umstrittenes-Kohlefoerderprojekt/!5655402/" ratioURL-ressource="5655402" class="objlink report article" role="link"><h4>Umstrittenes Kohleförderprojekt</h4><h3>FFF protestiert gegen Siemens</h3></a></li><li class=" last odd treven    report article"><a href="/Siemens-haelt-an-Kohleprojekt-fest/!5655233/" ratioURL-ressource="5655233" class="objlink report article" role="link"><h4>Siemens hält an Kohleprojekt fest</h4><h3>Kaeser am Pranger</h3></a></li></ul></div>
+
+    
+
+	</div><script> $(document.getLatestElement()).filter('.rack').trigger('TAZdomChange'); //
+			</script><div class="rack first_rack" id="xid479112">
+    
+	<div role="region" id="" class="first last odd sect sect_profile brief pictured "><div class="secthead" role="heading"><h2><a name="mehr von"><span>mehr von</span></a></h2></div><div class="sectbody" itemscope="itemscope" itemtype="http://schema.org/Person" itemprop="author"><a rel="author" class="brief pictured 
+        
+	
+        
+
+		
+			
+	        
+	
+			author 
+		
+		community 
+		
+        
+                
+		        
+		                
+		
+	        
+	        
+                
+
+				
+		
+
+        person objlink" itemprop="url" href="/Ingo-Arzt/!a132/"><h4 itemprop="name">Ingo Arzt</h4><img itemprop="image" src="/kommune/files/images/profile/30x30/132.png" alt="Ingo Arzt" title="Ingo Arzt"></img></a><ul class="contact"><li><a itemprop="email" class="email" href="mailto:Ingo Arzt &lt;arzt@taz.de&gt;"><img src="/lib/ch/web/pix/icons/email.png" class="icon"></img></a></li><li><a itemprop="sameAs" class="remote microblog" target="_blank" href="http://twitter.com/@Ingo_Arzt"><img src="/lib/ch/web/pix/icons/microblog.png" class="icon" alt="microblog" title="Ingo Arzt's microblog"></img></a></li></ul></div></div>
+
+    
+		</div><script> $(document.getLatestElement()).filter('.rack').trigger('TAZdomChange'); //
+			</script><div role="region" id="xid705738" class="odd sect sect_adr style_adr "><ul role="directory" class="sectbody corp  directory"><li class=" first last odd trodd online   leaded pictured leaded remote product"><a class="dept" href="/Abo/!p4209/">Abo</a><a href="/!170285/#matomo:pk_campaign=Praemienabo580_Agentterrorist&amp;pk_source=Online&amp;pk_medium=taz.de&amp;pk_kwd=Kachel/" class="objlink leaded pictured leaded remote product" role="link"><p class="brief">    Lesen Sie 10 Wochen lang die digitale Ausgabe der taz und die taz am Wochenende zusätzlich auf Papier. Obendrauf legen wir noch Deniz Yücels „Agentterrorist“.     </p><img src="/uploads/images/300/Deniz_Yuecel_Agentterrorist_kachel_01.jpg" alt="" title=""></img><div class="hint">Her damit</div></a></li></ul></div></span><a itemprop="mainEntityOfPage" href="/Siemens-und-die-Kohlemine-Adani/!5655255"></a></div><script type="text/javascript">(function () {	// align skirt top with first page's bottom asap
+$( document ).ready(function() {
+  var skirt_top = $('.sect_tdt >.sectbody').length ? $('.sect_tdt >.sectbody').first().offset().top -4 : 1500;
+  $('#skirt').css({'top': ''+ skirt_top +'px'});
+});
+	})();	</script><div class="full community page last even n2"><div class="head" role="head"><ul role="navigation" class=" navbar newsnavigation"></ul><script>
+		var liSelected = $(document.getLatestElement()).find('li.selected');
+		if ( liSelected.length > 1 ){ liSelected.first().removeClass('selected')};
+	</script></div><span class="body" role="main"><div class="rack first_rack" id="xid495498">
+    
+
+	<div role="region" id="" class="first last odd sect sect_text "><div class="secthead" role="heading"><h2><a name="So können Sie kommentieren:"><span>So können Sie kommentieren:</span></a></h2></div><div class="sectbody"><p>       Bitte <a href="https://www.taz.de/kommune/post.php?a=registration" target="_blank">registrieren Sie sich</a> und halten Sie sich an unsere <a href="http://taz.de/netiquette" target="_blank">Netiquette</a>.     
+</p><p>      Haben Sie Probleme beim Kommentieren oder Registrieren?   
+</p><p>  Dann mailen Sie uns bitte an <a href="mailto:kommune@taz.de" target="_blank">kommune@taz.de</a>   </p></div></div>
+
+	</div><script> $(document.getLatestElement()).filter('.rack').trigger('TAZdomChange'); //
+			</script><div role="region" id="" class="even sect sect_commentlinks style_commentlinks "><div class="secthead" role="heading"><h2><a name="Leserkommentare"><span>Leserkommentare</span></a></h2><ul class="toolbar" role="toolbar"></ul></div><ul role="directory" class="sectbody   directory"><li class="member " id="bb_message_3901235"><a class="author person" href="/!ku49090/"><h4>Martinxyz</h4></a><time datetime="2020-01-14T13:47:02+01:00"><meta value="1579006022"></meta>14. 01. 2020, 
+		13:47</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Wer wen und mit was über den Tisch zog ist noch offen. Das hängt nicht einfach nur von Herr Kaeser ab und mit welchem Bein er heute morgen aufstand. Das kleine Marketingmanöver mit der väterlichen Geste "dann übernimm du doch mal Verantwortung Kind" ist so durchsichtig wie armselig. Wir müssen einfach verstehen: Mehr haben diese Leute tatsächlich nicht drauf. Kultur der Verantwortungslosigkeit die nur Initiationsriten in diese ihre Kultur kennt.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Den Posten abzulehnen war natürlich richtig. Verarschen können wir uns selbst. Fehler ist aber jetzt wenn Neubauer /FFF nicht präziser wird: Nicht Siemens begeht das Verbrechen an den nachfolgenden Generationen in Australien. Das wird immer noch durch dieses völlig irrsinnige Kohle-Abbau-Projekt in Australien begangen.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Hier hatten wir nur die Nebenfrage zu klären, ob man als Siemens dafür Infrastruktur liefert. Nicht unwichtig.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Aber anlässlich nicht das eigentliche Thema. In einem brennenden Land, dessen Regierung noch Gesellschaft begreifen will was bei ihnen grundfalsch läuft.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Also nicht im Dorf bleiben Luisa.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Ich fände es richtig du fliegst mal rüber nach Australien und erklärst dort öffentlich mit den wahrscheinlich nicht so zahlreichen Freundinnen und Freunden, weshalb du nicht Aufsichtsrat geworden bist. Dein Flug wird Schmutz verursachen. Aber bist du am Ende ein wenig erfolgreich  - das Australien mal mit sich selbst über sich selbst spricht -<br xmlns="http://www.w3.org/1999/xhtml"></br>
+dann dürfte deine Energiebilanz am Ende positiv ausfallen.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Ich verspreche dir  - ich fliege nicht nach Australien. Um interessiert auf den Heiligtümern der Ureinwohner herumzutrampeln. Und ich kenne noch so 10 die es  -versprochen- nie tun werden. Den Flugzeugsprit haben wir schon mal zusammen für dich gespart.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901448"><a class="author person" href="/!ku10739/"><h4>Dr. McSchreck</h4></a><time datetime="2020-01-14T20:29:22+01:00"><meta value="1579030162"></meta>14. 01. 2020, 
+		20:29</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Martinxyz </span>ob die Australier, die ja vor gar nicht so langer Zeit gewählt haben, wirklich von einer jungen Deutschen belehrt werden wollen, was sie bauen dürfen/sollen und was nicht - ich weiß ja nicht....</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3901225"><a class="author person" href="/!ku36408/"><h4>Götz-Michael Freimann</h4><img src="/kommune/files/images/profile/70x70/36408.png" alt="" title=""></img></a><time datetime="2020-01-14T13:29:55+01:00"><meta value="1579004995"></meta>14. 01. 2020, 
+		13:29</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Inhaltlich ist der Artikel super. Ich finde die Form des Kommentars für die Ansammlung an Fakten unpassend. <br xmlns="http://www.w3.org/1999/xhtml"></br>
+Kaeser musste sie fragen ob sie mitmachen will. Er musste mit ihr reden. Um Schaden vom Unternehmen abzuwenden. Das ist sein Job. Sie hätte den Posten annehmen sollen. FFF wären ihre ungeliebte Sprecherin los. Sie hätte der Bewegung ungeheuren Einfluss verschafft.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901283"><a class="author person" href="/!ku13069/"><h4>josan</h4></a><time datetime="2020-01-14T14:56:29+01:00"><meta value="1579010189"></meta>14. 01. 2020, 
+		14:56</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Götz-Michael Freimann </span>Welche ungeliebte Sprecherin? Es gibt weder einen gewählten Vorstand noch einen gewählten Sprecher. FFF ist eine basisdemokratische Initiative. Luisa Neubauer ist dabei halt sehr aktiv und deswegen vielen bekannt, nicht mehr und nicht weniger.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901244"><a class="author person" href="/!ku49090/"><h4>Martinxyz</h4></a><time datetime="2020-01-14T14:00:21+01:00"><meta value="1579006821"></meta>14. 01. 2020, 
+		14:00</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Götz-Michael Freimann </span>Finde ich falsch. Neubauers Job ist nicht Kaeser quasi zu ersetzen. Noch wäre es überhaupt leistbar lauter Neubauers in Aufsichtsräte zu schicken. Die gibt es nämlich so einfach nicht.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Worum es geht ist das die Kaesers dieser Welt volkswirtschaftliche statt betriebswirtschaftliche Entscheidungen treffen. Soviel Professionalität muss einfach jetzt sein. Deshalb war natürlich richtig Kaeser einen anderen Fachmenschen für den Aufsichtsratsposten vorzuschlagen. Woraufhin die prompte Ablehnung Kaesers die Redlichkeit und Wahrhaftigkeit seines "Angebotes" klärte.  Soviel zu Ihrer Fantasie vom "ungeheuren Einfluss" unter solchen Vorzeichen in solcher Kultur und Unternehmensstruktur.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Wir müssen doch nicht so tun, als wüssten wir nicht, das sie wissen wie es geht. Schliesslich machen die das ja schon ziemlich sehr lange genau so. Mit dem Ergebnis das sie ihre Ergebnisse richtig oder unvermeidlich finden.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Während wir doch sagen: Nein. Eure Ergebnisse sind nicht richtig. Noch ausreichend. Wir sind nicht interessiert an der Technik zu falschen Entscheidungen zu kommen und sie als Richtige zu verkaufen.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Das ist gemessen an unserem Ziel einfach Zeitverschwendung.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3901208"><a class="author person" href="/!ku2272/"><h4>albert992</h4></a><time datetime="2020-01-14T13:08:15+01:00"><meta value="1579003695"></meta>14. 01. 2020, 
+		13:08</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">Die Entscheidung, die Kohle (grins) zu fördern, fällt woanders, nicht bei Siemens oder in Käsers Büro.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Wer die Schienen liefert, die Lokomotiven, die Waggons, die Schwellen, die Signalanlagen oder die Computeranlage, die Bürostühle, oder die Bagger, die Händies der Mitarbeiter oder das Briefpapier, ist piepegal. Sollen die jetzt alle boykottiert werden?</p>
+<p xmlns="" class="last even">Und wieso heißt jetzt auf einmal Vertragsbruch "Aussteigen"?</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901460"><a class="author person" href="/!ku35237/"><h4>Mitch Miller</h4></a><time datetime="2020-01-14T20:52:20+01:00"><meta value="1579031540"></meta>14. 01. 2020, 
+		20:52</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@albert992 </span>Ach so? Na, dann kann man wohl nichts machen. Also: WEITERMACHEN! Alles gut: wir können eh nichts ändern.</p>
+<p xmlns="" class="last even">Wir können zwar unseren einzigen Planeten verseuchen und die Lebensbedingungen extrem verschlechtern, aber Kohleabbau...neeee...das können wir nicht stoppen.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3901206"><a class="author person" href="/!ku24791/"><h4>Opossum</h4></a><time datetime="2020-01-14T13:07:38+01:00"><meta value="1579003658"></meta>14. 01. 2020, 
+		13:07</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">Ich finde bezüglich der Rolle von FFF<br xmlns="http://www.w3.org/1999/xhtml"></br>
+folgenden Artikel interessant, ob man jetzt die Ernsthaftigkeit von Blackrock, die ich eigentlich gar nicht schätzte, ernst nehmen kann steht auf einem anderen Blatt</p>
+<p xmlns="" class="last even"><a target="_blank" href="https://www.spiegel.de/wirtschaft/unternehmen/klimaschutz-blackrock-chef-schreibt-brandbrief-an-topmanager-a-fdab3783-6308-4cfe-b7ac-63d98457947e">www.spiegel.de/wir...-b7ac-63d98457947e</a></p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901204"><a class="author person" href="/!ku40894/"><h4>Gregor Tobias</h4><img src="/kommune/files/images/profile/70x70/40894.png" alt="" title=""></img></a><time datetime="2020-01-14T13:06:38+01:00"><meta value="1579003598"></meta>14. 01. 2020, 
+		13:06</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Siemens hat richtig gehandelt. Ein Vertragsbruch hätte kein Gramm CO2 eingespart, sondern durch erneute Ausschreibung, Planung und Entwicklung zu erheblichen Emissionen geführt. Deshalb werden auch Würstchen gegrillt bei der HV.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Frau Neubauer hat falsch gehandelt. Mehr Einflussmöglichkeit wird sie so schnell nicht mehr bekommen. Leider.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3905534"><a class="author person" href="/!ku54603/"><h4>Gandalf</h4></a><time datetime="2020-01-24T13:18:19+01:00"><meta value="1579868299"></meta>24. 01. 2020, 
+		13:18</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Gregor Tobias </span>Sie hat zu 100% richtig und ehrenwert  gehandelt, im Gegensatz zu Kaeser und Siemens. Jeder hätte ihr danach auch postwendend persönliche Vorteilsnahme unterstellen können. Die Prioritäten für den Klimaschutz liegen weitaus höher, als Umsatz und Gewinn von Konzernen die Milliardenumsätze machen.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3901201"><a class="author person" href="/!ku54580/"><h4>patchwork</h4></a><time datetime="2020-01-14T12:59:29+01:00"><meta value="1579003169"></meta>14. 01. 2020, 
+		12:59</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Siemens soll endlich mal eine Gemeinwohl Bilanz erstellen und Auditieren lassen damit die Öffentlichkeit auch Rechenschaft erhält und besser durchblickt</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901148"><a class="author person" href="/!ku53486/"><h4>MB996</h4></a><time datetime="2020-01-14T11:22:36+01:00"><meta value="1578997356"></meta>14. 01. 2020, 
+		11:22</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Die Rolle die Siemens in dem Projekt spielt ist ziemlich nachrangig. Daher kann man mit einer gewissen Berechtigung annehmen, das FfF als auch Siemens hier bewusst auf die Theatralik achten. <br xmlns="http://www.w3.org/1999/xhtml"></br>
+Keine Ruhmestat von beiden!</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901121"><a class="author person" href="/!ku54580/"><h4>patchwork</h4></a><time datetime="2020-01-14T10:41:08+01:00"><meta value="1578994868"></meta>14. 01. 2020, 
+		10:41</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">es macht Sinn den Konflikt dahin zu spielen wo die Entscheidungen fallen. Hauptversammlungen sind eine Bühne aber leider nur das. Den Konzern öffentlichkeitswirksam herauszufordern Bringt viel Öffentlichkeit und macht deutlich wo die Verantwortung setzt. Käser ist demaskiert, FFF hat seinen Bluff aufgedeckt. Der Erfolg ist unmittelbar: ein geschärfter Review im  nachhaltigkeitskontrollgremium. Es ist vielversprechend Konzernvorstände öffentlichkeitswirksam zu konfrontieren. Das bringt mehr als die Bundesregierung anzusprechen, denn die Konzerne ziehen im Hintergrund ohne hin die Strippen.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901109"><a class="author person" href="/!ku21085/"><h4>Wolfgang Leiberg</h4></a><time datetime="2020-01-14T10:25:22+01:00"><meta value="1578993922"></meta>14. 01. 2020, 
+		10:25</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Sehen wir also dem 5. Februar und dem "Grillen" von Herr Kaeser erwartungsfroh entgegen.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901187"><a class="author person" href="/!ku424/"><h4>Rainer B.</h4><img src="/kommune/files/images/profile/70x70/424.png" alt="" title=""></img></a><time datetime="2020-01-14T12:27:19+01:00"><meta value="1579001239"></meta>14. 01. 2020, 
+		12:27</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Wolfgang Leiberg </span>Werd' diesmal an der Hauptversammlung nicht teilnehmen. Sie können meinen Grillkaeser aber gerne haben.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3901101"><a class="author person" href="/!ku49147/"><h4>MahNaMahNa</h4></a><time datetime="2020-01-14T10:15:23+01:00"><meta value="1578993323"></meta>14. 01. 2020, 
+		10:15</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Gabor Steingarts Morning Briefing: Nachruf auf Joe Kaeser<br xmlns="http://www.w3.org/1999/xhtml"></br><a target="_blank" href="https://www.gmx.net/magazine/politik/gabor-steingarts-morning-briefing-nachruf-joe-kaeser-34341378">www.gmx.net/magazi...oe-kaeser-34341378</a><br xmlns="http://www.w3.org/1999/xhtml"></br>
+Das nenn ich treffend geschrieben.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901076"><a class="author person" href="/!ku44788/"><h4>tomás zerolo</h4></a><time datetime="2020-01-14T09:32:33+01:00"><meta value="1578990753"></meta>14. 01. 2020, 
+		09:32</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">"Kaeser verarscht XXX"</p>
+<p xmlns="" class="even">Naja -- das gehört zu seiner Jobbeschreibung: der Zivilgesellschaft zu verkaufen, dass "sein" Konzern in unserer aller Interesse handelt; dieses Handeln wird jedoch ausschliesslich von den Interessen seiner Aktionäre bestimmt, und das wissen wir alle.</p>
+<p xmlns="" class="last odd">Solche begabte TaschenspielerInnen werden hoch gehandelt.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901062"><a class="author person" href="/!ku39307/"><h4>Sven Günther</h4><img src="/kommune/files/images/profile/70x70/39307.png" alt="" title=""></img></a><time datetime="2020-01-14T08:45:33+01:00"><meta value="1578987933"></meta>14. 01. 2020, 
+		08:45</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Know your customer...</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901051"><a class="author person" href="/!ku19714/"><h4>Pfanni</h4></a><time datetime="2020-01-14T08:24:31+01:00"><meta value="1578986671"></meta>14. 01. 2020, 
+		08:24</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">„Siemens-Chef Joe Kaeser hat die Klimaaktivistin Luisa Neubauer über den Tisch gezogen“<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Irrtum! Das konnte er gar nicht, selbst wenn er es gewollt hätte. Denn dazu gehören Zwei, und Frau Neubauer hat nicht mitgemacht, siehe <a target="_blank" href="https://taz.de/Siemens-wirbt-um-FFF-Sprecherin/!5652243/">taz.de/Siemens-wir...recherin/!5652243/</a><br xmlns="http://www.w3.org/1999/xhtml"></br>
+Im Übrigen ist es selbst für Grüne keine grüne Todsünde, in die Industrie zu wechseln, wie Frau Röstel beweist.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Gunda Röstel war Sprecherin von B90/Grüne 1996-2000. Danach wechselte sie zur Gelsenwasser AG, damals ein Tochterunternehmen von E.ON. Als Vertreterin des Landes Baden-Württemberg wurde sie im April 2011 in den Aufsichtsrat der EnBW gewählt. <a target="_blank" href="https://de.wikipedia.org/wiki/Gunda_R%C3%B6stel">de.wikipedia.org/wiki/Gunda_R%C3%B6stel</a><br xmlns="http://www.w3.org/1999/xhtml"></br>
+Anscheinend hatte Frau Röstel nicht die Absicht, sich als Feigenblatt missbrauchen zu lassen. Wäre es anders, hätte das die TAZ ganz bestimmt berichtet! Frau Neubauer hätte ruhig den angebotenen Posten bei Siemens annehmen und sicher auch etwas bewirken können. Aber vermutlich fühlte sie sich der Aufgabe nicht gewachsen – im Gegensatz zu Frau Röstel. <br xmlns="http://www.w3.org/1999/xhtml"></br>
+Und was die besagte Eisenbahnstrecke betrifft: Ich bin ganz, ganz sicher, dass sich darüber auch andere Güter transportieren lassen, wenn Kohle nicht mehr „geht“. Frau Neubauer hätte daran mitwirken können. Eine Chance wurde vertan.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901048"><a class="author person" href="/!ku22896/"><h4>Rudolf Fissner</h4><img src="/kommune/files/images/profile/70x70/22896.png" alt="" title=""></img></a><time datetime="2020-01-14T08:00:52+01:00"><meta value="1578985252"></meta>14. 01. 2020, 
+		08:00</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Im rot/rot/grünen Bremen externalisiert man einfach die Verantwortung für den Klimawandel. Das größte Kohlekraftwerk hat man an einen US-Investor verkauft :-) <a target="_blank" href="https://www.weser-kurier.de/bremen/bremen-wirtschaft_artikel,-warum-ein-usinvestor-ein-kohlekraftwerk-in-bremen-kauft-_arid,1871348.html">www.weser-kurier.d..._arid,1871348.html</a></p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901059"><a class="author person" href="/!ku29905/"><h4>Dhimitry</h4><img src="/kommune/files/images/profile/70x70/29905.png" alt="" title=""></img></a><time datetime="2020-01-14T08:40:10+01:00"><meta value="1578987610"></meta>14. 01. 2020, 
+		08:40</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Rudolf Fissner </span>Hat denn die R2G-Regierung das Kraftwerk verkauft oder war das ein privater Konzern?</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3901047"><a class="author person" href="/!ku3150/"><h4>uvw</h4></a><time datetime="2020-01-14T07:58:50+01:00"><meta value="1578985130"></meta>14. 01. 2020, 
+		07:58</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">Naja, von was träumen wir nachts? Dass Konzerne ihrer Verantwortung nachkommen? Als würde sich der Präsi von Siemens mit Klimapolitik befassen. Es ging wie üblich nur um PR, keine weiteren Fragen. Was haben sie schon zu befürchten? Auf Privatkundenebene ist Siemens nicht zu boykottieren. Profit ist denen eben wichtiger als der Planet, das ist die unmissverständliche Botschaft.</p>
+<p xmlns="" class="last even">Bleibt die Frage, wie man dagegen wirksam vorgehen kann.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901019"><a class="author person" href="/!ku41255/"><h4>m. luz</h4></a><time datetime="2020-01-14T06:48:52+01:00"><meta value="1578980932"></meta>14. 01. 2020, 
+		06:48</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">bitte thematisieren sie mal, das siemens schon lange mehr kohle mit ihren geld und bankgeschäften auf den xeno-offshore-finanzmärkten macht (ohne bafin kontrollen !) ,als mit ihren produkten!</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901018"><a class="author person" href="/!ku33153/"><h4>OSCILLATEWILDLY</h4><img src="/kommune/files/images/profile/70x70/33153.png" alt="" title=""></img></a><time datetime="2020-01-14T06:40:40+01:00"><meta value="1578980440"></meta>14. 01. 2020, 
+		06:40</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Es ist wie ich finde wenig erbaulich, Begriffe wie verarscht oder gegrillt im Kommentar einer seriösen Tageszeitung zu lesen. Im Übrigen: ist nicht der Mensch Verursacher allen Übels? Wäre es nicht also am konsequentesten, die Abschaffung des Menschen zu fordern. Die Selbstgerechtigkeit, die überwiegend alle aktuellen Debatten bestimmt, seien es Debatten ums Klima oder um Geschlechter (Ich-Auch) ist mittlerweile kaum mehr zu ertragen. Im Kern ist alles rein egoistisch motiviert.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901036"><a class="author person" href="/!ku47137/"><h4>Berter</h4></a><time datetime="2020-01-14T07:22:54+01:00"><meta value="1578982974"></meta>14. 01. 2020, 
+		07:22</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@OSCILLATEWILDLY </span>Aussagen wie "Wäre es nicht also am konsequentesten, die Abschaffung des Menschen zu fordern" lassen sich durchaus als Aufforderung zum Nichtstun deuten. Angesichts der aktuellen Situation wenig hilfreich.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901028"><a class="author person" href="/!ku54638/"><h4>Soy</h4></a><time datetime="2020-01-14T07:02:36+01:00"><meta value="1578981756"></meta>14. 01. 2020, 
+		07:02</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@OSCILLATEWILDLY </span>Nein, nicht „der Mensch“ ist der Verursacher allen Übels. Ein Großteil der Umwelt- und Klimazerstörung wird von wenigen großen Konzernen verursacht! Es ist eine große Augenwischerei, sozusagen verarsche,  zu sagen, es sei „die Menschheit“ und der „kleine Konsument“! Es macht wirklich keinen großen Unterschied, ob ich als Einzelperson Versuche, klimaneutral zu leben, oder nicht, solange Großkonzerne und Machthabende nicht bereit sind, das Ruder herum zu reißen!</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3901010"><a class="author person" href="/!ku49630/"><h4>Nicklas</h4><img src="/kommune/files/images/profile/70x70/49630.png" alt="" title=""></img></a><time datetime="2020-01-14T03:58:02+01:00"><meta value="1578970682"></meta>14. 01. 2020, 
+		03:58</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">"Am 5. Februar ist Hauptversammlung bei Siemens. Wird Kaeser dort wegen des Adani-Geschäftes gegrillt, wäre es doch noch ein Sieg"</p>
+<p xmlns="" class="last even">Kaeser wird gegrillt werden. Definitiv. FFF München plant bereits den Protest. Diese Aktionärsversammlung wird nicht ohne Protest vonstattengehen. Und die Entscheidung von Siemens wird nicht akzeptiert.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3901002"><a class="author person" href="/!ku2601/"><h4>Eckart Schirrmacher</h4></a><time datetime="2020-01-14T02:33:05+01:00"><meta value="1578965585"></meta>14. 01. 2020, 
+		02:33</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Ist das wirklich die geeignete Perspektive, aus der die Angelegenheit zu beurteilen ist, dass der Siemens-Chef Luisa Neubauer verarscht hat. Aus meiner Wahrnehmung heraus beurteilt, steht es 2 : 1 für Luisa Neubauer (bzw. FFF), in dem der Schachzug von Kaeser, ihr einen Job im Aufsichtsrat anzubieten, geschickt damit pariert worden ist, diesen (selbstredend) für sich selbst abzulehnen und statt dessen angeregt hat, diesen Job an einen Scientist For Future zu übergeben. <br xmlns="http://www.w3.org/1999/xhtml"></br>
+Von vornherein ist es wohl kaum zu erwarten gewesen, dass der Siemens-Chef sich durch solch ein Gespräch  tatsächlich dazu bewegen lässt, aus diesem Projekt wieder auszusteigen. Aber es macht nur allzu deutlich, wer es denn ist, der da "in der Ferne baggert" (bzw. baggern lässt). M. E. verhält es sich nicht so, dass es Kaeser gelungen ist, Luisa Neubauer vorzuführen und sich dabei ein "grünes" Image zu verpassen, sondern im Gegenteil, Kaeser ist der Vorgeführte, als einer von jenen Managern, die den Wachstum der Profitraten ihrer Konzerne, als die einzige zu akzeptierende Faktenlage anerkennen und Umweltschutz allenfalls für einen Marketing-Gag halten.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901046"><a class="author person" href="/!ku12040/"><h4>LeSti</h4></a><time datetime="2020-01-14T07:56:45+01:00"><meta value="1578985005"></meta>14. 01. 2020, 
+		07:56</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Eckart Schirrmacher </span>Es steht 2:1? Nach Moralpunkten vielleicht? Die lassen sich leider weder in Geld, noch in Grad K messen. Sind mithin also für beide Seiten wertlos.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3900980"><a class="author person" href="/!ku6716/"><h4>Tatzelbrumm</h4></a><time datetime="2020-01-13T23:55:09+01:00"><meta value="1578956109"></meta>13. 01. 2020, 
+		23:55</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Luisa Neubauer ist ja nun allerdings drauf und dran, bei einer noch viel größeren, ja geradezu olympischen Verarsche mitzumachen [die taz berichtete hier: <a target="_blank" href="https://taz.de/Klima-Event...stadion/!5650366/">taz.de/Klima-Event...stadion/!5650366/</a> ], worüber uns dankenswerterweise Ole Nymœn und Wolfgang M. Schmitt Jr. aufklären.<br xmlns="http://www.w3.org/1999/xhtml"></br><a target="_blank" href="https://youtu.be/ZpabgFlVIlE">youtu.be/ZpabgFlVIlE</a></p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901004"><a class="author person" href="/!ku49630/"><h4>Nicklas</h4><img src="/kommune/files/images/profile/70x70/49630.png" alt="" title=""></img></a><time datetime="2020-01-14T03:47:01+01:00"><meta value="1578970021"></meta>14. 01. 2020, 
+		03:47</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Tatzelbrumm </span>Das Video ist das wichtigste Video überhaupt zu dem Thema Olympia. Es ist wahr, dass das Video Olympia zerstört. Und ja: Luisa Neubauer ist zu mächtig geworden. Und ja: es ist offensichtlich hauptsächlich ihr Wunschprojekt.</p>
+<p xmlns="" class="even">Aber das hat mit diesem Thema hier eher wenig zu tun.</p>
+<p xmlns="" class="last odd">Diskutieren wir also gerne über Olympia, wenn es wirklich mal wieder darum geht. Das Video zeigt noch nicht mal alles, was katastrophal schief läuft. Da gibts noch viel mehr Diskussionsbedarf.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3900974"><a class="author person" href="/!ku1868/"><h4>meerwind7</h4></a><time datetime="2020-01-13T23:28:20+01:00"><meta value="1578954500"></meta>13. 01. 2020, 
+		23:28</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">Siemens kann vor allem eines nicht brauchen: Aufträge aus der Öl- und Gasindustrie, für Gasturbinen und Windparks verlieren, weil Geschäftspartner weltweit das Signal erhalten, sie können weiterhin ihre Kohlekraftwerke betreiben.</p>
+<p xmlns="" class="last even">60 Millionen Tonnen Kohle jährlich bedeutet auch: Ca, 50 Mrd. Euro Aufträge weniger für andere Energiegewinnungen wie Solar (Siemens liefert Wechselrichter), Wind (Siemens liefert Turbinen und Offshore-Plattformen), GuD (Siemens liefert Gasturbinen und komplette Kraftwerke und Anlagen zur Fördertechnik).</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901005"><a class="author person" href="/!ku49630/"><h4>Nicklas</h4><img src="/kommune/files/images/profile/70x70/49630.png" alt="" title=""></img></a><time datetime="2020-01-14T03:48:18+01:00"><meta value="1578970098"></meta>14. 01. 2020, 
+		03:48</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@meerwind7 </span>Sie gehen davon aus, dass der Kuchen begrenzt groß ist. Im Kapitalismus ist das nicht der Fall. Der Kuchen wächst ständig. Energie kann man nie genug haben.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3900973"><a class="author person" href="/!ku6716/"><h4>Tatzelbrumm</h4></a><time datetime="2020-01-13T23:25:43+01:00"><meta value="1578954343"></meta>13. 01. 2020, 
+		23:25</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Ist 'ne ganze Weile her, seit so'ne Chefcharge 1:1 an Franz Josef Degenhardt erinnert hat.<br xmlns="http://www.w3.org/1999/xhtml"></br><a target="_blank" href="https://youtu.be/O6C2t6GtNDI?t=191">youtu.be/O6C2t6GtNDI?t=191</a></p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3900947"><a class="author person" href="/!ku41509/"><h4>Hampelstielz</h4></a><time datetime="2020-01-13T22:00:32+01:00"><meta value="1578949232"></meta>13. 01. 2020, 
+		22:00</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Ich finde nicht, dass seine Strategie wirklich aufgegangen ist. Dies wäre erst der Fall gewesen, wenn Neubauer den Posten im Aufsichtsrat angenommen und korrumpieren hätte lassen. Die genannten Imvestoren pfeifen auf Signale Richtung Umweltschutz. Die wollen Dividende.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3900942"><a class="author person" href="/!ku48732/"><h4>Kenni303</h4></a><time datetime="2020-01-13T21:56:13+01:00"><meta value="1578948973"></meta>13. 01. 2020, 
+		21:56</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Na eeeeeeeendlich. Habe ich von Anfang an so gesagt als Kaeser noch als Looser galt. (Sorry für die Selbstbeweihräucherung)</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3900929"><a class="author person" href="/!ku46996/"><h4>Drabiniok Dieter</h4></a><time datetime="2020-01-13T21:32:41+01:00"><meta value="1578947561"></meta>13. 01. 2020, 
+		21:32</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">Zu bezweifeln ist, dass Kaeser/Siemens eine Verarschungsstrategie gefahren hat. (Dem scheint er ein Schulhof Politikverständnis zugrunde zu liegen, dass von politischer und unternehmerischer kurzfristiger Taktik und mittel- und langfristiger strategischer Planung noch zu wenig mitbekommen hat.) Das galt auch schon für Diess, der zuvor ausgelotet hat, wie empfänglich die Bewegung für Schmeicheleien und dem Gefühl von Einfluss und Anerkennung von Seiten der obersten Konzernebenen ist.Um herauszufinden, wie einzelne Personen und die Strömungen innerhalb der Klimabewegung auf Gesprächs- und Postenangebote reagieren.</p>
+<p xmlns="" class="even">Kaesers Angebot für einen Aufsichtsratsposten für eine Führungsfigur von FfF, war ein doppelt vergiftetes Angebot: Bei Annahme wäre die Wahrscheinlichkeit der Spaltung von FfF und einem Einbruch der gesellschaftliche Zustimmung hoch. Der Vorwurf der Käuflichkeit stünde im Raum. Die Begründung weshalb Siemens dieses Projekt auch bei Annahme des Postens nicht aufgegeben hätte, ist im Artikel ja nachlesbar.</p>
+<p xmlns="" class="odd">Spekuliert wird gleichzeitig darauf, dass nach so einem Angebot eine interne Debatte entstehen wird, über die Umsetzungsmöglichkeiten wenigsten von Teilen der FfF Ziele, durch Beteiligung in Entscheidungsgremien. Um über diesen Weg, FfF in Strategiestreitereien zu verwickeln, ggf. zu spalten (Realo gegen Fundis; war bei den Grünen erfolgreich) oder Teile der Bewegung zu radikalisieren/kriminalisieren.</p>
+<p xmlns="" class="even">Das FfF "auch an die Wirtschaft denken sollte", wurde ja schon von älteren Herren der FfF Unterstützer geäußert.</p>
+<p xmlns="" class="odd">Es ist immer das gleiche Spiel. Es sind immer die gleichen Reaktionsmuster, die ablaufen, wenn gesellschaftliche Bewegungen auf den Plan treten, die das Potential haben, den Status quo der herrschenden politischen und wirtschaftlichen Interessen zu gefährden.</p>
+<p xmlns="" class="last even">Eine Kretschmannisierung von FfF wäre den Kaesers, Diess@all das Liebste. Mit so einer Bewegung arbeitet man gerne zusammen.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901001"><a class="author person" href="/!ku2116/"><h4>Konrad Ohneland</h4><img src="/kommune/files/images/profile/70x70/2116.png" alt="" title=""></img></a><time datetime="2020-01-14T02:19:54+01:00"><meta value="1578964794"></meta>14. 01. 2020, 
+		02:19</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Drabiniok Dieter </span>Meine alten Leute haben Siemensaktien und ich werde mir mal eine Vollmacht von ihnen für die nächste Aktionärsversammling erbitten. Vielleicht kommt ja die eine oder andere auf dieselbe Idee.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3900911"><a class="author person" href="/!ku44318/"><h4>Markus Michaelis</h4></a><time datetime="2020-01-13T20:46:13+01:00"><meta value="1578944773"></meta>13. 01. 2020, 
+		20:46</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">Ein Artikel von Poschardt in der WELT sieht das in etwa seitenverkehrt.</p>
+<p xmlns="" class="even">In jedem Fall scheint klar, dass die Welt in Gut und Böse geteilt ist. Der Gute Teil besteht aus Menschen, die nicht in Gut und Böse einteilen, sondern den Menschen sehen. Der Böse Teil besteht aus Gruppen, Firmen, Parteien etc., die grundsätzlich instrumentalisieren, d.h. ihre wahren Absichten sind immer versteckt und in jedem Falle schädlich für die Menschen.</p>
+<p xmlns="" class="last odd">Eigentlich ganz einfach. Was für ein Glück, dass wir zu den Guten gehören.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3900986"><a class="author person" href="/!ku1868/"><h4>meerwind7</h4></a><time datetime="2020-01-14T00:04:35+01:00"><meta value="1578956675"></meta>14. 01. 2020, 
+		00:04</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Markus Michaelis </span>Poschardt in der WELT+ ist hinter Bezahlschranke.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="member " id="bb_message_3900885"><a class="author person" href="/!ku4304/"><h4>Tongo</h4><img src="/kommune/files/images/profile/70x70/4304.png" alt="" title=""></img></a><time datetime="2020-01-13T19:56:13+01:00"><meta value="1578941773"></meta>13. 01. 2020, 
+		19:56</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd">Stimmt. Aber dennoch darf man ja drüber reden. Und das dieser Typ ein richtiges Arschloch ist, darf auch mal so hingestellt werden. Den wer verarscht, ist Arschloch - oder?</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901006"><a class="author person" href="/!ku49630/"><h4>Nicklas</h4><img src="/kommune/files/images/profile/70x70/49630.png" alt="" title=""></img></a><time datetime="2020-01-14T03:49:57+01:00"><meta value="1578970197"></meta>14. 01. 2020, 
+		03:49</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Tongo </span>Kaeser ist das nicht, weil er verarscht, sondern weil er ein Extremkapitalist ist. So wie jeder Konzernboss.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li><li class="guest " id="bb_message_3900868"><a class="author person"><h4>88181 (Profil gelöscht)</h4><h5>Gast</h5></a><time datetime="2020-01-13T19:34:36+01:00"><meta value="1578940476"></meta>13. 01. 2020, 
+		19:34</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd">Was für eine Wortwahl. Verarscht hat er sie also. Das ist ja ungeheuerlich. Wir haben doch alle gedacht, Siemens würde das Projekt in Australien canceln. Und jetzt so etwas. <br xmlns="http://www.w3.org/1999/xhtml"></br>
+Der Wahnsinn. Die sind ja voll mit allen Wassern gewaschen.</p>
+<p xmlns="" class="last even">Was wäre denn ein klima-neutraler Siemens. Wahrscheinlich kein Siemens. Was wäre ein klima-neutraler Kapitalismus? Wahrscheinlich kein Kapitalismus.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901008"><a class="author person" href="/!ku49630/"><h4>Nicklas</h4><img src="/kommune/files/images/profile/70x70/49630.png" alt="" title=""></img></a><time datetime="2020-01-14T03:54:06+01:00"><meta value="1578970446"></meta>14. 01. 2020, 
+		03:54</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person guest">@88181 (Profil gelöscht) </span>Ein klimaneutrales Siemens hat Fridays for Future nie verlangt. Um weltweite Klimaneutralität zu erreichen, müssen wir allerdings irgendwo mal anfangen. Es macht Sinn, das bei den größten Brocken zu machen. Und der größte Klimakillerbrocken der kommenden Jahre ist diese Kohlemine.</p>
+<p xmlns="" class="last even">Normalerweise wäre es besser, die Politik zu attackieren. Der Protest gegen Einzelkonzerne ist höchst ineffizient. Extremer Aufwand für sehr wenig Ertrag. Trotzdem war das hier richtig, weil einfach alles gleichzeitig versucht wurde. So hat etwa XR weltweit vor den Australischen Botschaften demonstriert. Und der Ultrakonservative Premierminister hat 2 Tage später eine "Klima-Kehrtwende" angekündigt. Ja, das sind nur Worte, aber dennoch verändert es das Bewusstsein in Australien für das Problem um 180 Grad und es ist ein erster Schritt.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li><li class="member " id="bb_message_3900999"><a class="author person" href="/!ku37003/"><h4>Rolf B.</h4></a><time datetime="2020-01-14T01:14:14+01:00"><meta value="1578960854"></meta>14. 01. 2020, 
+		01:14</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person guest">@88181 (Profil gelöscht) </span>"Was wäre ein klima-neutraler Kapitalismus? Wahrscheinlich kein Kapitalismus."</p>
+<p xmlns="" class="last even">Richtig!<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Ich vermute, dass es auch in den Parteien kluge Leute gibt, die genau das auch so sehen und sich nicht trauen, das auch auszusprechen.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+M.a.W.: Wer sich zuerst so äußert, ist weg vom Fenster. Deshalb das Märchen mit grüner Marktwirtschaft. Mit nachhaltigen Profiten.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="guest " id="bb_message_3901146"><a class="author person"><h4>88181 (Profil gelöscht)</h4><h5>Gast</h5></a><time datetime="2020-01-14T11:15:13+01:00"><meta value="1578996913"></meta>14. 01. 2020, 
+		11:15</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Rolf B. </span>Und, weil es so schön ist, hier noch einmal der Text von Norbert Trenkle über die Unmöglichkeit einer ökologischen Marktwirtschaft:</p>
+<p xmlns="" class="last even"><a target="_blank" href="http://www.krisis.org/2019/lizenz-zum-klima-killen/">www.krisis.org/201...-zum-klima-killen/</a></p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3901179"><a class="author person" href="/!ku37003/"><h4>Rolf B.</h4></a><time datetime="2020-01-14T12:17:07+01:00"><meta value="1579000627"></meta>14. 01. 2020, 
+		12:17</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person guest">@88181 (Profil gelöscht) </span>Danke für den Link. Als Volkswirt staune ich wie auch Ulrike Herrmann von der taz darüber, wie seltsam beschränkt viele Ökonomen in DE einfachste Logik missachten. Ganz abgesehen von den Predigern und Predigerinnen der marktradikalen Lösungen, die mit erschreckender Einfältigkeit dem Volk versprechen, dass der Kampf gegen Klimawandel mit einer grünen Preiserhöhung für fossile Energieträger  möglich ist, sofern man mit der sozialen Frage nichts am Hut hat. <br xmlns="http://www.w3.org/1999/xhtml"></br>
+Ich verwette meinen Ar..., dass in 10-20 Jahren die Armut in DE deutlich größer ist. Aber der Reichtum weniger auch.</p>
+<p xmlns="" class="last even">Der verlinkte Text zeigt in beeindruckender Weise die Fähigkeit des Kapitalismus, selbst im Zeichen der sich anbahnenden Klimakatastrophe noch Wege zu finden, auf Kosten der Armen noch einmal richtig abzufeiern und darüber zu lachen, wie Lieschen Müller mit Flug- und Autoverzicht, Ernährungsumstellung weg von tierischen Produkten usw. ihren Beitrag zum Klimaschutz leisten will.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="guest " id="bb_message_3901336"><a class="author person"><h4>88181 (Profil gelöscht)</h4><h5>Gast</h5></a><time datetime="2020-01-14T17:21:15+01:00"><meta value="1579018875"></meta>14. 01. 2020, 
+		17:21</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Rolf B. </span>Das Bittere an der ganzen Chose ist, dass es keine Lösung zu geben scheint.</p>
+<p xmlns="" class="even">Die kapitalistische Produktions- und Geldverwertungsweise weltweit umzustürzen, dafür fehlt mir schlicht die Fantasie.</p>
+<p xmlns="" class="odd">Zumal man bei einem etwaigen Gelingen nur eine vage Vorstellung davon haben kann, wie das dann aussehen würde.</p>
+<p xmlns="" class="even">Vielleicht hätte man die eine Hölle zerstört, nur um eine neue zu errichten.</p>
+<p xmlns="" class="odd">Andererseits, machen alle einfach so weiter, geht irgendwann auch die letzte Energiesparbirne aus und alles kollabiert.</p>
+<p xmlns="" class="last even">Die Reichen sitzen in ihren Bunkern und der Rest ist Mad Max.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li></ul></li></ul></li><li class="member " id="bb_message_3900877"><a class="author person" href="/!ku42689/"><h4>Willi Müller alias Jupp Schmitz</h4></a><time datetime="2020-01-13T19:43:41+01:00"><meta value="1578941021"></meta>13. 01. 2020, 
+		19:43</time><div class="objlink nolead" role="link"><p xmlns="" class="first last odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person guest">@88181 (Profil gelöscht) </span>Natürlich hat er sie verarscht. <br xmlns="http://www.w3.org/1999/xhtml"></br>
+Und ein klimaneutraler Siemens ist wie eine klimaneutrale MAN, VW, AUDI, DAIMLER et j'en passe...</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul><ul class="thread"><li class="member " id="bb_message_3900933"><a class="author person" href="/!ku53972/"><h4>Fabian Wetzel</h4></a><time datetime="2020-01-13T21:37:16+01:00"><meta value="1578947836"></meta>13. 01. 2020, 
+		21:37</time><div class="objlink nolead" role="link"><p xmlns="" class="first odd"><span xmlns="http://www.w3.org/1999/xhtml" class="reference person member">@Willi Müller alias Jupp Schmitz </span>Auch wenn ich das Wort hier nicht angemessen finde (wissen wir, ob er ihr im Gepräch irgendwas versprochen hat, was er nun nicht einhält?) sieht mir das eher aus, als ob sie sich selbst verarscht hätte.</p>
+<p xmlns="" class="even">Nimmt sie den Posten an, geht die Sache genauso aus - nur sie hats dann schon fast gelöst...</p>
+<p xmlns="" class="odd">Herrjeh, ich muss Jim zustimmen. Wer glaubt mit bunten Umzügen wäre ein Paradigmenwechsel zu schaffen, der irrt.<br xmlns="http://www.w3.org/1999/xhtml"></br>
+Damit kann man vielleicht geichgeschlechtliche Ehe erstreiten und andere Sachen, die keinen Mächtigen wirklich interessieren.</p>
+<p xmlns="" class="last even">Nur die objektiven Umstände werden das Umdenken vielleicht irgendwann erzwingen, aber dazu muss es noch viel mehr Menschen viel schlechter gehen.</p></div><ul class="toolbar"><li class="reply"><a title="auf diesen Beitrag antworten …">antworten</a></li><li class="report"><a title="diesen Beitrag als unangemessen melden …">melden</a></li></ul></li></ul></li></ul></li></ul></div><span id="ad_bin_uebersicht_medrec_4" class="ad_bin sold contentad"><div id="ad_zone_uebersicht_medrec_4" name="uebersicht_medrec-4" class="ad_zone ad_zone_contentad ad_zone_badged ad_zone_sold"></div></span><script type="text/javascript"> (function(){
+		var domId = 'uebersicht_medrec_4';
+		var parent = $( '#ad_bin_'+ domId ).parent();
+		if ( parent.is('.wing') ) {
+			filOtaz_de_float.promise.promise().done(function(){		
+				filOtaz_de.ads.gpt.activateAdFrame( domId );
+			});
+		} else {
+			filOtaz_de.ads.gpt.activateAdFrame( domId );				
+		}
+	})(); 
+	</script></span><span class="wing" role="complementary"><div class="rack first_rack" id="xid476383">
+    
+
+<form name="form" method="post" enctype="application/x-www-form-urlencoded" id="send-comment" class="first last odd sect sect_send-comment_form style_commentform " action="https://taz.de/kommune/post.php" target="_blank"><div role="heading" class="secthead"><h2><a name="jetzt mitreden"><span>jetzt mitreden</span></a></h2></div><div class="sectbody"><input class="constant" type="hidden" name="test" value="yes"></input><input class="constant" type="hidden" name="id" value="5655255"></input><input type="hidden" name="scope" class="constant" id="form_scope" value="cms-article"></input><input type="hidden" name="asid" class="constant" id="form_asid" value=""></input><span class="field"><p class="label">Ihren Kommentar hier eingeben</p><textarea name="post" class="text" id="form_post"></textarea></span><input type="submit" class="submit" name="ignore" value="abschicken"></input></div></form><script> filOtaz_de.Form( 'send-comment' ); </script><script type="text/javascript"> (function(){
+	if( filOtaz_de.ajaxifyForm ) return;
+
+	if ('withCredentials' in new XMLHttpRequest() )
+		var haveCORS = true;
+	if( typeof XDomainRequest !== "undefined" )
+		var haveXDR = true;
+//console.log('haveCORS: '+ haveCORS );
+
+	filOtaz_de.ajaxifyForm = function( id, options ){
+		/*	options : {
+				option : choice, …,
+				handlername : function(){…}, …
+				}
+			options:
+				mirrorInput	true/false, default false
+			implemented handlers:
+				handle200	handle OK Server response instead of default
+				on Success	done first in default 200 handler
+			to implement:
+				handle4xx	handle specific 4xx response from Server
+				onReset		done before resetting form to start
+				onError		done first in 4xx handlers
+		*/
+		var formID = id;
+		var form1N = $('#'+ id );
+		if( !form1N.length ) return;
+		if( form1N[0].submit_via_ajax ) return; form1N[0].submit_via_ajax = true;
+
+		var mirror = {  node : options.mirrorInput ? form1N : $()  };
+		mirror.toShow = mirror.node.find('input, textarea');
+		mirror.toHide = mirror.node.find('input:submit');
+
+		if( !( location.protocol=='https:' || haveCORS ) ) 
+			return $('<div class="warning">Um sichere und dennoch bequeme Kommunikation mit unseren Servern zu erlauben, '
+					+'sollten sie zu einem aktuelleren Browser wechseln '
+					+'oder diese Seite <a href="https:.#'+ formID +'">per HTTPS aufrufen</a></div>'
+				);
+
+//		var callback = callback;
+
+		var altFormNs = $();	// keep track of form nodes we may insert from server responses
+		var clear4reset = function(){
+			altFormNs.slideUp( function(){
+				altFormNs.remove(); altFormNs = $();
+				});
+			};
+		var back2start = function( val ){
+			if( typeof val == 'string' ) {
+				form1N.find('>.sectbody >span >textarea')
+					.val( val )
+					.trigger('blur')
+					;
+				}
+			// ToDo: show hint -> change filOtaz_de.Form first
+			mirror.toShow.prop('disabled', false);
+			mirror.toHide.slideDown();
+			form1N.slideDown();
+			};
+		var reset = function( val ){
+			clear4reset();
+			back2start( val );
+			};
+		var handle200 = ( options.handle200 instanceof Function )? options.handle200 : function( data, status, req ){
+//console.log( data.documentElement.outerHTML );
+			if( options.onSuccess instanceof Function ) options.onSuccess();
+			clear4reset();	// hide follow-up forms
+
+			var message = $(data).filter('.message');
+			if( message.length && message.text() >'' ) {	// show success message
+				var messageN = $('<form id="successMessage" class="sect" />').append( message.addClass('sectbody') );
+				$('<input class="submit" type="submit" value="OK" />').appendTo( message ).click( function(){
+					messageN.slideUp( function(){  messageN.remove();  });
+					back2start('');	// reset to original form
+					return false;
+					});
+				messageN.hide().prependTo( form1N.parent() ).slideDown();
+				form1N.slideUp();
+				}
+			}
+
+
+		var asySubmit = function( formN ){
+			var formN = formN;
+			var action;
+			var clickLock = false;
+			formN.find('>.sectbody >input:submit').click( function(){
+				if( clickLock ) return false; clickLock = true;
+				action = formN.attr('action'); if( !action ) return;	// ToDo: handle missing action
+				action = action.replace(/^http:/,'https:');		// ToDo: handle relative action URL
+
+				var handle422 = function( data ) { // we sent incomplete Data. Show forms from response body!
+//console.log( data[0].documentElement.outerHTML );
+								var formNs = data.find('form');
+								if( !formNs.length ) {
+									alert('error: server response fails expectations: no form found.');
+									return false;
+									}
+
+								var anchor = $('<a />').hide()[ mirror.node.length ?'insertAfter' :'insertBefore' ]( formN );
+
+								formN.not( mirror.node ).slideUp( function(){
+									formN.not( form1N ).remove();
+									});
+								mirror.toShow.attr({ disabled : true });
+								mirror.toHide.slideUp();
+
+								var last = anchor;
+								formNs.each( function(i,e){ var n = $(e);
+
+									var have = $('#'+ n.attr('id') );
+									if(! n.children('.secthead').length )
+										have.children('.secthead').first().clone(true).prependTo( n );
+									var have = have.not( form1N );
+									have.slideUp( function(){
+										altFormNs = altFormNs.not( have );
+										have.remove();					// remove old incarnation
+										});
+
+									n.find('script').remove();	// don't import scripts
+
+									n.hide().insertAfter( last );
+									anchor.remove();
+									last = n;
+									altFormNs = altFormNs.add( n );
+
+									/*
+									*/
+									var ccN = n.find('#captcha-code');
+									var captchaCode = ccN.attr('name');
+									if( ccN.length && captchaCode )	// this form needs a captcha, make one!
+										Recaptcha.create( captchaCode, 'captcha-code', {
+											theme: 'red'
+											} );
+									(new filOtaz_de.Form( n )).cancel( function(){
+										 reset();
+										});
+									asySubmit( n );
+									n.slideDown();									
+									});
+//console.log( altFormNs.length +' forms found' );
+
+					} //handle422
+
+
+				var post = {};
+				formN.find('input,textarea').each( function(i,n){ var N = $(n);
+					post[N.attr('name')] = N.val();
+					});
+
+				$.ajax({
+					type		: 'POST',
+					url		: action,
+					cache		: false,
+					data		: post,
+					dataType 	: 'html', // 'xml',
+					xhrFields: {
+					    withCredentials: true
+					},
+
+// chrisso: Disabled beforeSend manipulation because first parameter ("req") is now jqXHR and not original XMLHttpRequest object. (see above "xhrFields")
+// 
+//					beforeSend	: function( req, settings ){
+//						req.responseType = 'document';
+//						req.withCredentials = true;
+//						//req.overrideMimeType('text/xml');
+//						},
+
+					success		: function( data, status, req ){	// our post was accepted, show response message!
+						handle200( data, status, req );
+						},
+
+					error		: function( req, status, message ){
+
+//console.log('status: '+ status +' :: '+ message ); 
+						var data = $( req.response );
+						if( !data.length ) {	// data is not document
+							var text;
+							try{	text = req.responseText;
+								if( text ) text = text.replace(/http:/g, "");	// have src'es protocol relative
+								data = $('<div />').html( text );
+//console.log('response text: '+ text );
+								} catch(e) {
+//console.log('error reading responseText: '+ e );
+								}
+							}
+						if( !data.length ) {
+							try{
+//console.log( req.response.head.parentElement.outerHTML );
+								} catch(e) {
+//console.log('error reading response.head: '+ e );
+								}
+							}
+
+
+
+						({	0   : function() {
+								alert('Error: Can not see server answer. CORS missing?');	// seems a Cross-Origin problem
+//console.log( data );
+								},
+							200 : function() {	// 200 but error, IE9 ends up here
+								handle200( data, status, req );
+								},
+							422 : function() {  handle422( data );  }
+							})[ req.status ]();
+						}, //error
+
+					/* not available befor jQ 1.5 
+					statusCode : {
+						422	: function( req, status, message ){}
+						},
+					*/
+
+					complete	: function( req, status ){
+//try{ console.log('response headers:\n'+ req.getAllResponseHeaders() ); } catch(e){ console.log('getAllResponseHeaders() failed'); }
+//console.log('responseXML: '+ req.responseXML );
+//if( req.response ) console.log( req.response.head.parentElement.outerHTML )
+//else console.log('no data');
+						clickLock = false;
+						}
+
+					}); //ajax
+
+				return false;
+				}); //click
+			}; //asySubmit
+		asySubmit( form1N );
+		}; //filOtaz_de.ajaxifyForm
+	})(); </script><script type="text/javascript"> (function(){
+
+	var formN = $('#send-comment');	// who i am
+
+	if( formN[0].filOtaz_de_handled ) return; formN[0].filOtaz_de_handled = true;	// run only once
+
+
+
+	// ajaxify myself
+	filOtaz_de.ajaxifyForm('send-comment', {
+		mirrorInput	: true ,
+		onSuccess	: function( data ){
+			filOtaz_de.kommune.updateLogin();
+//console.log('success handler send-comment '+ $(data).html() );
+//			var message = $(data).find('.message');
+//			alert( message.length ? message.text() : 'OK' );
+			} 
+		});   
+
+
+	if( formN.parents('.wing').length ) {    // we're in wing
+//console.log('send-comment in wing '+ formN.length +', '+ formN.parents('.wing').length +', '+ formN.parents('.float').length );
+
+	var multiUse = function() {
+
+		// === lend ourselfes to reply-function ===
+
+		// shared functions
+		var onScroll, reset;
+
+		// shared data
+		var form, anchor, prior, bros, dad, uncles, yMin;
+
+
+		$('.community.page >.body >.sect_commentlinks').find('>.sectbody >li, .thread >li').each( function(i,el){	// each comment
+
+			// per comment data
+			var refN	= $(el),
+			    toolbarN	= refN.find('>.toolbar'),
+			    id,
+			    onClick
+			    ;
+
+			toolbarN.find('>.reply >a').click( function(){
+				// reply specific
+				onClick({
+					idKey	: 'asid',
+					title	: {
+						prefix	: '',
+						suffix	: ' antworten'
+						},
+					hint	: 'Antwort bitte hier eingeben',
+					submit	: 'antworten'
+					});
+				} );
+			
+			toolbarN.find('>.report >a').click( function(){
+				// report specific
+				onClick({
+					a	: 'report',
+					idKey	: 'pid',
+					title	: {
+						prefix  : 'Kommentar von ',
+						suffix  : ' melden'
+						},
+					hint    : 'Problem bitte hier beschreiben',
+					submit	: 'melden'
+					});
+				} );
+
+			toolbarN.css({ visibility:'visible' });
+
+
+			onClick = function( par ) {
+
+					// determine shared data late
+				if( !form ) {
+					form = {
+						titleN	: formN.find('>.secthead >h2 >a >span'),
+						aN	: formN.find('>.sectbody >input[name="a"]'),
+						idN	: formN.find('>.sectbody >input[name="asid"]'),
+						pidN	: formN.find('>.sectbody >input[name="pid"]'),
+						textN	: formN.find('>.sectbody >span >textarea'),
+						submitN	: formN.find('>.sectbody >input:submit')
+						};
+					form.hintN 	= form.textN.prev('p');
+					form.org = {
+						title	: form.titleN.text(),
+						hint	: form.hintN.text(),
+						a	: form.aN.attr('value'),
+						submit	: form.submitN.attr('value')
+						};
+					}
+
+				// determine per comment data late
+				if( !id )  	id = refN.attr('id').replace(/^[^0-9]*/, '');
+
+
+				// change presented data to our needs
+
+				if( par.a ) {
+					if( !( form.aN  && form.aN.length  ) )  
+						form.aN  = $('<input class="constant" type="hidden" />').insertBefore( form.submitN );
+					form.aN.attr({	name	: 'a',
+							value	: par.a
+							});
+					}
+				else if( form.aN ) {
+					form.aN.remove();
+					form.aN = null;
+					}
+
+				if( par.idKey ) {
+					if( form.idN ) form.idN.remove();
+					form.idN = $('<input class="constant" type="hidden" />')
+						.attr({	name	: par.idKey,
+							value	: id
+							})
+						.insertBefore( form.submitN );
+					}
+				else if( form.idN ) {
+					form.idN.remove();
+					form.idN = null;
+					}
+
+				form.titleN.empty().append( 
+					par.title.prefix, 
+					$('<span>'+ refN.find('>.author >h4').text() +'</span>').addClass( refN.attr('class') ),
+					par.title.suffix
+					);
+
+				form.hintN.text(		par.hint	);
+
+				form.submitN.attr({	value :	par.submit	});
+
+
+				// add reset options
+				(new filOtaz_de.Form( formN )).cancel( function(){ reset();	afterLogin.fadeIn(); });
+				formN.on('filOtaz_de.Form.done',   reset );
+
+				// geometry
+				var	commBot	=   toolbarN.offset().top +   toolbarN.outerHeight(),
+					formBot = form.textN.offset().top + form.textN.outerHeight(),
+					d	= commBot - formBot
+					;
+				if( !yMin ) yMin = formBot - $(window).scrollTop();
+				if( commBot - $(window).scrollTop() < yMin )  window.scrollTo( 0, commBot - yMin );
+
+				// relocate form to stick w/ referenced comment
+				if( !anchor && d >0 ) {
+					prior = formN.prev(), bros = formN.nextAll(), dad = formN.parent(), uncles = dad.filter('.rack').nextAll(), afterLogin = $('form#bb-login').nextAll().not('script');
+					messageN = $('#successMessage');
+					anchor = $('<div class="community wing pin" />')
+						.css({  position: 'absolute',
+							top     : formN.offset().top +'px',
+							left    : dad.offset().left +'px',
+							width   : formN.width() +'px'
+							})
+						.appendTo( document.body )
+						;
+					if( uncles.length ) {   // we're in rack
+						dad.css({  borderBottomStyle: 'none'  });
+						anchor.append( $('<div />').addClass( dad.attr('class') ).append( formN, bros ), uncles );
+						}
+					else	anchor.append( formN, bros );
+					}
+
+				if( anchor ) {
+
+					// fading out "meistkommentiert" when answering
+
+					afterLogin.fadeOut();
+				// refresh for second ... n time "antworten"
+				// commtented out to prevent "neues kommtar" instead of "antworten"
+				//	if (formN.hasClass('worked')){
+				//		  if( form.aN ) form.aN.remove();
+				//		  if( form.idN ) form.idN.remove();
+				//	}
+
+					anchor.animate(
+						{ 
+							top : formN.offset().top + d
+						},
+					function(){
+							$(window).scroll( onScroll );
+							} );
+						}
+
+				}; //onClick
+
+			} ); //each comment
+
+			onScroll = function() {
+				var ref = prior.length ?( prior.offset().top + prior.outerHeight() ) :dad.offset().top;
+				// reset clears the whole form, we don't want that onScroll, so we only call relocateForm instead
+				// if( formN.offset().top <= ref )  reset();
+
+				// Do not scroll when already commented and there is success message
+				if (( formN.offset().top <= ref ) && ! (formN.hasClass('worked')))  relocateForm();
+				};
+			reset = function() {
+				if( reset ) 	formN.off('filOtaz_de.Form.done');
+				resetForm();
+				relocateForm();
+				};
+			relocateForm = function() {
+				// clean up
+				if( onScroll )  $(window).off('scroll.taz_onscroll');
+
+				// relocate form back
+				if( anchor ) {
+					var 	ref = prior.length ?( prior.offset().top + prior.outerHeight() ) :dad.offset().top,
+						d = anchor.offset().top - ref
+						;
+					anchor.animate({ top: ref }, d, function(){
+						dad.append( formN, bros );
+						if( uncles.length ) {	// we were in rack
+							dad.css({  borderBottomStyle: null  });
+							dad.after( uncles );
+							}
+						if( anchor ) anchor.remove(); anchor = null;
+						} );
+					}
+				};
+			resetForm = function() {
+				// reset shown data
+				if( form.aN      ) form.aN.remove();
+				if( form.idN     ) form.idN.remove();
+//				if( form.cancelN ) form.cancelN.remove();
+				form.titleN.text(		form.org.title	);
+				form.hintN.text(		form.org.hint	);
+				form.textN.attr({	value : ''		}).trigger('blur');
+				form.submitN.attr({	value : form.org.submit	});
+
+				};
+
+		}; // multiUse
+
+
+		if( formN.parents('.float').length ) { 	// already relocated into float
+			multiUse();
+			}
+		else {					// wait for relocation
+
+			formN.parents('.wing').on('filOtaz_de_float_mounted', function(){  multiUse();  });
+			}
+		} //we're in wing
+
+	})(); </script>
+
+
+	</div><script> $(document.getLatestElement()).filter('.rack').trigger('TAZdomChange'); //
+			</script><form name="form" method="post" enctype="application/x-www-form-urlencoded" id="bb-login" class="even sect sect_bb-login_form style_kommune " action="https://taz.de/kommune/post.php" target="_blank"><div role="heading" class="secthead"><ul role="toolbar" class="toolbar"><li class="login"><a href="" target="_blank">Login</a></li><li class="settings"><a href="https://taz.de/kommune/post.php?a=registration" target="_blank">Registrieren</a></li><li class="newpass"><a shape="rect" target="_blank" href="https://portal.taz.de/?a=nopw">Passwort vergessen?</a></li></ul></div><div class="sectbody"><input type="hidden" name="a" class="constant" id="form_a" value="login"></input><span class="field"><p class="label">E-Mail</p><input type="text" name="email" class="line" id="form_email"></input></span><span class="field"><p class="label">Passwort</p><input type="password" name="password" class="secret" id="form_password"></input></span><input type="submit" class="submit" name="ignore" value="einloggen"></input></div></form><script> filOtaz_de.Form( 'bb-login' ); </script><script type="text/javascript"> (function(){
+	if( filOtaz_de.ajaxifyForm ) return;
+
+	if ('withCredentials' in new XMLHttpRequest() )
+		var haveCORS = true;
+	if( typeof XDomainRequest !== "undefined" )
+		var haveXDR = true;
+//console.log('haveCORS: '+ haveCORS );
+
+	filOtaz_de.ajaxifyForm = function( id, options ){
+		/*	options : {
+				option : choice, …,
+				handlername : function(){…}, …
+				}
+			options:
+				mirrorInput	true/false, default false
+			implemented handlers:
+				handle200	handle OK Server response instead of default
+				on Success	done first in default 200 handler
+			to implement:
+				handle4xx	handle specific 4xx response from Server
+				onReset		done before resetting form to start
+				onError		done first in 4xx handlers
+		*/
+		var formID = id;
+		var form1N = $('#'+ id );
+		if( !form1N.length ) return;
+		if( form1N[0].submit_via_ajax ) return; form1N[0].submit_via_ajax = true;
+
+		var mirror = {  node : options.mirrorInput ? form1N : $()  };
+		mirror.toShow = mirror.node.find('input, textarea');
+		mirror.toHide = mirror.node.find('input:submit');
+
+		if( !( location.protocol=='https:' || haveCORS ) ) 
+			return $('<div class="warning">Um sichere und dennoch bequeme Kommunikation mit unseren Servern zu erlauben, '
+					+'sollten sie zu einem aktuelleren Browser wechseln '
+					+'oder diese Seite <a href="https:.#'+ formID +'">per HTTPS aufrufen</a></div>'
+				);
+
+//		var callback = callback;
+
+		var altFormNs = $();	// keep track of form nodes we may insert from server responses
+		var clear4reset = function(){
+			altFormNs.slideUp( function(){
+				altFormNs.remove(); altFormNs = $();
+				});
+			};
+		var back2start = function( val ){
+			if( typeof val == 'string' ) {
+				form1N.find('>.sectbody >span >textarea')
+					.val( val )
+					.trigger('blur')
+					;
+				}
+			// ToDo: show hint -> change filOtaz_de.Form first
+			mirror.toShow.prop('disabled', false);
+			mirror.toHide.slideDown();
+			form1N.slideDown();
+			};
+		var reset = function( val ){
+			clear4reset();
+			back2start( val );
+			};
+		var handle200 = ( options.handle200 instanceof Function )? options.handle200 : function( data, status, req ){
+//console.log( data.documentElement.outerHTML );
+			if( options.onSuccess instanceof Function ) options.onSuccess();
+			clear4reset();	// hide follow-up forms
+
+			var message = $(data).filter('.message');
+			if( message.length && message.text() >'' ) {	// show success message
+				var messageN = $('<form id="successMessage" class="sect" />').append( message.addClass('sectbody') );
+				$('<input class="submit" type="submit" value="OK" />').appendTo( message ).click( function(){
+					messageN.slideUp( function(){  messageN.remove();  });
+					back2start('');	// reset to original form
+					return false;
+					});
+				messageN.hide().prependTo( form1N.parent() ).slideDown();
+				form1N.slideUp();
+				}
+			}
+
+
+		var asySubmit = function( formN ){
+			var formN = formN;
+			var action;
+			var clickLock = false;
+			formN.find('>.sectbody >input:submit').click( function(){
+				if( clickLock ) return false; clickLock = true;
+				action = formN.attr('action'); if( !action ) return;	// ToDo: handle missing action
+				action = action.replace(/^http:/,'https:');		// ToDo: handle relative action URL
+
+				var handle422 = function( data ) { // we sent incomplete Data. Show forms from response body!
+//console.log( data[0].documentElement.outerHTML );
+								var formNs = data.find('form');
+								if( !formNs.length ) {
+									alert('error: server response fails expectations: no form found.');
+									return false;
+									}
+
+								var anchor = $('<a />').hide()[ mirror.node.length ?'insertAfter' :'insertBefore' ]( formN );
+
+								formN.not( mirror.node ).slideUp( function(){
+									formN.not( form1N ).remove();
+									});
+								mirror.toShow.attr({ disabled : true });
+								mirror.toHide.slideUp();
+
+								var last = anchor;
+								formNs.each( function(i,e){ var n = $(e);
+
+									var have = $('#'+ n.attr('id') );
+									if(! n.children('.secthead').length )
+										have.children('.secthead').first().clone(true).prependTo( n );
+									var have = have.not( form1N );
+									have.slideUp( function(){
+										altFormNs = altFormNs.not( have );
+										have.remove();					// remove old incarnation
+										});
+
+									n.find('script').remove();	// don't import scripts
+
+									n.hide().insertAfter( last );
+									anchor.remove();
+									last = n;
+									altFormNs = altFormNs.add( n );
+
+									/*
+									*/
+									var ccN = n.find('#captcha-code');
+									var captchaCode = ccN.attr('name');
+									if( ccN.length && captchaCode )	// this form needs a captcha, make one!
+										Recaptcha.create( captchaCode, 'captcha-code', {
+											theme: 'red'
+											} );
+									(new filOtaz_de.Form( n )).cancel( function(){
+										 reset();
+										});
+									asySubmit( n );
+									n.slideDown();									
+									});
+//console.log( altFormNs.length +' forms found' );
+
+					} //handle422
+
+
+				var post = {};
+				formN.find('input,textarea').each( function(i,n){ var N = $(n);
+					post[N.attr('name')] = N.val();
+					});
+
+				$.ajax({
+					type		: 'POST',
+					url		: action,
+					cache		: false,
+					data		: post,
+					dataType 	: 'html', // 'xml',
+					xhrFields: {
+					    withCredentials: true
+					},
+
+// chrisso: Disabled beforeSend manipulation because first parameter ("req") is now jqXHR and not original XMLHttpRequest object. (see above "xhrFields")
+// 
+//					beforeSend	: function( req, settings ){
+//						req.responseType = 'document';
+//						req.withCredentials = true;
+//						//req.overrideMimeType('text/xml');
+//						},
+
+					success		: function( data, status, req ){	// our post was accepted, show response message!
+						handle200( data, status, req );
+						},
+
+					error		: function( req, status, message ){
+
+//console.log('status: '+ status +' :: '+ message ); 
+						var data = $( req.response );
+						if( !data.length ) {	// data is not document
+							var text;
+							try{	text = req.responseText;
+								if( text ) text = text.replace(/http:/g, "");	// have src'es protocol relative
+								data = $('<div />').html( text );
+//console.log('response text: '+ text );
+								} catch(e) {
+//console.log('error reading responseText: '+ e );
+								}
+							}
+						if( !data.length ) {
+							try{
+//console.log( req.response.head.parentElement.outerHTML );
+								} catch(e) {
+//console.log('error reading response.head: '+ e );
+								}
+							}
+
+
+
+						({	0   : function() {
+								alert('Error: Can not see server answer. CORS missing?');	// seems a Cross-Origin problem
+//console.log( data );
+								},
+							200 : function() {	// 200 but error, IE9 ends up here
+								handle200( data, status, req );
+								},
+							422 : function() {  handle422( data );  }
+							})[ req.status ]();
+						}, //error
+
+					/* not available befor jQ 1.5 
+					statusCode : {
+						422	: function( req, status, message ){}
+						},
+					*/
+
+					complete	: function( req, status ){
+//try{ console.log('response headers:\n'+ req.getAllResponseHeaders() ); } catch(e){ console.log('getAllResponseHeaders() failed'); }
+//console.log('responseXML: '+ req.responseXML );
+//if( req.response ) console.log( req.response.head.parentElement.outerHTML )
+//else console.log('no data');
+						clickLock = false;
+						}
+
+					}); //ajax
+
+				return false;
+				}); //click
+			}; //asySubmit
+		asySubmit( form1N );
+		}; //filOtaz_de.ajaxifyForm
+	})(); </script><script type="text/javascript"> (function(){
+
+		var formID = 'bb-login';
+		var form = $('#bb-login');
+
+		if( !form.length ) return;
+		if( form[0].filOtaz_de_form_handled ) return; form[0].filOtaz_de_form_handled = true;
+
+		var nodes, org, firstrun = true;
+		if( !filOtaz_de.kommune ) filOtaz_de.kommune = {};
+		if( !filOtaz_de.kommune.updateLogin ) filOtaz_de.kommune.updateLogin = function(){
+			if( !nodes ) nodes = {	// parse DOM lazily
+				head	: form.find('>.secthead'),
+				body	: form.find('>.sectbody').hide(),
+				a	: form.find('input[name="a"]'),
+				inputs	: form.find('span').has('input[name="email"],input[name="password"]'),
+				submit	: form.find('input.submit'),
+				links	: {
+					all		: form.find('ul.toolbar'),
+					login		: form.find('ul>li.login').click(function(){
+								var me = $(this);
+//								nodes.body
+								me.closest('.secthead').nextAll('.sectbody')	// we might be dynamically inserted, so parse DOM here
+								.slideToggle(function(){
+									me.toggleClass('active');
+									});
+								return false;
+								}),
+					settings	: form.find('ul>li.settings'),
+					newpass		: form.find('ul>li.newpass')
+					}
+				};
+			var duration = firstrun ? 0 : $.fx.speeds._default;
+			var tazsid = $.cookie('tazsid');
+			if(! tazsid ){  // not logged in
+					$('#send-comment .submit').val('Einloggen und Senden');
+					};
+
+			if( tazsid ) {	// already logged in
+					$('#send-comment .submit').val('Abschicken');
+
+				// mar: refresh after login error and then successful login
+				if ( $('#bb-login >.sectbody >p.error').length ){
+
+
+					$('.sect_bb-login').fadeOut().remove();
+					$('.sect_bb-login_form').fadeIn();
+					};
+
+
+				var tazid = $.cookie('tazid');
+//console.log('	now logged in as '+ tazid );
+				if( !org ) org = {	// store original values lazily
+					action	: form.attr('action'),
+					a	: nodes.a.attr('value'),
+					submit	: nodes.submit.attr('value'),
+					links	: {
+						login		: nodes.links.login,
+						settings	: {
+							text	: nodes.links.settings.children('a').text()
+							},
+						newpass		: nodes.links.newpass
+						}
+					};
+				form.attr({ action: 'https://taz.de/kommune/post.php?a=logout' });
+//console.log( tazsid );
+
+				nodes.body.slideUp( duration, function(){
+					form.addClass('session');
+					nodes.a.attr({ value: 'logout' });
+					nodes.inputs.hide();
+					nodes.submit.attr({ value: 'ausloggen' });
+					nodes.body.fadeIn( duration/3 );
+					});
+				if( tazid ) var profileURL = '/!ku'+ tazid +'/';
+				nodes.links.all.fadeTo( duration/2, 0, function(){
+					if( nodes.links.login    )  nodes.links.login.detach();
+					if( profileURL ) {
+						if( !nodes.links.profile ) {
+							nodes.links.profile = $('<li><a href="'+ profileURL +'">mein Profil</a></li>');
+							nodes.links.settings.before( nodes.links.profile );
+							}
+						}
+					if( nodes.links.settings )  nodes.links.settings.children('a').text('Einstellungen');
+					if( nodes.links.newpass  )  nodes.links.newpass.detach();
+					nodes.links.all.fadeTo( duration/2, 1 );
+					});
+				if( profileURL ) {	// tell user their name
+					if( !nodes.salute ) {
+						nodes.salute = $();
+//console.log('go, get profile '+ profileURL );
+						$.ajax({
+							type		: 'GET',
+							url		: profileURL +'c.xml', 
+							dataType	: 'xml',
+							success		: function( data, status, xhr ){
+								if( !nodes.salute ) return;	// we're too late
+								var name = $('content >item[type="person"] >name', data ).text();
+//console.log('	found '+ name );
+								nodes.salute = $('<h2><a>'+ name +'</a></h2>').hide().prependTo( nodes.head );
+								nodes.salute.slideDown( duration );
+								},
+							error		: function( req, status, message ){
+//console.log( req.status +' '+ status +' :: '+ message );
+								},
+							complete	: function( req, status ){
+								}
+							});
+						}
+					}
+				} //tazsid
+			else if( org )	(function(){	// reset logged out state
+				var orgwas = org; org = null;
+				nodes.body.fadeOut( duration/2, function(){
+					nodes.a.attr({		value	: orgwas.a		});
+					nodes.inputs.show();
+					nodes.submit.attr({	value	: orgwas.submit	});
+					form.removeClass('session');
+					}); 
+				if( nodes.salute )  nodes.salute.slideUp( duration, function(){
+					nodes.salute.remove(); nodes.salute = null;
+					});
+				if( nodes.links.all ) nodes.links.all.fadeTo( duration/2, 0, function(){
+					if( nodes.links.profile ) nodes.links.profile.remove(); nodes.links.profile = null;
+					nodes.links.settings.before( orgwas.links.login.removeClass('active') );
+					nodes.links.settings.children('a').text( orgwas.links.settings.text );
+					nodes.links.settings.after(  orgwas.links.newpass );
+					nodes.links.all.fadeTo( duration/2, 1 );
+					});
+
+				form.attr({		action	: orgwas.action	});
+				})();
+			firstrun = false;
+			};
+		filOtaz_de.kommune.updateLogin();
+
+		var message = filOtaz_de.ajaxifyForm('bb-login', { handle200 : filOtaz_de.kommune.updateLogin } );
+
+		if( message && message.length )	// secure ajax not supported
+			form.after( message );
+
+		})();
+	</script><div class="rack" id="xid524032">
+    
+
+<div role="region" id="" class="first last odd sect sect_shop style_shop "><div class="secthead" role="heading"><h2><a name="meistkommentiert"><span>meistkommentiert</span></a></h2><ul class="toolbar" role="toolbar"></ul></div><ul role="directory" class="sectbody   directory"><li class=" first odd trodd   "><a href="/Lars-Eidinger-auf-der-Berlinale/!5664578/" class="objlink" role="link"><h4>Lars Eidinger auf der Berlinale</h4><h3>Dicke, weiße Krokodilstränen</h3></a></li><li class=" even trodd   "><a href="/Wie-sich-Krieg-anfuehlt/!5664579/" class="objlink" role="link"><h4>Wie sich Krieg anfühlt</h4><h3>Verstaubte Wörter</h3></a></li><li class=" odd treven   "><a href="/Rassismus-in-Deutschland/!5664485/" class="objlink" role="link"><h4>Rassismus in Deutschland</h4><h3>Osmose des Hasses</h3></a></li><li class=" even trodd   "><a href="/Verkleidungen-zum-Karneval/!5658751/" class="objlink" role="link"><h4>Verkleidungen zum Karneval</h4><h3>Indianerkostüme gegen Rassismus</h3></a></li><li class=" last odd trodd   "><a href="/Machtkampf-um-CDU-Vorsitz/!5664462/" class="objlink" role="link"><h4>Machtkampf um CDU-Vorsitz</h4><h3>Jeder gegen jeden</h3></a></li></ul></div>
+
+
+	</div><script> $(document.getLatestElement()).filter('.rack').trigger('TAZdomChange'); //
+			</script></span><script> $(document.getLatestElement()).filter('.wing').on( 'TAZdomChange', function(){
+					$(this).find('.rack').removeClass('first first_rack').first().addClass('first first_rack');
+					}); //</script><a itemprop="mainEntityOfPage" href="/Siemens-und-die-Kohlemine-Adani/!5655255"></a></div><div id="footer"><ul role="navigation" class="sitemap"><li class="news"><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="/"><span itemprop="title">taz</span></a></span><ul><li class="first odd trodd"><a href="/Politik/!p4615/" id="menu_p4615"><span>Politik</span></a><ul><li class="first odd trodd"><a href="/Politik/Deutschland/!p4616/" id="menu_p4616"><span>Deutschland</span></a></li><li class="even trodd"><a href="/Politik/Europa/!p4617/" id="menu_p4617"><span>Europa</span></a></li><li class="odd treven"><a href="/Politik/Amerika/!p4618/" id="menu_p4618"><span>Amerika</span></a></li><li class="even trodd"><a href="/Politik/Afrika/!p4621/" id="menu_p4621"><span>Afrika</span></a></li><li class="odd trodd"><a href="/Politik/Asien/!p4619/" id="menu_p4619"><span>Asien</span></a></li><li class="even treven"><a href="/Politik/Nahost/!p4620/" id="menu_p4620"><span>Nahost</span></a></li><li class="last odd trodd"><a href="/Politik/Netzpolitik/!p4622/" id="menu_p4622"><span>Netzpolitik</span></a></li></ul></li><li class="even trodd selected" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="/Oeko/!p4610/" id="menu_p4610"><span itemprop="title">Öko</span></a><ul><li class="first odd trodd selected" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a itemprop="url" href="/Oeko/Oekonomie/!p4623/" id="menu_p4623"><span itemprop="title">Ökonomie</span></a></li><li class="even trodd"><a href="/Oeko/Oekologie/!p4624/" id="menu_p4624"><span>Ökologie</span></a></li><li class="odd treven"><a href="/Oeko/Arbeit/!p4629/" id="menu_p4629"><span>Arbeit</span></a></li><li class="even trodd"><a href="/Oeko/Konsum/!p4625/" id="menu_p4625"><span>Konsum</span></a></li><li class="odd trodd"><a href="/Oeko/Verkehr/!p4628/" id="menu_p4628"><span>Verkehr</span></a></li><li class="even treven"><a href="/Oeko/Wissenschaft/!p4636/" id="menu_p4636"><span>Wissenschaft</span></a></li><li class="last odd trodd"><a href="/Oeko/Netzoekonomie/!p4627/" id="menu_p4627"><span>Netzökonomie</span></a></li></ul></li><li class="odd treven"><a href="/Gesellschaft/!p4611/" id="menu_p4611"><span>Gesellschaft</span></a><ul><li class="first odd trodd"><a href="/Gesellschaft/Alltag/!p4632/" id="menu_p4632"><span>Alltag</span></a></li><li class="even trodd"><a href="/Gesellschaft/Debatte/!p4633/" id="menu_p4633"><span>Debatte</span></a></li><li class="odd treven"><a href="https://gazete.taz.de/" target="_blank" id="menu_p5057"><span>taz.gazete</span></a></li><li class="even trodd"><a href="https://migration-control.taz.de/#de" target="_blank" id="menu_p5058"><span>migration control</span></a></li><li class="odd trodd"><a href="/Gesellschaft/Kolumnen/!p4634/" id="menu_p4634"><span>Kolumnen</span></a></li><li class="even treven"><a href="/Gesellschaft/Medien/!p4630/" id="menu_p4630"><span>Medien</span></a></li><li class="odd trodd"><a href="/Gesellschaft/Bildung/!p4635/" id="menu_p4635"><span>Bildung</span></a></li><li class="even trodd"><a href="/Gesellschaft/Gesundheit/!p4637/" id="menu_p4637"><span>Gesundheit</span></a></li><li class="last odd treven"><a href="/Gesellschaft/Reise/!p4638/" id="menu_p4638"><span>Reise</span></a></li></ul></li><li class="even trodd"><a href="/Kultur/!p4639/" id="menu_p4639"><span>Kultur</span></a><ul><li class="first odd trodd"><a href="/Kultur/Musik/!p4640/" id="menu_p4640"><span>Musik</span></a></li><li class="even trodd"><a href="/Kultur/Film/!p4641/" id="menu_p4641"><span>Film</span></a></li><li class="odd treven"><a href="/Kultur/Kuenste/!p4642/" id="menu_p4642"><span>Künste</span></a></li><li class="even trodd"><a href="/Kultur/Buch/!p4643/" id="menu_p4643"><span>Buch</span></a></li><li class="last odd trodd"><a href="/Kultur/Netzkultur/!p4631/" id="menu_p4631"><span>Netzkultur</span></a></li></ul></li><li class="odd trodd"><a href="/Sport/!p4646/" id="menu_p4646"><span>Sport</span></a><ul><li class="first odd trodd"><a href="/Sport/Fussball/!p4647/" id="menu_p4647"><span>Fußball</span></a></li><li class="last even trodd"><a href="/Sport/Kolumnen/!p4648/" id="menu_p4648"><span>Kolumnen</span></a></li></ul></li><li class="even treven"><a href="/Berlin/!p4649/" id="menu_p4649"><span>Berlin</span></a><ul></ul></li><li class="odd trodd"><a href="/Nord/!p4650/" id="menu_p4650"><span>Nord</span></a><ul><li class="first odd trodd"><a href="/Nord/Hamburg/!p4651/" id="menu_p4651"><span>Hamburg</span></a></li><li class="even trodd"><a href="/Nord/Bremen/!p4652/" id="menu_p4652"><span>Bremen</span></a></li><li class="last odd treven"><a href="/Nord/Kultur/!p4653/" id="menu_p4653"><span>Kultur</span></a></li></ul></li><li class="last even trodd"><a href="/Wahrheit/!p4644/" id="menu_p4644"><span>Wahrheit</span></a><ul><li class="first odd trodd"><a href="/bei-Tom/!t5180734/" id="menu_p4685"><span>bei Tom</span></a></li><li class="last even trodd"><a href="/ueber-die-Wahrheit/!115080/" id="menu_p4684"><span>über die Wahrheit</span></a></li></ul></li></ul></li><li class="corp"><ul><li class="first odd trodd"><a href="/Abo/!p4209/" id="menu_p4209"><span>Abo</span></a></li><li class="even trodd"><a href="/Info/!p4206/" id="menu_p4206"><span>Info</span></a></li><li class="odd treven"><a href="/Genossenschaft/!p4271/" id="menu_p4271"><span>Genossenschaft</span></a></li><li class="even trodd"><a href="https://shop.taz.de/" target="_blank" id="menu_p4378"><span>Shop</span></a></li><li class="odd trodd"><a href="https://taz.de/!p4905/" id="menu_p5284"><span>taz lab 2020</span></a></li><li class="even treven"><a href="/Anzeigen/!p4288/" id="menu_p4288"><span>Anzeigen</span></a></li><li class="odd trodd"><a href="/taz-zahl-ich/!p4697/" id="menu_p5149"><span>taz zahl ich</span></a></li><li class="even trodd"><a href="/Podcast/!p5171/" id="menu_p5171"><span>Podcast</span></a></li><li class="odd treven"><a href="/Bewegung/!p4715/" id="menu_p4715"><span>Bewegung</span></a></li><li class="even trodd"><a href="/!p5099/" id="menu_p5106"><span>taz FUTURZWEI</span></a></li><li class="odd trodd"><a href="/!p4662/" id="menu_p5148"><span>taz am Wochenende</span></a></li><li class="even treven"><a href="/Nord/!p4962/" id="menu_p4962"><span>Nord</span></a></li><li class="odd trodd"><a href="/!p5021/" id="menu_p5277"><span>taz Salon</span></a></li><li class="even trodd"><a href="/!p5188/" id="menu_p5189"><span>40 Jahre taz</span></a></li><li class="odd treven"><a href="//blogs.taz.de/" id="menu_p4366"><span>Blogs</span></a></li><li class="even trodd"><a href="//blogs.taz.de/hausblog/" id="menu_p4718"><span>Hausblog</span></a></li><li class="odd trodd"><a href="/ePaper/!p4350/" id="menu_p4350"><span>ePaper</span></a></li><li class="even treven"><a href="/!p4233/" id="menu_p5239"><span>Veranstaltungen</span></a></li><li class="odd trodd"><a href="/Kantine/!p4237/" id="menu_p4237"><span>Kantine</span></a></li><li class="even trodd"><a href="/Panter-Stiftung/!p4258/" id="menu_p4258"><span>Panter Stiftung</span></a></li><li class="odd treven"><a href="/Reisen-in-die-Zivilgesellschaft/!p4310/" id="menu_p4310"><span>Reisen in die Zivilgesellschaft</span></a></li><li class="even trodd"><a href="/Recherchefonds-Ausland/!p5062/" id="menu_p5062"><span>Recherchefonds Ausland</span></a></li><li class="odd trodd"><a href="//monde-diplomatique.de/" id="menu_p4387"><span>LE MONDE diplomatique</span></a></li><li class="even treven"><a href="//www.kontextwochenzeitung.de/" id="menu_p4721"><span>KONTEXT: Wochenzeitung</span></a></li><li class="odd trodd"><a href="/Neubau/!p4820/" id="menu_p4820"><span>Neubau</span></a></li><li class="even trodd"><a href="/Archiv/!p4311/" id="menu_p4311"><span>Archiv</span></a></li><li class="last odd treven"><a href="/Hilfe/!p4591/" id="menu_p4591"><span>Hilfe</span></a></li></ul></li><li class="help"><ul id="legal"><li class="first odd trodd"><a href="/Hilfe/!p4591/" id="menu_p4591"><span>Hilfe</span></a></li><li class="even trodd"><a href="https://taz.de/!112354/" id="menu_p4679"><span>Impressum</span></a></li><li class="odd treven"><a href="https://taz.de/!p5097/" id="menu_p5136"><span>Leichte Sprache</span></a></li><li class="even trodd"><a href="https://taz.de/!114802/" id="menu_p4965"><span>Redaktionsstatut</span></a></li><li class="odd trodd"><a href="https://taz.de/!114191/" id="menu_p4680"><span>RSS</span></a></li><li class="even treven"><a href="https://taz.de/!166598/" id="menu_p4681"><span>Datenschutz</span></a></li><li class="odd trodd"><a href="https://taz.de/!p4283/" id="menu_p4827"><span>Newsletter</span></a></li><li class="even trodd"><a href="https://taz.de/!p4858/" id="menu_p4859"><span>Informant</span></a></li><li class="last odd treven"><a href="https://taz.de/!112355/" id="menu_p4682"><span>Kontakt</span></a></li></ul></li><li class="search"><form class="search" role="search" action="/!s=/" method="POST"><div class="frame"><input type="text" class="text" name="s" value="suchen ..."></input><script type="text/javascript" language="javascript">filOtaz_de.searchslot();</script><input type="image" class="send" title="suche senden" alt="suche senden" name="ignore" src="/lib/ch/web/pix/redArrowsRight_d50d2e.png"></input></div></form></li></ul><div class="copyright">Alle Rechte vorbehalten. Für Fragen zu Rechten oder Genehmigungen wenden Sie sich bitte an lizenzen@taz.de<a id="mobileswitcher" href="#" onclick="
+					event.preventDefault();
+					var currentDate = new Date();
+					var expDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()+1, 3, 59, 59);
+					$.cookie.raw = true;
+					$.cookie('ratioURL_channel', 'moby/force', { expires: expDate, domain:'taz.de', path:'/', secure: false } ); 
+
+					if( (/moby/).test($.cookie('ratioURL_channel') ) ) {
+
+						location.search = ( location.search ? location.search +'&amp;' : '?' ) +'nocache='+ (new Date()).getTime();
+						}
+					else alert('Cookie konnte nicht gesetzt werden');
+					
+				"><span>zur mobilen Ansicht wechseln</span></a></div></div></div></div></div></body><!-- DEBUG end 17:51:52+01:00--></html>

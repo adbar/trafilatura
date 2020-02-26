@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7" lang="de-DE">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8" lang="de-DE">
+<![endif]-->
+<!--[if !(IE 7) & !(IE 8)]><!-->
+<html lang="de-DE">
+<!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Einen Twitterfeed in das Blog einbinden – so geht’s! | Bloghaus</title>
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="https://bloghaus.hypotheses.org/xmlrpc.php">
+	<!--[if lt IE 9]>
+	<script src="https://f.hypotheses.org/wp-content/themes/twentyfourteen/js/html5.js"></script>
+	<![endif]-->
+	<link rel="icon" type="image/png" href="https://f.hypotheses.org/wp-content/cleo-commons/images/favicon.png" /><link rel='dns-prefetch' href='//bloghaus.hypotheses.org' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Bloghaus &raquo; Feed" href="https://bloghaus.hypotheses.org/feed" />
+<link rel="alternate" type="application/rss+xml" title="Bloghaus &raquo; Kommentar-Feed" href="https://bloghaus.hypotheses.org/comments/feed" />
+<link rel="alternate" type="application/rss+xml" title="Bloghaus &raquo; Einen Twitterfeed in das Blog einbinden – so geht’s! Kommentar-Feed" href="https://bloghaus.hypotheses.org/2320/feed" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/bloghaus.hypotheses.org\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.3.2"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://f.hypotheses.org/wp-includes/css/dist/block-library/style.min.css?ver=5.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-theme-css'  href='https://f.hypotheses.org/wp-includes/css/dist/block-library/theme.min.css?ver=5.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-hal-style1-css'  href='https://f.hypotheses.org/wp-content/plugins/hal/css/style.css?ver=5.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-syntax-css-css'  href='https://f.hypotheses.org/wp-content/plugins/wp-syntax/css/wp-syntax.css?ver=1.1' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfourteen-lato-css'  href='https://fonts.googleapis.com/css?family=Lato%3A300%2C400%2C700%2C900%2C300italic%2C400italic%2C700italic&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='https://f.hypotheses.org/wp-content/themes/twentyfourteen/genericons/genericons.css?ver=3.0.3' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfourteen-style-css'  href='https://f.hypotheses.org/wp-content/themes/twentyfourteen/style.css?ver=5.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='twentyfourteen-block-style-css'  href='https://f.hypotheses.org/wp-content/themes/twentyfourteen/css/blocks.css?ver=20181230' type='text/css' media='all' />
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentyfourteen-ie-css'  href='https://f.hypotheses.org/wp-content/themes/twentyfourteen/css/ie.css?ver=20131205' type='text/css' media='all' />
+<![endif]-->
+<link rel='stylesheet' id='Branda_Signup_Password-css'  href='https://f.hypotheses.org/wp-content/plugins/ultimate-branding/inc/modules/login-screen/assets/css/signup-password.css?ver=3.1.2' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-featherlight-css'  href='https://f.hypotheses.org/wp-content/plugins/wp-featherlight/css/wp-featherlight.min.css?ver=1.3.0' type='text/css' media='all' />
+<link rel='stylesheet' id='cleo-global-css'  href='https://static.openedition.org/openbarre/css/openbarre.css?ver=5.3.2' type='text/css' media='screen' />
+<link rel='stylesheet' id='print-global-css'  href='https://f.hypotheses.org/wp-content/cleo-commons/css/print.css?ver=5.3.2' type='text/css' media='print' />
+<link rel='stylesheet' id='wp-author-bio-css'  href='https://f.hypotheses.org/wp-content/plugins/wp-about-author/wp-about-author.css?ver=5.3.2' type='text/css' media='all' />
+<script type='text/javascript' src='https://f.hypotheses.org/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='https://f.hypotheses.org/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<link rel='https://api.w.org/' href='https://bloghaus.hypotheses.org/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://bloghaus.hypotheses.org/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://f.hypotheses.org/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Jobangebot: ReferentIn (m/w/d) für digitale Wissenschaftskommunikation für de.hypotheses (50 %)' href='https://bloghaus.hypotheses.org/2301' />
+<meta name="generator" content="Wordpress" />
+<link rel="canonical" href="https://bloghaus.hypotheses.org/2320" />
+<link rel='shortlink' href='https://bloghaus.hypotheses.org/?p=2320' />
+<link rel="alternate" type="application/json+oembed" href="https://bloghaus.hypotheses.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320" />
+<link rel="alternate" type="text/xml+oembed" href="https://bloghaus.hypotheses.org/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320&#038;format=xml" />
+		<style type="text/css">
+						ol.footnotes li {list-style-type:decimal;}
+						ol.footnotes{font-size:0.8em; color:#666666;}		</style>
+		    <style type="text/css">
+        .wpcp {background: #f7f7f7; padding: 16px 20px; border-radius: 5px; line-height: 20px;}
+    </style>
+    <meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@hypothesesorg" />
+<meta property="fb:app_id" content="1148222708571516" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Bloghaus" />
+<meta property="og:url" content="https://bloghaus.hypotheses.org/2320" />
+<meta property="og:title" content="Einen Twitterfeed in das Blog einbinden – so geht’s!" />
+<meta property="og:description" content="Aktualisiert am 19.02.2020 Um Sichtbarkeit und Leserschaft auf einem Wissenschaftsblog zu generieren, empfiehlt sich der Einsatz eines Twitteraccount, über den Artikel geteilt und ein Austausch mit der Community angestoßen werden kann. In diesem Blogbeitrag zeigen wir, wie man den eigenen  Twitterfeed direkt und datenschutzkonform in ein Blog einbetten kann. So sehen Leserinnen und Leser auf &hellip; Einen Twitterfeed in das Blog einbinden – so geht’s! weiterlesen &rarr;" />
+<meta property="og:image" content="https://f.hypotheses.org/wp-content/cleo-commons/images/favicon_150x150.png" />
+
+		<style type="text/css">
+		@font-face {
+		    font-family: "si";
+		    src: url("https://f.hypotheses.org/wp-content/cleo-commons/fonts/social-font/socicon.eot");
+		    src: url("https://f.hypotheses.org/wp-content/cleo-commons/fonts/social-font/socicon.eot?#iefix") format("embedded-opentype"),
+			 url("https://f.hypotheses.org/wp-content/cleo-commons/fonts/social-font/socicon.woff") format("woff"),
+			 url("https://f.hypotheses.org/wp-content/cleo-commons/fonts/social-font/socicon.ttf") format("truetype"),
+			 url("https://f.hypotheses.org/wp-content/cleo-commons/fonts/social-font/socicon.svg#icomoonregular") format("svg");
+		    font-weight: normal;
+		    font-style: normal;
+		}
+		@media screen and (-webkit-min-device-pixel-ratio:0) {
+		    @font-face {
+			font-family:si;
+			src: url(https://f.hypotheses.org/wp-content/cleo-commons/fonts/social-font/socicon.svg) format(svg);
+		    }
+		}
+		.entry ul.soc { overflow:hidden; margin:0; padding:0; list-style:none;}
+		.soc li { display:inline-block; *display:inline; zoom:1;}
+		.soc li a { font-family:si!important; font-style:normal; font-weight:400; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box;
+		    -o-transition:.1s; -ms-transition:.1s; -moz-transition:.1s; -webkit-transition:.1s; transition:.1s; -webkit-transition-property: transform;transition-property: transform; -webkit-transform: translateZ(0); transform: translateZ(0);
+		    overflow:hidden; text-decoration:none; text-align:center; display:block; position: relative; z-index: 1; width: 38px;  height: 38px; line-height: 38px; font-size: 20px; -webkit-border-radius: 0px; -moz-border-radius: 0px; border-radius: 0px; margin-right: 13px; color: #ffffff; background-color: none;}
+		.soc a:hover { z-index: 2; -webkit-transform: scale(1.1); transform: scale(1.1);}
+		.soc-icon-last{ margin:0 !important;}
+		.soc-twitter { background-color: #4da7de;}
+		.soc-twitter:before { content:"\e040";}
+		.soc-facebook { background-color: #3e5b98;}
+		.soc-facebook:before { content:"\e041";}
+		.soc-linkedin { background-color: #3371b7;}
+		.soc-linkedin:before { content:"\e049";}
+		</style>
+
+		<script type="text/javascript">
+		// Share buttons
+		jQuery(document).ready(function($) {
+			$(".share-hypotheses").click(function(event) {
+				var shareName = $(this).attr("class").split(" ")[0]; //get the first class name of clicked element
+				switch (shareName) {
+					case "facebook":
+					var openLink = "https://www.facebook.com/sharer.php?title=Einen+Twitterfeed+in+das+Blog+einbinden+%E2%80%93+so+geht%E2%80%99s%21&u=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320";
+					break;
+					case "twitter":
+					var openLink = "http://twitter.com/share?text=Einen+Twitterfeed+in+das+Blog+einbinden+%E2%80%93+so+geht%E2%80%99s%21&url=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320&via=hypothesesorg";
+					break;
+					case "linkedin":
+					var openLink = "https://www.linkedin.com/shareArticle?title=Einen+Twitterfeed+in+das+Blog+einbinden+%E2%80%93+so+geht%E2%80%99s%21&url=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320&mini=true";
+					break;
+				}
+				//Parameters for the Popup window
+				var winWidth    = 650;
+				var winHeight   = 450;
+				var winLeft     = ($(window).width()  - winWidth)  / 2;
+				var winTop      = ($(window).height() - winHeight) / 2;
+				var winOptions   = "width="  + winWidth  + ",height=" + winHeight + ",top="    + winTop    + ",left="   + winLeft;
+				//open Popup window and redirect user to share website.
+				window.open(openLink,"Share This Link",winOptions);
+				return false;
+			});
+		});
+		</script>
+		<style id="fourteen-colors" type="text/css">
+		/* Custom accent color. */
+		button,
+		.button,
+		.contributor-posts-link,
+		input[type="button"],
+		input[type="reset"],
+		input[type="submit"],
+		.search-toggle,
+		.hentry .mejs-controls .mejs-time-rail .mejs-time-current,
+		.widget .mejs-controls .mejs-time-rail .mejs-time-current,
+		.hentry .mejs-overlay:hover .mejs-overlay-button,
+		.widget .mejs-overlay:hover .mejs-overlay-button,
+		.widget button,
+		.widget .button,
+		.widget input[type="button"],
+		.widget input[type="reset"],
+		.widget input[type="submit"],
+		.widget_calendar tbody a,
+		.content-sidebar .widget input[type="button"],
+		.content-sidebar .widget input[type="reset"],
+		.content-sidebar .widget input[type="submit"],
+		.slider-control-paging .slider-active:before,
+		.slider-control-paging .slider-active:hover:before,
+		.slider-direction-nav a:hover,
+		.ie8 .primary-navigation ul ul,
+		.ie8 .secondary-navigation ul ul,
+		.ie8 .primary-navigation li:hover > a,
+		.ie8 .primary-navigation li.focus > a,
+		.ie8 .secondary-navigation li:hover > a,
+		.ie8 .secondary-navigation li.focus > a {
+			background-color: #c40b0b;
+		}
+
+		.site-navigation a:hover {
+			color: #c40b0b;
+		}
+
+		::-moz-selection {
+			background: #c40b0b;
+		}
+
+		::selection {
+			background: #c40b0b;
+		}
+
+		.paging-navigation .page-numbers.current {
+			border-color: #c40b0b;
+		}
+
+		@media screen and (min-width: 782px) {
+			.primary-navigation li:hover > a,
+			.primary-navigation li.focus > a,
+			.primary-navigation ul ul {
+				background-color: #c40b0b;
+			}
+		}
+
+		@media screen and (min-width: 1008px) {
+			.secondary-navigation li:hover > a,
+			.secondary-navigation li.focus > a,
+			.secondary-navigation ul ul {
+				background-color: #c40b0b;
+			}
+		}
+	
+			.contributor-posts-link,
+			button,
+			.button,
+			input[type="button"],
+			input[type="reset"],
+			input[type="submit"],
+			.search-toggle:before,
+			.hentry .mejs-overlay:hover .mejs-overlay-button,
+			.widget .mejs-overlay:hover .mejs-overlay-button,
+			.widget button,
+			.widget .button,
+			.widget input[type="button"],
+			.widget input[type="reset"],
+			.widget input[type="submit"],
+			.widget_calendar tbody a,
+			.widget_calendar tbody a:hover,
+			.site-footer .widget_calendar tbody a,
+			.content-sidebar .widget input[type="button"],
+			.content-sidebar .widget input[type="reset"],
+			.content-sidebar .widget input[type="submit"],
+			button:hover,
+			button:focus,
+			.button:hover,
+			.button:focus,
+			.widget a.button:hover,
+			.widget a.button:focus,
+			.widget a.button:active,
+			.content-sidebar .widget a.button,
+			.content-sidebar .widget a.button:hover,
+			.content-sidebar .widget a.button:focus,
+			.content-sidebar .widget a.button:active,
+			.contributor-posts-link:hover,
+			.contributor-posts-link:active,
+			input[type="button"]:hover,
+			input[type="button"]:focus,
+			input[type="reset"]:hover,
+			input[type="reset"]:focus,
+			input[type="submit"]:hover,
+			input[type="submit"]:focus,
+			.slider-direction-nav a:hover:before {
+				color: #fff;
+			}
+
+			@media screen and (min-width: 782px) {
+				.primary-navigation ul ul a,
+				.primary-navigation li:hover > a,
+				.primary-navigation li.focus > a,
+				.primary-navigation ul ul {
+					color: #fff;
+				}
+			}
+
+			@media screen and (min-width: 1008px) {
+				.secondary-navigation ul ul a,
+				.secondary-navigation li:hover > a,
+				.secondary-navigation li.focus > a,
+				.secondary-navigation ul ul {
+					color: #fff;
+				}
+			}
+		
+		/* Generated variants of custom accent color. */
+		a,
+		.content-sidebar .widget a {
+			color: #c40b0b;
+		}
+
+		.contributor-posts-link:hover,
+		.button:hover,
+		.button:focus,
+		.slider-control-paging a:hover:before,
+		.search-toggle:hover,
+		.search-toggle.active,
+		.search-box,
+		.widget_calendar tbody a:hover,
+		button:hover,
+		button:focus,
+		input[type="button"]:hover,
+		input[type="button"]:focus,
+		input[type="reset"]:hover,
+		input[type="reset"]:focus,
+		input[type="submit"]:hover,
+		input[type="submit"]:focus,
+		.widget button:hover,
+		.widget .button:hover,
+		.widget button:focus,
+		.widget .button:focus,
+		.widget input[type="button"]:hover,
+		.widget input[type="button"]:focus,
+		.widget input[type="reset"]:hover,
+		.widget input[type="reset"]:focus,
+		.widget input[type="submit"]:hover,
+		.widget input[type="submit"]:focus,
+		.content-sidebar .widget input[type="button"]:hover,
+		.content-sidebar .widget input[type="button"]:focus,
+		.content-sidebar .widget input[type="reset"]:hover,
+		.content-sidebar .widget input[type="reset"]:focus,
+		.content-sidebar .widget input[type="submit"]:hover,
+		.content-sidebar .widget input[type="submit"]:focus,
+		.ie8 .primary-navigation ul ul a:hover,
+		.ie8 .primary-navigation ul ul li.focus > a,
+		.ie8 .secondary-navigation ul ul a:hover,
+		.ie8 .secondary-navigation ul ul li.focus > a {
+			background-color: #e12828;
+		}
+
+		.featured-content a:hover,
+		.featured-content .entry-title a:hover,
+		.widget a:hover,
+		.widget-title a:hover,
+		.widget_twentyfourteen_ephemera .entry-meta a:hover,
+		.hentry .mejs-controls .mejs-button button:hover,
+		.widget .mejs-controls .mejs-button button:hover,
+		.site-info a:hover,
+		.featured-content a:hover {
+			color: #e12828;
+		}
+
+		a:active,
+		a:hover,
+		.entry-title a:hover,
+		.entry-meta a:hover,
+		.cat-links a:hover,
+		.entry-content .edit-link a:hover,
+		.post-navigation a:hover,
+		.image-navigation a:hover,
+		.comment-author a:hover,
+		.comment-list .pingback a:hover,
+		.comment-list .trackback a:hover,
+		.comment-metadata a:hover,
+		.comment-reply-title small a:hover,
+		.content-sidebar .widget a:hover,
+		.content-sidebar .widget .widget-title a:hover,
+		.content-sidebar .widget_twentyfourteen_ephemera .entry-meta a:hover {
+			color: #e12828;
+		}
+
+		.page-links a:hover,
+		.paging-navigation a:hover {
+			border-color: #e12828;
+		}
+
+		.entry-meta .tag-links a:hover:before {
+			border-right-color: #e12828;
+		}
+
+		.page-links a:hover,
+		.entry-meta .tag-links a:hover {
+			background-color: #e12828;
+		}
+
+		@media screen and (min-width: 782px) {
+			.primary-navigation ul ul a:hover,
+			.primary-navigation ul ul li.focus > a {
+				background-color: #e12828;
+			}
+		}
+
+		@media screen and (min-width: 1008px) {
+			.secondary-navigation ul ul a:hover,
+			.secondary-navigation ul ul li.focus > a {
+				background-color: #e12828;
+			}
+		}
+
+		button:active,
+		.button:active,
+		.contributor-posts-link:active,
+		input[type="button"]:active,
+		input[type="reset"]:active,
+		input[type="submit"]:active,
+		.widget input[type="button"]:active,
+		.widget input[type="reset"]:active,
+		.widget input[type="submit"]:active,
+		.content-sidebar .widget input[type="button"]:active,
+		.content-sidebar .widget input[type="reset"]:active,
+		.content-sidebar .widget input[type="submit"]:active {
+			background-color: #f53c3c;
+		}
+
+		.site-navigation .current_page_item > a,
+		.site-navigation .current_page_ancestor > a,
+		.site-navigation .current-menu-item > a,
+		.site-navigation .current-menu-ancestor > a {
+			color: #f53c3c;
+		}
+	</style><link rel="alternate" type="application/rdf+xml" title="RDF Version" href="https://bloghaus.hypotheses.org/feed/rdf" />
+<link rel="alternate" type="application/rdf+xml" title="RDF Version of this post" href="https://bloghaus.hypotheses.org/2320/feed/rdf" />
+<link rel="alternate" type="application/rdf+xml" title="RDF Version of the category Artikel"  href="https://bloghaus.hypotheses.org/category/non-classe/feed/rdf" />
+<link rel="alternate" type="application/rdf+xml" title="RDF Version of the tag Datenschutz"  href="https://bloghaus.hypotheses.org/category/datenschutz/feed/rdf" />
+<link rel="alternate" type="application/rdf+xml" title="RDF Version of the tag Twitter"  href="https://bloghaus.hypotheses.org/category/twitter/feed/rdf" />
+<script type="text/javascript" src="https://f.hypotheses.org/wp-content/plugins/hypotheses-config//js/hypoc.js"></script>  <style type="text/css">
+    span.icon-hypotheses {
+      background:url(https://f.hypotheses.org/wp-content/cleo-commons/images/favicon_18x20.png);width:18px;height:20px;display:inline-block;margin-right:5px;
+    }
+  </style>
+<style type="text/css">
+	.header-image.masthead-fixed .site-main {margin-top: 48px;}
+	.masthead-fixed .site-main {margin-top: 88px;}
+</style>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	/*  
+	 * apply js that add the body class "masthead-fixed" to body without the "masthead-fixed" class (because of openbarre usage)
+	 */
+	if ( $(window).width() > 781 ) { 
+		var mastheadHeight = $( '#masthead' ).height(),
+			toolbarOffset, mastheadOffset;
+
+		if ( mastheadHeight > 48 ) { 
+			$('body').removeClass( 'masthead-fixed' );
+		}   
+
+		if ( !$('body').is( '.header-image' ) ) { 
+			toolbarOffset  = $('body').is( '.admin-bar' ) ? $( '#wpadminbar' ).height() : 0;
+			mastheadOffset = $( '#masthead' ).offset().top - toolbarOffset;
+
+			$(window).on( 'scroll.twentyfourteen', function() {
+				if ( $(window).scrollTop() > mastheadOffset && mastheadHeight < 49 ) { 
+					$('body').addClass( 'masthead-fixed' );
+				} else {
+					$('body').removeClass( 'masthead-fixed' );
+				}
+			} );
+		}
+	}
+
+} );
+</script>
+
+<link rel="dc:identifier" href="https://bloghaus.hypotheses.org/2320" />
+<meta property="dc:title" content="Einen Twitterfeed in das Blog einbinden – so geht’s!" />
+<meta property="dc:creator" content="Ulrike Stockhausen" />
+<meta property="dcterms:created" content="2019-09-26" />
+<meta property="dcterms:abstract" content="Aktualisiert am 19.02.2020 Um Sichtbarkeit und Leserschaft auf einem Wissenschaftsblog zu generieren, empfiehlt sich der Einsatz eines Twitteraccount, über den Artikel geteilt und ein Austausch mit der Community angestoßen werden kann. In diesem Blogbeitrag zeigen wir, wie man den eigenen  Twitterfeed direkt und datenschutzkonform in ein Blog einbetten kann. So sehen Leserinnen und Leser auf &hellip; Einen Twitterfeed in das Blog einbinden – so geht’s! weiterlesen &rarr;" xml:lang="fr" />
+<meta property="dc:subject" content="Artikel" />
+<meta property="dc:subject" content="Datenschutz" />
+<meta property="dc:subject" content="Twitter" />
+<meta property="dc:type" content="Billet" />
+<link rel="alternate" type="application/opml+xml" title="Outline" href="https://www.openedition.org/opml.php?pubtype=carnet" />    <style type="text/css">body, html.js body {margin-top:40px;}</style>
+</head>
+
+<body class="post-template-default single single-post postid-2320 single-format-standard wp-embed-responsive wp-featherlight-captions group-blog header-image singular">
+<div id="page" class="hfeed site">
+		<div id="site-header">
+		<a href="https://bloghaus.hypotheses.org/" rel="home">
+			<img src="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2014/08/bloghaus_1260x180.png" width="1260" height="180" alt="Bloghaus">
+		</a>
+	</div>
+	
+	<header id="masthead" class="site-header" role="banner">
+		<div class="header-main">
+			<h1 class="site-title"><a href="https://bloghaus.hypotheses.org/" rel="home">Bloghaus</a></h1>
+
+			<div class="search-toggle">
+				<a href="#search-container" class="screen-reader-text" aria-expanded="false" aria-controls="search-container">Suchen</a>
+			</div>
+
+			<nav id="primary-navigation" class="site-navigation primary-navigation" role="navigation">
+				<button class="menu-toggle">Primäres Menü</button>
+				<a class="screen-reader-text skip-link" href="#content">Springe zum Inhalt</a>
+				<div class="menu-menu-container"><ul id="primary-menu" class="nav-menu"><li id="menu-item-1245" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1245"><a href="https://bloghaus.hypotheses.org/category/wissenschaftliches-bloggen">Wissenschaftliches Bloggen</a>
+<ul class="sub-menu">
+	<li id="menu-item-1269" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1269"><a href="https://bloghaus.hypotheses.org/category/bilder-videos-und-dokumente-finden">Bilder, Videos und Dokumente finden</a></li>
+</ul>
+</li>
+<li id="menu-item-1176" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1176"><a href="https://bloghaus.hypotheses.org/category/erste-schritte">Erste Schritte</a>
+<ul class="sub-menu">
+	<li id="menu-item-1194" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1194"><a href="https://bloghaus.hypotheses.org/category/zurechtfinden-auf-wordpress">Zurechtfinden auf WordPress</a></li>
+	<li id="menu-item-1189" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1189"><a href="https://bloghaus.hypotheses.org/category/personalisieren">Personalisieren</a></li>
+	<li id="menu-item-1190" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1190"><a href="https://bloghaus.hypotheses.org/category/themes">Themes</a>
+	<ul class="sub-menu">
+		<li id="menu-item-1461" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1461"><a href="https://bloghaus.hypotheses.org/1292">Twenty Eleven</a></li>
+		<li id="menu-item-1369" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1369"><a href="https://bloghaus.hypotheses.org/1247">Twenty Fourteen</a></li>
+		<li id="menu-item-1622" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1622"><a href="https://bloghaus.hypotheses.org/1579">TwentyFifteen</a></li>
+		<li id="menu-item-1553" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1553"><a href="https://bloghaus.hypotheses.org/1496">Hueman</a></li>
+		<li id="menu-item-1904" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1904"><a href="https://bloghaus.hypotheses.org/1845">Twenty Seventeen</a></li>
+	</ul>
+</li>
+	<li id="menu-item-1213" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1213"><a href="https://bloghaus.hypotheses.org/category/impressum">Impressum</a></li>
+</ul>
+</li>
+<li id="menu-item-1231" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1231"><a href="https://bloghaus.hypotheses.org/category/zweite-schritte">Schreiben</a>
+<ul class="sub-menu">
+	<li id="menu-item-1195" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1195"><a href="https://bloghaus.hypotheses.org/category/artikel-und-seiten-erstellen">Artikel und Seiten erstellen</a></li>
+	<li id="menu-item-1199" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1199"><a href="https://bloghaus.hypotheses.org/category/inhalte-editorisch-verwalten">Inhalte editorisch verwalten</a></li>
+	<li id="menu-item-1658" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1658"><a href="https://bloghaus.hypotheses.org/1430">Weiterlesen-Button</a></li>
+	<li id="menu-item-1275" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1275"><a href="https://bloghaus.hypotheses.org/category/fussnoten">Fußnoten</a></li>
+</ul>
+</li>
+<li id="menu-item-1230" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1230"><a href="https://bloghaus.hypotheses.org/category/zweite-schritte-2">Zweite Schritte</a>
+<ul class="sub-menu">
+	<li id="menu-item-1242" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-1242"><a href="https://bloghaus.hypotheses.org/category/zweite-schritte-2/widgets">Widgets</a>
+	<ul class="sub-menu">
+		<li id="menu-item-1620" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1620"><a href="https://bloghaus.hypotheses.org/1598">Twitter</a></li>
+		<li id="menu-item-1621" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1621"><a href="https://bloghaus.hypotheses.org/1404">LibraryThing</a></li>
+	</ul>
+</li>
+	<li id="menu-item-1596" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1596"><a href="https://bloghaus.hypotheses.org/category/zweite-schritte-2/kommentare">Kommentare</a></li>
+	<li id="menu-item-1208" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1208"><a href="https://bloghaus.hypotheses.org/category/zweite-schritte-2/issn">ISSN</a></li>
+	<li id="menu-item-1209" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1209"><a href="https://bloghaus.hypotheses.org/category/zweite-schritte-2/bloggen-mit-apps">Bloggen mit Apps</a></li>
+	<li id="menu-item-1246" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1246"><a href="https://bloghaus.hypotheses.org/category/zweite-schritte-2/email-abonnement">Email-Abonnement</a></li>
+	<li id="menu-item-1650" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1650"><a href="https://bloghaus.hypotheses.org/1559">Sprungmarken</a></li>
+</ul>
+</li>
+<li id="menu-item-1179" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1179"><a href="https://bloghaus.hypotheses.org/category/blog-und-recht">Blog und Recht</a></li>
+<li id="menu-item-1210" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1210"><a href="https://bloghaus.hypotheses.org/category/video-tutorials">Video-Tutorials</a></li>
+<li id="menu-item-1175" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1175"><a href="https://bloghaus.hypotheses.org/blog-eroeffnen">Blog eröffnen</a></li>
+<li id="menu-item-1169" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1169"><a href="https://bloghaus.hypotheses.org/credits">Impressum</a></li>
+</ul></div>			</nav>
+		</div>
+
+		<div id="search-container" class="search-box-wrapper hide">
+			<div class="search-box">
+				<form role="search" method="get" class="search-form" action="https://bloghaus.hypotheses.org/">
+				<label>
+					<span class="screen-reader-text">Suche nach:</span>
+					<input type="search" class="search-field" placeholder="Suche&#160;&hellip;" value="" name="s" />
+				</label>
+				<input type="submit" class="search-submit" value="Suche" />
+			</form>			</div>
+		</div>
+	</header><!-- #masthead -->
+
+	<div id="main" class="site-main">
+
+	<div id="primary" class="content-area">
+		<div id="content" class="site-content" role="main">
+			
+<article id="post-2320" class="post-2320 post type-post status-publish format-standard hentry category-non-classe tag-datenschutz tag-twitter">
+	
+	<header class="entry-header">
+				<div class="entry-meta">
+			<span class="cat-links"><a href="https://bloghaus.hypotheses.org/category/non-classe" rel="category tag">Artikel</a></span>
+		</div>
+			<h1 class="entry-title">Einen Twitterfeed in das Blog einbinden – so geht’s!</h1>
+		<div class="entry-meta">
+			<span class="entry-date"><a href="https://bloghaus.hypotheses.org/2320" rel="bookmark"><time class="entry-date" datetime="2019-09-26T11:43:53+02:00">26. September 2019</time></a></span> <span class="byline"><span class="author vcard"><a class="url fn n" href="https://bloghaus.hypotheses.org/author/ustockhausen" rel="author">Ulrike Stockhausen</a></span></span>			<span class="comments-link"><a href="https://bloghaus.hypotheses.org/2320#respond">Schreibe einen Kommentar</a></span>
+						</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+		<div class="entry-content">
+		
+<p><em>Aktualisiert am 19.02.2020</em></p>
+<p>Um Sichtbarkeit und Leserschaft auf einem Wissenschaftsblog zu generieren, empfiehlt sich der Einsatz eines Twitteraccount, über den Artikel geteilt und ein Austausch mit der Community angestoßen werden kann.</p>
+<p>In diesem Blogbeitrag zeigen wir, wie man den eigenen  Twitterfeed direkt und datenschutzkonform in ein Blog einbetten kann. So sehen Leserinnen und Leser auf einen Blick, was sich in einem Twitter-Konto tut. Das Prinzip hierfür ist denkbar einfach: Im Backend Ihres Blogs richten Sie ein Text-Widget ein, in das Sie einfach die URL Ihres Twitterfeeds kopieren – fertig!</p>
+
+
+
+<p><span id="more-2320"></span></p>
+
+
+
+<h2><strong>Hier eine Schritt-für-Schritt-Übersicht:</strong></h2>
+
+
+
+<ul>
+<li>Sie wählen Design &gt; Widgets aus.</li>
+</ul>
+
+
+
+<figure class="wp-block-image is-resized"><img class="wp-image-2332" src="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-1-471x500.jpg" alt="" width="406" height="432" srcset="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-1-471x500.jpg 471w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-1-282x300.jpg 282w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-1.jpg 608w" sizes="(max-width: 406px) 100vw, 406px" /></figure>
+
+
+
+<ul>
+<li>Nun fügen Sie ein Text-Widget an den von Ihnen gewählten Ort ein. Sie können das Widget auch anschließend noch verschieben.</li>
+</ul>
+
+
+
+<figure class="wp-block-image is-resized"><img class="wp-image-2334" src="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-2.jpg" alt="" width="417" height="443" srcset="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-2.jpg 449w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-2-282x300.jpg 282w" sizes="(max-width: 417px) 100vw, 417px" /></figure>
+
+
+
+
+
+<ul>
+<li>Nun kopieren Sie die URL Ihres Twitter-Kontos (z.B.: https://twitter.com/dehypotheses) in das Textfeld, speichern und klicken auf „fertig“.</li>
+</ul>
+
+
+
+<figure class="wp-block-image is-resized"><img class="wp-image-2340" src="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitter-3_neu.jpg" alt="" width="426" height="453" srcset="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitter-3_neu.jpg 400w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitter-3_neu-282x300.jpg 282w" sizes="(max-width: 426px) 100vw, 426px" /></figure>
+
+
+
+
+
+<p>Und so sieht das bei uns im Redaktionsblog aus:</p>
+
+
+
+<figure class="wp-block-image"><img class="wp-image-2330" src="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-beim-Redaktionsblog-470x500.jpg" alt="" srcset="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-beim-Redaktionsblog-470x500.jpg 470w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-beim-Redaktionsblog-282x300.jpg 282w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2019/09/Twitterfeed-beim-Redaktionsblog.jpg 625w" sizes="(max-width: 470px) 100vw, 470px" /></figure>
+
+
+
+
+
+<p>Übrigens: Die persönlichen Daten der Nutzerinnen und Nutzer, die auf das Feed klicken, werden nicht an Twitter übermittelt. Lediglich die URL der Seite, in die das Feed eingebettet ist (in diesem Fall Ihr Blog) wird weitergegeben.</p>
+<p>Sollte das Twitterfeed im Mozilla Firefox Browser nur als Hyperlink angezeigt werden, liegt das möglicherweise daran, dass die Einstellungen Seitenelemente blockieren, <span style="font-weight: 400;"> über die Drittanbieter  über das Seite Blog-Daten von Nutzern erfassen könnten. Wenn das der Fall ist, findet sich <a href="https://support.mozilla.org/de/kb/seitenelemente-blockieren#w_so-stellen-sie-fest-ob-das-blockieren-von-seitenelementen-aktiviert-ist">hier</a> eine Erklärung, wie die Einstellungen entsprechend geändert werden können</span></p>
+
+
+
+<p>Viel Erfolg beim Ausprobieren!</p>
+
+		<hr/>
+		<!-- from https://perfecticons.com/ -->
+		<ul class="soc">
+		    <li><a class="twitter  share-hypotheses soc-twitter"    href="http://twitter.com/share?text=Einen+Twitterfeed+in+das+Blog+einbinden+%E2%80%93+so+geht%E2%80%99s%21&amp;url=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320&amp;via=hypothesesorg"></a></li>
+		    <li><a class="facebook share-hypotheses soc-facebook"   href="https://www.facebook.com/sharer.php?title=Einen+Twitterfeed+in+das+Blog+einbinden+%E2%80%93+so+geht%E2%80%99s%21&amp;u=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320"></a></li>
+		    <li><a class="linkedin share-hypotheses soc-linkedin"   href="https://www.linkedin.com/shareArticle?title=Einen+Twitterfeed+in+das+Blog+einbinden+%E2%80%93+so+geht%E2%80%99s%21&amp;url=https%3A%2F%2Fbloghaus.hypotheses.org%2F2320&amp;mini=true"></a></li>
+		</ul>
+			</div><!-- .entry-content -->
+	
+	<footer class="entry-meta"><span class="tag-links"><a href="https://bloghaus.hypotheses.org/tag/datenschutz" rel="tag">Datenschutz</a><a href="https://bloghaus.hypotheses.org/tag/twitter" rel="tag">Twitter</a></span></footer></article><!-- #post-2320 -->
+		<nav class="navigation post-navigation" role="navigation">
+		<h1 class="screen-reader-text">Beitrags-Navigation</h1>
+		<div class="nav-links">
+			<a href="https://bloghaus.hypotheses.org/2301" rel="prev"><span class="meta-nav">Vorheriger Beitrag</span>Jobangebot: ReferentIn (m/w/d) für digitale Wissenschaftskommunikation für de.hypotheses (50 %)</a>			</div><!-- .nav-links -->
+		</nav><!-- .navigation -->
+		
+<div id="comments" class="comments-area">
+
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Schreibe einen Kommentar <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2320#respond" style="display:none;">Antworten abbrechen</a></small></h3><form action="https://bloghaus.hypotheses.org/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><p class="comment-notes"><span id="email-notes">Deine E-Mail-Adresse wird nicht veröffentlicht.</span></p><p class="comment-form-comment"><label for="comment">Kommentar</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name</label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" /></p>
+<p class="comment-form-email"><label for="email">E-Mail</label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /> <label for="wp-comment-cookies-consent">Meinen Namen, E-Mail und Website in diesem Browser speichern, bis ich wieder kommentiere.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Kommentar abschicken" /> <input type='hidden' name='comment_post_ID' value='2320' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="54e34ca249" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="157"/></p></form>	</div><!-- #respond -->
+	<p class="akismet_comment_form_privacy_notice">Diese Website verwendet Akismet, um Spam zu reduzieren. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Erfahre mehr darüber, wie deine Kommentardaten verarbeitet werden</a>.</p>
+</div><!-- #comments -->
+		</div><!-- #content -->
+	</div><!-- #primary -->
+
+<div id="content-sidebar" class="content-sidebar widget-area" role="complementary">
+	<aside id="text-1" class="widget widget_text"><h1 class="widget-title">Über das Bloghaus </h1>			<div class="textwidget"><p>Dieses Blog gibt Hilfestellung und Tipps bei der Einrichtung von Blogs auf der Plattform von de.hypotheses.org. Hier finden Sie Informationen rund um das Bloggen sowie technische Neuerungen der Plattform. Das Blog ist als Austauschplattform für alle Bloggenden von de.hypotheses.org gedacht.</p>
+<p>Weitere Hilfe per Email erhalten Sie in der  <a href="mailto:deutschsprachige-blogs@groups.openedition.org"> Mailingliste der Community</a> oder direkt beim<br />
+ <a href="mailto:blogs@maxweberstiftung.de">Community Management</a>.</p>
+</div>
+		</aside><aside id="text-6" class="widget widget_text"><h1 class="widget-title">Soziale Medien</h1>			<div class="textwidget"><a href="https://www.facebook.com/de.hypotheses.org">Facebook</a><br>
+<a href="https://www.twitter.com/dehypotheses">Twitter</a><br></div>
+		</aside><aside id="text-8" class="widget widget_text"><h1 class="widget-title">Tweets</h1>			<div class="textwidget"><p><a class="twitter-timeline" data-width="474" data-height="711" data-dnt="true" href="https://twitter.com/dehypotheses?ref_src=twsrc%5Etfw">Tweets by dehypotheses</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+</div>
+		</aside><aside id="rss-8" class="widget widget_rss"><h1 class="widget-title"><a class="rsswidget" href="http://de.hypotheses.org/feed/"><img class="rss-widget-icon" style="border:0" width="14" height="14" src="https://f.hypotheses.org/wp-includes/images/rss.png" alt="RSS" /></a> <a class="rsswidget" href="https://de.hypotheses.org/">Artikel auf der Startseite de.hypotheses.org</a></h1><ul><li><a class='rsswidget' href='https://dkblog.hypotheses.org/2580'>25. Februar 1620: Professoren als Propheten</a></li><li><a class='rsswidget' href='https://medienerbe.hypotheses.org/1966'>O-Töne aus dem Osten, ungefiltert</a></li><li><a class='rsswidget' href='https://fordemocracy.hypotheses.org/2526'>Shareholder Value – eine demokratietheoretische Perspektive</a></li><li><a class='rsswidget' href='https://beyondwaves.hypotheses.org/1260'>E.R.A. – Now or never? Ein Diskurs über vier Generationen</a></li><li><a class='rsswidget' href='https://urbrel.hypotheses.org/846'>Qudsiya Contractor on “Old Shanghai” and Hindu/Muslim Relations in Modern India</a></li><li><a class='rsswidget' href='https://beyondwaves.hypotheses.org/2790'>Hexe als gendered metaphor</a></li><li><a class='rsswidget' href='https://thearticle.hypotheses.org/7150'>Hans Baldung in Karlsruhe: Grien, Grien, Grien sind alle meine Farben</a></li><li><a class='rsswidget' href='https://medienblog.hypotheses.org/8500'>Warum Lateinamerikas Medien “Weißes Wissen” verbreiten</a></li><li><a class='rsswidget' href='https://fnzinfo.hypotheses.org/1827'>Projektbericht | Strittige Scheidungen vor dem Wiener Zivilmagistrat (1786–1850)</a></li><li><a class='rsswidget' href='https://bluecher.hypotheses.org/690'>SoCP, Vorlesungen XII und XIII, Frühling 1954: Sokrates</a></li></ul></aside>		<aside id="recent-posts-4" class="widget widget_recent_entries">		<h1 class="widget-title">Aktuelle Artikel</h1>		<ul>
+											<li>
+					<a href="https://bloghaus.hypotheses.org/2320" aria-current="page">Einen Twitterfeed in das Blog einbinden – so geht’s!</a>
+									</li>
+											<li>
+					<a href="https://bloghaus.hypotheses.org/2301">Jobangebot: ReferentIn (m/w/d) für digitale Wissenschaftskommunikation für de.hypotheses (50 %)</a>
+									</li>
+											<li>
+					<a href="https://bloghaus.hypotheses.org/2169">Gutenberg, der neue Texteditor von WordPress</a>
+									</li>
+											<li>
+					<a href="https://bloghaus.hypotheses.org/1981">Plug-Ins auf Hypothèses</a>
+									</li>
+											<li>
+					<a href="https://bloghaus.hypotheses.org/1912">Formeln schreiben in LaTex</a>
+									</li>
+					</ul>
+		</aside></div><!-- #content-sidebar -->
+<div id="secondary">
+		<h2 class="site-description">Alles rund um Blogs bei de.hypotheses.org</h2>
+	
+	
+		<div id="primary-sidebar" class="primary-sidebar widget-area" role="complementary">
+		<aside id="widget_sp_image-6" class="widget widget_sp_image"><a href="http://de.hypotheses.org" target="_blank" class="widget_sp_image-image-link"><img width="150" height="25" alt="de.hypotheses" class="attachment-150x25 aligncenter" style="max-width: 100%;" src="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2012/11/hypotheses_300dpi.png" /></a></aside><aside id="text-7" class="widget widget_text"><h1 class="widget-title">ISSN 2265-5131</h1>			<div class="textwidget"></div>
+		</aside><aside id="widget_sp_image-3" class="widget widget_sp_image"><h1 class="widget-title">Die Inhalte von Bloghaus stehen unter der Lizenz CC-BY 3.0, siehe Impressum</h1><a href="http://creativecommons.org/licenses/by/3.0/" target="_blank" class="widget_sp_image-image-link" title="Die Inhalte von Bloghaus stehen unter der Lizenz CC-BY 3.0, siehe Impressum"><img width="88" height="31" alt="88x31" class="attachment-full aligncenter" style="max-width: 100%;" srcset="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2012/02/88x31.png 88w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2012/02/88x31-50x17.png 50w, https://f.hypotheses.org/wp-content/blogs.dir/645/files/2012/02/88x31-80x28.png 80w" sizes="(max-width: 88px) 100vw, 88px" src="https://f.hypotheses.org/wp-content/blogs.dir/645/files/2012/02/88x31.png" /></a></aside><aside id="text-2" class="widget widget_text"><h1 class="widget-title">Bloghaus in anderen Sprachen</h1>			<div class="textwidget"><p><em>Das Bloghaus</em> ist auch in anderen Sprachen verfügbar:<br />
+&#8211; auf Französisch: <a href="http://maisondescarnets.hypotheses.org/" target="_blank" rel="noopener noreferrer"><em>Maison des carnets</em></a><br />
+&#8211; auf Spanisch: <a href="https://casadelosblogs.hypotheses.org/" target="_blank" rel="noopener noreferrer"><em>La casa de los blogs</em></a><br />
+&#8211; auf Englisch:<a href="https://houseofblogs.hypotheses.org/" target="_blank" rel="noopener noreferrer"><em> The house of blogs</em></a></p>
+</div>
+		</aside><aside id="tag_cloud-4" class="widget widget_tag_cloud"><h1 class="widget-title">Schlagwörter-Wolke</h1><div class="tagcloud"><ul class='wp-tag-cloud' role='list'>
+	<li><a href="https://bloghaus.hypotheses.org/tag/artikelanfang" class="tag-cloud-link tag-link-260078 tag-link-position-1" style="font-size: 8pt;" aria-label="Artikelanfang (1 Eintrag)">Artikelanfang</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/autor" class="tag-cloud-link tag-link-217522 tag-link-position-2" style="font-size: 16.615384615385pt;" aria-label="Autor (4 Einträge)">Autor</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/blog" class="tag-cloud-link tag-link-27 tag-link-position-3" style="font-size: 16.615384615385pt;" aria-label="Blog (4 Einträge)">Blog</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/bloggen" class="tag-cloud-link tag-link-214964 tag-link-position-4" style="font-size: 19.846153846154pt;" aria-label="Bloggen (6 Einträge)">Bloggen</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/blogs" class="tag-cloud-link tag-link-245 tag-link-position-5" style="font-size: 11.876923076923pt;" aria-label="Blogs (2 Einträge)">Blogs</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/cleo" class="tag-cloud-link tag-link-31 tag-link-position-6" style="font-size: 8pt;" aria-label="Cléo (1 Eintrag)">Cléo</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/community-management" class="tag-cloud-link tag-link-505721 tag-link-position-7" style="font-size: 8pt;" aria-label="Community Management (1 Eintrag)">Community Management</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/creative-commons" class="tag-cloud-link tag-link-5804 tag-link-position-8" style="font-size: 11.876923076923pt;" aria-label="Creative Commons (2 Einträge)">Creative Commons</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/de-hypotheses-org" class="tag-cloud-link tag-link-173933 tag-link-position-9" style="font-size: 20.923076923077pt;" aria-label="de.hypotheses.org (7 Einträge)">de.hypotheses.org</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/design" class="tag-cloud-link tag-link-3384 tag-link-position-10" style="font-size: 18.338461538462pt;" aria-label="Design (5 Einträge)">Design</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/einbeten" class="tag-cloud-link tag-link-886616 tag-link-position-11" style="font-size: 8pt;" aria-label="Einbeten (1 Eintrag)">Einbeten</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/email-abonnement-monitoring" class="tag-cloud-link tag-link-886621 tag-link-position-12" style="font-size: 11.876923076923pt;" aria-label="Email-Abonnement; Monitoring (2 Einträge)">Email-Abonnement; Monitoring</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/evolve" class="tag-cloud-link tag-link-260074 tag-link-position-13" style="font-size: 11.876923076923pt;" aria-label="Evolve (2 Einträge)">Evolve</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/featured" class="tag-cloud-link tag-link-1121939 tag-link-position-14" style="font-size: 14.461538461538pt;" aria-label="featured (3 Einträge)">featured</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/hangout-on-air" class="tag-cloud-link tag-link-510760 tag-link-position-15" style="font-size: 16.615384615385pt;" aria-label="Hangout On Air (4 Einträge)">Hangout On Air</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/hueman" class="tag-cloud-link tag-link-1506175 tag-link-position-16" style="font-size: 16.615384615385pt;" aria-label="Hueman (4 Einträge)">Hueman</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/hypotheses" class="tag-cloud-link tag-link-6562 tag-link-position-17" style="font-size: 19.846153846154pt;" aria-label="Hypotheses (6 Einträge)">Hypotheses</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/impressum" class="tag-cloud-link tag-link-1506193 tag-link-position-18" style="font-size: 11.876923076923pt;" aria-label="Impressum (2 Einträge)">Impressum</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/issn" class="tag-cloud-link tag-link-1506187 tag-link-position-19" style="font-size: 14.461538461538pt;" aria-label="ISSN (3 Einträge)">ISSN</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/link" class="tag-cloud-link tag-link-202407 tag-link-position-20" style="font-size: 11.876923076923pt;" aria-label="Link (2 Einträge)">Link</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/lizenzvertrag" class="tag-cloud-link tag-link-260060 tag-link-position-21" style="font-size: 8pt;" aria-label="Lizenzvertrag (1 Eintrag)">Lizenzvertrag</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/logo" class="tag-cloud-link tag-link-31040 tag-link-position-22" style="font-size: 8pt;" aria-label="Logo (1 Eintrag)">Logo</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/magazinep" class="tag-cloud-link tag-link-260073 tag-link-position-23" style="font-size: 8pt;" aria-label="MagazineP (1 Eintrag)">MagazineP</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/magazinep-basic" class="tag-cloud-link tag-link-260076 tag-link-position-24" style="font-size: 11.876923076923pt;" aria-label="MagazineP Basic (2 Einträge)">MagazineP Basic</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/menue" class="tag-cloud-link tag-link-997794 tag-link-position-25" style="font-size: 11.876923076923pt;" aria-label="Menü (2 Einträge)">Menü</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/portal" class="tag-cloud-link tag-link-123379 tag-link-position-26" style="font-size: 14.461538461538pt;" aria-label="Portal (3 Einträge)">Portal</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/profil" class="tag-cloud-link tag-link-6454 tag-link-position-27" style="font-size: 8pt;" aria-label="Profil (1 Eintrag)">Profil</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/slideshow" class="tag-cloud-link tag-link-6265 tag-link-position-28" style="font-size: 8pt;" aria-label="Slideshow (1 Eintrag)">Slideshow</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/sprachen" class="tag-cloud-link tag-link-260057 tag-link-position-29" style="font-size: 8pt;" aria-label="Sprachen (1 Eintrag)">Sprachen</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/startseite" class="tag-cloud-link tag-link-237900 tag-link-position-30" style="font-size: 14.461538461538pt;" aria-label="Startseite (3 Einträge)">Startseite</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/support" class="tag-cloud-link tag-link-1501 tag-link-position-31" style="font-size: 14.461538461538pt;" aria-label="Support (3 Einträge)">Support</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/support-on-air" class="tag-cloud-link tag-link-886620 tag-link-position-32" style="font-size: 11.876923076923pt;" aria-label="Support On Air (2 Einträge)">Support On Air</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/thema" class="tag-cloud-link tag-link-66655 tag-link-position-33" style="font-size: 22pt;" aria-label="Thema (8 Einträge)">Thema</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/theme" class="tag-cloud-link tag-link-12731 tag-link-position-34" style="font-size: 16.615384615385pt;" aria-label="Theme (4 Einträge)">Theme</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/themes" class="tag-cloud-link tag-link-1506190 tag-link-position-35" style="font-size: 19.846153846154pt;" aria-label="Themes (6 Einträge)">Themes</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/twenty-eleven" class="tag-cloud-link tag-link-260077 tag-link-position-36" style="font-size: 14.461538461538pt;" aria-label="Twenty Eleven (3 Einträge)">Twenty Eleven</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/twentyfifteen" class="tag-cloud-link tag-link-1506180 tag-link-position-37" style="font-size: 11.876923076923pt;" aria-label="TwentyFifteen (2 Einträge)">TwentyFifteen</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/twenty-fourteen" class="tag-cloud-link tag-link-1155282 tag-link-position-38" style="font-size: 14.461538461538pt;" aria-label="Twenty Fourteen (3 Einträge)">Twenty Fourteen</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/twitter" class="tag-cloud-link tag-link-1506189 tag-link-position-39" style="font-size: 14.461538461538pt;" aria-label="Twitter (3 Einträge)">Twitter</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/urheberrecht" class="tag-cloud-link tag-link-260059 tag-link-position-40" style="font-size: 11.876923076923pt;" aria-label="Urheberrecht (2 Einträge)">Urheberrecht</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/video" class="tag-cloud-link tag-link-1467 tag-link-position-41" style="font-size: 11.876923076923pt;" aria-label="Video (2 Einträge)">Video</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/widget" class="tag-cloud-link tag-link-6816 tag-link-position-42" style="font-size: 14.461538461538pt;" aria-label="Widget (3 Einträge)">Widget</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/widgets" class="tag-cloud-link tag-link-1506191 tag-link-position-43" style="font-size: 8pt;" aria-label="Widgets (1 Eintrag)">Widgets</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/wordpress" class="tag-cloud-link tag-link-3485 tag-link-position-44" style="font-size: 20.923076923077pt;" aria-label="Wordpress (7 Einträge)">Wordpress</a></li>
+	<li><a href="https://bloghaus.hypotheses.org/tag/workshop" class="tag-cloud-link tag-link-4379 tag-link-position-45" style="font-size: 11.876923076923pt;" aria-label="Workshop (2 Einträge)">Workshop</a></li>
+</ul>
+</div>
+</aside><aside id="archives-3" class="widget widget_archive"><h1 class="widget-title">Archiv</h1>		<ul>
+				<li><a href='https://bloghaus.hypotheses.org/date/2019/09'>September 2019</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2019/06'>Juni 2019</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2018/09'>September 2018</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2018/07'>Juli 2018</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2018/01'>Januar 2018</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2017/09'>September 2017</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2017/02'>Februar 2017</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2016/12'>Dezember 2016</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2016/08'>August 2016</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2016/07'>Juli 2016</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2016/03'>März 2016</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2016/01'>Januar 2016</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2015/10'>Oktober 2015</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2015/09'>September 2015</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2015/07'>Juli 2015</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2015/06'>Juni 2015</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2015/02'>Februar 2015</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2014/12'>Dezember 2014</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2014/10'>Oktober 2014</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2014/09'>September 2014</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2014/05'>Mai 2014</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2014/04'>April 2014</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2014/02'>Februar 2014</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2013/11'>November 2013</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2013/10'>Oktober 2013</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2013/09'>September 2013</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2013/07'>Juli 2013</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2013/03'>März 2013</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2013/01'>Januar 2013</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2012/12'>Dezember 2012</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2012/11'>November 2012</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2012/06'>Juni 2012</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2012/04'>April 2012</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2012/03'>März 2012</a></li>
+	<li><a href='https://bloghaus.hypotheses.org/date/2012/02'>Februar 2012</a></li>
+		</ul>
+			</aside>	</div><!-- #primary-sidebar -->
+	</div><!-- #secondary -->
+
+		</div><!-- #main -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+
+			
+			<div class="site-info">
+				<span class="icon-hypotheses"></span>Ein Blog präsentiert von  <a href="https://hypotheses.org" title="Hypotheses">Hypotheses</a> - <a href="https://www.openedition.org/10423" title="Zum OpenEdition-Katalogeintrag">Zum OpenEdition-Katalogeintrag</a> - <a href="https://www.openedition.org/19362?lang=en">Datenschutzerklärung</a><br/><a href="https://bloghaus.hypotheses.org/feed" title="RSS">Syndication Feed</a> - <a href="https://bloghaus.hypotheses.org/credits">Impressum</a> - ISSN: 2265-5131<br/>								<a href="https://de.wordpress.org/" class="imprint">
+					Stolz präsentiert von WordPress				</a>
+			</div><!-- .site-info -->
+		</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+	 
+
+  
+    <!-- Piwik -->
+  <script type="text/javascript">
+    var _paq = _paq || [];
+    // tracker methods like "setCustomDimension" should be called before "trackPageView"
+    _paq.push(['setCustomVariable', 1, 'Domain', document.domain, 'page']);
+    _paq.push(['enableCrossDomainLinking']);
+    _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="https://pk.labocleo.org/";
+      _paq.push(['setTrackerUrl', u+'pk.php']);
+      _paq.push(['setSiteId', '4']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'pk.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <!-- End Piwik Code -->
+  
+  
+  
+<script type="text/javascript" src="https://static-origin.openedition.org/openbarre/js/cleo.js?date=2014-12-01"></script>
+<script type="text/javascript" src="https://static-origin.openedition.org/js/jquery.jsonp-latest.min.js"></script>
+<script type="text/javascript"><!--
+    jQuery(document).ready(function($) {
+        $('input[name=q]').focus(function() {
+            if ( $(this).attr('value') == 'Suchen' ) {
+                $(this).attr('value', '');
+            }
+        });
+    });
+function getCookieValue(c_name) {
+  if (document.cookie.length>0) {
+    c_start = document.cookie.indexOf(c_name + "=");
+    if (c_start!=-1) {
+      c_start = c_start + c_name.length+1;
+      c_end = document.cookie.indexOf(";",c_start);
+      if (c_end==-1) c_end = document.cookie.length;
+      return unescape(document.cookie.substring(c_start,c_end));
+    }
+  }
+  return "";
+}
+jQuery(document).ready(function($) {
+    $(function() {
+        var splitdomain = window.location.hostname.split('.');
+if (splitdomain.length > 2) { splitdomain.shift(); }
+        var currentdomain = splitdomain.join('.');
+        var privacyPolicyUpd = new Date('2018-06-25T10:00:00'); 
+        var privacyCookieValue=getCookieValue("__privacyalert");
+        var acceptedPrivacyDate;
+        if (privacyCookieValue!="") {
+            var acceptedPrivacyDate = new Date(Date.parse(privacyCookieValue));
+        }
+        if (privacyCookieValue == "" || acceptedPrivacyDate < privacyPolicyUpd){
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            var displayedDate = privacyPolicyUpd.toLocaleDateString("de-DE", options);
+            var language="de_DE";
+    var langattr = language == "fr_FR"? "fr" : "en";
+    $("<div>").html("<span class=\"privacytext\">Diese Webseite verwendet Cookies und sammelt personenbezogene Daten.<br />F&uuml;r weitere Informationen lesen Sie bitte unsere <a href=\"https://www.openedition.org/19362?lang="+langattr+"\">Datenschutzerkl&auml;rung</a> (aktualisiert am "+displayedDate+").<br />Sie geben Einwilligung zu unseren Cookies, wenn Sie unsere Webseite weiterhin nutzen.</span><span class=\"closeprivacynotice\">schlie&szlig;en</span>").attr("id", "privacynotice").appendTo("body");
+            $(".closeprivacynotice").click(function() {
+                var expDate = new Date();
+                expDate.setTime(expDate.getTime() + (365 * 24 * 3600 * 1000));
+                var curDate = new Date();
+                curDate.setTime(curDate.getTime());
+                document.cookie = "__privacyalert="+curDate.toUTCString() +";expires=" + expDate.toUTCString() + ";domain="+currentdomain+";path=/";
+                $("#privacynotice").remove();
+            });
+        }
+    });
+});
+--></script>
+<div id="openbarre">
+  <div class="openedition">
+    <div>
+      <div class="first">
+        <a href="http://www.openedition.org">OpenEdition</a>
+        <ul class="submenu nav-toggle-show">
+          <li>
+            <span>OpenEdition Books</span>
+            <ul>
+              <li><a href="http://books.openedition.org"><span class="title">OpenEdition Books</span>B&uuml;cher in den Geistes- und Sozialwissenschaften</a></li>
+              <li><a href="http://books.openedition.org/catalogue">B&uuml;cher</a></li>
+              <li><a href="http://books.openedition.org/publishers">Verleger</a></li>
+              <li><a href="http://books.openedition.org">Weitere Informationen</a></li>
+            </ul>
+          </li><li>
+            <span>OpenEdition Journals</span>
+            <ul>
+                <li><a href="http://journals.openedition.org"><span class="title">OpenEdition Journals</span>Zeitschriften in den Geistes- und Sozialwissenschaften</a></li>
+                <li><a href="http://www.openedition.org/catalogue-journals">Zeitschriften</a></li>
+                <li><a href="http://journals.openedition.org/6438">Weitere Informationen</a></li>
+            </ul>
+          </li><li>
+            <span>Calenda</span>
+            <ul>
+                <li><a href="http://calenda.org"><span class="title">Calenda</span>Wissenschaftlicher Veranstaltungskalender</a></li>
+                <li><a href="http://calenda.org/search">Veranstaltungen</a></li>
+                <li><a href="http://calenda.org/about">Weitere Informationen</a></li>
+            </ul>
+          </li><li>
+                <span>Hypotheses</span>
+                <ul>
+                    <li><a href="http://hypotheses.org"><span class="title">Hypotheses</span>Wissenschaftliche Blogs</a></li>
+                    <li><a href="http://www.openedition.org/catalogue-notebooks">Blogkatalog</a></li>
+                </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="last nav-toggle-show">
+        <ul class="submenu">
+          <li>
+            <span>Newsletters</span>
+            <ul>
+                <li><a href="http://newsletter.openedition.org"><span class="title">Newsletter</span>Newsletter abonnieren</a></li>
+            </ul>
+          </li><li>
+            <a href="http://www.openedition.org/14043">OpenEdition Freemium</a>
+          </li>
+        </ul>
+        <div class="align-right">
+          <form action="https://search.openedition.org/results" method="get">
+            <fieldset>
+              <div>
+                <input name="q" type="text" />
+                                                         <div class="search-choice">
+  <input id="HOtitle" name="s" type="hidden" value="Bloghaus">
+  <input id="HOradio" name="pf" value="HO" checked="checked" type="radio" />
+  <label for="HOradio">das Blog</label>
+  <br /><br />
+  <input id="openeditionradio" name="pf" value="" type="radio" />
+  <label for="openeditionradio">in OpenEdition</label>
+</div>
+<script>
+(function( $ ) {
+'use strict';
+$(function() {
+$('input[name="pf"]').change( function() {
+var value = $(this).val();
+if (value=='HO') {
+$('input[name="s"]').val("Bloghaus");
+} else {
+$('input[name="s"]').val("");
+}
+});
+});
+})(jQuery);
+</script>
+                                                    <button type="submit" class="icons icon-search"><span>Suchen</span></button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    <button class="icons icon-nav"></button>
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="https://static-origin.openedition.org/openbarre/css/ie_openbarre.css">
+    <![endif]-->
+</div>
+
+
+<script type='text/javascript' src='https://f.hypotheses.org/wp-content/plugins/hal/js/cv-hal.js?ver=5.3.2'></script>
+<script type='text/javascript' src='https://f.hypotheses.org/wp-content/plugins/wp-syntax/js/wp-syntax.js?ver=1.1'></script>
+<script type='text/javascript' src='https://f.hypotheses.org/wp-includes/js/comment-reply.min.js?ver=5.3.2'></script>
+<script type='text/javascript' src='https://f.hypotheses.org/wp-content/themes/twentyfourteen/js/functions.js?ver=20150315'></script>
+<script type='text/javascript' src='https://f.hypotheses.org/wp-content/plugins/wp-featherlight/js/wpFeatherlight.pkgd.min.js?ver=1.3.0'></script>
+<script type='text/javascript' src='https://f.hypotheses.org/wp-includes/js/wp-embed.min.js?ver=5.3.2'></script>
+<script async="async" type='text/javascript' src='https://f.hypotheses.org/wp-content/plugins/akismet/_inc/form.js?ver=4.1.3'></script>
+</body>
+</html>

@@ -1,0 +1,1947 @@
+<!doctype html>
+<!--[if IE 7]>         <html class="no-js ie7" lang="fr">  <![endif]-->
+<!--[if IE 8]>         <html class="no-js ie8" lang="fr">  <![endif]-->
+<!--[if IE 9]>         <html class="no-js ie9" lang="fr">  <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="fr">      <!--<![endif]-->
+<head>
+    <!-- Matomo Tag Manager -->
+    <script type="text/javascript">
+        var _mtm = _mtm || [];
+        _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src='https://analytics.ledevoir.com/js/container_nfPwhs6y.js'; s.parentNode.insertBefore(g,s);
+    </script>
+    <!-- End Matomo Tag Manager -->
+
+    <!-- Matomo -->
+    <script type="text/javascript">
+        var _paq = _paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="https://analytics.ledevoir.com/";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', '2']);
+            _paq.push(['enableHeartBeatTimer', 30]);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <!-- End Matomo Code -->
+
+    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"3a67a9c110",applicationID:"104581530"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1167.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="medium" content="news" />
+    <meta name="apple-itunes-app" content="app-id=909476802" />
+    <meta name="google-play-app" content="app-id=com.ledevoir.journaltablette.and">
+    <meta name="twitter:widgets:csp" content="on">
+    
+    
+            <link rel="canonical" href="https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal" />    
+        
+    
+    <!-- Remove default styles applied to phone numbers -->
+    <meta name="format-detection" content="telephone=no">
+
+            <meta property="fb:app_id" content="105451392851924" />
+        <meta property="fb:pages" content="98317905527" />
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="title" content="La fin des trottinettes en libre-service à Montréal | Le Devoir" />
+<meta name="description" content="" />
+<meta name="language" content="fr" />
+    <title>La fin des trottinettes en libre-service à Montréal | Le Devoir</title>
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds2.feedburner.com/fluxdudevoir" />
+
+    <link rel="stylesheet" href="/css/nweb/main.css?20191128" media="screen">
+    <link rel="stylesheet" href="/css/nweb/print.css?20181123" media="print">
+    <link rel="stylesheet" href="/css/jquery.fancybox.css" />
+    <link rel="stylesheet" href="/css/vendor/magnific-popup.css">
+
+    
+    
+                        
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.min.css" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   	<script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.12.4.min.js"><\/script>')</script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+        <script src="/js/ie/selectivizr-min.js"></script>
+        <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script>jQuery('html').removeClass('no-js');</script>
+
+    <script src="/js/web-push.js?20180515"></script>
+    <script src="/js/js.cookie.js"></script>
+
+                    <meta property="og:image" content="https://media2.ledevoir.com/images_galerie/nwd_789720_623516/image.jpg?ts=1582173042" />
+        <link rel="image_src" href="https://media2.ledevoir.com/images_galerie/nwd_789720_623516/image.jpg?ts=1582173042" />
+        
+                <meta property="og:title" content="La fin des trottinettes en libre-service à Montréal" />
+    <meta property="og:description" content="L’administration Plante justifie sa décision par le taux élevé de délinquance chez les utilisateurs." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal" />
+    <meta property="og:site_name" content="Le Devoir" />
+    
+    <script type="text/javascript" async="" src="https://rdc.m32.media/m32pixel.min.js"></script>
+    <script src="//rdc.m32.media/madops.js"></script>
+    
+                    <script type="text/javascript">
+            var m32_context = {"sous-section":"montreal","article":"la-fin-des-trottinettes-en-libre-service-a-montreal"};
+        </script>
+    
+            <script type="text/JavaScript">
+var dataLayer = [{
+	'pageTitle': 'La fin des trottinettes en libre-service à Montréal | Le Devoir',	'siteSection': 'politique',	'siteSubSection': 'montreal',	'articleAuthor': 'Jeanne Corriveau',	'articleName': 'La fin des trottinettes en libre-service à Montréal',	'articleRight': 'prive',	'edition': '2020-02-25',			'pageCategory': 'article',	'contentBlocked': 'No',	'counterNumberArticles': '1',	'userStatus': 'non-logged in'}];
+</script>
+<script type="text/JavaScript">
+
+</script>        <script src="/js/google_tag_event.js?20180530" async></script>
+        <script type="text/javascript" src="/js/head.js?20190211"></script>
+
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "Organization",
+          "name": "Le Devoir",
+          "url": "https://www.ledevoir.com",
+          "logo": "https://www.ledevoir.com/images/ul/logos/2018/logo_ledevoir.png",
+          "sameAs": [
+            "https://www.facebook.com/ledevoir/",
+            "https://www.instagram.com/ledevoir/",
+            "https://www.linkedin.com/company/le-devoir",
+            "https://plus.google.com/+ledevoir"
+          ]
+        }
+    </script>
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebSite",
+          "url": "https://www.ledevoir.com",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.ledevoir.com/recherche?expression={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+    </script>
+</head>
+<body class="article_module show_action ">
+
+    <!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-5DKW8X"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5DKW8X');</script>
+<!-- End Google Tag Manager -->
+    
+<div id="smartbanner" class="android shown" style="top: 0;display:none">
+    <div class="sb-container">
+        <a href="#" class="sb-close">×</a>
+        <span class="sb-icon" style="background-image: url(https://lh3.ggpht.com/CIyo6B7azh9YBLvULZc0GgPm5v9oPXY54I73TmeBJfDSDQxkP0kauqsj8JtprXkBIQ=w300-rw);"></span>
+        <div class="sb-info"><strong>Le Devoir</strong><span>Le Devoir</span><span>GRATUIT - sur Google Play</span>
+        </div>
+        <a href="market://details?id=com.ledevoir.journaltablette.and" class="sb-button"><span>OUVRIR</span></a></div>
+</div>
+
+<script>
+    $(function(){
+
+        var $smartbanner = $('#smartbanner');
+        var defaultTop = 0;
+
+        $('.sb-close', $smartbanner).click(function(event){
+            event.preventDefault();
+            $('#smartbanner').fadeOut();
+            $.cookie('hide_android_banner', '1', { expires: 365 });
+            $('#side_social').css('top', defaultTop);
+        });
+
+            });
+</script>
+    <script type="text/javascript" src="/js/gestion_ck.js"></script>
+
+	<script type="text/javascript">
+	$(function() {
+			});
+	</script>
+
+	<script type="text/javascript">
+	$(function() {
+				});
+	</script>
+
+
+    <div id="site-wrapper">
+
+        <div id="sliding-panel">
+    <button type="button" class="btn btn-close-sub-menu hidden-sm hidden-md hidden-lg"><svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M5.578.644L1.222 4.998l4.356 4.36-.634.64L0 5 4.945-.015"/></svg></button>
+
+    
+<div class="actions">
+    <div class="wrapper">
+        
+                    <div class="register">
+                <a href="https://abonnement.ledevoir.com/nos-offres" class="btn btn-register">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg>                    Je m'abonne <span class="hidden-md hidden-lg">au Devoir</span>
+                </a>
+            </div>
+            </div>
+</div>
+
+    <button type="button" class="btn btn-close-sliding-panel visible-xs"><svg xmlns="http://www.w3.org/2000/svg" width="11.744" height="11.695" viewBox=".651 .652 11.744 11.695"><path d="M.682 1.374l11.006 10.974.707-.707L1.337.666"/><path d="M1.358 12.33l10.98-10.97-.706-.708-10.98 10.97"/></svg></button>
+
+    <div class="sliding-panel-overflow">
+        <nav id="navigation" class="categories">
+            <ul class="list-unstyled">
+
+                <li><a href="/">Accueil</a></li>
+
+                                    
+                    <li class="turquoise has-children">
+                        <a href="/opinion">
+                            <span>
+                                Opinion                                                                    <span class="plus"></span>
+                                                            </span>
+                        </a>
+
+                                                    <div class="sub-menu" style="top:150%">
+                                <h2><a href="/opinion">Opinion</a></h2>
+                                <ul class="list-unstyled">
+                                                                                                                    <li>
+                                            <a href="/photos/galeries-photos/la-caricature-de-pascal-et-godin">
+                                                Caricatures
+                                            </a>
+                                        </li>
+                                    
+                                                                            <li>
+                                            <a href="/opinion/chroniques">Chroniques</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/opinion/editoriaux">Éditoriaux</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/opinion/idees">Idées</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/opinion/libre-opinion">Libre opinion</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/opinion/lettres">Lettres</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </li>
+
+                    
+                                                        
+                    <li class="dodger-blue has-children">
+                        <a href="/politique">
+                            <span>
+                                Politique                                                                    <span class="plus"></span>
+                                                            </span>
+                        </a>
+
+                                                    <div class="sub-menu" >
+                                <h2><a href="/politique">Politique</a></h2>
+                                <ul class="list-unstyled">
+                                    
+                                                                            <li>
+                                            <a href="/politique/canada">Canada</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/politique/quebec">Québec</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/politique/montreal">Montréal</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/politique/ville-de-quebec">Ville de Québec</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/politique/regions">Régions</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </li>
+
+                    
+                                                        
+                    <li class="west-side has-children">
+                        <a href="/societe">
+                            <span>
+                                Société                                                                    <span class="plus"></span>
+                                                            </span>
+                        </a>
+
+                                                    <div class="sub-menu" >
+                                <h2><a href="/societe">Société</a></h2>
+                                <ul class="list-unstyled">
+                                    
+                                                                            <li>
+                                            <a href="/societe/consommation">Consommation</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/societe/education">Éducation</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/societe/environnement">Environnement</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/societe/le-devoir-de-philo-histoire">Le Devoir de philo/Histoire</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/societe/sante">Santé</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/societe/science">Science</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/societe/transports-urbanisme">Transports / Urbanisme</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </li>
+
+                    
+                                                        
+                    <li class="dodger-blue">
+                        <a href="/economie">
+                            <span>
+                                Économie                                                            </span>
+                        </a>
+
+                                            </li>
+
+                    
+                                                        
+                    <li class="electric-violet has-children">
+                        <a href="/monde">
+                            <span>
+                                Monde                                                                    <span class="plus"></span>
+                                                            </span>
+                        </a>
+
+                                                    <div class="sub-menu" >
+                                <h2><a href="/monde">Monde</a></h2>
+                                <ul class="list-unstyled">
+                                    
+                                                                            <li>
+                                            <a href="/monde/afrique">Afrique</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/monde/asie">Asie</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/monde/moyen-orient">Moyen-Orient</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/monde/ameriques">Amériques</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/monde/etats-unis">États-Unis</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/monde/europe">Europe</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </li>
+
+                    
+                                                        
+                    <li class="red-violet has-children">
+                        <a href="/culture">
+                            <span>
+                                Culture                                                                    <span class="plus"></span>
+                                                            </span>
+                        </a>
+
+                                                    <div class="sub-menu" >
+                                <h2><a href="/culture">Culture</a></h2>
+                                <ul class="list-unstyled">
+                                    
+                                                                            <li>
+                                            <a href="/culture/ecrans">Écrans</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/culture/medias">Médias</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/culture/arts-visuels">Arts visuels</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/culture/cinema">Cinéma</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/culture/danse">Danse</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/culture/musique">Musique</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/culture/theatre">Théâtre</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </li>
+
+                    
+                                                        
+                    <li class="red-violet">
+                        <a href="/lire">
+                            <span>
+                                Lire                                                            </span>
+                        </a>
+
+                                            </li>
+
+                    
+                                                        
+                    <li class="dark-pink has-children">
+                        <a href="/vivre">
+                            <span>
+                                Vivre                                                                    <span class="plus"></span>
+                                                            </span>
+                        </a>
+
+                                                    <div class="sub-menu" >
+                                <h2><a href="/vivre">Vivre</a></h2>
+                                <ul class="list-unstyled">
+                                    
+                                                                            <li>
+                                            <a href="/vivre/recettes">Recettes</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/vivre/alimentation">Alimentation</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/vivre/habitation">Habitation</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/vivre/jardinage">Jardinage</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/vivre/restaurants">Restaurants</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/vivre/vin">Vin</a>
+                                        </li>
+                                                                            <li>
+                                            <a href="/vivre/voyage">Voyage</a>
+                                        </li>
+                                                                    </ul>
+                            </div>
+                                            </li>
+
+                    
+                                                        
+                    <li class="guardsman-red">
+                        <a href="/sports">
+                            <span>
+                                Sports                                                            </span>
+                        </a>
+
+                                            </li>
+
+                    
+                                                        
+                    <li class="">
+                        <a href="/dossiers">
+                            <span>
+                                Dossiers                                                            </span>
+                        </a>
+
+                                            </li>
+
+                                            <li>
+                            <a href="/cahiers-speciaux">
+                                <span>
+                                    Cahiers spéciaux
+                                </span>
+                            </a>
+                        </li>
+                    
+                                                        
+                    <li class="black">
+                        <a href="/videos">
+                            <span>
+                                Vidéos                                                            </span>
+                        </a>
+
+                                            </li>
+
+                    
+                                    
+                <li><a href="/photos/galeries-photos">Photos</a></li>
+
+                <li class="dodger-blue has-children">
+                    <a href="/jeux">
+                        <span>Jeux <span class="plus"></span></span>
+                    </a>
+                    <div class="sub-menu">
+                        <h2>Jeux</h2>
+                        <ul class="list-unstyled">
+                            <li><a href="/jeux">Mots-croisés</a></li>
+                            <li><a href="/jeux/sudoku">Sudoku</a></li>
+                            <li><a href="/jeux/jeu-questionnaire">Jeu-questionnaire</a></li>
+                            <li><a href="/jeux/epreuve-de-revision">Épreuve de révision</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+                <header id="header" class="has-header-pub">
+            <div class="header-top show-logo">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-14 fixed-height">
+                            <a href="/" class="brand"><svg width="256" height="52" viewBox="0 0 256 51.558" xmlns="http://www.w3.org/2000/svg"><g fill-rule="nonzero" fill="none"><path d="M232.685 24.7657V2.5125c0-.4306.1402-.718.42-.718h2.9371c1.6321 0 2.7515.359 3.5906 1.2924 1.632 1.7945 2.1915 5.8144 2.1915 10.265 0 4.379-.466 7.7528-1.818 9.6907-.8394 1.2921-2.2381 1.7229-3.8239 1.7229l-3.4973.0002zm15.5279 26.7038c5.5483 0 7.6937-3.8765 7.7871-11.4137h-.5595c0 4.8097-.9326 7.5372-2.5645 7.5372-1.1664 0-1.7719-.8615-2.0986-2.2972-.373-2.0096-.6531-5.24-.8858-8.255-.5595-8.0397-4.8493-10.5522-10.2121-11.4855v-.1436c6.6681-.718 10.8181-4.7376 10.8181-12.2032 0-7.968-3.6375-12.4189-12.1703-12.4189H219.349v.718l3.9166.0719c.373 0 .4661.2153.4661.646v46.8753c0 .5025-.0931.646-.466.646l-3.9167.0718v.7177h17.6256v-.718l-3.8234-.0716c-.3732 0-.4661-.1436-.4661-1.005v-22.971l3.6841.0718c2.4245 0 4.01 1.2204 4.1964 5.4556.0934 2.5844.1868 6.0301.3266 8.1118.3727 8.3984 2.9376 12.0596 7.3208 12.0596zm-48.0754-.9332h17.7197v-.718l-3.9168-.0716c-.3734 0-.513-.1436-.513-.646V2.2252c0-.5024.1396-.646.513-.646l3.9168-.072V.7895h-17.7197v.718l3.9173.0719c.373 0 .4663.1436.4663.646v46.8753c0 .5025-.0934.646-.4663.646l-3.9173.0718v.718zM182.838 51.613c10.0257 0 16.7405-11.27 16.7405-25.7706C199.5785 11.2702 192.8637 0 182.838 0c-10.025 0-16.7866 11.2702-16.7866 25.8423.0002 14.5009 6.7615 25.7706 16.7866 25.7706zm0-.8611c-1.0717 0-1.9582-.1438-3.0306-1.149-2.4716-2.3684-3.8705-9.1882-3.8705-23.7605 0-14.6442 1.399-21.4638 3.8705-23.8325C180.8798.933 181.7663.7894 182.838.7894c1.0262 0 1.9589.1436 2.9844 1.2204 2.4716 2.3687 3.9171 9.1883 3.9171 23.8325 0 14.5723-1.4455 21.392-3.917 23.7606-1.0256 1.005-1.9583 1.1489-2.9845 1.1489zm-31.9412 0h3.1242l10.3987-43.5017c.979-4.0918 1.7719-5.5991 3.4971-5.6708l1.7255-.072V.7895H159.99v.718l2.1919.0719c2.3774.0717 2.1447 3.0866 1.3985 6.1735l-6.808 28.57h-.1402L149.638 4.7376c-.4661-2.1534-.5123-3.0866.7463-3.1583l3.2173-.072V.7895h-17.2533v.718l1.9588.0719c1.399.0717 1.7719 1.1485 2.3314 3.5172l10.2584 45.6553zm-46.723-.2155h31.5685V30.006h-.4195c-1.1664 5.0967-2.705 10.1931-4.7565 13.8541-2.1448 4.0203-4.4762 5.743-8.2071 5.743h-4.3832c-.3727 0-.466-.2153-.466-.646V25.8424h1.5384c1.9582 0 3.5905.5027 4.7102 2.2253 1.445 2.01 2.3315 5.671 2.4245 9.2604h.5597V13.4955h-.5597c-.0927 3.5893-1.2126 7.3218-2.4716 9.2604-1.0723 1.7945-2.6574 2.2253-4.6629 2.2253h-1.5385V2.3689c0-.4305.0934-.646.4196-.646h4.1502c2.9844 0 5.2692 1.364 6.854 3.4455 2.1455 2.7277 3.824 7.5375 5.0361 14.1415h.5136V.7894h-30.3098v.718l3.9167.0719c.3731 0 .4667.2152.4667.646v46.8753c0 .4308-.0936.646-.4667.646l-3.9167.0718v.718zm-22.2887-.9332c-.3727 0-.4661-.2153-.4661-.646V2.2971c0-.4307.0934-.646.4193-.646h3.5907c1.6785 0 3.0776.2872 4.1968 1.1485 2.8909 2.2253 4.1496 9.4754 4.1496 22.971 0 13.1366-1.6317 20.0997-4.1032 22.5403-1.1654 1.0768-2.5645 1.292-4.0103 1.292h-3.7768zm-13.756.9332h18.6518c9.2329 0 16.8337-8.9732 16.8337-24.8374 0-15.721-7.461-24.9095-17.02-24.9095H68.129v.718l3.9171.0719c.3727 0 .4663.2152.4663.646v46.8753c0 .4308-.0934.646-.4663.646l-3.917.0718v.718z" fill="#231F20"/><path d="M32.3737 50.5806H64V30.1324h-.4203c-1.168 5.0763-2.7097 10.1524-4.7653 13.7988-2.1485 4.0042-4.4843 5.72-8.2215 5.72h-4.3912c-.374 0-.4674-.2145-.4674-.6435V25.9856h1.5411c1.9625 0 3.5978.5007 4.7188 2.2164 1.4478 2.002 2.3359 5.6484 2.4295 9.2234h.5605V13.688h-.5605c-.0936 3.575-1.2149 7.2925-2.4768 9.2233-1.074 1.7874-2.6623 2.2164-4.6717 2.2164H45.734V2.606c0-.4289.0933-.6435.42-.6435h4.1584c2.9895 0 5.2786 1.3586 6.8668 3.4317 2.1488 2.717 3.8303 7.5074 5.0451 14.085h.5141V1.0327H32.3737v.715l3.9243.0717c.3734 0 .467.2144.467.6435v46.6878c0 .429-.0936.6435-.467.6435l-3.9243.0714v.715zM0 50.5806h30.4586V28.4878h-.514c-1.2142 5.0761-2.6624 10.2957-4.6716 14.2278-2.2418 4.3615-4.1105 7.007-7.3338 7.007h-4.1114c-.3738 0-.467-.286-.467-.7151l-.0466-46.545c0-.5005.1398-.6435.5136-.6435l3.9243-.0717v-.715H0v.715l3.924.0717c.3737 0 .4672.143.4672.6434v46.6879c0 .429-.0935.715-.4671.715H0v.7153z" fill="#849DAA"/></g></svg></a>
+                                                            <a href="/" class="mobile-brand"><svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="25 25 51 51"><switch><path fill="#231F20" d="M52.234 25H33.282v.737l4.021.074c.381 0 .48.22.48.664v48.082c0 .438-.1.659-.48.659l-4.021.074v.733h19.142c9.477 0 17.279-9.2 17.279-25.474C69.703 34.425 62.045 25 52.234 25M47.4 75.068c-.383 0-.479-.224-.479-.662v-47.86c0-.441.097-.664.431-.664h3.687c1.726 0 3.157.294 4.308 1.179 2.967 2.282 4.26 9.717 4.26 23.562 0 13.477-1.674 20.613-4.213 23.116-1.195 1.104-2.629 1.329-4.113 1.329H47.4z"/></switch></svg></a>
+                            
+                            <button type="button" class="btn btn-open-sliding-panel"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13"><path d="M0 0h14v1H0V0zm5 4h7v1H5V4zM0 4h2v1H0V4zm0 4h2v1H0V8zm0 4h2v1H0v-1zm5-4h8v1H5V8zm0 4h6v1H5v-1z"/></svg><span class="hidden-xs"> Sections</span></button>
+                            <button type="button" class="btn btn-search"><svg xmlns="http://www.w3.org/2000/svg" width="14.354" height="14.354" viewBox="0 0 14.354 14.354"><path d="M5.5 11C2.462 11 0 8.537 0 5.5 0 2.462 2.462 0 5.5 0 8.537 0 11 2.462 11 5.5 11 8.537 8.537 11 5.5 11zm3.646-1.146l.707-.707 4.5 4.5-.707.707-4.5-4.5zM5.5 10C7.985 10 10 7.985 10 5.5S7.985 1 5.5 1 1 3.015 1 5.5 3.015 10 5.5 10z"/></svg></button>
+
+                            
+<div class="actions">
+    <div class="wrapper">
+                    <a href="https://abonnement.ledevoir.com/nos-offres" class="btn btn-register hidden-xs">
+                <svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg>                Je m'abonne <span class="hidden-md hidden-lg">au Devoir</span>
+            </a>
+            <a href="http://www.lesamisdudevoir.com" target="_blank" class="btn btn-donation hidden-xs hidden-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg>                Je donne
+            </a>
+
+            <div class="dropdown profile-dropdown  from-right">
+                <button type="button" class="btn btn-profile">
+                    <span class="profile"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M18 9.07c-.038 4.97-4.1 8.968-9.07 8.93S-.037 13.9 0 8.93C.038 3.96 4.1-.037 9.07 0c4.97.038 8.968 4.1 8.93 9.07zm-4.025 6.196C15.8 13.814 16.98 11.578 17 9.06c.034-4.417-3.52-8.026-7.94-8.06C4.644.966 1.035 4.52 1 8.94c-.02 2.554 1.16 4.837 3.015 6.317l.117-1.435c.17-.78.717-1.14 1.327-1.366 0 0 1.25-.456 3.535-.456 2.284 0 3.536.456 3.536.456.717.246 1.25.57 1.327 1.366l.115 1.443h.003zm-.98.668c.187-.108.37-.225.547-.347l-.574-.01-.08-1.056c-.06-.663-.49-.934-1.06-1.14 0 0-1-.38-2.83-.38s-2.83.38-2.83.38c-.488.19-.926.49-1.06 1.14l-.074.93-.782-.01c1.313.97 2.933 1.546 4.69 1.56 1.428.01 2.773-.353 3.94-1H13l-.006-.066z"/><path d="M12 7c0 1.657-1.344 3-3 3-1.657 0-3-1.343-3-3 0-1.655 1.343-3 3-3 1.656 0 3 1.345 3 3zm-1 0c0-1.104-.896-2-2-2s-2 .896-2 2 .896 2 2 2 2-.896 2-2z"/></svg></span>
+                                        <span class="chevron"><svg xmlns="http://www.w3.org/2000/svg" width="10.014" height="5.577" viewBox="-2.219 2.204 10.014 5.577"><path d="M-1.56 2.204L2.795 6.56l4.36-4.356.64.635-5 4.94L-2.22 2.84"/></svg></span>
+                </button>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="/auth/login">Se connecter <svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg></a>
+                    </li>
+                    <li>
+                        <a href="https://abonnement.ledevoir.com/profil/creer-votre-profil">
+                            Créez un compte gratuitement
+                            <small>Obtenez 3 articles de plus par mois</small>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg>                        </a>
+                    </li>
+                    <li class="stand-out">
+                        <a href="https://abonnement.ledevoir.com/nos-offres">
+                            Abonnez-vous au <em>Devoir</em>
+                            <small>À partir de 13,61$/mois</small>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg>                        </a>
+                    </li>
+                </ul>
+            </div>
+        
+            </div>
+</div>
+
+                            
+                                                                <div class="article-reminder hidden-xs hidden-sm">
+    <h2>
+        <small>Montréal</small>
+        La fin des trottinettes en libre-service à Montréal    </h2>
+</div>
+<ul class="social list-unstyled">
+    <li class="fb"><a target="_blank" href="https://www.facebook.com/share.php?u=https%3A%2F%2Fwww.ledevoir.com%2Fpolitique%2Fmontreal%2F573258%2Fla-fin-des-trottinettes-en-libre-service-a-montreal&title=La+fin+des+trottinettes+en+libre-service+%C3%A0+Montr%C3%A9al"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"><path d="M21 18.004C21 19 19.986 20 19.023 20H13.03v-8.012h2.698l.32-1.988-3.02-.003V8.31c0-.874 1.024-2.326 2.277-2.326l.682.066L15.914 4c-.277-.037-.234 0-1.34 0-2.305 0-3.566.947-3.566 4.01v1.987H8.962v1.99h2.046V20H1.993C.99 20 0 18.986 0 18.004V1.986C0 .86.958 0 1.993 0h16.985C20.01 0 21 1.004 21 1.986v16.018zm-.99-.064V2.104c0-.61-.494-1.104-1.104-1.104H2.104C1.494 1 1 1.495 1 2.104V17.94c0 .61.494 1.104 1.104 1.104h7.907V13.02H8V9.038h2.01V8.01c0-3.61 1.552-4.99 4.564-4.99 1.105 0 2.162-.038 2.438 0V7.03l-1.706-.066c-.68 0-1.29.595-1.29 1.343v.727h2.996l-.66 3.982h-2.336v6.023h4.89c.61 0 1.104-.493 1.104-1.103z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"><path d="M20.994 18.008c0 .918-1.044 1.985-1.977 1.985L13.01 20v-7.996h2.186l.66-2H13.01V8.31c0-.75 1.06-2.298 1.74-2.298h1.268V3.988s-.547.007-1.425.007c-1.778 0-3.616 1.537-3.616 4.016v1.994H8.97v2h2.007V20l-8.93-.007C1.106 19.993 0 18.93 0 18.008L.006 1.972C.006 1.02 1.056 0 2.046 0h16.97C19.962 0 21 1.04 21 1.972l-.006 16.036z"/></svg></span></a></li>
+<li class="tw"><a href="https://twitter.com/intent/tweet?text=La+fin+des+trottinettes+en+libre-service+%C3%A0+Montr%C3%A9al+https%3A%2F%2Fwww.ledevoir.com%2Fpolitique%2Fmontreal%2F573258%2Fla-fin-des-trottinettes-en-libre-service-a-montreal" target="_blank"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="22.058" height="19" viewBox="-1.058 0 22.058 19"><path d="M20.4.692s-.494 1.79-1.36 2.32C19.89 2.91 20.25 2.8 21 2.46c-.6 1.592-1.26 2.226-2.078 2.83.008.184.012.37.012.557 0 7.17-4.82 13.153-12.52 13.153-3.3 0-7.012-1.494-7.472-4.342.613.29 2.345.5 2.683.5.664 0 2.193-.184 3.1-.895-1.83-.033-3.528-1.293-4.06-2.998.254.05.69.125.96.125.382 0 .74-.117 1.09-.218C.8 10.78 0 9.16 0 7.027c.565.32 1 .356 1.625.162C.668 6.574 0 5.4 0 3.912 0 3.127.214 1.6 1 .693c2.076 2.43 5.726 4.198 8.027 4.6C9.027 2.254 10.737 0 14.123 0c1.48 0 2.556.622 3.41 1.6.955-.19 2.096-.49 2.867-.908zm-3.222 1.662C16.416 1.52 15.328 1 14.123 1 11.813 1 9.94 2.922 9.94 5.292c0 .336-.01.488.062.803-3.48-.18-6.58-1.95-8.817-4.05-.36.635-.332 1.113-.332 1.9 0 1.487.924 2.668 2.046 3.438-.77.43-1.457.657-2.046.652v.053c0 1.83 1.51 2.467 3.324 3.152-.717.49-1.443.705-2.158.764.575 1.008 3.12 1.845 4.395 1.948-1.733 1.813-3.866 2.28-5.85 1.9C2.165 17.317 4.053 18 6.415 18c7.7 0 11.638-6.498 11.638-12.17 0-.186-.067-.666-.074-.848.737-.425.903-.625 1.284-1.28-.75.34-1.68.227-2.426.153 1.098-.572 2.02-1.81 2.02-1.81s-.712.252-1.68.31z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="22.058" height="19" viewBox="-1.058 0 22.058 19"><path d="M20.4.692c-.77.417-1.912.718-2.867.91C16.68.62 15.603 0 14.123 0c-3.385 0-5.096 2.255-5.096 5.292-2.3-.402-5.952-2.17-8.028-4.6-.786.91-1 2.435-1 3.22 0 1.49.668 2.663 1.625 3.277C1 7.382.565 7.346 0 7.026c0 2.133.8 3.752 2.715 4.146-.352.1-.708.218-1.09.218-.27 0-.706-.073-.96-.124.532 1.705 2.23 2.965 4.06 2.998-.907.71-2.436.895-3.1.895-.338 0-2.07-.21-2.683-.5.46 2.846 4.17 4.34 7.473 4.34 7.7 0 12.52-5.984 12.52-13.152 0-.187-.005-.373-.013-.556C19.74 4.686 20.4 4.052 21 2.46c-.75.34-1.112.45-1.96.552.866-.53 1.36-2.32 1.36-2.32z"/></svg></span></a></li>
+<li class="mail"><a href="#" data-href="https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="19.99" height="14.988" viewBox="0 0 19.99 14.988"><path d="M2.453 1l7.524 6.133L17.437 1H2.454zm16.528.205L9.978 8.52 1 1.35v12.68h17.98V1.204zM0 0h19.99v14.988H0V0z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="19.99" height="14.988" viewBox="0 0 19.99 14.988"><path d="M0 0h19.99v14.988H0V0zm2.468 2.542l7.51 5.977 7.578-5.978-.733-.825-6.846 5.415-6.77-5.388-.74.798z"/></svg></span></a></li>
+    <li class="print"><a href="#"><span class="normal"><svg width="20" height="23" xmlns="http://www.w3.org/2000/svg" class="article-toolbar-icon"><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.243" y1=".513" x2="12.407" y2=".513" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.724" y1="7.873" x2="3.724" y2=".025"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.203" y1=".347" x2="16.465" y2="4.536" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.07" y1=".001" x2="12.07" y2="4.42" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="11.57" y1="4.496" x2="16.061" y2="4.496" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".022" y1="7.47" x2="20.012" y2="7.47" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.3" y1="4.157" x2="16.3" y2="7.887" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".256" y1="17.559" x2="4.112" y2="17.559" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".484" y1="7.043" x2=".484" y2="18.064" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="19.501" y1="7.041" x2="19.501" y2="17.955" stroke="#000"/><rect stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.708" y="10.551" width="7.996" height=".902" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.198" y1="14.547" x2="16.827" y2="14.547" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.335" y1="14.102" x2="16.335" y2="22.684" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.708" y1="14.06" x2="3.708" y2="22.789" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.202" y1="22.487" x2="16.843" y2="22.487"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.105" y1="17.561" x2="20.001" y2="17.561" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="5.044" y1="17.56" x2="14.748" y2="17.56" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="4.994" y1="19.511" x2="14.752" y2="19.511" stroke="#000"/><rect height=".783" width=".783" y="10.548" x="15.415" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" fill="none"/></svg></span><span class="hover"><svg width="20" height="23" xmlns="http://www.w3.org/2000/svg" class="article-toolbar-icon"><rect stroke="#000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x=".485" y="7.427" width="18.999" height="7.171" class="color-match-1"/><rect fill="#fff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.757" y="14.614" width="12.448" height="7.519" stroke="#000" /><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.243" y1=".513" x2="12.407" y2=".513" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.724" y1="7.873" x2="3.724" y2=".025"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.203" y1=".347" x2="16.465" y2="4.536" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.07" y1=".001" x2="12.07" y2="4.42" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="11.57" y1="4.496" x2="16.061" y2="4.496" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".022" y1="7.47" x2="20.012" y2="7.47" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.3" y1="4.157" x2="16.3" y2="7.887" stroke="#000"/><rect fill="#fff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.687" y="10.53" width="7.996" height=".902" stroke="#fff" class="color-match-2"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.198" y1="14.547" x2="16.827" y2="14.547" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.335" y1="14.102" x2="16.335" y2="22.684" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.708" y1="14.06" x2="3.708" y2="22.789" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.202" y1="22.487" x2="16.843" y2="22.487"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="5.044" y1="17.56" x2="14.748" y2="17.56" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="4.994" y1="19.511" x2="14.752" y2="19.511" stroke="#000"/><rect height=".783" width=".783" y="10.548" x="15.415" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#fff" fill="none" class="color-match-2"/><rect height="2.116" width="2.814" y="15.442" x=".488" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" class="color-match-1"/><rect height="2.116" width="2.814" y="15.453" x="16.686" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" class="color-match-1"/></svg></span></a></li>
+    <li class="bookmark"><a href="#" class="btn_favoris"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="20.031" viewBox="0 0 14 20.031"><path d="M0 0h14v1H0zM1 19l6.104-4.895.505.597L1 20"/><path d="M6.552 14.867l6.446 5.116v-1l-5.946-4.616M13 0h1v20h-1M0 .032h1v20H0z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="20.031" viewBox="0 0 14 20.031"><path fill="none" d="M1 19l6.104-4.895.505.597-.062.05L13 18.97V1H1"/><path d="M13 0H0v20.032h1V20l5.98-4.793 6.018 4.775.002-.003V20h1V0h-1z"/></svg></span></a></li>
+</ul>                                                    </div>
+                    </div>
+                </div>
+                <span class="blur"></span>
+                <div class="header-search">
+    <div class="header-search-top">
+        <button type="button" class="btn btn-close-search"><svg xmlns="http://www.w3.org/2000/svg" width="11.744" height="11.695" viewBox=".651 .652 11.744 11.695"><path d="M.682 1.374l11.006 10.974.707-.707L1.337.666"/><path d="M1.358 12.33l10.98-10.97-.706-.708-10.98 10.97"/></svg></button>
+        <div class="container">
+            <div class="row">
+    <div class="col-xs-14">
+        <form action="/recherche" method="GET" novalidate>
+            <div class="form-group">
+                <label for="header-search" class="sr-only">Que cherchez-vous?</label>
+                <span class="input-group-addon"><svg xmlns="http://www.w3.org/2000/svg" width="14.354" height="14.354" viewBox="0 0 14.354 14.354"><path d="M5.5 11C2.462 11 0 8.537 0 5.5 0 2.462 2.462 0 5.5 0 8.537 0 11 2.462 11 5.5 11 8.537 8.537 11 5.5 11zm3.646-1.146l.707-.707 4.5 4.5-.707.707-4.5-4.5zM5.5 10C7.985 10 10 7.985 10 5.5S7.985 1 5.5 1 1 3.015 1 5.5 3.015 10 5.5 10z"/></svg></span>
+                <input type="text" name="expression" id="header-search" placeholder="Que cherchez-vous?" class="form-control autocomplete-search">
+            </div>
+            <div class="actions">
+                <button type="submit" name="rechercher" class="btn btn-default"><span class="hidden-xs">Rechercher</span><span class="chevron-right"><svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg></span></button>
+            </div>
+        </form>
+    </div>
+</div>        </div>
+    </div>
+    </div>
+                                                    <div class="header-articles-carousel hidden-xs">
+        <h3><small>Dans la section</small>
+            <a href="/politique"><span>Politique</span></a></h3>
+        <div class="carousel-wrapper">
+            <div class="header-carousel-items list-unstyled">
+                                                        <article>
+                        <a href="/politique/quebec/573466/le-ministre-roberge-doit-s-excuser-au-professeur-weinstock-reclame-marwah-rizqy">
+                                                            <span class="img"><img src="https://media2.ledevoir.com/images_galerie/nwlb_790540_624475/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Le professeur Weinstock songe à poursuivre le ministre Roberge</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/canada/573548/le-federal-se-dit-toujours-ouvert-a-discuter-avec-les-autochtones">
+                                                            <span class="img"><img src="https://media2.ledevoir.com/images_galerie/nwlb_790825_624669/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Le fédéral dit demeurer ouvert à la discussion avec les chefs autochtones</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/quebec/573549/le-ministre-roberge-offre-ses-excuses-sinceres-au-professeur-weinstock">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_790828_624571/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Roberge fait son mea culpa envers le professeur Weinstock</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/canada/573578/ultimatum-aux-mohawks-de-tyendinaga">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_790927_624633/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Ultimatum aux Mohawks de Tyendinaga</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/canada/573593/ecrasement-d-avion-en-iran-70-compensations-versees-aux-proches-des-victimes">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_790979_624710/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Écrasement d’avion en Iran: 70 compensations versées aux proches des victimes</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/canada/573603/l-aide-medicale-a-mourir-elargie-par-ottawa">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_791013_624751/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Ottawa veut élargir l’aide médicale à mourir</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/canada/573605/victoire-de-l-alberta-en-cour-d-appel-sur-la-taxe-carbone">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_791019_624878/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Taxe carbone: l’Alberta obtient gain de cause en appel</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/canada/573627/les-arrestations-ne-remettent-pas-en-question-la-reconciliation-selon-ottawa">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_791094_624774/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Les arrestations ne remettent pas en question la réconciliation, selon Ottawa</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/canada/573638/les-barrages-autochtones-pourraient-se-multiplier">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_791135_624885/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Les barrages autochtones pourraient se multiplier</h2>
+                        </a>
+                    </article>
+                                                        <article>
+                        <a href="/politique/quebec/573642/longue-attente-au-bout-du-monde">
+                                                            <span class="img"><img src="https://media1.ledevoir.com/images_galerie/nwlb_791149_624874/image.jpg" alt="" height="42" width="75" class="img-responsive"></span>
+                                                        <h2>Longue attente au bout du monde</h2>
+                        </a>
+                    </article>
+                            </div>
+        </div>
+    </div>
+                                    
+                                                                </div>
+            
+                    </header>
+        <main>
+                        <link rel="stylesheet" type="text/css" media="all" href="/css/spellchecker.css" />
+<script type="text/javascript" src="/js/jquery.spellchecker.js"></script>
+
+    
+<script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "NewsArticle",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal"
+      },
+      "headline": "La fin des trottinettes en libre-service à Montréal",
+            "image": [
+        "https://media2.ledevoir.com/images_galerie/nwd_789720_623516/image.jpg?ts=1582173042"
+       ],
+             "datePublished": "2020-02-19T00:00:00-05:00",
+      "dateModified": "2020-02-19T23:30:42-05:00",
+
+                  "author": {
+        "@type": "Person",
+        "name": "Jeanne Corriveau"
+      },
+             "publisher": {
+        "@type": "Organization",
+        "name": "Le Devoir",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.ledevoir.com/images/ul/logos/logo_devoir_amp.png"
+        }
+      },
+      "description": "L’administration Plante justifie sa décision par le taux élevé de délinquance chez les utilisateurs."
+    }
+</script>
+
+
+
+
+
+                        <div class="popup-msg hidden-print full">
+            <a class="btn-close" href="#" title="Fermer"><svg xmlns="http://www.w3.org/2000/svg" width="11.744" height="11.695" viewBox=".651 .652 11.744 11.695"><path d="M.682 1.374l11.006 10.974.707-.707L1.337.666"/><path d="M1.358 12.33l10.98-10.97-.706-.708-10.98 10.97"/></svg></a>
+            <a class="btn-infos" href="#" title="Ouvrir"><svg xmlns="http://www.w3.org/2000/svg" width="10.014" height="5.577" viewBox="-2.218 2.204 10.014 5.577"><path d="M7.138 7.78L2.783 3.426l-4.36 4.356-.64-.634 5-4.942 5.012 4.943"/></svg></a>
+            <div class="panel sans-espacement">
+                <div class="panel-title">
+                                            Vous avez lu <strong>1 des 4 articles gratuits</strong> ce mois-ci.
+                                    </div>
+                <div class="panel-content">
+                    <p><a class="btn btn-default btn-paywall btn-abonnement bg-blue-secondary" href="https://abonnement.ledevoir.com/profil/creer-votre-profil">
+                                                            Créez-vous un compte<br/>
+                                pour consulter <br/>
+                                <strong>3 articles gratuits</strong><br/>
+                                de plus par mois.
+                                                        <span class="chevron-right"><svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"></path></svg></span></a></p>
+                    <p><a class="question" href="/du-nouveau">?</a><small>Déjà abonné? <a href="/auth/login" class="afficher_login_popup btn-connexion">Connectez-vous</a>.</small></p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(function(){
+                var $paywall = $('.popup-msg');
+                var $btnClose = $('.btn-close', $paywall);
+                var $btnInfos = $('.btn-infos', $paywall);
+                var $btnAbonnement = $('.btn-abonnement', $paywall);
+                var $btnConnexion = $('.btn-connexion', $paywall);
+                var $btnQuestion = $('.question', $paywall);
+
+                var fadeTimeOut;
+
+                if ($paywall.hasClass('mini')) {
+                    fadeTimeOut = setTimeout(function() {
+                        $paywall.fadeOut('normal', function() {
+                            if ($videoLive.length && !$videoLive.hasClass('moved')) {
+                                $videoLive.css('left', videoLiveOriginalLeft);
+                            }
+                        });
+                    }, 5000);
+                }
+
+                                var $videoLive = $('#video-live');
+                var videoLiveOriginalLeft;
+                if ($videoLive.length) {
+                    videoLiveOriginalLeft = $videoLive.css('left');
+                    $videoLive.css('left', (parseInt($paywall.outerWidth()) + 60) + 'px');
+                }
+
+                if ($btnClose.length > 0) {
+                    $btnClose.click(function (e) {
+                        $paywall.fadeOut();
+                        dataLayer.push({'eventCategory': 'PW', 'eventAction': 'Click - X', 'eventLabel': '1e article', 'event': 'gtm_event'});
+                        e.preventDefault();
+                    });
+                }
+
+                if ($btnInfos.length > 0) {
+                    $btnInfos.click(function (e) {
+                        var $this = $(this);
+
+                        clearTimeout(fadeTimeOut);
+
+                        $this.parent().find('.panel-content').slideDown();
+                        $this.hide();
+                        $btnClose.show();
+
+                        dataLayer.push({'eventCategory': 'PW', 'eventAction': 'Click - Agrandir', 'eventLabel': '1e article', 'event': 'gtm_event'});
+
+                        e.preventDefault();
+                    });
+                }
+
+                if ($btnAbonnement.length > 0) {
+                    $btnAbonnement.click(function (e) {
+                        dataLayer.push({'eventCategory': 'PW', 'eventAction': 'Click - Abonnement', 'eventLabel': '1e article', 'event': 'gtm_event'});
+                    });
+                }
+
+                if ($btnConnexion.length > 0) {
+                    $btnConnexion.click(function (e) {
+                        dataLayer.push({'eventCategory': 'PW', 'eventAction': 'Click - Connexion', 'eventLabel': '1e article', 'event': 'gtm_event'});
+                    });
+                }
+                if ($btnQuestion.length > 0) {
+                    $btnQuestion.click(function (e) {
+                        dataLayer.push({'eventCategory': 'PW', 'eventAction': 'Click - ?', 'eventLabel': '1e article', 'event': 'gtm_event'});
+                    });
+                }
+
+                dataLayer.push({'eventCategory': 'PW', 'eventAction': 'Show', 'eventLabel': '1e article', 'event': 'gtm_event'});
+                if (typeof fbq !== 'undefined') {
+                    fbq('trackCustom', 'VirtualPageview', { content: '/paywall', numArticle: '1', referrer: document.location.href, blocked: false });
+                }
+            });
+        </script>
+
+    
+<div id="articles" class="single dodger-blue clearfix">
+            <header class="article-header text-dark">
+            <div class="container wide-container">
+            <div class="header-pub">
+                <div class="text-center mb15">
+                    <div class="row">
+    <div>
+        <div class="pub super-leaderboard">	<!-- ZP:A1 -->
+	<div id="A1" class="pub">
+		<div align="center">
+															
+                                                                                            <div data-m32-ad data-options='{"sizes":"[[320,50],[728,90],[970,250]]","sizeMapping":"[ [[0,0], [[320,50]]], [[768,0], [[728,90]]], [[1024, 0], [[970,250],[728,90]]], [[1236, 0], [[1260,400],[1200,400],[970,250],[728,90]]] ]","dfpId":"21658289790","dfpAdUnitPath":"le.devoir/politique","kv":{"zone":"A1"}}'></div>                                            									</div>
+        	</div>
+</div>
+    </div>
+    <div class="col-xs-14 hidden">
+        <div class="pub pub-fw-offset mobile">	<!-- ZP:M1 -->
+	<div id="M1" class="pub">
+		<div align="center">
+															
+                                                                                    									</div>
+        	</div>
+</div>
+    </div>
+</div>                </div>
+            </div>
+        </div>
+        <div class="container">
+        <div class="row">
+                            <div class="col-xs-14 col-sm-3 hidden-xs hidden-print">
+                                            <ul class="social list-unstyled">
+                            <li class="fb"><a target="_blank" href="https://www.facebook.com/share.php?u=https%3A%2F%2Fwww.ledevoir.com%2Fpolitique%2Fmontreal%2F573258%2Fla-fin-des-trottinettes-en-libre-service-a-montreal&title=La+fin+des+trottinettes+en+libre-service+%C3%A0+Montr%C3%A9al"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"><path d="M21 18.004C21 19 19.986 20 19.023 20H13.03v-8.012h2.698l.32-1.988-3.02-.003V8.31c0-.874 1.024-2.326 2.277-2.326l.682.066L15.914 4c-.277-.037-.234 0-1.34 0-2.305 0-3.566.947-3.566 4.01v1.987H8.962v1.99h2.046V20H1.993C.99 20 0 18.986 0 18.004V1.986C0 .86.958 0 1.993 0h16.985C20.01 0 21 1.004 21 1.986v16.018zm-.99-.064V2.104c0-.61-.494-1.104-1.104-1.104H2.104C1.494 1 1 1.495 1 2.104V17.94c0 .61.494 1.104 1.104 1.104h7.907V13.02H8V9.038h2.01V8.01c0-3.61 1.552-4.99 4.564-4.99 1.105 0 2.162-.038 2.438 0V7.03l-1.706-.066c-.68 0-1.29.595-1.29 1.343v.727h2.996l-.66 3.982h-2.336v6.023h4.89c.61 0 1.104-.493 1.104-1.103z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"><path d="M20.994 18.008c0 .918-1.044 1.985-1.977 1.985L13.01 20v-7.996h2.186l.66-2H13.01V8.31c0-.75 1.06-2.298 1.74-2.298h1.268V3.988s-.547.007-1.425.007c-1.778 0-3.616 1.537-3.616 4.016v1.994H8.97v2h2.007V20l-8.93-.007C1.106 19.993 0 18.93 0 18.008L.006 1.972C.006 1.02 1.056 0 2.046 0h16.97C19.962 0 21 1.04 21 1.972l-.006 16.036z"/></svg></span></a></li>
+<li class="tw"><a href="https://twitter.com/intent/tweet?text=La+fin+des+trottinettes+en+libre-service+%C3%A0+Montr%C3%A9al+https%3A%2F%2Fwww.ledevoir.com%2Fpolitique%2Fmontreal%2F573258%2Fla-fin-des-trottinettes-en-libre-service-a-montreal" target="_blank"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="22.058" height="19" viewBox="-1.058 0 22.058 19"><path d="M20.4.692s-.494 1.79-1.36 2.32C19.89 2.91 20.25 2.8 21 2.46c-.6 1.592-1.26 2.226-2.078 2.83.008.184.012.37.012.557 0 7.17-4.82 13.153-12.52 13.153-3.3 0-7.012-1.494-7.472-4.342.613.29 2.345.5 2.683.5.664 0 2.193-.184 3.1-.895-1.83-.033-3.528-1.293-4.06-2.998.254.05.69.125.96.125.382 0 .74-.117 1.09-.218C.8 10.78 0 9.16 0 7.027c.565.32 1 .356 1.625.162C.668 6.574 0 5.4 0 3.912 0 3.127.214 1.6 1 .693c2.076 2.43 5.726 4.198 8.027 4.6C9.027 2.254 10.737 0 14.123 0c1.48 0 2.556.622 3.41 1.6.955-.19 2.096-.49 2.867-.908zm-3.222 1.662C16.416 1.52 15.328 1 14.123 1 11.813 1 9.94 2.922 9.94 5.292c0 .336-.01.488.062.803-3.48-.18-6.58-1.95-8.817-4.05-.36.635-.332 1.113-.332 1.9 0 1.487.924 2.668 2.046 3.438-.77.43-1.457.657-2.046.652v.053c0 1.83 1.51 2.467 3.324 3.152-.717.49-1.443.705-2.158.764.575 1.008 3.12 1.845 4.395 1.948-1.733 1.813-3.866 2.28-5.85 1.9C2.165 17.317 4.053 18 6.415 18c7.7 0 11.638-6.498 11.638-12.17 0-.186-.067-.666-.074-.848.737-.425.903-.625 1.284-1.28-.75.34-1.68.227-2.426.153 1.098-.572 2.02-1.81 2.02-1.81s-.712.252-1.68.31z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="22.058" height="19" viewBox="-1.058 0 22.058 19"><path d="M20.4.692c-.77.417-1.912.718-2.867.91C16.68.62 15.603 0 14.123 0c-3.385 0-5.096 2.255-5.096 5.292-2.3-.402-5.952-2.17-8.028-4.6-.786.91-1 2.435-1 3.22 0 1.49.668 2.663 1.625 3.277C1 7.382.565 7.346 0 7.026c0 2.133.8 3.752 2.715 4.146-.352.1-.708.218-1.09.218-.27 0-.706-.073-.96-.124.532 1.705 2.23 2.965 4.06 2.998-.907.71-2.436.895-3.1.895-.338 0-2.07-.21-2.683-.5.46 2.846 4.17 4.34 7.473 4.34 7.7 0 12.52-5.984 12.52-13.152 0-.187-.005-.373-.013-.556C19.74 4.686 20.4 4.052 21 2.46c-.75.34-1.112.45-1.96.552.866-.53 1.36-2.32 1.36-2.32z"/></svg></span></a></li>
+<li class="mail"><a href="#" data-href="https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="19.99" height="14.988" viewBox="0 0 19.99 14.988"><path d="M2.453 1l7.524 6.133L17.437 1H2.454zm16.528.205L9.978 8.52 1 1.35v12.68h17.98V1.204zM0 0h19.99v14.988H0V0z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="19.99" height="14.988" viewBox="0 0 19.99 14.988"><path d="M0 0h19.99v14.988H0V0zm2.468 2.542l7.51 5.977 7.578-5.978-.733-.825-6.846 5.415-6.77-5.388-.74.798z"/></svg></span></a></li>
+    <li class="print"><a href="#"><span class="normal"><svg width="20" height="23" xmlns="http://www.w3.org/2000/svg" class="article-toolbar-icon"><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.243" y1=".513" x2="12.407" y2=".513" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.724" y1="7.873" x2="3.724" y2=".025"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.203" y1=".347" x2="16.465" y2="4.536" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.07" y1=".001" x2="12.07" y2="4.42" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="11.57" y1="4.496" x2="16.061" y2="4.496" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".022" y1="7.47" x2="20.012" y2="7.47" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.3" y1="4.157" x2="16.3" y2="7.887" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".256" y1="17.559" x2="4.112" y2="17.559" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".484" y1="7.043" x2=".484" y2="18.064" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="19.501" y1="7.041" x2="19.501" y2="17.955" stroke="#000"/><rect stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.708" y="10.551" width="7.996" height=".902" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.198" y1="14.547" x2="16.827" y2="14.547" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.335" y1="14.102" x2="16.335" y2="22.684" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.708" y1="14.06" x2="3.708" y2="22.789" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.202" y1="22.487" x2="16.843" y2="22.487"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.105" y1="17.561" x2="20.001" y2="17.561" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="5.044" y1="17.56" x2="14.748" y2="17.56" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="4.994" y1="19.511" x2="14.752" y2="19.511" stroke="#000"/><rect height=".783" width=".783" y="10.548" x="15.415" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" fill="none"/></svg></span><span class="hover"><svg width="20" height="23" xmlns="http://www.w3.org/2000/svg" class="article-toolbar-icon"><rect stroke="#000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x=".485" y="7.427" width="18.999" height="7.171" class="color-match-1"/><rect fill="#fff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.757" y="14.614" width="12.448" height="7.519" stroke="#000" /><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.243" y1=".513" x2="12.407" y2=".513" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.724" y1="7.873" x2="3.724" y2=".025"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.203" y1=".347" x2="16.465" y2="4.536" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.07" y1=".001" x2="12.07" y2="4.42" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="11.57" y1="4.496" x2="16.061" y2="4.496" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".022" y1="7.47" x2="20.012" y2="7.47" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.3" y1="4.157" x2="16.3" y2="7.887" stroke="#000"/><rect fill="#fff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.687" y="10.53" width="7.996" height=".902" stroke="#fff" class="color-match-2"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.198" y1="14.547" x2="16.827" y2="14.547" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.335" y1="14.102" x2="16.335" y2="22.684" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.708" y1="14.06" x2="3.708" y2="22.789" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.202" y1="22.487" x2="16.843" y2="22.487"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="5.044" y1="17.56" x2="14.748" y2="17.56" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="4.994" y1="19.511" x2="14.752" y2="19.511" stroke="#000"/><rect height=".783" width=".783" y="10.548" x="15.415" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#fff" fill="none" class="color-match-2"/><rect height="2.116" width="2.814" y="15.442" x=".488" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" class="color-match-1"/><rect height="2.116" width="2.814" y="15.453" x="16.686" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" class="color-match-1"/></svg></span></a></li>
+    <li class="bookmark"><a href="#" class="btn_favoris"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="20.031" viewBox="0 0 14 20.031"><path d="M0 0h14v1H0zM1 19l6.104-4.895.505.597L1 20"/><path d="M6.552 14.867l6.446 5.116v-1l-5.946-4.616M13 0h1v20h-1M0 .032h1v20H0z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="20.031" viewBox="0 0 14 20.031"><path fill="none" d="M1 19l6.104-4.895.505.597-.062.05L13 18.97V1H1"/><path d="M13 0H0v20.032h1V20l5.98-4.793 6.018 4.775.002-.003V20h1V0h-1z"/></svg></span></a></li>
+                        </ul>
+                                    </div>
+            
+            <div class="col-xs-14 col-sm-11">
+                <h1>
+                                        La fin des trottinettes en libre-service à Montréal                </h1>
+
+                
+                                        <ol class="breadcrumb">
+        <li><a href="/">[Accueil]</a></li>
+                    <li><a href="/politique">[Politique]</a></li>
+                    <li><a href="/politique/montreal">[Montréal]</a></li>
+            </ol>
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "/",
+              "name": "Accueil"
+            }
+          }
+                    ,{
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+                "@id": "/politique",
+                "name": "Politique"
+              }
+          }
+                    ,{
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+                "@id": "/politique/montreal",
+                "name": "Montréal"
+              }
+          }
+                  ]
+    }
+    </script>
+                            </div>
+        </div>
+    </div>
+    </header>    
+    
+    
+    <div class="container">
+        <div class="row flex-sm flex-row">
+            <div class="col-xs-14 col-sm-7 col-md-9 col-lg-10">
+
+                
+                                                                        <figure>
+        <img src="https://media2.ledevoir.com/images_galerie/nwd_789720_623516/image.jpg" alt="Les entreprises de trottinettes et de vélos en libre-service sans ancrage ont enregistré 365 000 déplacements entre le 21 juin et le 15 novembre 2019, dont 61% en trottinettes." height="530" width="828" class="img-responsive">
+            <figcaption>
+            <span>Photo:  Adil Boukind Archives Le Devoir</span>
+            Les entreprises de trottinettes et de vélos en libre-service sans ancrage ont enregistré 365 000 déplacements entre le 21 juin et le 15 novembre 2019, dont 61% en trottinettes.        </figcaption>
+    </figure>                
+                <div class="row">
+                                            <div class="col-xs-14 col-md-10 col-md-offset-4">
+                                                                                                                                                    
+                                                    <div class="author-offset">
+    <aside class="author sans-photo">
+        <h3>
+                        
+                                    <a href="/auteur/jeanne-corriveau" title="Jeanne Corriveau">
+                                
+                                <span>Jeanne Corriveau</span></a>
+                
+            
+                    </h3>
+
+                            
+        <time datetime="2020-02-19">19 février 2020</time>
+
+        
+                    <nav class="category-nav">
+                <ul class="list-unstyled">
+                    <li><a href="/politique/montreal"><span>Montréal</span></a></li>
+                </ul>
+            </nav>
+                            <ul class="social list-unstyled hidden-xs hidden-sm">
+                <li class="fb"><a target="_blank" href="https://www.facebook.com/share.php?u=https%3A%2F%2Fwww.ledevoir.com%2Fpolitique%2Fmontreal%2F573258%2Fla-fin-des-trottinettes-en-libre-service-a-montreal&title=La+fin+des+trottinettes+en+libre-service+%C3%A0+Montr%C3%A9al"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"><path d="M21 18.004C21 19 19.986 20 19.023 20H13.03v-8.012h2.698l.32-1.988-3.02-.003V8.31c0-.874 1.024-2.326 2.277-2.326l.682.066L15.914 4c-.277-.037-.234 0-1.34 0-2.305 0-3.566.947-3.566 4.01v1.987H8.962v1.99h2.046V20H1.993C.99 20 0 18.986 0 18.004V1.986C0 .86.958 0 1.993 0h16.985C20.01 0 21 1.004 21 1.986v16.018zm-.99-.064V2.104c0-.61-.494-1.104-1.104-1.104H2.104C1.494 1 1 1.495 1 2.104V17.94c0 .61.494 1.104 1.104 1.104h7.907V13.02H8V9.038h2.01V8.01c0-3.61 1.552-4.99 4.564-4.99 1.105 0 2.162-.038 2.438 0V7.03l-1.706-.066c-.68 0-1.29.595-1.29 1.343v.727h2.996l-.66 3.982h-2.336v6.023h4.89c.61 0 1.104-.493 1.104-1.103z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"><path d="M20.994 18.008c0 .918-1.044 1.985-1.977 1.985L13.01 20v-7.996h2.186l.66-2H13.01V8.31c0-.75 1.06-2.298 1.74-2.298h1.268V3.988s-.547.007-1.425.007c-1.778 0-3.616 1.537-3.616 4.016v1.994H8.97v2h2.007V20l-8.93-.007C1.106 19.993 0 18.93 0 18.008L.006 1.972C.006 1.02 1.056 0 2.046 0h16.97C19.962 0 21 1.04 21 1.972l-.006 16.036z"/></svg></span></a></li>
+<li class="tw"><a href="https://twitter.com/intent/tweet?text=La+fin+des+trottinettes+en+libre-service+%C3%A0+Montr%C3%A9al+https%3A%2F%2Fwww.ledevoir.com%2Fpolitique%2Fmontreal%2F573258%2Fla-fin-des-trottinettes-en-libre-service-a-montreal" target="_blank"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="22.058" height="19" viewBox="-1.058 0 22.058 19"><path d="M20.4.692s-.494 1.79-1.36 2.32C19.89 2.91 20.25 2.8 21 2.46c-.6 1.592-1.26 2.226-2.078 2.83.008.184.012.37.012.557 0 7.17-4.82 13.153-12.52 13.153-3.3 0-7.012-1.494-7.472-4.342.613.29 2.345.5 2.683.5.664 0 2.193-.184 3.1-.895-1.83-.033-3.528-1.293-4.06-2.998.254.05.69.125.96.125.382 0 .74-.117 1.09-.218C.8 10.78 0 9.16 0 7.027c.565.32 1 .356 1.625.162C.668 6.574 0 5.4 0 3.912 0 3.127.214 1.6 1 .693c2.076 2.43 5.726 4.198 8.027 4.6C9.027 2.254 10.737 0 14.123 0c1.48 0 2.556.622 3.41 1.6.955-.19 2.096-.49 2.867-.908zm-3.222 1.662C16.416 1.52 15.328 1 14.123 1 11.813 1 9.94 2.922 9.94 5.292c0 .336-.01.488.062.803-3.48-.18-6.58-1.95-8.817-4.05-.36.635-.332 1.113-.332 1.9 0 1.487.924 2.668 2.046 3.438-.77.43-1.457.657-2.046.652v.053c0 1.83 1.51 2.467 3.324 3.152-.717.49-1.443.705-2.158.764.575 1.008 3.12 1.845 4.395 1.948-1.733 1.813-3.866 2.28-5.85 1.9C2.165 17.317 4.053 18 6.415 18c7.7 0 11.638-6.498 11.638-12.17 0-.186-.067-.666-.074-.848.737-.425.903-.625 1.284-1.28-.75.34-1.68.227-2.426.153 1.098-.572 2.02-1.81 2.02-1.81s-.712.252-1.68.31z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="22.058" height="19" viewBox="-1.058 0 22.058 19"><path d="M20.4.692c-.77.417-1.912.718-2.867.91C16.68.62 15.603 0 14.123 0c-3.385 0-5.096 2.255-5.096 5.292-2.3-.402-5.952-2.17-8.028-4.6-.786.91-1 2.435-1 3.22 0 1.49.668 2.663 1.625 3.277C1 7.382.565 7.346 0 7.026c0 2.133.8 3.752 2.715 4.146-.352.1-.708.218-1.09.218-.27 0-.706-.073-.96-.124.532 1.705 2.23 2.965 4.06 2.998-.907.71-2.436.895-3.1.895-.338 0-2.07-.21-2.683-.5.46 2.846 4.17 4.34 7.473 4.34 7.7 0 12.52-5.984 12.52-13.152 0-.187-.005-.373-.013-.556C19.74 4.686 20.4 4.052 21 2.46c-.75.34-1.112.45-1.96.552.866-.53 1.36-2.32 1.36-2.32z"/></svg></span></a></li>
+<li class="mail"><a href="#" data-href="https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="19.99" height="14.988" viewBox="0 0 19.99 14.988"><path d="M2.453 1l7.524 6.133L17.437 1H2.454zm16.528.205L9.978 8.52 1 1.35v12.68h17.98V1.204zM0 0h19.99v14.988H0V0z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="19.99" height="14.988" viewBox="0 0 19.99 14.988"><path d="M0 0h19.99v14.988H0V0zm2.468 2.542l7.51 5.977 7.578-5.978-.733-.825-6.846 5.415-6.77-5.388-.74.798z"/></svg></span></a></li>
+    <li class="print"><a href="#"><span class="normal"><svg width="20" height="23" xmlns="http://www.w3.org/2000/svg" class="article-toolbar-icon"><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.243" y1=".513" x2="12.407" y2=".513" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.724" y1="7.873" x2="3.724" y2=".025"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.203" y1=".347" x2="16.465" y2="4.536" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.07" y1=".001" x2="12.07" y2="4.42" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="11.57" y1="4.496" x2="16.061" y2="4.496" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".022" y1="7.47" x2="20.012" y2="7.47" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.3" y1="4.157" x2="16.3" y2="7.887" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".256" y1="17.559" x2="4.112" y2="17.559" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".484" y1="7.043" x2=".484" y2="18.064" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="19.501" y1="7.041" x2="19.501" y2="17.955" stroke="#000"/><rect stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.708" y="10.551" width="7.996" height=".902" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.198" y1="14.547" x2="16.827" y2="14.547" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.335" y1="14.102" x2="16.335" y2="22.684" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.708" y1="14.06" x2="3.708" y2="22.789" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.202" y1="22.487" x2="16.843" y2="22.487"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.105" y1="17.561" x2="20.001" y2="17.561" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="5.044" y1="17.56" x2="14.748" y2="17.56" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="4.994" y1="19.511" x2="14.752" y2="19.511" stroke="#000"/><rect height=".783" width=".783" y="10.548" x="15.415" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" fill="none"/></svg></span><span class="hover"><svg width="20" height="23" xmlns="http://www.w3.org/2000/svg" class="article-toolbar-icon"><rect stroke="#000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x=".485" y="7.427" width="18.999" height="7.171" class="color-match-1"/><rect fill="#fff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.757" y="14.614" width="12.448" height="7.519" stroke="#000" /><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.243" y1=".513" x2="12.407" y2=".513" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.724" y1="7.873" x2="3.724" y2=".025"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.203" y1=".347" x2="16.465" y2="4.536" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="12.07" y1=".001" x2="12.07" y2="4.42" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="11.57" y1="4.496" x2="16.061" y2="4.496" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1=".022" y1="7.47" x2="20.012" y2="7.47" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.3" y1="4.157" x2="16.3" y2="7.887" stroke="#000"/><rect fill="#fff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="3.687" y="10.53" width="7.996" height=".902" stroke="#fff" class="color-match-2"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.198" y1="14.547" x2="16.827" y2="14.547" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="16.335" y1="14.102" x2="16.335" y2="22.684" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.708" y1="14.06" x2="3.708" y2="22.789" stroke="#000"/><line stroke="#000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="3.202" y1="22.487" x2="16.843" y2="22.487"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="5.044" y1="17.56" x2="14.748" y2="17.56" stroke="#000"/><line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="4.994" y1="19.511" x2="14.752" y2="19.511" stroke="#000"/><rect height=".783" width=".783" y="10.548" x="15.415" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#fff" fill="none" class="color-match-2"/><rect height="2.116" width="2.814" y="15.442" x=".488" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" class="color-match-1"/><rect height="2.116" width="2.814" y="15.453" x="16.686" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000" class="color-match-1"/></svg></span></a></li>
+    <li class="bookmark"><a href="#" class="btn_favoris"><span class="normal"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="20.031" viewBox="0 0 14 20.031"><path d="M0 0h14v1H0zM1 19l6.104-4.895.505.597L1 20"/><path d="M6.552 14.867l6.446 5.116v-1l-5.946-4.616M13 0h1v20h-1M0 .032h1v20H0z"/></svg></span><span class="hover"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="20.031" viewBox="0 0 14 20.031"><path fill="none" d="M1 19l6.104-4.895.505.597-.062.05L13 18.97V1H1"/><path d="M13 0H0v20.032h1V20l5.98-4.793 6.018 4.775.002-.003V20h1V0h-1z"/></svg></span></a></li>
+            </ul>
+            </aside>
+</div>                        
+                        <div class="text-offset">
+                            <div class="editor scrolling-tracker">
+
+                                
+                                                                
+                                    
+                                                                        
+                                    
+                                                                                                                                                        <p>En raison du taux élevé de délinquance chez les utilisateurs des trottinettes en libre-service, l’administration de <a href="https://www.ledevoir.com/valerie-plante">Valérie Plante</a> a décidé de ne pas autoriser ces véhicules dans les rues de la ville en 2020.</p>
+
+
+<p>C’est ce qu’a annoncé Éric Alan Caldwell, responsable de la mobilité au comité exécutif, mercredi matin. Le bilan du projet-pilote mené l’an dernier fait état d’un taux important de délinquance chez les utilisateurs de trottinettes. Ainsi, huit véhicules sur dix étaient garés au mauvais endroit, a constaté la Ville, qui a dressé le bilan du projet-pilote.</p>
+
+
+<p>Les entreprises de trottinettes et de vélos en libre-service sans ancrage ont enregistré 365 000 déplacements entre le 21 juin et le 15 novembre 2019, dont 61 % en trottinettes. Il a cependant été observé que seulement 20 % des trottinettes ont été stationnées dans les aires prévues à cet effet dans le règlement de la Ville.</p>
+
+
+<p>Éric Alan Caldwell estime que l’expérience a été un échec et que les entreprises Lime et Bird n’ont pas été en mesure d’encadrer le service efficacement. De plus, 333 constats d’infraction ont été donnés par le Service de police de la Ville de Montréal (SPVM) pour le non-respect du Code de la sécurité routière, dont 324 concernant le port du casque.</p>
+
+
+<p>« Notre règlement n’a pas été respecté. Les opérateurs ne se sont pas assurés de le faire respecter. Donc, dans ces conditions, on doit tirer une conclusion : bien que cette micromobilité ait sa place dans une ville comme Montréal. […] Mais pour que ça fonctionne, ça ne doit pas nuire aux autres modes de mobilité durable et c’est ce qui est arrivé l’an passé », a dit M. Caldwell. « Avec un taux de délinquance de 80 % quant au respect de notre réglementation, il faut savoir en tirer un constat d’échec. C’est pour ça qu’en 2020, il n’y aura pas de trottinettes dans les rues de Montréal. »</p>
+
+
+<p>Le règlement de la Ville sera donc modifié. Les vélos en libre-service de Jump seront toutefois autorisés à Montréal cette année.</p>
+                                    
+                                    
+                                    
+                                                                
+                                
+                                
+                                                                
+                                
+                                                            </div>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+                            <div class="col-xs-14 col-sm-7 col-md-5 col-lg-4 hidden-xs hidden-print flex-sm">
+                    <aside class="flex-sm flex-col">
+
+                        
+                        <div class="flex-1">
+                            <div class="pub pub-sticky bigbox">	<!-- ZP:D1 -->
+	<div id="D1" class="pub">
+		<div align="center">
+															
+                                        					    <div data-m32-ad data-options='{"sizes":"[[300,250],[300,600]]","sizeMapping":"[[[0,0],[[0,0]]], [[768,0],[[300,250],[300,600]]]]","dfpId":"21658289790","dfpAdUnitPath":"le.devoir/politique","kv":{"zone":"D1"}}'></div>                    									</div>
+        	</div>
+</div>
+                        </div>
+
+                                                        <!-- ARTICLES LES PLUS POPULAIRES -->
+    <div class="dodger-blue">
+        <section class="most-popular vertical">
+            <h3>Les plus populaires</h3>
+            <ul class="list-unstyled">
+                                    <li class="turquoise">
+                        <a href="/opinion/idees/573610/ethique-l-affaire-weinstock-une-derive-inquietante">
+                            <span class="nb">1</span>
+                                                            <strong class="article-type">Idées</strong>
+                                                        <h2>L’affaire Weinstock, une dérive inquiétante</h2>
+                        </a>
+                    </li>
+                                    <li class="west-side">
+                        <a href="/societe/573602/cas-de-covid-19-a-l-aeroport-montreal-trudeau-les-autorites-quebecoises-de-sante-publique-tentent-de-contacter-61-personnes">
+                            <span class="nb">2</span>
+                                                        <h2>Le Canada se dit prêt à faire face à la pandémie appréhendée</h2>
+                        </a>
+                    </li>
+                                    <li class="dodger-blue">
+                        <a href="/politique/canada/573638/les-barrages-autochtones-pourraient-se-multiplier">
+                            <span class="nb">3</span>
+                                                        <h2>Les barrages autochtones pourraient se multiplier</h2>
+                        </a>
+                    </li>
+                                    <li class="turquoise">
+                        <a href="/opinion/chroniques/573607/la-vertu-t-l-interet">
+                            <span class="nb">4</span>
+                                                            <strong class="article-type">Chronique</strong>
+                                                        <h2>La vertu et l’intérêt</h2>
+                        </a>
+                    </li>
+                                    <li class="dodger-blue">
+                        <a href="/politique/quebec/573642/longue-attente-au-bout-du-monde">
+                            <span class="nb">5</span>
+                                                        <h2>Longue attente au bout du monde</h2>
+                        </a>
+                    </li>
+                            </ul>
+        </section>
+    </div>
+                        
+                                                    <div class="flex-1">
+                                <div class="pub-sticky">
+                                    <div class="pub bigbox">	<!-- ZP:D2 -->
+	<div id="D2" class="pub">
+		<div align="center">
+															
+                                        					    <div data-m32-ad data-options='{"sizes":"[[300,250],[300,600]]","sizeMapping":"[[[0,0],[[0,0]]], [[768,0],[[300,250],[300,600]]]]","dfpId":"21658289790","dfpAdUnitPath":"le.devoir/politique","kv":{"zone":"D2"}}'></div>                    									</div>
+        	</div>
+</div>
+
+                                        <div class="card card-blue card-sm mb30">
+        <div class="card-header">
+            Abonnez-vous à notre infolettre matinale
+        </div>
+        <div class="card-content">
+            <p>
+                Du lundi au samedi, découvrez l’essentiel de l’actualité.
+            </p>
+
+            <form
+                class="form"
+                action="https://abonnement.ledevoir.com/infolettres/inscription-rapide/1"
+                method="POST"
+            >
+                <div class="form-group">
+                    <input type="email" name="courriel" class="form-control" placeholder="Votre courriel" required>
+                    <input type="hidden" name="referer" value="https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal" />
+                </div>
+
+                <button type="submit" class="btn btn-default bg-blue-secondary btn-lg btn-icon-right">
+                    Je m'abonne
+                    <span class="chevron-right">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg>                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+                                    <div class="pub bigbox">	<!-- ZP:D3 -->
+	<div id="D3" class="pub">
+		<div align="center">
+															
+                                        					    <div data-m32-ad data-options='{"sizes":"[[300,250],[300,600]]","sizeMapping":"[[[0,0],[[0,0]]], [[768,0],[[300,250],[300,600]]]]","dfpId":"21658289790","dfpAdUnitPath":"le.devoir/politique","kv":{"zone":"D3"}}'></div>                    									</div>
+        	</div>
+</div>
+                                </div>
+                            </div>
+                        
+                        <div class="pub bigbox"></div>
+                    </aside>
+                </div>
+                    </div>
+
+        
+                                                    <div class="row">
+                <div class="col-xs-14">
+                    <aside class="suggested-content category">
+                                                    <h2 class="category-name">À lire aussi</h2>
+                                                <div class="row">
+                            <div class="col-xs-14 col-sm-8 col-md-9">
+                                <div class="stories-linked">
+                                    <div class="row">
+                    <div class="col-xs-14">
+                <div class="dodger-blue">
+                    <div class="category-articles">
+                            <article class="article has-img mh">
+        <a href="/politique/montreal/562591/trottinettes-en-libre-service-montreal-sera-plus-severe-envers-lime" class="card-click">
+                            <span class="img">
+                    <img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAQAAADYv8WvAAAAEElEQVR42mP8/5+BgRFEAAAYAQP/58fuIwAAAABJRU5ErkJggg=="
+                        data-src="https://media1.ledevoir.com/images_galerie/nwl_750616_588429/image.jpg"
+                        alt="L’administration municipale en a assez des trottinettes abandonnées n’importe où; elle imposera désormais des amendes aux délinquants et à l’entreprise qui loue les trottinettes."
+                        width="226" height="134"                        class="img-responsive lazyload"
+                    >
+                    	                </span>
+                
+            <h2>
+                Trottinettes en libre-service: Montréal sévira contre Lime et ses clients délinquants            </h2>
+    
+                            
+                                <p>
+        La période de grâce se terminera le 21 octobre.    </p>
+                        
+        
+                    <div class="specs lowercase">
+                                    <time datetime="2019-09-14">
+                        14 septembre 2019                    </time>
+                
+                
+                            </div>
+                
+                </a>
+            </article>
+                    </div>
+                </div>
+            </div>
+                    <div class="col-xs-14">
+                <div class="dodger-blue">
+                    <div class="category-articles">
+                            <article class="article has-img mh">
+        <a href="/politique/montreal/568297/montreal-a-remis-110-constats-d-infraction-aux-operateurs-de-trottinettes-et-de-velos" class="card-click">
+                            <span class="img">
+                    <img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAQAAADYv8WvAAAAEElEQVR42mP8/5+BgRFEAAAYAQP/58fuIwAAAABJRU5ErkJggg=="
+                        data-src="https://media1.ledevoir.com/images_galerie/nwl_771569_606795/image.jpg"
+                        alt="L’infraction la plus fréquente touche les véhicules qui ne sont pas garés debout, essentiellement des trottinettes, aux endroits désignés."
+                        width="226" height="134"                        class="img-responsive lazyload"
+                    >
+                    	                </span>
+                
+            <h2>
+                110 constats en deux semaines pour les trottinettes et vélos en libre-service            </h2>
+    
+                            
+                                <p>
+        La Ville de Montréal se dit déçue de la délinquance des opérateurs.    </p>
+                        
+        
+                    <div class="specs lowercase">
+                                    <time datetime="2019-12-03">
+                        3 décembre 2019                    </time>
+                
+                
+                            </div>
+                
+                </a>
+            </article>
+                    </div>
+                </div>
+            </div>
+                    <div class="col-xs-14">
+                <div class="dodger-blue">
+                    <div class="category-articles">
+                            <article class="article has-img mh">
+        <a href="/politique/montreal/572474/trottinettes-a-montreal-le-spvm-a-remis-335-constats-d-infraction" class="card-click">
+                            <span class="img">
+                    <img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAQAAADYv8WvAAAAEElEQVR42mP8/5+BgRFEAAAYAQP/58fuIwAAAABJRU5ErkJggg=="
+                        data-src="https://media1.ledevoir.com/images_galerie/nwl_786934_620985/image.jpg"
+                        alt="Selon le SPVM, Lime et Bird auraient enregistré plus de 225 547 déplacements pendant le projet-pilote."
+                        width="226" height="134"                        class="img-responsive lazyload"
+                    >
+                    	                </span>
+                
+            <h2>
+                Plus de 300 contraventions aux utilisateurs de trottinettes            </h2>
+    
+                            
+                                <p>
+        <p>Le non-respect de l’obligation de porter un casque a été la principale infraction.</p>
+    </p>
+                        
+        
+                    <div class="specs lowercase">
+                                    <time datetime="2020-02-07">
+                        7 février 2020                    </time>
+                
+                
+                            </div>
+                
+                </a>
+            </article>
+                    </div>
+                </div>
+            </div>
+            </div>                                </div>
+                                <div class="stories-same-section">
+                                    <h2 class="category-name">
+            Plus en <a class="dodger-blue" href="/politique/montreal">Montréal</a>
+        </h2>
+        <div class="row">
+                    <div class="col-xs-14 col-md-4">
+                <div class="dodger-blue">
+                    <div class="category-articles">
+                            <article class="article has-img mh">
+        <a href="/politique/montreal/572708/le-deneigement-est-complete-a-pres-de-40-a-montreal" class="card-click">
+                            <span class="img">
+                    <img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAQAAADYv8WvAAAAEElEQVR42mP8/5+BgRFEAAAYAQP/58fuIwAAAABJRU5ErkJggg=="
+                        data-src="https://media1.ledevoir.com/images_galerie/nwl_787757_621775/image.jpg"
+                        alt="La Ville de Montréal demande aux automobilistes d’éviter de garer leur véhicule en angle et de respecter les interdictions de stationnement pour assurer le bon déroulement des opérations."
+                        width="226" height="134"                        class="img-responsive lazyload"
+                    >
+                    	                </span>
+                
+            <h2>
+                Le déneigement est complété à près de 40 % à Montréal            </h2>
+    
+                            
+                                <p>
+        L’opération de chargement de la neige devrait durer au moins une semaine.    </p>
+                        
+        
+                    <div class="specs lowercase">
+                                    <time datetime="2020-02-11">
+                        11 février 2020                    </time>
+                
+                
+                            </div>
+                
+                </a>
+            </article>
+                    </div>
+                </div>
+            </div>
+                    <div class="col-xs-14 col-md-4">
+                <div class="dodger-blue">
+                    <div class="category-articles">
+                            <article class="article has-img mh">
+        <a href="/politique/montreal/572710/charette-annonce-sa-reforme-du-systeme-de-collecte-selective" class="card-click">
+                            <span class="img">
+                    <img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAQAAADYv8WvAAAAEElEQVR42mP8/5+BgRFEAAAYAQP/58fuIwAAAABJRU5ErkJggg=="
+                        data-src="https://media1.ledevoir.com/images_galerie/nwl_787763_621781/image.jpg"
+                        alt="Cela améliorera la qualité des matières récupérées, donc leur valeur sera accrue.
+"
+                        width="226" height="134"                        class="img-responsive lazyload"
+                    >
+                    	                </span>
+                
+            <h2>
+                Charette annonce sa réforme du système de collecte sélective            </h2>
+    
+                            
+                                <p>
+        <p>Québec fait un pas de plus pour améliorer la récupération et le recyclage.</p>
+    </p>
+                        
+        
+                    <div class="specs lowercase">
+                                    <time datetime="2020-02-12">
+                        12 février 2020                    </time>
+                
+                
+                            </div>
+                
+                </a>
+            </article>
+                    </div>
+                </div>
+            </div>
+                    <div class="col-xs-14 col-md-4">
+                <div class="dodger-blue">
+                    <div class="category-articles">
+                            <article class="article has-img mh">
+        <a href="/politique/montreal/573003/la-ville-de-montreal-poursuit-sue-montgomery" class="card-click">
+                            <span class="img">
+                    <img
+                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAQAAADYv8WvAAAAEElEQVR42mP8/5+BgRFEAAAYAQP/58fuIwAAAABJRU5ErkJggg=="
+                        data-src="https://media2.ledevoir.com/images_galerie/nwl_788846_622693/image.jpg"
+                        alt="Le 24 janvier, Sue Montgomery a été expulsée du caucus de Projet Montréal par la mairesse Valérie Plante."
+                        width="226" height="134"                        class="img-responsive lazyload"
+                    >
+                    	                </span>
+                
+            <h2>
+                Nouveau front dans le conflit Montgomery-Montréal            </h2>
+    
+                            
+                                <p>
+        Le Contrôleur général demande à la Commission municipale de faire enquête.    </p>
+                        
+        
+                    <div class="specs lowercase">
+                                    <time datetime="2020-02-15">
+                        15 février 2020                    </time>
+                
+                
+                            </div>
+                
+                </a>
+            </article>
+                    </div>
+                </div>
+            </div>
+            </div>                                </div>
+                                <div class="stories-keywords">
+                                    <section class="mots-cles dodger-blue">
+        <strong>Mots clés</strong>
+                    <a href="/motcle/valerie-plante">Valérie Plante</a>,                     <a href="/motcle/trottinette">trottinette</a>,                     <a href="/motcle/trottinette-electrique">trottinette électrique</a>            </section>                                </div>
+                            </div>
+                            <div class="col-xs-14 col-sm-6 col-md-5">
+                                    <!-- ARTICLES LES PLUS POPULAIRES -->
+    <div class="dodger-blue">
+        <section class="most-popular vertical">
+            <h3>Les plus populaires</h3>
+            <ul class="list-unstyled">
+                                    <li class="turquoise">
+                        <a href="/opinion/idees/573610/ethique-l-affaire-weinstock-une-derive-inquietante">
+                            <span class="nb">1</span>
+                                                            <strong class="article-type">Idées</strong>
+                                                        <h2>L’affaire Weinstock, une dérive inquiétante</h2>
+                        </a>
+                    </li>
+                                    <li class="west-side">
+                        <a href="/societe/573602/cas-de-covid-19-a-l-aeroport-montreal-trudeau-les-autorites-quebecoises-de-sante-publique-tentent-de-contacter-61-personnes">
+                            <span class="nb">2</span>
+                                                        <h2>Le Canada se dit prêt à faire face à la pandémie appréhendée</h2>
+                        </a>
+                    </li>
+                                    <li class="dodger-blue">
+                        <a href="/politique/canada/573638/les-barrages-autochtones-pourraient-se-multiplier">
+                            <span class="nb">3</span>
+                                                        <h2>Les barrages autochtones pourraient se multiplier</h2>
+                        </a>
+                    </li>
+                                    <li class="turquoise">
+                        <a href="/opinion/chroniques/573607/la-vertu-t-l-interet">
+                            <span class="nb">4</span>
+                                                            <strong class="article-type">Chronique</strong>
+                                                        <h2>La vertu et l’intérêt</h2>
+                        </a>
+                    </li>
+                                    <li class="dodger-blue">
+                        <a href="/politique/quebec/573642/longue-attente-au-bout-du-monde">
+                            <span class="nb">5</span>
+                                                        <h2>Longue attente au bout du monde</h2>
+                        </a>
+                    </li>
+                                    <li class="west-side">
+                        <a href="/societe/573604/la-violence-conjugale-qui-choque">
+                            <span class="nb">6</span>
+                                                        <h2>La violence conjugale et ses multiples euphémismes</h2>
+                        </a>
+                    </li>
+                                    <li class="red-violet">
+                        <a href="/culture/cinema/573600/la-chute-d-un-producteur-de-cinema-visionnaire">
+                            <span class="nb">7</span>
+                                                        <h2>La chute en disgrâce d'un producteur célèbre</h2>
+                        </a>
+                    </li>
+                                    <li class="dodger-blue">
+                        <a href="/economie/573635/comment-concilier-climat-et-petrole">
+                            <span class="nb">8</span>
+                                                        <h2>Comment concilier climat et pétrole?</h2>
+                        </a>
+                    </li>
+                                    <li class="west-side">
+                        <a href="/societe/573634/la-communaute-de-pointe-parent-en-images">
+                            <span class="nb">9</span>
+                                                        <h2>La communauté de Pointe-Parent en images</h2>
+                        </a>
+                    </li>
+                                    <li class="west-side">
+                        <a href="/societe/573643/pour-votre-info-quoi-surveiller-aujourd-hui">
+                            <span class="nb">10</span>
+                                                        <h2>Quoi surveiller aujourd’hui?</h2>
+                        </a>
+                    </li>
+                            </ul>
+        </section>
+    </div>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        
+        <div class="row visible-sm visible-md visible-lg">
+            <div class="col-xs-14">
+                <div class="pub e1 mb30">
+                                    </div>
+            </div>
+        </div>
+
+        <div class="row visible-sm visible-md visible-lg">
+            <div class="col-xs-14">
+                <div class="pub e3 mb30">
+                                    </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <div id="dialog" title="Envoyer cet article">
+        <br />
+        <div class="form-group">
+            <label for="email_de" class="sr-only">Votre courriel</label>
+            <input id="email_de" type="text" class="form-control" placeholder="Votre courriel" />
+        </div>
+
+        <div class="form-group">
+            <label for="email_a" class="sr-only">Le courriel du destinataire</label>
+            <input id="email_a" type="text" class="form-control" placeholder="Le courriel du destinataire" />
+        </div>
+
+        <div class="form-group">
+            <label for="email_commentaires" class="sr-only">Commentaires</label>
+            <textarea id="email_commentaires" name="email_commentaires" class="form-control" placeholder="Commentaires"></textarea>
+        </div>
+
+        <div id="zone-captcha"><div class="g-recaptcha" data-sitekey="6LdEKAgTAAAAAIl3JRYM0HDmKp1tLqrRbOdLGk93"></div></div>
+
+        <div class="form-group mt20">
+            <button class="btn btn-default bg-blue" id="bouton_envoyer_mail">Envoyer</button>
+        </div>
+
+        <div class="erreur"></div>
+</div>
+
+<script type="text/javascript">
+       var articleUrl = '';
+       $(function() {
+           $('#bouton_envoyer_mail').click(function(e){
+               e.preventDefault();
+               var $btn_envoyer = $(this);
+
+               if ($btn_envoyer.is('.en-traitement')) return; // Limiter 1 clic à la fois
+
+               $btn_envoyer.addClass('en-traitement').css('fontStyle','italic').css('opacity',0.5);
+               $.ajax({
+                   type: "POST",
+                   url: "/article/envoyer",
+                   data: "email_de="+$('#email_de').val()+"&email_a="+$('#email_a').val()+"&url="+articleUrl+"&g-recaptcha-response="+grecaptcha.getResponse()+"&email_commentaires="+$('#email_commentaires').val(),
+                   success: function(msg){
+                       if (msg == 'false') {
+                           $('#dialog .erreur').html('Erreur: veuillez réessayer.');
+                       } else if (msg == 'false-captcha') {
+                           $('#dialog .erreur').html('Captcha invalide.');
+                       } else if (msg == 'true') {
+                           $('#dialog').dialog('close');
+                           afficher_message('Votre lien a été envoyé.', 'message');
+
+                                                          dataLayer.push({'eventCategory': 'Partage Social', 'eventAction': 'Social Mailto', 'eventLabel': 'https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal', 'event': 'gtm_event'});
+                                                  }
+                   },
+                   complete: function(msg) {
+                       $btn_envoyer.removeClass('en-traitement').css('fontStyle','normal').css('opacity',1);
+                   }
+               });
+               grecaptcha.reset();
+           });
+       });
+
+       function show_envoyer_mail(url){
+           articleUrl = url;
+           $("#dialog").dialog({
+               height: 450,
+               width: 337,
+               resizable: false,
+               modal: true,
+               zIndex: 25000
+           });
+
+           return false;
+       }
+</script></div>
+
+        <script type="text/javascript">
+        //Google Tag Manager Event
+
+        $(function(){
+
+            
+            //Voir tous les commentaires
+            $('#event_tous_commentaires').click(function(e) {
+                dataLayer.push({'eventCategory': 'User', 'eventAction': 'All Comments', 'eventLabel': 'La fin des trottinettes en libre-service à Montréal', 'event': 'gtm_event'});
+            });
+
+            //Scroll dans l'article
+            var $window = $(window);
+
+            var fin  = false;
+            var fin25 = false;
+            var fin50  = false;
+            var fin75 = false;
+
+            // Pour tracker le texte seulement, utiliser ce sélecteur
+//            var textWrapper = $('.scrolling-tracker:first');
+
+            // Celui-ci est pour la page au complet
+            var textWrapper = $('#articles');
+            var textHeight = textWrapper.height();
+//            console.log('Hauteur : ' + textHeight);
+
+            $window.scroll(function () {
+                var scrollTopWithViewport = parseInt($window.scrollTop()) + viewportheight - textWrapper.offset().top; //11642956
+//                console.log(parseInt($window.scrollTop()) + viewportheight - textWrapper.offset().top);
+                if(parseInt($window.scrollTop()) == 0){
+                    fin = false;
+                    fin25 = false;
+                    fin50 = false;
+                    fin75 = false;
+                }
+                if (scrollTopWithViewport >= textHeight) {
+                    if(fin == false){
+                        fin = true;
+//                        console.log('Scroll 100%');
+                        dataLayer.push({'eventCategory': 'User', 'eventAction': 'Scroll Depth', 'eventLabel': '100%', 'event': 'gtm_event'});
+                    }
+                }
+                else if (scrollTopWithViewport >= textHeight*75/100) {
+                    if(fin75 == false){
+                        fin75 = true;
+//                        console.log('Scroll 75%');
+                        dataLayer.push({'eventCategory': 'User', 'eventAction': 'Scroll Depth', 'eventLabel': '75%', 'event': 'gtm_event'});
+                    }
+                }
+                else if (scrollTopWithViewport >= textHeight*50/100) {
+                    if(fin50 == false){
+                        fin50 = true;
+//                        console.log('Scroll 50%');
+                        dataLayer.push({'eventCategory': 'User', 'eventAction': 'Scroll Depth', 'eventLabel': '50%', 'event': 'gtm_event'});
+                    }
+                }
+                else if (scrollTopWithViewport >= textHeight*25/100) {
+                    if(fin25 == false){
+                        fin25 = true;
+//                        console.log('Scroll 25%');
+                        dataLayer.push({'eventCategory': 'User', 'eventAction': 'Scroll Depth', 'eventLabel': '25%', 'event': 'gtm_event'});
+                    }
+                }
+            });
+        });
+
+    </script>
+
+<script type="text/javascript">
+    if (typeof favorisConf === 'undefined') {
+        $(function(){
+            $('li.print a').click(function(e){
+                e.preventDefault();
+                if (typeof window.print === 'function') {
+                    window.print();
+                }
+            });
+
+            $('li.mail a').click(function(e){
+                e.preventDefault();
+                $('#dialog .erreur').html('');
+                if (typeof show_envoyer_mail !== 'undefined') {
+                    show_envoyer_mail($(this).data('href'));
+                }
+            });
+
+                            $('li.fb a').click(function(e){
+                    dataLayer.push({'eventCategory': 'Partage Social', 'eventAction': 'Facebook', 'eventLabel': 'https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal', 'event': 'gtm_event'});
+                });
+
+                $('li.tw a').click(function(e){
+                    dataLayer.push({'eventCategory': 'Partage Social', 'eventAction': 'Twitter', 'eventLabel': 'https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal', 'event': 'gtm_event'});
+                });
+
+                $('li.bookmark a').click(function(e){
+                    dataLayer.push({'eventCategory': 'User', 'eventAction': 'Favoris', 'eventLabel': 'Article en favoris', 'event': 'gtm_event'});
+                });
+                    });
+
+        var favorisConf = {
+            isFavori: false,
+            isLu: false,
+            luUrl: null,
+            modifierUrl: null        };
+    }
+</script>
+        </main>
+
+        <footer id="footer">
+            
+            <div class="footer-pub">
+                <div class="container">
+                    <div class="row">
+    <div class="col-xs-14">
+        <div class="pub super-leaderboard">	<!-- ZP:A3 -->
+	<div id="A3" class="pub">
+		<div align="center">
+															
+                                                                                            <div data-m32-ad data-options='{"sizes":"[[728,90],[970,250]]","sizeMapping":"[ [[0,0], [[320,50]]], [[768,0], [[728,90]]], [[1250, 0], [[1200,400],[970,250],[728,90]]] ]","dfpId":"21658289790","dfpAdUnitPath":"le.devoir/politique","kv":{"zone":"A3"}}'></div>                                            									</div>
+        	</div>
+</div>
+    </div>
+            <div class="col-xs-14 hidden" id="mobile-pub-first-paragraph">
+        <div class="pub pub-fw-offset mobile">	<!-- ZP:M2 -->
+	<div id="M2" class="pub">
+		<div align="center">
+															
+                                                                                            <div data-m32-ad data-options='{"sizes":"[[320,50],[300,250], [300,600]]","sizeMapping":"[[[0,0],[[320,50],[300,250], [300,600]]], [[768,0],[[320,50],[300,250]]], [[1024,0],[[0,0]]]]","dfpId":"21658289790","dfpAdUnitPath":"le.devoir/politique","kv":{"zone":"M2"}}'></div>                                            									</div>
+        	</div>
+</div>
+    </div>
+    </div>
+
+<script type="text/javascript">
+var $text1stP = $('.editor', '#articles .text-offset').find('p:first-child').first();
+if ($text1stP.length === 0) $text1stP = $('.editor', '#articles .article-commandite').find('p:first-child, div:first-child').first(); 
+if ($text1stP.length) {
+    // Si on chain .wrap et insertAfter, ce n'est pas le wrapper qui se fait insérer
+    $('#mobile-pub-first-paragraph').css('marginBottom', '1em').removeClass('hidden').wrap('<div class="row visible-xs visible-sm" id="mobile-pub-first-paragraph-wrapper"></div>');
+    $('#mobile-pub-first-paragraph-wrapper').insertAfter($text1stP);
+}
+</script>
+                </div>
+            </div>
+
+            <div class="footer-nav">
+    <div class="container">
+        <nav class="row">
+            <section class="col-xs-14 col-md-3">
+                <h2 class="visible-md visible-lg">S’abonner</h2>
+                <h2 class="visible-xs visible-sm" data-toggle="collapse" data-target="#collapse-footer-nav-abonnement">
+                    S’abonner
+                    <button class="btn pull-right visible-xs visible-sm" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13"><path d="M0 0h14v1H0V0zm5 4h7v1H5V4zM0 4h2v1H0V4zm0 4h2v1H0V8zm0 4h2v1H0v-1zm5-4h8v1H5V8zm0 4h6v1H5v-1z"/></svg>                    </button>
+                </h2>
+                <div class="collapse collapse-sm" id="collapse-footer-nav-abonnement">
+                    <ul class="list-unstyled">
+                        <li><a href="https://abonnement.ledevoir.com/nos-offres"><span>Abonnez-vous au Devoir</span></a></li>
+                                                    <li>
+                                <a class="infolettre-abonnement-popup-btn" href="/infolettres"><span>Infolettre</span></a>
+                            </li>
+                                                <li><a href="/mon-abonnement"><span>Gérer votre abonnement</span></a></li>
+                        <li><a href="/classe"><span>Le Devoir en classe</span></a></li>
+                        <li><a href="/flux-rss"><span>Flux RSS</span></a></li>
+                    </ul>
+                </div>
+                            </section>
+            <section class="col-xs-14 col-md-3">
+                <h2 class="visible-md visible-lg">À propos</h2>
+                <h2 class="visible-xs visible-sm" data-toggle="collapse" data-target="#collapse-footer-nav-apropos">
+                    À propos
+                    <button class="btn pull-right visible-xs visible-sm" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13"><path d="M0 0h14v1H0V0zm5 4h7v1H5V4zM0 4h2v1H0V4zm0 4h2v1H0V8zm0 4h2v1H0v-1zm5-4h8v1H5V8zm0 4h6v1H5v-1z"/></svg>                    </button>
+                </h2>
+                <div class="collapse collapse-sm" id="collapse-footer-nav-apropos">
+                    <ul class="list-unstyled">
+                        <li><a href="/edition/2020-02-25"><span>Éditions précédentes</span></a></li>
+                        <li><a href="/le-devoir/le-devoir"><span>Qui nous sommes (histoire)</span></a></li>
+                        <li><a href="/politique-de-confidentialite"><span>Politique de confidentialité</span></a></li>
+                        <li><a href="/conditions"><span>Conditions d’utilisation</span></a></li>
+                        <li><a href="/le-devoir/direction"><span>Direction</span></a> et <a href="/le-devoir/redaction"><span>rédaction</span></a></li>
+                        <li><a href="/participation-aux-commentaires"><span>Participation aux commentaires</span></a></li>
+                        <li><a href="/plan-de-site"><span>Plan du site</span></a></li>
+                        <li><a href="/registre-de-publicites-elections-federales-2019"><span>Registre des publicités</span></a></li>
+                    </ul>
+                </div>
+            </section>
+            <div class="clearfix visible-sm"></div>
+            <section class="col-xs-14 col-md-3">
+                <h2 class="visible-md visible-lg">Nous joindre</h2>
+                <h2 class="visible-xs visible-sm" data-toggle="collapse" data-target="#collapse-footer-nav-joindre">
+                    Nous joindre
+                    <button class="btn pull-right visible-xs visible-sm" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13"><path d="M0 0h14v1H0V0zm5 4h7v1H5V4zM0 4h2v1H0V4zm0 4h2v1H0V8zm0 4h2v1H0v-1zm5-4h8v1H5V8zm0 4h6v1H5v-1z"/></svg>                    </button>
+                </h2>
+                <div class="collapse collapse-sm" id="collapse-footer-nav-joindre">
+                    <ul class="list-unstyled">
+                        <li><a href="/mon-abonnement"><span>Service à la clientèle</span></a></li>
+                        <li><a href="/le-devoir/publicite"><span>Service de la publicité</span></a></li>
+                        <li><a href="/aide"><span>Aide</span></a></li>
+                        <li><a href="/faq"><span>FAQ</span></a></li>
+                    </ul>
+                </div>
+            </section>
+            <section class="col-xs-14 col-md-3">
+                <h2 class="visible-md visible-lg">Services</h2>
+                <h2 class="visible-xs visible-sm" data-toggle="collapse" data-target="#collapse-footer-nav-services">
+                    Services
+                    <button class="btn pull-right visible-xs visible-sm" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13"><path d="M0 0h14v1H0V0zm5 4h7v1H5V4zM0 4h2v1H0V4zm0 4h2v1H0V8zm0 4h2v1H0v-1zm5-4h8v1H5V8zm0 4h6v1H5v-1z"/></svg>                    </button>
+                </h2>
+                <div class="collapse collapse-sm" id="collapse-footer-nav-services">
+                    <ul class="list-unstyled">
+                        <li><a href="/services-et-annonces/avis-publics"><span>Avis publics</span></a></li>
+                        <li><a href="/services-et-annonces/appels-d-offres"><span>Appels d'offres</span></a></li>
+                        <li><a href="/services-et-annonces/carrieres"><span>Carrières</span></a></li>
+                        <li><a href="/services-et-annonces/charme-et-prestige"><span>Charme et prestige</span></a></li>
+                        <li><a href="/services-et-annonces/petites-annonces"><span>Petites annonces</span></a></li>
+                        <li><a href="/jeux"><span>Jeux</span></a></li>
+                    </ul>
+                </div>
+            </section>
+            <div class="clearfix visible-sm"></div>
+            <section class="col-xs-14 col-md-2">
+                <h2 class="visible-md visible-lg">Réseaux sociaux</h2>
+                <h2 class="visible-xs visible-sm" data-toggle="collapse" data-target="#collapse-footer-nav-social">
+                    Réseaux sociaux
+                    <button class="btn pull-right visible-xs visible-sm" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13"><path d="M0 0h14v1H0V0zm5 4h7v1H5V4zM0 4h2v1H0V4zm0 4h2v1H0V8zm0 4h2v1H0v-1zm5-4h8v1H5V8zm0 4h6v1H5v-1z"/></svg>                    </button>
+                </h2>
+                <div class="collapse collapse-sm" id="collapse-footer-nav-social">
+                    <ul class="list-unstyled">
+                        <li><a href="http://www.facebook.com/ledevoir" target="_blank"><span>Facebook</span></a></li>
+                        <li><a href="https://twitter.com/LeDevoir" target="_blank"><span>Twitter</span></a></li>
+                        <li><a href="https://www.instagram.com/ledevoir/" target="_blank"><span>Instagram</span></a></li>
+                        <li><a href="https://www.youtube.com/user/JournalLeDevoir" target="_blank"><span>Youtube</span></a></li>
+                    </ul>
+                </div>
+            </section>
+        </nav>
+    </div>
+</div>
+            <div class="modal fade" id="modal-newsletter" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-newsletter" role="document">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="11.744" height="11.695" viewBox=".651 .652 11.744 11.695"><path d="M.682 1.374l11.006 10.974.707-.707L1.337.666"/><path d="M1.358 12.33l10.98-10.97-.706-.708-10.98 10.97"/></svg>            </button>
+
+            <div class="modal-body">
+                <img src="/images/nweb/newsletter-modal.jpg?v=201804161045" class="img-responsive">
+
+                <form
+                    class="form form-inline text-center"
+                    action="https://abonnement.ledevoir.com/infolettres/inscription-rapide/1"
+                    method="POST"
+                >
+                    <div class="row">
+                        <div class="col-xs-14 mb10 col-sm-7 col-sm-offset-2">
+                            <input type="email" name="courriel" class="form-control" placeholder="Votre courriel" required>
+                            <input type="hidden" name="referer" value="https://www.ledevoir.com/politique/montreal/573258/la-fin-des-trottinettes-en-libre-service-a-montreal" />
+                        </div>
+                        <div class="col-xs-14 col-sm-3">
+                            <button type="submit" class="btn btn-default btn-default-no-icon bg-white">Je m'abonne</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+            <div class="footer-search">
+    <div class="container">
+        <div class="row">
+    <div class="col-xs-14">
+        <form action="/recherche" method="GET" novalidate>
+            <div class="form-group">
+                <label for="footer-search" class="sr-only">Que cherchez-vous?</label>
+                <span class="input-group-addon"><svg xmlns="http://www.w3.org/2000/svg" width="14.354" height="14.354" viewBox="0 0 14.354 14.354"><path d="M5.5 11C2.462 11 0 8.537 0 5.5 0 2.462 2.462 0 5.5 0 8.537 0 11 2.462 11 5.5 11 8.537 8.537 11 5.5 11zm3.646-1.146l.707-.707 4.5 4.5-.707.707-4.5-4.5zM5.5 10C7.985 10 10 7.985 10 5.5S7.985 1 5.5 1 1 3.015 1 5.5 3.015 10 5.5 10z"/></svg></span>
+                <input type="text" name="expression" id="footer-search" placeholder="Que cherchez-vous?" class="form-control autocomplete-search">
+            </div>
+            <div class="actions">
+                <button type="submit" name="rechercher" class="btn btn-default"><span class="hidden-xs">Rechercher</span><span class="chevron-right"><svg xmlns="http://www.w3.org/2000/svg" width="5.577" height="10.014" viewBox=".001 -.015 5.577 10.014"><path d="M0 9.34l4.357-4.353L0 .627l.636-.64 4.942 5L.635 10"/></svg></span></button>
+            </div>
+        </form>
+    </div>
+</div>    </div>
+</div>    
+            <div class="footer-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-14">
+                <div class="copy">
+                    &copy; <a href="https://www.ledevoir.com/">Le Devoir</a> 2002-2020                </div>
+            </div>
+        </div>
+    </div>
+</div>    
+        </footer>
+    </div>
+
+        
+    <div class="modal fade" id="alertesNavigateur" tabindex="-1" role="dialog" aria-labelledby="Alertes navigateur" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body">
+            <h1>Recevez les alertes de dernière heure du Devoir</h1>
+              <p>Voulez-vous activer les alertes du navigateur?</p>
+              <button type="button" class="btn btn-default bg-blue" id="activerAlertes">Oui</button>
+              <button type="button" class="btn btn-default bg-gray" id="desactiverAlertes">Non</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+                            
+        
+        <script>
+            var loginUrl = '/auth/login';
+
+            $(function() {
+                WebPush.init({
+                    apiInscriptionUrl: 'https://api.ledevoir.com/1.1/pushes/inscriptions',
+                    apiInscriptionDhUrl: 'https://api.ledevoir.com/1.1/pushes/inscriptions/dernieres/heures',
+                    apiDesinscriptionDhUrl: 'https://api.ledevoir.com/1.1/push/inscription/derniere/heure/web',
+                    applicationServerPublicKey: 'BMRhk42WSloAI3jQztQFv1oIBc8rWOmSj7496zQAzRwxzKE5F41/29u/RYdfs+HeQzsoM6pUpBsvApB20Jm1p/o='
+                });
+            });
+        </script>
+
+        <script src="/js/vendor/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            var bootstrapButton = $.fn.button.noConflict();
+            $.fn.bootstrapBtn = bootstrapButton;
+        </script>
+
+        <script src="/js/nweb/plugins.js"></script>
+        <script src="/js/nweb/main.js?20181125"></script>
+        <script src="/js/nweb/lazysizes.min.js?20180315" async></script>
+        <script src="/js/nweb/ls.unveilhooks.min.js?20180315" async></script>
+        <script src="/js/jquery.magnific-popup.min.js"></script>
+
+        <script src="/js/nweb/autocomplete-recherche.js"></script>
+        <script>
+            $(function() {
+                AutocompleteRecherche.init({
+                    get_url: '/recherche/autocomplete'
+                });
+            });
+        </script>
+
+                    <script src="/js/favoris.js?20180205"></script>
+        
+        
+        
+                    
+            
+            
+            
+            
+                            <script src="/js/nweb/article-analytics.js?20180315" async></script>
+            
+            <script src="/js/showads.js"></script>
+            <script src="/js/google_tag_event_pub.js?2"></script>
+        
+        <script src="/js/fonctions.js?20170329"></script>
+
+        
+        <script src="/js/jquery.cookie.js"></script>
+        <script src='https://www.google.com/recaptcha/api.js?hl=fr-CA'></script>
+
+        <div>
+            <div id="fb-root"></div>
+            <script>
+                window.fbAsyncInit = function() {
+                    FB.init({
+                        appId: '105451392851924',
+                        cookie: true,
+                        xfbml: true,
+                        version: 'v2.8'
+                    });
+                };
+
+                (function(d, s, id){
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) {return;}
+                    js = d.createElement(s); js.id = id;
+                    js.src = "//connect.facebook.net/fr_CA/sdk.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+            </script>
+        </div>
+
+                <script type="text/javascript">
+        (function() {
+
+                    var chartbeatSection = '', chartbeatAuthor = '';
+                        if ($('body.section_show_action, body.caricature_liste, body.dossier_module, body.cahier_special_module, body.galeries_photos_action, body.jeux_module').length) {
+                  chartbeatSection = $('header').find('h1').text();
+                  if ($('body.cahier_special_module.cahier_special_action').length) {
+                      chartbeatSection = 'Cahiers spéciaux ' + chartbeatSection;
+                  }
+                  if (chartbeatSection === '' && $('#jeux').length) {
+                      chartbeatSection = $('#jeux').find('h1').text();
+                  }
+              } else if ($('body.article_module.show_action, body.galerie_detail_action').length) {
+                  chartbeatSection = $('.author nav').find('li').map(function(){return $.trim($(this).text());}).get().join(',');
+                  chartbeatAuthor = $('.author h3, .infos h3').find('span').map(function(){return $.trim($(this).text());}).get().join(',');
+                  
+                  if (chartbeatSection === '' && $('header h1').find('small').length) {
+                      chartbeatSection = $('header h1').find('small').text();
+                  }
+              } else {
+                  chartbeatSection = $('body').attr('class');
+              }
+          
+          /** CONFIGURATION START **/
+          var _sf_async_config = window._sf_async_config = (window._sf_async_config || {});
+          _sf_async_config.uid = 65774;
+          _sf_async_config.domain = 'ledevoir.com';
+          _sf_async_config.flickerControl = false;
+          _sf_async_config.useCanonical = true;
+          _sf_async_config.useCanonicalDomain = true;
+          _sf_async_config.sections = chartbeatSection;
+          _sf_async_config.authors = chartbeatAuthor;
+                      var _cbq = window._cbq = (window._cbq || []);
+          _cbq.push(['_acct', 'anon']);
+          /** CONFIGURATION END **/
+          function loadChartbeat() {
+              var e = document.createElement('script');
+              var n = document.getElementsByTagName('script')[0];
+              e.type = 'text/javascript';
+              e.async = true;
+              e.src = '//static.chartbeat.com/js/chartbeat.js';
+              n.parentNode.insertBefore(e, n);
+          }
+          loadChartbeat();
+        })();
+        </script>
+      
+        <script async="true" src="//static.chartbeat.com/js/chartbeat_mab.js"></script>
+        
+                    <script>
+                                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+                ga('create', 'UA-1157473-10', 'auto');
+                                ga('send', 'pageview');
+            </script>
+        
+            <script src="https://static.freeskreen.com/ba/178/freeskreen.min.js"></script>
+        
+    <script>$.browser = {};</script>
+    <script src="/js/jquery.fancybox-1.2.1.js"></script>
+        <script>
+            $(function () {
+                $("a.fancybox").fancybox({
+                    'speedIn':	600,
+                    'speedOut': 200,
+                    'transitionIn': 'elastic',
+                    'opacity': true
+                });
+            });
+        </script>
+
+        <!-- 10.0.16.7-->
+
+            <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"3a67a9c110","applicationID":"104581530","transactionName":"NgdSMEZVC0UCBhcNDA9NcQdAXQpYTAQREAoCDlVLR1wKQQ==","queueTime":0,"applicationTime":921,"atts":"GkBRRg5PGEs=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

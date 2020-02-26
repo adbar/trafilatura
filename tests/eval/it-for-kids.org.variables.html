@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta property="og:title" content="Variablen und ihr Zuhause" />
+<meta property="og:description" content="Wie war das nochmal mit den Variablen? Hier ein Auszug aus unseren Lehrmaterialien!           Variablen sind kein Problem für dich? Dann schau doch mal, ob du unser Puzzle lösen kannst!  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://it-for-kids.org/blog/191211_variables/" />
+<meta property="og:image" content="https://it-for-kids.org/img/ms-icon-310x310.png"/>
+<meta property="article:published_time" content="2019-12-11T11:00:00+00:00" />
+<meta property="article:modified_time" content="2019-12-11T11:00:00+00:00" /><meta property="og:site_name" content="IT4Kids | IT-Kurse für Grundschulen" />
+
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://it-for-kids.org/img/ms-icon-310x310.png"/>
+
+<meta name="twitter:title" content="Variablen und ihr Zuhause"/>
+<meta name="twitter:description" content="Wie war das nochmal mit den Variablen? Hier ein Auszug aus unseren Lehrmaterialien!           Variablen sind kein Problem für dich? Dann schau doch mal, ob du unser Puzzle lösen kannst!  "/>
+
+    <meta property="og:url" content="https://it-for-kids.org">
+    <meta property="og:locale" content="de_DE">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/img/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/img/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/img/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/img/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+<title>IT4Kids | IT-Kurse für Grundschulen</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700" type="text/css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/app.css">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-139711350-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139711350-1');
+</script>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-default bg-light navbar-custom fixed-top">
+    <a class="navbar-brand" href="/">
+        <img id="logo" alt="IT4Kids Logo" src="/img/logo.svg"
+             style="height:65px;padding:7.5px;"></img>
+    </a>
+    <button class="navbar-toggler navbar-toggler-right collapsed" type="button"
+            data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span> </span>
+        <span> </span>
+        <span> </span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav ml-auto text-center">
+            
+            
+            
+            <li class="nav-item ">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            
+            
+            
+            <li class="nav-item ">
+                <a class="nav-link" href="/vision/">Vision</a>
+            </li>
+            
+            
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   role="button" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    Lehrmaterial
+                </a>
+                <div class="dropdown-menu">
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/lehrmaterial/">Inhalte</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/lehrmaterial/">Inhalte</a>
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/projekte/">Projekte</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/projekte/">Projekte</a>
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/software/">Software</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/software/">Software</a>
+                    
+                </div>
+            </li>
+            
+            
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   role="button" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    Kursangebot
+                </a>
+                <div class="dropdown-menu">
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/schulen/">Für Schulen</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/schulen/">Für Schulen</a>
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/mitmachen/">Für Kursleiter</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/mitmachen/">Für Kursleiter</a>
+                    
+                </div>
+            </li>
+            
+            
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   role="button" data-toggle="dropdown" aria-haspopup="true"
+                   aria-expanded="false">
+                    Über uns
+                </a>
+                <div class="dropdown-menu">
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/blog/">Blog</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/blog/">Blog</a>
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/status/">Status</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/status/">Status</a>
+                    
+                    <a class="dropdown-item d-none d-sm-block" href="/team/">Team</a>
+                    <a class="dropdown-item d-sm-none text-center" href="/team/">Team</a>
+                    
+                </div>
+            </li>
+            
+            
+            <li class="nav-item">
+                <a class="btn btn-primary ml-2 mr-2" href="/mitmachen">Jetzt mitmachen!</a>
+            </li>
+        </ul>
+    </div>
+    
+</nav>
+
+<div class="pt-0 pt-md-5" style="margin-top: 100px">
+    
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-5 col-12">
+                <h1 style="font-weight: 400;font-size:45px">Variablen und ihr Zuhause</h1>
+            <p class="text-muted" style="font-size:20px">11.12.2019 - Amelie Loevenich</p>
+        </div>
+        
+        <div class="col-md-7 col-12">
+            <div class="jumbotron" style="width:100%; height:200px;background-image: url('/blog/191211_variables/image.png');background-size:cover;background-repeat: no-repeat;background-position: center center">
+            </div>
+        </div>
+        
+        
+    </div>
+
+    <div><div class="row">
+    <div class="col">
+        <p style="font-size: 24px">
+            Wie war das nochmal mit den Variablen?
+            Hier ein Auszug aus unseren Lehrmaterialien!
+        </p>
+    </div>
+</div>
+<div class="row my-auto">
+ <div class="col-12 col-lg-6 mb-2 mb-lg-0">
+        <img class="img-fluid img-comic" src="comic1.png" alt="Variablen Erklärung Bild 1"/>
+    </div>
+    <div class="col-12 mb-2 mb-lg-0 col-lg-6 mt-lg-5 pt-lg-5">
+        <img class="img-fluid img-comic" src="comic2.png" alt="Variablen Erklärung Bild 2"/>
+    </div>
+</div>
+<div class="row">
+     <div class="col-12 mb-2 mb-lg-0 col-lg-6">
+            <img class="img-fluid img-comic" src="comic3.png" alt="Variablen Erklärung Bild 3"/>
+     </div>
+     <div class="col-12 mb-2 mb-lg-0 col-lg-6 mt-lg-5 pt-lg-5">
+            <img class="img-fluid img-comic" src="comic4.png" alt="Variablen Erklärung Bild 4"/>
+     </div>
+     <div class="col-12 mb-2 mb-lg-0 col-lg-6">
+            <img class="img-fluid img-comic" src="comic5.png" alt="Variablen Erklärung Bild 5"/>
+     </div>
+</div>
+<div class="row">
+    <div class="col">
+    <p>
+        Variablen sind kein Problem für dich? Dann schau doch mal, ob du unser <a href="/puzzle">Puzzle</a></a> lösen kannst!
+    </p>
+    </div>
+</div></div>
+</div>
+
+</div>
+<footer>
+    <div class="container pt-5">
+        <div id="footer-row" class="row">
+            <div class="col-4 footer-col">
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <span class="copyright">Copyright &copy; <script>document.write(new Date().getFullYear())</script> IT4Kids</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-4 footer-col">
+                <ul class="list-inline social-buttons">
+                    <li class="list-inline-item">
+                        <a href="https://www.facebook.com/itforkids.org/"><i class="fab fa-facebook-f fa-2x"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="https://www.instagram.com/it4kids.ac/"><i class="fab fa-instagram fa-2x"></i></a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="https://enactus.de/aachen/"><img class="icon-img" height="35px" src="/img/enactusschwalbe.png"/></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-4 footer-col">
+                <ul class="list-inline quicklinks">
+                    <li class="list-inline-item">
+                        <a href="/impressum/">Impressum</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="/datenschutz/">Datenschutz</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
