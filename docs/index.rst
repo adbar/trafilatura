@@ -87,14 +87,19 @@ This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is
 .. code-block:: bash
 
     $ pip install trafilatura # pip3 install on systems where both Python 2 and 3 are installed
+
+This project is under active development, please make sure you keep it up-to-date to benefit from latest improvements:
+
+.. code-block:: bash
+
     $ pip install -U trafilatura # to make sure you have the latest version
-    $ pip install git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
+    $ pip install -U git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
 
 A few additional libraries can be installed for extended functionality and faster processing: extraction of publication date (``htmldate``), language detection (``langid``), and faster processing of downloads (``cchardet``, currently not working on some macOS versions).
 
 .. code-block:: bash
 
-    $ pip install trafilatura[metadata] # metadata extraction
+    $ pip install trafilatura[metadata] # metadata extraction (work in progress)
     $ pip install trafilatura[all] # all additional functionality
 
 You can also install or update the packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.

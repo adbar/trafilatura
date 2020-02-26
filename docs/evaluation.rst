@@ -56,7 +56,7 @@ Python Package                  Precision  Recall     Accuracy  F-Score   Time
 =============================== =========  ========== ========= ========= =====
 *everything with markup*        0.492      0.902      0.511     0.637     0
 inscriptis 1.0 (html to txt)    0.504      **0.989**  0.532     0.668     0.87
-justext 2.2.0                   0.886      0.553      0.754     0.681     2.22
+justext 2.2.0 (German stoplist) 0.886      0.553      0.754     0.681     2.22
 goose3 3.1.6                    **0.935**  0.594      0.787     0.726     7.64
 newspaper3k 0.2.8               0.920      0.609      0.789     0.733     5.34
 boilerpy3 1.0.2                 0.767      0.756      0.775     0.761     1.89
@@ -79,7 +79,7 @@ Python Package                  Precision  Recall     F-Score   Time
 *everything with markup*        0.481      0.902      0.627     0
 inscriptis 1.0 (html to txt)    0.494      **0.992**  0.659     0.44
 newspaper3k 0.2.8               0.893      0.545      0.677     2.53
-justext 2.2.0                   0.880      0.593      0.709     1.21
+justext 2.2.0 (German stoplist) 0.880      0.593      0.709     1.21
 goose3 3.1.6                    **0.915**  0.610      0.732     3.88
 readability-lxml 0.7.1          0.873      0.724      0.791     1.15
 trafilatura 0.3.1 (rule-based)  0.853      0.894      0.873     0.86

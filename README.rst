@@ -77,13 +77,13 @@ Evaluation and alternatives
 For experimental results see the `evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 =============================== =========  ========== ========= ========= =====
-100 documents, 266 text and 294 boilerplate segments
+100 documents, 266 text and 294 boilerplate segments (2019-01-29)
 -------------------------------------------------------------------------------
 Python Package                  Precision  Recall     Accuracy  F-Score   Time
 =============================== =========  ========== ========= ========= =====
 *everything with markup*        0.492      0.902      0.511     0.637     0
 inscriptis 1.0 (html to txt)    0.504      **0.989**  0.532     0.668     0.87
-justext 2.2.0                   0.886      0.553      0.754     0.681     2.22
+justext 2.2.0 (German stoplist) 0.886      0.553      0.754     0.681     2.22
 goose3 3.1.6                    **0.935**  0.594      0.787     0.726     7.64
 newspaper3k 0.2.8               0.920      0.609      0.789     0.733     5.34
 boilerpy3 1.0.2                 0.767      0.756      0.775     0.761     1.89
@@ -103,14 +103,19 @@ This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is
 .. code-block:: bash
 
     $ pip install trafilatura # pip3 install on systems where both Python 2 and 3 are installed
+
+This project is under active development, please make sure you keep it up-to-date to benefit from latest improvements:
+
+.. code-block:: bash
+
     $ pip install -U trafilatura # to make sure you have the latest version
-    $ pip install git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
+    $ pip install -U git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
 
 A few additional libraries can be installed for extended functionality and faster processing: extraction of publication date (``htmldate``), language detection (``langid``), and faster processing of downloads (``cchardet``, currently not working on some macOS versions).
 
 .. code-block:: bash
 
-    $ pip install trafilatura[metadata] # metadata extraction
+    $ pip install trafilatura[metadata] # metadata extraction (work in progress)
     $ pip install trafilatura[all] # all additional functionality
 
 You can also install or update the packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
