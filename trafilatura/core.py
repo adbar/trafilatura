@@ -505,7 +505,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         etree.strip_tags(cleaned_tree, 'hi')
 
     # comments first, then remove
-    commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
+    if include_comments is True:
+        commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
+    else:
+        commentsbody =  etree.Element('body')
 
     # extract content
     temppost_hand, sure_thing = extract_content(cleaned_tree, include_tables)
