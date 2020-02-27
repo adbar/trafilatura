@@ -59,9 +59,9 @@ class LXMLDocument(Document):
 
 def try_readability(htmlinput, url):
     '''Safety net: try with the generic algorithm readability'''
-    # defaults min_text_length=25, retry_length=250
+    # defaults: min_text_length=25, retry_length=250
     try:
-        doc = LXMLDocument(htmlinput, url=url, min_text_length=MIN_EXTRACTED_SIZE, retry_length=250)
+        doc = LXMLDocument(htmlinput, url=url, min_text_length=25, retry_length=250)
         resultstring = doc.summary(html_partial=True)  # don't wrap in html and body tags
         newtree = html.fromstring(resultstring, parser=HTML_PARSER)
         return newtree
