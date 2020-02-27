@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>bumm film GmbH</title>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+    
+    <link rel="stylesheet" type="text/css" href="./default.css">
+    
+    <link rel="shortcut icon" type="image/png" href="./icon.png" />
+    <link rel="icon" type="image/png" href="./icon.png" />
+    
+    <!--<link href="https://fonts.googleapis.com/css?family=Do+Hyeon" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Oswald" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alegreya" rel="stylesheet">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script src="http://bummfilm.de/webyep-system/programm/opt/lightbox/js/jquery-1.10.2.min.js"></script>
+    <script src="http://bummfilm.de/webyep-system/programm/opt/lightbox/js/lightbox-2.6.min.js"></script>    
+    
+    <link rel='stylesheet' href='http://bummfilm.de/webyep-system/programm/opt/lightbox/css/lightbox.css' type='text/css' media='screen' />
+
+    <!--<script src='https://www.google.com/recaptcha/api.js?render=6LcTgG4UAAAAADMiqS-4ryaZhIh_DQyQrmR1--_t'></script>-->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    
+    <script>
+    leistungenAuswahl = 0;       
+    $( document ).ready(function() {
+      //alert("welcome");
+      var activeProject = "";
+    });
+    </script>
+
+  <script>
+  $( document ).ready(function() {
+      var scrollTo = "goToÜber";
+      $("html, body").animate({
+          scrollTop: parseInt(parseInt($("." + scrollTo).offset().top)-200)
+      }, "slow");
+  });
+  </script>
+  
+  <script>
+  $( document ).ready(function() {
+    //Wenn ein Cookie gesetzt ist, wird die Cookie-Meldung verborgen
+    if(getCookie('CookieAnfrage')=="Zugestimmt"){
+      $("#botclick").slideUp(0);
+    }
+  });
+  
+  
+  function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+  </script>
+  </head>
+  <body>
+  
+<div id="background-image-box"> <div id="background-image"></div></div>
+
+<div class="sideIcon-Facebook"><a target="_blank" href="https://de-de.facebook.com/bummfilm/"></a></div>
+    
+<div id="pov-fenster"><div class="boxrahmen"><div class="boxcenter"><div class="tranz"></div><div class="box">
+
+</div><div class="secbox"></div></div></div></div>
+
+<div class="goToHome"></div>
+
+<div id="nav"><div class="logoimg"></div><a id="goToHome">Home</a><a id="goToProjekte">Projekte</a><a id="goToUeber">&Uuml;ber</a><a id="goToLeistungen">Leistungen</a><a id="goToKontakt">Kontakt</a></div>
+
+<div id="logo">
+<span>Produktionsfirma M&uuml;nchen</span>
+<!--<h1>bumm film</h1>-->
+<img id="logoimg" src="./images/bummfilm.png" />
+<div>kreative, originelle und neuartige Formate</div>
+<div id="sm"><a class="sm-fb" target="_blank" title="Facebook" href="https://www.facebook.com/bummfilm/"></a><a class="sm-ig" target="_blank" title="Instagram" href="https://www.instagram.com/explore/locations/1018701510/bumm-film-gmbh?hl=de"></a><a class="sm-tw" target="_blank" title="Twitter" href="https://twitter.com/hashtag/bummbeibeans?lang=de"></a><a class="sm-yt" target="_blank" title="YouTube" href="https://www.youtube.com/watch?v=6pZFrFYIRSs&list=PLQ4S1w9yIyhF7kisovuT3aXm7ByEEmzTo"></a></div>
+</div>
+
+<div class="pov-box goToProjekte">
+<div class="pov-point"><div class="Live"><span>Live</span></div></div>
+<div class="pov-point"><div class="Doku"><span>Doku</span></div></div>
+<div class="pov-point"><div class="Kino"><span>Kino</span></div></div>
+<div class="pov-point"><div class="Kinder"><span>Kinder</span></div></div>
+<div class="pov-point"><div class="Audio"><span>Audio</span></div></div>
+<div class="pov-point"><div class="VideoOnDemand"><span>Video-on-Demand</span></div></div>
+<div class="pov-point"><div class="TV-Serien"><span>TV-Serien</span></div></div>
+<div class="pov-point"><div class="Comedy"><span>Comedy</span></div></div>
+<div class="pov-point"><div class="Games"><span>Games</span></div></div>
+<div class="pov-point"><div class="OnAirPromotion"><span>OnAir Promotion</span></div></div>
+<!--<div class="pov-point"><div class="VR"><span>VR</span></div></div>-->
+<div class="pov-point"><div class="Buecher"><span>Bücher</span></div></div>
+</div>
+
+<!-- Hier liegen die Projekte inhaltlich -->
+<div id="get-pov" style="display:none;">
+<div id="Live" class="pov-element"><div class="abstand"><h2>Live</h2><div class="ProjektText">Ob für große Messen, wie die Gamescom, Branchenparties, Kino- oder Release-Events. Wir bieten ein breites Spektrum der Event- und Veranstaltungsplanung, schaffen atemberaubende Aufbauten, Bühnenbilder, Beamereffekte und beleben Events mit charmanter Moderation und Liveperformence.</div><div class="slideImgInhalt slideImgLive"></div><div class="slideImgBox"></div></div></div>
+<div id="Doku" class="pov-element"><div class="abstand"><h2>Doku</h2><div class="ProjektText">Mit fundiertem Hintergrundwissen und unter Einbeziehung renommierter Experten konnten wir bereit in Projekten wie "Unsere Alpen" und "Iron Skin" unser K&ouml;nnen unter Beweis stellen.<br />Moderne Animationstechniken und atemberaubende CGI-Effekte in Zusammenarbeit mit der BigHugFX lassen der Kreativit&auml;t und der visuellen Gestaltung alle M&ouml;glichkeiten offen.<br />Ob komplette Greenscreen Postproduktion. F&uuml;r Greenscreen-Shots steht uns die Hauseigene Studiohalle zur Verf&uuml;gung. Gerne stellen wir f&uuml;r entsprechende Projekte passende ma&szlig;geschneiderte L&ouml;sungen zusammen.</div><div class="slideImgInhalt slideImgDoku"></div><div class="slideImgBox"></div></div></div>
+<div id="Kino" class="pov-element"><div class="abstand"><h2>Kino</h2><div class="slideImgInhalt slideImgKino"></div><div class="slideImgBox"></div></div></div>
+<div id="Kinder" class="pov-element"><div class="abstand"><h2>Kinder</h2><div class="slideImgInhalt slideImgKinder"></div><div class="slideImgBox"></div></div></div>
+<div id="Audio" class="pov-element"><div class="abstand"><h2>Audio</h2><div class="slideImgInhalt slideImgAudio"></div><div class="slideImgBox"></div></div></div>
+<div id="VideoOnDemand" class="pov-element"><div class="abstand"><h2>Video-On-Demand</h2><div class="slideImgInhalt slideImgVideoOnDemand"></div><div class="slideImgBox"></div></div></div>
+<div id="TV-Serien" class="pov-element"><div class="abstand"><h2>TV-Serien</h2><div class="slideImgInhalt slideImgTV-Serien"></div><div class="slideImgBox"></div></div></div>
+<div id="Comedy" class="pov-element"><div class="abstand"><h2>Comedy</h2><div class="slideImgInhalt slideImgComedy"></div><div class="slideImgBox"></div></div></div>
+<div id="Games" class="pov-element"><div class="abstand"><h2>Games</h2><div class="slideImgInhalt slideImgGames"></div><div class="slideImgBox"></div></div></div>
+<div id="OnAirPromotion" class="pov-element"><div class="abstand"><h2>OnAir Promotion</h2><div class="slideImgInhalt slideImgOnAirPromotion"></div><div class="slideImgBox"></div></div></div>
+<!--<div id="VR" class="pov-element"><div class="abstand"><h2>VR</h2>Wir besitzen nicht nur die HTC Vive, sondern sogar die Vive Pro und schauen uns gerne Ihren 360-Content an!<div class="slideImgInhalt slideImgVR"></div><div class="slideImgBox"></div></div></div>-->
+<div id="Buecher" class="pov-element"><div class="abstand"><h2>B&uuml;cher</h2><div class="slideImgInhalt slideImgBuecher"></div><div class="slideImgBox"></div></div></div>
+</div>
+
+<!-- Hier liegen die Leistungen inhaltlich -->
+<div id="get-lov" style="display:none;">
+<div id="Entwicklung" class="lov-element"><div class="abstand"><h2>Entwicklung</h2>PROSIEBEN, SERVUS TV, CARTOON NETWORK, BOOMERANG, WDR, DMAX, BAYERISCHER RUNDFUNK etc. und preisgekrönten ON-AIR PROMOTIONS für SYFY, THIRTEENTH STREET und DISNEY CHANNEL, hat die bumm film ihre originelle Vielseitigkeit unter Beweis gestellt.
+<p style="margin:12px 0 0;">Heute hat sich die BUMM FILM mit ihren vier kreativen Köpfen Tommy Krappweis, Norman Cöster, David Gromer und Sophia Krappweis zu einer eigenen Marke entwickelt. Sie garantiert Kreativität und originelle Ideen - mit Kunden in verschiedenen Bereichen von TV über die Gaming-Industrie, Live Entertainment und Shows, bis hin zu Hörspielen, Events und Musik. </div></div>
+<div id="Produktion" class="lov-element"><div class="abstand"><h2>Produktion</h2>Als Produktionsfirma konnten wir uns schon in unzähligen Formaten profilieren. Durch unsere langj&auml;hrige Erfahrung mit verschiedenen Drehteams und unterschiedlichen Formaten können wir ein breites Spektrum an Produktionen bieten und verschiedensten Anforderungen gerecht werden.<!--Formaten bieten sich vielf&auml;ltige M&ouml;glichkeiten der Produktion.--><!--Von kompletten eigenen Produktionen bis zu kooperationen mit anderne Produktionsfirmen oder  --- Dabei steht das Produkt und dessen Aufwertung immer im Vordergrund.--></div></div>
+<div id="Studiohalle" class="lov-element"><div class="abstand"><h2>Studiohalle</h2>Unsere Studiohallte, ausgestattet mit einer gro&szlig;z&uuml;gig angelegte Greenscreen-Area, befindet sich direkt auf dem Gel&auml;nde und bietet hohe Flexibilit&auml;t und genug Raum f&uuml;r verschiedenste Produktionen.<br />Die N&auml;he von Studiohalle, Lagerr&auml;umen und Postproduktion beg&uuml;nstigt dabei eine reibungslose und optimierte Produktion.</div></div>
+<!--<div id="Postproduktion" class="lov-element"><div class="abstand"><h2>Postproduktion</h2><ul><li>3 AVID/Premiere Schnittpl&auml;tze</li><li>2 Tonstudios mit Aufnahmer&auml;umen und bis zu f&uuml;nf Mischpl&auml;tze</li><li>1 DaVinci Grading mit Wave-Panel</li></ul></div></div>-->
+<div id="Werkstatt" class="lov-element"><div class="abstand"><h2>Werkstatt <span style="font-size:0.7em;">(Ausstattung & Requisiten)</span></h2>Unsere Werkstatt ist der Ort, an dem sich Kulissen entfalten, Setobjekte verwirklichen und bespielbare Puppen geboren werden.<br /> Und auch im mobilen Einsatz vor Ort werden Drehorte, Sets und Bühnen liebevoll gestaltet, um individuelle und einzigartige Szenenbilder zu erschaffen. <!--Unsere Requisiten-Werkstatt Komplette Kulissen--></div></div>
+<div id="Schnitt" class="lov-element"><div class="abstand"><h2>Schnitt</h2>Unsere voll ausgestattete AVID/Premiere-Schnittpl&auml;tze vermieten wir gerne auf Anfrage.<br />Ein Raidsystem mit "ISIS" sorgt f&uuml;r die n&ouml;tige Sicherheit und Volumenflexibilit&auml;t um selbt gro&szlig;e Serien oder Kinoprojekte zu stemmen.</div></div>
+<div id="VFX" class="lov-element"><div class="abstand"><h2>VFX</h2>Durch unsere langj&auml;hrige Erfahrung in der Postproduktion k&ouml;nnen wir verschiedenste L&ouml;sungen f&uuml;r VFX-Shots und hochwertigen CGI-Content bieten.<!-- Unsere hauseigene Studiohalle mit Greenscreen-Area bietet dabei gro&szlig;e Flexibilit&auml;t in der Generierung von ben&ouml;tigtem Content/Footage.--> Gerne setzen wir uns mit Ihnen zusammen und finden "Grafik-VFX und Compositing"-Lösungen maßgeschneidert in koop. mit der BigHugFX.</div></div>
+
+
+<div id="Grading" class="lov-element"><div class="abstand"><h2>Grading</h2>Wir bieten Grading f&uuml;r jegliche Formate auch f&uuml;r 360°- und High-Resolution-Content.<br />Dabei haben wir unter anderem die M&ouml;glichkeiten von DaVinci (inkl. Wave-Panel) oder Grading direkt in AVID/Premiere (auch mit Magic Bullet Suite).<br /></div></div>
+<div id="Tonproduktion" class="lov-element"><div class="abstand"><h2>Tonproduktion</h2><p style="margin:0 0 8px;">Das Herzstück für unsere Aufnahmen sind zwei hochwertig ausgestattete Aufnahmeräume. Sieben Mischplätze geben dabei genug Platz für eine schnelle und routinierte Bearbeitung.<br />
+</p><p style="margin:0 0 4px">Wir bieten Synchron- und Sprecher-Aufnahmen, -Coaching, und -Editing (eigene Sprecher im Haus), sowie Sounddesign und Ton-Mischung auch im R128 Standart.</p>
+<span style="font-size:0.9em;">Ausstattung jeweils: Pult Sony DMX-R100, Abhöre A.D.A.M. (2.0/5.1), DAW Magix Sequoia (Pro Tools auf Anfrage), Waves Plugins.</span></div></div>
+</div>
+
+<!-- Hier liegen die Projekt-Details inhaltlich -->
+<div id="ov-rahmen">
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>NBC Ulica Brand Spot</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">NBC</span><span class="trenner"></span><span class="datum">2018</span></div>
+        <a href='./images/projekte/nbc_2018_ulica_brand_spot.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='./images/projekte/nbc_2018_ulica_brand_spot_kl.jpg' width='200' alt=''></a>
+  <ul>
+  	<li>NBC Spot</li>
+  </ul>  
+        <div class="shownot-info">Werbung</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+    <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>ServusTV</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">ServusTV</span><span class="trenner"></span><span class="datum">2018</span></div>
+        <a href='./images/projekte/servustv_2018_werbetrenner.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='./images/projekte/servustv_2018_werbetrenner_kl.jpg' width='200' alt=''></a>
+  <ul>
+  	<li>19 Werbetrenner</li>
+  </ul>  
+        <div class="shownot-info">Werbung</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Gamescom </h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Spielemesse</span><span class="trenner"></span><span class="datum">2016 - 2018</span></div>
+        <a href='./images/projekte/gamescom_2018.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='./images/projekte/gamescom_2018_kl.jpg' width='200' alt=''></a>
+        <!--<a href='/webyep-system/daten/15-35-im-Projekte-OV-Bild-5574.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-35-im-Projekte-OV-Bild-5574-tn.jpg' width='150' height='73' alt=''></a>-->      <h4>2018 - Cosplay Area</h4>
+        <ul>
+        	<li>Gestaltung/K&uuml;nstlerische Leitung</li>
+        </ul>  
+        <h4>2017 - Cosplay Area/Halle 5 &amp; Branchenparty</h4>  
+        <ul>
+        	<li>Gestaltung/K&uuml;nstlerische Leitung</li>
+        </ul>  
+        <h4>2016 - Gamescom &ndash; Cosplay Area/Halle 5</h4>  
+        <ul>
+        	<li>Gestaltung/K&uuml;nstlerische Leitung</li>
+        </ul>
+        <div class="shownot-info">Event Live</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Hörspiele Audible 2018</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">audible</span><span class="trenner"></span><span class="datum">2018</span></div>
+        <a href='./images/projekte/audible_2018.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='./images/projekte/audible_2018_kl.jpg' height='200' alt=''></a>
+             
+   <h4>Die Meisterin</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Ghostsitter</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible, Staffel 2+3</li>
+  </ul>
+              
+  <h4>Die Zwerge</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible, Teil 2</li>
+  </ul>
+  
+  <h4>Doors</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Bill Bo und seine Bande</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible, Staffel 1</li>
+  </ul>
+  
+  <h4>Eine andere Weihnachtsgeschichte</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <br />&nbsp;<br />&nbsp;
+ 
+  <!--<h4>Die Fl&uuml;sse von London</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Schwarzer Mond &uuml;ber Soho</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Eine andere Weihnachtsgeschichte</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Eltern hoch 2</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Bill Bo</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Musibold</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible</li>
+  </ul>
+  
+  <h4>Die Zwerge</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible, Teil 2</li>
+  </ul>-->
+  
+  
+        <div class="shownot-info">Musik</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Hörspiele Audible 2017</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">audible</span><span class="trenner"></span><span class="datum">2017</span></div>
+        <a href='./images/projekte/audible_2017.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='./images/projekte/audible_2017_kl.jpg' width='200' alt=''></a>
+  
+  <h4>Ghostsitter</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible, Staffel 2+3</li>
+  </ul>
+  
+  <h4>Die Zwerge</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage f&uuml;r audible, Teil 1</li>
+  </ul>
+  
+        <div class="shownot-info">Musik</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>bumm bei Beans</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Rocketbeans </span><span class="trenner"></span><span class="datum">2018</span></div>
+        <a href='/webyep-system/daten/15-38-im-Projekte-OV-Bild-9443.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-38-im-Projekte-OV-Bild-9443-tn.jpg' width='150' height='84' alt=''></a>      <ul>
+  	<li>Webserie bei Rocketbeans</li>
+  </ul>
+        <div class="shownot-info">Webcontent Live Comedy</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Erzählmirnix</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2018</span></div>
+        <a href='/webyep-system/daten/15-37-im-Projekte-OV-Bild-1626.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-37-im-Projekte-OV-Bild-1626-tn.jpg' width='150' height='84' alt=''></a>      <ul>
+  	<li>Puppensketche</li>
+  </ul>
+        <div class="shownot-info">Webcontent</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Chris Kramer</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2017</span></div>
+        <a href='/webyep-system/daten/15-42-im-Projekte-OV-Bild-6522.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-42-im-Projekte-OV-Bild-6522-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>Dokumentation in den USA</li>
+  </ul>
+        <div class="shownot-info">Musik Dokumentation</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Ironskin</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">DMAX</span><span class="trenner"></span><span class="datum">2017</span></div>
+        <a href='/webyep-system/daten/15-41-im-Projekte-OV-Bild-9941.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-41-im-Projekte-OV-Bild-9941-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>DMAX &ndash; Doku-Pilot</li>
+  </ul>
+        <div class="shownot-info">Dokumentation</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Hörspiele Audible 2017</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">audible</span><span class="trenner"></span><span class="datum">2017</span></div>
+              <h4>Ghostsitter</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage von Tommy Krappweis f&uuml;r audible, Staffel 1</li>
+  </ul>
+  
+  <h4>Die Zwerge</h4>
+  
+  <ul>
+  	<li>H&ouml;rspiel nach Buchvorlage von Markus Heitz f&uuml;r aud ible, Teil 1</li>
+  </ul>
+        <div class="shownot-info">Audio</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Gauselmann</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Merkur</span><span class="trenner"></span><span class="datum">2016</span></div>
+        <a href='/webyep-system/daten/15-43-im-Projekte-OV-Bild-9808.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-43-im-Projekte-OV-Bild-9808-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>Doku mit Mario Adorf</li>
+  </ul>
+        <div class="shownot-info">Dokumentation Werbung</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Echt jetzt?!</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Boomerang </span><span class="trenner"></span><span class="datum">2016</span></div>
+        <a href='/webyep-system/daten/15-1-im-Projekte-OV-Bild-3756.png' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-1-im-Projekte-OV-Bild-3756-tn.png' width='150' height='80' alt=''></a>      <ul>
+  	<li>10 Folgen, 2016</li>
+  </ul>
+        <div class="shownot-info">Kinder TVSerienUndReihen Comedy Show</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Habe die Ehre</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">BR 2014-2016</span></div>
+        <a href='/webyep-system/daten/15-32-im-Projekte-OV-Bild-7230.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-32-im-Projekte-OV-Bild-7230-tn.jpg' width='150' height='84' alt=''></a>      <h4>2016</h4>
+  
+  <ul>
+  	<li>TV-Unterhaltungsshow, 6 Folgen</li>
+  </ul>
+  
+  <h4>2015</h4>
+  
+  <ul>
+  	<li>TV-Unterhaltungsshow, 6 Folgen</li>
+  </ul>
+  
+  <h4>2014</h4>
+  
+  <ul>
+  	<li>TV-Unterhaltungsshow, 11 Folgen</li>
+  </ul>
+        <div class="shownot-info">TVSerienUndReihen Show</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Unsere Alpen</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Servus TV</span><span class="trenner"></span><span class="datum">2015-2016</span></div>
+        <a href='/webyep-system/daten/15-33-im-Projekte-OV-Bild-6881.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-33-im-Projekte-OV-Bild-6881-tn.jpg' width='150' height='113' alt=''></a>      <ul>
+  	<li>TV-Doku, 6 Folgen</li>
+  </ul>
+        <div class="shownot-info">TVSerienUndReihen Dokumentation</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Buntschau</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">BR</span><span class="trenner"></span><span class="datum">2015</span></div>
+        <a href='/webyep-system/daten/15-34-im-Projekte-OV-Bild-7432.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-34-im-Projekte-OV-Bild-7432-tn.jpg' width='150' height='100' alt=''></a>      <p>&bdquo;BUNTSCHAU&ldquo; ist eine neue Comedy-Show des Bayerischen Fernsehens, die die bekannten Bestandteile und Rituale einer Nachrichtensendung karikiert und persifliert.<br />
+  &nbsp;</p>
+        <div class="shownot-info">TVSerienUndReihen Show</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Schandmaul - Ein echter wahrer Held</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">03.2015</span></div>
+        <a href='/webyep-system/daten/15-21-im-Projekte-OV-Bild-7643.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-21-im-Projekte-OV-Bild-7643-tn.jpg' width='150' height='110' alt=''></a>      <div class="_5pbx userContent">
+  <p>Komplette Musik und Videoproduktion</p>
+  
+  <p>Der Song &quot;Ein Echter Wahrer Held&quot; stammt urspr&uuml;nglich aus der Web-Serie &quot;Hoppers&quot; von und mit Nino Kerl und Fabian Siegismund. Nach dem Weggang von Fabi zu Studio71 nach Berlin schien eine Reunion eher unwahrscheinlich. F&uuml;r den Dreh des Schandmaul-Covers vom Heldensong aber trafen sich beide jetzt wieder am Set in M&uuml;nchen und eine Smartphone Kamera hat den Moment festgehalten, in dem Nino mitten w&auml;hrend eines Takes von Tommy ins Bild geschoben und dann von Fabian st&uuml;rmisch begr&uuml;&szlig;t wird.<br />
+  Au&szlig;erdem dabei Dennis Br4amm3n von Pietsmiet, Julius von High5, jede Menge Reenactos, Cosplayer, Larper und nat&uuml;rlich auch die Band &quot;Schandmaul&quot;!</p>
+  
+  <p><a href="https://youtu.be/zN6cG29-s70" rel="nofollow" target="_blank">Hier der direkte Link zum Clip auf YouTube</a></p>
+  </div>
+        <div class="shownot-info">Event Musik</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Mara und der Feuerbringer</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2013-2015</span></div>
+        <a href='/webyep-system/daten/15-31-im-Projekte-OV-Bild-1705.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-31-im-Projekte-OV-Bild-1705-tn.jpg' width='150' height='212' alt=''></a>      <p>Die vierzehnj&auml;hrige Mara (Lilian Prent) hat nur einen Wunsch: normal sein![...] Denn Mara hat keine geringere Aufgabe auferlegt bekommen, als den drohenden Weltuntergang zu verhindern &ndash; steht Ragnar&ouml;k, die G&ouml;tterd&auml;mmerung, wirklich unmittelbar bevor?</p>
+  
+  <ul>
+  	<li>Kinostart: 02. April 2015 im Verleih der Constantin Film</li>
+  	<li>Darsteller: Lilian Prent, Jan Josef Liefers, Esther Schweins, Christoph Maria Herbst, Eva Habermann, Alex Simon, Carin C. Tietze, Joseph Hannesschl&auml;ger, Billy Boyd und Heino Ferch</li>
+  	<li>Drehbuch und Regie: Tommy Krappweis</li>
+  	<li>Produzent: Christian Becker</li>
+  	<li>Produktionsfirmen: Rat Pack Filmproduktion GmbH in Co-Produktion mit RTL Television GmbH</li>
+  	<li>Buch / Dramaturgie / Script Supervision / Creative Producing / Regie / Schnitt / VFX</li>
+  </ul>
+  
+  <h3><a href="./index.php?preis=2015-rpc-fantasy-award" target="_self">Rpc-Fantasy Award</a></h3>
+        <div class="shownot-info">Fiction Kino Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>bumm Event 2015</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Release-Event zu MARA UND DER FEUERBRINGER</span><span class="trenner"></span><span class="datum">2015</span></div>
+        <a href='/webyep-system/daten/15-19-im-Projekte-OV-Bild-8139.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-19-im-Projekte-OV-Bild-8139-tn.jpg' width='150' height='99' alt=''></a>      <p>Zusammen mit dem Gutshof Menterschwaige und der BigHugFX gew&auml;hrte die bumm film GmbH Einblick in die verschiedenen Produktionsvorg&auml;nge, w&auml;hrend im Innenhof Schauk&auml;mpfe und Modenschauen stattfanden und die Eventb&uuml;hne mit Witz, Spannung und Stars gl&auml;nzte.</p>  
+  <ul>
+  	<li>23.10.2015 - 25.10.2015</li>
+  	<li>Bernhard Hoecker, Wigald Boning, Carin C. Tietze, Josef Hannesschl&auml;ger, Esther Schweins, Lilian Prent, Alex Simon, Schandmaul, Prof. Simek, Josef G&ouml;hlen</li>
+  </ul>  
+  <!--<p><strong>Mehr Erfahren:</strong></p>  
+  <ul>
+  	<li><a href="http://youtu.be/cLfBPCQ77hs" target="_blank">Video-Impressionen</a></li>
+  	<li><a href="http://digital.unitymedia.teleschau.de/reportagen/303798/dvd-veroffentlichung-mit-herz" target="_blank">Bericht der Teleschau</a></li>
+  	<li><a href="http://www.robots-and-dragons.de/news/17414-robots-dragons-auf-dem-bumm-film-event-zu-mara-und-der-feuerbringer" target="_blank">Bericht von robots-and-dragons.de</a></li>
+  </ul>-->
+        <div class="shownot-info">Event Live</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Syfy - Jurassic Park Marathon</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2015</span></div>
+              <p><a class="WYPopUpImage" href="http://bummfilm.de/images/projekte/syfy.jpg" rel="lightbox[lo-Projekte-Werbung]"><img alt="" src="http://bummfilm.de/images/projekte/syfy.jpg" style="width:200px" /></a></p>
+  
+  <p>3 Promospots, 2015</p>
+  
+  <ul>
+  	<li><a href="https://www.youtube.com/watch?v=imYUX0K6sUo" target="_blank">Bushaltestelle</a></li>
+  	<li><a href="https://www.youtube.com/watch?v=Cv_Ej7XWn5Y" target="_blank">Sushi</a></li>
+  	<li><a href="https://www.youtube.com/watch?v=_RlqEzJd9sI" target="_blank">Flughafen</a></li>
+  </ul>
+  
+  <h3><a href="./index.php?preis=2016-promax_europe" target="_self">Promax Europe, Preis: Gold &amp; Silver</a></h3>
+        <div class="shownot-info">Werbung</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Ich bin Du – und Du schaust zu</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Boomerang</span><span class="trenner"></span><span class="datum">2015</span></div>
+        <a href='/webyep-system/daten/15-2-im-Projekte-OV-Bild-8081.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-2-im-Projekte-OV-Bild-8081-tn.jpg' width='150' height='115' alt=''></a>      <ul>
+  	<li>6 Folgen, 2015</li>
+  </ul>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernd Channel</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">KIKA</span><span class="trenner"></span><span class="datum">2015</span></div>
+        <a href='/webyep-system/daten/15-12-im-Projekte-OV-Bild-4191.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-12-im-Projekte-OV-Bild-4191-tn.jpg' width='150' height='84' alt=''></a>      <ul>
+  	<li>3 Folgen, 2015</li>
+  </ul>
+        <div class="shownot-info">Show Kinder Webcontent</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Das Disney XD Heimspiel</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">KIKA</span><span class="trenner"></span><span class="datum">2015</span></div>
+        <a href='/webyep-system/daten/15-4-im-Projekte-OV-Bild-8857.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-4-im-Projekte-OV-Bild-8857-tn.jpg' width='150' height='100' alt=''></a>      <p><strong>Staffel III</strong></p>
+  
+  <ul>
+  	<li>Kinderunterhaltung, 6 Folgen</li>
+  	<li>2014</li>
+  </ul>
+  
+  <p><strong>Staffel II </strong></p>
+  
+  <ul>
+  	<li>Kinderunterhaltung, 6 Folgen</li>
+  	<li>2013</li>
+  </ul>
+  
+  <p><strong>Staffel I</strong></p>
+  
+  <ul>
+  	<li>Kinderunterhaltung, 6 Folgen</li>
+  	<li>2012</li>
+  </ul>
+  
+  <h3><a href="./index.php?preis=2012-goldener-spatz" target="_self">Goldener Spatz Nominierung</a></h3>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1></h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum"></span></div>
+                    <div class="shownot-info"></div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>High5 - Ein echter wahrer Held</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">02.2013</span></div>
+        <a href='/webyep-system/daten/15-23-im-Projekte-OV-Bild-5015.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-23-im-Projekte-OV-Bild-5015-tn.jpg' width='150' height='84' alt=''></a>      <p>Komplette Musik und Videoproduktion</p>
+  
+  <p><a class="link" href="http://www.amazon.de/Echter-Wahrer-Held-Radio-Edit/dp/B00B9W88RU/ref=sr_1_1?ie=UTF8&amp;qid=1392907457&amp;sr=8-1&amp;keywords=Ein+echter+wahrer+Held" target="_blank">auf Amazon</a></p>
+  
+  <p><a class="link" href="https://itunes.apple.com/de/album/ein-echter-wahrer-held-radio/id598998067?i=598998786&amp;ign-mpt=uo%3D4" target="_blank">auf iTunes</a></p>
+        <div class="shownot-info">Musik</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Cartoon Network Spurensuche</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Turner Broadcasting </span><span class="trenner"></span><span class="datum">2012</span></div>
+        <a href='/webyep-system/daten/15-3-im-Projekte-OV-Bild-7905.png' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-3-im-Projekte-OV-Bild-7905-tn.png' width='150' height='107' alt=''></a>      <h4>Schnitzeljagd war gestern</h4>
+    <ul>
+        	<li>Doku TV-Serie</li>
+        </ul>
+        
+        <p><strong>deutsch</strong></p>
+        
+        <ul>
+        	<li>Staffel III
+        	<ul>
+        		<li>3 Folgen,&nbsp;2015</li>
+        	</ul>
+        	</li>
+        	<li>Staffel II
+        	<ul>
+        		<li>6 Folgen, 2014</li>
+        	</ul>
+        	</li>
+        	<li>Staffel I
+        	<ul>
+        		<li>6 Folgen, 2012</li>
+        	</ul>
+        	</li>
+        </ul>
+        
+        <p><strong>polnisch</strong></p>
+        
+        <ul>
+        	<li>Staffel II
+        	<ul>
+        		<li>6 Folgen, 2015</li>
+        	</ul>
+        	</li>
+        	<li>Staffel I
+        	<ul>
+        		<li>6 Folgen, 2014</li>
+        	</ul>
+        	</li>
+        </ul>
+        
+        <p><strong>rum&auml;nisch</strong></p>
+        
+        <ul>
+        	<li>Staffel I
+        	<ul>
+        		<li>6 Folgen, 2015</li>
+        	</ul>
+        	</li>
+        </ul>
+        
+        <h3><a href="./index.php?preis=2015-grimme-preis" target="_self">Grimme Preis Nominierung</a></h3>
+        
+        <h3><a href="./index.php?preis=2013-mira-award" target="_self">MIRA-Award Nominierung</a></h3>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+        
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernhard Hoecker</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">LIVE</span><span class="trenner"></span><span class="datum">2014</span></div>
+        <a href='/webyep-system/daten/15-20-im-Projekte-OV-Bild-6586.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-20-im-Projekte-OV-Bild-6586-tn.jpg' width='120' alt=''></a>      <h4>Liveprogramm &bdquo;So Liegen Sie Richtig Falsch&ldquo;<br />
+  &nbsp;</h4>
+  
+  <ul>
+  	<li>Bucharbeit / Regie</li>
+  </ul>
+        <div class="shownot-info">Event Comedy Live</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernd das Brot - Und die Unmöglichen</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">PC-Spiel</span><span class="trenner"></span><span class="datum">September 2014</span></div>
+        <a href='/webyep-system/daten/15-13-im-Projekte-OV-Bild-6429.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-13-im-Projekte-OV-Bild-6429-tn.jpg' width='150' height='85' alt=''></a>      <p><a class="link" href="http://bernddasbrot.deepsilver.de/" target="_blank">Mehr zum Spiel</a></p>
+  
+  <p><a class="link" href="http://forum.deepsilver.com/forum/forumdisplay.php/547-Bernd-das-Brot-und-die-Unmöglichen" target="_blank">Offizielles Forum</a></p>
+  
+  <p><a class="link" href="https://www.facebook.com/pages/Bernd-das-Brot-und-die-Unmöglichen/121146554616938?fref=ts" target="_blank">News in Facebook</a></p>
+  
+  <h3><a href="./index.php?preis=2015-computerspielpreis" target="_self">Computerspielpreis Nominierung</a></h3>
+  
+  <h3><a href="./index.php?preis=2014-deutscher_entwicklerpreis" target="_self">Deutscher Entwicklerpreis Nominierung</a></h3>
+  
+  <h3><a href="./index.php?preis=2014-tommi" target="_self">Deutscher Kindersoftwarepreis Tommi Nominierung</a></h3>
+        <div class="shownot-info">Games</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>13th Street Awareness Campaign</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2014</span></div>
+        <a href='/webyep-system/daten/15-15-im-Projekte-OV-Bild-8995.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-15-im-Projekte-OV-Bild-8995-tn.jpg' width='150' height='214' alt=''></a>      <p>10 Werbespots, General Brand Campaign; Channel Network or Platform, Franz Campaign, 2014</p>
+  
+  <h3><a href="./index.php?preis=2015-promax_europe" target="_self">Promax Europe, Preis: Gold &amp; Silver</a></h3>
+  
+  <h3><a href="./index.php?preis=2015-new-york-festivals" target="_self">New York Festivals, Preis: Gold</a></h3>
+        <div class="shownot-info">Werbung</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>5 Kino-Werbespots</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2014</span></div>
+              <p>Casino Merkur</p>
+        <div class="shownot-info">Werbung</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernhard Hoecker</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">LIVE</span><span class="trenner"></span><span class="datum">2012</span></div>
+        <a href='/webyep-system/daten/15-18-im-Projekte-OV-Bild-4832.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-18-im-Projekte-OV-Bild-4832-tn.jpg' width='120' alt=''></a>      <h4>Liveprogramm &bdquo;Netthamseshier!&ldquo;<br />
+  &nbsp;</h4>
+  
+  <ul>
+  	<li>Buch / Regie</li>
+  </ul>
+        <div class="shownot-info">Event Comedy Live</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  
+  
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernd das Brot „Nachtschleife”</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">KIKA</span><span class="trenner"></span><span class="datum">2011</span></div>
+        <a href='/webyep-system/daten/15-5-im-Projekte-OV-Bild-7296.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-5-im-Projekte-OV-Bild-7296-tn.jpg' width='150' height='106' alt=''></a>      <ul>
+  	<li>TV-Serie, 3 Folgen</li>
+  </ul>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Sturmfrei</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">KIKA 2011</span></div>
+        <a href='/webyep-system/daten/15-6-im-Projekte-OV-Bild-5551.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-6-im-Projekte-OV-Bild-5551-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>13 Folgen Kinder-Sitcom mit B&uuml;rger Lars Dietrich</li>
+  	<li>Buch / Co-Regie / Sounddesign / Co-Produktion</li>
+  </ul>
+  
+  <h3><a href="./index.php?preis=2012-chicago-international-childrens-film-festival" target="_self">Chicago International Children&rsquo;s Film Festival</a></h3>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernd and Friends</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">KIKA<br>
+  </span><span class="trenner"></span><span class="datum">2010</span></div>
+        <a href='/webyep-system/daten/15-7-im-Projekte-OV-Bild-7854.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-7-im-Projekte-OV-Bild-7854-tn.jpg' width='150' height='212' alt=''></a>      <ul>
+  	<li>25 Folgen mit Christoph Maria Herbst, Michael Kessler, Oliver Beerhenke, Guido Hammesfahr, Carolin Kebekus, u.v.m.</li>
+  	<li>Buch / Regie / Schnitt / Digitaleffekte / Sounddesign / Produktion</li>
+  </ul>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernd das Brot</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">KIKA</span><span class="trenner"></span><span class="datum">2007-2009</span></div>
+        <a href='/webyep-system/daten/15-8-im-Projekte-OV-Bild-1559.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-8-im-Projekte-OV-Bild-1559-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>52 Folgen &agrave; 12 Minuten</li>
+  	<li>Buch / Regie / Schnitt / Digitaleffekte / Sounddesign / Produktion</li>
+  </ul>
+  
+  <h3><a href="./index.php?preis=2004-adolf-grimme-preis" target="_self">Adolf Grimme Preis</a></h3>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Rookie – Fast Platt</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">ProSieben</span><span class="trenner"></span><span class="datum">2009</span></div>
+        <a href='/webyep-system/daten/15-28-im-Projekte-OV-Bild-5596.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-28-im-Projekte-OV-Bild-5596-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>90-Min&uuml;ter mit Axel Stein aus der &ldquo;Funny Movies&ldquo;-Reihe</li>
+  	<li>Buch / Regie / Schnitt / Digitaleffekte / Sounddesign / Produktion f&uuml;r Rat Pack Filmproduktion</li>
+  </ul>
+        <div class="shownot-info">Spielfilm Fiction</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>C.I.S. - Chaoten im Sondereinsatz</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">RTL</span><span class="trenner"></span><span class="datum">2009</span></div>
+        <a href='/webyep-system/daten/15-27-im-Projekte-OV-Bild-3694.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-27-im-Projekte-OV-Bild-3694-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>TV Eventmovie mit Sasha, Martina Hill, Alexander Schubert und Dieter Thomas Heck</li>
+  	<li>Regie/Schnitt/Digitaleffekte</li>
+  </ul>
+        <div class="shownot-info">Spielfilm Fiction Comedy</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  
+  
+  
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernhard Hoecker</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">LIVE</span><span class="trenner"></span><span class="datum">2009</span></div>
+        <a href='/webyep-system/daten/15-17-im-Projekte-OV-Bild-2560.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-17-im-Projekte-OV-Bild-2560-tn.jpg' width='120' alt=''></a>
+      <h4>Liveprogramm &bdquo;Wikihoecker&ldquo;<br />
+      &nbsp;</h4>
+      
+      <ul>
+      	<li>Buch / Regie</li>
+      </ul>
+      <div class="shownot-info">Event Live</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Life Bites</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Disney Channel</span><span class="trenner"></span><span class="datum">2007</span></div>
+        <a href='/webyep-system/daten/15-9-im-Projekte-OV-Bild-7575.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-9-im-Projekte-OV-Bild-7575-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>52 Folgen Sketchcomedy</li>
+  	<li>Komplette Produktion</li>
+  </ul>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Disney Channels Comedy Crew</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">Disney Channel</span><span class="trenner"></span><span class="datum">2006</span></div>
+        <a href='/webyep-system/daten/15-10-im-Projekte-OV-Bild-2100.png' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-10-im-Projekte-OV-Bild-2100-tn.png' width='150' height='122' alt=''></a>      <ul>
+  	<li>16 Folgen Sketchcomedy</li>
+  	<li>Komplette Produktion</li>
+  </ul>
+  
+  <h3><a href="./index.php?preis=2006-goldener-spatz" target="_self">Goldener Spatz Nominierung</a></h3>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernd das Brot „Nachtschleife“</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">KIKA</span><span class="trenner"></span><span class="datum">2006-2008</span></div>
+        <a href='/webyep-system/daten/15-11-im-Projekte-OV-Bild-2579.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-11-im-Projekte-OV-Bild-2579-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>Buch / Regie / Schnitt / Digitaleffekte / Sounddesign / Produktion</li>
+  </ul>
+        <div class="shownot-info">Show Kinder</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Spiel mir das Lied und du bist tot</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent">ProSieben</span><span class="trenner"></span><span class="datum">2007</span></div>
+        <a href='/webyep-system/daten/15-26-im-Projekte-OV-Bild-7080.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-26-im-Projekte-OV-Bild-7080-tn.jpg' width='150' height='100' alt=''></a>      <ul>
+  	<li>90-Min&uuml;ter aus der &ldquo;Funny Movies&ldquo;-Reihe</li>
+  	<li>Buch / Regie / Schnitt / Sounddesign / Digitaleffekte</li>
+  </ul>
+        <div class="shownot-info">Spielfilm Fiction Comedy</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernds Balkon</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2004</span></div>
+        <a href='/webyep-system/daten/15-22-im-Projekte-OV-Bild-5032.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-22-im-Projekte-OV-Bild-5032-tn.jpg' width='150' height='150' alt=''></a>      <p>2004 erschien die Single Bernds Balkon.</p>
+        <div class="shownot-info">Musik</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Tanzt das Brot</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">10.2003 - 02.2004</span></div>
+        <a href='/webyep-system/daten/15-25-im-Projekte-OV-Bild-5616.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-25-im-Projekte-OV-Bild-5616-tn.jpg' width='150' height='150' alt=''></a>      <p>Singlehit von Bernd das Brot - Von Oktober 2003 bis Februar 2004 in den Single Top 100. Davon 5 Wochen in den Top 50.</p>
+        <div class="shownot-info">Musik</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br /></div>
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Rockt das Brot</h1></div>
+      <div class="schmal">
+        <div class="info"><span class="produzent"></span><span class="trenner"></span><span class="datum">2003</span></div>
+        <a href='/webyep-system/daten/15-24-im-Projekte-OV-Bild-9587.jpg' rel='lightbox[lo-Projekte-OV]' class='WYPopUpImage'><img src='/webyep-system/daten/15-24-im-Projekte-OV-Bild-9587-tn.jpg' width='150' height='100' alt=''></a>      <p>Longplay von Bernd und Co. Allesamt Songs aus der Feder von bumm, im eigenen Studio von Hand eingespielt und jedezeit live reproduzierbar.<!-- INHALT ENDE --></p>
+  
+  <h3><a href="./index.php?preis=2005-goldener-spatz" target="_self">Goldener Spatz Nominierung</a></h3>
+        <div class="shownot-info">Musik</div>
+        <hr class="clearer" />
+      </div>
+    </div>
+  <br />&nbsp;<br />
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">  
+      <div class="ueberschrift"><h1>Sportlerkind</h1></div>
+      <div class="schmal">
+      <span class="datum">Knaur Taschenbuch, 2016</span>
+      <a href='/webyep-system/daten/14-15-im-Projekte-Produkte-Bild-1645.jpeg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img width="171" height="260" src='/webyep-system/daten/14-15-im-Projekte-Produkte-Bild-1645.jpeg' alt=''></a><p><strong>Meine Jugend mit Seitenstechen</strong></p>
+      
+      <p>&raquo;Mein Urgro&szlig;vater war ein begeisterter Radfahrer und besa&szlig; das gr&ouml;&szlig;te Fahrradgesch&auml;ft in Bayern. Seine Tochter &ndash; meine Oma &ndash; lief noch im hohen Alter mit dem Sch&auml;ferhund um die Wette, unterst&uuml;tzt von Kr&uuml;cken und dem Durchhalteverm&ouml;gen aus zwei Weltkriegen. Ihr Sohn &ndash; mein Vater &ndash; fuhr Radrennen mit geplatztem Blinddarm, ging Langlaufen mit abgerissenem Bizeps und Joggen mit gebrochenen Rippen. Sein Sohn &ndash; ich &ndash; wollte einfach nur Lego spielen&hellip;&laquo;</p>
+      
+      <ul>
+      	<li><a href="https://www.amazon.de/Sportlerkind-Meine-Jugend-mit-Seitenstechen-ebook/dp/B017F3MVCE" target="_blank">Hier bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Ghostsitter, Band 01 - Geister Geerbt</h1></div>
+      <div class="schmal">
+      <span class="datum">Egmont Schneiderbuch, 2015</span>
+      <a href='/webyep-system/daten/14-5-im-Projekte-Produkte-Bild-5287.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-5-im-Projekte-Produkte-Bild-5287-tn.jpg' width='182' height='260' alt=''></a><p>Krass! Tom hat eine Geisterbahn mit quicklebendigen Geistern geerbt! Und die im Zaum und geheim zu halten, ist gar nicht so einfach: Vampir Vlarad mutiert dummerweise bei Blutkonsum zum jeweiligen Spenderwesen, meistens zu Meerschweinchen. Mit Zombie Wombie ist nicht zu spa&szlig;en, wenn man seinem Pl&uuml;schh&auml;schen zu nahe kommt, und Hop-Tep, die Mumie, hat ein hei&szlig;bl&uuml;tiges Temperament. Und dann w&auml;ren da noch Werwolf Welf, dem man bei Vollmond besser nicht begegnet, und Gespensterm&auml;dchen Mimi. Bei dieser geisterhaften Chaostruppe ist echt ein Profi gefragt! Toi, toi, toi, Tom!</p>
+      
+      <ul>
+      	<li><a href="http://www.amazon.de/Ghostsitter-Band-01-Geister-geerbt/dp/350513757X" target="_blank">Mehr Detail und bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div> 
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Mara und der Feuerbringer</h1></div>
+      <div class="schmal">
+      <span class="datum">Constantin Film, 2015</span>
+      <a href='/webyep-system/daten/14-14-im-Projekte-Produkte-Bild-8750.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-14-im-Projekte-Produkte-Bild-8750-tn.jpg' width='183' height='260' alt=''></a><p><strong>DVD / Blue-ray</strong></p>
+      
+      <p>Die vierzehnj&auml;hrige Mara (Lilian Prent) hat nur einen Wunsch: normal sein. Wenn das nur so einfach w&auml;re&hellip; [...] Denn Mara hat keine geringere Aufgabe auferlegt bekommen, als den drohenden Weltuntergang zu verhindern &ndash; steht Ragnar&ouml;k, die G&ouml;tterd&auml;mmerung, wirklich unmittelbar bevor?</p>
+      
+      <p>Mithilfe von Dr. Reinhold Weissinger (Jan Josef Liefers), Universit&auml;tsprofessor f&uuml;r germanische Mythologie, st&uuml;rzt sich Mara in ein aufregendes Abenteuer, in dem sie ganz auf ihre St&auml;rken vertrauen muss. Geht von dem selbstverliebten Loki (Christoph Maria Herbst) und seiner geheimnisvollen Frau Sigyn (Eva Habermann) wirklich die gr&ouml;&szlig;te Gefahr aus? Und was hat es mit dem bedrohlichen Feuerbringer auf sich? Mara ger&auml;t immer tiefer in eine magische Welt, in der sie all ihren Mut beweisen und &uuml;ber sich hinauswachsen muss&hellip;</p>
+      
+      <ul>
+      	<li><a href="http://maraundderfeuerbringer.com/" target="_blank">Offizielle Webseite</a></li>
+      	<li><a href="http://www.amazon.de/Mara-Feuerbringer-Lilian-Prent/dp/B00VWTYQO4/ref=sr_1_cc_1?s=aps&amp;ie=UTF8&amp;qid=1448890915&amp;sr=1-1-catcorr&amp;keywords=Mara+und+der+Feuerbringer+dvd" target="_blank">Hier bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Mara und der Feuerbringer</h1></div>
+      <div class="schmal">
+      <span class="datum">Egmont Schneiderbuch, 2015</span>
+      <a href='/webyep-system/daten/14-4-im-Projekte-Produkte-Bild-4354.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-4-im-Projekte-Produkte-Bild-4354-tn.jpg' width='164' height='260' alt=''></a><h4>Das Buch zum Film</h4>
+      
+      <p>Grandiose Fantasy-Spannung auf der Kinoleinwand: &raquo;Mara und der Feuerbringer&laquo; wird im Fr&uuml;hjahr 2015 in deutschen Kinos f&uuml;r Furore sorgen. In den Hauptrollen sind Jan Josef Liefers, Lilian Prent, Christoph Maria Herbst, Esther Schweins, Heino Ferch und Eva Habermann zu sehen. Als die 14-j&auml;hrige Mara erf&auml;hrt, dass ausgerechnet sie die letzte Sp&aacute;kona &ndash; eine Seherin &ndash; ist und nur sie die Welt vor dem Untergang bewahren kann, ger&auml;t ihr Leben v&ouml;llig aus den Fugen. Es steht allein in Maras Macht, ob sich der Halbgott und D&auml;mon Loki von seinen Fesseln befreit und zur t&ouml;dlichen Gefahr wird. Schafft sie es, sich dieser gro&szlig;en Aufgabe zu stellen?</p>
+      
+      <ul>
+      	<li><a href="http://maraundderfeuerbringer.com/" target="_blank">Offizielle Webseite</a></li>
+      	<li><a href="http://www.amazon.de/Mara-Feuerbringer-Das-Buch-Film/dp/3505135216/ref=pd_sim_14_3?ie=UTF8&amp;dpID=51VC7rpVhnL&amp;dpSrc=sims&amp;preST=_AC_UL160_SR101%2C160_&amp;refRID=0XA75XVW5AC8070KSDZ5" target="_blank">Hier bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Mara und der Feuerbringer</h1></div>
+      <div class="schmal">
+      <span class="datum">Heidelberger Spieleverlag, 2015</span>
+      <a href='/webyep-system/daten/14-8-im-Projekte-Produkte-Bild-2941.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-8-im-Projekte-Produkte-Bild-2941-tn.jpg' width='200' height='200' alt=''></a><h4>Das Kartenspiel</h4>
+      
+      <ul>
+      	<li>Das Kartenspiel zum Roman &quot;Mara und der Feuerbringer&quot; von Erfolgsautor Tommy Krappweis</li>
+      	<li>Ein taktisches Kartenspiel f&uuml;r 2-4 Spieler in der fantastischen Welt der nordischen Mythologie.</li>
+      	<li>Nutze die seherische F&auml;higkeit Maras und geleite die G&ouml;tter zu ihren Heimatorten.</li>
+      	<li>Schare genug G&ouml;tter um dich, um die dunkle Bedrohung zu besiegen und Ragnar&ouml;k zu verhindern.</li>
+      	<li>Autor: Fabian Dittmann; Ilustrator: Adriaan Prent</li>
+      </ul>
+      
+      <ul>
+      	<li><a href="http://www.amazon.de/Heidelberger-Spieleverlag-HE780-Feuerbringer-Kartenspiel/dp/B00VZY46UA/ref=sr_1_1?ie=UTF8&amp;qid=1448887535&amp;sr=8-1&amp;keywords=MAra+und+der+Feuerbringer+Kartenspiel#productDetails" target="_blank">Mehr Detail und bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Games</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Die Schanin hat nur schwere Knochen!</h1></div>
+      <div class="schmal">
+      <span class="datum">Knaur TB, 2015</span>
+      <a href='/webyep-system/daten/14-10-im-Projekte-Produkte-Bild-3493.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-10-im-Projekte-Produkte-Bild-3493-tn.jpg' width='171' height='260' alt=''></a><h4>Unerh&ouml;rte Geschichten einer Familienpsychologin</h4>
+      
+      <p>Absurde Geschichten aus dem echten Leben: Sandy erwartet ein Kind vom Ex-Freund ihrer Mutter, der der Vater ihres kleinen Bruders ist. Dass die Mutter auch noch vom Ex-Freund der Tochter schwanger ist, macht das Ganze nicht einfacher f&uuml;r Familienpsychologin Sophie Seeberg. Als Gerichtsgutachterin erlebt sie tragische, aber auch skurrile Momente. Wenn beispielsweise eine Mutter erkl&auml;rt, dass ihre Schanin &bdquo;nur schwere Knochen&ldquo; habe, w&auml;hrend diese in kurzer Zeit mehrere Tafeln Schokolade verdr&uuml;ckt. Seeberg erz&auml;hlt auch in ihrem zweiten Buch einf&uuml;hlsam aus ihrem Berufsleben und bewahrt sich ihren besonderen Sinn f&uuml;r Humor.</p>
+      
+      <p><a href="http://www.amazon.de/Die-Schanin-schwere-Knochen-Familienpsychologin/dp/3426787644" target="_blank">Mehr Detail und bestellen!</a></p>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>GameCraft</h1></div>
+      <div class="schmal">
+      <span class="datum">DMAX, 2015</span>
+      <a href='/webyep-system/daten/gamcraft1.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/gamcraft1.jpg' width='171' alt=''></a><ul><li>Gaming-Magazin, 10 Folgen</li></ul>
+      <div class="shownot-info">Doku Games</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <!--<div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Bernd das Brot und die Unmöglichen </h1></div>
+      <div class="schmal">
+      <span class="datum">Deep Silver, 2014</span>
+      <a href='/webyep-system/daten/14-12-im-Projekte-Produkte-Bild-7086.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-12-im-Projekte-Produkte-Bild-7086-tn.jpg' width='184' height='260' alt=''></a><h4>PC-Adventure</h4>
+      
+      <p><strong>Bernd das Brot</strong> w&auml;re gerne nicht hier. Nicht in diesem Plastikkost&uuml;m. Nicht in diesem Computerspiel. Und erst recht nicht zusammen mit <strong>Chili, dem Stuntschaf, und Briegel, dem Erfinderbusch.</strong> Denn sie behaupten, seine Freunde zu sein. Bernd sieht das anders. Denn echte Freunde w&uuml;rden ihn doch niemals in so ein albernes Outfit quetschen, um mit ihm zusammen als Superhelden-Trio &quot;DIE UNM&Ouml;GLICHEN&quot; das Verbrechen zu bek&auml;mpfen, oder? Oder doch? <strong>Mist.</strong></p>
+      
+      <p><a href="http://www.amazon.de/Bernd-das-Brot-die-Unm%C3%B6glichen/dp/B00LBZYRF2/ref=sr_1_1?ie=UTF8&amp;qid=1448889953&amp;sr=8-1&amp;keywords=Bernd+das+Brot+Computerspiel" target="_blank">Mehr Detail und bestellen!</a></p>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>-->
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Ääh ist keine Antwort</h1></div>
+      <div class="schmal">
+      <span class="datum">Ullstein Taschenbuch, 2014</span>
+      <a href='/webyep-system/daten/14-13-im-Projekte-Produkte-Bild-3012.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-13-im-Projekte-Produkte-Bild-3012-tn.jpg' width='165' height='260' alt=''></a><h4>Schlagfertige Spr&uuml;che f&uuml;r alle Lebenslagen</h4>
+      
+      <p>Wenn die Computerhotline dich fragt, ob du den Rechner schon mal neu gestartet hast:</p>
+      
+      <p>a) &quot;Nein, darauf bin ich noch gar nicht gekommen. Sie sind ein Genie!&quot;</p>
+      
+      <p>b) &quot;Den kann man ausschalten? Ich wart immer bis zum n&auml;chsten Stromausfall.&quot;</p>
+      
+      <p>c) &quot;Ich hab leider den Z&uuml;ndschl&uuml;ssel verloren.&quot;</p>
+      
+      <p>Wer kennt das nicht: Man braucht eine schnelle Antwort, die das Gegen&uuml;ber ausknockt, aber nichts f&auml;llt einem ein. Das passiert Ihnen jetzt nicht mehr. Ob die passende Fast-Beleidigung f&uuml;r die Politesse oder die geistreiche Erniedrigung des T&uuml;rstehers: Erik Haffner und David Gromer haben die idealen Reprisen f&uuml;r alle &auml;rgerlichen Situationen gesammelt, die das Leben t&auml;glich bietet &ndash; damit sie im Bedarfsfall wie aus der Pistole geschossen kommen.</p>
+      
+      <p><a href="http://www.amazon.de/%C3%84%C3%A4h-ist-keine-Antwort-Schlagfertige/dp/3548374891/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1448890350&amp;sr=1-1&amp;keywords=%C3%A4%C3%A4h+ist+keine+antwort" target="_blank">Mehr Detail und bestellen!</a></p>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Vier Fäuste für ein blaues Auge</h1></div>
+      <div class="schmal">
+      <span class="datum">Knaur TB, 2013</span>
+      <a href='/webyep-system/daten/14-6-im-Projekte-Produkte-Bild-8981.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-6-im-Projekte-Produkte-Bild-8981-tn.jpg' width='171' height='260' alt=''></a><h4>Wie der Wilde Westen nach Deutschland kam</h4>
+      
+      <p>Der Wilde Westen mitten in Bayern. Geht nicht? Von wegen! Jahrelang lockte No Name City eingefleischte Western-Fans in die tiefste Provinz. &raquo;H&auml;uptling&laquo; Heinz J. Br&uuml;ndl und Stuntman Tommy Krappweis erz&auml;hlen von ihrem wilden Leben in der Westernstadt: von unz&auml;hligen Raufereien und Schie&szlig;ereien, unfreiwilligen Explosionen zu stark gestopfter Schrotflinten bis hin zu den heimlichen und unheimlichen Liebschaften des Totengr&auml;bers. Von einem Goldsucher mit Realit&auml;tsverlust, der in der M&uuml;nchner S-Bahn dem Sicherheitsdienst Feuerschutz gab. Und von zwei unverbesserlichen Cowboys, die entgegen aller Konventionen ihren Traum verwirklicht und zur Not auch mit der Flinte verteidigt haben.</p>
+      
+      <ul>
+      	<li><a href="http://www.amazon.de/Vier-F%C3%A4uste-f%C3%BCr-blaues-Auge/dp/3426785722/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1448889809&amp;sr=1-1&amp;keywords=vier+f%C3%A4uste+f%C3%BCr+ein+blaues+auge" target="_blank">Mehr Detail und bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Das Vorzelt zur Hölle</h1></div>
+      <div class="schmal">
+      <span class="datum">Turbine Medien, 2012</span>
+      <a href='/webyep-system/daten/14-7-im-Projekte-Produkte-Bild-4192.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-7-im-Projekte-Produkte-Bild-4192-tn.jpg' width='184' height='260' alt=''></a><h4>DVD</h4>
+      
+      <p>Der Ex-RTL Samstag Nacht Comedian und Bernd-das-Brot-Erfinder Tommy Krappweis erz&auml;hlt von am&uuml;santen, spannenden und skurrilen Abenteuern auf den verr&uuml;ckten Urlaubsreisen mit der Familie in den Siebzigern. Vieles erkennt man wieder, manches hat sich bis heute nicht ge&auml;ndert&hellip; aber andere Dinge sind so unfassbar, dass man versucht ist, kopfsch&uuml;ttelnd abzuwinken. Doch Grimme-Preistr&auml;ger Tommy Krappweis kann jeglichen Zweifel entkr&auml;ften: Seine Ausf&uuml;hrungen werden von nostalgisch-charmanten Super-8-Videoaufnahmen belegt, und im Zwiegespr&auml;ch mit seinem Vater Werner Krappweis werden fantastisch anmutende Begebenheiten auf &auml;u&szlig;erst witzige Weise best&auml;tigt.</p>
+      
+      <p><a href="http://www.amazon.de/Das-Vorzelt-zur-H%C3%B6lle-DVDs/dp/B008BP1MSK/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1448889317&amp;sr=8-1&amp;keywords=Das+Vorzelt+zur+h%C3%B6lle+dvd" target="_blank">Mehr Detail und bestellen!</a></p>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Die Schakkeline ist voll hochbegabt, ey</h1></div>
+      <div class="schmal">
+      <span class="datum">Knaur TB, 2013</span>
+      <a href='/webyep-system/daten/14-11-im-Projekte-Produkte-Bild-4891.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-11-im-Projekte-Produkte-Bild-4891-tn.jpg' width='171' height='260' alt=''></a><h4>Aus dem Leben einer Familienpsychologin</h4>
+      
+      <p>Sophie Seeberg kriegt es hautnah mit, das Leben, denn die Psychologin begutachtet Familien f&uuml;rs Gericht. Sie erlebt dabei schockierende und traurige, aber auch komische und skurrile Geschichten. Wenn zum Beispiel der Vater nicht zum Termin erscheint, weil er betrunken auf der Stra&szlig;e eingeschlafen ist &ndash; neben dem Bollerwagen voller Diebesgut. Oder wenn die Mutter ihren erwachsenen Sohn behandelt, als w&auml;re er ein Kleinkind. Seeberg zeigt uns den ganz normalen Familienwahnsinn und beh&auml;lt dabei immer einen unnachahmlichen Sinn f&uuml;r Humor.</p>
+      
+      <p><a href="http://www.amazon.de/Die-Schakkeline-voll-hochbegabt-Familienpsychologin/dp/3426786036/ref=pd_sim_14_1?ie=UTF8&amp;dpID=51dsAuLTaBL&amp;dpSrc=sims&amp;preST=_AC_UL160_SR105%2C160_&amp;refRID=0JH82TDCPHA2P7V6W8XG" target="_blank">Mehr Detail und bestellen!</a></p>
+      <div class="shownot-info">Buch</div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">  
+      <div class="ueberschrift"><h1>Das Vorzelt zur Hölle</h1></div>
+      <div class="schmal">
+      <span class="datum">Knaur TB, 2012</span>
+      <a href='/webyep-system/daten/14-9-im-Projekte-Produkte-Bild-7163.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-9-im-Projekte-Produkte-Bild-7163-tn.jpg' width='170' height='260' alt=''></a><h4>Wie ich die Familienurlaube meiner Kindheit &uuml;berlebte</h4>
+      
+      <p>&raquo;Jeden Sommer brachen wir mit dem VW-Bus auf von M&uuml;nchen, Neuperlach in Richtung S&uuml;den, ins Jugoskorsikalawienland oder irgendwo anders hin, wo es d&uuml;stere Felsen, d&uuml;steres Meer und d&uuml;stere Ortschaften mit d&uuml;steren Menschen gab. Was es dort nicht gab, war so etwas wie ein Klo oder eine Dusche. Denn meine Eltern waren nicht einfach nur Camper. Nein, sie waren &uuml;berzeugte Wildcamper. Riesenspinnen auf dem R&uuml;cksitz, Schlangen in der Trinkwasserzisterne, gigantische M&uuml;llberge und sinkende Schlauchboote &ndash; es war alles dabei, was Camping in den 70ern so au&szlig;ergew&ouml;hnlich machte. Zumindest wenn man mit meinen Eltern unterwegs war.&laquo;</p>
+      
+      <p><a href="http://www.amazon.de/Das-Vorzelt-zur-H%C3%B6lle-Familienurlaube/dp/3426784769" target="_blank">Mehr Detail und bestellen!</a></p>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Mara und der Feuerbringer, Band 3</h1></div>
+      <div class="schmal">
+      <span class="datum">Egmont Schneiderbuch - 2011</span>
+      <a href='/webyep-system/daten/14-3-im-Projekte-Produkte-Bild-8918.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-3-im-Projekte-Produkte-Bild-8918-tn.jpg' width='183' height='260' alt=''></a><h4>G&ouml;tterd&auml;mmerung</h4>
+      
+      <p>Maras Welt ist in gro&szlig;er Gefahr. Es ist nur eine Frage der Zeit, bis der Feuerbringer zur&uuml;ckkehren und alles um sie herum ausl&ouml;schen wird. Mara muss unbedingt herausfinden, wer ihr geheimnisvoller Auftraggeber ist! Ihr bleibt nicht mehr viel Zeit. Und pl&ouml;tzlich &uuml;berst&uuml;rzen sich die Ereignisse: Eine spannende Verfolgungsjagd durch die G&ouml;tterwelt beginnt. Kann Mara das gro&szlig;e Unheil aufhalten und ihre Welt retten?</p>
+      
+      <ul>
+      	<li><a href="http://maraundderfeuerbringer.com/" target="_blank">Offizielle Webseite</a></li>
+      	<li><a href="http://www.amazon.de/Mara-Feuerbringer-Band-03-G%C3%B6tterd%C3%A4mmerung/dp/3505126489/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1448880643&amp;sr=1-1&amp;keywords=Mara+und+der+Feuerbringer%2C+Band+03" target="_blank">Hier bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Mara und der Feuerbringer, Band 2</h1></div>
+      <div class="schmal">
+      <span class="datum">Egmont Schneiderbuch - 2010</span>
+      <a href='/webyep-system/daten/14-2-im-Projekte-Produkte-Bild-9237.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-2-im-Projekte-Produkte-Bild-9237-tn.jpg' width='183' height='260' alt=''></a><h4>Das Todesmal</h4>
+      
+      <p>Mara ist als eine der letzten Seherinnen dazu auserw&auml;hlt, das Ende der Welt zu verhindern. Nun erf&auml;hrt sie, dass der Feuerbringer doch noch nicht besiegt ist und seine Kraft t&auml;glich w&auml;chst. Zusammen mit Professor Weissinger versucht Mara, das Geheimnis um die Macht des Feuerbringers zu l&uuml;ften. Dabei ger&auml;t sie in die F&auml;nge der Todesg&ouml;ttin Hel, die sie nur wieder gehen l&auml;sst, wenn Mara einen Auftrag f&uuml;r sie ausf&uuml;hrt. Doch daf&uuml;r muss sich Mara erneut in die N&auml;he des Halbgottes und D&auml;mons Loki wagen ...</p>
+      
+      <ul>
+      	<li><a href="http://maraundderfeuerbringer.com/" target="_blank">Offizielle Webseite</a></li>
+      	<li><a href="http://www.amazon.de/Mara-Feuerbringer-Band-02-Todesmal/dp/3505127868/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1448880487&amp;sr=1-1&amp;keywords=Mara+und+der+Feuerbringer%2C+Band+02" target="_blank">Hier bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  <div>
+    <div class="projekte-rahmen-box">
+      <div class="ueberschrift"><h1>Mara und der Feuerbringer, Band 1</h1></div>
+      <div class="schmal">
+      <span class="datum">Egmont Schneiderbuch - 2009</span>
+      <a href='/webyep-system/daten/14-1-im-Projekte-Produkte-Bild-6177.jpg' rel='lightbox[lo-Projekte-Produkte]' class='WYPopUpImage'><img src='/webyep-system/daten/14-1-im-Projekte-Produkte-Bild-6177-tn.jpg' width='173' height='260' alt=''></a><p>&quot;NEIN! Mara sch&uuml;ttelte die Bilder von sich und fasste einen Entschluss: Keine. Tagtr&auml;ume. Mehr. Nie wieder! Ab heute w&uuml;rde Mara das normalste M&auml;dchen der Welt sein. Auf Wiedersehen, Traumwelt. Guten Tag, Realit&auml;t.&quot; Die 14-j&auml;hrige Mara w&auml;re am liebsten eines: unauff&auml;llig. Ein ganz normales M&auml;dchen. Ohne die Tagtr&auml;ume, die der Grund f&uuml;r die st&auml;ndigen H&auml;nseleien in der Schule sind. Doch gerade als sie beschlie&szlig;t, ihr Leben zu &auml;ndern, passiert pl&ouml;tzlich etwas Unglaubliches: Mara erf&auml;hrt, dass sie eine der letzten Seherinnen ist. Eine Sp&aacute;kona. Und nur mithilfe ihrer besonderen Gabe kann sie verhindern, dass sich der Halbgott und D&auml;mon Loki von seinen Fesseln befreit und zu einer Gefahr wird. Maras Welt ger&auml;t aus den Fugen: Wird sie es schaffen, sich dieser gro&szlig;en Aufgabe zu stellen?</p>
+      
+      <ul>
+      	<li><a href="http://maraundderfeuerbringer.com/" target="_blank">Offizielle Webseite</a></li>
+      	<li><a href="http://www.amazon.de/Mara-Feuerbringer-Band-Tommy-Krappweis/dp/3505126462" target="_blank">Hier bestellen!</a></li>
+      </ul>
+      <div class="shownot-info">Buch</div>
+      <hr class="clearer" />
+      </div>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+
+
+
+<!--<div id="ov-rahmen">
+<div>
+  <div class="projekte-rahmen-box">
+    <div class="ueberschrift"><h1>TITEL</h1></div>
+    <div class="schmal">
+      <div class="info"><span class="produzent">PRODUZENT</span><span class="trenner"></span><span class="datum">DATUM</span></div>
+      INHALT
+      <div class="shownot-info">KATEGORIE</div>
+      <hr class="clearer" />
+    </div>
+  </div>
+</div>
+-->
+
+<!-- Hier liegen die Preise inhaltlich -->
+<div id="get-preise" class="preis-rahmen">  
+  <hr />
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2017</div>
+      <div class="preis-sp goto-2017-lovelybooksleserpreis"><span class="preis-pfeil"></span><h2>LovelyBooks Leserpreis</h2>
+        <span class="preis-hinweis">Preis, 2017</span><br />
+        <div class="preis-abstand"><p style="font-size:0.9em;margin:0;">SILBER: <i>Hörbuch</i></p>
+          <p style="font-size:0.9em;margin:0;">f&uuml;r Ghostsitter: Die komplette 1. Staffel, Tommy Krappweis</p>
+          <p style="font-size:0.9em;margin:0;">BRONZE: <i>Kinderbücher</i></p>
+          <p style="font-size:0.9em;margin:0;">f&uuml;r Ghostsitter – Schreck im Spiegelkabinett, Tommy Krappweis</p>
+        </div>
+      </div>
+    </div>
+  </div>    
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2016</div>
+      <div class="preis-sp goto-2016-hombuch"><span class="preis-pfeil"></span><h2>Saarländischer Autorenpreis der HomBuch</h2>
+        <span class="preis-hinweis">Preis, 2016</span><br />
+        <div class="preis-abstand"><p style="font-size:0.9em;margin:0;">Kategorie: <i>Kinder- & Jugendbuch</i></p>
+          <p style="font-size:0.9em;margin:0;">an Tommy Krappweis</p>
+        </div>
+      </div>      
+      <div class="preis-sp goto-2016-promax_europe"><span class="preis-pfeil"></span><h2>Promax Europe</h2>
+        <span class="preis-hinweis">Preis, 2016</span><br />
+        <div class="preis-abstand"><p style="font-size:0.9em;margin:0;">GOLD: <i>Program Promotional Campaign - Out-Of-House</i></p>
+          <p style="font-size:0.9em;margin:0;">SILVER: <i>Art Direction & Design: Program Promotional Campaign</i></p>
+          <p style="font-size:0.9em;margin:0;">SILVER: <i>Holiday/Seasonal/Special Event Program Campaign</i></p>
+          <p style="font-size:0.9em;margin:0;">BRONZE: <i>Dramatic Program Spot Or Campaign</i></p>
+          <p style="font-size:0.9em;margin:0;">für Syfy – Jurassic Park Marathon</p>
+        </div>
+      </div>
+      <div class="preis-sp goto-2016-promax_europe_animation"><span class="preis-pfeil"></span><h2>Promax Europe</h2>
+        <span class="preis-hinweis">Preis, 2016</span><br />
+        <div class="preis-abstand">GOLD: <i>Beste Animation</i><br />
+          SILVER: <i>Beste Holiday/Seasonal/Special Event Program Spots</i><br />
+          für Syfy – Jurassic Park Marathon
+        </div>
+      </div>
+      <div class="preis-sp goto-2016-promax_europe_nominierung"><span class="preis-pfeil"></span><h2>Promax Europe</h2>
+        <span class="nominierung-hinweis">Nominierung, 2016</span><br />
+        <div class="preis-abstand"><i>Dramatic Programme Spots</i><br />          
+          für Syfy – Jurassic Park Airport<br />
+          <i>Programme Spot Not Using Programme Footage</i><br />
+          für Syfy – Jurassic Park Marathon
+        </div>
+      </div>      
+    </div>
+  </div>
+  
+  <hr />
+     
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2015</div>
+      <div class="preis-sp goto-2015-rpc-fantasy-award"><span class="preis-pfeil"></span><h2>LovelyBooks Leserpreis 2015</h2>
+        <span class="preis-hinweis">Preis, 2015</span><br />
+        <div class="preis-abstand">Kategorie: <i>Kinderbuch</i><br />für "Ghostsitter – Geister geerbt“<br /><span class="klein">von Tommy Krappweis</span><br />
+Der Award wird jedes Jahr von LovelyBooks.de ausgerichtet und gilt als der größte, bedeutendste Leserpreis im gesamten deutschsprachigen Raum.
+        </div>
+      </div>      
+      <div class="preis-sp goto-2015-rpc-fantasy-award"><span class="preis-pfeil"></span><h2>Eyes&Ears Award</h2>
+        <span class="preis-hinweis">Preis, 2015</span><br />
+        <div class="preis-abstand"><p style="font-size:0.9em;margin:0;">3. PREIS: <i>Bester On-Air-Programm-Spot</i><br />für "Syfy: Jurassic Park Marathon - Flughafen"<br />
+        3. PREIS: <i>Beste On-Air-Programm-Kampagne</i><br />für "Syfy: Jurassic Park Marathon"</p>
+<b>Kreativ-Team: Elmar Krick</b>, Marketing & Creative Director NBCUniversal International Networks; <b>Sebastian Geller</b>, Senior Producer NBCUniversal International Networks; <b>Daniel Saini</b>, Producer NBCUniversal International Networks; <b>Fabian Schneider</b>, Producer NBCUniversal International Networks; <b>Nico Krappweis</b>, Produzent Bummfilm; <b>Tommy Krappweis</b>, Autor & Produzent Bummfilm; <b>Erik Haffner</b>, Autor & Regisseur Bummfilm; <b>Benedikt Laubenthal</b>, VFX Supervisor BigHugFX München
+        </div>
+      </div>      
+      <div class="preis-sp goto-2015-rpc-fantasy-award"><span class="preis-pfeil"></span><h2>Rpc-Fantasy Award</h2>
+        <span class="preis-hinweis">Preis, 2015</span><br />
+        <div class="preis-abstand"><i>bester deutscher Fantasyfilm seit über zwanzig Jahren</i><br />
+          für "Mara und der Feuerbringer"
+        </div>
+      </div>
+      <div class="preis-sp goto-2015-promax_europe"><span class="preis-pfeil"></span><h2>Promax Europe</h2>
+        <span class="preis-hinweis">Preis, 2015</span><br />
+        <div class="preis-abstand">GOLD: <i>Funniest Promo</i><br />
+          SILVER: <i>General Brand Campaign</i><br />
+          für "13th Street Awareness Campaign"
+        </div>
+      </div>
+      <div class="preis-sp goto-2015-new-york-festivals"><span class="preis-pfeil"></span><h2>New York Festivals</h2>
+        <span class="preis-hinweis">Preis, 2015</span><br />
+        <div class="preis-abstand">GOLD: <i>Direction: Promotion/Open & IDs</i><br />
+          für "13th Street Awareness Campaign"
+        </div>
+      </div>
+      <div class="preis-sp goto-2015-grimme-preis"><span class="preis-pfeil"></span><h2>Grimme Preis</h2>
+        <span class="nominierung-hinweis">Nominierung, 2015</span><br />
+        <div class="preis-abstand">Kategorie: <i>Unterhaltung</i><br />
+          für "Habe die Ehre" (BR) und "Cartoon Network Spurensuche"
+        </div>
+      </div>
+      <div class="preis-sp goto-2015-computerspielpreis"><span class="preis-pfeil"></span><h2>Computerspielpreis</h2>
+        <span class="nominierung-hinweis">Nominierung, 2015</span><br />
+        <div class="preis-abstand">Kategorie: <i>Bestes Kinderspiel</i><br />
+          f&uuml;r das Computerspiel „Bernd das Brot und die Unmöglichen“ (wird am 21.4. verliehen)
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <hr />
+    
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2014</div>
+      <div class="preis-sp goto-2014-deutscher_entwicklerpreis"><span class="preis-pfeil"></span><h2>Deutscher Entwicklerpreis</h2>
+        <span class="nominierung-hinweis">Nominierung, 2014</span><br />
+        <div class="preis-abstand">Kategorien:
+          <ul><li>Bestes Familienspiel</li><li>Beste Story</li><li>Bestes Adventure</li></ul>
+          f&uuml;r das Computerspiel „Bernd das Brot und die Unmöglichen“
+        </div>
+      </div>
+      <div class="preis-sp goto-2014-tommi"><span class="preis-pfeil"></span><h2>Deutscher Kindersoftwarepreis Tommi</h2>
+        <span class="nominierung-hinweis">Nominierung, 2014</span><br />
+        <div class="preis-abstand">
+          f&uuml;r das Computerspiel „Bernd das Brot und die Unmöglichen“
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <hr />
+     
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2013</div>
+      <div class="preis-sp goto-2013-hombuch"><span class="preis-pfeil"></span><h2>Saarländischer Autorenpreis der „HomBuch“</h2>
+        <span class="preis-hinweis">Preis, 2013</span><br />
+        <div class="preis-abstand">Kategorie: <i>Kinder- & Jugendbuch</i><br />
+          f&uuml;r Tommy Krappweis
+        </div>
+      </div>
+      <div class="preis-sp goto-2013-mira-award"><span class="preis-pfeil"></span><h2>MIRA-Award</h2>
+        <span class="nominierung-hinweis">Nominierung, 2013</span><br />
+        <div class="preis-abstand">
+          f&uuml;r Collien Ulmen-Fernandes als Moderatorin der Cartoon Network Spurensuche
+        </div>
+      </div>
+    </div>
+  </div>    
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2012</div>
+      <div class="preis-sp goto-2012-der-weisse-elefant"><span class="preis-pfeil"></span><h2>Der weiße Elefant</h2>
+        <span class="preis-hinweis">Preis, 2012</span><br />
+        <div class="preis-abstand">für die Cartoon Network Spurensuche 2012</div>
+      </div>    
+      <div class="preis-sp goto-2012-chicago-international-childrens-film-festival"><span class="preis-pfeil"></span><h2>Chicago International Children’s Film Festival</h2>
+        <span class="preis-hinweis">Preis, 2012</span><br />
+        <div class="preis-abstand">Kategorie: <i>1st prize, Live-action Television Program, Children’s Jury</i><br />
+          f&uuml;r Sturmfrei
+        </div>
+      </div>
+      <div class="preis-sp goto-2012-goldener-spatz"><span class="preis-pfeil"></span><h2>Goldener Spatz</h2>
+        <span class="nominierung-hinweis">Nominierung, 2012</span><br />
+        <div class="preis-abstand">Kategorie: <i>1st prize, Live-action Television Program, Children’s Jury</i><br />
+          f&uuml;r 1. Staffel von “Das Disney XD Heimspiel”, Folge 6 (Das Finale)
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2008</div>
+      <div class="preis-sp"><span class="preis-pfeil"></span><h2>Eyes & Ears Award</h2>
+        <span class="preis-hinweis">Preis, 2008</span><br />
+        <div class="preis-abstand">Kategorie: <i>Minis</i><br />
+        für die Realisation der "On-Air-Kampagne" für Camp Rock im Disney Channel
+        </div>
+      </div>
+    </div>   
+  </div>  
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2007</div>
+      <div class="preis-sp"><span class="preis-pfeil"></span><h2>Goldener Spatz</h2>
+        <span class="nominierung-hinweis">Nominierung, 2007</span><br />
+        <div class="preis-abstand">Kategorie: <i>Minis</i><br />
+        für "Disney Channel Christmas Ding Sing: Socken und ein Schal"
+        </div>
+      </div>
+    </div>   
+  </div>  
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2006</div>
+      <div class="preis-sp"><span class="preis-pfeil"></span><h2>Goldener Spatz</h2>
+        <span class="nominierung-hinweis">Nominierung, 2006</span><br />
+        <div class="preis-abstand">Kategorie: <i>Minis</i><br />
+        für "Feste feiern mit Bernd: Steintafel"
+        </div>
+      </div>
+      <div class="preis-sp goto-2006-goldener-spatz"><span class="preis-pfeil"></span><h2>Goldener Spatz</h2>
+        <span class="nominierung-hinweis">Nominierung, 2006</span><br />
+        <div class="preis-abstand">Kategorie: <i>Unterhaltung</i><br />
+        für "Disney Channels Comedy Crew: Folge 1"
+        </div>
+      </div>
+    </div>   
+  </div>
+    
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr" id="goto-2005-goldener-spatz"><div class="preis-jahr-marker"></div>2005</div>
+      <div class="preis-sp"><span class="preis-pfeil"></span><h2>Goldener Spatz</h2>
+        <span class="nominierung-hinweis">Nominierung, 2005</span><br />
+        <div class="preis-abstand">Kategorie: <i>Unterhaltung</i><br />
+        für „Rockt das Brot“
+        </div>
+      </div>
+    </div>   
+  </div>
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2004</div>
+      <div class="preis-sp goto-2004-adolf-grimme-preis"><span class="preis-pfeil"></span><h2>Adolf Grimme Preis</h2>
+        <span class="preis-hinweis">Preis, 2004</span><br />
+        <div class="preis-abstand">für „Bernd das Brot“
+        </div>
+      </div>
+    </div>   
+  </div>
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>2003</div>
+      <div class="preis-sp"><span class="preis-pfeil"></span><h2>Goldener Spatz</h2>
+        <span class="preis-hinweis">Preis, 2003</span><br />
+        <div class="preis-abstand">Kategorie: <i>Unterhaltung</i><br />
+        für KI.KA XL
+        </div>
+      </div>   
+    </div>
+  </div>  
+  
+  <hr />
+  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">    
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>1996</div>
+      <div class="preis-sp"><span class="preis-pfeil"></span><h2>Romy</h2>
+        <span class="preis-hinweis">Preis, 1996</span><br />
+        <div class="preis-abstand">Kategorie: <i>Jurypreise</i><br />
+        für RTL Samstag Nacht während der Zeit, in der Krappweis mitwirkte
+        </div>
+      </div>
+      <div class="preis-sp"><span class="preis-pfeil"></span><h2>Goldener L&ouml;we</h2>
+        <span class="preis-hinweis">Preis, 1996</span><br />
+        <div class="preis-abstand">Kategorie: <i>Beste Fernsehshow</i><br />
+        für RTL Samstag Nacht während der Zeit, in der Krappweis mitwirkte
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!--<div id="get-preise" class="preis-rahmen">  
+  <div class="preis-zeitspanne">
+    <div class="preis-timeline">
+      <div class="preis-jahr"><div class="preis-jahr-marker"></div>JAHRESZAHL</div>
+      <div class="preis-sp" id="goto-2014-deutscher_entwicklerpreis"><span class="preis-pfeil"></span><h2>TITEL</h2>
+        <span class="preis-hinweis">Preis, DATUM</span><br />
+        <div class="preis-abstand">INHALT</div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+<div class="Ueber"><div class="Ueberabstand"></div>
+
+
+<div class="BlackBox"><h2 class="goToUeber">Über uns</h2>
+<div class="text">
+<p>Die bumm film GmbH bietet<br />
+originelle, kreative und neuartige Formate und Ideen<br />
+Dienstleistung und Full Service Produktion<br />
+für Kino, TV, Musik, Visual Effects, Web und Live-Entertainment<br />
+und wurde im Laufe der Zeit mit zahlreiche Preisen und Awards ausgezeichnet!</p>
+<a class="openPreise">&raquo; Zu den Auszeichnungen!</a><br />
+
+<a href="http://www.bummfilm.de/firmenprofil_21-05-2019.pdf" target="_blank" class="openLink">&raquo; Zum Firmenprofil!</a>
+</div>
+</div>
+</div>
+
+<div class="Leistungen"><h2 class="goToLeistungen">Leistungen</h2>
+<div class="Leistungen-Element leistung-entwicklung"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Entwicklung</h3></a></div><div class="pfeil-kopf"></div></div></div>
+<div class="Leistungen-Element leistung-produktion"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Produktion</h3><br /><span>(On Location)</span></a></div><div class="pfeil-kopf"></div></div></div>
+<div class="Leistungen-Element leistung-studiohalle nextbreak"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Studiohalle</h3></a></div><div class="pfeil-kopf"></div></div></div>
+<!--<div class="Leistungen-Element leistung-postproduktion"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Postproduktion</h3></a></div><div class="pfeil-kopf"></div></div></div>-->
+<div class="Leistungen-Element leistung-werkstatt"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Werkstatt</h3></a></div><div class="pfeil-kopf"></div></div></div>
+<div class="Leistungen-Element leistung-schnitt break"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Schnitt</h3><br /><span>(Avid, Premiere)</span></a></div><div class="pfeil-kopf"></div></div></div>
+<div class="Leistungen-Element leistung-vfx"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>VFX</h3></a></div><div class="pfeil-kopf"></div></div></div>
+<div class="leistung-grading Leistungen-Element nextbreak"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Grading</h3><br /><span>(Davinci)</span></a></div><div class="pfeil-kopf"></div></div></div>
+<div class="Leistungen-Element leistung-tonproduktion"><div class="pfeil"><div class="pfeil-hinten"></div><div class="pfeil-text"><a><h3>Tonproduktion</h3><br /><span>(Eigenes Tonstudio, Aufnahmeraum)</span></a></div><div class="pfeil-kopf"></div></div></div>
+<div style="width:100%;height:1px;clear:both;margin:-1px 0 0 0;"></div>
+</div>
+
+<div class="Kontakt">
+
+  <h2 class="goToKontakt">Kontakt</h2>
+  
+<form action="" method="POST">
+<div class="NachrichtVerschickt">
+Die Nachricht wurde erfolgreich verschickt! Vielen Dank, wir melden uns in Kürze!
+</div>
+<div class="Meldung">
+        Uns fehlen noch ein paar Informationen, damit die Kontakt-Anfrage verschickt werden kann:<br />
+<div><a class="MeldungName">Bitte gib Deinen Namen an.</a>
+<a class="MeldungMail">Bitte gib eine g&uuml;ltige Mail-Adresse an.</a>
+<a class="MeldungNachricht">Bitte gib eine Nachricht an.</a>
+<a class="MeldungSpamschutz">Bitte mach den Roboter-Test.</a></div></div>
+
+    <div>Name:
+    <input type="text" id="inputName" name="name" value="" /></div>
+    <div>E-Mail:
+    <input type="text" id="inputMail" name="email" value="" /></div>
+    <div>
+    <select name="anliegen" id="anliegen" size="1">
+          <option selected="selected" value="Kontaktanfrage">Kontaktanfrage</option>
+          <option disabled="disabled">-------------------------------------</option>
+          <option value="Postproduktion">Postproduktion</option>
+          <option value="Schnitt">Schnitt</option>
+          <option value="VFX-Produktion">VFX</option>
+          <option value="Tonproduktion">Ton</option>
+          <option disabled="disabled">-------------------------------------</option>
+        </select></div>
+        
+    <div><textarea type="text" name="message" id="inputText" rows="8" cols="32"></textarea></div>
+    <div class="g-recaptcha" data-sitekey="6LeuxG4UAAAAAE2-6laKa7zrzt9qqIIKrDlaRMav"></div>
+    <input type="submit" name="submit" id="submit" value="Senden">
+
+</form>
+
+</div>
+
+
+
+<div id="botclick">Wir verwenden Cookies, die unser Angebot nutzerfreundlicher, effektiver und sicherer machen.<br />Durch die Nutzung unserer Dienste stimmen Sie der Verwendung von Cookies zu. <a href="./datenschutz.php" id="Datenschutz">Weitere Informationen</a><a class="ok">OK</a></div>
+
+<div id="bot-info">
+
+
+
+<b>
+      <a href="https://www.facebook.com/#!/pages/Bumm-Film-GmbH/100901086650150?fref=ts" target="_blank"><img src="http://bummfilm.de/images/FB_FindUsOnFacebook-144.png" /></a><br />
+      <p>Lightbox2 &copy; <a class="link" href="http://www.lokeshdhakar.com" target="_blank">Lokesh Dhakar</a> licensed under the <a class="link" target="_blank" href="http://creativecommons.org/licenses/by/2.5/">Creative Commons Attribution 2.5 License</a><hr />Copyright 2019 by bumm film GmbH<br />
+
+
+
+</div>
+
+
+<div id="bot"> <div>Alle Rechte vorbehalten | <a href="./impressum.php" id="Impressum">Impressum</a> | <a href="./datenschutz.php" id="Datenschutz">Datenschutz</a></div></div>
+
+<script src="seitenfunktionen.js"></script>
+
+<script>
+
+
+
+
+$( "input" ).change(function() {
+  checkInput($(this).attr("id"));
+});
+
+$( "textarea" ).change(function() {
+  checkInput($(this).attr("id"));
+});
+
+$('#submit').click(function(){
+  checkInput($(this).attr("alle"));
+});
+
+$('#botclick .ok').click(function(){
+  $("#botclick").slideUp(400);
+  document.cookie = "CookieAnfrage=Zugestimmt; max-age=60*60*24*3; path=/";
+});
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+
+function checkInput(e){
+  var enableSubmit = true;
+
+  if($("#inputName").val()==""){ 
+    enableSubmit = false;
+    if(e=="inputName"||e=="alle")
+    $(".MeldungName").slideDown(400);
+  }else{
+    $(".MeldungName").slideUp(400);
+  }
+  
+  if(!validateEmail($("#inputMail").val())){
+    enableSubmit = false;
+    if(e=="inputMail"||e=="alle")
+    $(".MeldungMail").slideDown(400);
+  }else{
+    $(".MeldungMail").slideUp(400);
+  }
+  
+  if($("#inputText").val()==""){ 
+    enableSubmit = false;
+    if(e=="inputText"||e=="alle")
+    $(".MeldungNachricht").slideDown(400);
+  }else{
+    $(".MeldungNachricht").slideUp(400);
+  } 
+  
+  if(e=="alle"){
+    $(".MeldungSpamschutz").slideDown(400);
+    
+    $(".Meldung").slideDown(400);
+  }else{    
+    //$(".MeldungSpamschutz").slideUp(400);
+  }
+  
+  if(e==""){
+    $(".Meldung").slideUp(400);
+    $(".NachrichtVerschickt").slideDown(400);
+  }
+  
+  /*if(enableSubmit){
+    $("#submit").prop('disabled', false);
+  }
+  else{
+    $("#submit").prop('disabled', true);
+  }*/
+}
+
+function validateEmail(sEmail) {
+    var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    if (filter.test(sEmail)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+</script>
+
+  </body>
+</html>

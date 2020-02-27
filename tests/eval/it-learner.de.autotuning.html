@@ -1,0 +1,989 @@
+<!DOCTYPE html><html class="no-js mh-two-sb" lang="de-DE"
+ prefix="og: https://ogp.me/ns#" ><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="profile" href="https://gmpg.org/xfn/11" /><link rel="pingback" href="https://it-learner.de/xmlrpc.php" /><link media="all" href="https://it-learner.de/wp-content/cache/autoptimize/css/autoptimize_4e06525fc01e6e6c2297d6654a3aca8a.css" rel="stylesheet" /><title>Windows 10 Netzwerk sehr langsam | IT-Learner.de</title><meta name="description"  content="Wenn das Netzwerk unter Windows 10 sehr langsam ist, könnte das mit der Autotuning Funktion zusammen hängen. So kann man dies prüfen!" /><meta name="keywords"  content="windows 10,netzwerk sehr langsam,windows 10 netzwerkprobleme,windows autotuning,windows netsh,cmd autotuning,netzwerkprobleme,cmd,installation,netzwerk,windows" /> <script type="application/ld+json" class="aioseop-schema">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://it-learner.de/#organization","url":"https://it-learner.de/","name":"IT-Learner.de","sameAs":["https://de.linkedin.com/in/markus-elsberger-65451314b","https://www.facebook.com/itlearner.de","https://twitter.com/MElsberger"],"logo":{"@type":"ImageObject","@id":"https://it-learner.de/#logo","url":"https://it-learner.de/wp-content/uploads/2019/12/IT-Learner.de-11.png","caption":"Tipps und Trick rund um den Einstieg in die Systemadministration"},"image":{"@id":"https://it-learner.de/#logo"}},{"@type":"WebSite","@id":"https://it-learner.de/#website","url":"https://it-learner.de/","name":"IT-Learner.de","publisher":{"@id":"https://it-learner.de/#organization"},"potentialAction":{"@type":"SearchAction","target":"https://it-learner.de/?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"WebPage","@id":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#webpage","url":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/","inLanguage":"de-DE","name":"Wenn das Netzwerk unter Windows 10 sehr langsam ist, k\u00f6nnte das Abschalten der Autotuning Funktion Abhilfe schaffen.","isPartOf":{"@id":"https://it-learner.de/#website"},"image":{"@type":"ImageObject","@id":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#primaryimage","url":"https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg","width":1021,"height":476,"caption":"Unter Windows 10 die Autotuning Funktion \u00fcber die cmd abschalten"},"primaryImageOfPage":{"@id":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#primaryimage"},"datePublished":"2019-05-16T07:30:27+02:00","dateModified":"2019-05-08T06:30:29+02:00","description":"Wenn das Netzwerk unter Windows 10 sehr langsam ist, k\u00f6nnte das mit der Autotuning Funktion zusammen h\u00e4ngen. So kann man dies pr\u00fcfen!"},{"@type":"Article","@id":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#article","isPartOf":{"@id":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#webpage"},"author":{"@id":"https://it-learner.de/author/markus/#author"},"headline":"Wenn das Netzwerk unter Windows 10 sehr langsam ist, k\u00f6nnte das Abschalten der Autotuning Funktion Abhilfe schaffen.","datePublished":"2019-05-16T07:30:27+02:00","dateModified":"2019-05-08T06:30:29+02:00","commentCount":"2","mainEntityOfPage":{"@id":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#webpage"},"publisher":{"@id":"https://it-learner.de/#organization"},"articleSection":"Netzwerk, Windows, Cmd, Installation, Netzwerk, Windows","image":{"@type":"ImageObject","@id":"https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#primaryimage","url":"https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg","width":1021,"height":476,"caption":"Unter Windows 10 die Autotuning Funktion \u00fcber die cmd abschalten"}},{"@type":"Person","@id":"https://it-learner.de/author/markus/#author","name":"Markus Elsberger","sameAs":["https://twitter.com/MElsberger"]}]}</script> <link rel="canonical" href="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/" /><meta property="og:type" content="article" /><meta property="og:title" content="Windows 10 Netzwerk sehr langsam | IT-Learner.de" /><meta property="og:description" content="Wenn das Netzwerk unter Windows 10 sehr langsam ist, könnte das mit der Autotuning Funktion zusammen hängen. So kann man dies prüfen!" /><meta property="og:url" content="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/" /><meta property="og:site_name" content="IT-Learner.de" /><meta property="og:image" content="https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg" /><meta property="article:published_time" content="2019-05-16T07:30:27Z" /><meta property="article:modified_time" content="2019-05-08T06:30:29Z" /><meta property="og:image:secure_url" content="https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg" /><meta name="twitter:card" content="summary" /><meta name="twitter:title" content="Windows 10 Netzwerk sehr langsam | IT-Learner.de" /><meta name="twitter:description" content="Wenn das Netzwerk unter Windows 10 sehr langsam ist, könnte das mit der Autotuning Funktion zusammen hängen. So kann man dies prüfen!" /><meta name="twitter:image" content="https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg" /><link rel='dns-prefetch' href='//www.googletagmanager.com' /><link rel="alternate" type="application/rss+xml" title="IT-Learner.de &raquo; Feed" href="https://it-learner.de/feed/" /><link rel="alternate" type="application/rss+xml" title="IT-Learner.de &raquo; Kommentar-Feed" href="https://it-learner.de/comments/feed/" /><link rel="alternate" type="application/rss+xml" title="IT-Learner.de &raquo; Wenn das Netzwerk unter Windows 10 sehr langsam ist, könnte das Abschalten der Autotuning Funktion Abhilfe schaffen. Kommentar-Feed" href="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/feed/" /><link rel='stylesheet' id='borlabs-cookie-css'  href='https://it-learner.de/wp-content/cache/autoptimize/css/autoptimize_single_0864d17f52815c75bad5bf6b4cee4029.css?ver=2.1.14-46' type='text/css' media='all' /><link rel='stylesheet' id='dashicons-css'  href='https://it-learner.de/wp-includes/css/dashicons.min.css?ver=5.3.2' type='text/css' media='all' /> <script type='text/javascript' src='https://it-learner.de/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script> <script type='text/javascript'>var THO_Head = {"variations":{"33101":{"variations":{"27":"Am Windows Server \u00fcber die Gruppenrichtlinien den Zugriff auf Ger\u00e4te verweigern &#8211; DVD Laufwerk nicht anzeigen","28":"\u00dcber die Gruppenrichtlinien den Zugriff auf das DVD Laufwerk oder den USB-Port sperren","29":"Den Clients in der Dom\u00e4ne den Zugriff auf verschiedene Ger\u00e4te sperren - Keine DVD-Laufwerk, Kein USB-Port"},"test_id":"8","winners":[]},"30907":{"variations":{"23":"Drei verschiedene M\u00f6glichkeiten um unter Windows eine PowerShell Konsole zu \u00f6ffnen &#8211; Mit und ohne administrative Berechtigungen","24":"Viele Wege f\u00fchren zur Windows PowerShell Konsole - Hier findest du drei verschiedene!","25":"So kannst du die Windows PowerShell Konsole \u00f6ffnen - Diese drei Optionen f\u00fchren dich zur PowerShell","26":"Jetzt mit der Windows PowerShell starten - Diese drei M\u00f6glichkeiten zeigen dir, wie du ein PowerShell Terminal \u00f6ffnest"},"test_id":"7","winners":[]},"2053":{"variations":{"20":"Bitlocker mit der Kommandozeile \u2013 Festplatte sperren bzw. entsperren unter Windows mithilfe der cmd","21":"Die Festplatte mit Bitlocker und der Kommandozeile verschl\u00fcsseln","22":"Mehr Sicherheit durch das verschl\u00fcsseln der Festplatte mit Bitlocker per cmd"},"test_id":"6","winners":[]},"754":{"variations":{"16":"IP Adresse mit der cmd \u00e4ndern \u2013 auch ohne grafische Oberfl\u00e4che l\u00e4sst sich eine IP Adresse festlegen","17":"So kann man mit der Kommandozeile die IP-Adresse konfigurieren ","18":"Mi der Kommandozeile (cmd) l\u00e4sst sich auch die IP-Adresse einstellen ","19":"Unter Windows die IP-Adresse per Kommandozeile einrichten"},"test_id":"5","winners":[]},"2425":{"variations":{"12":"Windows 10 einer Dom\u00e4ne hinzuf\u00fcgen!","13":"So l\u00e4sst sich Windows 10 zum Mitglied einer Dom\u00e4ne machen!","14":"Mit dieser Variante kannst du Windows 10 zu einer Dom\u00e4ne hinzuf\u00fcgen!","15":"Das Betriebssystem Windows 10 jetzt in eine Dom\u00e4ne mit aufnehmen! So gehts!"},"test_id":"4","winners":[]},"1307":{"variations":{"8":"Mit Diskpart eine Partition erstellen","9":"So kann man mit der cmd und dem Tool Diskpart eine neue Festplatte erstellen","10":"Mit der Kommandozeile eine neue Festplatte konfigurieren","11":"Das Erstellen einer neuen Festplatte ist auch mit der cmd m\u00f6glich"},"test_id":"3","winners":[]},"31531":{"variations":{"1":"Windows 10 zu einer Dom\u00e4ne hinzuf\u00fcgen &#8211; Neue Methode &#8211; Konfiguration \u00fcber &#8220;Einstellungen&#8221;","2":"So einfach kann man Windows 10 einer Dom\u00e4ne hinzuf\u00fcgen","3":"\u00dcber \"Einstellungen\" den Windows 10 Client Mitglied einer Dom\u00e4ne machen"},"test_id":"1","winners":[]}},"post_id":"30499","element_tag":"thrive_headline","woo_tag":"tho_woo"};</script> <script data-borlabs-script-blocker-js-handle="google_gtagjs" data-borlabs-script-blocker-id="google-site-kit" type='text/template' data-borlabs-script-blocker-src='https://www.googletagmanager.com/gtag/js?id=UA-38833587-1' async></script> <script data-borlabs-script-blocker-js-handle="google_gtagjs" data-borlabs-script-blocker-id="google-site-kit" type='text/template'>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+gtag('config', 'UA-38833587-1', {"useAmpClientId":true,"anonymize_ip":true} );</script> <link rel='https://api.w.org/' href='https://it-learner.de/wp-json/' /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://it-learner.de/xmlrpc.php?rsd" /><link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://it-learner.de/wp-includes/wlwmanifest.xml" /><link rel='prev' title='Mit einem kleinem PowerShell Script die Laufzeit des Windows System ermitteln' href='https://it-learner.de/mit-einem-kleinem-powershell-script-die-laufzeit-des-windows-system-ermitteln/' /><link rel='next' title='Die Windows PowerShell auch unter Linux verwenden &#8211; So installiert man die Windows PowerShell Core unter Linux' href='https://it-learner.de/die-windows-powershell-auch-unter-linux-verwenden-so-installiert-man-die-windows-powershell-core-unter-linux/' /><meta name="generator" content="WordPress 5.3.2" /><link rel='shortlink' href='https://it-learner.de/?p=30499' /><link rel="alternate" type="application/json+oembed" href="https://it-learner.de/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F" /><link rel="alternate" type="text/xml+oembed" href="https://it-learner.de/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F&#038;format=xml" /><meta name="generator" content="Site Kit by Google 1.3.1" /> <!--[if lt IE 9]> <script src="https://it-learner.de/wp-content/themes/mh-magazine/js/css3-mediaqueries.js"></script> <![endif]--><link rel="icon" href="https://it-learner.de/wp-content/uploads/2019/12/cropped-2-32x32.png" sizes="32x32" /><link rel="icon" href="https://it-learner.de/wp-content/uploads/2019/12/cropped-2-192x192.png" sizes="192x192" /><link rel="apple-touch-icon-precomposed" href="https://it-learner.de/wp-content/uploads/2019/12/cropped-2-180x180.png" /><meta name="msapplication-TileImage" content="https://it-learner.de/wp-content/uploads/2019/12/cropped-2-270x270.png" /> <script type='text/javascript'>if (typeof jQuery == 'undefined') {
+        window.onload = function () {
+            if (typeof jQuery == 'undefined') {
+                console.log( 'DIGIMEMBER needs JQUERY, but could not detect it.' );
+            }
+            else {
+                ncoreJQ = jQuery;
+            }
+        };
+    }
+    else {
+        ncoreJQ = jQuery;
+    }</script>  <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script> <script>var OneSignal = window.OneSignal || [];
+  OneSignal.push(function() {
+    OneSignal.init({
+      appId: "153146d3-afa4-4536-9202-ea221d2c817a",
+    });
+  });</script>    <script type="text/javascript" async=true>var elem = document.createElement('script');
+    elem.src = 'https://quantcast.mgr.consensu.org/cmp.js';
+    elem.async = true;
+    elem.type = "text/javascript";
+    var scpt = document.getElementsByTagName('script')[0];
+    scpt.parentNode.insertBefore(elem, scpt);
+    (function() {
+    var gdprAppliesGlobally = true;
+    function addFrame() {
+        if (!window.frames['__cmpLocator']) {
+        if (document.body) {
+            var body = document.body,
+                iframe = document.createElement('iframe');
+            iframe.style = 'display:none';
+            iframe.name = '__cmpLocator';
+            body.appendChild(iframe);
+        } else {
+            // In the case where this stub is located in the head,
+            // this allows us to inject the iframe more quickly than
+            // relying on DOMContentLoaded or other events.
+            setTimeout(addFrame, 5);
+        }
+        }
+    }
+    addFrame();
+    function cmpMsgHandler(event) {
+        var msgIsString = typeof event.data === "string";
+        var json;
+        if(msgIsString) {
+        json = event.data.indexOf("__cmpCall") != -1 ? JSON.parse(event.data) : {};
+        } else {
+        json = event.data;
+        }
+        if (json.__cmpCall) {
+        var i = json.__cmpCall;
+        window.__cmp(i.command, i.parameter, function(retValue, success) {
+            var returnMsg = {"__cmpReturn": {
+            "returnValue": retValue,
+            "success": success,
+            "callId": i.callId
+            }};
+            event.source.postMessage(msgIsString ?
+            JSON.stringify(returnMsg) : returnMsg, '*');
+        });
+        }
+    }
+    window.__cmp = function (c) {
+        var b = arguments;
+        if (!b.length) {
+        return __cmp.a;
+        }
+        else if (b[0] === 'ping') {
+        b[2]({"gdprAppliesGlobally": gdprAppliesGlobally,
+            "cmpLoaded": false}, true);
+        } else if (c == '__cmp')
+        return false;
+        else {
+        if (typeof __cmp.a === 'undefined') {
+            __cmp.a = [];
+        }
+        __cmp.a.push([].slice.apply(b));
+        }
+    }
+    window.__cmp.gdprAppliesGlobally = gdprAppliesGlobally;
+    window.__cmp.msgHandler = cmpMsgHandler;
+    if (window.addEventListener) {
+        window.addEventListener('message', cmpMsgHandler, false);
+    }
+    else {
+        window.attachEvent('onmessage', cmpMsgHandler);
+    }
+    })();
+    window.__cmp('init', {
+    		'Language': 'de',
+		'Initial Screen Title Text': 'Deine Privatsphäre wird natürlich respektiert!',
+		'Initial Screen Reject Button Text': 'ICH STIMME NICHT ZU',
+		'Initial Screen Accept Button Text': 'ICH Stimme zu!',
+		'Initial Screen Purpose Link Text': 'Wofür werden die Daten gesammelt!',
+		'Purpose Screen Title Text': 'Deine Privatsphäre wird natürlich respektiert!',
+		'Purpose Screen Body Text': 'Sie können Ihre Einwilligungsvorgaben festlegen und bestimmen, wie Ihre Daten basierend auf den folgenden Zwecken verwendet werden sollen. Sie können Ihre Einstellungen für uns unabhängig von denen von Drittanbietern vornehmen. Jeder Zweck hat eine Beschreibung, damit Sie wissen, wie wir und unsere Partner Ihre Daten verwenden.',
+		'Purpose Screen Vendor Link Text': 'Anbieter anzeigen',
+		'Purpose Screen Cancel Button Text': 'Abbrechen',
+		'Purpose Screen Save and Exit Button Text': 'Speichern &amp; verlassen',
+		'Vendor Screen Title Text': 'Wir respektieren Ihre Privatsphäre',
+		'Vendor Screen Body Text': 'Im Folgenden können Sie Einwilligungsvorgaben für einzelne Drittanbieter festlegen, mit denen wir zusammenarbeiten. Zur Erleichterung Ihrer Auswahl können Sie die einzelnen Einträge auf der Unternehmensliste erweitern, um zu sehen, für welche Zwecke sie Daten verwenden. In einigen Fällen können Unternehmen Ihre Daten aufgrund ihrer berechtigten Interessen verwenden, ohne Sie um Ihre Zustimmung zu bitten. Sie können auf deren Datenschutzrichtlinien-Links klicken, um weitere Informationen zu erhalten und einer solchen Verarbeitung zu widersprechen.',
+		'Vendor Screen Accept All Button Text': 'ALLE AKZEPTIEREN',
+		'Vendor Screen Reject All Button Text': 'ALLE ABLEHNEN',
+		'Vendor Screen Purposes Link Text': 'Zurück zu den Zwecken',
+		'Vendor Screen Cancel Button Text': 'Abbrechen',
+		'Vendor Screen Save and Exit Button Text': 'Speichern &amp; verlassen',
+		'Initial Screen Body Text': 'Wir und unsere Partner verwenden Technologien wie Cookies und verarbeiten personenbezogene Daten wie IP-Adressen und Cookie-IDs, um Anzeigen und Inhalte auf Grundlage Ihrer Interessen zu personalisieren, die Leistung von Anzeigen und Inhalten zu messen und Erkenntnisse über die Zielgruppen zu gewinnen, die Anzeigen und Inhalte gesehen haben. Klicken Sie unten, um der Verwendung dieser Technologie und der Verarbeitung Ihrer persönlichen Daten für diese Zwecke zuzustimmen. Sie können Ihre Meinung und Ihre Einwilligungsentscheidungen jederzeit ändern, indem Sie auf diese Website zurückkehren.',
+		'Initial Screen Body Text Option': 1,
+		'Publisher Name': 'IT-Learner.de',
+		'Publisher Logo': 'https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1.png',
+		'Display UI': 'always',
+		'Publisher Purpose IDs': [1,2,3,4,5],
+		'Consent Scope': 'service',
+		'UI Layout': 'banner',
+		'Non-Consent Display Frequency': 3,
+    });</script> </head><body id="mh-mobile" class="post-template-default single single-post postid-30499 single-format-standard custom-background wp-custom-logo aawp-custom mh-boxed-layout mh-left-sb mh-loop-layout1 mh-widget-layout1" itemscope="itemscope" itemtype="https://schema.org/WebPage"><div class="mh-container mh-container-outer"><div class="mh-header-nav-mobile clearfix"></div><div class="mh-preheader"><div class="mh-container mh-container-inner mh-row clearfix"><div class="mh-header-bar-content mh-header-bar-top-left mh-col-2-3 clearfix"><nav class="mh-navigation mh-header-nav mh-header-nav-top clearfix" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><div class="menu-headmenu-container"><ul id="menu-headmenu" class="menu"><li id="menu-item-31323" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-31323"><a title="Info"><i class="fa fa-info" aria-hidden="true fa-lg"></i>    Info</a><ul class="sub-menu"><li id="menu-item-4137" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4137"><a href="https://it-learner.de/ueber-mich/">About IT-Learner</a></li><li id="menu-item-4344" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4344"><a href="https://it-learner.de/kontakt-2/">Contact</a></li><li id="menu-item-28649" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy menu-item-28649"><a href="https://it-learner.de/datenschutz/">Datenschutz</a></li><li id="menu-item-5123" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5123"><a href="https://it-learner.de/werbung-schalten/">Advertising</a></li></ul></li></ul></div></nav></div><div class="mh-header-bar-content mh-header-bar-top-right mh-col-1-3 clearfix"><nav class="mh-social-icons mh-social-nav mh-social-nav-top clearfix" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><div class="menu-social-icon-meneu-container"><ul id="menu-social-icon-meneu" class="menu"><li id="menu-item-28126" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-28126"><a href="https://de.linkedin.com/in/markus-elsberger-65451314b"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Linkedin</span></a></li><li id="menu-item-30672" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-30672"><a href="https://www.facebook.com/itlearner.de"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Facebook</span></a></li><li id="menu-item-4153" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4153"><a href="https://twitter.com/MElsberger"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Twitter</span></a></li><li id="menu-item-28743" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-28743"><a href="https://it-learner.de/feed/"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Feed</span></a></li></ul></div></nav></div></div></div><header class="mh-header" itemscope="itemscope" itemtype="http://schema.org/WPHeader"><div class="mh-container mh-container-inner clearfix"><div class="mh-custom-header clearfix"><div class="mh-header-columns mh-row clearfix"><div class="mh-col-1-3 mh-site-identity"><div class="mh-site-logo" role="banner" itemscope="itemscope" itemtype="http://schema.org/Brand"> <a href="https://it-learner.de/" class="custom-logo-link" rel="home"><noscript><img width="500" height="120" src="https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1.png" class="custom-logo" alt="IT-Learner.de" srcset="https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1.png 500w, https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1-300x72.png 300w, https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1-150x36.png 150w" sizes="(max-width: 500px) 100vw, 500px" /></noscript><img width="500" height="120" src='data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20500%20120%22%3E%3C/svg%3E' data-src="https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1.png" class="lazyload custom-logo" alt="IT-Learner.de" data-srcset="https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1.png 500w, https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1-300x72.png 300w, https://it-learner.de/wp-content/uploads/2019/12/cropped-IT-Learner.de-11-1-150x36.png 150w" data-sizes="(max-width: 500px) 100vw, 500px" /></a></div></div><aside class="mh-col-2-3 mh-header-widget-2"><div id="custom_html-16" class="widget_text mh-widget mh-header-2 widget_custom_html"><div class="textwidget custom-html-widget"><div id="18819-1"><script src="//ads.themoneytizer.com/s/gen.js?type=1"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=18819&formatId=1" ></script></div></div></div></aside></div></div></div><div class="mh-main-nav-wrap"><nav class="mh-navigation mh-main-nav mh-container mh-container-inner clearfix" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><div class="menu-hauptnavigation-container"><ul id="menu-hauptnavigation" class="menu"><li id="menu-item-32742" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-32742"><a href="https://it-learner.de/"><i class="fa fa-home" aria-hidden="true fa-la"></i>  Home</a></li><li id="menu-item-29127" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-29127"><a><i class="fa fa-laptop fa-lg" aria-hidden="true"></i>    Tutorials</a><ul class="sub-menu"><li id="menu-item-5979" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5979"><a href="https://it-learner.de/beliebteste-tutorials-zur-administration-von-windows-betriebssystemen/">Windows Einsteiger</a></li><li id="menu-item-4063" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4063"><a href="https://it-learner.de/category/powershell/">Powershell</a></li><li id="menu-item-4129" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4129"><a href="https://it-learner.de/category/batch-scripting/">Batch Scripting</a></li><li id="menu-item-4061" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4061"><a href="https://it-learner.de/category/windows/">Windows</a></li><li id="menu-item-5276" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5276"><a href="https://it-learner.de/category/active-directory/">Active Directory</a></li><li id="menu-item-4132" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4132"><a href="https://it-learner.de/category/netzwerk/">Netzwerk</a></li><li id="menu-item-4062" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4062"><a href="https://it-learner.de/category/linux/">Linux</a></li><li id="menu-item-4130" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4130"><a href="https://it-learner.de/category/virtualisierung/">Virtualisierung</a></li><li id="menu-item-4131" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4131"><a href="https://it-learner.de/category/sicherheit/">Sicherheit</a></li><li id="menu-item-4133" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4133"><a href="https://it-learner.de/category/allgemeines/">Allgemeines</a></li><li id="menu-item-27652" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-27652"><a href="https://it-learner.de/category/spiele/">Spiele</a></li><li id="menu-item-32841" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-32841"><a href="#">Artikelserien</a><ul class="sub-menu"><li id="menu-item-29185" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-29185"><a href="https://it-learner.de/was-versteht-man-unter-routing-grundlagen-zum-thema-routing-in-netzwerken-teil-1/">Windows Server Routing</a></li><li id="menu-item-6958" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6958"><a href="https://it-learner.de/das-linux-terminal-in-10-teilen/">Linux Terminal</a></li><li id="menu-item-6957" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6957"><a href="https://it-learner.de/einen-root-server-mit-wordpress-einrichten-und-betreiben-in-10-teilen/">Rootserver konfigurieren</a></li></ul></li><li id="menu-item-4147" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-has-children menu-item-4147"><a href="https://it-learner.de/ueberblick-it-zerifizierungen-aus-dem-bereich-der-windows-und-linux-betriebssysteme/">Zertifizierungen</a><ul class="sub-menu"><li id="menu-item-5463" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5463"><a href="https://it-learner.de/fuer-einsteiger-linux-essential-zertifikat/">Linux Essential</a></li><li id="menu-item-5466" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5466"><a href="https://it-learner.de/die-linux-zertifizierung-lpic-1/">Linux LPIC 1</a></li><li id="menu-item-5465" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5465"><a href="https://it-learner.de/die-linux-zertifizierung-lpic-2/">Linux LPIC 2</a></li><li id="menu-item-5464" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5464"><a href="https://it-learner.de/die-linux-zertifizierung-lpic-3/">Linux LPIC 3</a></li><li id="menu-item-5467" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5467"><a href="https://it-learner.de/der-weg-zum-microsoft-mcsa-fuer-windows-8-1/">MCSA Windows 8.1</a></li><li id="menu-item-5583" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5583"><a href="https://it-learner.de/der-weg-zum-microsoft-mcsa-fuer-windows-10/">MCSA Windows 10</a></li></ul></li></ul></li><li id="menu-item-4145" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4145"><a href="https://it-learner.de/buchempfehlungen/"><i class="fa fa-book fa-lg" aria-hidden="true"></i>  Buchtipps</a><ul class="sub-menu"><li id="menu-item-30668" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-30668"><a href="https://it-learner.de/top-5-bestseller-fuer-windows-server/">Top 5 Windows Server</a></li><li id="menu-item-27906" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-27906"><a href="https://it-learner.de/top-5-bestseller-buecher-fuer-windows-10/">Top 5 Windows 10</a></li><li id="menu-item-7448" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7448"><a href="https://it-learner.de/top-5-bestseller-buecher-zur-powershell/">Top 5 PowerShell</a></li><li id="menu-item-27912" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-27912"><a href="https://it-learner.de/top-5-bestseller-buecher-fuer-linux/">Top 5 Linux</a></li><li id="menu-item-5495" class="menu-item menu-item-type-taxonomy menu-item-object-post_tag menu-item-5495"><a href="https://it-learner.de/tag/buecher/">Buchrezensionen</a></li></ul></li><li id="menu-item-30828" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-30828"><a href="https://it-learner.de/scripte-ueberblick-zum-downloaden/"><i class="fa fa-terminal fa-lg"></i>  Scripting</a></li><li id="menu-item-32743" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32743"><a href="https://it-learner.de/ebooks-zum-downloaden/"><i class="fa fa-file-text-o" aria-hidden="true fa-lg"></i>  Ebooks</a></li><li id="menu-item-32776" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-32776"><a href="https://it-learner.de/cheatsheets-zum-downloaden-2/"><i class="fa fa-file-pdf-o" aria-hidden="true fa-lg"></i> Cheatsheets</a></li></ul></div></nav></div></header><div class="mh-subheader"><div class="mh-container mh-container-inner mh-row clearfix"><div class="mh-header-bar-content mh-header-bar-bottom-left mh-col-2-3 clearfix"><div class="mh-header-ticker mh-header-ticker-bottom"><div class="mh-ticker-bottom"><div class="mh-ticker-title mh-ticker-title-bottom"> Letzte Artikel<i class="fa fa-chevron-right"></i></div><div class="mh-ticker-content mh-ticker-content-bottom"><ul id="mh-ticker-loop-bottom"><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/am-windows-server-2019-einen-neuen-iscsi-datentraeger-bereitstellen-sowie-einen-iscsi-speicher-einbinden/" title="Am Windows Server 2019 einen neuen iSCSI Datenträger bereitstellen &#8211; sowie einen iSCSI Speicher einbinden"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 26. Februar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Am Windows Server 2019 einen neuen iSCSI Datenträger bereitstellen &#8211; sowie einen iSCSI Speicher einbinden </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Windows </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/das-potential-des-streckenhandels-diese-vorteile-bietet-das-geschaeftsmodell-sponsored-post/" title="Das Potential des Streckenhandels – diese Vorteile bietet das Geschäftsmodell [Sponsored Post]"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 20. Februar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Das Potential des Streckenhandels – diese Vorteile bietet das Geschäftsmodell [Sponsored Post] </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Allgemeines </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/virtualisieren-unter-windows-10-mit-der-hyper-v-schnellerstellung-in-wenigen-schritten-zum-virtuellen-computer-unter-windows-10/" title="Virtualisieren unter Windows 10 mit der Hyper-V Schnellerstellung – In wenigen Schritten zum virtuellen Computer unter Windows 10"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 19. Februar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Virtualisieren unter Windows 10 mit der Hyper-V Schnellerstellung – In wenigen Schritten zum virtuellen Computer unter Windows 10 </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Virtualisierung </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/digitalisierung-in-der-praxis-5-branchen-im-fokus/" title="Digitalisierung in der Praxis – 5 Branchen im Fokus"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 14. Februar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Digitalisierung in der Praxis – 5 Branchen im Fokus </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Allgemeines </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/dienste-unter-windows-mit-der-powershell-starten-stoppen-dienst-soll-verzoegert-gestartet-werden/" title="Dienste unter Windows mit der PowerShell starten / Stoppen &#8211; Dienst soll verzögert gestartet werden"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 12. Februar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Dienste unter Windows mit der PowerShell starten / Stoppen &#8211; Dienst soll verzögert gestartet werden </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Powershell </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/windows-suche-im-startmenue-geht-nicht-mehr-einfache-loesung/" title="Windows Suche im Startmenü geht nicht mehr &#8211; einfache Lösung!"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 10. Februar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Windows Suche im Startmenü geht nicht mehr &#8211; einfache Lösung! </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Windows </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/mit-der-powershell-einen-neuen-benutzer-anlegen-welcher-sofort-nach-dem-einloggen-sein-passwort-aendern-muss/" title="Mit der PowerShell einen neuen Benutzer anlegen, welcher sofort nach dem einloggen sein Passwort ändern muss"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 5. Februar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Mit der PowerShell einen neuen Benutzer anlegen, welcher sofort nach dem einloggen sein Passwort ändern muss </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Powershell </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/manchmal-muss-es-auch-in-game-schnell-gehen-rapid-transfer/" title="Manchmal muss es auch In-Game schnell gehen – Rapid Transfer"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 28. Januar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> Manchmal muss es auch In-Game schnell gehen – Rapid Transfer </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Allgemeines </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/pcb-design-tipps-fuer-anfaenger-sponsored-post/" title="PCB-Design Tipps für Anfänger [Sponsored Post]"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 27. Januar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> PCB-Design Tipps für Anfänger [Sponsored Post] </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Allgemeines </span> </a></li><li class="mh-ticker-item mh-ticker-item-bottom"> <a href="https://it-learner.de/am-windows-server-ueber-die-gruppenrichtlinien-den-zugriff-auf-geraete-verweigern-dvd-laufwerk-nicht-anzeigen/" title="Am Windows Server über die Gruppenrichtlinien den Zugriff auf Geräte verweigern &#8211; DVD Laufwerk nicht anzeigen"> <span class="mh-ticker-item-date mh-ticker-item-date-bottom"> [ 27. Januar 2020 ] </span> <span class="mh-ticker-item-title mh-ticker-item-title-bottom"> <thrive_headline click tho-post-33101 tho-test-8>Am Windows Server über die Gruppenrichtlinien den Zugriff auf Geräte verweigern &#8211; DVD Laufwerk nicht anzeigen</thrive_headline> </span> <span class="mh-ticker-item-cat mh-ticker-item-cat-bottom"> <i class="fa fa-caret-right"></i> Active Directory </span> </a></li></ul></div></div></div></div><div class="mh-header-bar-content mh-header-bar-bottom-right mh-col-1-3 clearfix"><aside class="mh-header-search mh-header-search-bottom"><form role="search" method="get" class="search-form" action="https://it-learner.de/"> <label> <span class="screen-reader-text">Suche nach:</span> <input type="search" class="search-field" placeholder="Suche&#160;&hellip;" value="" name="s" /> </label> <input type="submit" class="search-submit" value="Suche" /></form></aside></div></div></div><div class="mh-wrapper clearfix"><div class="mh-main clearfix"><div id="main-content" class="mh-content" role="main" itemprop="mainContentOfPage"><nav class="mh-breadcrumb"><span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://it-learner.de" itemprop="url"><span itemprop="title">Startseite</span></a></span><span class="mh-breadcrumb-delimiter"><i class="fa fa-angle-right"></i></span><span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://it-learner.de/category/netzwerk/" itemprop="url"><span itemprop="title">Netzwerk</span></a></span><span class="mh-breadcrumb-delimiter"><i class="fa fa-angle-right"></i></span>Wenn das Netzwerk unter Windows 10 sehr langsam ist, könnte das Abschalten der Autotuning Funktion Abhilfe schaffen.</nav><article id="post-30499" class="post-30499 post type-post status-publish format-standard has-post-thumbnail hentry category-netzwerk category-windows tag-cmd tag-installation tag-netzwerk tag-windows"><header class="entry-header clearfix"><h1 class="entry-title">Wenn das Netzwerk unter Windows 10 sehr langsam ist, könnte das Abschalten der Autotuning Funktion Abhilfe schaffen.</h1><div class="mh-subheading-top"></div><h2 class="mh-subheading">So könnte das Netzwerk unter Windows 10 schneller werden</h2><div class="mh-meta entry-meta"> <span class="entry-meta-date updated"><i class="fa fa-clock-o"></i><a href="https://it-learner.de/2019/05/">16. Mai 2019</a></span> <span class="entry-meta-author author vcard"><i class="fa fa-user"></i><a class="fn" href="https://it-learner.de/author/markus/">Markus Elsberger</a></span> <span class="entry-meta-categories"><i class="fa fa-folder-open-o"></i><a href="https://it-learner.de/category/netzwerk/" rel="category tag">Netzwerk</a>, <a href="https://it-learner.de/category/windows/" rel="category tag">Windows</a></span> <span class="entry-meta-comments"><i class="fa fa-comment-o"></i><a href="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#comments" class="mh-comment-count-link" >2</a></span></div></header><div class="entry-content clearfix"><div class="tve-tl-cnt-wrap"><p style="text-align: justify;">Mit Windows Vista wurde damals die sogenannte <strong>Autotuning Funktion</strong> eingeführt. Diese ist auch noch unter <strong><a class="thirstylink" title="Windows 10 Pro" href="https://it-learner.de/recommends/windows-10-pro/" target="_blank" rel="nofollow noopener noreferrer">Windows 10</a>*</strong> vorhanden. Eingeführt wurde diese, damit die Leistung von Programmen verbessert wird, die TCP Daten über das Netzwerk empfangen. Die Latenzen und Durchsatzgeschwindigkeiten sind heute allerdings einfach zu groß um diese statisch zu verwalten. Genau aus diesem Grund gibt es jene Funktion. Es sollen eben die Größe des Empfangspuffers dynamisch an den Durchsatz und den Latenzen angepasst werden.</p><p style="text-align: justify;">Jedoch gibt es anscheinend Probleme mit älteren Routern oder manch Firewall Software, welche diese Funktion nicht unterstützt. Daher kann es deshalb zu einer langsamen Datenübertragung kommen oder einem ständigen Verlust der Verbindung. Die Autotuning Funktion kann natürlich deshalb auch deaktiviert werden. Am einfachsten bedient man sich der cmd. Hier lautet der Befehl <strong>netsh</strong>. Damit kann man den aktuellen Status auslesen, so wie auch die Funktion an- bzw. abschalten. Der Name des globalen TCP-Parameters unter der netsh heißt hier <strong>&#8220;Automatischer Abstimmungsgrad Empfangsfenster&#8221;.</strong></p><p><strong>Aktueller Status von autotuninglevel</strong></p><pre lang="Batch">netsh interface tcp show global</pre><figure id="attachment_30501" aria-describedby="caption-attachment-30501" style="width: 1021px" class="wp-caption alignnone"><a href="https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg"><img class="size-full wp-image-30501 lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="Unter Windows 10 die Autotuning Funktion über die cmd abschalten" width="1021" height="476" sizes="(max-width: 1021px) 100vw, 1021px" data-src="https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg" data-srcset="https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg 1021w, https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion-300x140.jpg 300w"></a><figcaption id="caption-attachment-30501" class="wp-caption-text">Unter Windows 10 die Autotuning Funktion über die cmd abschalten</figcaption></figure><p><strong>Autotuning deaktivieren:</strong></p><pre lang="Batch">netsh interface tcp set global autotuninglevel=disabled</pre><p><strong>Autotuning wieder aktivieren:</strong></p><pre lang="Batch">netsh interface tcp set global autotuninglevel=normal</pre><p>&nbsp;</p> <span id="tho-end-content" style="display: block; visibility: hidden;"></span><span id="tve_leads_end_content" style="display: block; visibility: hidden; border: 1px solid transparent;"></span><span class="tve-leads-two-step-trigger tl-2step-trigger-7080"></span><span class="tve-leads-two-step-trigger tl-2step-trigger-7080"></span></div><div class="mh-social-bottom"><div class="mh-share-buttons clearfix"> <a class="mh-facebook" href="#" onclick="window.open('https://www.facebook.com/sharer.php?u=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F&t=Wenn+das+Netzwerk+unter+Windows+10+sehr+langsam+ist%2C+k%C3%B6nnte+das+Abschalten+der+Autotuning+Funktion+Abhilfe+schaffen.', 'facebookShare', 'width=626,height=436'); return false;" title="Auf Facebook teilen"> <span class="mh-share-button"><i class="fa fa-facebook"></i></span> </a> <a class="mh-twitter" href="#" onclick="window.open('https://twitter.com/share?text=Wenn+das+Netzwerk+unter+Windows+10+sehr+langsam+ist%2C+k%C3%B6nnte+das+Abschalten+der+Autotuning+Funktion+Abhilfe+schaffen.:&url=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F', 'twitterShare', 'width=626,height=436'); return false;" title="Diesen Artikel twittern"> <span class="mh-share-button"><i class="fa fa-twitter"></i></span> </a> <a class="mh-linkedin" href="#" onclick="window.open('https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F&source=', 'linkedinShare', 'width=626,height=436'); return false;" title="Auf LinkedIn teilen"> <span class="mh-share-button"><i class="fa fa-linkedin"></i></span> </a> <a class="mh-pinterest" href="#" onclick="window.open('https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F&media=https://it-learner.de/wp-content/uploads/2019/05/Autotuning-Funktion.jpg&description=Wenn+das+Netzwerk+unter+Windows+10+sehr+langsam+ist%2C+k%C3%B6nnte+das+Abschalten+der+Autotuning+Funktion+Abhilfe+schaffen.', 'pinterestShare', 'width=750,height=350'); return false;" title="Auf Pinterest teilen"> <span class="mh-share-button"><i class="fa fa-pinterest"></i></span> </a> <a class="mh-googleplus" href="#" onclick="window.open('https://plusone.google.com/_/+1/confirm?hl=en-US&url=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F', 'googleShare', 'width=626,height=436'); return false;" title="Auf Google+ teilen" target="_blank"> <span class="mh-share-button"><i class="fa fa-google-plus"></i></span> </a> <a class="mh-email" href="mailto:?subject=Wenn%20das%20Netzwerk%20unter%20Windows%2010%20sehr%20langsam%20ist%2C%20k%C3%B6nnte%20das%20Abschalten%20der%20Autotuning%20Funktion%20Abhilfe%20schaffen.&amp;body=https%3A%2F%2Fit-learner.de%2Fwenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen%2F" title="Diesen Artikel an einen Freund senden" target="_blank"> <span class="mh-share-button"><i class="fa fa-envelope-o"></i></span> </a> <a class="mh-print" href="javascript:window.print()" title="Diesen Artikel drucken"> <span class="mh-share-button"><i class="fa fa-print"></i></span> </a></div></div></div><div class="entry-tags clearfix"><i class="fa fa-tag"></i><ul><li><a href="https://it-learner.de/tag/cmd/" rel="tag">Cmd</a></li><li><a href="https://it-learner.de/tag/installation/" rel="tag">Installation</a></li><li><a href="https://it-learner.de/tag/netzwerk/" rel="tag">Netzwerk</a></li><li><a href="https://it-learner.de/tag/windows/" rel="tag">Windows</a></li></ul></div></article><div style="text-align:center;" id="18819-31"><script src="//ads.themoneytizer.com/s/gen.js?type=31"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=18819&formatId=31" ></script></div><div id="comments" class="comments-compat-mh-magazine-child"><div id="thrive-comments" class="clearfix"><div class="tcm-dot-loader"> <span class="inner1"></span> <span class="inner2"></span> <span class="inner3"></span></div><div class="thrive-comments-content"><div class="tcm-comments-filter"></div><div class="tcm-comments-create" id="respond"></div><div class="tcm-comments-list"><li id="comment-421" class="comment even thread-even depth-1 parent entry-content"><article id="div-comment-421" class="comment-body"><footer class="comment-meta"><div class="comment-author vcard"> <b class="fn">Karl</b> <span class="says">sagt:</span></div><div class="comment-metadata"> <a href="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#comments/421"> <time datetime="2019-11-24T17:53:10+01:00"> 24. November 2019 um 17:53&nbsp;Uhr </time> </a></div></footer><div class="comment-content"><p>Wenn ich den o.g. syntax eingebe, bekomme ich folgende Fehlermeldung. Dabei bin ich Administrator.</p><p>Fehler beim Befehl zum Festlegen von global für IPv4 Für den angeforderten Vorgang sind erhöhte Rechte erforderlich (Als Administrator ausführen).</p></div><div class="reply"><a rel='nofollow' class='comment-reply-link' href='https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/?replytocom=421#respond' data-commentid="421" data-postid="30499" data-belowelement="div-comment-421" data-respondelement="respond" aria-label='Antworte auf Karl'>Antworten</a></div></article><ul class="children"><li id="comment-422" class="comment byuser comment-author-markus bypostauthor odd alt depth-2 entry-content"><article id="div-comment-422" class="comment-body"><footer class="comment-meta"><div class="comment-author vcard"> <b class="fn">Markus Elsberger</b> <span class="says">sagt:</span></div><div class="comment-metadata"> <a href="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#comments/422"> <time datetime="2019-11-24T20:10:31+01:00"> 24. November 2019 um 20:10&nbsp;Uhr </time> </a></div></footer><div class="comment-content"><p>Hallo Karl,<br /> ich habe es gerade nochmal getestet und es hat einwandfrei funktioniert. Vorab habe ich eine cmd als Administrator geöffnet und anschließend die Befehle eingetippt. Hast du evtl. andere UAC Einstellungen vorgenommen. Diese lassen sich u.a. in den Sicherheitsrichtlinien (secpol.msc) ändern.</p></div></article></li></ul></li></div><div class="tcm-lazy-comments"></div></div></div></div></div><aside class="mh-widget-col-1 mh-sidebar" itemscope="itemscope" itemtype="http://schema.org/WPSideBar"><div id="custom_html-12" class="widget_text mh-widget widget_custom_html"><h4 class="mh-widget-title"><span class="mh-widget-title-inner">Anzeige</span></h4><div class="textwidget custom-html-widget"><div id="18819-3"><script src="//ads.themoneytizer.com/s/gen.js?type=3"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=18819&formatId=3" ></script></div></div></div><div id="media_image-4" class="mh-widget widget_media_image"><figure style="width: 300px" class="wp-caption alignnone"><a href="https://it-learner.de/quiz-netzwerkkonfiguration-cmd/"><noscript><img width="300" height="120" src="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png" class="image wp-image-33383  attachment-medium size-medium" alt="Quiz cmd Windows" style="max-width: 100%; height: auto;" srcset="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png 300w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-150x60.png 150w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></noscript><img width="300" height="120" src='data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20300%20120%22%3E%3C/svg%3E' data-src="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png" class="lazyload image wp-image-33383  attachment-medium size-medium" alt="Quiz cmd Windows" style="max-width: 100%; height: auto;" data-srcset="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png 300w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-150x60.png 150w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2.png 500w" data-sizes="(max-width: 300px) 100vw, 300px" /></a><figcaption class="wp-caption-text">Quiz cmd Windows</figcaption></figure></div><div id="aawp_widget_bestseller-15" class="mh-widget widget_aawp_widget_bestseller"><h4 class="mh-widget-title"><span class="mh-widget-title-inner">Windows Bestseller</span></h4><div class="aawp aawp-widget"><div class="aawp-product aawp-product--widget-small aawp-product--style-light aawp-product--bestseller aawp-product--ribbon"  data-aawp-product-id="3842106262" data-aawp-product-title="Windows 10  Die Anleitung in Bildern Aktuell inklusive aller Updates Komplett in Farbe Ideal für Einsteiger."> <span class="aawp-product__ribbon aawp-product__ribbon--bestseller">Bestseller Nr. 1</span> <span class="aawp-product__inner"> <a class="aawp-product__image-link aawp-product__image" href="https://www.amazon.de/dp/3842106262?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10: Die Anleitung in Bildern. Aktuell inklusive aller Updates. Komplett in Farbe. Ideal für Einsteiger." rel="nofollow" target="_blank" style="background-image: url('https://it-learner.de/wp-content/plugins/aawp/public/image.php?url=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTFpdFQ0MHU5RkwuX1NMMTYwXy5qcGc%3D');"></a> <span class="aawp-product__content"> <a class="aawp-product__title" href="https://www.amazon.de/dp/3842106262?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10: Die Anleitung in Bildern. Aktuell inklusive aller Updates. Komplett in Farbe. Ideal für Einsteiger." rel="nofollow" target="_blank">Windows 10: Die Anleitung in Bildern. Aktuell...</a> <span class="aawp-product__meta"> <span class="aawp-product__price aawp-product__price--current">9,90 EUR</span> </span> </span> </span></div><div class="aawp-product aawp-product--widget-small aawp-product--style-light aawp-product--bestseller aawp-product--ribbon"  data-aawp-product-id="3959821697" data-aawp-product-title="Windows 10 Praxisbuch inkl der aktuellen Updates von 2020"> <span class="aawp-product__ribbon aawp-product__ribbon--bestseller">Bestseller Nr. 2</span> <span class="aawp-product__inner"> <a class="aawp-product__image-link aawp-product__image" href="https://www.amazon.de/dp/3959821697?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10 Praxisbuch inkl. der aktuellen Updates von 2020" rel="nofollow" target="_blank" style="background-image: url('https://it-learner.de/wp-content/plugins/aawp/public/image.php?url=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTE0cHQyZ3ItakwuX1NMMTYwXy5qcGc%3D');"></a> <span class="aawp-product__content"> <a class="aawp-product__title" href="https://www.amazon.de/dp/3959821697?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10 Praxisbuch inkl. der aktuellen Updates von 2020" rel="nofollow" target="_blank">Windows 10 Praxisbuch inkl. der aktuellen Updates...</a> <span class="aawp-product__meta"> <span class="aawp-product__price aawp-product__price--current">19,95 EUR</span> </span> </span> </span></div><div class="aawp-product aawp-product--widget-small aawp-product--style-light aawp-product--bestseller aawp-product--ribbon"  data-aawp-product-id="3842104685" data-aawp-product-title="Windows 10 für Senioren  Der Lernkurs für Späteinsteiger – extra große Schrift und viele Merkhilfen Neuauflage inkl April 2018 Update"> <span class="aawp-product__ribbon aawp-product__ribbon--bestseller">Bestseller Nr. 3</span> <span class="aawp-product__inner"> <a class="aawp-product__image-link aawp-product__image" href="https://www.amazon.de/dp/3842104685?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10 für Senioren: Der Lernkurs für Späteinsteiger – extra große Schrift und viele Merkhilfen. Neuauflage inkl. April 2018 Update" rel="nofollow" target="_blank" style="background-image: url('https://it-learner.de/wp-content/plugins/aawp/public/image.php?url=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTFRQnBUcThDN0wuX1NMMTYwXy5qcGc%3D');"></a> <span class="aawp-product__content"> <a class="aawp-product__title" href="https://www.amazon.de/dp/3842104685?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10 für Senioren: Der Lernkurs für Späteinsteiger – extra große Schrift und viele Merkhilfen. Neuauflage inkl. April 2018 Update" rel="nofollow" target="_blank">Windows 10 für Senioren: Der Lernkurs für...</a> <span class="aawp-product__meta"> <span class="aawp-product__price aawp-product__price--current">19,90 EUR</span> </span> </span> </span></div><div class="aawp-product aawp-product--widget-small aawp-product--style-light aawp-product--bestseller aawp-product--ribbon"  data-aawp-product-id="3959821549" data-aawp-product-title="Windows 10 - Das große Kompendium inkl aller aktuellen Updates - Ein umfassender Ratgeber  Komplett in Farbe mit vielen Beispielen aus der Praxis"> <span class="aawp-product__ribbon aawp-product__ribbon--bestseller">Bestseller Nr. 4</span> <span class="aawp-product__inner"> <a class="aawp-product__image-link aawp-product__image" href="https://www.amazon.de/dp/3959821549?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10 - Das große Kompendium inkl. aller aktuellen Updates - Ein umfassender Ratgeber: Komplett in Farbe, mit vielen Beispielen aus der Praxis" rel="nofollow" target="_blank" style="background-image: url('https://it-learner.de/wp-content/plugins/aawp/public/image.php?url=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTFCRUg4YkJqM0wuX1NMMTYwXy5qcGc%3D');"></a> <span class="aawp-product__content"> <a class="aawp-product__title" href="https://www.amazon.de/dp/3959821549?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10 - Das große Kompendium inkl. aller aktuellen Updates - Ein umfassender Ratgeber: Komplett in Farbe, mit vielen Beispielen aus der Praxis" rel="nofollow" target="_blank">Windows 10 - Das große Kompendium inkl. aller...</a> <span class="aawp-product__meta"> <span class="aawp-product__price aawp-product__price--current">39,95 EUR</span> </span> </span> </span></div><div class="aawp-product aawp-product--widget-small aawp-product--style-light aawp-product--bestseller aawp-product--ribbon"  data-aawp-product-id="3836266571" data-aawp-product-title="Windows Server 2019  Das umfassende Handbuch von den Microsoft-Experten Praxiswissen für alle Windows-Administratoren"> <span class="aawp-product__ribbon aawp-product__ribbon--bestseller">Bestseller Nr. 5</span> <span class="aawp-product__inner"> <a class="aawp-product__image-link aawp-product__image" href="https://www.amazon.de/dp/3836266571?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows Server 2019: Das umfassende Handbuch von den Microsoft-Experten. Praxiswissen für alle Windows-Administratoren" rel="nofollow" target="_blank" style="background-image: url('https://it-learner.de/wp-content/plugins/aawp/public/image.php?url=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTFDTm5nTVAtVUwuX1NMMTYwXy5qcGc%3D');"></a> <span class="aawp-product__content"> <a class="aawp-product__title" href="https://www.amazon.de/dp/3836266571?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows Server 2019: Das umfassende Handbuch von den Microsoft-Experten. Praxiswissen für alle Windows-Administratoren" rel="nofollow" target="_blank">Windows Server 2019: Das umfassende Handbuch von...</a> <span class="aawp-product__meta"> <span class="aawp-product__price aawp-product__price--current">69,90 EUR</span> </span> </span> </span></div><div class="aawp-product aawp-product--widget-small aawp-product--style-light aawp-product--bestseller aawp-product--ribbon"  data-aawp-product-id="3842104588" data-aawp-product-title="Windows 10  Das große Handbuch Das Standardwerk für die Praxis Aktuell inkl April 2018 Update."> <span class="aawp-product__ribbon aawp-product__ribbon--bestseller">Bestseller Nr. 6</span> <span class="aawp-product__inner"> <a class="aawp-product__image-link aawp-product__image" href="https://www.amazon.de/dp/3842104588?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10: Das große Handbuch. Das Standardwerk für die Praxis. Aktuell inkl. April 2018 Update." rel="nofollow" target="_blank" style="background-image: url('https://it-learner.de/wp-content/plugins/aawp/public/image.php?url=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL0kvNTEybWZHRjJZSkwuX1NMMTYwXy5qcGc%3D');"></a> <span class="aawp-product__content"> <a class="aawp-product__title" href="https://www.amazon.de/dp/3842104588?tag=itlearner-21&linkCode=osi&th=1&psc=1&keywords=Windows%20%20B%C3%BCcher" title="Windows 10: Das große Handbuch. Das Standardwerk für die Praxis. Aktuell inkl. April 2018 Update." rel="nofollow" target="_blank">Windows 10: Das große Handbuch. Das Standardwerk...</a> <span class="aawp-product__meta"> <span class="aawp-product__price aawp-product__price--current">19,90 EUR</span> </span> </span> </span></div></div></div></aside></div><aside class="mh-widget-col-1 mh-sidebar-2 mh-sidebar-wide" itemscope="itemscope" itemtype="http://schema.org/WPSideBar"><div id="custom_html-55" class="widget_text mh-widget widget_custom_html"><h4 class="mh-widget-title"><span class="mh-widget-title-inner">Anzeige</span></h4><div class="textwidget custom-html-widget"><div class="pepsia_player" data-token="00ZX" data-mute="1" data-logo="0" data-controls="1" data-corner="0" data-popup="0" data-volume="1" data-autoplay="1" data-vid="0" data-cid="0"></div> <script type="text/javascript">(function(){var e=document.createElement("script"),f=document.getElementsByTagName("script")[0];e.src="//player.pepsia.com/sdk.js?d="+(new Date).getTime().toString(16);e.type="text/javascript";e.async=!0;f.parentNode.insertBefore(e,f);})();</script> </div></div><div style="display:none" class="tl-widget-container"><div id="widget_thrive_leads-9" class="mh-widget widget_thrive_leads"><span style="display:none" class="tl-placeholder-f-type-widget"></span></div></div><div id="custom_html-61" class="widget_text mh-widget widget_custom_html"><h4 class="mh-widget-title"><span class="mh-widget-title-inner">Anzeige</span></h4><div class="textwidget custom-html-widget"><div id="18819-19"><script src="//ads.themoneytizer.com/s/gen.js?type=19"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=18819&formatId=19" ></script></div></div></div><div id="media_image-3" class="mh-widget widget_media_image"><figure style="width: 300px" class="wp-caption alignnone"><a href="https://it-learner.de/quiz-netzwerkkonfiguration-cmd/"><noscript><img width="300" height="120" src="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png" class="image wp-image-33383  attachment-medium size-medium" alt="Quiz cmd Windows" style="max-width: 100%; height: auto;" srcset="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png 300w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-150x60.png 150w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2.png 500w" sizes="(max-width: 300px) 100vw, 300px" /></noscript><img width="300" height="120" src='data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20300%20120%22%3E%3C/svg%3E' data-src="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png" class="lazyload image wp-image-33383  attachment-medium size-medium" alt="Quiz cmd Windows" style="max-width: 100%; height: auto;" data-srcset="https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-300x120.png 300w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2-150x60.png 150w, https://it-learner.de/wp-content/uploads/2020/02/Quiz-Button-Widget-2.png 500w" data-sizes="(max-width: 300px) 100vw, 300px" /></a><figcaption class="wp-caption-text">Quiz cmd Windows</figcaption></figure></div><div id="custom_html-60" class="widget_text mh-widget widget_custom_html"><h4 class="mh-widget-title"><span class="mh-widget-title-inner">Anzeige</span></h4><div class="textwidget custom-html-widget"><div id="18819-2"><script src="//ads.themoneytizer.com/s/gen.js?type=2"></script><script src="//ads.themoneytizer.com/s/requestform.js?siteId=18819&formatId=2" ></script></div></div></div><div id="mh_magazine_tabbed-7" class="mh-widget mh_magazine_tabbed"><div class="mh-tabbed-widget"><div class="mh-tab-buttons clearfix"> <a class="mh-tab-button" href="#tab-mh_magazine_tabbed-7-1"> <span><i class="fa fa-newspaper-o"></i></span> </a> <a class="mh-tab-button" href="#tab-mh_magazine_tabbed-7-2"> <span><i class="fa fa-tags"></i></span> </a> <a class="mh-tab-button" href="#tab-mh_magazine_tabbed-7-3"> <span><i class="fa fa-comments-o"></i></span> </a></div><div id="tab-mh_magazine_tabbed-7-1" class="mh-tab-content mh-tab-posts"><ul class="mh-tab-content-posts"><li class="mh-tab-post-item post-33184 post type-post status-publish format-standard has-post-thumbnail category-windows tag-datentraeger tag-installation tag-server tag-speicherplatz tag-windows"> <a href="https://it-learner.de/am-windows-server-2019-einen-neuen-iscsi-datentraeger-bereitstellen-sowie-einen-iscsi-speicher-einbinden/"> Am Windows Server 2019 einen neuen iSCSI Datenträger bereitstellen &#8211; sowie einen iSCSI Speicher einbinden </a></li><li class="mh-tab-post-item post-33627 post type-post status-publish format-standard has-post-thumbnail category-allgemeines tag-internet"> <a href="https://it-learner.de/das-potential-des-streckenhandels-diese-vorteile-bietet-das-geschaeftsmodell-sponsored-post/"> Das Potential des Streckenhandels – diese Vorteile bietet das Geschäftsmodell [Sponsored Post] </a></li><li class="mh-tab-post-item post-33126 post type-post status-publish format-standard has-post-thumbnail category-virtualisierung category-windows tag-anwendungen tag-hyper-v tag-installation tag-windows"> <a href="https://it-learner.de/virtualisieren-unter-windows-10-mit-der-hyper-v-schnellerstellung-in-wenigen-schritten-zum-virtuellen-computer-unter-windows-10/"> Virtualisieren unter Windows 10 mit der Hyper-V Schnellerstellung – In wenigen Schritten zum virtuellen Computer unter Windows 10 </a></li><li class="mh-tab-post-item post-33402 post type-post status-publish format-standard has-post-thumbnail category-allgemeines tag-internet"> <a href="https://it-learner.de/digitalisierung-in-der-praxis-5-branchen-im-fokus/"> Digitalisierung in der Praxis – 5 Branchen im Fokus </a></li></ul></div><div id="tab-mh_magazine_tabbed-7-2" class="mh-tab-content mh-tab-cloud"><div class="tagcloud mh-tab-content-cloud"> <a href="https://it-learner.de/tag/active-directory/" class="tag-cloud-link tag-link-38 tag-link-position-1" style="font-size: 12px;">Active Directory</a> <a href="https://it-learner.de/tag/anwendungen/" class="tag-cloud-link tag-link-88 tag-link-position-2" style="font-size: 12px;">Anwendungen</a> <a href="https://it-learner.de/tag/artikelserie/" class="tag-cloud-link tag-link-30 tag-link-position-3" style="font-size: 12px;">Artikelserie</a> <a href="https://it-learner.de/tag/backup/" class="tag-cloud-link tag-link-34 tag-link-position-4" style="font-size: 12px;">Backup</a> <a href="https://it-learner.de/tag/bash/" class="tag-cloud-link tag-link-31 tag-link-position-5" style="font-size: 12px;">Bash</a> <a href="https://it-learner.de/tag/benutzer/" class="tag-cloud-link tag-link-23 tag-link-position-6" style="font-size: 12px;">Benutzer</a> <a href="https://it-learner.de/tag/cmd/" class="tag-cloud-link tag-link-26 tag-link-position-7" style="font-size: 12px;">Cmd</a> <a href="https://it-learner.de/tag/cmdlets/" class="tag-cloud-link tag-link-2 tag-link-position-8" style="font-size: 12px;">Cmdlets</a> <a href="https://it-learner.de/tag/datentraeger/" class="tag-cloud-link tag-link-19 tag-link-position-9" style="font-size: 12px;">Datenträger</a> <a href="https://it-learner.de/tag/domaenencontroller/" class="tag-cloud-link tag-link-39 tag-link-position-10" style="font-size: 12px;">Domänencontroller</a> <a href="https://it-learner.de/tag/installation/" class="tag-cloud-link tag-link-17 tag-link-position-11" style="font-size: 12px;">Installation</a> <a href="https://it-learner.de/tag/internet/" class="tag-cloud-link tag-link-36 tag-link-position-12" style="font-size: 12px;">Internet</a> <a href="https://it-learner.de/tag/ip-adressen/" class="tag-cloud-link tag-link-27 tag-link-position-13" style="font-size: 12px;">IP Adressen</a> <a href="https://it-learner.de/tag/linux/" class="tag-cloud-link tag-link-32 tag-link-position-14" style="font-size: 12px;">Linux</a> <a href="https://it-learner.de/tag/netzwerk/" class="tag-cloud-link tag-link-14 tag-link-position-15" style="font-size: 12px;">Netzwerk</a> <a href="https://it-learner.de/tag/powershell/" class="tag-cloud-link tag-link-4 tag-link-position-16" style="font-size: 12px;">PowerShell</a> <a href="https://it-learner.de/tag/programme/" class="tag-cloud-link tag-link-89 tag-link-position-17" style="font-size: 12px;">Programme</a> <a href="https://it-learner.de/tag/schulungsmaterial/" class="tag-cloud-link tag-link-54 tag-link-position-18" style="font-size: 12px;">Schulungsmaterial</a> <a href="https://it-learner.de/tag/scripte/" class="tag-cloud-link tag-link-5 tag-link-position-19" style="font-size: 12px;">Scripte</a> <a href="https://it-learner.de/tag/server/" class="tag-cloud-link tag-link-6 tag-link-position-20" style="font-size: 12px;">Server</a> <a href="https://it-learner.de/tag/sicherheit/" class="tag-cloud-link tag-link-16 tag-link-position-21" style="font-size: 12px;">Sicherheit</a> <a href="https://it-learner.de/tag/software/" class="tag-cloud-link tag-link-84 tag-link-position-22" style="font-size: 12px;">Software</a> <a href="https://it-learner.de/tag/speicherplatz/" class="tag-cloud-link tag-link-93 tag-link-position-23" style="font-size: 12px;">Speicherplatz</a> <a href="https://it-learner.de/tag/terminal/" class="tag-cloud-link tag-link-33 tag-link-position-24" style="font-size: 12px;">Terminal</a> <a href="https://it-learner.de/tag/windows/" class="tag-cloud-link tag-link-8 tag-link-position-25" style="font-size: 12px;">Windows</a></div></div><div id="tab-mh_magazine_tabbed-7-3" class="mh-tab-content mh-tab-comments"><ul class="mh-tab-content-comments"><li class="mh-tab-comment-item"> <span class="mh-tab-comment-avatar"> </span> <span class="mh-tab-comment-author"> Markus Elsberger: </span> <a href="https://it-learner.de/was-versteht-man-unter-routing-grundlagen-zum-thema-routing-in-netzwerken-teil-1/#comment-460"> <span class="mh-tab-comment-excerpt"> Welche Adresse meinst du genau? </span> </a></li><li class="mh-tab-comment-item"> <span class="mh-tab-comment-avatar"> </span> <span class="mh-tab-comment-author"> PK: </span> <a href="https://it-learner.de/was-versteht-man-unter-routing-grundlagen-zum-thema-routing-in-netzwerken-teil-1/#comment-459"> <span class="mh-tab-comment-excerpt"> Die Addressen im Text stimmen nicht mit den Adressen der abgebildeten Routingtabelle überein. Das verwirrt. </span> </a></li><li class="mh-tab-comment-item"> <span class="mh-tab-comment-avatar"> </span> <span class="mh-tab-comment-author"> Markus Elsberger: </span> <a href="https://it-learner.de/mit-dem-windows-explorer-dateien-mit-einer-bestimmten-groesse-suchen-mehr-suchkriterien-verwenden/#comment-458"> <span class="mh-tab-comment-excerpt"> Danke! </span> </a></li></ul></div></div></div></aside></div><div id='ncore_ajax_wait'><div id='ncore_ajax_wait_icon'><div id='ncore_ajax_wait_icon_inner'></div></div><div id='ncore_ajax_wait_curtain'></div></div><div id='ncore_ajax_dialog' class='ncore_hidden'></div><div style='display: none;'></div><footer class="mh-footer" itemscope="itemscope" itemtype="http://schema.org/WPFooter"><div class="mh-container mh-container-inner mh-footer-widgets mh-row clearfix"><div class="mh-col-1-4 mh-widget-col-1 mh-footer-4-cols  mh-footer-area mh-footer-1"><div id="custom_html-56" class="widget_text mh-footer-widget widget_custom_html"><h6 class="mh-widget-title mh-footer-widget-title"><span class="mh-widget-title-inner mh-footer-widget-title-inner">Über IT-Learner</span></h6><div class="textwidget custom-html-widget"><p >Das Blog rund um den Einstieg in die <a href="https://it-learner.de/category/windows/"><strong>Windows</strong></a> und <a href="https://it-learner.de/category/linux/"><strong>Linux</strong></a> Server sowie Client Administration.</p></div></div><div id="categories-4" class="mh-footer-widget widget_categories"><h6 class="mh-widget-title mh-footer-widget-title"><span class="mh-widget-title-inner mh-footer-widget-title-inner">Kategorien</span></h6><form action="https://it-learner.de" method="get"><label class="screen-reader-text" for="cat">Kategorien</label><select  name='cat' id='cat' class='postform' ><option value='-1'>Kategorie auswählen</option><option class="level-0" value="75">Active Directory&nbsp;&nbsp;(24)</option><option class="level-0" value="9">Allgemeines&nbsp;&nbsp;(23)</option><option class="level-0" value="29">Batch Scripting&nbsp;&nbsp;(16)</option><option class="level-0" value="40">Bücher&nbsp;&nbsp;(14)</option><option class="level-0" value="119">Cyber Security&nbsp;&nbsp;(1)</option><option class="level-0" value="44">IT-Zertifizierungen&nbsp;&nbsp;(9)</option><option class="level-0" value="12">Linux&nbsp;&nbsp;(52)</option><option class="level-0" value="15">Netzwerk&nbsp;&nbsp;(73)</option><option class="level-0" value="3">Powershell&nbsp;&nbsp;(100)</option><option class="level-0" value="103">Scripte&nbsp;&nbsp;(16)</option><option class="level-0" value="7">Sicherheit&nbsp;&nbsp;(79)</option><option class="level-0" value="90">Software&nbsp;&nbsp;(34)</option><option class="level-0" value="96">Spiele&nbsp;&nbsp;(5)</option><option class="level-0" value="13">Virtualisierung&nbsp;&nbsp;(27)</option><option class="level-0" value="11">Windows&nbsp;&nbsp;(346)</option> </select></form> <script type="text/javascript">(function() {
+	var dropdown = document.getElementById( "cat" );
+	function onCatChange() {
+		if ( dropdown.options[ dropdown.selectedIndex ].value > 0 ) {
+			dropdown.parentNode.submit();
+		}
+	}
+	dropdown.onchange = onCatChange;
+})();</script> </div></div><div class="mh-col-1-4 mh-widget-col-1 mh-footer-4-cols  mh-footer-area mh-footer-2"><div id="custom_html-62" class="widget_text mh-footer-widget widget_custom_html"><h6 class="mh-widget-title mh-footer-widget-title"><span class="mh-widget-title-inner mh-footer-widget-title-inner">IT-Partnerseiten</span></h6><div class="textwidget custom-html-widget"><i class="fa fa-external-link fa-lg"><a href="https://www.tech-faq.net/" target="_blank" draggable="false" rel="noopener noreferrer"> Tech-faq.net</a> &nbsp;</i> <i class="fa fa-external-link fa-lg"><a href="https://sid-500.com/" target="_blank" draggable="false" rel="noopener noreferrer"> Sid-500.com </a> &nbsp;</i> <i class="fa fa-external-link fa-lg"><a href="https://www.windows-faq.de/" target="_blank" draggable="false" rel="noopener noreferrer"> Windows FAQ </a> &nbsp;</i> <i class="fa fa-external-link fa-lg"><a href="http://www.andresilaghi.com/" target="_blank" draggable="false" rel="noopener noreferrer"> André Fritsche </a> &nbsp;</i> <i class="fa fa-external-link fa-lg"><a href="https://janotta-partner.de/" target="_blank" draggable="false" rel="noopener noreferrer"> Janotta &amp; Partner </a> &nbsp;</i> <i class="fa fa-external-link fa-lg"><a href="https://www.sult.eu/" target="_blank" draggable="false" rel="noopener noreferrer"> Sult.eu </a> &nbsp;</i> <i class="fa fa-external-link fa-lg"><a href="https://www.itnator.net/" target="_blank" draggable="false" rel="noopener noreferrer"> Itnator.net </a> &nbsp;</i> <i class="fa fa-external-link fa-lg"><a href="https://www.tech-tipps.de/" target="_blank" draggable="false" rel="noopener noreferrer"> Tech-tipps.de </a> &nbsp;</i>&nbsp; <i class="fa fa-external-link fa-lg"><a href="http://blog.adminweb.at" target="_blank" draggable="false" rel="noopener noreferrer"> adminweb.at </a> &nbsp;</i></div></div></div><div class="mh-col-1-4 mh-widget-col-1 mh-footer-4-cols  mh-footer-area mh-footer-3"><div id="custom_html-58" class="widget_text mh-footer-widget widget_custom_html"><h6 class="mh-widget-title mh-footer-widget-title"><span class="mh-widget-title-inner mh-footer-widget-title-inner">Hinweise</span></h6><div class="textwidget custom-html-widget">* = Affiliate Links, dabei handelt es sich um sogenannte Partnerlinks. Wenn Ihr über diesen Link Produkte erwerbt, so erhält IT-Learner dafür eine Provision. Zusätzliche Kosten entstehen für den Käufer dabei nicht, Ihr könnt aber damit das Blog aktiv unterstützen.<p></p> Alle genannten Produkte von Microsoft Windows sind eingetragene Warenzeichen von Microsoft.
+IT-Learner.de ist ein privater Blog. <a href="https://it-learner.de/10-schritte-nach-der-windows-10-installation-der-online-kurs-verkaufsseite/">L</a></div></div></div><div class="mh-col-1-4 mh-widget-col-1 mh-footer-4-cols  mh-footer-area mh-footer-4"><div id="custom_html-57" class="widget_text mh-footer-widget widget_custom_html"><h6 class="mh-widget-title mh-footer-widget-title"><span class="mh-widget-title-inner mh-footer-widget-title-inner">Du hast eine idee für uns!</span></h6><div class="textwidget custom-html-widget"><p style="text-align:justify;">Dann schreibe uns die Idee oder gerne einen ganzen Beitrag, welchen wir als Gastbeitrag veröffentlichen.</p><a href="https://it-learner.de/kontakt-2/"><strong><i class="fa fa-envelope fa-lg" aria-hidden="true"></i>&nbsp; Jetzt Kontakt aufnehmen</strong></a></div></div><div id="mh_magazine_social-15" class="mh-footer-widget mh_magazine_social"><h6 class="mh-widget-title mh-footer-widget-title"><span class="mh-widget-title-inner mh-footer-widget-title-inner">IT-Learner folgen</span></h6><nav class="mh-social-icons mh-social-widget clearfix"><div class="menu-social-icon-meneu-container"><ul id="menu-social-icon-meneu-1" class="menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-28126"><a href="https://de.linkedin.com/in/markus-elsberger-65451314b"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Linkedin</span></a></li><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-30672"><a href="https://www.facebook.com/itlearner.de"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Facebook</span></a></li><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4153"><a href="https://twitter.com/MElsberger"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Twitter</span></a></li><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-28743"><a href="https://it-learner.de/feed/"><i class="fa fa-mh-social"></i><span class="screen-reader-text">Feed</span></a></li></ul></div></nav></div></div></div></footer><div class="mh-footer-nav-mobile"></div><nav class="mh-navigation mh-footer-nav" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement"><div class="mh-container mh-container-inner clearfix"><div class="menu-navi-fussleiste-container"><ul id="menu-navi-fussleiste" class="menu"><li id="menu-item-4160" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4160"><a href="https://it-learner.de/impressum/">Impressum</a></li><li id="menu-item-4161" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy menu-item-4161"><a href="https://it-learner.de/datenschutz/">Datenschutzerklärung</a></li></ul></div></div></nav><div class="mh-copyright-wrap"><div class="mh-container mh-container-inner clearfix"><p class="mh-copyright"> © 2012 - 2020 IT-Learner.de -  Alle Rechte Vorbehalten | Angetrieben von <strong><a href="https://de.wordpress.org/" target="_blank">Wordpress </a></strong> | Theme von <strong><a href="http://www.mhthemes.com/de/" target="_blank">MH Theme</a></strong> | Gehostet bei <strong><a href="https://service.serverprofis.net/aff.php?aff=414" target="_blank">Serverprofis*</a></strong></p></div></div> <a href="#" class="mh-back-to-top"><i class="fa fa-chevron-up"></i></a></div> <script type="text/template" id="comments-conversion"><# if ( html_switch === 'tcm_live_update' ) { #>
+	<div class="tcm-thank-you-submited tcm-border-color-ac">
+		<#= custom_message #>
+	</div>
+<# } #>
+<# if ( html_switch === 'tcm_related_posts' ) { #>
+	<div class="tcm-posts tcm-border-color-ac">
+	        <#= custom_message #>
+	        <div class="tcm-posts-list <# if ( ! show_featured_image ) { #> no-featured-image <# } #> clear-this posts-length-<#= ThriveComments.related_posts.length #>">
+		        <# ThriveComments.related_posts.forEach( function ( value ) { #>
+			        <div class="tcm-post tcm-color-ac <# if ( ! show_featured_image ) { #> tcm-border-bottom-color-ac <# } #>">
+				        <# if ( show_featured_image ) { #>
+				            <div>
+		                         <a href="<#= value.guid #>" style="background-image: url(<#= value.featured_image #>)" class="tcm-related-thumbnail <# if ( ! value.featured_image ) { #>tcm-no-featured-image<# } #>">
+	                            </a>
+				            </div>
+					    <# } #>
+				        <h3><a href="<#= value.guid #>">
+
+								<span>
+									<svg class="related-posts-arrow tcm-svg-fill-ac"><use xlink:href="#tcm-related-posts-arrow"></use></svg>								</span>
+
+
+								<#= value.post_title #>
+
+								</#></a></h3>
+			        </div>
+		        <# } ) #>
+	        </div>
+	</div>
+<# } #>
+<# if ( html_switch === 'tcm_social_share' ) { #>
+	<div class="tcm-share-post tcm-border-color-ac">
+		<#= custom_message #>
+		<div class="share-buttons">
+			<# if ( share_btns.fb_share ) { #><div class="fb-button" data-href="http://www.facebook.com/share.php"></div><# } #>
+			<# if ( share_btns.tw_share ) { #><div class="tw-button" data-href="https://twitter.com/intent/tweet"></div><# } #>
+			<# if ( share_btns.lk_share ) { #><div class="in-button" data-href="https://www.linkedin.com/cws/share"></div><# } #>
+			<# if ( share_btns.pt_share ) { #><div class="pt-button" data-href="http://pinterest.com/pin/create/button"></div><# } #>
+			<# if ( share_btns.gg_share ) { #><div class="gm-button" data-href="https://plus.google.com/share"></div><# } #>
+			<# if ( share_btns.xi_share ) { #><div class="xi-button" data-href="https://www.xing.com/spi/shares/new"></div><# } #>
+		</div>
+	</div>
+<# } #></script><script type="text/template" id="comments-create"><# if ( ! current_user_id && comment_registration ) { #>
+<div class="tcm-error-heading">
+	<p><#= ThriveComments.util.render_label('login_submit_comment') #></p>
+</div>
+<# } #>
+<div class="tcm-comment-wrapper">
+	<# if ( ! close_comments ) { #>
+	<div class="tcm-create-post-container comment-id-<#= id #>" data-position="<#= position #>" data-comment-id="<#= id #>">
+		<# if ( gravatarActive ) { #>
+		<div class="left">
+			<div class="tcm-client-avatar"
+			<# if(typeof (ThriveComments.social_user) !== 'undefined'){#>style="background-image: url('<#= ThriveComments.social_user.picture #>')"<#}else{#>style="background-image: url('<#= photo_src #>')"<#}#>></div>
+	</div>
+	<# } #>
+	<div class="right">
+		<div class="tcm-post-input-container">
+			<div class="tcm-error-message"></div>
+			<textarea tabindex="1" <# if ( mainInput ) { #> class='mainInput' <# } #> id='tcm-post-content' name="tcm-post-content" placeholder="<#= ThriveComments.util.render_label('enter_comment') #>"><#= comment_content #></textarea>
+		</div>
+		<div class="tcm-comment-additional-fields">
+			<div class="inner clear-this">
+				<# if ( ThriveComments.current_user.ID || typeof (ThriveComments.social_user) !== 'undefined') { #>
+				<div class="tcm-comment-as">
+					<div class="tcm-comment-as-label">
+						<p><#= ThriveComments.util.render_label('commenting_as',ThriveComments.current_user.display_name || ( ThriveComments.social_user && ThriveComments.social_user.name ) ) #></p>
+					</div>
+					<div class="tcm-logout-label">
+						<a <# if(ThriveComments.current_user.ID){#>href="https://it-learner.de/wp-login.php?action=logout&amp;_wpnonce=5bae2ec4e7"<#}#>><#= ThriveComments.util.render_label('logout_change') #></a>
+					</div>
+				</div>
+
+				<div class="tcm-btn-div">
+					<button tabindex="1" class="tcm-save-btn tcm-save-btn-right tcm-truncate tcm-transparent tcm-border-color-ac-h " id="tcm-submit-comment" data-parent="<#= id #>" data-level="<#= level #>" type="submit">
+						<#= ThriveComments.util.render_label('submit_comment') #>
+					</button>
+				</div>
+
+				<# if ( ! ThriveComments.close_comments && ThriveComments.email_services.length !== 0  ) { #>
+					<label class="tcm_receive_notif_container">
+						<#= ThriveComments.util.render_label('tcm_receive_notifications') #>
+						<# if ( ThriveComments.settings.tcm_moderators_notifications && ThriveComments.current_user.is_moderator ) { #>
+							<input id="tcm_receive_notifications" class="form-input" type="checkbox" name="tcm_receive_notifications" checked/>
+						<# } else { #>
+							<input id="tcm_receive_notifications" class="form-input" type="checkbox" name="tcm_receive_notifications" />
+						<# } #>
+						<span class="checkmark"></span>
+					</label>
+				<# } #>
+
+				<# if ( ThriveComments.settings.remember_me === '1' ) { #>
+				<label class="tcm_remember_me">
+					<#= ThriveComments.util.render_label('remember_me') #>
+					<input id="tcm_remember_me" class="form-input" type="checkbox" name="tcm_remember_me"/>
+					<span class="checkmark"></span>
+				</label>
+				<# } #>
+
+				<# } else if( ThriveComments.settings.comment_registration && !ThriveComments.current_user.ID) { #>
+
+				<# if ( ! current_user_id ) { #>
+					<# if ( ! ThriveComments.close_comments && ThriveComments.email_services.length !== 0 ) { #>
+						<label class="tcm_receive_notif_container">
+							<#= ThriveComments.util.render_label('tcm_receive_notifications') #>
+							<input id="tcm_receive_notifications" class="form-input" type="checkbox" name="tcm_receive_notifications"/>
+							<span class="checkmark"></span>
+						</label>
+					<# } #>
+				<button class="tcm-show-login tcm-save-btn-center" id="tcm-login-up" data-parent="<#= id #>" data-level="<#= level #>" type="submit">
+					<#= ThriveComments.util.render_label('login_on_website') #>
+				</button>
+				<# } #>
+				<# } else {#>
+				<div class="tcm-guest">
+					<# if ( !ThriveComments.settings.comment_registration && !ThriveComments.current_user.ID ) {#>
+						<p><#= ThriveComments.util.render_label('guest_comment') #></p>
+						<div class="tcm-error-message"></div>
+						<input tabindex="1" id="tcm-guest-name" class="form-input" type="text" name="name" placeholder="<#= ThriveComments.util.render_label('name') #>"/>
+						<div class="tcm-error-message"></div>
+						<input tabindex="1" id="tcm-guest-email" class="form-input" type="text" name="email" placeholder="<#= ThriveComments.util.render_label('email') #>"/>
+						<# if(ThriveComments.settings.tcm_show_url == 1){#>
+							<div class="tcm-error-message"></div>
+							<input tabindex="1" id="tcm-author-url" class="form-input" type="text" name="url" placeholder="<#= ThriveComments.util.render_label('website') #>"/>
+						<# } #>
+					<# } #>
+
+
+					<# if ( ! ThriveComments.close_comments && ThriveComments.email_services.length !== 0 ) { #>
+						<label class="tcm_receive_notif_container">
+							<#= ThriveComments.util.render_label('tcm_receive_notifications') #>
+							<input id="tcm_receive_notifications" class="form-input" type="checkbox" name="tcm_receive_notifications"/>
+							<span class="checkmark"></span>
+						</label>
+					<# } #>
+
+					<# if ( ThriveComments.settings.remember_me === '1' ) { #>
+						<label class="tcm_remember_me">
+							<#= ThriveComments.util.render_label('remember_me') #>
+							<input id="tcm_remember_me" class="form-input" type="checkbox" name="tcm_remember_me"/>
+							<span class="checkmark"></span>
+						</label>
+					<# } #>
+
+					<# if ( ThriveComments.settings.storing_consent === '1' && !ThriveComments.current_user.ID ) { #>
+						<label class="tcm_remember_me tcm_last_label">
+							<span class="tcm-consent-text"><#= ThriveComments.util.render_label('storing_consent') #></span>
+							<div class="tcm-error-message"></div>
+							<input id="tcm_storing_consent" class="form-input" type="checkbox" name="tcm_storing_consent"/>
+							<span class="checkmark"></span>
+						</label>
+					<# } #>
+
+					<button tabindex="1" class="tcm-save-btn tcm-truncate tcm-transparent tcm-border-color-ac-h" id="tcm-submit-comment" data-parent="<#= id #>" data-level="<#= level #>" type="submit">
+						<#= ThriveComments.util.render_label('submit_comment') #>
+					</button>
+				</div>
+
+				<# if ( ( ! current_user_id && ThriveComments.settings.login_activation ) || ( ThriveComments.settings.tcm_enable_social_signin === '1' &&
+						( ( ThriveComments.settings.tcm_api_status.google === 1 && ThriveComments.settings.tcm_api_status.google_api === 1 ) ||
+						( ThriveComments.settings.tcm_api_status.facebook === 1 && ThriveComments.settings.tcm_api_status.facebook_api === 1 ) ) ) ) { #>
+				<div class="tcm-separator">
+					<span>or</span>
+				</div>
+				<# } #>
+				<div class="tcm-user-details">
+					<# if ( ! current_user_id && ThriveComments.settings.tcm_enable_social_signin === '1' && ( ThriveComments.social_user === undefined &&
+							( ThriveComments.settings.tcm_api_status.google === 1 && ThriveComments.settings.tcm_api_status.google_api === 1 ) ||
+							( ThriveComments.settings.tcm_api_status.facebook === 1 && ThriveComments.settings.tcm_api_status.facebook_api === 1 ) ) ) { #>
+					<div class="tcm-social-accounts">
+						<p>
+							<#= ThriveComments.util.render_label('social_account') #>
+						</p>
+						<# if(ThriveComments.settings.tcm_api_status.facebook === 1 && ThriveComments.settings.tcm_api_status.facebook_api === 1){#>
+						<a href="javascript:void(0)" id="tcm-fb-logo" class="tcm-social-share-logo">
+						                                            <span class="tcm-share-info">
+							                                            <#= ThriveComments.util.render_label('signin_facebook') #>
+						                                            </span>
+						</a>
+						<# } #>
+						<# if(ThriveComments.settings.tcm_api_status.google === 1 && ThriveComments.settings.tcm_api_status.google_api === 1){#>
+						<a href="javascript:void(0)" id="tcm-gp-logo" class="tcm-social-share-logo">
+						                                            <span class="tcm-share-info">
+							                                            <#= ThriveComments.util.render_label('signin_google') #>
+						                                            </span>
+						</a>
+						<# } #>
+					</div>
+					<# } #>
+					<# if ( ! current_user_id && ThriveComments.settings.login_activation ) { #>
+
+					<button class="tcm-show-login tcm-truncate" id="tcm-login-down" data-parent="<#= id #>" data-level="<#= level #>" type="submit"
+					<# if(ThriveComments.settings.tcm_enable_social_signin == 1){#>style="margin-top: 20px;"<#}#>>
+					<#= ThriveComments.util.render_label('login_on_website') #>
+					</button>
+					<# } #>
+				</div>
+				<# }#>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<# } #>
+</div></script><script type="text/template" id="comments-deleted"><div class="tcm-deleted-comment clear-this">
+	<div class="deleted-header">
+		<div class="moderation-img no-image" data-social-avatar="<#= comment.get('social_avatar') #>" data-email="<#= comment.get('comment_author_email') #>" data-src="<#= comment.get('photo_src') #>" style="background-image: url(<#= comment.get('author_avatar_urls') #>);"></div>
+		<div class="deleted-header-text">
+			<strong>
+				<#= comment.get('author_name') #>
+			</strong>
+			<span>
+				<#= comment.get('formatted_date') #>
+			</span>
+		</div>
+	</div>
+	<div class="deleted-text">
+		<p class="deleted-info-text tcm-color-ac">
+			<# if ( comment.get('status') === 'spam' ) { #>
+			<span>This comment was marked as spam</span>
+			<# } else { #>
+			<span>This comment was marked as trash</span>
+			<# } #>
+			<a href="#" data-key="z" class="undo-action">Undo</a>
+		</p>
+
+		<p>
+			<#= comment.get('comment_content') #>
+		</p>
+	</div>
+</div></script><script type="text/template" id="comments-item"><div class="deleted-state"></div>
+<div class="tcm-comment-content <# if ( parseInt( comment.get('tcm_featured') ) === 1 ) { #> tcm-featured <# } #><# if ( comment.get('comment_approved') == 0 )  { #> tcm-comment-awaiting-moderation <# } #> level-<#= comment.get('level') #>"
+	 data-comment-id="<#= comment.get('comment_ID') #>">
+	<div id="tcm-moderate-front" class="tcm-moderate-front"></div>
+
+	<#  if ( comment.isPostAuthor() ) { #>
+	<svg class="author-icon-svg"><use xlink:href="#tcm-author-icon"></use></svg>	<# } #>
+	<div class="tcm-comment-header">
+		<# if ( gravatarActive ) { #>
+		<div class="tcm-comment-author-img no-image" title="Comment Author Image" data-social-avatar="<#= comment.get('social_avatar') #>" data-email-hash="<#= comment.get('email_hash') #>" data-comment-id="<#= comment.get('comment_ID') #>" data-src="<#= comment.get('photo_src') #>"
+			 style="background-image: url(<#= comment.get('photo_src') #>)"></div>
+		<# } #>
+		<div class="tcm-author-content">
+			<div class="tcm-user-info">
+				<div class="tcm-comment-author-name">
+					<strong>
+						<#= comment.get('display_name') #>
+					</strong>
+					<# if ( comment.get('show_badge') ) { #>
+					<# var badges_object = comment.get('user_achieved_badges');#>
+					<# if(badges_object != undefined && badges_object.length === undefined && ThriveComments.settings.tcm_badges_option == '1'){#>
+					<div class="tcm-author-badges">
+						<# _.each(badges_object,function(badge,key){
+								if(badge.image_url.indexOf('all_badges.svg') !== -1){#>
+														<span class="tcm-badge svg-badge">
+															<span class="text"><#= badge.name #></span>
+															<svg><use xlink:href="<#= badge.image_url #>"/></svg>
+														</span>
+														<#}else{#>
+														<span class="tcm-badge" style="background-image: url('<#= badge.image_url #>')">
+															<span class="text"><#= badge.name #></span>
+														</span>
+														<#}#>
+														<# });#>
+					</div>
+					<# } #>
+					<# } #>
+				</div>
+
+				<# if ( ThriveComments.settings['comment_date'] != 0) { #>
+				<div class="tcm-date-container">
+											<span>
+												<#= comment.get('formatted_date') #>
+											</span>
+				</div>
+				<# } #>
+			</div>
+		</div>
+	</div>
+
+	<div class="tcm-comment-text">
+		<p class="tcm-moderation tcm-color-ac">This comment is awaiting moderation</p>
+		<div class="tcm-comment-text-content">
+			<#= comment.get('comment_content') #>
+		</div>
+	</div>
+
+	<div class="clearfix" style="position: relative;">
+		<div class="tcm-left">
+			<#  var can_vote = true;
+					if(ThriveComments.current_user.display_name == undefined && ThriveComments.settings.tcm_voting_only_register == 1){
+					can_vote = false;
+					}
+					if(ThriveComments.settings.tcm_vote_type != 'no_vote' && (comment.get('comment_approved') == 1) && can_vote){#>
+			<div class="tcm-voting-container">
+                <span>
+                    <#= ThriveComments.util.render_label('vote') #>
+                </span>
+				<button class="tcm-voting-input tcm-upvote <# if(last_vote == 'upvote'){#> active <# } #>" data-type="upvote">
+					<div class="tcm-thumb_up">
+						<svg class=""><use xlink:href="#tcm-icon-thumb_up"></use></svg>					</div>
+					<span class="tcm-votes-count"><#= comment.get('upvote') #></span>
+				</button>
+				<# if(ThriveComments.settings.tcm_vote_type != 'up_only'){#>
+				<button class="tcm-voting-input tcm-downvote <# if(last_vote == 'downvote'){#> active <# } #>" data-type="downvote">
+					<div class="tcm-thumb_down">
+						<svg class=""><use xlink:href="#tcm-icon-thumb_down"></use></svg>					</div>
+					<span class="tcm-votes-count"><#= comment.get('downvote') #> </span>
+				</button>
+				<# } #>
+			</div>
+			<# } #>
+			<# if ( share_individual_comments && (comment.get('comment_approved') == 1 ) ) { #>
+			<div class="tcm-dropdown tcm-share-dropdown">
+                    <span class="tcm-toggle-button">
+                        <#= ThriveComments.util.render_label('share') #>
+
+						<svg class="bulk-action-arrow-svg"><use xlink:href="#tcm-bulk-action-arrow"></use></svg>
+                    </span>
+				<div class="tcm-dropdown-content">
+					<div class="tcm-dropdown-element">
+						<a href="http://www.facebook.com/share.php" class="tcm-fb-icon tcm-share-facebook"
+						   data-url="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#comments/<#= comment.get('comment_ID') #>">
+							Facebook						</a>
+					</div>
+					<div class="tcm-dropdown-element">
+						<a href="https://twitter.com/intent/tweet" class="tcm-tw-icon tcm-share-twitter"
+						   data-url="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#comments/<#= comment.get('comment_ID') #>">
+							Twitter						</a>
+					</div>
+					<div class="tcm-dropdown-element tcm-copy-input-content">
+						<a id="tcm-click-to-copy"
+						   class="tcm-left  tcm-copy-url tcm-cu-icon"
+						   href="javascript:void(0)" data-clipboard-text="https://it-learner.de/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen/#comments/<#= comment.get('comment_ID') #>">
+							<#= ThriveComments.util.render_label('copy_url') #>
+						</a>
+					</div>
+				</div>
+			</div>
+			<# } #>
+		</div>
+		<# if ( ! close_comments ) { #>
+			<# if ( comment.get('comment_approved') == 1 || ( ThriveComments.current_user.is_moderator && comment.get('comment_approved') !== 1 ) ) { #>
+			<div class="tcm-reply-container">
+				<button class='tcm-reply-btn tcm-right tcm-truncate tcm-border-color-ac' data-id="<#= comment.get('comment_ID') #>"
+						data-level="<#= comment.get('level') #>" type="submit"><span class="reply-icon-container">
+						<svg class="tcm-svg-fill-ac"><use xlink:href="#tcm-reply"></use></svg>					</span>
+					<#= ThriveComments.util.render_label('reply_to_user', comment.get('comment_author')) #>
+				</button>
+				<div class="clear"></div>
+				<div class="tcm-create-comment-fields"></div>
+			</div>
+			<# } #>
+		<# } #>
+	</div>
+
+	<div class="clear"></div>
+
+</div></script><script type="text/template" id="comments-lazy-loading"><button class="tcm-loader">
+	<div style="display: inline-block" class="tcm-dot-loader done">
+		<span class="inner1"></span>
+		<span class="inner2"></span>
+		<span class="inner3"></span>
+	</div>
+	<p>
+		<#= ThriveComments.util.render_label('load_comments') #>
+	</p>
+</button>
+<# if ( comments_rendered > 2 && ! ThriveComments.close_comments ) { #>
+<div class="add-comment tcm-background-color-ac">
+	<p>
+			<span class="add-comment-icon">
+				<svg class="add-comment-svg"><use xlink:href="#tcm-add-comment"></use></svg>			</span>
+		<#= ThriveComments.util.render_label('add_comment') #></#></p>
+</div>
+<# } #>
+<# if ( showPoweredBy ) { #>
+<div class="tcm-powered-by">
+    	<a href="https://thrivethemes.com/comments/" title="Powered by Thrive Comments" target="_blank">
+			<span class="tcm-footer-logo">
+				<svg class="logo-footer-svg"><use xlink:href="#tcm-logo-footer"></use></svg>			</span>
+
+		<span>
+			Powered by 		</span>
+		<span>
+			Thrive Comments		</span>
+	</a>
+</div>
+<# } #>
+
+<# if ( ! ThriveComments.close_comments && ThriveComments.email_services.length !== 0 ) { #>
+	<div class="tcm-align-right">
+
+		<a href="javascript:void(0)" class="tcm-link-unsubscribe" title="<#= ThriveComments.util.render_label('unsubscribe') #>"
+		<# if ( - 1 === ThriveComments.util.get_cookie( 'subscribed_posts' ).indexOf( ThriveComments.post.ID ) || ( typeof ThriveComments.current_user.ID === 'undefined' ) ) { #> hidden <# } #> >
+		<#= ThriveComments.util.render_label('unsubscribe') #></a>
+
+		<a href="javascript:void(0)" class="tcm-link-subscribe" title="<#= ThriveComments.util.render_label('subscribe') #>"
+		<# if ( - 1 !== ThriveComments.util.get_cookie( 'subscribed_posts' ).indexOf( ThriveComments.post.ID ) ) { #> hidden <# } #> >
+		<#= ThriveComments.util.render_label('subscribe') #></a>
+
+		<div id="tcm-subscribe-form" class="tcm-subscribe-form" hidden>
+			<div class="tcm-error-message"></div>
+			<input class="form-input tcm-subscriber-email" type="text" name="Email" placeholder="<#= ThriveComments.util.render_label('email') #>"/>
+			<button class="submit-subscribe-post"><#= ThriveComments.util.render_label('subscribe') #></a></button>
+		</div>
+
+		<# if ( typeof ThriveComments.current_user.ID === 'undefined' ) { #>
+			<div id="tcm-unsubscribe-form" class="tcm-subscribe-form"
+			<# if ( - 1 === ThriveComments.util.get_cookie( 'subscribed_posts' ).indexOf( ThriveComments.post.ID )  ) { #> hidden <# } #> >
+				<div class="tcm-error-message"></div>
+				<input class="form-input tcm-unsubscriber-email" type="text" name="Email" placeholder="<#= ThriveComments.util.render_label('email') #>"/>
+				<button class="submit-unsubscribe-post"><#= ThriveComments.util.render_label('unsubscribe') #></a></button>
+			</div>
+		<# } #>
+        <p class="tcm-already-subscribed" hidden> Already subscribed! </p>
+
+    </div>
+<# } #>
+<div class="clear"></div></script><script type="text/template" id="comments-list"><div id="tcm-comments-filter" class="tcm-comments-filter">
+	<div class="tcm-lazy-loader"></div>
+</div></script><script type="text/template" id="comments-moderation"><div class="tcm-moderate-dots tcm-background-color-ac-h">
+	<span class="moderate-dot"></span>
+	<span class="moderate-dot"></span>
+	<span class="moderate-dot"></span>
+</div>
+
+<div class="tcm-dropdown-moderate">
+	<# _.each( actions, function( action, key ){ #>
+	<div class="tcm-dropdown-moderate-element" data-fn="<#= action.fn #>" data-value="<#= action.value #>"><#= action.text #></div>
+	<# }) #>
+</div></script><script type="text/template" id="comments-sort"><div class="tcm-comments-filters">
+	<div class="left">
+		<div class="tcm-comments-number">
+			<#= ThriveComments.util.render_label( 'number_of_comments', 'comment_count' ) #>
+		</div>
+	</div>
+	<div class="right">
+		<label for="sort-by">
+			<#= ThriveComments.util.render_label('show_comments_first','','before') #>
+		</label>
+		<div name="sort-by" id="tcm-sort-by" class="tcm-dropdown tcm-filter-dropdown tcm-really-random">
+            <span class="tcm-toggle-button current-sorting">
+                <# if ( ThriveComments.settings.comment_order === 'desc') { #>
+					<#= ThriveComments.util.render_label( 'newest') #>
+					<# } else if( ThriveComments.settings.comment_order === 'asc') { #>
+					<#= ThriveComments.util.render_label( 'oldest') #>
+					<# } else {#>
+				<# if( ThriveComments.settings.tcm_vote_type != 'no_vote' ) {#>
+					<#= ThriveComments.util.render_label( 'top_rated') #>
+					<# } #>
+				<# } #>
+			</span>
+
+			<span class="dropdown-arrow-comments">
+						<svg class="sort-by-dropdown-svg"><use xlink:href="#tcm-sort-by-dropdown"></use></svg>			</span>
+
+			<div class="tcm-dropdown-content">
+
+				<div data-value="desc" class="tcm-dropdown-element tcm-sort-by">
+					<#= ThriveComments.util.render_label( 'newest') #>
+				</div>
+				<div data-value="asc" class="tcm-dropdown-element tcm-sort-by">
+					<#= ThriveComments.util.render_label( 'oldest') #>
+				</div>
+				<# if(ThriveComments.settings.tcm_vote_type != 'no_vote'){#>
+				<div data-value="top-rated" class="tcm-dropdown-element tcm-sort-by">
+					<#= ThriveComments.util.render_label( 'top_rated') #>
+				</div>
+
+				<# } #>
+
+			</div>
+		</div>
+		<label for="sort-by">
+			<#= ThriveComments.util.render_label('show_comments_first','','after') #>
+		</label>
+	</div>
+</div>
+<div class="clear"></div>
+<# if ( ThriveComments.close_comments ) { #>
+<div class="tcm-closed-comments" style="text-align: center">
+	<p>
+		<#= ThriveComments.util.render_label('close_comments') #>
+	</p>
+</div>
+<# } #></script> <div id="wp-auth-check-wrap" class="hidden"><div id="wp-auth-check-bg"></div><div id="wp-auth-check"> <button type="button" class="wp-auth-check-close button-link"><span class="screen-reader-text">Dialog schließen</span></button><div id="wp-auth-check-form" class="loading" data-src="https://it-learner.de/wp-login.php?interim-login=1&#038;wp_lang=de_DE"></div><div class="wp-auth-fallback"><p><b class="wp-auth-fallback-expired" tabindex="0">Sitzung abgelaufen</b></p><p><a href="https://it-learner.de/wp-login.php" target="_blank">Bitte melde dich erneut an.</a> Die Anmelde-Seite wird sich in einem neuen Tab öffnen. Nach dem Anmelden kannst du das Tab schließen und zu dieser Seite zurückkehren.</p></div></div></div><div style='display: none;'></div><div style="display: none;"> <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"xml:space="preserve"> <defs> <symbol id="tcm-reply" viewBox="0 0 100 100"> <g> <path d="M69.9,38.1L69.9,38.1c-1.5-3.7-4.7-6.4-7.4-9.2c-2.8-2.8-6.3-4.7-9.9-6.3c-3.7-1.6-7.7-2.4-11.7-2.4h-11
+ l4.7-4.8c3.4-3.4,3.4-9,0-12.4c-3.4-3.4-8.9-3.4-12.2,0L2.8,22.7c-3.4,3.4-3.4,9,0,12.4l19.4,19.7c1.7,1.7,3.9,2.6,6.1,2.6
+ c2.2,0,4.4-0.9,6.1-2.6c3.4-3.4,3.4-9,0-12.4l-4.6-4.6h10.9c3.4,0,6.6,1.4,9.1,3.8l4.8,4.8c1.2,2,3,3.4,5.1,4.1
+ c2.1,0.6,4.5,0.4,6.6-0.7C70.5,47.5,72,42.3,69.9,38.1z"/> <ellipse cx="81.1" cy="60.8" rx="8.5" ry="8.6"/> </g> </symbol> <symbol id="tcm-icon-thumb_down" viewBox="0 0 24 24"> <g> <path d="M18.984 3h4.031v12h-4.031v-12zM15 3c1.078 0 2.016 0.938 2.016 2.016v9.984c0 0.563-0.234 1.031-0.609
+ 1.406l-6.563 6.609-1.078-1.078c-0.281-0.281-0.422-0.609-0.422-1.031v-0.328l0.984-4.594h-6.328c-1.078 0-2.016-0.891-2.016-1.969l0.047-0.094h-0.047v-1.922c0-0.281
+ 0.047-0.516 0.141-0.75l3.047-7.031c0.281-0.703 0.984-1.219 1.828-1.219h9z" /> </g> </symbol> <symbol id="tcm-icon-thumb_up" viewBox="0 0 24 24"> <g> <path d="M23.016 9.984l-0.047 0.094h0.047v1.922c0 0.281-0.047 0.516-0.141 0.75l-3.047 7.031c-0.281 0.703-0.984
+ 1.219-1.828 1.219h-9c-1.078 0-2.016-0.938-2.016-2.016v-9.984c0-0.563 0.234-1.031 0.609-1.406l6.563-6.609 1.078
+ 1.078c0.281 0.281 0.422 0.609 0.422 1.031v0.328l-0.984 4.594h6.328c1.078 0 2.016 0.891 2.016 1.969zM0.984 21v-12h4.031v12h-4.031z" /> </g>> </symbol> <symbol id="tcm-add-comment" viewBox="0 0 267.3 245"> <path style="fill:#FFFFFF;" class="st0" d="M265.7,61C259.6,27.5,230.3,2,195.1,2H72.5C33,2,0.8,34.2,0.8,73.8v77c0,0.1,0,0.1,0,0.2v81.6
+ c0,0-1.8,11.1,9.7,11.1c0,0,4.2,1,13.1-4.6l46.8-43.2h124.6c39.5,0,71.7-32.2,71.7-71.7V83.8L265.7,61z M78.4,114
+ c-8.1,0-14.6-6.5-14.6-14.6c0-8.1,6.5-14.6,14.6-14.6S93,91.4,93,99.5C93,107.5,86.5,114,78.4,114z M137.5,114
+ c-8.1,0-14.6-6.5-14.6-14.6c0-8.1,6.5-14.6,14.6-14.6c8.1,0,14.6,6.5,14.6,14.6C152.1,107.5,145.5,114,137.5,114z M196.5,114
+ c-8.1,0-14.6-6.5-14.6-14.6c0-8.1,6.5-14.6,14.6-14.6c8.1,0,14.6,6.5,14.6,14.6C211.1,107.5,204.6,114,196.5,114z"/> </symbol> <symbol id="tcm-logo-footer" viewBox="0 0 130 100"> <path style="fill:#434343;" class="st0" d="M108.8,26.5C106.7,14.9,96.5,6.1,84.4,6.1H41.9C28.2,6.1,17,17.2,17,30.9v26.7c0,0,0,0,0,0.1v28.2
+ c0,0-0.6,3.8,3.4,3.8c0,0,1.5,0.4,4.6-1.6l16.2-14.9h12.1c0.1-0.2,0.3-0.4,0.4-0.6l2.2-3.1c0.4-0.6,1.9-2.3,3.1-3.6H37.6
+ c-1.1,0-2.1,0.6-2.8,1.4l0,0L24.1,78.6V58.2c0-0.2,0.1-0.4,0.1-0.6V30.9c0-9.7,7.9-17.6,17.6-17.6h42.5c9.7,0,17.6,7.9,17.6,17.6
+ v16.9c2.6-0.4,5.3-0.6,7.2-0.7V34.4L108.8,26.5z"/> <path style="fill:#57A245;" class="st1" d="M43.7,39.9c-3.3,0-6-2.7-6-6c0-3.3,2.7-6,6-6h38.9c3.3,0,6,2.7,6,6c0,3.3-2.7,6-6,6H43.7z"/> <path style="fill:#434343;" class="st0" d="M43.7,52.2h38.9c2.4,0,4.3-1.9,4.3-4.3s-1.9-4.3-4.3-4.3H43.7c-2.4,0-4.3,1.9-4.3,4.3S41.3,52.2,43.7,52.2"/> <path style="fill-rule:evenodd;clip-rule:evenodd;fill:#57A245;" class="st2" d="M118.2,52.4c-1.2,0-1.6,0.2-2.4,0.5c-0.9,0.3-1.9,1-2.6,1.7l-1.8,1.7c-0.2,0.2-0.2,0.2-0.3,0.4
+ c-3.4,4.2-4.1,4.9-6.8,10.2c-1.2,2.5-2.7,4.8-4.2,7.1c-1,1.6-2,3.2-3.2,4.6c-0.1,0.2-0.2,0.2-0.3,0.4c-0.7,0.9-1.7,1.7-2.5,2.5
+ c-0.6,0.5-1.3,1-1.9,1.5c-0.6,0.4-1.1,0.8-1.7,1.1l-0.9,0.5c-0.2,0.1-0.3,0.2-0.5,0.3c-0.1,0-0.3,0.2-0.4,0.2
+ c-0.2,0.1-0.4,0.2-0.5,0.2c-3.7,1.8-8.5,3-12.7,3.4L72.7,89c-0.8,0.1-2.8,0.2-4.7,0.2c-1.6,0-3,0-3.5-0.2l0.3-0.7
+ c0.6-1.4,1.3-2.8,2.1-4.1c0.1-0.2,0.2-0.4,0.4-0.6l1.5-2.6l3.9-5.3l3.5-3.6l0.2-0.2c0.2-0.1,0.2-0.1,0.3-0.2l0.8-0.7
+ c0.1-0.1,0.2-0.1,0.3-0.2c0.2-0.2,0.3-0.3,0.5-0.4l3.7-2.5c1.3-0.8,2.6-1.6,3.8-2.3l4-2.1c1.5-0.8,4-2.1,5.5-2.7l4.1-1.9
+ c-0.6,0.1-1.4,0.4-1.9,0.6c-0.6,0.2-1.3,0.4-1.9,0.6l-3.8,1.3c-1.8,0.6-3.6,1.4-5.5,2.1l-3.5,1.5c-1.3,0.5-3.3,1.6-4.7,2.3
+ c-1.5,0.8-2.9,1.8-4.3,2.6l-4.8,3.4c-0.1,0.1-0.2,0.2-0.4,0.3l-2.7,2.3c-0.8,0.8-1.8,1.7-2.5,2.5c-0.2,0.2-0.2,0.2-0.3,0.4
+ c-0.7,0.7-1.3,1.6-1.9,2.4c-0.9,1.2-1.8,2.5-2.5,3.8l-1.3,2.5c-0.5,1-2.7,6-2.8,7.4h-0.2c0-0.2-0.5-2.5-0.7-4.4v-1.6
+ c0-0.1,0-0.1,0-0.2c0.2-1.1,0.1-1.8,0.3-3.1c0.6-3.6,2.2-7.4,4.2-10.4l2.1-3c0.6-0.8,2.8-3.4,3.5-3.8c0.6-0.5,1.2-1.3,1.9-1.8
+ c0.3-0.2,0.6-0.5,0.9-0.8c0.4-0.2,0.6-0.5,1-0.8l2-1.5c2-1.5,4.2-2.8,6.4-3.8c2.4-1.2,4.7-2.1,7.2-3.1c3.2-1.3,7.6-2.2,10.9-2.9
+ c3.5-0.7,12.3-2.3,16.6-2.3h0.9C114,51.2,117.4,51.2,118.2,52.4z"/> <path style="fill:none;" class="st3" d="M99.5,58.5c0.4,0,0.2,0,0.2-0.1C99.4,58.4,99.6,58.4,99.5,58.5z M99.5,58.5c0.1-0.1-0.1-0.1,0.2-0.1
+ C99.7,58.5,99.9,58.5,99.5,58.5 M99.9,58.3l-0.1,0.1 M99.5,58.5c-0.6,0.1-1.4,0.4-1.9,0.6c-0.6,0.2-1.3,0.4-1.9,0.6l-3.8,1.3
+ c-1.8,0.6-3.6,1.4-5.5,2.1l-3.5,1.5c-1.3,0.5-3.3,1.6-4.7,2.3c-1.5,0.8-2.9,1.8-4.3,2.6l-4.8,3.4c-0.1,0.1-0.2,0.2-0.4,0.3l-2.7,2.3
+ c-0.8,0.8-1.8,1.7-2.5,2.5c-0.2,0.2-0.2,0.2-0.3,0.4c-0.7,0.7-1.3,1.6-1.9,2.4c-0.9,1.2-1.8,2.5-2.5,3.8l-1.3,2.5
+ c-0.5,1-2.7,6-2.8,7.4h-0.2c0-0.2-0.5-2.5-0.7-4.4v-1.6c0-0.1,0-0.1,0-0.2c0.2-1.1,0.1-1.8,0.3-3.1c0.6-3.6,2.2-7.4,4.2-10.4l2.1-3
+ c0.6-0.8,2.8-3.4,3.5-3.8c0.6-0.5,1.2-1.3,1.9-1.8c0.3-0.2,0.6-0.5,0.9-0.8c0.4-0.2,0.6-0.5,1-0.8l2-1.5c2-1.5,4.2-2.8,6.4-3.8
+ c2.4-1.2,4.7-2.1,7.2-3.1c3.2-1.3,7.6-2.2,10.9-2.9c3.5-0.7,12.3-2.3,16.6-2.3h0h0.2h0.6c2.2,0,5.6,0.1,6.4,1.3
+ c-1.2,0-1.6,0.2-2.4,0.5c-0.9,0.3-1.9,1-2.6,1.7l-1.8,1.7c-0.2,0.2-0.2,0.2-0.3,0.4c-3.4,4.2-4.1,4.9-6.8,10.2
+ c-1.2,2.5-2.7,4.8-4.2,7.1c-1,1.6-2,3.2-3.2,4.6c-0.1,0.2-0.2,0.2-0.3,0.4c-0.7,0.9-1.7,1.7-2.5,2.5c-0.6,0.5-1.3,1-1.9,1.5
+ c-0.6,0.4-1.1,0.8-1.7,1.1l-0.9,0.5c-0.2,0.1-0.3,0.2-0.5,0.3c-0.1,0-0.3,0.2-0.4,0.2c-0.2,0.1-0.4,0.2-0.5,0.2
+ c-3.7,1.8-8.5,3-12.7,3.4L72.7,89c-0.8,0.1-2.8,0.2-4.7,0.2c-1.6,0-3,0-3.5-0.2l0.3-0.7c0.6-1.4,1.3-2.8,2.1-4.1
+ c0.1-0.2,0.2-0.4,0.4-0.6l1.5-2.6l3.9-5.3l3.5-3.6c0.1-0.1,0.2-0.2,0.2-0.2c0.2-0.1,0.2-0.1,0.3-0.2l0.8-0.7
+ c0.1-0.1,0.2-0.1,0.3-0.2c0.2-0.2,0.3-0.3,0.5-0.4l3.7-2.5c1.3-0.8,2.6-1.6,3.8-2.3l4-2.1c1.5-0.8,4-2.1,5.5-2.7L99.5,58.5"/> </symbol> <symbol id="tcm-related-posts-arrow" viewBox="0 0 16 16"> <path class="st0" d="M8,15.9c-4.4,0-7.9-3.5-7.9-7.9S3.6,0.1,8,0.1s7.9,3.5,7.9,7.9S12.4,15.9,8,15.9z M8,2.4C4.9,2.4,2.4,4.9,2.4,8
+ s2.5,5.6,5.6,5.6s5.6-2.5,5.6-5.6S11.1,2.4,8,2.4z M11.9,8.3l-3.3,3.3c-0.1,0.1-0.2,0.1-0.2,0.1c-0.2,0-0.3-0.2-0.3-0.3v-2H4.4
+ C4.2,9.3,4.1,9.2,4.1,9V7c0-0.2,0.2-0.3,0.3-0.3H8v-2c0-0.2,0.1-0.3,0.3-0.3c0.1,0,0.2,0,0.2,0.1l3.3,3.3C11.9,7.9,12,7.9,12,8
+ S11.9,8.2,11.9,8.3z"/> </symbol> <symbol id="tcm-sort-by-dropdown" viewBox="0 0 12 7"> <path style="fill:#6E767D;" class="st0" d="M0.3,1.5l5.2,5.2c0,0,0.5,0.5,1.1,0l5.2-5.2c0,0,0.4-0.4,0.2-0.9c0,0-0.1-0.4-0.7-0.4H0.8c0,0-0.5,0-0.7,0.4
+ C0.1,0.5-0.2,1,0.3,1.5z"/> </symbol> <symbol id="tcm-author-icon" viewBox="0 0 1020 1080"> <polygon style="fill:#474F57" class="st0" points="44.5,882.9 251.4,1081 251.4,889.8 "/> <path style="fill:#6E767D" class="st1" d="M937.8,891.8H81.2c-44.3,0-80.6-36.3-80.6-80.6V82.7c0-44.3,36.3-80.6,80.6-80.6h856.6
+ c44.3,0,80.6,36.3,80.6,80.6v728.5C1018.4,855.5,982.1,891.8,937.8,891.8z"/> <g> <path style="fill:#6E767D" class="st2" d="M732,688.3c-0.5,0.1-2.7,0.5-6.3,1.1c-142.4,25.4-168.6,29.8-171.6,30.1c-7,0.8-12.3,0.4-16-1.3
+ c-2.4-1-3.6-2.3-4-2.8c0.2-1,1.4-3.3,2.2-4.7c0.7-1.4,1.6-3,2.3-4.6c4.9-11.1,1.5-22.4-8.9-29.5c-7.8-5.3-18.1-7.4-30.6-6.3
+ c-7.5,0.6-138.9,22.6-211.1,34.7l-35.4,27.7c82.6-13.9,240.1-40.2,248.4-41c7.4-0.6,13.2,0.3,16.7,2.7c2,1.4,1.8,1.8,1.3,3.1
+ c-0.4,0.9-1,2-1.6,3.2c-2.4,4.4-5.6,10.5-4.5,18c1.2,8.2,7.3,15.3,16.7,19.4c5.3,2.3,11.4,3.5,18.4,3.5c2.8,0,5.7-0.2,8.8-0.5
+ c5.7-0.7,63.8-10.9,172.9-30.3c3.6-0.6,5.8-1,6.3-1.1c5.9-1,9.8-6.6,8.7-12.5C743.4,691.2,737.8,687.3,732,688.3L732,688.3z
+ M732,688.3"/> <path style="fill:#FFFFFF" class="st2" d="M349.8,583.9l-91.7,95.5c-10.1,10.5-17.2,23.5-20.6,37.7l130.2-102c40.8,18,73.3,23.7,98.3,23.7
+ c43.8,0,64.2-17.7,64.2-17.7c-40.8-21.2-46.6-60.6-46.6-60.6c31.3,13.2,96.4,28.7,96.4,28.7c86.5-57.5,131.7-181.9,131.7-181.9
+ c-9,2.5-17.5,3.5-25.6,3.5c-40.6,0-68.5-25.9-68.5-25.9l113-24.5c37.6-76.7,41.2-211.1,41.2-211.1L428.2,453.5
+ C389.2,487.9,361.9,533.4,349.8,583.9L349.8,583.9z M349.8,583.9"/> </g> </symbol> <symbol id="tcm-bulk-action-arrow" viewBox="0 0 12 7"> <path style="fill:#6E767D" class="st0" d="M0.3,1.5l5.2,5.2c0,0,0.5,0.5,1.1,0l5.2-5.2c0,0,0.4-0.4,0.2-0.9c0,0-0.1-0.4-0.7-0.4H0.8c0,0-0.5,0-0.7,0.4
+ C0.1,0.5-0.2,1,0.3,1.5z"/> </symbol> </defs> </svg></div><script>document.addEventListener("DOMContentLoaded",function(){var e="undefined"!=typeof MutationObserver;if(WPO_LazyLoad.update(),e){var t=new MutationObserver(function(e){e.forEach(function(e){WPO_LazyLoad.update(e.addedNodes)})}),n={childList:!0,subtree:!0},a=document.getElementsByTagName("body")[0];t.observe(a,n)}else window.addEventListener("load",function(){WPO_LazyLoad.deferred_call("update",WPO_LazyLoad.update)}),window.addEventListener("scroll",function(){WPO_LazyLoad.deferred_call("update",WPO_LazyLoad.update)}),window.addEventListener("resize",function(){WPO_LazyLoad.deferred_call("update",WPO_LazyLoad.update)}),document.getElementsByTagName("body")[0].addEventListener("post-load",function(){WPO_LazyLoad.deferred_call("update",WPO_LazyLoad.update)})});var WPO_Intersection_Observer=function(e,t){function n(e){d.push(e)}function a(e){var t;for(t in d)if(d.hasOwnProperty(t)&&e==d[t])return void delete d[t]}function o(){var t;for(t in d)d.hasOwnProperty(t)&&r(d[t])&&(e(d[t]),a(d[t]))}function r(e){var n=e.getBoundingClientRect(),a=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight;return n.top-t.offset<a&&n.bottom+t.offset>0}var d=[];return t=t||{offset:100},window.addEventListener("load",function(){WPO_LazyLoad.deferred_call("check",o)}),window.addEventListener("scroll",function(){WPO_LazyLoad.deferred_call("check",o)}),window.addEventListener("resize",function(){WPO_LazyLoad.deferred_call("check",o)}),{observe:n,unobserve:a}},WPO_LazyLoad=function(){function e(e){if(!c(e,u.loaded_class)){d(e,u.loaded_class),i.unobserve(e),s(e,u.observe_class);var n,a=e.tagName;if("picture"==a.toLowerCase())for(n in e.childNodes)e.childNodes.hasOwnProperty(n)&&t(e.childNodes[n]);else t(e)}}function t(e){if("undefined"!=typeof e.getAttribute){var t=e.getAttribute("data-src"),n=e.getAttribute("data-srcset");t&&(e.setAttribute("src",t),e.removeAttribute("data-src")),n&&(e.setAttribute("srcset",n),e.removeAttribute("data-srcset"))}}function n(t){var n;for(n in t)t.hasOwnProperty(n)&&t[n].isIntersecting&&e(t[n].target)}function a(e){s(e,u.select_class),c(e,u.observe_class)||(d(e,u.observe_class),i.observe(e))}function o(e){var t,n=e||Array.prototype.slice.call(u.container.getElementsByClassName(u.select_class));for(t in n)n.hasOwnProperty(t)&&(c(n[t],u.select_class)?a(n[t]):n[t].childNodes&&n[t].childNodes.length&&o(n[t].childNodes))}function r(e,t,n){n=n||200,f[e]=f[e]?f[e]+1:1,setTimeout(function(){var a=(new Date).getTime(),o=v[e]||0;f[e]--,(0===f[e]||o+n<a)&&(v[e]=a,t())},n)}function d(e,t){c(e,t)||(e.className?e.className+=" "+t:e.className=t)}function s(e,t){var n=new RegExp(["(^|\\s)",t,"(\\s|$)"].join(""));e.className=e.className.replace(n," ")}function c(e,t){var n=new RegExp(["(^|\\s)",t,"(\\s|$)"].join(""));return n.test(e.className)}var i,l="undefined"!=typeof IntersectionObserver,u={container:window.document,select_class:"lazyload",observe_class:"lazyload-observe",loaded_class:"lazyload-loaded"};i=l?new IntersectionObserver(n,{root:null,rootMargin:"0px",threshold:[.1]}):new WPO_Intersection_Observer(e);var f={},v={};return{update:o,deferred_call:r}}();</script><script id="BorlabsCookieBoxWrap" type="text/template"><div id="BorlabsCookieBox" class="BorlabsCookie">
+    <div class="top-center" style="display: none;">
+        <div class="_brlbs-bar-wrap">
+            <div class="_brlbs-bar _brlbs-bar-advanced">
+                <div class="cookie-box">
+                    <div class="container">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-12 col-sm-9">
+                                <div class="row no-gutters">
+                                                                        <div class="col-2 text-center"><img class="cookie-logo" src="https://it-learner.de/wp-content/uploads/2019/12/2.png" srcset="https://it-learner.de/wp-content/uploads/2019/12/2.png, https://it-learner.de/wp-content/uploads/2019/12/2.png 2x" alt="Datenschutzeinstellungen"></div>
+                                                                        <div class="col-10">
+                                        <h3>Datenschutzeinstellungen</h3>
+                                        <p>Wir nutzen Cookies auf unserer Website. Einige von ihnen sind essenziell, während andere uns helfen, diese Website und Ihre Erfahrung zu verbessern. Hinweis: Wir nutzen das Cookie-Opt-In-Plugin für Wordpress von BORLABS.</p>
+                                    </div>
+                                </div>
+                                <ul class="show-cookie-logo"><li>
+                                            <label for="checkbox-essential" class="_brlbs-checkbox">
+                                                Essenziell                                                <input id="checkbox-essential" type="checkbox" name="cookieGroup[]" value="essential" checked disabled data-borlabs-cookie-checkbox>
+                                                <div class="_brlbs-checkbox-indicator"></div>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label for="checkbox-statistics" class="_brlbs-checkbox">
+                                                Statistiken                                                <input id="checkbox-statistics" type="checkbox" name="cookieGroup[]" value="statistics" data-borlabs-cookie-checkbox>
+                                                <div class="_brlbs-checkbox-indicator"></div>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label for="checkbox-external-media" class="_brlbs-checkbox">
+                                                Externe Medien                                                <input id="checkbox-external-media" type="checkbox" name="cookieGroup[]" value="external-media" checked data-borlabs-cookie-checkbox>
+                                                <div class="_brlbs-checkbox-indicator"></div>
+                                            </label>
+                                        </li>
+                                        </ul>                            </div>
+                            <div class="col-12 col-sm-3">
+                                                                <p class="_brlbs-accept"><a class="_brlbs-btn _brlbs-btn-accept-all cursor" data-cookie-accept-all>Alle akzeptieren</a></p>
+                                <p class="_brlbs-accept"><a class="_brlbs-btn cursor" data-cookie-accept>Auswahl speichern & schließen</a></p>
+                                                                                                <p class="_brlbs-manage"><a class="cursor" data-cookie-individual>Individuelle Datenschutzeinstellungen</a></p>
+                                <p class="_brlbs-legal">
+                                    <a class="cursor" data-cookie-individual>Cookie-Details</a><span class="_brlbs-separator"></span><a href="https://it-learner.de/datenschutz/">Datenschutzerklärung</a><span class="_brlbs-separator"></span><a href="https://it-learner.de/impressum/">Impressum</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cookie-preference">
+    <div class="container not-visible">
+        <div class="row no-gutters">
+            <div class="col-12">
+                <div class="row no-gutters align-items-top">
+                                        <div class="col-2">
+                        <img class="cookie-logo" src="https://it-learner.de/wp-content/uploads/2019/12/2.png" srcset="https://it-learner.de/wp-content/uploads/2019/12/2.png, https://it-learner.de/wp-content/uploads/2019/12/2.png 2x" alt="Datenschutzeinstellungen">
+                    </div>
+                                        <div class="col-10">
+                        <h3>Datenschutzeinstellungen</h3>
+                        <p>Hier finden Sie eine Übersicht über alle verwendeten Cookies. Sie können Ihre Einwilligung zu ganzen Kategorien geben oder sich weitere Informationen anzeigen lassen und so nur bestimmte Cookies auswählen.</p>
+
+                        <div class="row no-gutters align-items-center">
+                            <div class="col-12 col-sm-7">
+                                <p class="_brlbs-accept">
+                                                                <a class="_brlbs-btn _brlbs-btn-accept-all cursor" data-cookie-accept-all>Alle akzeptieren</a>
+                                                                <a class="_brlbs-btn cursor" data-cookie-accept>Auswahl speichern & schließen</a></p>
+                            </div>
+                            <div class="col-12 col-sm-5">
+                                <p class="_brlbs-refuse">
+                                    <a class="cursor" data-cookie-back>Zurück</a>                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div data-cookie-accordion>
+                                    <div class="bcac-item">
+                        <div class="d-flex flex-row">
+                            <div class="w-75">
+                                <h4>Essenziell (2)</h4>
+                            </div>
+                            <div class="w-25 text-right">
+                                                            </div>
+                        </div>
+                        <div class="d-block">
+                            <p>Essenzielle Cookies ermöglichen grundlegende Funktionen und sind für die einwandfreie Funktion der Website erforderlich.</p>
+                            <p class="text-center">
+                                <a class="cursor d-block" data-cookie-accordion-target="essential">
+                                    <span data-cookie-accordion-status="show">Cookie-Informationen anzeigen</span>
+                                    <span data-cookie-accordion-status="hide" class="borlabs-hide">Cookie-Informationen ausblenden</span>
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="borlabs-hide" data-cookie-accordion-parent="essential">
+                                                        <table>
+                                                                <tr>
+                                    <th>Name</th>
+                                    <td>Borlabs Cookie</td>
+                                </tr>
+                                <tr>
+                                    <th>Anbieter</th>
+                                    <td>Eigentümer dieser Website</td>
+                                </tr>
+                                                                <tr>
+                                    <th>Zweck</th>
+                                    <td>Speichert die Einstellungen der Besucher, die in der Cookie Box von Borlabs Cookie ausgewählt wurden.</td>
+                                </tr>
+                                                                                                                                                                <tr>
+                                    <th>Cookie Name</th>
+                                    <td>borlabs-cookie</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Cookie Laufzeit</th>
+                                    <td>1 Jahr</td>
+                                </tr>
+                                                            </table>
+                                                        <table>
+                                                                <tr>
+                                    <th>Name</th>
+                                    <td>VG Wort</td>
+                                </tr>
+                                <tr>
+                                    <th>Anbieter</th>
+                                    <td>Verwertungsgesellschaft Wort</td>
+                                </tr>
+                                                                <tr>
+                                    <th>Zweck</th>
+                                    <td>Das Cookie der VG Wort hilft die Kopierwahrscheinlichkeit unserer Texte zu ermitteln und stellt die Vergütung von gesetzlichen Ansprüchen von Autoren und Verlagen sicher. IP-Adressen werden nur in anonymisierter Form verarbeitet.</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Datenschutzerklärung</th>
+                                    <td class="_brlbs-pp-url"><a href="https://www.vgwort.de/datenschutz.html" target="_blank" rel="nofollow noopener noreferrer">https://www.vgwort.de/datenschutz.html</a></td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Host(s)</th>
+                                    <td>*.vgwort.de</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Cookie Name</th>
+                                    <td>srp</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Cookie Laufzeit</th>
+                                    <td>Sitzung</td>
+                                </tr>
+                                                            </table>
+                                                    </div>
+                    </div>
+                                        <div class="bcac-item">
+                        <div class="d-flex flex-row">
+                            <div class="w-75">
+                                <h4>Statistiken (1)</h4>
+                            </div>
+                            <div class="w-25 text-right">
+                                                                <span class="_brlbs-btn-switch-status"><span>An</span><span>Aus</span></span>
+                                <label for="borlabs-cookie-group-statistics" class="_brlbs-btn-switch">
+                                    <input id="borlabs-cookie-group-statistics" type="checkbox" name="cookieGroup[]" value="statistics" data-borlabs-cookie-switch>
+                                    <span class="_brlbs-slider"></span>
+                                </label>
+                                                            </div>
+                        </div>
+                        <div class="d-block">
+                            <p>Statistik Cookies erfassen Informationen anonym. Diese Informationen helfen uns zu verstehen, wie unsere Besucher unsere Website nutzen.</p>
+                            <p class="text-center">
+                                <a class="cursor d-block" data-cookie-accordion-target="statistics">
+                                    <span data-cookie-accordion-status="show">Cookie-Informationen anzeigen</span>
+                                    <span data-cookie-accordion-status="hide" class="borlabs-hide">Cookie-Informationen ausblenden</span>
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="borlabs-hide" data-cookie-accordion-parent="statistics">
+                                                        <table>
+                                                                <tr>
+                                    <th>Akzeptieren</th>
+                                    <td>
+                                        <label for="borlabs-cookie-google-analytics" class="_brlbs-btn-switch">
+                                            <input id="borlabs-cookie-google-analytics" type="checkbox" data-cookie-group="statistics" name="cookies[statistics][]" value="google-analytics" data-borlabs-cookie-switch>
+                                            <span class="_brlbs-slider"></span>
+                                        </label>
+                                        <span class="_brlbs-btn-switch-status"><span>An</span><span>Aus</span></span>
+                                    </td>
+                                </tr>
+                                                                <tr>
+                                    <th>Name</th>
+                                    <td>Google Analytics</td>
+                                </tr>
+                                <tr>
+                                    <th>Anbieter</th>
+                                    <td>Google LLC</td>
+                                </tr>
+                                                                <tr>
+                                    <th>Zweck</th>
+                                    <td>Cookie von Google für Website-Analysen. Erzeugt statistische Daten darüber, wie der Besucher die Website nutzt.</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Datenschutzerklärung</th>
+                                    <td class="_brlbs-pp-url"><a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="nofollow noopener noreferrer">https://policies.google.com/privacy?hl=de</a></td>
+                                </tr>
+                                                                                                                                <tr>
+                                    <th>Cookie Name</th>
+                                    <td>_ga,_gat,_gid</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Cookie Laufzeit</th>
+                                    <td>2 Jahre</td>
+                                </tr>
+                                                            </table>
+                                                    </div>
+                    </div>
+                                        <div class="bcac-item">
+                        <div class="d-flex flex-row">
+                            <div class="w-75">
+                                <h4>Externe Medien (2)</h4>
+                            </div>
+                            <div class="w-25 text-right">
+                                                                <span class="_brlbs-btn-switch-status"><span>An</span><span>Aus</span></span>
+                                <label for="borlabs-cookie-group-external-media" class="_brlbs-btn-switch">
+                                    <input id="borlabs-cookie-group-external-media" type="checkbox" name="cookieGroup[]" value="external-media" checked data-borlabs-cookie-switch>
+                                    <span class="_brlbs-slider"></span>
+                                </label>
+                                                            </div>
+                        </div>
+                        <div class="d-block">
+                            <p>Inhalte von Videoplattformen und Social-Media-Plattformen werden standardmäßig blockiert. Wenn Cookies von externen Medien akzeptiert werden, bedarf der Zugriff auf diese Inhalte keiner manuellen Einwilligung mehr.</p>
+                            <p class="text-center">
+                                <a class="cursor d-block" data-cookie-accordion-target="external-media">
+                                    <span data-cookie-accordion-status="show">Cookie-Informationen anzeigen</span>
+                                    <span data-cookie-accordion-status="hide" class="borlabs-hide">Cookie-Informationen ausblenden</span>
+                                </a>
+                            </p>
+                        </div>
+
+                        <div class="borlabs-hide" data-cookie-accordion-parent="external-media">
+                                                        <table>
+                                                                <tr>
+                                    <th>Akzeptieren</th>
+                                    <td>
+                                        <label for="borlabs-cookie-facebook" class="_brlbs-btn-switch">
+                                            <input id="borlabs-cookie-facebook" type="checkbox" data-cookie-group="external-media" name="cookies[external-media][]" value="facebook" checked data-borlabs-cookie-switch>
+                                            <span class="_brlbs-slider"></span>
+                                        </label>
+                                        <span class="_brlbs-btn-switch-status"><span>An</span><span>Aus</span></span>
+                                    </td>
+                                </tr>
+                                                                <tr>
+                                    <th>Name</th>
+                                    <td>Facebook</td>
+                                </tr>
+                                <tr>
+                                    <th>Anbieter</th>
+                                    <td>Facebook</td>
+                                </tr>
+                                                                <tr>
+                                    <th>Zweck</th>
+                                    <td>Wird verwendet, um Facebook-Inhalte zu entsperren.</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Datenschutzerklärung</th>
+                                    <td class="_brlbs-pp-url"><a href="https://www.facebook.com/privacy/explanation" target="_blank" rel="nofollow noopener noreferrer">https://www.facebook.com/privacy/explanation</a></td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Host(s)</th>
+                                    <td>.facebook.com</td>
+                                </tr>
+                                                                                                                            </table>
+                                                        <table>
+                                                                <tr>
+                                    <th>Akzeptieren</th>
+                                    <td>
+                                        <label for="borlabs-cookie-twitter" class="_brlbs-btn-switch">
+                                            <input id="borlabs-cookie-twitter" type="checkbox" data-cookie-group="external-media" name="cookies[external-media][]" value="twitter" checked data-borlabs-cookie-switch>
+                                            <span class="_brlbs-slider"></span>
+                                        </label>
+                                        <span class="_brlbs-btn-switch-status"><span>An</span><span>Aus</span></span>
+                                    </td>
+                                </tr>
+                                                                <tr>
+                                    <th>Name</th>
+                                    <td>Twitter</td>
+                                </tr>
+                                <tr>
+                                    <th>Anbieter</th>
+                                    <td>Twitter</td>
+                                </tr>
+                                                                <tr>
+                                    <th>Zweck</th>
+                                    <td>Wird verwendet, um Twitter-Inhalte zu entsperren.</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Datenschutzerklärung</th>
+                                    <td class="_brlbs-pp-url"><a href="https://twitter.com/privacy" target="_blank" rel="nofollow noopener noreferrer">https://twitter.com/privacy</a></td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Host(s)</th>
+                                    <td>.twimg.com, .twitter.com</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Cookie Name</th>
+                                    <td>__widgetsettings, local_storage_support_test</td>
+                                </tr>
+                                                                                                <tr>
+                                    <th>Cookie Laufzeit</th>
+                                    <td>Unbegrenzt</td>
+                                </tr>
+                                                            </table>
+                                                    </div>
+                    </div>
+                                    </div>
+                <div class="d-flex justify-content-between">
+                    <p class="_brlbs-branding flex-fill">
+                        <a href="https://de.borlabs.io/borlabs-cookie/" target="_blank" rel="nofollow noopener noreferrer"><img src="https://it-learner.de/wp-content/plugins/borlabs-cookie//images/borlabs-cookie-icon-black.svg" alt="Borlabs Cookie"> powered by Borlabs Cookie</a>                    </p>
+                    <p class="_brlbs-legal flex-fill"><a href="https://it-learner.de/datenschutz/">Datenschutzerklärung</a><span class="_brlbs-separator"></span><a href="https://it-learner.de/impressum/">Impressum</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>            </div>
+        </div>
+    </div>
+</div></script><span style="display:none" class="tl-placeholder-f-type-ribbon"></span><noscript><style>.lazyload{display:none;}</style></noscript><script data-noptimize="1">window.lazySizesConfig=window.lazySizesConfig||{};window.lazySizesConfig.loadMode=1;</script><script async data-noptimize="1" src='https://it-learner.de/wp-content/plugins/autoptimize/classes/external/js/lazysizes.min.js?ao_version=2.6.2'></script> <script type='text/javascript'>var option = {"mystickyClass":".mh-main-nav-wrap","activationHeight":"320","disableWidth":"359","disableLargeWidth":"0","adminBar":"false","device_desktop":"1","device_mobile":"1","mystickyTransition":"slide","mysticky_disable_down":"false"};</script> <script type='text/javascript'>var thirsty_global_vars = {"home_url":"\/\/it-learner.de","ajax_url":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php","link_fixer_enabled":"yes","link_prefix":"recommends","link_prefixes":["recommends"],"post_id":"30499","enable_record_stats":"yes","enable_js_redirect":"","disable_thirstylink_class":""};</script> <script type='text/javascript'>var tve_frontend_options = {"is_editor_page":"","page_events":[],"is_single":"1","ajaxurl":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php","social_fb_app_id":"","dash_url":"https:\/\/it-learner.de\/wp-content\/plugins\/thrive-visual-editor\/thrive-dashboard","translations":{"Copy":"Copy"},"post_id":"30499","ip":"195.30.84.222","current_user":[],"post_title":"Wenn das Netzwerk unter Windows 10 sehr langsam ist, k\u00f6nnte das Abschalten der Autotuning Funktion Abhilfe schaffen.","post_type":"post","post_url":"https:\/\/it-learner.de\/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen\/","is_lp":"","post_request_data":[]};</script> <script type='text/javascript'>var wpcw_frontend_params = {"api_url":"https:\/\/it-learner.de\/wp-json\/wpcw\/v1\/api\/","api_nonce":"2048fafd73","ajax_api_url":"\/?wpcw-ajax=%%endpoint%%","ajax_api_nonce":"6480ff2a9a","ajaxurl":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php","enrollment_nonce":"9aa83ad0e0","progress_nonce":"3d68abdf9c","str_uploading":"Hochladen l\u00e4uft:","str_quiz_all_fields":"Bitte beantworten Sie alle Fragen auf dieser Seite.","timer_units_hrs":"Std","timer_units_mins":"Min","timer_units_secs":"Sek","min_password_strength":"3","i18n_password_error":"Bitte verwenden Sie ein st\u00e4rkeres Passwort.","i18n_password_hint":"Tipp: Das Passwort sollte mindestens zw\u00f6lf Zeichen lang sein. F\u00fcr ein st\u00e4rkeres Passwort verwende Gro\u00df- und Kleinbuchstaben, Zahlen und Sonderzeichen wie ! \" ? $ % ^ & ).","course_progress":{"i18n_confirm_reset_unit":"Are you sure you wish to reset your progress of this Unit? This CANNOT be undone.","i18n_confirm_reset_units":"Are you sure you wish to reset your progress up to this Unit? This CANNOT be undone."}};</script> <script type='text/javascript'>var tve_dash_front = {"ajaxurl":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php","force_ajax_send":"1","is_crawler":""};</script> <script type='text/javascript'>var mystickyside_name = {"mystickyside_string":".mh-sidebar-2.mh-sidebar-wide","mystickyside_content_string":"","mystickyside_margin_top_string":"200","mystickyside_margin_bot_string":"","mystickyside_update_sidebar_height_string":"true","mystickyside_min_width_string":"","device_desktop":"1","device_mobile":"1"};</script> <script type='text/javascript'>var ThriveComments = {"current_user":{"photo_url":"https:\/\/it-learner.de\/wp-content\/plugins\/thrive-comments\/assets\/images\/placeholder_avatar_icon.svg","is_admin":false},"translations":{"isRequired":"Please enter a valid email address","author_name_required":"Please add your name before submitting the comment","comment_content_missing":"Please add your comment text in the field below","choose_avatar":"Choose an avatar","choose_avatar_button":"Select","settings_saved_success_toast":"Settings saved successfully.","settings_saved_fail_toast":"There seems to be a problem in changing the settings. Please, try again and if the error persists contact our support team.","options_saved_success_toast":"Option changed successfully.","options_saved_fail_toast":"There seems to be a problem in changing this option. Please, try again and if the error persists contact our support team.","comments_saved_error":"There was a problem in saving your comment. Please, try again!.","tcm_duplicate_comment_error":"Duplicate comment detected, it looks as though you've already said that!","tcm_get_comments_error":"The comments could not be retrieved","change_image":"Change image","choose_image":"Choose image","default_avatar":"Selected image: default placeholder","selected_image":"Selected image","comment_to_fast":"You are posting comments too quickly. Slow down.","link_copied":"Link copied to clipboard","conversion_leads_availabe":"Option available only if you have ","conversion_leads_installed":"installed","badge_default_title":"Badge title","badge_no_empty_name":"Badge name field can't be empty","badge_reaches_only_number":"Reaches input can only be a positive number and can't be empty.","badge_select_image":"Please select a badge image before saving","badge_same_settings":"You have already set a badge with the same conditions.","approved":"Approved","unapproved":"Unapproved","reply_needed":"Reply Needed","not_reply_needed":"No Reply Needed","spam":"spam","trash":"trash","entire_website":"Entire Website","reply_failed":"Failed to submit reply!","label_enabled":"Enabled","label_disabled":"Disabled","invalid_website_url":"Invalid website url","accept_privacy_checkbox":"Please accept the privacy checkbox","email_copied":"Email copied to clipboard","autolink_added":"Auto-Link added successfully!","autolink_changed":"Changes on Auto-Link were saved successfully!","autolink_error":"Error while creating Auto-Link!","copy_input":"Copied","tcb_prevent_insert_element":"You cannot add two Thrive Comments sections on the same page","comment_by":"Comment by","moderation_approved":"was approved","moderation_unapproved":"was unapproved","moderation_no_replied":"was marked as No Reply Needed","moderation_replied":"was replied","moderation_featured":"was marked as Featured comment","moderation_no_featured":"is no longer featured","moderation_delegate":"was delegated to","moderation_not_spam":"is not spam","moderation_spam":"was marked as spam","moderation_trash":"was marked as trash","moderation_restored":"was restored","approve_text":"Approve","unapprove_text":"Unapprove","feature_text":"Feature","stop_feature_text":"Stop Featuring","spam_text":"Mark as Spam","trash_text":"Mark as Trash","comment_sending":"Sending...","comment_pending":"Pending...","nr_votes":"Number of Votes","nr_comments":"Number of Comments","moderation_expand":"Expand","moderation_error":"Error encountered for the following action","edit":"Edit","delegate":"Delegate","reply":"Reply","no_reply_needed":"No Reply Needed","error":"Error","see_comment_reply":"Click here to see the reply.","see_comment_edit":"Click here to see the edited comment."},"nonce":"2048fafd73","routes":{"comments":"https:\/\/it-learner.de\/wp-json\/tcm\/v1\/comments","gravatar":"https:\/\/it-learner.de\/wp-json\/tcm\/v1\/comments\/gravatar","live_update":"https:\/\/it-learner.de\/wp-json\/tcm\/v1\/comments\/live_update","update_post_subscriber":"https:\/\/it-learner.de\/wp-json\/tcm\/v1\/comments\/update_post_subscriber","generate_nonce":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php"},"post":{"ID":30499,"post_author":"2","post_date":"2019-05-16 09:30:27","post_title":"Wenn das Netzwerk unter Windows 10 sehr langsam ist, k\u00f6nnte das Abschalten der Autotuning Funktion Abhilfe schaffen.","post_excerpt":"Mit Windows Vista wurde damals die sogenannte Autotuning Funktion eingef\u00fchrt. Diese ist auch noch unter Windows 10 vorhanden. Eingef\u00fchrt wurde diese, damit die Leistung von Programmen verbessert wird, die TCP Daten \u00fcber das Netzwerk empfangen. ","post_status":"publish","comment_status":"open","post_name":"wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen","to_ping":"","pinged":"","post_parent":0,"guid":"https:\/\/it-learner.de\/?p=30499","menu_order":0,"post_type":"post","post_mime_type":"","comment_count":"2","filter":"raw","featured_image":"https:\/\/it-learner.de\/wp-content\/uploads\/2019\/05\/Autotuning-Funktion.jpg","permalink":"https:\/\/it-learner.de\/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen\/","ancestors":[],"post_category":[15,11],"tags_input":["Cmd","Installation","Netzwerk","Windows"]},"related_posts":[{"post_id":33184,"post_title":"Am Windows Server 2019 einen neuen iSCSI Datentr\u00e4ger bereitstellen - sowie einen iSCSI Speicher einbinden","guid":"https:\/\/it-learner.de\/?p=33184","featured_image":"https:\/\/it-learner.de\/wp-content\/uploads\/2020\/01\/Windows-Server-2019-iSCSI-Target-anlegen-Rolle-installieren-1.png"},{"post_id":33126,"post_title":"Virtualisieren unter Windows 10 mit der Hyper-V Schnellerstellung \u2013 In wenigen Schritten zum virtuellen Computer unter Windows 10","guid":"https:\/\/it-learner.de\/?p=33126","featured_image":"https:\/\/it-learner.de\/wp-content\/uploads\/2020\/01\/Praxisszenario.jpg"},{"post_id":33144,"post_title":"Dienste unter Windows mit der PowerShell starten \/ Stoppen - Dienst soll verz\u00f6gert gestartet werden","guid":"https:\/\/it-learner.de\/?p=33144","featured_image":"https:\/\/it-learner.de\/wp-content\/uploads\/2020\/01\/Windows-PowerShell-Dienste-verwalten.jpg"},{"post_id":33317,"post_title":"Windows Suche im Startmen\u00fc geht nicht mehr - einfache L\u00f6sung!","guid":"https:\/\/it-learner.de\/?p=33317","featured_image":"https:\/\/it-learner.de\/wp-content\/uploads\/2020\/02\/Win10-Kein-Suche-mehr-m\u00f6gliche.png"}],"const":{"toast_timeout":4000,"wp_content":"https:\/\/it-learner.de\/wp-content\/","ajax_dash":["tcm_ajax_dash"],"site_url":"https:\/\/it-learner.de","post_url":"https:\/\/it-learner.de\/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen\/","moderation":{"approve":"approved","unapprove":"hold","spam":"spam","unspam":"unspam","trash":"trash","untrash":"untrash","unreplied":"tcm_unreplied","tcm_delegate":"tcm_delegate","tcm_featured":"tcm_featured","tcm_keyboard_tooltip":"tcm_display_keyboard_notification_tooltip","featured":1,"not_featured":0}},"settings":{"activate_comments":1,"comment_registration":"","close_comments_for_old_posts":"","close_comments_days_old":"900","comments_per_page":"50","page_comments":"","is_dynamic":0,"comment_order":"asc","gravatar_active":1,"tcm_default_picture":"https:\/\/it-learner.de\/wp-content\/plugins\/thrive-comments\/assets\/images\/placeholder_avatar_icon.svg","powered_by":"","comment_date":"1","share_individual_comments":1,"comment_style_template":1,"lazy_load":1,"lazy_load_avatar":0,"tcm_labels_option":{"number_of_comments":{"default":"{number_of_comments} comments","text":"{number_of_comments} Kommentare"},"show_comments_first":{"default":"{dropdown_option} comments first","text":"{dropdown_option} Kommentiere als erster"},"newest":{"default":"Newest","text":"Neueste"},"oldest":{"default":"Oldest","text":"\u00c4lteste"},"top_rated":{"default":"Top rated","text":"Best Bewertet"},"enter_comment":{"default":"Enter your comment...","text":"Schreibe hier deinen Kommentar"},"load_comments":{"default":"Load more comments","text":"Lade weitere Kommentare"},"add_comment":{"default":"Add your comment...","text":"Erstelle deinen Kommentar"},"reply_to_user":{"default":"Reply to {username}","text":"Antwort an {username}"},"commenting_as":{"default":"Commenting as {username}","text":"Kommentiere als {username}"},"social_account":{"default":"Log in with:","text":"Einloggen als:"},"guest_comment":{"default":"Comment as a guest:","text":"Als Gast kommentieren"},"name":{"default":"Name","text":"Name"},"email":{"default":"Email (not displayed publicly)","text":"Email (Nicht \u00f6ffentlich sichtbar)"},"website":{"default":"Website","text":"Website"},"submit_comment":{"default":"Submit comment","text":"Kommentar abschicken"},"vote":{"default":"Vote:","text":"Abstimmen"},"share":{"default":"Share","text":"Teilen"},"copy_url":{"default":"Copy link to comment","text":"Kopieren den Link zum Kommentar"},"close_comments":{"default":"Comments are closed","text":"Kommentare geschlossen"},"email_address":{"default":"Email address","text":"Email addresse"},"subscribe":{"default":"Subscribe to comments","text":"Kommentare abbonnieren"},"unsubscribe":{"default":"Unsubscribe","text":"abbestellen"},"logout_change":{"default":"Logout\/Change","text":"Logout\/\u00c4ndern"},"login_on_website":{"default":"Login on website","text":"Login auf Webseite"},"signin_facebook":{"default":"Sign in with Facebook","text":"Login \u00fcber Facebook"},"signin_google":{"default":"Sign in with Google","text":"Login \u00fcber Google"},"comment_content_missing":{"default":"Please add your comment text in the field below","text":"Bitte im unteren Feld deinen Kommentar hinzuf\u00fcgen"},"author_name_required":{"default":"Please add your name before submitting the comment","text":"Vor dem Absenden des Kommentars bitte deinen Namen angeben"},"isRequired":{"default":"Please enter a valid email address","text":"Bitte gib eine g\u00fcltige Email Adresse ein."},"need_register":{"default":"The comment could not be saved. You must be registered in order to comment","text":"Der Kommentar konnte nicht gespeichert werden, weil du nicht angemeldet bist."},"login_submit_comment":{"default":"You need to be logged in to submit a comment","text":"Um einen Kommentar abzuschicken, musst du eingeloggt sein. "},"comment_duplicate":{"default":"Duplicate comment detected, it looks as though you've already said that!","text":"Doppelter Kommentar wurde entdeckt! Es scheint so als h\u00e4ttest du bereits kommentiert!"},"comment_flood":{"default":"Du schreibst die Kommentare zu schnell. Bitte etwas langsamer.","text":"Du schreibst die Kommentare zu schnell. Bitte etwas langsamer."},"spam_comment":{"default":"Your comment was marked as spam","text":"Dein Kommentar wurde als Spam markiert."},"rest_cookie_invalid_nonce":{"default":"Das Cookie-Nonce ist ung\u00fcltig","text":"Das Cookie-Nonce ist ung\u00fcltig"},"tcm_receive_notifications":{"default":"Notify me when someone replies to my comment","text":"Informiere mich, wenn jemand auf meinen Kommentar antwortet."},"remember_me":{"default":"Save the details above in this browser for the next time I comment","text":"Speichere obige Details im Browser f\u00fcr das n\u00e4chste mal wenn ich kommentiere."},"storing_consent":{"default":"By using this form you agree with the storage and handling of your data by this website","text":"Beim verwenden des Formulars stimmst du zu, dass deine Daten von IT-Learner gespeichert und verarbeitet werden."}},"tcm_color_picker_value":"#00aae1","tcm_notification_labels":{"email_subject":{"default":"New reply to your comment {comment_start}","text":"New reply to your comment {comment_start}"},"content_title":{"default":"A reply to your comment was posted on {site_title}","text":"A reply to your comment was posted on {site_title}"},"comment_posted":{"default":"Comment posted on {site_title}","text":"Comment posted on {site_title}"},"reply_to":{"default":"Reply to {source_commenter_name}","text":"Reply to {source_commenter_name}"},"signed_up":{"default":"You are signed up to be notified of replies to your comment on {source_page}","text":"You are signed up to be notified of replies to your comment on {source_page}"},"unsubscribe":{"default":"You can {unsubscribe_link} from these notifications. Please note that this will unsubscribe you only from this notification thread. If you have signed up to receive notifications to other comments or comment threads on {site_title}, you will still receive those.","text":"You can {unsubscribe_link} from these notifications. Please note that this will unsubscribe you only from this notification thread. If you have signed up to receive notifications to other comments or comment threads on {site_title}, you will still receive those."},"replied_comment":{"default":"{source_commenter_name} wrote this reply in response to the comment by {comment_author} on {source_page}","text":"{source_commenter_name} wrote this reply in response to the comment by {comment_author} on {source_page}"},"unsubscribe_text":{"default":"click here to unsubscribe","text":"click here to unsubscribe"},"post_email_subject":{"default":"New comment posted on {source_page}","text":"New comment posted on {source_page}"},"post_content_title":{"default":"A new comment was posted on {site_title}","text":"A new comment was posted on {site_title}"},"post_comment_posted":{"default":"Comment posted on {site_title}","text":"Comment posted on {site_title}"},"post_reply_to":{"default":"Reply to {source_commenter_name}","text":"Reply to {source_commenter_name}"},"post_signed_up":{"default":"You are signed up to be notified of replies to your comment on {source_page}","text":"You are signed up to be notified of replies to your comment on {source_page}"},"post_unsubscribe":{"default":"You can {unsubscribe_link} from these notifications. Please note that this will unsubscribe you only from this notification  thread. If you have signed up to receive notifications to other comments or comment threads on {site_title}, you will still receive those.","text":"You can {unsubscribe_link} from these notifications. Please note that this will unsubscribe you only from this notification  thread. If you have signed up to receive notifications to other comments or comment threads on {site_title}, you will still receive those."},"post_unsubscribe_text":{"default":"click here to unsubscribe","text":"click here to unsubscribe"}},"tcm_keywords":"","tcm_live_update":0,"tcm_live_update_refresh_rate":20,"tcm_enable_social_signin":"","tcm_show_url":1,"login_activation":0,"tcm_badges":"","tcm_badges_option":false,"tcm_badges_custom_images":"","tcm_voting_only_register":false,"tcm_conversion":{"first_time":{"active":"tcm_live_update"},"second_time":{"active":"tcm_live_update"},"tcm_live_update":{"first_time":{"custom_message":"Danke, {commenter_name}! Dein Kommentar wurde f\u00fcr diesen Beitrag abgegeben. Wenn du zu irgendeinem Zeitpunkt \u00c4nderungen vornehmen oder deinen Kommentar l\u00f6schen m\u00f6chtest, dann kontaktieren uns bitte."},"second_time":{"custom_message":"Thank you, {commenter_name} ! Your comment has been submitted for this post. If at any point in time you want to make changes or delete your comment, contact us."}},"tcm_social_share":{"first_time":{"custom_message":"Thank you, {commenter_name}! Your comment has been submitted for this post. If at any point in time you want to make changes or delete your comment, contact us. Would you like to share this post with your friends?","social_sharing_buttons":{"fb_share":1,"tw_share":1,"lk_share":1,"pt_share":1,"gg_share":1,"xi_share":1}},"second_time":{"custom_message":"Thank you, {commenter_name}! Your comment has been submitted for this post. If at any point in time you want to make changes or delete your comment, contact us. Would you like to share this post with your friends?","social_sharing_buttons":{"fb_share":1,"tw_share":1,"lk_share":1,"pt_share":1,"gg_share":1,"xi_share":1}}},"tcm_related_posts":{"first_time":{"custom_message":"Thank you for your comment,{commenter_name}! If at any point in time you want to make changes or delete your comment, contact us. Here are some more posts you might be interested in:","show_featured_image":0},"second_time":{"custom_message":"Thank you for your comment,{commenter_name}! If at any point in time you want to make changes or delete your comment, contact us. Here are some more posts you might be interested in:","show_featured_image":0}},"tcm_redirect":{"first_time":{"redirect_url":"","redirect_post_id":"","redirect_post_val":"","flag":""},"second_time":{"redirect_url":"","redirect_post_id":"","redirect_post_val":"","flag":""}},"tcm_thrivebox":{"first_time":{"thrivebox_id":7080},"second_time":{"thrivebox_id":7080}}},"tcm_roles":"","tcm_mod_administrator":"1","tcm_mod_editor":"1","tcm_mod_author":"1","tcm_mod_contributor":"0","tcm_mod_subscriber":"0","tcm_exclude_moderators":0,"tcm_vote_type":"up_only","tcm_email_service":"","tcm_api_status":{"facebook":1,"google":1,"facebook_api":0,"google_api":0},"badges_to_moderators":1,"tcm_mark_upvoted":1,"comment_moderation":"1","comment_whitelist":"","comment_max_links":"2","moderation_keys":"","blacklist_keys":"","tcm_meta_tags":0,"tcm_moderators_notifications":1,"remember_me":"1","storing_consent":"1"},"close_comments":"","sorting":{"sort_name":"oldest","sort_field":"comment_ID","order":1},"tcm_customize_labels":{"number_of_comments":{"default":"{number_of_comments} comments","text":"{number_of_comments} Kommentare"},"show_comments_first":{"default":"{dropdown_option} comments first","text":"{dropdown_option} Kommentiere als erster"},"newest":{"default":"Newest","text":"Neueste"},"oldest":{"default":"Oldest","text":"\u00c4lteste"},"top_rated":{"default":"Top rated","text":"Best Bewertet"},"enter_comment":{"default":"Enter your comment...","text":"Schreibe hier deinen Kommentar"},"load_comments":{"default":"Load more comments","text":"Lade weitere Kommentare"},"add_comment":{"default":"Add your comment...","text":"Erstelle deinen Kommentar"},"reply_to_user":{"default":"Reply to {username}","text":"Antwort an {username}"},"commenting_as":{"default":"Commenting as {username}","text":"Kommentiere als {username}"},"social_account":{"default":"Log in with:","text":"Einloggen als:"},"guest_comment":{"default":"Comment as a guest:","text":"Als Gast kommentieren"},"name":{"default":"Name","text":"Name"},"email":{"default":"Email (not displayed publicly)","text":"Email (Nicht \u00f6ffentlich sichtbar)"},"website":{"default":"Website","text":"Website"},"submit_comment":{"default":"Submit comment","text":"Kommentar abschicken"},"vote":{"default":"Vote:","text":"Abstimmen"},"share":{"default":"Share","text":"Teilen"},"copy_url":{"default":"Copy link to comment","text":"Kopieren den Link zum Kommentar"},"close_comments":{"default":"Comments are closed","text":"Kommentare geschlossen"},"email_address":{"default":"Email address","text":"Email addresse"},"subscribe":{"default":"Subscribe to comments","text":"Kommentare abbonnieren"},"unsubscribe":{"default":"Unsubscribe","text":"abbestellen"},"logout_change":{"default":"Logout\/Change","text":"Logout\/\u00c4ndern"},"login_on_website":{"default":"Login on website","text":"Login auf Webseite"},"signin_facebook":{"default":"Sign in with Facebook","text":"Login \u00fcber Facebook"},"signin_google":{"default":"Sign in with Google","text":"Login \u00fcber Google"},"comment_content_missing":{"default":"Please add your comment text in the field below","text":"Bitte im unteren Feld deinen Kommentar hinzuf\u00fcgen"},"author_name_required":{"default":"Please add your name before submitting the comment","text":"Vor dem Absenden des Kommentars bitte deinen Namen angeben"},"isRequired":{"default":"Please enter a valid email address","text":"Bitte gib eine g\u00fcltige Email Adresse ein."},"need_register":{"default":"The comment could not be saved. You must be registered in order to comment","text":"Der Kommentar konnte nicht gespeichert werden, weil du nicht angemeldet bist."},"login_submit_comment":{"default":"You need to be logged in to submit a comment","text":"Um einen Kommentar abzuschicken, musst du eingeloggt sein. "},"comment_duplicate":{"default":"Duplicate comment detected, it looks as though you've already said that!","text":"Doppelter Kommentar wurde entdeckt! Es scheint so als h\u00e4ttest du bereits kommentiert!"},"comment_flood":{"default":"Du schreibst die Kommentare zu schnell. Bitte etwas langsamer.","text":"Du schreibst die Kommentare zu schnell. Bitte etwas langsamer."},"spam_comment":{"default":"Your comment was marked as spam","text":"Dein Kommentar wurde als Spam markiert."},"rest_cookie_invalid_nonce":{"default":"Das Cookie-Nonce ist ung\u00fcltig","text":"Das Cookie-Nonce ist ung\u00fcltig"},"tcm_receive_notifications":{"default":"Notify me when someone replies to my comment","text":"Informiere mich, wenn jemand auf meinen Kommentar antwortet."},"remember_me":{"default":"Save the details above in this browser for the next time I comment","text":"Speichere obige Details im Browser f\u00fcr das n\u00e4chste mal wenn ich kommentiere."},"storing_consent":{"default":"By using this form you agree with the storage and handling of your data by this website","text":"Beim verwenden des Formulars stimmst du zu, dass deine Daten von IT-Learner gespeichert und verarbeitet werden."}},"tcm_social_apis":{"facebook":[],"google":[]},"email_services":[],"tcm_accent_color":"#00aae1","has_plugin_cache":"thrive-leads"};</script> <script type='text/javascript'>var borlabsCookieConfig = {"ajaxURL":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php","language":"de","animation":"1","animationDelay":"","animationIn":"bounceInDown","animationOut":"flipOutX","blockContent":"1","boxLayout":"bar","boxLayoutAdvanced":"1","automaticCookieDomainAndPath":"1","cookieDomain":"it-learner.de","cookiePath":"\/","cookieLifetime":"365","crossDomainCookie":[],"cookieBeforeConsent":"","cookiesForBots":"1","cookieVersion":"1","hideCookieBoxOnPages":[],"respectDoNotTrack":"1","reloadAfterConsent":"","showCookieBox":"1","cookieBoxIntegration":"javascript","ignorePreSelectStatus":"1","cookies":{"essential":["borlabs-cookie","vgwort"],"statistics":["google-analytics"],"marketing":[],"external-media":["facebook","twitter"]}};
+var borlabsCookieCookies = {"essential":{"borlabs-cookie":{"cookieNameList":{"borlabs-cookie":"borlabs-cookie"},"settings":{"blockCookiesBeforeConsent":"0"}},"vgwort":{"cookieNameList":{"srp":"srp"},"settings":{"blockCookiesBeforeConsent":"0"}}},"statistics":{"google-analytics":{"optInJS":"PHNjcmlwdD53aW5kb3cuQm9ybGFic0Nvb2tpZS51bmJsb2NrU2NyaXB0QmxvY2tlcklkKCJnb29nbGUtc2l0ZS1raXQiKTs8L3NjcmlwdD4=","optOutJS":""}},"external-media":{"facebook":{"optInJS":"PHNjcmlwdD5pZih0eXBlb2Ygd2luZG93LkJvcmxhYnNDb29raWUgPT09ICJvYmplY3QiKSB7IHdpbmRvdy5Cb3JsYWJzQ29va2llLnVuYmxvY2tDb250ZW50SWQoImZhY2Vib29rIik7IH08L3NjcmlwdD4=","optOutJS":""},"twitter":{"optInJS":"PHNjcmlwdD5pZih0eXBlb2Ygd2luZG93LkJvcmxhYnNDb29raWUgPT09ICJvYmplY3QiKSB7IHdpbmRvdy5Cb3JsYWJzQ29va2llLnVuYmxvY2tDb250ZW50SWQoInR3aXR0ZXIiKTsgfTwvc2NyaXB0Pg==","optOutJS":""}}};</script> <script type='text/javascript'>jQuery(document).ready(function() {
+var borlabsCookieContentBlocker = {"facebook": {"id": "facebook","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) { if(typeof FB === "object") { FB.XFBML.parse(el.parentElement); } },"settings": {"executeGlobalCodeBeforeUnblocking":false}},"default": {"id": "default","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) {  },"settings": {"executeGlobalCodeBeforeUnblocking":false}},"googlemaps": {"id": "googlemaps","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) {  },"settings": {"executeGlobalCodeBeforeUnblocking":false}},"instagram": {"id": "instagram","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) { if (typeof instgrm === "object") { instgrm.Embeds.process(); } },"settings": {"executeGlobalCodeBeforeUnblocking":false}},"openstreetmap": {"id": "openstreetmap","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) {  },"settings": {"executeGlobalCodeBeforeUnblocking":false}},"twitter": {"id": "twitter","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) {  },"settings": {"executeGlobalCodeBeforeUnblocking":false}},"vimeo": {"id": "vimeo","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) {  },"settings": {"executeGlobalCodeBeforeUnblocking":false,"saveThumbnails":false,"videoWrapper":false}},"youtube": {"id": "youtube","global": function (contentBlockerData) {  },"init": function (el, contentBlockerData) {  },"settings": {"executeGlobalCodeBeforeUnblocking":false,"changeURLToNoCookie":true,"saveThumbnails":false,"thumbnailQuality":"maxresdefault","videoWrapper":false}}};
+(function () { var borlabsCookieLoaded = null;var borlabsCookieInit = false;var borlabsCookieCheck = function () { if (typeof window.BorlabsCookie === "object" && borlabsCookieInit === false) { borlabsCookieInit = true; clearInterval(borlabsCookieLoaded); window.BorlabsCookie.init(borlabsCookieConfig, borlabsCookieCookies, borlabsCookieContentBlocker); } };borlabsCookieLoaded = setInterval(borlabsCookieCheck, 50); borlabsCookieCheck();})();});</script> <script type="text/javascript">var THO_Front = THO_Front || {}; THO_Front.data = {"end_of_content_id":"tho-end-content","is_single":true,"log_url":"https:\/\/it-learner.de\/wp-json\/tho\/v1\/logs","active_triggers":{"viewport":"thrive_headline"},"log_engagements":[],"post_id":30499,"test_id":0,"const":{"_e_click":1,"_e_scroll":2,"_e_time":3,"_impression":1,"_engagement":2}}/* */</script><script type="text/javascript">var tcb_post_lists=JSON.parse('[]');</script><script type="text/javascript">if ( !window.TL_Const ) {var TL_Const={"security":"595a86adc0","ajax_url":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php","forms":[],"action_conversion":"tve_leads_ajax_conversion","action_impression":"tve_leads_ajax_impression","ajax_load":1,"main_group_id":7103,"display_options":{"allowed_post_types":[],"flag_url_match":false},"custom_post_data":{"http_referrer":"https:\/\/it-learner.de\/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen\/"},"current_screen":{"screen_type":4,"screen_id":30499},"ignored_fields":["email","_captcha_size","_captcha_theme","_captcha_type","_submit_option","_use_captcha","g-recaptcha-response","__tcb_lg_fc","__tcb_lg_msg","_state","_form_type","_error_message_option","_back_url","_submit_option","url","_asset_group","_asset_option","mailchimp_optin"]};} else {ThriveGlobal.$j.extend(true, TL_Const, {"security":"595a86adc0","ajax_url":"https:\/\/it-learner.de\/wp-admin\/admin-ajax.php","forms":[],"action_conversion":"tve_leads_ajax_conversion","action_impression":"tve_leads_ajax_impression","ajax_load":1,"main_group_id":7103,"display_options":{"allowed_post_types":[],"flag_url_match":false},"custom_post_data":{"http_referrer":"https:\/\/it-learner.de\/wenn-das-netzwerk-unter-windows-10-sehr-langsam-ist-koennte-das-abschalten-der-autotuning-funktion-abhilfe-schaffen\/"},"current_screen":{"screen_type":4,"screen_id":30499},"ignored_fields":["email","_captcha_size","_captcha_theme","_captcha_type","_submit_option","_use_captcha","g-recaptcha-response","__tcb_lg_fc","__tcb_lg_msg","_state","_form_type","_error_message_option","_back_url","_submit_option","url","_asset_group","_asset_option","mailchimp_optin"]})} /* */</script><div></div>  <script type="text/javascript">(function(e,t,o,n,p,r,i){e.visitorGlobalObjectAlias=n;e[e.visitorGlobalObjectAlias]=e[e.visitorGlobalObjectAlias]||function(){(e[e.visitorGlobalObjectAlias].q=e[e.visitorGlobalObjectAlias].q||[]).push(arguments)};e[e.visitorGlobalObjectAlias].l=(new Date).getTime();r=t.createElement("script");r.src=o;r.async=true;i=t.getElementsByTagName("script")[0];i.parentNode.insertBefore(r,i)})(window,document,"https://diffuser-cdn.app-us1.com/diffuser/diffuser.js","vgo");
+    vgo('setAccount', '610367816');
+    vgo('setTrackByDefault', true);
+    vgo('process');</script>  <script defer src="https://it-learner.de/wp-content/cache/autoptimize/js/autoptimize_3c259ca78de1252ee4eb1114538a4c8a.js"></script></body></html>
+<!-- Cached by WP-Optimize - https://getwpo.com - Last modified: Thu, 27 Feb 2020 16:13:25 GMT -->

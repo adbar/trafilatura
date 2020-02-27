@@ -1,0 +1,988 @@
+
+<!DOCTYPE html>
+<html lang="de" dir="ltr" prefix="content: http://purl.org/rss/1.0/modules/content/  dc: http://purl.org/dc/terms/  foaf: http://xmlns.com/foaf/0.1/  og: http://ogp.me/ns#  rdfs: http://www.w3.org/2000/01/rdf-schema#  schema: http://schema.org/  sioc: http://rdfs.org/sioc/ns#  sioct: http://rdfs.org/sioc/types#  skos: http://www.w3.org/2004/02/skos/core#  xsd: http://www.w3.org/2001/XMLSchema# ">
+<head>
+<meta charset="utf-8"><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"ca72d542be",applicationID:"56771253"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1167.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/themes/contrib/infinite/js/infinite/utils/head-cookie-utils.js"></script>
+<meta charset="utf-8" />
+<script type="application/json" data-breakpoint-settings="breakpoint-settings-json">{"Breakpoints":{"xxs":0,"xs":480,"sm":767,"md":992,"lg":1128,"xl":1450,"xxl":1800},"DeviceMapping":{"smartphone":"xxs","tablet":"sm","desktop":"md"}}</script>
+<script src="/modules/contrib/breakpoint_js_settings/js/breakpointSettingsLoader.js"></script>
+<script id="ad-entity-settings" type="application/json">{"responsive":false,"inline":false,"p13n":false}</script>
+<meta itemprop="acquia_lift:content_title" content="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" />
+<meta itemprop="acquia_lift:content_type" content="article" />
+<meta itemprop="acquia_lift:page_type" content="node page" />
+<meta itemprop="acquia_lift:context_language" content="de" />
+<meta itemprop="acquia_lift:content_section" content="Trends &amp; Styling" />
+<meta itemprop="acquia_lift:content_keywords" content="" />
+<meta itemprop="acquia_lift:post_id" content="357196" />
+<meta itemprop="acquia_lift:content_uuid" content="47af768c-9f72-4c27-bde0-729e88005ff1" />
+<meta itemprop="acquia_lift:published_date" content="1560960000" />
+<meta itemprop="acquia_lift:persona" content="Trends &amp; Styling" />
+<meta itemprop="acquia_lift:engagement_score" content="1" />
+<meta itemprop="acquia_lift:account_id" content="HUBERTBURDAMEDIAEU" />
+<meta itemprop="acquia_lift:site_id" content="elle" />
+<meta itemprop="acquia_lift:contentOrigin" content="" />
+<meta itemprop="acquia_lift:liftAssetsURL" content="https://lift3assets.lift.acquia.com/stable" />
+<meta itemprop="acquia_lift:liftDecisionAPIURL" content="https://eu-central-1-decisionapi.lift.acquia.com" />
+<meta itemprop="acquia_lift:authEndpoint" content="https://eu-central-1-oauth2.lift.acquia.com/authorize" />
+<meta itemprop="acquia_lift:bootstrapMode" content="auto" />
+<meta itemprop="acquia_lift:contentReplacementMode" content="trusted" />
+<script src="https://lift3assets.lift.acquia.com/stable/lift.js" async></script>
+<script src="https://script.ioam.de/iam.js?m=1"></script>
+<meta name="title" content="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" />
+<link rel="canonical" href="https://www.elle.de/plateau-sneaker-trend" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="robots" content="index, follow" />
+<meta http-equiv="content-language" content="de" />
+<meta property="og:site_name" content="ELLE" />
+<meta name="description" content="Alexander McQueen bis Adidas: Für den Sommer 2019 setzen die einflußreichsten Labels auf Plateau-Sneaker. Mehr über den Trend auf ELLE.de!" />
+<meta name="twitter:title" content="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" />
+<meta name="twitter:site" content="@ELLE_de" />
+<meta property="og:type" content="article" />
+<meta name="news_keywords" content="Sneaker, Sneaker-Trends, Fashion-Mode, Modetrends Frühjahr/Sommer, Sommerschuhe, Plateau-Sneaker" />
+<meta property="fb:app_id" content="574248226045295" />
+<meta name="twitter:description" content="Alexander McQueen bis Adidas: Für den Sommer 2019 setzen die einflußreichsten Labels auf Plateau-Sneaker. Mehr über den Trend auf ELLE.de!" />
+<meta property="og:url" content="https://www.elle.de/plateau-sneaker-trend" />
+<meta property="og:title" content="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" />
+<meta name="twitter:creator" content="@ELLE_de" />
+<meta name="keywords" content="Fashion, Sneaker, Fashion-Mode, Modetrends Frühjahr/Sommer, Sommerschuhe" />
+<link rel="image_src" href="https://www.elle.de/sites/default/files/styles/og_image/public/images/2019-06/plateau-sneaker.jpg?h=a2aa609c&amp;itok=S6EnruQ8" />
+<meta name="referrer" content="no-referrer-when-downgrade" />
+<meta name="twitter:url" content="https://www.elle.de/plateau-sneaker-trend" />
+<meta property="og:description" content="Alexander McQueen bis Adidas: Für den Sommer 2019 setzen die einflußreichsten Labels auf Plateau-Sneaker. Mehr über den Trend auf ELLE.de!" />
+<meta name="twitter:image:width" content="1200" />
+<meta name="twitter:image:height" content="630" />
+<meta name="twitter:image" content="https://www.elle.de/sites/default/files/styles/og_image/public/images/2019-06/plateau-sneaker.jpg?h=a2aa609c&amp;itok=S6EnruQ8" />
+<meta property="og:image" content="https://www.elle.de/sites/default/files/styles/og_image/public/images/2019-06/plateau-sneaker.jpg?h=a2aa609c&amp;itok=S6EnruQ8" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="de_DE" />
+<meta property="article:publisher" content="https://www.facebook.com/ElleGermany" />
+<meta property="article:section" content="Fashion" />
+<meta property="article:tag" content="Sneaker" />
+<meta property="article:tag" content="Fashion-Mode" />
+<meta property="article:tag" content="Modetrends Frühjahr/Sommer" />
+<meta property="article:tag" content="Sommerschuhe" />
+<meta property="article:published_time" content="2019-06-19T18:00:00+02:00" />
+<meta property="article:modified_time" content="2019-06-19T18:00:00+02:00" />
+<meta name="Generator" content="Drupal 8 (Thunder | http://www.thunder.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta property="fb:pages" content="165220715578" />
+<script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Article",
+            "name": "Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl",
+            "headline": "Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl",
+            "about": [
+                "Sneaker",
+                "Fashion-Mode",
+                "Modetrends Frühjahr/Sommer",
+                "Sommerschuhe"
+            ],
+            "description": "Alexander McQueen bis Adidas: Für den Sommer 2019 setzen die einflußreichsten Labels auf Plateau-Sneaker. Mehr über den Trend auf ELLE.de!",
+            "image": {
+                "@type": "ImageObject",
+                "representativeOfPage": "True",
+                "url": "https://www.elle.de/sites/default/files/styles/og_image/public/images/2019-06/plateau-sneaker.jpg?h=a2aa609c\u0026itok=S6EnruQ8",
+                "width": "1200",
+                "height": "630"
+            },
+            "datePublished": "2019-06-19T18:00:00+02:00",
+            "dateModified": "2019-06-19T18:00:00+02:00",
+            "author": {
+                "@type": "Person",
+                "@id": "276",
+                "name": "Alexa von Heyden",
+                "url": "https://www.elle.de/autor/alexa-von-heyden"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "@id": "https://www.elle.de/",
+                "name": "ELLE",
+                "url": "https://www.elle.de/",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://www.elle.de/themes/custom/elle_infinite_amp/logo_schema_149x60.jpg",
+                    "width": "149",
+                    "height": "60"
+                }
+            },
+            "mainEntityOfPage": "https://www.elle.de/plateau-sneaker-trend"
+        }
+    ]
+}</script>
+<script type="text/javascript">dataLayer = [{"environment":{"systemType":"prod","isLoggedIn":false},"page":{"name":"Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl","entityType":"node","contentType":"article","entityID":"357196","authorName":"Alexa von Heyden","contentSubType":["Affiliate-Tipser","Affiliate-Tracdelight","Image","Instagram","Text"],"category":"Fashion","subCategory":"Trends &amp; Styling","channelId":"18751","sponsorType":"default","articlePublishDate":"2019-06-19T18:00:00+0200"}}];</script>
+<link rel="shortcut icon" href="/themes/custom/elle_infinite/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="revision" href="https://www.elle.de/plateau-sneaker-trend" />
+<link rel="amphtml" href="https://www.elle.de/plateau-sneaker-trend?amp" />
+<title>Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl</title>
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_v52pnKvzGMwJsCsbQob1gLXKl-3n3S7iFQHISwvruAA.css?q5nb4g" />
+<link rel="stylesheet" media="all" href="/sites/default/files/css/css_ol_WoanH_rKDcL-l__5fsTHRuBKoyfSVH7_CzU_XF8E.css?q5nb4g" />
+<script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/357196","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"de"},"pluralDelimiter":"\u0003","ajaxPageState":{"libraries":"ad_entity\/viewready,ad_entity_adtech\/page_targeting,blazy\/load,core\/html5shiv,core\/picturefill,elle_infinite\/global-styling,hm_newsletter\/base,infinite\/blockadblock,infinite\/drupal.behaviors.redirect-on-click,infinite\/infinite.header,infinite\/infinite.init,infinite\/infinite.libs,infinite\/infinite.manager.marketing-manager,infinite\/infinite.manager.scroll-manager,infinite\/infinite.manager.tracking-manager,infinite\/infinite.models.ajax-model,infinite\/infinite.models.base.base-collection-model,infinite\/infinite.models.base.base-model,infinite\/infinite.models.device-model,infinite\/infinite.models.infinite-block-data-model,infinite\/infinite.models.page-offsets-model,infinite\/infinite.views.article-view,infinite\/infinite.views.base.base-dynamic-view,infinite\/infinite.views.base.base-feed-view,infinite\/infinite.views.base.base-inview-view,infinite\/infinite.views.base.base-list-swipeable-view,infinite\/infinite.views.base.base-sidebar-view,infinite\/infinite.views.base.base-view,infinite\/infinite.views.gallery-view,infinite\/infinite.views.infinite-block-view,infinite\/infinite.views.main-view,infinite\/infinite.views.marketing-view,infinite\/infinite.views.menu-main-view,infinite\/infinite.views.menu-sidebar-view,infinite\/infinite.views.modal-search-view,infinite\/infinite.views.product-view,infinite\/infinite.views.spinner,infinite\/infinite.views.sticky-view,infinite\/infinite.views.teaser-feed-view,infinite\/instagram,infinite\/intersectionobserver,infinite\/swiper,infinite_base\/jquery-migrate,ivw_integration\/ivw_call,media_entity_instagram\/integration,paragraphs\/drupal.paragraphs.unpublished,paragraphs_starterkit\/drupal.paragraphs_starterkit,system\/base,thunder_media\/gallery,tipser_client\/frontend","theme":"elle_infinite","theme_token":null},"ajaxTrustedUrl":[],"adtech_page_targeting":{"website":"elle"},"hm_newsletter":{"clientid":"376445","env":"production"},"product_db":{"url":"https:\/\/products.harpersbazaar.de","consumer_uuid":"eae68a91-82b7-471a-815b-b62d1b0b24b7","elastic_url":"https:\/\/88d9acf92f5e44d0a03d1c27c3b679ca.eu-central-1.aws.cloud.es.io\/elasticsearch_index_productdb_products","elastic_authorization":"elle:elleelle"},"theme_breakpoints":"[{\u0022name\u0022:\u0022mobile_sm\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 0px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]},{\u0022name\u0022:\u0022mobile_md\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 414px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]},{\u0022name\u0022:\u0022xs\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 480px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]},{\u0022name\u0022:\u0022sm\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 767px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]},{\u0022name\u0022:\u0022md\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 992px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]},{\u0022name\u0022:\u0022lg\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 1279px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]},{\u0022name\u0022:\u0022xl\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 1439px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]},{\u0022name\u0022:\u0022xxl\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 1800px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022,\u00222x\u0022]}]","datalayer":{"47af768c-9f72-4c27-bde0-729e88005ff1":{"environment":{"systemType":"prod","isLoggedIn":false},"page":{"name":"Sneaker-Trend: Plateau-Sohlen sorgen f\u00fcr ein neues Hochgef\u00fchl","entityType":"node","contentType":"article","entityID":"357196","authorName":"Alexa von Heyden","contentSubType":["Affiliate-Tipser","Affiliate-Tracdelight","Image","Instagram","Text"],"category":"Fashion","subCategory":"Trends \u0026 Styling","channelId":"18751","sponsorType":"default","articlePublishDate":"2019-06-19T18:00:00+0200"}}},"blazy":{"loadInvisible":false,"offset":100,"saveViewportOffsetDelay":50},"amazon":{"associatesIdDefault":"e0bb5-21"},"tipser":{"userid":"5b8686bb9d258016bcab1f77","env":"prod"},"user":{"uid":0,"permissionsHash":"c57f0d13a6a0c55477882c04352b0667a959eda04577a5e1d4842630ffa0b5fb"}}</script>
+<!--[if lte IE 8]>
+<script src="/sites/default/files/js/js_VtafjXmRvoUgAzqzYTA3Wrjkx9wcWhjP0G4ZnnqRamA.js"></script>
+<![endif]-->
+<script src="/sites/default/files/js/js_J1FgOLusNeqv9XYYNuNXf35rpGzztz5sIe6N6-6yuxQ.js"></script>
+<script src="https://burdasty.tag.tagtool.de/burdasty_ell/lib/init.js" async="async"></script>
+<script src="/sites/default/files/js/js_l-Irt3U9vhaF78DA1c13IDn8_ZwoAgC5OAiIOqlYjok.js"></script>
+</head>
+<body class="plateau-sneaker-trend page-node page-article">
+
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NNNNV5"
+                    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<script>
+
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer', 'GTM-NNNNV5');
+
+  </script>
+
+<div id="page-wrapper">
+<div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+<div id="page">
+<header id="header">
+<p>
+<style type="text/css">
+<!--/*--><![CDATA[/* ><!--*/
+
+<!--/*--><![CDATA[/* ><!--*/
+
+.page-newsletter .newsletter__optin-text strong {
+  font-family: unset;
+  letter-spacing: unset;
+}
+
+/* https://jira.burda.com/browse/INREL-6863 */
+#content .item-product--single .img-container {
+    height: auto;
+    padding-bottom: 0;
+}
+
+.region-presenter.no-v-padding {
+   padding-top: 0 !important;
+   margin-top: 0 !important;
+}
+
+#ecommerce-slider-326496 .ecommerce-slider__bg {
+   padding-bottom: 0 !important;
+   height: 700px;
+}
+
+#ecommerce-slider-326496 .ecommerce-slider__bg img {
+   object-fit: cover;
+   object-position: top;
+   height: 700px;
+}
+
+#ecommerce-slider-326496 .text-shop, #ecommerce-slider-326496 .text-price {
+    display: none;
+}
+
+@media (max-width: 479px) {
+    #header-home .socials-bar {
+        opacity: 0;
+        filter: alpha(opacity=0);
+        visibility: hidden
+    }
+}
+
+/*--><!]]]]><![CDATA[>*/
+
+/*--><!]]>*/
+</style></p>
+
+<style type="text/css">
+<!--/*--><![CDATA[/* ><!--*/
+
+<!--/*--><![CDATA[/* ><!--*/
+.affiliatelinks ~ * .affiliatelinks {
+    display: none;
+  }
+
+/*--><!]]]]><![CDATA[>*/
+
+/*--><!]]>*/
+</style><style type="text/css">
+<!--/*--><![CDATA[/* ><!--*/
+
+<!--/*--><![CDATA[/* ><!--*/
+#user-navigation--main-navigation .tipser__button:before {
+    opacity: .8;
+}
+
+/*--><!]]]]><![CDATA[>*/
+
+/*--><!]]>*/
+</style>
+<script type="text/javascript">
+    var iam_data = {
+        "st": "elle",
+        "cp": "01L1F1S1H2D1A1P1C04",
+        "sv": "in",
+        "co": "",
+        "sc": "yes"
+    };
+
+    if ( (window.innerWidth < 480) || (/iPhone/.test(window.navigator.userAgent))) {
+        iam_data.cp = "01L1F1S1H2D2A1P1C04";
+        iam_data.sv = "mo";
+
+        var ivw_mobile_site = "mobelle";
+        if((typeof ivw_mobile_site !== 'undefined') && ivw_mobile_site != '') {
+            iam_data.st = ivw_mobile_site;
+        }
+    }
+    if ((typeof window.iom !== 'undefined') && (typeof window.iom.c === 'function')) {
+        iom.c(iam_data, 1);
+    }
+</script>
+<nav id="menu-main-navigation" class="region-full-content">
+<button id="menu-open-btn" class="icon icon-menu" type="button"><span class="label-menu">Menü</span></button>
+<div class="container-content region-fixed-content">
+<div class="logo" data-internal-url="/">
+<img src="/themes/custom/elle_infinite/logo.svg" alt="Startseite" />
+</div>
+<ul class="menu">
+<li class="menu-item">
+<a href="/fashion" target="" rel="" title="Fashion" data-drupal-link-system-path="taxonomy/term/18746">Fashion</a>
+<ul>
+<li class="menu-item">
+<a href="/trends-styling" target="" rel="" title="Trends &amp; Styling" data-drupal-link-system-path="taxonomy/term/18751">Trends &amp; Styling</a>
+</li>
+<li class="menu-item">
+<a href="/uhren-schmuck" target="" rel="" title="Uhren &amp; Schmuck" data-drupal-link-system-path="taxonomy/term/18786">Uhren &amp; Schmuck</a>
+</li>
+<li class="menu-item">
+<a href="/designer" target="" rel="" title="Designer" data-drupal-link-system-path="vocabulary/brands">Designer</a>
+</li>
+<li class="menu-item">
+<a href="/models" target="" rel="" title="Models" data-drupal-link-system-path="vocabulary/model">Models</a>
+</li>
+<li class="menu-item">
+<a href="/modelexikon" data-drupal-link-system-path="taxonomy/term/49796">Modelexikon</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="/beauty" target="" rel="" data-drupal-link-system-path="taxonomy/term/18791">Beauty</a>
+<ul>
+<li class="menu-item">
+<a href="/trends" target="" rel="" data-drupal-link-system-path="taxonomy/term/18796">Trends</a>
+</li>
+<li class="menu-item">
+<a href="/haare-frisuren" target="" rel="" data-drupal-link-system-path="taxonomy/term/18801">Haare &amp; Frisuren</a>
+</li>
+<li class="menu-item">
+<a href="/hautpflege" target="" rel="" data-drupal-link-system-path="taxonomy/term/18806">Hautpflege</a>
+</li>
+<li class="menu-item">
+<a href="/make-up" target="" rel="" data-drupal-link-system-path="taxonomy/term/18811">Make-Up</a>
+</li>
+<li class="menu-item">
+<a href="/abnehmen-fitness" title="Abnehmen &amp; Fitness" data-drupal-link-system-path="taxonomy/term/49551">Abnehmen &amp; Fitness</a>
+</li>
+<li class="menu-item">
+<a href="/beauty-lexikon" target="" rel="" title="Beauty Lexikon" data-drupal-link-system-path="vocabulary/beauty">Beauty Lexikon</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="/lifestyle" target="" rel="" title="Lifestyle" data-drupal-link-system-path="taxonomy/term/18816">Lifestyle</a>
+<ul>
+<li class="menu-item">
+<a href="/essen-trinken" target="" rel="" title="Essen &amp; Trinken" data-drupal-link-system-path="taxonomy/term/18826">Essen &amp; Trinken</a>
+</li>
+<li class="menu-item">
+<a href="/health" title="Health" data-drupal-link-system-path="taxonomy/term/18831">Health</a>
+</li>
+<li class="menu-item">
+<a href="/hochzeit" target="" rel="" title="Hochzeit" data-drupal-link-system-path="taxonomy/term/18836">Hochzeit</a>
+</li>
+<li class="menu-item">
+<a href="/psycho" target="" rel="" title="Psychologie" data-drupal-link-system-path="taxonomy/term/18841">Psychologie</a>
+</li>
+<li class="menu-item">
+<a href="/kultur-tipps" target="" rel="" title="Kultur" data-drupal-link-system-path="taxonomy/term/18891">Kultur</a>
+</li>
+<li class="menu-item">
+<a href="/frauen-3-0" target="" rel="" title="Frauen 3.0" data-drupal-link-system-path="taxonomy/term/18851">Frauen 3.0</a>
+</li>
+<li class="menu-item">
+<a href="/horoskop" target="" rel="" title="Horoskop" data-drupal-link-system-path="taxonomy/term/18856">Horoskop</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="/decoration" target="" rel="" title="Decoration" data-drupal-link-system-path="taxonomy/term/18861">Decoration</a>
+</li>
+<li class="menu-item">
+<a href="/traveller" target="" rel="" title="Traveller" data-drupal-link-system-path="taxonomy/term/18866">Traveller</a>
+<ul>
+<li class="menu-item">
+<a href="/city" target="" rel="" title="City" data-drupal-link-system-path="taxonomy/term/18871">City</a>
+</li>
+<li class="menu-item">
+<a href="/hotels" target="" rel="" title="Hotels" data-drupal-link-system-path="taxonomy/term/18876">Hotels</a>
+</li>
+<li class="menu-item">
+<a href="/spa" target="" rel="" title="Spa" data-drupal-link-system-path="taxonomy/term/18881">Spa</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="/fashion-weeks" target="" rel="" title="Fashion Weeks" data-drupal-link-system-path="taxonomy/term/18756">Fashion Weeks</a>
+<ul>
+<li class="menu-item">
+<a href="/fashion-week-new-york" target="" rel="" title="New York" data-drupal-link-system-path="taxonomy/term/18761">New York</a>
+</li>
+<li class="menu-item">
+<a href="/fashion-week-london" target="" rel="" title="London" data-drupal-link-system-path="taxonomy/term/18766">London</a>
+</li>
+<li class="menu-item">
+<a href="/fashion-week-mailand" target="" rel="" title="Mailand" data-drupal-link-system-path="taxonomy/term/18771">Mailand</a>
+</li>
+<li class="menu-item">
+<a href="/fashion-week-paris" target="" rel="" title="Paris" data-drupal-link-system-path="taxonomy/term/18776">Paris</a>
+</li>
+<li class="menu-item">
+<a href="/fashion-week-berlin" target="" rel="" title="Berlin" data-drupal-link-system-path="taxonomy/term/18781">Berlin</a>
+</li>
+<li class="menu-item">
+<a href="/haute-couture" target="" rel="" title="Haute Couture" data-drupal-link-system-path="taxonomy/term/18886">Haute Couture</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="/shop-it" data-drupal-link-system-path="taxonomy/term/59216">Shop-it</a>
+</li>
+</ul>
+</div>
+<div id="user-navigation--main-navigation">
+<div class="tipser-icon-container"></div>
+</div>
+<button id="search-open-btn" class="icon icon-search" type="button"></button>
+</nav>
+</header>
+<div data-drupal-messages-fallback class="hidden"></div>
+<main role="main" id="main" class="container-main">
+<div id="content" class="region-content">
+<div data-view-type="infiniteBlockView" data-nid="357196" data-uuid="47af768c-9f72-4c27-bde0-729e88005ff1" data-history-url="/plateau-sneaker-trend" data-history-title="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" data-tr-container-type="article" data-no-track="true" class="region-full-content region-infinite-block infinite-item">
+<div class="region-full-content region-marketing ad-inactive marketing-view" data-view-type="marketingView">
+<div class="container-content container-fixed-content container-marketing">
+<div class="item-marketing">
+<img class="item-marketing__fallback" src="/themes/custom/elle_infinite/logo.svg"><div id="ad-entity-EsEYia_R_pk" class="ad-entity-container not-initialized" data-ad-entity="adtech_leaderboard_full_article" data-ad-entity-type="adtech_factory" data-ad-entity-view="adtech_default" data-ad-entity-variant="[&quot;any&quot;]" data-ad-entity-targeting="{&quot;entitytype&quot;:&quot;node\/article&quot;,&quot;entitylabel&quot;:&quot;Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl&quot;,&quot;entityuuid&quot;:&quot;47af768c-9f72-4c27-bde0-729e88005ff1&quot;,&quot;channel&quot;:&quot;homepage\/fashion\/trends-und-styling&quot;,&quot;contentwidth&quot;:&quot;full&quot;}"><div id="adtech-aa_Ep1ST35Q" class="adtech-factory-ad adtech-default-view" data-atf="tag" data-atf-format="leaderboard"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="region-full-content region-breadcrumb">
+<nav class="breadcrumb"><ol itemscope itemtype="http://schema.org/BreadcrumbList"><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="/" itemscope itemtype="http://schema.org/Thing" itemprop="item">
+<span itemprop="name">Home</span>
+</a>
+</li>
+<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="/fashion" itemscope itemtype="http://schema.org/Thing" itemprop="item">
+<span itemprop="name">Fashion</span>
+</a>
+</li>
+<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+<a href="/trends-styling" itemscope itemtype="http://schema.org/Thing" itemprop="item">
+<span itemprop="name">Trends &amp; Styling</span>
+</a>
+</li>
+</ol></nav></div>
+<article role="article" about="/plateau-sneaker-trend" class="region-full-content item-content item-content--article" data-view-type="articleView" data-history-url="/plateau-sneaker-trend" data-history-title="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" data-nid="357196" data-uuid="47af768c-9f72-4c27-bde0-729e88005ff1"><div class="item-content__header">
+<h1 class="title--article">Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl</h1>
+<div class="author item-author" data-internal-url="https://www.elle.de/autor/alexa-von-heyden">
+<div class="img-container container-avatar">
+<a href="/autor/alexa-von-heyden" hreflang="de"><img src="/sites/default/files/styles/square_xxs/public/pictures/2019-05/alexa-von-heyden-sandra-semburg.jpg?itok=WUyl-Lql" width="50" height="50" alt="Profile picture for user alexa.heyden" typeof="foaf:Image"></a>
+</div>
+<div class="caption"> <div class="text-author">Artikel von
+<span>Alexa von Heyden</span>
+</div>
+ <time datetime="2019-06-19T18:00:00+0200" title>19. Juni 2019</time></div> </div>
+</div>
+<div class="item-content__content">
+<div class="item-paragraph--media--image item-paragraph item-paragraph--full item-paragraph--media">
+<div class="item-media item-media--image item-media--image-landscape">
+<div class="img-container__wrapper">
+<div class="img-container">
+<div class="media media--blazy media--loading media--responsive media--image">
+<picture><!--[if IE 9]><video style="display: none;"><![endif]--><source media="all and (min-width: 1800px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_xxl/public/images/2019-06/plateau-sneaker.jpg?itok=ftSWYF8j 1x"><source media="all and (min-width: 1439px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_xl/public/images/2019-06/plateau-sneaker.jpg?itok=7QEwWkwI 1x"><source media="all and (min-width: 1279px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_l/public/images/2019-06/plateau-sneaker.jpg?itok=4GYqbR9q 1x, /sites/default/files/styles/media_full_l_x2/public/images/2019-06/plateau-sneaker.jpg?itok=4W_8OvIU 2x"><source media="all and (min-width: 992px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_m/public/images/2019-06/plateau-sneaker.jpg?itok=Ps-vrvhV 1x, /sites/default/files/styles/media_full_m_x2/public/images/2019-06/plateau-sneaker.jpg?itok=hXItjKQv 2x"><source media="all and (min-width: 767px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_s/public/images/2019-06/plateau-sneaker.jpg?itok=cZvsoJtx 1x, /sites/default/files/styles/media_full_s_x2/public/images/2019-06/plateau-sneaker.jpg?itok=cSfZKV1H 2x"><source media="all and (min-width: 480px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_xs/public/images/2019-06/plateau-sneaker.jpg?itok=62Nzwj1H 1x, /sites/default/files/styles/media_full_xs_x2/public/images/2019-06/plateau-sneaker.jpg?itok=qF5LZsDs 2x"><source media="all and (min-width: 414px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_mobile_m/public/images/2019-06/plateau-sneaker.jpg?itok=x9ouDH8- 1x, /sites/default/files/styles/media_full_mobile_m_x2/public/images/2019-06/plateau-sneaker.jpg?itok=oZ1rXbXe 2x"><source media="all and (min-width: 0px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_full_mobile_s/public/images/2019-06/plateau-sneaker.jpg?itok=40OYBttS 1x, /sites/default/files/styles/media_full_mobile_s_x2/public/images/2019-06/plateau-sneaker.jpg?itok=Uxubf18C 2x"><!--[if IE 9]></video><![endif]--><img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/media_small_mobile_s/public/images/2019-06/plateau-sneaker.jpg?itok=2r1V1jtp" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Plateau Sneaker" title="Plateau Sneaker" typeof="foaf:Image"><noscript>
+	      <img src="/sites/default/files/styles/media_full_xxl/public/images/2019-06/plateau-sneaker.jpg?itok=ftSWYF8j 1x" alt="Plateau Sneaker" title="Plateau Sneaker" typeof="foaf:Image"></noscript>
+</picture></div>
+</div>
+</div>
+<div class="caption">
+<div class="text-copyright">
+<span>PR
+</span>
+</div>
+<div class="text-description"><p><a href="https://www.adidas.de/adidas-sleek-super-schuh/EF8858.html" rel="nofollow" target="_blank">Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, um&nbsp;100 €</a></p>
+</div>
+<div class="socials socials-bar">
+<div class="item-social icon-pinterest" data-url="https://www.elle.de/plateau-sneaker-trend?utm_medium=social&amp;utm_campaign=Sharing&amp;utm_source=Sharing_Pinterest" data-media-url="https://www.elle.de/sites/default/files/styles/media_middle_m_x2/public/images/2019-06/plateau-sneaker.jpg?itok=nYAyRFub" data-description="Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, um&nbsp;100 €
+" data-social-type="pinterest"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="item-content__block item-group--outer-wrapper">
+<div class="item-group--outer">
+<aside class="socials socials-bar socials-vertical-bar"><a class="item-social icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://www.elle.de/plateau-sneaker-trend?utm_medium=social&amp;utm_campaign=Sharing&amp;utm_source=Sharing_Facebook" target="_blank" rel="noopener noreferrer" data-social-type="facebook">
+</a>
+<a class="item-social icon-whatsapp" href="whatsapp://send?text=Sneaker-Trend%3A%20Plateau-Sohlen%20sorgen%20f%C3%BCr%20ein%20neues%20Hochgef%C3%BChl%20-%20https%3A%2F%2Fwww.elle.de%2Fplateau-sneaker-trend%3Futm_medium%3Dsocial%26utm_campaign%3DSharing%26utm_source%3DSharing_Whatsapp" data-social-type="whatsapp" rel="nofollow">
+</a>
+<div class="item-social icon-pinterest" data-url="https://www.elle.de/plateau-sneaker-trend?utm_medium=social&amp;utm_campaign=Sharing&amp;utm_source=Sharing_Pinterest" data-media-url="https://www.elle.de/sites/default/files/styles/pinterest_fallback_teaser_image/public/images/2019-06/plateau-sneaker.jpg?h=a2aa609c&amp;itok=2BBcq17b" data-description="Alexander McQueen bis Adidas: Für den Sommer 2019 setzen die einflußreichsten Labels auf Plateau-Sneaker. Mehr über den Trend auf ELLE.de!" data-social-type="pinterest">
+</div>
+<div class="item-social icon-email" data-url="https%3A%2F%2Fwww.elle.de%2Fplateau-sneaker-trend%3Futm_medium%3Dsocial%26utm_campaign%3DSharing%26utm_source%3DSharing_Email" data-email-share-text="Ich habe diesen Artikel auf www.elle.de entdeckt und glaube, er wird dich interessieren:" data-email-subject="ELLE:" data-description="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" data-social-type="email">
+</div>
+</aside><div class="item-content__block item-group--inner">
+<div class="item-content__row--sidebar">
+<div class="item-content__row-col col--left">
+<div class="item-paragraph item-paragraph--small item-paragraph--text">
+<p class="pread-1">Ob zum cremefarbenen <a href="/fashion-mode/blazer">Blazer</a> oder roten Sommerkleid: Sneaker sind längst abseits des Sportplatz salonfähig und gehören jede Saison aufs Neue zu den am meisten getragenen Lieblingsteilen in deiner Garderobe. Turnschuh-Klassiker wie die <a href="/converse-chucks-277714.html">Converse Chuck Taylor All Star</a> oder Nike Air Max kannst du sogar zu fast jedem Anlass tragen –&nbsp;sei es zu einem Vorstellungsgespräch, einer&nbsp;Taufe oder Galerie-Eröffnung.</p><div class="ad-content ad-inactive marketing-view" data-view-type="marketingView">
+<div class="item-marketing">
+<div id="ad-entity-0HZBNhtIRv8" class="ad-entity-container not-initialized" data-ad-entity="adtech_special_content_article" data-ad-entity-type="adtech_factory" data-ad-entity-view="adtech_default" data-ad-entity-variant="[&quot;any&quot;]" data-ad-entity-targeting="{&quot;entitytype&quot;:&quot;node\/article&quot;,&quot;entitylabel&quot;:&quot;Sneaker-Trend: Plateau-Sohlen sorgen fÃ¼r ein neues HochgefÃ¼hl&quot;,&quot;entityuuid&quot;:&quot;47af768c-9f72-4c27-bde0-729e88005ff1&quot;,&quot;channel&quot;:&quot;homepage\/fashion\/trends-und-styling&quot;,&quot;contentwidth&quot;:&quot;content&quot;}"><div id="adtech-TKLM17n7k9M" class="adtech-factory-ad adtech-default-view" data-atf="tag" data-atf-format="special"></div>
+</div>
+</div>
+</div>
+<h2>Plateau-Sneaker:&nbsp;So sieht der neue Sneaker-Trend aus</h2>
+<p>Doch beim Styling erweisen sich die flachen Schuhe oftmals als tricky. Vor allem dann,&nbsp;wenn du sie zu einem anderen Look als Jeans tragen möchtest. Denn anders als High&nbsp;Heels verlängern sie optisch nicht deine Beine, sondern lassen sie leider eher kürzer wirken. So manche <a href="/softe-palazzohosen">Palazzohose</a> kann da schnell wie ein Sack und hippieskes Maxikleid wie ein unförmiges Zelt wirken.&nbsp;</p>
+<p>Die Lösung für diese modische Herausforderung liegt in der Sohle: Sowohl Sportswear-Marken als auch Designer-Labels kombinieren bei ihren aktuellen Sneaker-Modellen klassische&nbsp;Formen mit einer femininen Plateau-Sohle.</p>
+</div>
+<div class="item-paragraph--single-product item-paragraph item-paragraph--small item-paragraph--advertising-products-paragraph">
+<div class="container-wrapper">
+<div class="container-content">
+<div class="item-ecommerce item-product--single" data-title="H &amp; M - Plateausneaker - White - Damen" data-shop="H&amp;M DE" data-brand="H &amp; M" data-price="24.99" data-currency="EUR" data-uuid="67bcecbb-8a5f-487f-9ed3-7798da9954e7" data-product-id="6plvwryi5j3suhox" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=c60oezwbj9ga1hb7&amp;ein=6plvwryi5j3suhox&amp;paid=0n9HtXhUykhPbGdx&amp;subid=6plvwryi5j3suhox" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe">
+<div class="affiliatelinks">
+<a href="/affiliatelinks" rel="nofollow" target="_self">Affiliatelink</a>
+</div>
+<div class="img-container">
+<div class="media media--blazy media--loading media--responsive media--image">
+<picture><!--[if IE 9]><video style="display: none;"><![endif]--><source media="all and (min-width: 480px)" type="image/jpeg" data-srcset="/sites/default/files/styles/product_single_l/public/tracdelight-6plvwryi5j3suhox.jpg?itok=Fm6m2Qjl 1x"><!--[if IE 9]></video><![endif]--><img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/product_single_s/public/tracdelight-6plvwryi5j3suhox.jpg?itok=2uIe1c9u" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="H &amp; M - Plateausneaker - White - Damen" typeof="foaf:Image"><noscript>
+	      <img src="/sites/default/files/styles/product_single_l/public/tracdelight-6plvwryi5j3suhox.jpg?itok=Fm6m2Qjl 1x" alt="H &amp; M - Plateausneaker - White - Damen" typeof="foaf:Image"></noscript>
+</picture></div>
+</div>
+<div class="caption">
+<div class="text-brand">H &amp; M
+</div>
+<div class="text-headline">H &amp; M - Plateausneaker - White - Damen
+</div>
+<div class="text-price">
+<span class="text-price--current">24,99
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="item-paragraph item-paragraph--small item-paragraph--instagram">
+<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/BwhCjGGF1Tt/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="12" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:658px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/p/BwhCjGGF1Tt/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631" /></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;"> View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/p/BwhCjGGF1Tt/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Kira Bejaoui (@kirabejaoui)</a> on <time style=" font-family:Arial,sans-serif; font-size:14px; line-height:17px;" datetime="2019-04-21T11:40:22+00:00">Apr 21, 2019 at 4:40am PDT</time></p></div></blockquote>
+</div>
+<div class="item-paragraph--single-product item-paragraph item-paragraph--small item-paragraph--advertising-products-paragraph pread-5">
+<div class="container-wrapper">
+<div class="container-content">
+<div class="item-ecommerce item-product--single" data-title="Nike Air Force 1 - Orange" data-shop="&amp; Other Stories DE" data-price="110.00" data-currency="EUR" data-uuid="a4750f2c-966b-4373-b829-e59085573351" data-product-id="telrcsmwqnz2op8h" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=l29c8jk5cwcqxnw8&amp;ein=telrcsmwqnz2op8h&amp;paid=0n9HtXhUykhPbGdx&amp;subid=telrcsmwqnz2op8h" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe">
+<div class="affiliatelinks">
+<a href="/affiliatelinks" rel="nofollow" target="_self">Affiliatelink</a>
+</div>
+<div class="img-container">
+<div class="media media--blazy media--loading media--responsive media--image">
+<picture><!--[if IE 9]><video style="display: none;"><![endif]--><source media="all and (min-width: 480px)" type="image/jpeg" data-srcset="/sites/default/files/styles/product_single_l/public/tracdelight-telrcsmwqnz2op8h.jpg?itok=ERuXn0sz 1x"><!--[if IE 9]></video><![endif]--><img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/product_single_s/public/tracdelight-telrcsmwqnz2op8h.jpg?itok=O4IUEv-J" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Nike Air Force 1 - Orange" typeof="foaf:Image"><noscript>
+	      <img src="/sites/default/files/styles/product_single_l/public/tracdelight-telrcsmwqnz2op8h.jpg?itok=ERuXn0sz 1x" alt="Nike Air Force 1 - Orange" typeof="foaf:Image"></noscript>
+</picture></div>
+</div>
+<div class="caption">
+<div class="text-brand"></div>
+<div class="text-headline">Nike Air Force 1 - Orange
+</div>
+<div class="text-price">
+<span class="text-price--current">110,00
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="a-lift__article-container-bottom">
+</div>
+<div class="item-paragraph item-paragraph--small item-paragraph--text">
+<h2>Plateau-Sneaker machen lange Beine</h2>
+<p>So geht die Tendenz nach <a href="/dad-sneaker">Dad Sneaker</a> und <a href="/ugly-sandals">Ugly Sneaker </a>wieder zu einem reduzierten Look, der aber nichts an der modischen Aussagekraft einbüßt.&nbsp;Plateau-Sneaker sind genial und funktionieren&nbsp;sowohl zum Business-Look als auch zu femininen Print-Kleidern. Das gilt für die <em>sleeke </em>All-White-Variante ebenso wie für sommerliches Bast-Plateau. Ein Hoch auf diesen hübschen Schuh-Trend!</p>
+</div>
+<div class="item-paragraph--default item-paragraph item-paragraph--small item-paragraph--advertising-products-paragraph">
+<div class="container-wrapper">
+<div class="affiliatelinks">
+<a href="/affiliatelinks" rel="nofollow" target="_self">Affiliatelinks</a>
+</div>
+<div class="container-content affiliatelinks--hide">
+<div class="item-ecommerce item-product" data-title="Plateau-Sneakers Ace aus Leder" data-shop="mytheresa DE" data-brand="Gucci" data-price="595.00" data-currency="EUR" data-uuid="862dfb2d-e9bc-41ca-80f0-03d38cde3b2f" data-product-id="7e93d4iuwlxyopjr" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=lFfCbCyQIw86JImD&amp;ein=7e93d4iuwlxyopjr&amp;paid=0n9HtXhUykhPbGdx&amp;subid=7e93d4iuwlxyopjr" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe Sneaker Flache Sneaker">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-7e93d4iuwlxyopjr.jpg?itok=GOFXNWb_" alt="Plateau-Sneakers Ace aus Leder" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Gucci
+</div>
+<div class="text-headline">Plateau-Sneakers Ace aus Leder
+</div>
+<div class="text-price">
+<span class="text-price--current">595,00
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="Golden Goose - Hi Star Plateau-sneakers Aus Metallic- Und Glitter-leder In Distressed-optik - Silber" data-shop="Net-A-Porter DE" data-brand="Golden Goose" data-price="325.00" data-currency="EUR" data-uuid="34673ea6-8a55-4cb0-9b06-9d204312a9aa" data-product-id="if3cbldpynh0zte1" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=h3kljlhuqwxzault&amp;ein=if3cbldpynh0zte1&amp;paid=0n9HtXhUykhPbGdx&amp;subid=if3cbldpynh0zte1" data-provider="tracdelight" data-view-type="productView" data-product-category="not available">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-if3cbldpynh0zte1.jpg?itok=3kQIdEOJ" alt="Golden Goose - Hi Star Plateau-sneakers Aus Metallic- Und Glitter-leder In Distressed-optik - Silber" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Golden Goose
+</div>
+<div class="text-headline">Golden Goose - Hi Star Plateau-sneakers Aus Metallic- Und Glitter-leder In Distressed-optik - Silber
+</div>
+<div class="text-price">
+<span class="text-price--current">325,00
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="Prada - Plateau-Sneakers aus Leder" data-shop="mytheresa DE" data-brand="Prada" data-price="580.00" data-currency="EUR" data-uuid="65041942-09a1-4d5b-ad90-6e9828bd8229" data-product-id="04wfvmosp3qj5rax" data-sold-out="0" data-external-url="http://td.oo34.net/cl/?aaid=lFfCbCyQIw86JImD&amp;ein=04wfvmosp3qj5rax&amp;paid=0n9HtXhUykhPbGdx&amp;subid=04wfvmosp3qj5rax" data-provider="tracdelight" data-view-type="productView">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-04wfvmosp3qj5rax.jpg?itok=7jQYxFwK" alt="Prada - Plateau-Sneakers aus Leder" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Prada
+</div>
+<div class="text-headline">Prada - Plateau-Sneakers aus Leder
+</div>
+<div class="text-price">
+<span class="text-price--current">580,00
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="item-paragraph--media--image item-paragraph item-paragraph--small item-paragraph--media">
+<div class="item-media item-media--image item-media--image-portrait">
+<div class="img-container__wrapper">
+<div class="img-container">
+<div class="media media--blazy media--loading media--responsive media--image">
+<picture><!--[if IE 9]><video style="display: none;"><![endif]--><source media="all and (min-width: 992px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_m/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=9QOUJo7O 1x, /sites/default/files/styles/media_small_m_x2/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=knTD3KG0 2x"><source media="all and (min-width: 767px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_s/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=6DX3_31h 1x, /sites/default/files/styles/media_small_s_x2/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=zPTK4g_e 2x"><source media="all and (min-width: 480px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_xs/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=MyKD7Mfb 1x, /sites/default/files/styles/media_small_xs_x2/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=jHyjn_Zp 2x"><source media="all and (min-width: 414px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_mobile_m/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=QeWUbb15 1x, /sites/default/files/styles/media_small_mobile_m_x2/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=b3b0ctuC 2x"><source media="all and (min-width: 0px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_mobile_s/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=6_bmNiII 1x, /sites/default/files/styles/media_small_mobile_s_x2/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=CtkNHppY 2x"><!--[if IE 9]></video><![endif]--><img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/media_small_mobile_s/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=6_bmNiII" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="&quot;Ace&quot; Plateau-Sneakers aus Leder von Gucci, ca. 975 €" title="&quot;Ace&quot; Plateau-Sneakers aus Leder von Gucci, ca. 975 €" typeof="foaf:Image"><noscript>
+	      <img src="/sites/default/files/styles/media_small_m/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=9QOUJo7O 1x, /sites/default/files/styles/media_small_m_x2/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=knTD3KG0 2x" alt="&quot;Ace&quot; Plateau-Sneakers aus Leder von Gucci, ca. 975 €" title="&quot;Ace&quot; Plateau-Sneakers aus Leder von Gucci, ca. 975 €" typeof="foaf:Image"></noscript>
+</picture></div>
+</div>
+</div>
+<div class="caption">
+<div class="text-copyright">
+<span>PR
+</span>
+</div>
+<div class="text-description"><p><a href="http://td.oo34.net/cl/?tt=slg&amp;aaid=lFfCbCyQIw86JImD&amp;paid=0n9HtXhUykhPbGdx&amp;link=https://mytheresa.commander1.com/c3/?tcs=3504&amp;chn=aff1&amp;src=trac&amp;cmp=aff_trac_de&amp;tarea=de&amp;ptyp=feed&amp;url=https://www.mytheresa.com/de-de/gucci-ace-platform-leather-sneakers-895923.html#&amp;gid=1&amp;pid=2" rel="nofollow" target="_blank">"Ace" Plateau-Sneakers aus Leder von Gucci&nbsp;über Mytheresa, um&nbsp;975 €</a></p>
+</div>
+<div class="socials socials-bar">
+<div class="item-social icon-pinterest" data-url="https://www.elle.de/plateau-sneaker-trend?utm_medium=social&amp;utm_campaign=Sharing&amp;utm_source=Sharing_Pinterest" data-media-url="https://www.elle.de/sites/default/files/styles/media_middle_m_x2/public/images/2019-06/elle-sneaker-trend-plateau-gucci.jpg?itok=pykTELYf" data-description="&quot;Ace&quot; Plateau-Sneakers aus Leder von Gucci&nbsp;über Mytheresa, um&nbsp;975 €
+" data-social-type="pinterest"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="item-paragraph--media--image item-paragraph item-paragraph--small item-paragraph--media">
+<div class="item-media item-media--image item-media--image-landscape">
+<div class="img-container__wrapper">
+<div class="img-container">
+<div class="media media--blazy media--loading media--responsive media--image">
+<picture><!--[if IE 9]><video style="display: none;"><![endif]--><source media="all and (min-width: 992px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_m/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=FjC8-bJU 1x, /sites/default/files/styles/media_small_m_x2/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=tksiVjv0 2x"><source media="all and (min-width: 767px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_s/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=a-BILhHn 1x, /sites/default/files/styles/media_small_s_x2/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=ZdTooqXi 2x"><source media="all and (min-width: 480px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_xs/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=9_btfG-7 1x, /sites/default/files/styles/media_small_xs_x2/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=7_ZL2-Bd 2x"><source media="all and (min-width: 414px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_mobile_m/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=wXWCDI4h 1x, /sites/default/files/styles/media_small_mobile_m_x2/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=4bDUUikK 2x"><source media="all and (min-width: 0px)" type="image/jpeg" data-srcset="/sites/default/files/styles/media_small_mobile_s/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=kZDb8n-v 1x, /sites/default/files/styles/media_small_mobile_s_x2/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=_Lx3waU6 2x"><!--[if IE 9]></video><![endif]--><img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/media_small_mobile_s/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=kZDb8n-v" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, ca. 100 €" title="Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, ca. 100 €" typeof="foaf:Image"><noscript>
+	      <img src="/sites/default/files/styles/media_small_m/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=FjC8-bJU 1x, /sites/default/files/styles/media_small_m_x2/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=tksiVjv0 2x" alt="Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, ca. 100 €" title="Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, ca. 100 €" typeof="foaf:Image"></noscript>
+</picture></div>
+</div>
+</div>
+<div class="caption">
+<div class="text-copyright">
+<span>PR
+</span>
+</div>
+<div class="text-description"><p><a href="https://www.adidas.de/adidas-sleek-super-schuh/EF8858.html" rel="nofollow" target="_blank">Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, um&nbsp;100 €</a></p>
+</div>
+<div class="socials socials-bar">
+<div class="item-social icon-pinterest" data-url="https://www.elle.de/plateau-sneaker-trend?utm_medium=social&amp;utm_campaign=Sharing&amp;utm_source=Sharing_Pinterest" data-media-url="https://www.elle.de/sites/default/files/styles/media_middle_m_x2/public/images/2019-06/elle-plateau-sneaker-adidas.jpg?itok=L9kZzg1f" data-description="Kommt im Sommer 2019 neu auf den Markt: Sleek Super Schuh von Adidas, um&nbsp;100 €
+" data-social-type="pinterest"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="item-paragraph--default item-paragraph item-paragraph--small item-paragraph--advertising-products-paragraph pread-9">
+<div class="container-wrapper">
+<h3 class="text-headline item-title">Noch mehr Plateau-Sneaker kaufen:</h3>
+<div class="affiliatelinks">
+<a href="/affiliatelinks" rel="nofollow" target="_self">Affiliatelinks</a>
+</div>
+<div class="container-content affiliatelinks--hide">
+<div class="item-product--strikethrough item-ecommerce item-product" data-title="Paul Green Sneaker metallic 36" data-shop="Schuh Benner GmbH &amp; Co. KG" data-brand="Paul Green" data-price="131.55" data-currency="EUR" data-uuid="fa5d8e45-ec61-49ae-a4e7-7e02d5a842e3" data-product-id="5c8a40d2ff859a0001f4e51f" data-sold-out="0" data-provider="tipser" data-tipser-url="https://www.tipser.com/products/5c8a40d2ff859a0001f4e51f" data-view-type="productView">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tipserproduct-5c8a40d2ff859a0001f4e51f.jpg?itok=TllM3VnV" alt="Paul Green Sneaker metallic 36" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Paul Green
+</div>
+<div class="text-headline">Paul Green Sneaker metallic 36
+</div>
+<div class="text-price">
+<span class="text-price--strikethrough">139,99
+€</span>
+<span class="text-price--current">131,55
+€</span>
+</div>
+<div class="text-shop text-shop--tipser">Kaufen</div>
+</div>
+</div>
+<div class="item-product--sold-out item-ecommerce item-product" data-title="Esprit Sneaker blau Barbie Lu navy Leinen Plateau 36" data-shop="Schuh Benner GmbH &amp; Co. KG" data-brand="Esprit" data-price="59.99" data-currency="EUR" data-uuid="e96af95b-0ee6-469b-ab98-86979121a4fe" data-product-id="5c8a415cff859a0001f53747" data-sold-out="1" data-provider="tipser" data-tipser-url="https://www.tipser.com/products/5c8a415cff859a0001f53747" data-view-type="productView">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tipserproduct-5c8a415cff859a0001f53747.jpg?itok=KVP3uVtU" alt="Esprit Sneaker blau Barbie Lu navy Leinen Plateau 36" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Esprit
+</div>
+<div class="text-headline">Esprit Sneaker blau Barbie Lu navy Leinen Plateau 36
+</div>
+<div class="text-price">
+<span class="text-price--current">
+59,99
+€
+</span>
+</div>
+<div class="text-shop text-sold-out">Ausverkauft</div>
+</div>
+</div>
+<div class="item-product--strikethrough item-ecommerce item-product" data-title="Puma Sneaker rot Smash Platform SD 36" data-shop="Schuh Benner GmbH &amp; Co. KG" data-brand="Puma" data-price="73.55" data-currency="EUR" data-uuid="4d9b5c8f-275f-4486-9848-8dd730e88a0d" data-product-id="5ca1de0df3a95f00013c3aa5" data-sold-out="0" data-provider="tipser" data-tipser-url="https://www.tipser.com/products/5ca1de0df3a95f00013c3aa5" data-view-type="productView">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tipserproduct-5ca1de0df3a95f00013c3aa5.jpg?itok=F8RJrH58" alt="Puma Sneaker rot Smash Platform SD 36" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Puma
+</div>
+<div class="text-headline">Puma Sneaker rot Smash Platform SD 36
+</div>
+<div class="text-price">
+<span class="text-price--strikethrough">79,95
+€</span>
+<span class="text-price--current">73,55
+€</span>
+</div>
+<div class="text-shop text-shop--tipser">Kaufen</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="Superga 2790 Linea Updown Flatform Damen Sneaker,Grau (Grey Seashell),39.5 EU" data-shop="Amazon DE Fashion" data-brand="Superga" data-price="79.99" data-currency="EUR" data-uuid="06d5a1b0-6a7b-4b9f-a7ac-03e581ad0ce4" data-product-id="ji0zg96wxku7p5ha" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=kUEhbgMV52beZpHq&amp;ein=ji0zg96wxku7p5ha&amp;paid=0n9HtXhUykhPbGdx&amp;subid=ji0zg96wxku7p5ha" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe Sneaker">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-ji0zg96wxku7p5ha.jpg?itok=xxwa_cBB" alt="Superga 2790 Linea Updown Flatform Damen Sneaker,Grau (Grey Seashell),39.5 EU" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Superga
+</div>
+<div class="text-headline">Superga 2790 Linea Updown Flatform Damen Sneaker,Grau (Grey Seashell),39.5 EU
+</div>
+<div class="text-price">
+<span class="text-price--current">79,99
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="Plateau-Sneakers Drihanna Logo" data-shop="mytheresa DE" data-brand="Acne Studios" data-price="360.00" data-currency="EUR" data-uuid="f974dc74-bb8b-46df-ad83-8d7e51157893" data-product-id="2lrf3cy5tujdk6qz" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=lFfCbCyQIw86JImD&amp;ein=2lrf3cy5tujdk6qz&amp;paid=0n9HtXhUykhPbGdx&amp;subid=2lrf3cy5tujdk6qz" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe Sneaker Flache Sneaker">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-2lrf3cy5tujdk6qz.jpg?itok=ckd2DZdA" alt="Plateau-Sneakers Drihanna Logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Acne Studios
+</div>
+<div class="text-headline">Plateau-Sneakers Drihanna Logo
+</div>
+<div class="text-price">
+<span class="text-price--current">360,00
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="H &amp; M - Plateausneaker - White - Damen" data-shop="H&amp;M DE" data-brand="H &amp; M" data-price="24.99" data-currency="EUR" data-uuid="5580d9d0-ef0a-41bc-84ba-2e508c039297" data-product-id="z91sf60rnq7tbihg" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=c60oezwbj9ga1hb7&amp;ein=z91sf60rnq7tbihg&amp;paid=0n9HtXhUykhPbGdx&amp;subid=z91sf60rnq7tbihg" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-z91sf60rnq7tbihg.jpg?itok=JXt5llyO" alt="H &amp; M - Plateausneaker - White - Damen" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">H &amp; M
+</div>
+<div class="text-headline">H &amp; M - Plateausneaker - White - Damen
+</div>
+<div class="text-price">
+<span class="text-price--current">24,99
+€</span>
+</div>
+ <div class="text-shop">Zum Shop</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="Plateau-Sneakers Ace aus Leder" data-shop="mytheresa DE" data-brand="Gucci" data-price="975.00" data-currency="EUR" data-uuid="39132e2b-ea21-40d5-979c-cd2f46200d05" data-product-id="7uvitz9alb35o62h" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=lFfCbCyQIw86JImD&amp;ein=7uvitz9alb35o62h&amp;paid=0n9HtXhUykhPbGdx&amp;subid=7uvitz9alb35o62h" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe Sneaker Flache Sneaker">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-7uvitz9alb35o62h.jpg?itok=SkOkcAki" alt="Plateau-Sneakers Ace aus Leder" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Gucci
+</div>
+<div class="text-headline">Plateau-Sneakers Ace aus Leder
+</div>
+<div class="text-price">
+<span class="text-price--current">975,00
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="Plateau-Espadrilles" data-shop="mytheresa DE" data-brand="Gucci" data-price="495.00" data-currency="EUR" data-uuid="e1b94636-416c-4d56-8df5-b17e85c5d02c" data-product-id="vsm1r9dbqp3ntawc" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=lFfCbCyQIw86JImD&amp;ein=vsm1r9dbqp3ntawc&amp;paid=0n9HtXhUykhPbGdx&amp;subid=vsm1r9dbqp3ntawc" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe Sandalen Espadrilles-Sandalen">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-vsm1r9dbqp3ntawc.jpg?itok=WE3pFFlt" alt="Plateau-Espadrilles" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">Gucci
+</div>
+<div class="text-headline">Plateau-Espadrilles
+</div>
+<div class="text-price">
+<span class="text-price--current">495,00
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+<div class="item-ecommerce item-product" data-title="H &amp; M - Plateausneaker - Pink - Damen" data-shop="H&amp;M DE" data-brand="H &amp; M" data-price="24.99" data-currency="EUR" data-uuid="7991c490-4984-4c76-bf23-dc4286f9a802" data-product-id="mlnvjydk2rxof09p" data-sold-out="0" data-external-url="https://td.oo34.net/cl/?aaid=c60oezwbj9ga1hb7&amp;ein=mlnvjydk2rxof09p&amp;paid=0n9HtXhUykhPbGdx&amp;subid=mlnvjydk2rxof09p" data-provider="tracdelight" data-view-type="productView" data-product-category="Schuhe">
+<div class="img-container">
+<div class="media media--blazy media--loading media--image">
+<img height="241" width="200" class="b-lazy media__image media__element" data-src="/sites/default/files/styles/product_s/public/tracdelight-mlnvjydk2rxof09p.jpg?itok=uyiVJo48" alt="H &amp; M - Plateausneaker - Pink - Damen" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" typeof="foaf:Image"></div>
+</div>
+<div class="caption">
+<div class="text-brand">H &amp; M
+</div>
+<div class="text-headline">H &amp; M - Plateausneaker - Pink - Damen
+</div>
+<div class="text-price">
+<span class="text-price--current">24,99
+€</span>
+</div>
+<div class="text-shop">Zum Shop</div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="ad-content ad-inactive marketing-view" data-view-type="marketingView">
+<div class="item-marketing">
+<div id="ad-entity-0HZBNhtIRv8" class="ad-entity-container not-initialized" data-ad-entity="adtech_special_content_article" data-ad-entity-type="adtech_factory" data-ad-entity-view="adtech_default" data-ad-entity-variant="[&quot;any&quot;]" data-ad-entity-targeting="{&quot;entitytype&quot;:&quot;node\/article&quot;,&quot;entitylabel&quot;:&quot;Sneaker-Trend: Plateau-Sohlen sorgen fÃ¼r ein neues HochgefÃ¼hl&quot;,&quot;entityuuid&quot;:&quot;47af768c-9f72-4c27-bde0-729e88005ff1&quot;,&quot;channel&quot;:&quot;homepage\/fashion\/trends-und-styling&quot;,&quot;contentwidth&quot;:&quot;content&quot;}"><div id="adtech-TKLM17n7k9M" class="adtech-factory-ad adtech-default-view" data-atf="tag" data-atf-format="special"></div>
+</div>
+</div>
+</div>
+<div class="a-lift__article-footer">
+</div>
+</div>
+<div class="item-content__row-col col--right">
+<div class="item-sticky">
+<div class="container-sidebar-content container-marketing ad-inactive marketing-view" data-view-type="marketingView">
+<div class="item-marketing">
+<div id="ad-entity-Z-MF7iOavpo" class="ad-entity-container not-initialized" data-ad-entity="adtech_skyscraper_sidebar_article" data-ad-entity-type="adtech_factory" data-ad-entity-view="adtech_default" data-ad-entity-variant="[&quot;any&quot;]" data-ad-entity-targeting="{&quot;entitytype&quot;:&quot;node\/article&quot;,&quot;entitylabel&quot;:&quot;Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl&quot;,&quot;entityuuid&quot;:&quot;47af768c-9f72-4c27-bde0-729e88005ff1&quot;,&quot;channel&quot;:&quot;homepage\/fashion\/trends-und-styling&quot;,&quot;contentwidth&quot;:&quot;sidebar&quot;}"><div id="adtech-QSOFT1AHd24" class="adtech-factory-ad adtech-default-view" data-atf="tag" data-atf-format="skyscraper"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="item-content__block item-content__block--tags">
+<div class="tags">
+<div class="label">Mehr zum Thema:</div>
+<ul><li><a href="/fashion-mode/sneaker" hreflang="de">Sneaker</a></li>
+<li><a href="/fashion-mode" hreflang="de">Fashion-Mode</a></li>
+<li><a href="/fashion-mode/modetrends-fruehjahr-sommer" hreflang="de">Modetrends Frühjahr/Sommer</a></li>
+<li><a href="/fashion-mode/sommerschuhe" hreflang="de">Sommerschuhe</a></li>
+</ul></div>
+</div>
+<div class="region-fixed-content socials socials-bar socials-horizontal-bar item-content__block">
+<a class="item-social icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://www.elle.de/plateau-sneaker-trend?utm_medium=social&amp;utm_campaign=Sharing&amp;utm_source=Sharing_Facebook" target="_blank" rel="noopener noreferrer" data-social-type="facebook">
+<span>Teilen</span>
+</a>
+<a class="item-social icon-whatsapp" href="whatsapp://send?text=Sneaker-Trend%3A%20Plateau-Sohlen%20sorgen%20f%C3%BCr%20ein%20neues%20Hochgef%C3%BChl%20-%20https%3A%2F%2Fwww.elle.de%2Fplateau-sneaker-trend%3Futm_medium%3Dsocial%26utm_campaign%3DSharing%26utm_source%3DSharing_Whatsapp" data-social-type="whatsapp" rel="nofollow">
+<span>Teilen</span>
+</a>
+<div class="item-social icon-pinterest" data-url="https://www.elle.de/plateau-sneaker-trend?utm_medium=social&amp;utm_campaign=Sharing&amp;utm_source=Sharing_Pinterest" data-media-url="https://www.elle.de/sites/default/files/styles/pinterest_fallback_teaser_image/public/images/2019-06/plateau-sneaker.jpg?h=a2aa609c&amp;itok=2BBcq17b" data-description="Alexander McQueen bis Adidas: Für den Sommer 2019 setzen die einflußreichsten Labels auf Plateau-Sneaker. Mehr über den Trend auf ELLE.de!" data-social-type="pinterest">
+<span>Pin</span>
+</div>
+<div class="item-social icon-email" data-url="https%3A%2F%2Fwww.elle.de%2Fplateau-sneaker-trend%3Futm_medium%3Dsocial%26utm_campaign%3DSharing%26utm_source%3DSharing_Email" data-email-share-text="Ich habe diesen Artikel auf www.elle.de entdeckt und glaube, er wird dich interessieren:" data-email-subject="ELLE:" data-description="Sneaker-Trend: Plateau-Sohlen sorgen für ein neues Hochgefühl" data-social-type="email">
+<span>Mail</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article></div>
+<div id="feed" class="region-full-content region-feed" data-view-type="feedView">
+<a class="infinite-more-link use-ajax" href="/lazyloading/node/357571/nojs?page=1" title="Lazy loading of next page" data-next-article-title="Net Sustain: Die neue Plattform von Net-A-Porter setzt auf nachhaltige Mode" rel="next">
+<span class="visually-hidden">Next page</span>
+<span aria-hidden="true">next ›</span>
+</a>
+<div class="region-full-content container-content-dynamic container-feed-items"></div>
+</div>
+</div>
+</main>
+</div>
+<div id="menu-sidebar">
+<div class="container-content">
+<div class="icon icon-close"></div>
+<a class="logo item-sidebar" href="/" title="Startseite">
+<img src="/themes/custom/elle_infinite/logo.svg" alt="Startseite" />
+</a>
+</a>
+<nav role="navigation" id="menu-sidebar-main" id="menu-sidebar-main" class="item-sidebar contextual-region">
+<ul class="menu">
+<li class="menu-item">
+<a href="/fashion" target="" rel="" title="Fashion" data-drupal-link-system-path="taxonomy/term/18746">Fashion</a>
+</li>
+<li class="menu-item">
+<a href="/beauty" target="" rel="" title="Beauty" data-drupal-link-system-path="taxonomy/term/18791">Beauty</a>
+</li>
+<li class="menu-item">
+<a href="/lifestyle" target="" rel="" title="Lifestyle" data-drupal-link-system-path="taxonomy/term/18816">Lifestyle</a>
+</li>
+<li class="menu-item">
+<a href="/decoration" target="" rel="" title="Decoration" data-drupal-link-system-path="taxonomy/term/18861">Decoration</a>
+</li>
+<li class="menu-item">
+<a href="/traveller" target="" rel="" title="Traveller" data-drupal-link-system-path="taxonomy/term/18866">Traveller</a>
+</li>
+<li class="menu-item">
+<a href="/fashion-weeks" target="" rel="" title="Fashion Weeks" data-drupal-link-system-path="taxonomy/term/18756">Fashion Weeks</a>
+</li>
+<li class="menu-item">
+<a href="/shop-it" data-drupal-link-system-path="taxonomy/term/59216">Shop-it</a>
+</li>
+<li class="menu-item">
+<a href="/gewinnspiele" target="" rel="" title="Gewinnspiele" data-drupal-link-system-path="taxonomy/term/33911">Gewinnspiele</a>
+</li>
+<li class="menu-item">
+<a href="/themen" class="item-lined" data-drupal-link-system-path="vocabulary/all">Alle Themen</a>
+</li>
+<li class="menu-item">
+<a href="/archiv" target="" rel="" data-drupal-link-system-path="archiv">Archiv</a>
+</li>
+<li class="menu-item">
+<a href="https://elle-abo.de/?hnr=extern.verlag.elle.sidebar-navigation-print" class="item-lined" target="_blank" rel="nofollow">Magazin Abo</a>
+</li>
+<li class="menu-item">
+<a href="https://elle-abo.de/zeitschriften/elle-e-paper.html?hnr=extern.verlag.elle.sidebar-navigation-epaper">E-Paper Abo</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mykiosk.com" target="_blank" rel="nofollow" title="My Kiosk">My Kiosk</a>
+</li>
+<li class="menu-item">
+<a href="/newsletter" class="item-lined" title="Newsletter" data-drupal-link-system-path="node/348556">Newsletter</a>
+</li>
+</ul>
+</nav>
+<div class="socials socials-bar socials-bar-clean item-sidebar">
+<a class="item-social icon-facebook" href="https://www.facebook.com/ElleGermany" target="_blank" data-social-type="facebook" rel="nofollow"></a>
+<a class="item-social icon-instagram" href="https://instagram.com/ellegermany" target="_blank" data-social-type="instagram" rel="nofollow"></a>
+<a class="item-social icon-pinterest" href="https://www.pinterest.de/ELLE_Germany" target="_blank" data-social-type="pinterest" rel="nofollow"></a>
+<a class="item-social icon-twitter" href="https://twitter.com/elle_de" target="_blank" data-social-type="twitter" rel="nofollow"></a>
+<a class="item-social icon-email" href="/newsletter" data-social-type="email"></a>
+</div>
+<nav role="navigation" id="menu-sidebar-misc" id="menu-sidebar-misc" class="item-sidebar contextual-region">
+<ul class="menu">
+<li class="menu-item">
+<a href="https://bcn.burda.de/marken/national/titel/elle/" target="_blank" rel="nofollow">Mediadaten</a>
+</li>
+<li class="menu-item">
+<a href="/agb" title="Nutzungsbedingungen" data-drupal-link-system-path="node/5">Nutzungsbedingungen</a>
+</li>
+<li class="menu-item">
+<a href="/datenschutz" title="Datenschutz" data-drupal-link-system-path="node/2">Datenschutz</a>
+</li>
+<li class="menu-item">
+<a href="https://bcn.burda.de/tracking-vertragspartner-bcn/" target="_blank" rel="nofollow" title="Über unsere Werbung">Über unsere Werbung</a>
+</li>
+<li class="menu-item">
+<a href="/impressum" title="Impressum" data-drupal-link-system-path="node/1">Impressum</a>
+</li>
+</ul>
+</nav>
+<nav role="navigation" id="menu-sidebar-logos" id="menu-sidebar-logos" class="item-sidebar contextual-region">
+<ul class="menu">
+<li class="menu-item">
+<a href="http://www.harpersbazaar.de">Harper´s BAZAAR</a>
+</li>
+<li class="menu-item">
+<a href="http://www.instyle.de">InStyle</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<div class="block-infinite-blocks-modal-search">
+
+<div id="modal-search" class="modal modal-full fade" role="dialog" data-keyboard="false" data-view-context>
+<div class="modal-content">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true" class="icon icon-close"></span>
+</button>
+<div class="container-input">
+<input id="modal-search-input" data-min-char-length="3" class="item-input text-headline text-headline-size-h1 input-blank" placeholder="|Suchen" type="search" name="search" />
+</div>
+<div class="h-line"></div>
+<div class="container-description">
+<div id="modal-search-description">
+<div class="message-default text-label text-label-size-medium">Suchbegriff eingeben</div>
+<div class="message-char-length icon icon-info">Noch mind. <span class="char-count">3</span> Zeichen
+</div>
+<div class="message-active text-label text-label-size-medium">Mit <i class="icon icon-return">
+bestätigen</i></div>
+</div>
+</div>
+<div id="feed-modal-search" class="region-feed-teasers region-feed" data-view-type="feedView">
+<div class="container-content container-content-dynamic container-feed-items"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script src="/sites/default/files/js/js_pXbGoX4E1YVSvS5mKbN3mf-nRuSa0d7ECJIxrgjaICE.js"></script>
+<script src="/themes/contrib/infinite/../../../core/assets/vendor/picturefill/picturefill.min.js?q5nb4g"></script>
+<script src="/sites/default/files/js/js_vvMfObQoIJ_H7aDaWZsTNuMnaDCSPhyOSxDGLZPomg4.js"></script>
+<script src="/modules/contrib/tipser_client/js/tipser.js?v=1559140401"></script>
+<script src="/modules/contrib/tipser_client/js/dist/tipser.bundle.js?v=1559140401"></script>
+<script src="/sites/default/files/tipser/tipser.sdk.js?v=1559140401"></script>
+<script src="/sites/default/files/js/js_PYUQ8X5kOUC2KcF-BGFhVRevHb_7p2TVS6v3ubgV6k8.js"></script>
+<script src="//platform.instagram.com/en_US/embeds.js" async></script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"ca72d542be","applicationID":"56771253","transactionName":"Z10AYUYAXhEFB0RaV14XI1ZACF8MSxRRVF1vWwNWXAQ=","queueTime":0,"applicationTime":27,"atts":"SxoDFw4aTR8=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

@@ -149,7 +149,10 @@ def run_newsplease(htmlstring):
 
 def run_jparser(htmlstring):
     '''try with jparser'''
-    pm = PageModel(htmlstring)
+    try:
+        pm = PageModel(htmlstring)
+    except ValueError:
+        return ''
     result = pm.extract()
     mylist = list()
     for x in result['content']:
