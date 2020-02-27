@@ -482,6 +482,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     else:
         doctitle = docdate = None
 
+    # backup (or not) for further processing
+    if no_fallback is True:
+        backup_tree = None
+    else:
+        backup_tree = deepcopy(tree)
+
     # clean
     cleaned_tree = manual_cleaning(tree, include_tables)
     # save space and processing time
@@ -489,11 +495,6 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
 
-    # backup (or not) for further processing
-    if no_fallback is True:
-        backup_tree = None
-    else:
-        backup_tree = deepcopy(cleaned_tree)
     # tree_cache[cleaned_tree] = list(cleaned_tree.iter())
     # bypass
     # cleaned_tree = tree
