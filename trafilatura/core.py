@@ -379,7 +379,7 @@ def process_comments_node(elem, potential_tags):
     return None
 
 
-def extract_comments(tree, include_comments):
+def extract_comments(tree):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
     # define iteration strategy
@@ -404,8 +404,6 @@ def extract_comments(tree, include_comments):
             # remove corresponding subtree
             subtree.getparent().remove(subtree)
             break
-    if include_comments is False:
-        comments_body = etree.Element('body')
     return comments_body, tree
 
 
@@ -422,7 +420,7 @@ def extract_metadata(tree):
     return doctitle, docdate
 
 
-def compare_extraction(filecontent, tree, url, temppost_hand, sure_thing, no_fallback):
+def compare_extraction(tree, url, temppost_hand, sure_thing, no_fallback):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     temp_text = trim(' '.join(temppost_hand.itertext()))
@@ -494,10 +492,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     cleaned_tree = prune_html(cleaned_tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-
     # tree_cache[cleaned_tree] = list(cleaned_tree.iter())
-    # bypass
-    # cleaned_tree = tree
 
     # convert tags, the rest does not work without conversion
     cleaned_tree = convert_tags(cleaned_tree)
@@ -507,15 +502,15 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
 
     # comments first, then remove
     if include_comments is True:
-        commentsbody, cleaned_tree = extract_comments(cleaned_tree, include_comments)
+        commentsbody, cleaned_tree = extract_comments(cleaned_tree)
     else:
-        commentsbody =  etree.Element('body')
+        commentsbody = etree.Element('body')
 
     # extract content
     temppost_hand, sure_thing = extract_content(cleaned_tree, include_tables)
 
     # compare
-    len_text, len_algo, postbody = compare_extraction(filecontent, backup_tree, url, temppost_hand, sure_thing, no_fallback)
+    len_text, len_algo, postbody = compare_extraction(backup_tree, url, temppost_hand, sure_thing, no_fallback)
 
     # try to use original/dirty tree
     if len_text == 0 and len_algo == 0:
