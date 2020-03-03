@@ -28,7 +28,8 @@ except ImportError:
 
 # try this option
 try:
-    from inscriptis import get_text
+    import justext
+    JUSTEXT_STOPLIST = justext.get_stoplist("German")
 except ImportError:
     pass
 
@@ -46,6 +47,11 @@ from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
+
+# bypass parsing
+#def my_bypass(html_tree, default_encoding, encoding, enc_errors):
+#    return html_tree
+#justext.html_to_dom = my_bypass
 
 
 class LXMLDocument(Document):
@@ -69,10 +75,24 @@ def try_readability(htmlinput, url):
         return etree.Element('div')
 
 
-def run_inscriptis(htmlstring):
-    '''try with the inscriptis module'''
-    text = get_text(htmlstring)
-    return text
+def try_justext(tree, url):
+    '''Second safety net: try with the generic algorithm justext'''
+    result_body = etree.Element('body')
+    justtextstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
+    # return result_body
+    try:
+        paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
+    except ValueError as err:  # not an XML element: HtmlComment
+        LOGGER.error('justext %s %s', err, url)
+        result_body = None
+    else:
+        for paragraph in paragraphs:
+            if not paragraph.is_boilerplate:
+                #if duplicate_test(paragraph) is not True:
+                elem = etree.Element('p')
+                elem.text = paragraph.text
+                result_body.append(elem)
+    return result_body
 
 
 def sanitize_tree(tree):
@@ -428,6 +448,7 @@ def compare_extraction(tree, url, temppost_hand, sure_thing, no_fallback):
     # algo_flag = False
     # readability_flag = False
     if no_fallback is False or sure_thing is False:
+        # backup = deepcopy(tree)
         # try with readability
         temppost_algo = try_readability(tree, url)
         len_algo = len(trim(' '.join(temppost_algo.itertext())))
@@ -525,19 +546,19 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     temp_comments = ' '.join(commentsbody.itertext())  # trim()?
     if len(temp_text) < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s %s', record_id, url)
+        # try with justext if it has been imported
+        if no_fallback is False and justext is not None:
+            temppost_algo = try_justext(tree, url)
+            if temppost_algo is not None:
+                len_algo = len(trim(' '.join(temppost_algo.itertext())))
+                if len_algo > len(temp_text):
+                    postbody = temppost_algo
+                    temp_text = ' '.join(postbody.itertext())  # trim()?
     if len(temp_comments) < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
     if len(temp_text) < MIN_OUTPUT_SIZE and len(temp_comments) < MIN_OUTPUT_COMM_SIZE:
         LOGGER.info('text and comments not long enough: %s %s', len(temp_text), len(temp_comments))
-        if txt_fallback is False or get_text is None:
-            return None
-        # additional fallback
-        rawtext = run_inscriptis(filecontent)
-        if len(rawtext) < MIN_OUTPUT_SIZE:
-            return None
-        postbody = etree.Element('p')
-        postbody.text = rawtext
-        temp_text = ' '.join(postbody.itertext())  # trim()?
+        return None
 
     # sanity check on language
     if language_filter(temp_text, temp_comments, target_language, record_id, url) is True:
