@@ -8,12 +8,17 @@ Module bundling all functions needed to extract the text in a webpage.
 
 
 # standard
-import contextlib
 import logging
 import os
 import re
 
 from copy import deepcopy
+
+try:
+    from contextlib import redirect_stderr
+    MUFFLE_FLAG = True
+except ImportError:
+    MUFFLE_FLAG = False
 
 # third-party
 from lxml import etree, html
@@ -69,9 +74,12 @@ def try_readability(htmlinput, url):
     # defaults: min_text_length=25, retry_length=250
     try:
         doc = LXMLDocument(htmlinput, url=url, min_text_length=25, retry_length=250)
-        with open(os.devnull, 'w') as devnull:
-            with contextlib.redirect_stderr(devnull):
-                resultstring = doc.summary(html_partial=True)  # don't wrap in html and body tags
+        if MUFFLE_FLAG is False:
+            resultstring = doc.summary(html_partial=True)
+        else:
+            with open(os.devnull, 'w') as devnull:
+                with redirect_stderr(devnull):
+                    resultstring = doc.summary(html_partial=True)
         newtree = html.fromstring(resultstring, parser=HTML_PARSER)
         return newtree
     except (etree.SerialisationError, Unparseable):

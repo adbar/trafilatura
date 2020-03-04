@@ -16,3 +16,4 @@ exclude_lines =
     except .*socket.*
     except .*UnicodeDecodeError.*:
     except .*UnboundLocalError.*:
+    with .*
