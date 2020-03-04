@@ -11,8 +11,11 @@ Module bundling all functions needed to extract the text in a webpage.
 # text blacklist
 
 # standard
+import contextlib
 import logging
+import os
 import re
+
 from copy import deepcopy
 
 # third-party
@@ -68,7 +71,9 @@ def try_readability(htmlinput, url):
     # defaults: min_text_length=25, retry_length=250
     try:
         doc = LXMLDocument(htmlinput, url=url, min_text_length=25, retry_length=250)
-        resultstring = doc.summary(html_partial=True)  # don't wrap in html and body tags
+        with open(os.devnull, 'w') as devnull:
+            with contextlib.redirect_stderr(devnull):
+                resultstring = doc.summary(html_partial=True)  # don't wrap in html and body tags
         newtree = html.fromstring(resultstring, parser=HTML_PARSER)
         return newtree
     except (etree.SerialisationError, Unparseable):
