@@ -18,11 +18,9 @@ extras = {
         'cchardet == 2.1.4; python_version == "3.4"',
         'cchardet >= 2.1.5; python_version > "3.4"',
         'htmldate >= 0.6.1',
+        'justext >= 2.2.0',
         'langid >= 1.1.6',
     ],
-    'metadata': [
-        'htmldate >= 0.6.1',
-    ]
 }
 
 

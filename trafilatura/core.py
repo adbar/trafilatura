@@ -6,9 +6,6 @@ Module bundling all functions needed to extract the text in a webpage.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-# TODO:
-# line-based heuristics?
-# text blacklist
 
 # standard
 import contextlib
@@ -34,7 +31,7 @@ try:
     import justext
     JUSTEXT_STOPLIST = justext.get_stoplist("German")
 except ImportError:
-    pass
+    justext = None
 
 
 # own
@@ -54,7 +51,8 @@ LOGGER = logging.getLogger(__name__)
 # bypass parsing
 #def my_bypass(html_tree, default_encoding, encoding, enc_errors):
 #    return html_tree
-#justext.html_to_dom = my_bypass
+#if justext:
+#    justext.html_to_dom = my_bypass
 
 
 class LXMLDocument(Document):
@@ -144,9 +142,9 @@ def handle_formatting(element):
     if element.text is not None or element.tail is not None:
         processed_element = etree.Element('p')
         processed_child = etree.SubElement(processed_element, element.tag)
-        if element.text is not None:
+        if element.text is not None and not element.text.isspace():
             processed_child.text = trim(element.text)
-        if element.tail is not None:
+        if element.tail is not None and not element.text.isspace():
             processed_child.tail = trim(element.tail)
     return processed_element
 
@@ -237,7 +235,7 @@ def handle_paragraphs(element, potential_tags):
                     # check depth and clean
                     if len(child) > 0:
                         for item in child:  # children are lists
-                            if item.text is not None:
+                            if item.text is not None and not item.text.isspace():
                                 item.text = ' ' + item.text
                             etree.strip_tags(child, item.tag)
                     newsub.set('rend', child.get('rend'))
@@ -251,11 +249,11 @@ def handle_paragraphs(element, potential_tags):
                     processed_element.text = trim(processed_element.text)
                     continue
                 # prepare text
-                if processed_child.text is None:
+                if processed_child.text is None or processed_child.text.isspace():
                     processed_child.text = ''
                 # if there are already children
                 if len(processed_element) > 0:
-                    if processed_child.tail is not None:
+                    if processed_child.tail is not None and not processed_child.tail.isspace():
                         newsub.tail = processed_child.text + processed_child.tail
                     else:
                         newsub.tail = processed_child.text
@@ -348,7 +346,7 @@ def handle_textelem(element, potential_tags):
     elif element.tag == 'p':
         new_element = handle_paragraphs(element, potential_tags)
     elif element.tag == 'lb':
-        if element.tail is not None and re.search(r'\w+', element.tail):
+        if element.tail is not None and not element.tail.isspace():
             processed_element = etree.Element('p')
             processed_element.text = handle_textnode(element, comments_fix=False).tail
             return processed_element
@@ -567,6 +565,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         LOGGER.error('not enough text %s %s', record_id, url)
         # try with justext if it has been imported
         if no_fallback is False and justext is not None:
+            #if target_language is not None:
+            #    global JUSTEXT_STOPLIST
+            #    JUSTEXT_STOPLIST = target_language
             postbody, len_text, temp_text = justext_rescue(tree, url, postbody, len_text, temp_text)
     if len_comments < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
