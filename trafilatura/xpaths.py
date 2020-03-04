@@ -69,9 +69,8 @@ DISCARD_XPATH = [
     './/header',
     './/*[@class="meta" or contains(@class, "meta-") or contains(@class, "-meta")]',
     # |.//footer
-    '''.//*[(self::div or self::p or self::section)][contains(@id, "header") or
-    contains(@class, "header") or contains(@id, "footer") or contains(@class, "footer") or
-    contains(@id, "bottom") or contains(@class, "bottom")]''',
+    '''.//*[contains(@id, "header") or contains(@class, "header") or contains(@id, "footer")
+    or contains(@class, "footer") or contains(@id, "bottom") or contains(@class, "bottom")]''',
     '''.//*[(self::a or self::div or self::p or self::section or self::ul)][contains(@id, "tags")
     or contains(@class, "tags")]''',
     # news outlets
