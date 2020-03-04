@@ -232,7 +232,8 @@ def handle_paragraphs(element, potential_tags):
                     # check depth and clean
                     if len(child) > 0:
                         for item in child:  # children are lists
-                            item.text = ' ' + item.text
+                            if item.text is not None:
+                                item.text = ' ' + item.text
                             etree.strip_tags(child, item.tag)
                     newsub.set('rend', child.get('rend'))
                 # handle line breaks
@@ -249,7 +250,10 @@ def handle_paragraphs(element, potential_tags):
                     processed_child.text = ''
                 # if there are already children
                 if len(processed_element) > 0:
-                    newsub.tail = processed_child.text + processed_child.tail
+                    if processed_child.tail is not None:
+                        newsub.tail = processed_child.text + processed_child.tail
+                    else:
+                        newsub.tail = processed_child.text
                 else:
                     newsub.text = processed_child.text
                     newsub.tail = processed_child.tail
