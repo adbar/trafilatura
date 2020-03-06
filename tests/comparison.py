@@ -38,6 +38,8 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 boilerpipe_extractor = extractors.DefaultExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
 
+g = Goose()
+
 
 def load_document(filename):
     '''load mock page from samples'''
@@ -65,7 +67,7 @@ def load_document(filename):
 
 def run_trafilatura(htmlstring):
     '''run trafilatura (without fallback) on content'''
-    result = extract(htmlstring, no_fallback=True, include_comments=False)
+    result = extract(htmlstring, no_fallback=True, include_comments=False, include_tables=True)
     return result
 
 
@@ -82,13 +84,12 @@ def run_justext(htmlstring):
 
 def run_trafilatura_fallback(htmlstring):
     '''run trafilatura (with fallback) on content'''
-    result = extract(htmlstring, no_fallback=False, include_comments=False, txt_fallback=False)
+    result = extract(htmlstring, no_fallback=False, include_comments=False, include_tables=True)
     return result
 
 
 def run_goose(htmlstring):
     '''try with the goose algorithm'''
-    g = Goose()
     article = g.extract(raw_html=htmlstring)
     return article.cleaned_text
 
