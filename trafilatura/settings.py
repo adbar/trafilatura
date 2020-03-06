@@ -60,3 +60,42 @@ MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure',
 
 TAG_CATALOG = frozenset(['code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'quote'])
 # 'span', 'item'
+
+JUSTEXT_DEFAULT = 'German'
+
+JUSTEXT_LANGUAGES = {
+    'ar': 'Arabic',
+    'bg': 'Bulgarian',
+    'cz': 'Czech',
+    'da': 'Danish',
+    'de': 'German',
+    'en': 'English',
+    'el': 'Greek',
+    'es': 'Spanish',
+    'fa': 'Persian',
+    'fi': 'Finnish',
+    'fr': 'French',
+    'hr': 'Croatian',
+    'hu': 'Hungarian',
+#    'ja': '',
+    'ko': 'Korean',
+    'fr': 'French',
+    'fr': 'French',
+    'id': 'Indonesian',
+    'it': 'Italian',
+    'no': 'Norwegian_Nynorsk',
+    'nl': 'Dutch',
+    'pl': 'Polish',
+    'pt': 'Portuguese',
+    'ro': 'Romanian',
+    'ru': 'Russian',
+    'sk': 'Slovak',
+    'sl': 'Slovenian',
+    'sr': 'Serbian',
+    'sv': 'Swedish',
+    'tr': 'Turkish',
+    'uk': 'Ukranian',
+    'ur': 'Urdu',
+    'vi': 'Vietnamese',
+#    'zh': '',
+}

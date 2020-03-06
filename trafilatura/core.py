@@ -34,7 +34,6 @@ except ImportError:
 # try this option
 try:
     import justext
-    JUSTEXT_STOPLIST = justext.get_stoplist("German")
 except ImportError:
     justext = None
 
@@ -44,7 +43,8 @@ from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLA
 from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
                              prune_html, recursively_empty, discard_unwanted,
                              discard_unwanted_comments)
-from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
+from .settings import (HTML_CLEANER, JUSTEXT_DEFAULT, JUSTEXT_LANGUAGES,
+                       MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv, HTML_PARSER
 from .xml import check_tei, validate_tei, write_teitree, xmltotxt
@@ -86,11 +86,17 @@ def try_readability(htmlinput, url):
         return etree.Element('div')
 
 
-def try_justext(tree, url):
+def try_justext(tree, url, target_language):
     '''Second safety net: try with the generic algorithm justext'''
     result_body = etree.Element('body')
     justtextstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
-    # return result_body
+    # determine language
+    if target_language is not None and target_language in JUSTEXT_LANGUAGES:
+        langsetting = JUSTEXT_LANGUAGES[target_language]
+    else:
+        langsetting = JUSTEXT_DEFAULT
+    JUSTEXT_STOPLIST = justext.get_stoplist(langsetting)
+    # extract
     try:
         paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
     except ValueError as err:  # not an XML element: HtmlComment
@@ -106,9 +112,9 @@ def try_justext(tree, url):
     return result_body
 
 
-def justext_rescue(tree, url, postbody, len_text, temp_text):
+def justext_rescue(tree, url, target_language, postbody, len_text, temp_text):
     '''Try to use justext algorithm as a second fallback'''
-    temppost_algo = try_justext(tree, url)
+    temppost_algo = try_justext(tree, url, target_language)
     if temppost_algo is not None:
         len_algo = len(trim(' '.join(temppost_algo.itertext())))
         if len_algo > len_text:
@@ -576,7 +582,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             #if target_language is not None:
             #    global JUSTEXT_STOPLIST
             #    JUSTEXT_STOPLIST = target_language
-            postbody, len_text, temp_text = justext_rescue(tree, url, postbody, len_text, temp_text)
+            postbody, len_text, temp_text = justext_rescue(tree, url,  target_language, postbody, len_text, temp_text)
     if len_comments < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
     if len_text < MIN_OUTPUT_SIZE and len_comments < MIN_OUTPUT_COMM_SIZE:
