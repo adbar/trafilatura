@@ -1,5 +1,5 @@
-Installing trafilatura
-======================
+Installation
+============
 
 
 Python
@@ -46,13 +46,14 @@ This project is under active development, please make sure you keep it up-to-dat
 Additional functionality
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-A few additional libraries can be installed for extended functionality and faster processing: extraction of publication date (``htmldate``), language detection (``langid``), and faster processing of downloads (``cchardet``, currently not working on some macOS versions).
+A few additional libraries can be installed for extended functionality and faster processing: language detection (``langid``) and faster processing of downloads (``cchardet``, may not work on all systems).
 
 .. code-block:: bash
 
-    $ pip install trafilatura[metadata] # metadata extraction (work in progress)
     $ pip install trafilatura[all] # all additional functionality
 
-You can also install or update the packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
+For extended date extraction you can use ``pip install htmldate[all]``.
+
+You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 
 *For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_
