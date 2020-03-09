@@ -31,9 +31,48 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
     :width: 85%
     :target: https://trafilatura.readthedocs.org/
 
-|
 
-*Trafilatura* downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, XML & TEI-XML. All the operations needed are handled seamlessly.
+Description
+-----------
+
+*Trafilatura* can seamlessly download, parse and convert web documents: it scrapes the main body text while preserving part of the text formatting and page structure and converts to TXT, CSV, XML & TEI-XML. 
+
+Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
+
+It has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of documents.
+
+
+Features
+~~~~~~~~
+
+-  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input
+-  Focus on main text and/or comments
+-  Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
+-  Extraction of metadata (currently title and date, more to come)
+-  Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
+-  Computationally efficient (relies on `lxml <http://lxml.de/>`_)
+-  Robust extraction and generic `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ algorithms used as fallback
+-  Optional language detection on the extracted content
+
+
+Evaluation and alternatives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The extraction focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and (optionally) comments. This task is also known as web scraping, boilerplate removal, DOM-based content extraction, main content identification, or web page cleaning.
+
+For first experimental results see the `evaluation page <evaluation.html>`_.
+
+
+Installation
+------------
+
+Chiefly with ``pip`` or ``pipenv``, for more details see `installation documentation <installation.html>`_.
+
+
+Usage
+-----
+
+With Python or on the command-line.
 
 In a nutshell, with Python:
 
@@ -51,66 +90,7 @@ On the command-line:
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
 
-
-Description
------------
-
-This library performs a robust extraction which focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and comments. *Trafilatura* can seamlessly download, parse and convert web documents. It scrapes the main body text while preserving part of the text formatting and page structure, a task also known as web scraping, boilerplate removal, DOM-based content extraction, main content identification, or web page cleaning.
-
-Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll, etc.) It has to be precise enough not to miss texts or discard valid documents, it also has to be reasonably fast, as it is expected to run in production on millions of documents.
-
-
-Features
-~~~~~~~~
-
--  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input
--  Focus on main text and/or comments
--  Formatting and structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
--  Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
--  Extraction of metadata (currently title and date, more to come)
--  Computationally efficient (relies on `lxml <http://lxml.de/>`_)
--  Robust extraction and generic `jusText algorithm <http://corpus.tools/wiki/Justext>`_ used as fallback
--  Optional language detection on the extracted content
-
-
-Evaluation and alternatives
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For first experimental results see the `evaluation page <evaluation.html>`_.
-
-
-Installation
-------------
-
-This `Python <https://wiki.python.org/moin/BeginnersGuide/Overview>`_ package is tested on Linux, macOS and Windows systems, it is compatible with Python 3.4 upwards (see `install Python guide <https://wiki.python.org/moin/BeginnersGuide/Download>`_). It is available on the package repository `PyPI <https://pypi.org/>`_ and can notably be installed with ``pip`` or ``pipenv``:
-
-.. code-block:: bash
-
-    $ pip install trafilatura # pip3 install on systems where both Python 2 and 3 are installed
-
-This project is under active development, please make sure you keep it up-to-date to benefit from latest improvements:
-
-.. code-block:: bash
-
-    $ pip install -U trafilatura # to make sure you have the latest version
-    $ pip install -U git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
-
-A few additional libraries can be installed for extended functionality and faster processing: extraction of publication date (``htmldate``), language detection (``langid``), and faster processing of downloads (``cchardet``, currently not working on some macOS versions).
-
-.. code-block:: bash
-
-    $ pip install trafilatura[metadata] # metadata extraction (work in progress)
-    $ pip install trafilatura[all] # all additional functionality
-
-You can also install or update the packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
-
-*For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_
-
-
-Usage
------
-
-See `usage documentation <usage.html>`_.
+For more information please refer to the `usage documentation <usage.html>`_.
 
 
 License
@@ -126,11 +106,11 @@ Going further
 
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
-In order to gather web documents it can be useful to download the portions of a website programmatically, here is `how to use sitemaps to crawl websites <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
+-  In order to gather web documents it can be useful to download the portions of a website programmatically, here is `how to use sitemaps to crawl websites <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_
 
-Tutorial video in German by Simon Meier-Vieracker: `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_.
+-  `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_ (Tutorial video in German by Simon Meier-Vieracker)
 
-Tutorials in German by Noah Bubenhofer: `Download von Web-Daten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_wwwdownload.html>`_ & `Daten aufbereiten und verwalten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_aufbereitenXML.html>`_.
+-  `Download von Web-Daten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_wwwdownload.html>`_ & `Daten aufbereiten und verwalten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_aufbereitenXML.html>`_ (Tutorials in German by Noah Bubenhofer)
 
 
 Roadmap
@@ -154,11 +134,8 @@ Feel free to file bug reports on the `issues page <https://github.com/adbar/html
 Thanks to these contributors who submitted features and bugfixes:
 
 -  `DerKozmonaut <https://github.com/DerKozmonaut>`_
+-  `LukasBBAW <https://github.com/LukasBBAW>`_
 -  `vbarbaresi <https://github.com/vbarbaresi>`_
-
-Kudos to the following software libraries:
-
--  `lxml <http://lxml.de/>`_, `jusText <https://github.com/miso-belica/jusText>`_, `cchardet <https://github.com/PyYoshi/cChardet>`_
 
 
 Author
@@ -183,6 +160,7 @@ Further documentation
    
    corefunctions
    evaluation
+   installation
    usage
 
 

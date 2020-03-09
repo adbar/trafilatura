@@ -5,6 +5,7 @@ Usage
 With Python
 -----------
 
+See here for a `beginner's guide <https://wiki.python.org/moin/BeginnersGuide>`_, a `Python Tutorial <https://docs.python.org/3/tutorial/index.html>`_, and `the Hitchhiker’s Guide to Python <https://docs.python-guide.org/>`_.
 
 .. code-block:: python
 
