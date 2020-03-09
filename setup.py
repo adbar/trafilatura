@@ -17,8 +17,6 @@ extras = {
     'all': [
         'cchardet == 2.1.4; python_version == "3.4"',
         'cchardet >= 2.1.5; python_version > "3.4"',
-        'htmldate >= 0.6.1',
-        'justext >= 2.2.0',
         'langid >= 1.1.6',
     ],
 }
@@ -69,11 +67,13 @@ setup(
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[
-        'readability-lxml == 0.7.1',
+        'htmldate >= 0.6.1',
+        'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
         'lxml >= 4.4.2; python_version > "3.4"',
         'requests == 2.21.0; python_version == "3.4"',
         'requests >= 2.22.0; python_version > "3.4"',
+        'readability-lxml >= 0.7.1',
     ],
     extras_require=extras,
     entry_points = {
