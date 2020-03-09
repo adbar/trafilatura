@@ -95,10 +95,10 @@ def try_justext(tree, url, target_language):
         langsetting = JUSTEXT_LANGUAGES[target_language]
     else:
         langsetting = JUSTEXT_DEFAULT
-    JUSTEXT_STOPLIST = justext.get_stoplist(langsetting)
+    justext_stoplist = justext.get_stoplist(langsetting)
     # extract
     try:
-        paragraphs = justext.justext(justtextstring, JUSTEXT_STOPLIST)
+        paragraphs = justext.justext(justtextstring, justext_stoplist)
     except ValueError as err:  # not an XML element: HtmlComment
         LOGGER.error('justext %s %s', err, url)
         result_body = None
@@ -112,16 +112,17 @@ def try_justext(tree, url, target_language):
     return result_body
 
 
-def justext_rescue(tree, url, target_language, postbody, len_text, temp_text):
+def justext_rescue(tree, url, target_language, postbody, len_text, text):
     '''Try to use justext algorithm as a second fallback'''
     temppost_algo = try_justext(tree, url, target_language)
     if temppost_algo is not None:
-        len_algo = len(trim(' '.join(temppost_algo.itertext())))
+        temp_text = trim(' '.join(temppost_algo.itertext()))
+        len_algo = len(temp_text)
         if len_algo > len_text:
             postbody = temppost_algo
-            temp_text = trim(' '.join(postbody.itertext()))
+            text = temp_text
             len_text = len_algo
-    return postbody, len_text, temp_text
+    return postbody, len_text, text
 
 
 def sanitize_tree(tree):
@@ -478,12 +479,11 @@ def extract_metadata(tree):
     return doctitle, docdate
 
 
-def compare_extraction(tree, url, len_text, temp_text, temppost_hand):
+def compare_extraction(tree, url, body, text, len_text):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
-    return_body = temppost_hand
-    return_text = temp_text
-    return_len = len_text
+    if tree is None:
+        return body, text, len_text
     # try with readability
     temppost_algo = try_readability(tree, url)
     algo_text = trim(' '.join(temppost_algo.itertext()))
@@ -501,7 +501,7 @@ def compare_extraction(tree, url, len_text, temp_text, temppost_hand):
         algo_flag = True
     #elif len_text >= 500 and 0.9*len_text < len_algo < len_text:
     #    algo_flag = True
-    elif len(temppost_hand.xpath('//p')) == 0 and len_algo > 0:
+    elif len(body.xpath('//p')) == 0 and len_algo > 0:
         algo_flag = True  # borderline case
     else:
         # print(sure_thing, len_text, len_algo)
@@ -509,13 +509,13 @@ def compare_extraction(tree, url, len_text, temp_text, temppost_hand):
         algo_flag = False
     # apply decision
     if algo_flag is True:
-        return_body = sanitize_tree(temppost_algo)
-        return_text = algo_text
-        return_len = len_algo
+        body = sanitize_tree(temppost_algo)
+        text = algo_text
+        len_text = len_algo
         LOGGER.info('using generic algorithm: %s', url)
     else:
         LOGGER.info('using custom extraction: %s', url)
-    return return_body, return_text, return_len
+    return body, text, len_text
 
 
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
@@ -565,24 +565,20 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
 
     # compare if necessary
     if no_fallback is False or sure_thing is False:
-        postbody, temp_text, len_text = compare_extraction(backup_tree, url, len_text, temp_text, postbody)
+        postbody, temp_text, len_text = compare_extraction(backup_tree, url, postbody, temp_text, len_text)
+        # try with justext
+        if len_text < MIN_EXTRACTED_SIZE:
+            LOGGER.error('not enough text %s %s', record_id, url)
+            if no_fallback is False and justext is not None:
+                postbody, len_text, temp_text = justext_rescue(tree, url, target_language, postbody, len_text, temp_text)
 
     # rescue: try to use original/dirty tree
-    if no_fallback is True and len_text == 0:
+    if no_fallback is True and len_text < MIN_OUTPUT_SIZE:
         tree = load_html(filecontent)
         tree = convert_tags(tree)
         postbody, temp_text, len_text, sure_thing = extract_content(tree)
         LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
-    # sanity check on length
-    if len_text < MIN_EXTRACTED_SIZE:
-        LOGGER.error('not enough text %s %s', record_id, url)
-        # try with justext if it has been imported
-        if no_fallback is False and justext is not None:
-            #if target_language is not None:
-            #    global JUSTEXT_STOPLIST
-            #    JUSTEXT_STOPLIST = target_language
-            postbody, len_text, temp_text = justext_rescue(tree, url,  target_language, postbody, len_text, temp_text)
     if len_comments < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
     if len_text < MIN_OUTPUT_SIZE and len_comments < MIN_OUTPUT_COMM_SIZE:
