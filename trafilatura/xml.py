@@ -117,7 +117,7 @@ def xmltotxt(xmloutput):
     return returnstring
 
 
-def write_teitree(postbody, commentsbody, url, doctitle, docdate):
+def write_teitree(postbody, commentsbody, docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
@@ -125,16 +125,16 @@ def write_teitree(postbody, commentsbody, url, doctitle, docdate):
     titlestmt = etree.SubElement(filedesc, 'titleStmt')
     title = etree.SubElement(titlestmt, 'title')
     if doctitle is not None:
-        title.text = doctitle
+        title.text = docmeta.title
     publicationstmt = etree.SubElement(filedesc, 'publicationStmt')
     publication_p = etree.SubElement(publicationstmt, 'publisher')
     publication_date = etree.SubElement(publicationstmt, 'date')
     publication_date.set('type', 'publication')
     if docdate is not None:
-        publication_date.text = docdate
+        publication_date.text = docmeta.date
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_p = etree.SubElement(sourcedesc, 'p')
-    source_p.text = url
+    source_p.text = docmeta.url
     textelem = etree.SubElement(tei, 'text')
     textbody = etree.SubElement(textelem, 'body')
     # post

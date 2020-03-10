@@ -118,7 +118,7 @@ def load_html(htmlobject):
     return tree
 
 
-def txttocsv(text, comments, url, doctitle, docdate):
+def txttocsv(text, comments, docmeta):
     '''Output the result in CSV format (tab-separated values)'''
     # outputwriter = csv.writer(sys.stdout, delimiter='\t', quoting=csv.QUOTE_NONE)
     # outputwriter.writerow()
@@ -127,16 +127,16 @@ def txttocsv(text, comments, url, doctitle, docdate):
         comments = trim(' '.join(comments.splitlines()))
     else:
         comments = ''
-    if url is None:
-        url = ''
-    if doctitle is None:
-        doctitle = ''
-    if docdate is None:
-        docdate = ''
+    if docmeta.url is None:
+        docmeta.url = ''
+    if docmeta.title is None:
+        docmeta.title = ''
+    if docmeta.date is None:
+        docmeta.date = ''
     tsv_output = '{url}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(
-        url=url,
-        doctitle=doctitle,
-        docdate=docdate,
+        url=docmeta.url,
+        doctitle=docmeta.title,
+        docdate=docmeta.date,
         text=text,
         comments=comments
         )

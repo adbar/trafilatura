@@ -43,6 +43,7 @@ from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLA
 from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
                              prune_html, recursively_empty, discard_unwanted,
                              discard_unwanted_comments)
+from .metadata import scrape as extract_metadata
 from .settings import (HTML_CLEANER, JUSTEXT_DEFAULT, JUSTEXT_LANGUAGES,
                        MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
@@ -473,19 +474,6 @@ def extract_comments(tree):
     return comments_body, temp_comments, len_comments, tree
 
 
-def extract_metadata(tree):
-    '''Extract title and document date if available/required'''
-    try:
-        doctitle = trim(tree.find('//title').text)  # h1?
-    except (AttributeError, SyntaxError):  # no title found
-        doctitle = None
-    if DATE_FLAG is True:
-        docdate = find_date(tree, extensive_search=False)
-    else:
-        docdate = None
-    return doctitle, docdate
-
-
 def compare_extraction(tree, url, body, text, len_text):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
@@ -537,9 +525,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
 
     # Metadata here
     if csv_output is True or xml_output is True or tei_output is True:
-        doctitle, docdate = extract_metadata(tree)
+        docmeta = extract_metadata(tree, default_url=url)
     else:
-        doctitle = docdate = None
+        docmeta = None
 
     # backup (or not) for further processing
     if no_fallback is False:
@@ -606,7 +594,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         commentsbody = None
     if tei_output is True:
         # build TEI tree
-        output = write_teitree(postbody, commentsbody, url, doctitle, docdate)
+        output = write_teitree(postbody, commentsbody, docmeta)
         # filter output (strip unwanted elements), just in case
         # check and repair
         output = check_tei(output, url)
@@ -641,7 +629,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         else:
             posttext = xmltotxt(postbody)
             commentstext = xmltotxt(commentsbody)
-            returnstring = txttocsv(posttext, commentstext, url, doctitle, docdate)
+            returnstring = txttocsv(posttext, commentstext, docmeta)
     else:
         # can be improved
         control_string = etree.tostring(output, encoding='unicode')

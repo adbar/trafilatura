@@ -12,7 +12,7 @@ from htmldate import find_date
 from htmldate.utils import load_html
 from lxml import etree, html
 
-from .xpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
+from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
 
 
 LOGGER = logging.getLogger(__name__)
@@ -161,6 +161,7 @@ def extract_date(tree, url):
 
 def extract_url(tree):
     '''Extract the URL from the canonical link'''
+    # link[rel="alternate"][hreflang="x-default"] ?
     element = tree.find('//head/link[@rel="canonical"]')
     if element is not None:
         return element.attrib['href']
@@ -188,7 +189,7 @@ def extract_catstags(metatype, tree):
             return results
 
 
-def scrape(filecontent, url=None):
+def scrape(filecontent, default_url=None):
     '''Main process for metadata extraction'''
     # create named tuple
     Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
@@ -212,7 +213,9 @@ def scrape(filecontent, url=None):
     # url
     if getattr(mymeta, 'url') is None:
         mymeta = mymeta._replace(url=extract_url(tree))
-    # link[rel="alternate"][hreflang="x-default"]
+    # default url
+    if getattr(mymeta, 'url') is None and default_url is not None:
+        mymeta = mymeta._replace(url=default_url)
     # date
     # if getattr(mymeta, 'date') is None:
     mymeta = mymeta._replace(date=extract_date(tree, url=mymeta.url))
