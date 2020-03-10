@@ -7,12 +7,11 @@ import logging
 import re
 
 from collections import namedtuple
-
 from htmldate import find_date
-from htmldate.utils import load_html
-from lxml import etree, html
+from lxml import html
 
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
+from .utils import load_html
 
 
 LOGGER = logging.getLogger(__name__)
@@ -78,7 +77,7 @@ def examine_meta(tree):
     for elem in tree.xpath('//head/meta'):
         # safeguard
         if len(elem.attrib) < 1:
-            print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+            LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
             continue
         # name attribute
         if 'name' in elem.attrib: # elem.get('name') is not None:
@@ -101,7 +100,7 @@ def examine_meta(tree):
                 if site_name is None:
                     site_name = elem.get('content')
             # url
-            elif elem.get('name') in ('twitter:url'):
+            elif elem.get('name') == 'twitter:url':
                 if url is None:
                     url = elem.get('content')
             # keywords
@@ -124,7 +123,7 @@ def examine_meta(tree):
             if elem.get('charset') is not None:
                 pass  # e.g. charset=UTF-8
             else:
-                print('# DEBUG:', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+                LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
     return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None, None)
 
 
@@ -136,7 +135,7 @@ def extract_metainfo(tree, expressions):
         if len(target_elements) > 0:
             result = target_elements[0].text
             if len(target_elements) > 1:
-                print('more than one result:', expression, len(target_elements))
+                LOGGER.debug('more than one result:', expression, len(target_elements))
             break
     return trim(result)
 
@@ -173,9 +172,9 @@ def extract_catstags(metatype, tree):
     results = list()
     regexpr = '/' + metatype + '/'
     if metatype == 'category':
-       xpath_expression = categories_xpaths
+        xpath_expression = categories_xpaths
     else:
-       xpath_expression = tags_xpaths
+        xpath_expression = tags_xpaths
     #if tree.find(expr) is not None:
     #     # expr = expr + '/a'
     for catexpr in xpath_expression:
@@ -186,7 +185,7 @@ def extract_catstags(metatype, tree):
                     match = re.search(regexpr, elem.attrib['href'])
                     if match:
                         results.append(elem.text_content())
-            return results
+    return results
 
 
 def scrape(filecontent, default_url=None):

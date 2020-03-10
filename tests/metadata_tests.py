@@ -214,7 +214,7 @@ def test_pages():
     assert metadata.description.startswith("L'évaluation, et la place")
     assert metadata.sitename == 'La Vie des idées'
     # assert metadata.categories == ['Essai', 'Économie']
-    assert metadata.tags == None
+    assert metadata.tags == []
     # <meta property="og:type" content="article" />
     # <meta name="DC:type" content="journalArticle">
 

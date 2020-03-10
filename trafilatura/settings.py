@@ -79,10 +79,8 @@ JUSTEXT_LANGUAGES = {
     'fr': 'French',
     'hr': 'Croatian',
     'hu': 'Hungarian',
-#    'ja': '',
+    # 'ja': '',
     'ko': 'Korean',
-    'fr': 'French',
-    'fr': 'French',
     'id': 'Indonesian',
     'it': 'Italian',
     'no': 'Norwegian_Nynorsk',
@@ -99,5 +97,5 @@ JUSTEXT_LANGUAGES = {
     'uk': 'Ukranian',
     'ur': 'Urdu',
     'vi': 'Vietnamese',
-#    'zh': '',
+    # 'zh': '',
 }

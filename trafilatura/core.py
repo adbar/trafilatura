@@ -25,12 +25,6 @@ from lxml import etree, html
 from readability import Document
 from readability.readability import Unparseable
 
-try:
-    from htmldate import find_date
-    DATE_FLAG = True
-except ImportError:
-    DATE_FLAG = False
-
 # try this option
 try:
     import justext

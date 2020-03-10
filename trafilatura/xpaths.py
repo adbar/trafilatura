@@ -6,8 +6,8 @@ X-Path expressions needed to extract and filter the main text content
 
 
 BODY_XPATH = [
-    '''//*[(self::div or self::section)][contains(@id, "content-main")  or
-    contains(@class, "content-main") or contains(@class, "content_main") or 
+    '''//*[(self::div or self::section)][contains(@id, "content-main") or
+    contains(@class, "content-main") or contains(@class, "content_main") or
     contains(@id, "content-body")  or contains(@class, "content-body") or
     @id="article" or @id="articleContent" or @itemprop="articleBody" or
     @class="post" or  @class="entry" or @id="story" or @class="story" or
