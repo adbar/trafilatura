@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Pluralsight Tech Blog  | Managing Python Environments</title>
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width,minimum-scale=1">
+<meta name="generator" content="Hugo 0.59.1" />
+<META NAME="ROBOTS" CONTENT="INDEX, FOLLOW">
+<link href="/tech-blog/dist/css/app.599be14c8b6ca798d684.css" rel="stylesheet">
+<link href="//cloud.typography.com/6966154/6397212/css/fonts.css" rel="stylesheet" />
+<meta property="og:title" content="Managing Python Environments" />
+<meta property="og:description" content="If you&#39;re not careful, your Python environment can quickly become a disaster.  We&#39;ll walk through the available tools to be more (code) environmentally friendly and establish some (highly opinionated) preferences for setting up Python." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.pluralsight.com/tech-blog/managing-python-environments/" />
+<meta property="article:published_time" content="2020-01-10T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-01-10T00:00:00+00:00" />
+<meta itemprop="name" content="Managing Python Environments">
+<meta itemprop="description" content="If you&#39;re not careful, your Python environment can quickly become a disaster.  We&#39;ll walk through the available tools to be more (code) environmentally friendly and establish some (highly opinionated) preferences for setting up Python.">
+<meta itemprop="datePublished" content="2020-01-10T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2020-01-10T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="4312">
+<meta itemprop="keywords" content="python,docker,getting started," />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Managing Python Environments" />
+<meta name="twitter:description" content="If you&#39;re not careful, your Python environment can quickly become a disaster.  We&#39;ll walk through the available tools to be more (code) environmentally friendly and establish some (highly opinionated) preferences for setting up Python." />
+<script type="text/javascript">
+    (function(){
+        var doNotTrack = document.cookie.indexOf("ps_optout=1") > -1
+        var oneHour = 60 * 60 * 1000
+        var trkDate = new Date(Date.now() + oneHour)
+        document.cookie = "ps_trk="+ (doNotTrack ? "0" : "1")  +"; expires=" + trkDate.toUTCString() + "; path=/; domain=pluralsight.com";
+    })()
+</script>
+<script src="//assets.adobedtm.com/launch-EN123ab280156b405ca2abf6acf664d9a0.min.js" async></script>
+</head>
+<body class="ma0 site-font bg-black production">
+<header>
+<div class="bg-black">
+<nav class="pv3 ph3 ph4-ns" role="navigation">
+<div class="flex-l justify-between items-center center">
+<a href="https://www.pluralsight.com/tech-blog/" class="f3 fw2 hover-white no-underline white-90 dib">
+<img class="header-logo" src="/tech-blog/img/ps_logo_white.png">
+</a>
+<div class="flex-l items-center">
+</div>
+<div>
+<a href="/tech-blog/index.xml">
+<img src="/tech-blog/img/rss-icon.png" alt="RSS Link" />
+</a>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main role="main">
+<article class="flex-l flex-wrap justify-between mw8 center ph3">
+<header class="mt4 w-100">
+<h1 class="f1 mb1">Managing Python Environments</h1>
+<div class="byline-metadata">
+<div>
+<span class="blog-author f5 dib tracked">By <a class="link" href="/tech-blog/author/john-walk">John Walk</a> -</span>
+<time class="f5 dib tracked" datetime="2020-01-10T00:00:00Z">January 10, 2020</time>
+</div>
+<div>
+<span class="f5 dib tracked">21 minutes</span>
+<span class="f5 dib tracked"> - 4312 words</span>
+</div>
+</div>
+</header>
+<section class="nested-copy-line-height lh-copy f4 nested-links nested-img mid-gray pr4-l w-100-l">
+<p>Python is, in general, an exceptionally flexible programming language - and this extends to its environment management.
+Unfortunately, that can mean that it&rsquo;s exceptionally easy for your Python install(s) to become a <a href="https://xkcd.com/1987/">messy, convoluted trash fire</a>.
+A whole host of environment management tools exist to tame this mess&hellip; but this can end up being even more convoluted, especially for a new Python developer!</p>
+<p>In this post, we&rsquo;ll go through the pros and cons of available tools so you can make an informed decision about your setup.
+Realistically, we just need to agree on a few principles:</p>
+<ul>
+<li><strong>virtualization is your friend:</strong> isolating your Python environment per-project makes your life infinitely easier by avoiding dependency clashes between projects</li>
+<li><strong>projects should be reproducible:</strong> the more tightly you can specify dependencies, the easier it is to exactly reproduce the running environment for your code on the fly, for yourself or another dev</li>
+<li><strong>self-contained = deployable</strong>: the easier it is to pack up and ship an environment with all the trimmings, the easier it is to get projects running on radically different systems (like moving from a dev environment to deployment)</li>
+</ul>
+<p>Any of our Python virtualization solutions can satisfy these - though like any other tool, you&rsquo;ll find <em>very</em> strong opinions as to which is best!
+Our goal here is for you to be able to make an informed decision about your Python environment and save yourself a few headaches on the way.
+We&rsquo;ll begin with the simplest low-level standard tooling, and work our way through newer, more powerful (though sometimes more esoteric and restrictive) options, discussing pros and cons along the way - I encourage you to consider all the options that could suit your project&rsquo;s needs.</p>
+<h3 id="whose-environment-is-it-anyway">whose environment is it, anyway?</h3>
+<p>First off, newer Python coders might be wondering - what are we talking about when we say <em>environment</em> control?
+Broadly, there&rsquo;s three levels of control we want to be cognizant of:</p>
+<ul>
+<li>installed python packages: what can we <code>import</code> into our running Python instance?</li>
+<li>the installed python binary itself: what version and flavor of Python are we actually running?</li>
+<li>non-python, system-level dependencies: what about things like the C/C++ toolchain underlying our numeric packages?</li>
+</ul>
+<p>Being able to explicitly control any (or all) of these things for a project makes it that much easier to pack up the project and get it up and running in a fresh environment.
+At the simplest level, most virtualization tools in Python will create a <em>virtual environment</em> that looks something like below:</p>
+<pre><code>venv/
+|-- bin/
+|   |-- python
+|   |-- pip
+|   |-- activate
+|   |-- &lt;other binaries/CLI tools&gt;
+|-- lib/
+|   |-- python3.7/
+|   |   |-- site-packages/
+|   |   |   |-- &lt;pip-installed packages&gt;
+|-- include/
+|   |-- &lt;underlying C header files and such&gt;
+|-- &lt;config files&gt;
+</code></pre>
+<p>A directory like this contains everything a Python instance needs to function - binaries and callable scripts (like an environment-specific <code>python</code> executable) in <code>bin</code>, any installed Python packages in <code>lib</code>, and any additional non-python headers and configurations needed.
+By setting system search paths to target this directory (usually accomplished with an included activation script), we can run a completely self-contained version of Python, with its executables, installed packages, etc. never referencing Python tooling outside of this directory.
+In addition to enabling project independence, this is a great solution for situations like running a Python environment on a system without <code>root</code> privileges, as we can just create the virtualenv in a location with permissions available to the user.</p>
+<p>Since the virtual environment includes its own version of the <code>pip</code> package manager, installing packages to the environment is trivial - we simply <code>pip install</code> like normal with the environment active, and the packages will end up in the right place.
+This also lets us specify dependencies for the environment - we can recreate an environment using only a known Python version (since we&rsquo;d want to use the same executable) and a <code>requirements.txt</code> file listing the required packages and their versions, which can be passed directly to <code>pip install</code>.</p>
+<p>Since environment activation is controlled by system path variables, we can technically put this directory anywhere - it&rsquo;s not necessary to have environment packages co-located with the project as it is with Node.js projects for example.
+It can be beneficial to keep the virtual environment with its associated project code (provided it&rsquo;s excluded from things like <code>git</code> tracking, as we only need to actually keep track of the Python version and requirements file), but it&rsquo;s equally workable to use a centralized directory for all of your Python projects.</p>
+<p>So, without further ado, let&rsquo;s see what our options are for environment management!</p>
+<h3 id="built-in-venv">built-in: <code>venv</code></h3>
+<p>Since version 3.3, the Python standard library has shipped with a simple built-in tool, <a href="https://docs.python.org/3/library/venv.html"><code>venv</code></a>, for creating virtual environments.
+Simply invoking</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ python -m venv <span class="nv">$VENV_PATH</span></code></pre></div>
+<p>(substituting your venv path as desired) will create a virtual environment like the above in the specified directory, along with a launch script - the environment can be activated or deactivated by calling</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ <span class="nb">source</span> <span class="nv">$VENV_PATH</span>/bin/activate
+$ deactivate</code></pre></div>
+<p>Once activated, <code>pip install</code> (individual packages or from a requirements file) will work as expected.
+To pack up a virtual environment to be reproduced elsewhere, you just need to generate a requirements file with the environment&rsquo;s contents:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pip freeze &gt; requirements.txt</code></pre></div>
+<p>with the environment active will generate a requirements file that can be installed into a fresh virtual environment on another system.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>comes stock in with Python, no additional tooling required</li>
+<li>creates a standard virtual environment that plays with pretty much any tooling: <code>requirements.txt</code> works for any environment manager using <code>pip</code></li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Only aware of installed packages: creates an environment with whatever Python was invoked to create it, so you&rsquo;re still stuck managing the Python version manually</li>
+<li>no bells and whistles apart from what&rsquo;s <code>pip</code>-installable into the environment</li>
+</ul>
+<h3 id="venv-with-more-virtualenv"><code>venv</code> with more: <code>virtualenv</code></h3>
+<p>There&rsquo;s actually an older (dating back to Python 2.x) tool, <a href="https://virtualenv.pypa.io/en/latest/"><code>virtualenv</code></a>, for creating these environments.
+In fact, <code>venv</code> was created by bringing a subset of <code>virtualenv</code> functionality into the Python 3.3+ standard library.
+This is still supported and installable via <code>pip</code> - though users should take note that this will install for the currently active Python only (defaulting to the system install).
+To avoid clashing with system packages (and for cases where the user lacks the privileges needed to install to the system Python), this can be installed on a per-user basis with <code>pip install --user virtualenv</code>.
+Once installed, invocation is similar to <code>venv</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">% virtualenv -p <span class="nv">$PYTHON_CALLABLE</span> <span class="nv">$VENV_PATH</span></code></pre></div>
+<p>creating a virtual environment directory at the specified location, that can be activated/deactivated just like one from <code>venv</code>.
+Notably, we have the option of supplying a Python callable - whereas <code>venv</code> creates an environment for the Python used to call it, <code>virtualenv</code> can create an environment for any Python install available on the system, meaning we can just run one tool from the system Python to create environments for separately managed Python installs (if the <code>-p</code> option is omitted, it will default to using the current active Python version).
+Once created, <code>pip install</code> by name or by requirements file works as expected.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>creates the same standard virtual enviroment that, like <code>venv</code>, plays nicely with most tooling</li>
+<li>can create environments for any installed Python with the same call</li>
+<li>includes some advanced functionality, like the ability to create bootstrap scripts for the environment</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>installed Python versions still need to be managed manually</li>
+<li>requires managing a package install to the system Python</li>
+</ul>
+<h3 id="extending-to-install-management-pyenv-and-pyenv-virtualenv">extending to install management: <code>pyenv</code> and <code>pyenv-virtualenv</code></h3>
+<p>Both of the above solutions only address package management - in either case, the user is left managing the installed Python version(s) manually.
+Fortunately, there is the excellent <a href="https://github.com/pyenv/pyenv"><code>pyenv</code></a> utility to address this, installable either through <code>homebrew</code> on OSX or by direct <code>git</code> checkout and build.</p>
+<p>Once set up, new Python versions can be installed easily by</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pyenv install <span class="nv">$PYTHON_VERSION_OR_DEFINITION_FILE</span></code></pre></div>
+<p>The currently active version or a list of all installs can be shown by</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pyenv version
+$ pyenv versions</code></pre></div>
+<p>User-level defaults or project-directory specific Python versions can be set by</p>
+<pre><code>$ pyenv global &lt;desired default version&gt;
+$ pyenv local &lt;desired version for current working directory&gt;
+</code></pre>
+<p>On its own, <code>pyenv</code> only controls installed Python versions, not virtual environments.
+Of course, within a <code>pyenv</code>-controlled Python version we could easily use <code>venv</code> or <code>virtualenv</code> to build the virtual environment - but the <code>pyenv</code> developers have also rolled out a plugin, <a href="https://github.com/pyenv/pyenv-virtualenv"><code>pyenv-virtualenv</code></a>, for managing environments with <code>pyenv</code>-installed Python versions.
+After installing via <code>homebrew</code> or <code>git</code> checkout+build, running</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pyenv virtualenv <span class="nv">$PYTHON_VERSION</span> <span class="nv">$VENV_NAME</span></code></pre></div>
+<p>will create a virtual environment using the specified <code>pyenv</code>-managed Python version with the given name (alternately, the Python version can be omitted to use the current default).
+The virtual environment can be activated or deactivated by</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pyenv activate <span class="nv">$VENV_NAME</span>
+$ pyenv deactivate</code></pre></div>
+<p>The install location for virtual environments is managed by <code>pyenv-virtualenv</code>, so we don&rsquo;t need to worry about specifying a directory (in our project, or in a central location) for the environment.
+It is, however, a normal virtual environment, so <code>pip</code> installs, requirements files, etc. all work like we expect.
+Notably, <code>pyenv</code> tracks a Python version for each virtual environment, so we can actually use <code>pyenv local</code> to set a specific virtual environment for a project directory, not just a Python version.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>no Python dependencies, only depends on shell commands</li>
+<li>one-stop management of all installed Python versions</li>
+<li>quickly set per-user and per-project default Python versions and virtual environments, including auto-switching for project directories</li>
+<li>easily create virtualenvs tied to specific Python installs</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>OSX/linux only (though a Windows port does exist)</li>
+<li>somewhat convoluted install/setup process</li>
+</ul>
+<h3 id="all-in-one-pipenv">all-in-one: <code>pipenv</code></h3>
+<p>Up to now, we&rsquo;ve been working with multiple tools for Python &amp; environment management, and package installation into those environments - what if we could roll all of that into a single tool?
+<a href="https://pipenv.kennethreitz.org/en/latest/"><code>Pipenv</code></a> aims to do just that, by bundling together Python and strong package version control in the style of <code>npm</code> or <code>yarn</code> for Javascript.
+After installing via package manager (<code>homebrew</code>, <code>apt</code>, <code>dnf</code>, etc.) or <code>pip</code> installing into an existing Python environment (recommended to install as a user-level utility, as with <code>virtualenv</code>), we can create a new <code>pipenv</code> project in our project directory with</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pipenv --python <span class="nv">$PYTHON_VERSION</span></code></pre></div>
+<p>which will initialize the project using the specified Python version (if <code>pyenv</code> is installed, it can even install Python versions on-demand).
+To start with, this creates:</p>
+<ul>
+<li>a <code>Pipfile</code> config file at the project home specifying Python version, sources, and any installed packages</li>
+<li>a fresh virtual environment housed in the <code>pipenv</code> working directory</li>
+</ul>
+<p>We no longer have to manage installs with <code>pip</code> and virtual environments separately - <code>pipenv</code> takes care of both!
+To install a package, simply running</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pipenv install <span class="nv">$PACKAGE_NAME</span></code></pre></div>
+<p>will both install the package into the virtual environment, and write the package as a dependency into the Pipfile.
+This Pipfile is then all we need to rebuild the project elsewhere, rather than the <code>requirements.txt</code> used by other managers - simply running <code>pipenv install</code> on a directory with a Pipfile will recreate the environment.
+To activate the environment,</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pipenv shell</code></pre></div>
+<p>will launch a new shell process using the project&rsquo;s virtual environment.</p>
+<p>Next, <code>pipenv</code> can do something fairly unique - it fully determines and specifies dependencies for the project.
+At the minimum, <code>pip install</code> just needs a package name to install, e.g. <code>pip install numpy</code>.
+We can, of course, specify version limits, e.g. <code>numpy==1.18.1</code>, in <code>pip install</code> or requirements files.
+However, beyond this, <code>pip</code> doesn&rsquo;t really do much validation - while pulling required dependencies of the packages we want to install, <code>pip</code> can potentially end up pulling clashing versions, so unless we&rsquo;ve actually checked that everything installs (like by actually installing everything and then generating the requirements file directly from <code>pip freeze</code>) we can run into issues trying to rebuild the environment from the package requirements.
+Instead, <code>pipenv</code> exhaustively builds out the dependency graph, flagging any issues and generating a validated <code>Pipfile.lock</code> for fully specifying every dependency in the project.
+We can trigger this manually for the requirements in our Pipfile with</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ pipenv lock</code></pre></div>
+<p>to pull the specifically requested packages from the Pipfile and generate the dependency graph for <code>Pipfile.lock</code>.
+While this does produce environments that can be deterministically reproduced, the dependency resolution can be quite complex, so <code>pipenv</code> environments are slower to write than using bare <code>pip</code>.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>officially supported by Python Packaging Authority</li>
+<li>single tool for project, virtual environment, and package management</li>
+<li>plays well with <code>pyenv</code> and <code>conda</code> for Python &amp; environment types</li>
+<li>validated, deterministic dependencies for every project</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>incompatible with other management tools, so requires consistent use across projects and users</li>
+<li>dependency resolution is quite slow</li>
+</ul>
+<h3 id="poetry-in-motion"><code>poetry</code> in motion</h3>
+<p>Similarly, <a href="https://python-poetry.org/"><code>poetry</code></a> includes environment control and dependency resolution, but is geared more specifically towards Python package development rather than general project control.
+After installing with the <a href="https://python-poetry.org/docs/#installation">custom installer</a>, we can create a new project with</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ poetry init</code></pre></div>
+<p>which will run through a series of interactive prompts to fill out a <code>pyproject.toml</code> config file specifying your project&rsquo;s dependencies.
+Alternately,</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ poetry new <span class="nv">$PACKAGE_NAME</span></code></pre></div>
+<p>will create a directory structure like</p>
+<pre><code>package-name/
+|-- pyproject.toml
+|-- README.rst
+|-- package_name/
+|   |-- __init__.py
+|-- tests/
+|   |-- __init__.py
+|   |-- test_package_name.py
+</code></pre>
+<p>Essentially, this has created a skeleton of exactly the structure we&rsquo;d want for building a Python package, albeit with the configuration TOML file taking the place of the <code>setup.py</code> file used by the standard library&rsquo;s packaging tools.
+We can add project dependencies via</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ poetry add <span class="nv">$PACKAGE_NAME</span></code></pre></div>
+<p>after which running <code>poetry install</code> will install all the specified packages into a fresh virtual environment if needed (if <code>poetry</code> is already running in a virtual environment, it will use that instead) while ensuring fully validated dependencies in a <code>poetry.lock</code> file.
+For specifying Python versions for the project, <code>poetry</code> can integrate with <code>pyenv</code> (or you can specify the environment manually with <code>poetry env use &lt;path&gt;</code>).
+We can use this directory for any code really, but where it shines is in Python package building - <code>poetry build</code> and <code>poetry publish</code> will assemble Python <code>sdist</code> and <code>wheel</code> package distributions and publish them to your repository of choice.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>single tool for project, virtual environment, and package management</li>
+<li>validated, deterministic dependencies for every project</li>
+<li>integrated build/publish tooling for Python packages</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>dependency resolution is quite slow</li>
+<li>requires tool-specific install &amp; updates, rather than using stock package managers</li>
+<li>tooling geared more towards package projects, rather than things like app development (but can still be used for it!)</li>
+<li>can currently only build pure Python wheels, so we can&rsquo;t include things like C/C++ dependencies or <code>Cython</code> integration code</li>
+<li>does not integrate with other environment/package managers</li>
+</ul>
+<h3 id="a-challenger-appears-anaconda">a challenger appears: <code>anaconda</code></h3>
+<p>Historically, Python package management has faced one major issue - while Python packages can require non-python dependencies (e.g., compiled C/C++ underlying nearly all numerical tooling in Python), packages could not meaningfully track these dependencies in a controlled way.
+Older <code>sdist</code> (&ldquo;source distributions&rdquo;) package distributions could only share source code, and as such required a compatible compiler on the host machine to build the package at all - vagaries between compiler toolchains could introduce errors into package installs.
+While this was greatly improved by the migration to <code>wheel</code> distributions, which can include compiled dependencies like shared-object <code>.so</code> files, Python&rsquo;s package trees do not version track non-Python dependencies (so, for example, they are not really aware of things like version changes in compiled dependencies).</p>
+<p>This, and other issues (like the lack of a rigorous dependency resolver in <code>pip</code>) motivated the development of <a href="https://www.anaconda.com/">Anaconda</a> - an all-in-one Python distribution (though it will behave identically to the usual Python callables you&rsquo;re used to), package &amp; environment manager called <code>conda</code>, and a new package distribution format.
+The whole deal is <a href="https://docs.anaconda.com/anaconda/install/">shipped with a graphical installer</a>, which will also inject instructions into your startup scripts such that the default Python will come from the Anaconda distribution.
+We can then create new virtual environments with the <code>conda</code> manager using</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ conda create --name <span class="nv">$ENV_NAME</span></code></pre></div>
+<p>and activate/deactivate the environment with</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ conda activate <span class="nv">$ENV_NAME</span>
+$ conda deactivate</code></pre></div>
+<p>Within the conda environment, simply running</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ conda install <span class="nv">$PACKAGE_NAME</span></code></pre></div>
+<p>will pull a package from the conda repository and install it into the environment.
+To export a <code>conda</code> environment or recreate one from the exported file (equivalent to installing from a <code>requirements.txt</code> file):</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ conda list --export &gt; <span class="nv">$REQUIREMENTS_FILE</span>
+$ conda create --name <span class="nv">$ENV_NAME</span> --file <span class="nv">$REQUIREMENTS_FILE</span></code></pre></div>
+<p>This is the biggest distinction between Anaconda/<code>conda</code> and the other managers we&rsquo;ve discussed here - while everything else is building on <code>pip</code> and using the standard <code>wheel</code> format for Python packages, <code>conda</code> redesigns from the ground up how packaging really works in its environments, and takes a rather different philosophy.
+In short: <code>pip</code> installs <em>python</em> dependencies in <em>any</em> environment, while <code>conda</code> installs <em>any</em> dependencies in <em>conda</em> environments.
+Within a <code>conda</code> environment, you&rsquo;ve got fine-grained control over your dependencies, at the cost of only being functional within the <code>conda</code> environment framework - the package manager is inextricably linked to the environment, and relies on a packaging structure and environment specification that is incompatible with other Python tools.
+In contrast, <code>pip</code> is thoroughly general in terms of environment for handling Python dependencies (it&rsquo;s used under the hood even in the more detailed environment managers like <code>pipenv</code> and <code>poetry</code>), and can install into essentially any environment that runs Python, including <code>conda</code> environments.</p>
+<p>All this means that Anaconda and its associated tools can be really powerful for getting your local environment up and running, and for fairly painless management of your own projects.
+As such, it&rsquo;s a common solution for (and is directly marketed to) Data Scientists, who more commonly are running code in their own bespoke environments and have particular needs for clean handling of compiled dependencies in numerical packages.
+However, it is significantly more difficult to integrate with other systems (unless they are also all running <code>conda</code>), particularly for dealing with production deployments.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>integrated Python distribution, environment, and package management</li>
+<li>meaningfully handle non-Python dependencies</li>
+<li>includes rigorous dependency resolution similar to <code>pipenv</code> and <code>poetry</code></li>
+<li>ships with a ready-made Data Science stack available</li>
+<li>works cross-platform</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>package management does not integrate with standard package repositories, meaning falling back to <code>pip</code> installs may still be necessary</li>
+<li>does not integrate with any other environment manager, no cross-compatibility</li>
+<li>mix-and-match with <code>conda</code> and <code>pip</code> installs can be hard to replicate</li>
+<li>entirely new toolchain for Python package development</li>
+</ul>
+<h3 id="if-it-works-on-your-machine-we-ll-ship-your-machine-docker">if it works on your machine, we&rsquo;ll ship your machine: <code>docker</code></h3>
+<p>This is a bit of an oddity for the purposes of this article, but it&rsquo;s so critical for environment management that it bears including.
+<a href="https://www.docker.com/products/docker-desktop">Docker</a>, unlike the other tools here, is not a Python environment manager at all - rather, it is a <a href="https://www.docker.com/resources/what-container"><em>container</em></a> manager.
+Each Docker container runs a lightweight environment including all code, runtimes, system tools, and libraries on top of isolated resources.
+From the developer&rsquo;s standpoint, the container appears to be an entirely independent machine running a Linux environment, without the resource overhead of a full virtual machine - it&rsquo;s entirely feasible to run a number of containers in parallel on one machine (for example, while building a full-stack app, the developer might simultaneously run separate containers for the frontend, backend, and database instance).
+This gives us complete control over <em>everything</em> in our code environment, right down to low-level system dependencies, and lets create a portable container that can exactly reproduce that environment anywhere running Docker.</p>
+<p>Really, learning Docker warrants a post in its own right, but let&rsquo;s quickly run through an example for running some Python code.
+First, our project directory would look something like this:</p>
+<pre><code>my-project/
+|-- Dockerfile
+|-- docker-compose.yml
+|-- requirements.txt
+|-- project_code/
+|   |-- &lt;your Python code goes here&gt;
+</code></pre>
+<p>in which we have:</p>
+<ul>
+<li><code>Dockerfile</code>: the instructions for building the Docker container.
+These assembled instructions constitute a <em>Docker image</em>, which can be spun up for any number of independent <em>container</em> instances.</li>
+<li><code>docker-compose.yml</code>: instructions and settings for running containers.
+This is optional, as everything in the YAML can be done with <code>docker</code> command-line calls, but it makes our life a lot easier.</li>
+<li><code>requirements.txt</code> and Python code: this is just like your Python setup in any other environment.
+In fact, we can substitute <code>requirements.txt</code> for the environment spec in any other manager, e.g. we could easily run <code>pipenv</code> and include a Pipfile for the container instead.</li>
+</ul>
+<p>The <code>Dockerfile</code> will look something like</p>
+<div class="highlight"><pre class="chroma"><code class="language-docker" data-lang="docker"><span class="k">FROM</span><span class="s"> python:3.7</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /opt/app</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">COPY</span> ./requirements.txt ./requirements.txt<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> pip install -r requirements.txt</code></pre></div>
+<p>in which we:</p>
+<ul>
+<li>declare a &ldquo;base image&rdquo; starting point: in this case, an official Python 3.7 image running on Debian linux</li>
+<li>set the current working directory for subsequent instructions</li>
+<li>copy files into the container so they&rsquo;re available for subsequent commands</li>
+<li>execute commands for setup: we can follow <code>RUN</code> calls with anything that can run in the command line for the operating system of the container</li>
+</ul>
+<p>This declares a container with the desired Python version installed, then brings in and installs our desired package dependencies - we could also use <code>RUN</code> calls to install any necessary system dependencies (C compilers, <code>git</code> calls to bring in source code, etc.).
+To build and run the container, we could use <a href="https://docs.docker.com/engine/reference/commandline/docker/"><code>docker</code> command line</a> calls, but it&rsquo;s generally much simpler to use the <a href="https://docs.docker.com/compose/"><code>docker-compose</code></a> wrapper tool.
+We specify settings for that in YAML format:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">version<span class="p">:</span><span class="w"> </span><span class="s1">&#39;3.7&#39;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>services<span class="p">:</span><span class="w">
+</span><span class="w">  </span>python-app<span class="p">:</span><span class="w">
+</span><span class="w">    </span>build<span class="p">:</span><span class="w">
+</span><span class="w">      </span>context<span class="p">:</span><span class="w"> </span>./<span class="w">
+</span><span class="w">    </span>volumes<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>./python_code<span class="p">:</span>/opt/app/python_code<span class="w">
+</span><span class="w">    </span>command<span class="p">:</span><span class="w"> </span>python</code></pre></div>
+<p>This lets us specify things all sorts of useful information for the container: shorthand build instructions (so <code>docker-compose</code> is aware of how to build an image from the <code>Dockerfile</code>), volume mounts to share code &amp; data between the container and host machine (so we can live edit our code and rerun it without needing to rebuild the container), port mappings and environment variables for system control, and the command we actually want it to run.
+To build our container then, we just need to run</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ docker-compose build</code></pre></div>
+<p>which will assemble an image for any service(s) specified in the compose file.
+Then running</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ docker-compose run</code></pre></div>
+<p>will launch a Python shell in our command line, running inside the container (or, for background services, we can use <code>docker-compose up</code>).</p>
+<p>Finally, we should take a moment to consider which base image to use, as there are a number of options.
+Technically, we could pull a base image for our linux distro of choice and install Python on it (e.g., with <code>pyenv</code>) - but if we don&rsquo;t have specific needs for an OS, we can easily just use the stock <code>python</code> images.
+This gives us a Debian environment with the Python version listed in the tag as its system Python (e.g., <code>python:3.7.5</code> will default to using Python 3.7.5) with no clashes, so we can go ahead and run that like normal.
+Alternately, we can use the &ldquo;slim&rdquo; images (e.g., <code>python:3.7.5-slim</code>), which strip out some potentially unnecessary system dependencies.
+We may need to add these back in - for example, certain packages with compiled dependencies will need <code>gcc</code> for a C compiler - but it generally results in a significantly smaller image compared to the &ldquo;full-fat&rdquo; version, and dependencies can easily be re-installed in <code>Dockerfile</code> instructions.</p>
+<p>Devs coming from other languages will likely be familiar with the <code>alpine</code> image type - this is an extremely stripped-down distro designed for security and size constraints.
+Alpine python images do exist, but I would strongly caution against their use.
+Alpine uses the <code>musl</code> toolchain for all its C dependencies (again, for size and security), whereas Python packages generally have their dependencies built assuming the <code>glibc</code> toolchain for performance reasons.
+Getting these packages running on alpine requires either rebuilding the <code>glibc</code> toolchain, or rebuilding those packages for <code>musl</code> - either way, it&rsquo;s a headache for devs and can result in an image of comparable size to the <code>slim</code> version, eliminating the advantage of using Alpine in the first place.
+Unless you have specific deployment needs for Alpine, I&rsquo;d recommend defaulting to the slim Python.
+Alternately, if you&rsquo;re already familiar with and prefer to use Anaconda tooling, there are well-supported <code>anaconda</code> and <code>miniconda</code> (a stripped-down, smaller distro) Docker base images.</p>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>complete control over all our dependencies, down to the system level - can even use any of the environment managers in this article</li>
+<li>explicitly specify all instructions to replicate the code environment</li>
+<li>containers can easily be packed up and shipped to run on production environments</li>
+<li>common instructions can be built into new base images and reused between projects</li>
+<li>can programmatically define interactions between multiple services running independently in a single <code>docker-compose</code> spec</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>whole new API to learn</li>
+<li>weird vagaries with build tooling on <code>alpine</code> images</li>
+</ul>
+<h3 id="wrapping-up">wrapping up</h3>
+<p>Of course, I said that any of these tools are workable for environment management - that&rsquo;s true, but that doesn&rsquo;t mean I don&rsquo;t have my own opinions!
+Out of all of these, I prefer to use <code>pyenv</code>/<code>pyenv-virtualenv</code> for control on my local machine, although for most projects I&rsquo;ll go ahead and use Docker (possibly with <code>venv</code> if I don&rsquo;t want to run as root) to have the maximum level of control and easiest possible deployment for my code.
+In nearly all cases, I&rsquo;ll default to using the slim Python images, as this strikes a good balance between image size &amp; removing unnecessary dependencies vs. ensuring I can easily get the tooling that I <em>do</em> need.</p>
+<p>I&rsquo;ve generally found dependency resolution to be less of an issue (particularly for highly isolated projects), and thus found tools like <code>pipenv</code> or <code>poetry</code> to be less necessary - although it&rsquo;s a great idea for larger projects, and better dependency resolution is a <a href="https://pyfound.blogspot.com/2019/11/seeking-developers-for-paid-contract.html">high-level priority for the Python Software Foundation</a>.
+In the case of a project with significant dependency issues, running <code>pipenv</code> on a Docker container is an excellent solution.</p>
+<p>The difficulties of dealing with production environments, coupled with the gains for dealing with compiled dependencies provided by the newer <code>wheel</code> format for Python packages (which was introduced since the development of Anaconda) means I prefer to avoid <code>conda</code> as an environment manager entirely.
+While it&rsquo;s marketed for data scientists, I find that a code setup that looks more like production, supplemented by consistent build environments provided by Docker, pays off in the long run.</p>
+<div class="f5">
+<span>Categories: </span><a href="/tech-blog/categories/practices" class="link">practices</a></div>
+<div class="f5">
+<span>Tags: </span><a href="/tech-blog/tags/python" class="link">python</a>, <a href="/tech-blog/tags/docker" class="link">docker</a>, <a href="/tech-blog/tags/getting-started" class="link">getting started</a></div>
+<div class="mt6">
+</div>
+</section>
+</article>
+</main>
+<footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+<div class="flex justify-between">
+<span class="white-70 dn dib-ns pv2 ph3">
+&nbsp;
+</span>
+<div>
+</div>
+</div>
+</footer>
+<script src="/tech-blog/dist/js/app.a147accca81f2a28260e.js"></script>
+</body>
+</html>
