@@ -7,16 +7,16 @@ File containing XPath expressions to extract metadata.
 
 
 author_xpaths = [
-'//a[@rel="author" or @class="author" or rel="me"]',
-'//*[@rel="author" or @class="author" or rel="me"]',
+'//*[(self::a or self::link)][@rel="author" or @class="author" or rel="me"]',
 '//author',
 '//a[contains(@class, "author")]',
-'//span[contains(@class, "authors") or contains(@class, "author")]',
-'//span[contains(@class, "byline") or contains(@itemprop, "author")]',
+'//span[contains(@class, "authors") or contains(@class, "author") or contains(@class, "posted-by") contains(@itemprop, "author")]',
+'//span[contains(@class, "byline")]',
 ]
 # json author
 # '//address[@class="author"]',
 # screenname
+# '//*[@rel="author" or @class="author" or rel="me"]',
 
 
 categories_xpaths = [
