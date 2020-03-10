@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en-US" prefix="og: http://ogp.me/ns#">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="google-site-verification" content="C2jz5ILKBOjIw9qYHChzPaFWPTyLTHWB_WVb6uV2zkQ" />
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+
+	<title>What is Rust and why is it so popular? - Stack Overflow Blog</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v8.2 - https://yoast.com/wordpress/plugins/seo/ -->
+<link rel="canonical" href="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="What is Rust and why is it so popular? - Stack Overflow Blog" />
+<meta property="og:description" content="Rust has been Stack Overflow&#039;s most loved language for four years in a row, indicating that many of those who have had the opportunity to use Rust have fallen in love with it. However, the roughly 97% of survey respondents who haven&#039;t used Rust may wonder, &quot;What&#039;s the deal with Rust?&quot;" />
+<meta property="og:url" content="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/" />
+<meta property="og:site_name" content="Stack Overflow Blog" />
+<meta property="article:publisher" content="https://www.facebook.com/officialstackoverflow/" />
+<meta property="article:tag" content="programming" />
+<meta property="article:tag" content="rust" />
+<meta property="article:section" content="Bulletin" />
+<meta property="article:published_time" content="2020-01-20T07:39:00-05:00" />
+<meta property="article:modified_time" content="2020-01-19T22:16:19-05:00" />
+<meta property="og:updated_time" content="2020-01-19T22:16:19-05:00" />
+<meta property="og:image" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-945x630.jpg" />
+<meta property="og:image:secure_url" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-945x630.jpg" />
+<meta property="og:image:width" content="945" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="Rust has been Stack Overflow&#039;s most loved language for four years in a row, indicating that many of those who have had the opportunity to use Rust have fallen in love with it. However, the roughly 97% of survey respondents who haven&#039;t used Rust may wonder, &quot;What&#039;s the deal with Rust?&quot;" />
+<meta name="twitter:title" content="What is Rust and why is it so popular? - Stack Overflow Blog" />
+<meta name="twitter:site" content="@StackOverflow" />
+<meta name="twitter:image" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-scaled.jpg" />
+<meta name="twitter:creator" content="@JakeGoulding" />
+<!-- / Yoast SEO plugin. -->
+
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Stack Overflow Blog &raquo; What is Rust and why is it so popular? Comments Feed" href="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/stackoverflow.blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.3.2"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://149351115.v2.pressablecdn.com/wp-includes/css/dist/block-library/style.min.css?ver=5.3.2' type='text/css' media='all' />
+<style id='wp-block-library-inline-css' type='text/css'>
+.has-text-align-justify{text-align:justify;}
+</style>
+<link rel='stylesheet' id='bodhi-svgs-attachment-css'  href='https://149351115.v2.pressablecdn.com/wp-content/plugins/svg-support/css/svgs-attachment.css?ver=5.3.2' type='text/css' media='all' />
+<link rel='stylesheet' id='google-fonts-css'  href='https://fonts.googleapis.com/css?family=Miriam+Libre%3A400%2C700&#038;ver=20171013' type='text/css' media='all' />
+<link rel='stylesheet' id='stack-css'  href='https://149351115.v2.pressablecdn.com/wp-content/themes/stackoverflow-oct-19/assets/css/stackoverflow.min.css?ver=20171013' type='text/css' media='all' />
+<link rel='stylesheet' id='tablepress-default-css'  href='https://149351115.v2.pressablecdn.com/wp-content/tablepress-combined.min.css?ver=19' type='text/css' media='all' />
+<link rel='stylesheet' id='jetpack_css-css'  href='https://149351115.v2.pressablecdn.com/wp-content/plugins/jetpack/css/jetpack.css?ver=8.1' type='text/css' media='all' />
+<script type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-content/plugins/wp-hide-post/public/js/wp-hide-post-public.js?ver=2.0.10'></script>
+<link rel='https://api.w.org/' href='https://stackoverflow.blog/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://stackoverflow.blog/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://stackoverflow.blog/wp-includes/wlwmanifest.xml" /> 
+
+<link rel='shortlink' href='https://stackoverflow.blog/?p=14760' />
+<link rel="alternate" type="application/json+oembed" href="https://stackoverflow.blog/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fstackoverflow.blog%2F2020%2F01%2F20%2Fwhat-is-rust-and-why-is-it-so-popular%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://stackoverflow.blog/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fstackoverflow.blog%2F2020%2F01%2F20%2Fwhat-is-rust-and-why-is-it-so-popular%2F&#038;format=xml" />
+          <style>
+          .has-post-thumbnail img.wp-post-image, 
+          .attachment-twentyseventeen-featured-image.wp-post-image { display: none !important; }          
+          </style><style type='text/css'>img#wpstats{display:none}</style><style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style><link rel="icon" href="https://149351115.v2.pressablecdn.com/wp-content/uploads/2017/03/cropped-SO_Logo_glyph-use-this-one-smaller-32x32.jpg" sizes="32x32" />
+<link rel="icon" href="https://149351115.v2.pressablecdn.com/wp-content/uploads/2017/03/cropped-SO_Logo_glyph-use-this-one-smaller-192x192.jpg" sizes="192x192" />
+<link rel="apple-touch-icon-precomposed" href="https://149351115.v2.pressablecdn.com/wp-content/uploads/2017/03/cropped-SO_Logo_glyph-use-this-one-smaller-180x180.jpg" />
+<meta name="msapplication-TileImage" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2017/03/cropped-SO_Logo_glyph-use-this-one-smaller-270x270.jpg" />
+</head>
+
+<body class="post-template-default single single-post postid-14760 single-format-standard">
+
+	<div id="page" class="site">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content		</a>
+
+		<header id="masthead" class="site-header">
+			<div class="top-bar">
+				<div class="wrapper">
+					<div class="logo" itemscope itemtype="http://schema.org/Organization">
+						<a itemprop="url" href="https://stackoverflow.blog/">
+							<img src="https://stackoverflow.blog/wp-content/themes/stackoverflow-oct-19/assets/svg/dist/logo.svg">
+						</a>
+					</div>
+
+					<nav class="site-header__nav">
+						<a id="nav-latest" href="/" >Latest</a>
+						<a href="/newsletter" >Newsletter</a>
+						<a href="/podcast" >Podcast</a>
+					</nav>
+
+					<div class="so-com">
+						<a href="https://stackoverflow.com" class="mainsite" target="_blank">stackoverflow.com</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		
+
+
+<div id="content" class="site-content wrapper">
+	
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+			
+<article id="post-14760" class="m-post post-14760 post type-post status-publish format-standard has-post-thumbnail hentry category-bulletin category-code-for-a-living category-stackoverflow tag-programming tag-rust" itemscope itemtype="https://schema.org/BlogPosting">
+
+	<div class="columns is-centered">
+
+		<div class="column is-two-thirds">
+
+							<!--<div class="m-post__featured-image m-post__featured-image--mobile" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+					<img width="1200" height="630" src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-1200x630.jpg" class="attachment-post-card size-post-card wp-post-image" alt="" />				</div>-->
+								<meta itemprop="url" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-scaled.jpg"/>
+									<meta itemprop="width" content="2560"/>
+					<meta itemprop="height" content="1707"/>
+							
+			<h1 class="section-title section-title--orange-underline">
+				What is Rust and why is it so popular?			</h1>
+
+			<div class="m-post__meta">
+				<span class="posted-on-container posted-on-container--avatar"><span class="avatar" itemprop="avatar"><a class="avatar__url url fn n" href="https://stackoverflow.blog/authors/jgoulding/"><img class="avatar__image" src="https://secure.gravatar.com/avatar/f87a220e9c58c1cacfd615ad9d9d9f4f?s=96&amp;d=mm&amp;r=g" /></a></span><span class="author vcard" itemprop="author"><a class="url fn n" href="https://stackoverflow.blog/authors/jgoulding/"></a><span class="author-name">by <a class="url fn n" href="https://stackoverflow.blog/authors/jgoulding/">Jake Goulding</a></span></span><span class="date"> on <time class="entry-date published updated" datetime="2020-01-20T07:39:00-05:00">January 20, 2020</time></span></span>			</div>
+
+			<div class="m-post__social-share">
+				    <div class="social-sharing">
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <div class="addthis_inline_share_toolbox" data-url="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/"
+             data-title="What is Rust and why is it so popular?" data-media="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-scaled.jpg"></div>
+    </div>
+
+			</div>
+
+							<div class="m-post__featured-image m-post__featured-image--desktop" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+					<img width="945" height="630" src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-945x630.jpg" class="attachment-large size-large wp-post-image" alt="" srcset="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-945x630.jpg 945w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-300x200.jpg 300w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-768x512.jpg 768w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-1536x1024.jpg 1536w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-2048x1365.jpg 2048w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-338x225.jpg 338w " sizes="(max-width: 945px) 100vw, 945px" />				</div>
+								<meta itemprop="url" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-845512746-scaled.jpg"/>
+									<meta itemprop="width" content="2560"/>
+					<meta itemprop="height" content="1707"/>
+							
+			<div class="m-post-content">
+				
+<p>Rust has been <a href="https://insights.stackoverflow.com/survey/2019">Stack Overflow&#8217;s most loved language for four years in a row</a>, indicating that many of those who have had the opportunity to use Rust have fallen in love with it. However, the roughly 97% of survey respondents who haven&#8217;t used Rust may wonder, &#8220;What&#8217;s the deal with Rust?&#8221;</p>
+
+
+
+<p>The short answer is that Rust solves pain points present in many other languages, providing a solid step forward with a limited number of downsides.</p>
+
+
+
+<p>I’ll show a sample of what Rust offers to users of other programming languages and what the current ecosystem looks like. It’s not all roses in Rust-land, so I talk about the downsides, too.&nbsp;</p>
+
+
+
+<h2>Coming from dynamically-typed languages</h2>
+
+
+
+<p>The arguments between programmers who prefer dynamic versus static type systems are likely to endure for decades more, but it&#8217;s hard to argue about the benefits of static types. You only need to look at the rise of languages like TypeScript or features like Python&#8217;s type hints as people have become frustrated with the current state of dynamic typing in today&#8217;s larger codebases. Statically-typed languages allow for compiler-checked constraints on the data and its behavior, alleviating cognitive overhead and misunderstandings.</p>
+
+
+
+<p>This isn&#8217;t to say that all static type systems are equivalent. Many statically-typed languages have a large asterisk next to them: they allow for the concept of <code>NULL</code>. This means any value may be what it says <strong>or nothing</strong>, effectively <a href="https://franklinchen.com/blog/2012/09/06/my-pittsburgh-ruby-talk-nil/">creating a second possible type for every type</a>. Like Haskell and some other modern programming languages, Rust encodes this possibility using an <em>optional type</em>, and the compiler requires you to handle the <code>None</code> case. This prevents occurrences of the dreaded <code>TypeError: Cannot read property 'foo' of null</code> runtime error (or language equivalent), instead promoting it to a compile time error you can resolve before a user ever sees it. Here&#8217;s an example of a function to greet someone whether or not we know their name; if we had forgotten the <code>None</code> case in the <code>match</code> or tried to use <code>name</code> as if it was an always-present <code>String</code> value, the compiler would complain.</p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.07.59-1200x148.png" alt="" class="wp-image-14768" srcset="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.07.59-1200x148.png 1200w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.07.59-300x37.png 300w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.07.59-768x95.png 768w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.07.59-1536x190.png 1536w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.07.59-400x49.png 400w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.07.59.png 1956w " sizes="(max-width: 1200px) 100vw, 1200px" /></figure>
+
+
+
+
+
+<p>Rust&#8217;s static typing does its best to get out of the programmer&#8217;s way while encouraging long-term maintainability. Some statically-typed languages place a large burden on the programmer, requiring them to repeat the type of a variable multiple times, which hinders readability and refactoring. Other statically-typed languages allow whole-program type inference. While convenient during initial development, this reduces the ability of the compiler to provide useful error information when types no longer match. Rust learns from both of these styles and requires top-level items like function arguments and constants to have explicit types, while allowing type inference inside of function bodies. In this example, the Rust compiler can infer the type of <code>twice</code>, <code>2</code>, and <code>1</code> because the <code>val</code> parameter and the return type are declared as 32-bit signed integers.</p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.12.45-1200x98.png" alt="" class="wp-image-14769" srcset="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.12.45-1200x98.png 1200w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.12.45-300x25.png 300w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.12.45-768x63.png 768w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.12.45-1536x126.png 1536w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.12.45-400x33.png 400w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.12.45.png 1956w " sizes="(max-width: 1200px) 100vw, 1200px" /></figure>
+
+
+
+
+
+<h2>Coming from garbage-collected languages</h2>
+
+
+
+<p>One of the biggest benefits of using a systems programming language is the ability to have control over low-level details.</p>
+
+
+
+<p>Rust gives you the choice of storing data on the stack or on the heap and determines at compile time when memory is no longer needed and can be cleaned up. This allows efficient usage of memory as well as more performant memory access. <a href="https://www.tilde.io/">Tilde</a>, an early production user of Rust in their <a href="https://www.skylight.io/">Skylight</a> product, found they were able to <a href="https://www.rust-lang.org/static/pdfs/Rust-Tilde-Whitepaper.pdf">reduce their memory usage from 5GiB to 50MiB</a> by rewriting certain Java HTTP endpoints in idiomatic Rust. Savings like this quickly add up when cloud providers charge premium prices for increased memory or additional nodes.</p>
+
+
+
+<p>Without the need to have a garbage collector continuously running, Rust projects are well-suited to be used as libraries by other programming languages via foreign-function interfaces. This allows existing projects to replace performance-critical pieces with speedy Rust code without the memory safety risks inherent with other systems programming languages. Some projects have even been <a href="https://people.gnome.org/~federico/blog/librsvg-is-almost-rustified.html">incrementally rewritten in Rust</a> using these techniques.</p>
+
+
+
+<p>With direct access to hardware and memory, Rust is an ideal language for embedded and bare-metal development. You can write extremely low-level code, such as <a href="https://os.phil-opp.com/">operating system kernels</a> or <a href="https://docs.rust-embedded.org/discovery/">microcontroller applications</a>. Rust&#8217;s core types and functions as well as reusable library code shine in these especially challenging environments.</p>
+
+
+
+<h2>Coming from other systems programming languages</h2>
+
+
+
+<p>To many people, Rust is largely viewed as an alternative to other systems programming languages, like C or C++. The biggest benefit Rust can provide compared to these languages is the <em>borrow checker</em>. This is the part of the compiler responsible for ensuring that references do not outlive the data they refer to, and it helps eliminate entire classes of bugs caused by memory unsafety.</p>
+
+
+
+<p>Unlike many existing systems programming languages, Rust doesn&#8217;t require that you spend all of your time mired in nitty-gritty details. Rust strives to have as many <em>zero-cost abstractions</em> as possible—abstractions that are as equally as performant as the equivalent hand-written code. In this example, we show how iterators, a primary Rust abstraction, can be used to succinctly create a vector containing the first ten square numbers.</p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.13.53-1200x25.png" alt="" class="wp-image-14770" srcset="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.13.53-1200x25.png 1200w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.13.53-300x6.png 300w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.13.53-768x16.png 768w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.13.53-1536x31.png 1536w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.13.53-400x8.png 400w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.13.53.png 1956w " sizes="(max-width: 1200px) 100vw, 1200px" /></figure>
+
+
+
+
+
+<p>When safe Rust isn&#8217;t able to express some concept, <a href="http://cliffle.com/p/dangerust/">you can use <em>unsafe</em> Rust</a>. This unlocks a few extra powers, but in exchange the programmer is now responsible for ensuring that the code is truly safe. This unsafe code can then be wrapped in higher-level abstractions which guarantee that all uses of the abstraction are safe.</p>
+
+
+
+<p>Using unsafe code should be a calculated decision, as using it correctly requires as much thought and care as any other language where you are responsible for avoiding <a href="https://raphlinus.github.io/programming/rust/2018/08/17/undefined-behavior.html">undefined behavior</a>. Minimizing unsafe code is the best way to minimize the possibilities for segfaults and vulnerabilities due to memory unsafety.</p>
+
+
+
+<p>Systems programming languages have the implicit expectation that they will be around effectively forever. While some modern development doesn&#8217;t require that amount of longevity, many businesses want to know that their fundamental code base will be usable for the foreseeable future. Rust recognizes this and has made conscious design decisions around backwards compatibility and stability; it&#8217;s a language <a href="https://www.youtube.com/watch?v=A3AdN7U24iU">designed for the next 40 years</a>.</p>
+
+
+
+<h2>The Rust ecosystem</h2>
+
+
+
+<p>The Rust experience is larger than a language specification and a compiler; many aspects of creating and maintaining production-quality software are treated as first-class citizens. Multiple concurrent Rust toolchains can be installed and managed via <a href="https://rustup.rs/">rustup</a>. Rust installations come with Cargo, a command line tool to manage dependencies, run tests, generate documentation, and more. Because dependencies, tests, and documentation are available by default, their usage is prevalent. <a href="https://crates.io/">crates.io</a> is the community site for sharing and discovering Rust libraries. Any library published to crates.io will have its documentation built and published on <a href="https://docs.rs/">docs.rs</a>.</p>
+
+
+
+<p>In addition to the built-in tools, the Rust community has created a large number of development tools. Benchmarking, fuzzing, and property-based testing are all easily accessible and well-used in projects. Extra compiler lints are available from <a href="https://github.com/rust-lang/rust-clippy">Clippy</a> and automatic idiomatic formatting is provided by <a href="https://github.com/rust-lang/rustfmt">rustfmt</a>. IDE support is healthy and growing more capable every day.</p>
+
+
+
+<p>Going beyond technical points, Rust has a vibrant, welcoming community. There are several official and unofficial avenues for people to get help, such as the <a href="https://discord.gg/rust-lang">chat</a>, the <a href="https://users.rust-lang.org/">user&#8217;s forum</a>, the <a href="https://www.reddit.com/r/rust/">Rust subreddit</a>, and, of course, Stack Overflow <a href="https://stackoverflow.com/questions/tagged/rust">questions and answers</a> and <a href="https://chat.stackoverflow.com/rooms/62927/rust">chatroom</a>. Rust has a <a href="https://www.rust-lang.org/policies/code-of-conduct">code of conduct</a> enforced by an awesome moderation team to make sure that the official spaces are welcoming, and most unofficial spaces also observe something similar.</p>
+
+
+
+<p>Offline, Rust has multiple conferences across the globe, such as <a href="https://rustconf.com/">RustConf</a>, <a href="https://rust-belt-rust.com/">Rust Belt Rust</a>, <a href="https://blog.rustfest.eu/">RustFest</a>, <a href="https://rustlatam.org/">Rust Latam</a>, <a href="https://rustcon.asia/">RustCon Asia</a>, and more.</p>
+
+
+
+<h2>It&#8217;s not all roses</h2>
+
+
+
+<p>Rust&#8217;s strong type system and emphasis on memory safety—all enforced at compile time—mean that it&#8217;s extremely common to get errors when compiling your code. This can be a frustrating feeling for programmers not used to such an opinionated programming language. However, the Rust developers have spent a large amount of time working to improve the error messages to ensure that they are clear and actionable. Don&#8217;t let your eyes gloss over while reading Rust errors!</p>
+
+
+
+<p>It&#8217;s especially common to hear someone complain that they&#8217;ve been &#8220;fighting the borrow checker.&#8221; While these errors can be disheartening, it&#8217;s important to recognize that each of the locations identified had the potential to introduce bugs and potential vulnerabilities in a language that didn&#8217;t perform the same checks.</p>
+
+
+
+<p>In this example, we create a mutable string containing a name, then take a reference to the first three bytes of the name. While that reference is outstanding, we attempt to mutate the string by clearing it. There&#8217;s now no guarantee that the reference points to valid data and dereferencing it could lead to undefined behavior, so the compiler stops us:</p>
+
+
+
+<figure class="wp-block-image size-large"><img src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.14.34-1200x147.png" alt="" class="wp-image-14771" srcset="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.14.34-1200x147.png 1200w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.14.34-300x37.png 300w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.14.34-768x94.png 768w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.14.34-1536x188.png 1536w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.14.34-400x49.png 400w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.14.34.png 1956w " sizes="(max-width: 1200px) 100vw, 1200px" /></figure>
+
+
+
+
+
+<figure class="wp-block-image size-large"><img src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.15.06-1200x270.png" alt="" class="wp-image-14772" srcset="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.15.06-1200x270.png 1200w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.15.06-300x67.png 300w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.15.06-768x173.png 768w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.15.06-1536x346.png 1536w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.15.06-400x90.png 400w , https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/Screen-Shot-2020-01-19-at-22.15.06.png 1956w " sizes="(max-width: 1200px) 100vw, 1200px" /></figure>
+
+
+
+
+
+<p>Helpfully, the error message incorporates our code and tries its hardest to explain the problem, pointing out exact locations.</p>
+
+
+
+<p>Prototyping solutions in Rust can be challenging due to its statically-typed nature and because Rust requires covering 100% of the conditions, not just 99%. Edge cases must have applicable code, even when the programmer doesn&#8217;t yet know what the happy path should do. During early development, these edge cases can often be addressed by causing the program to crash, and then rigorous error handling can be added at a later point. This is a different workflow than in languages such as Ruby, where developers often try out code in a REPL and then move that to a prototype without considering error cases at all.</p>
+
+
+
+<p>Rust is still relatively new, which means that some desired libraries may not be available yet. The upside is there&#8217;s plenty of fertile ground to develop these needed libraries, perhaps even taking advantage of recent developments in the relevant computer science fields. Due to this and Rust&#8217;s capabilities, some of Rust&#8217;s libraries, such as the <a href="https://github.com/rust-lang/regex">regex</a> crate, are the best-in-breed across any language.</p>
+
+
+
+<p>While Rust has a strong commitment to stability and backwards compatibility, that doesn&#8217;t imply the language is finalized. A specific problem may not have access to language features that would make it simpler to express or perhaps even possible to express. As an example, Rust has had asynchronous futures for over three years, but stable <a href="https://blog.rust-lang.org/2019/11/07/Async-await-stable.html"><code>async</code> / <code>await</code></a> support in the language itself is only a few months old.</p>
+
+
+
+<p>The Rust compiler is built on top of <a href="https://llvm.org/">LLVM</a>, which means that the number of target platforms will be smaller than C or C++.</p>
+
+
+
+<h2>Come and join us!</h2>
+
+
+
+<p>Regardless of which programming languages you love now, there&#8217;s bound to be something that excites or intrigues you about Rust. These are some of the reasons why I and others love Rust so much, and there&#8217;s many more. If you are looking for extra structure in your project, faster or more efficient code, or the ability to write performant code more quickly and safely, it&#8217;s time for you to see if Rust will be <em>your</em> next most-loved language!<br></p>
+			</div>
+
+			<div class="columns">
+
+				
+					<div class="column is-half">
+
+						<h2 class="section-title section-title--secondary section-title--orange-underline">Author</h2>
+
+						
+<div class="m-author">
+
+	<div class="m-author__header">
+			<span class="avatar" itemprop="avatar"><img class="avatar__image" src="https://secure.gravatar.com/avatar/f87a220e9c58c1cacfd615ad9d9d9f4f?s=96&#038;d=mm&#038;r=g"/></span>
+		<div class="m-author__header-content">
+			<div class="m-author__name">Jake Goulding</div>
+			<div class="m-author__title"></div>
+		</div>
+	</div>
+
+	<div class="m-author__description">Jake is the co-founder of <a href="https://www.integer32.com/">Integer 32</a>, the world's first Rust consultancy. He also co-produced the <a href="https://www.manning.com/livevideo/rust-in-motion?a_aid=jgoulding&amp;a_bid=6a993c2e">Rust in Motion video series</a> for Manning and is an organizer of <a href="http://www.rust-belt-rust.com/">Rust Belt Rust</a>, a Rust conference located in the Rust Belt area of the United States.</div>
+	<div class="m-author__meta">
+		<a class="m-author__meta-item" href="https://stackoverflow.blog/authors/jgoulding/">Author Archives</a><a class="m-author__meta-item" href="https://www.integer32.com/" target="blank">Website</a><a class="m-author__meta-item" href="https://twitter.com/JakeGoulding" target="blank">Twitter</a><a class="m-author__meta-item" href="https://github.com/shepmaster" target="blank">Github</a><a class="m-author__meta-item" href="https://stackoverflow.com/users/155423/shepmaster" target="blank">Stack Overflow</a><a class="m-author__meta-item" href="https://www.youtube.com/channel/UCptxtVyJkQAJZcFwBbIDZcgv" target="blank">Youtube</a>
+	</div>
+</div>
+
+					</div>
+
+				
+				
+					<div class="column is-half">
+
+						<h2 class="section-title section-title--secondary section-title--orange-underline">Tags</h2>
+
+						<ul class="m-tag-list"><li class="m-tag-list__item  m-tag-list__item--bulletin"><a href="https://stackoverflow.blog/tags/bulletin/" class="m-tag-list__link">Bulletin</a></li><li class="m-tag-list__item  m-tag-list__item--code-for-a-living"><a href="https://stackoverflow.blog/code-for-a-living/" class="m-tag-list__link">Code for a Living</a></li><li class="m-tag-list__item  m-tag-list__item--stackoverflow"><a href="https://stackoverflow.blog/tags/stackoverflow/" class="m-tag-list__link">Stackoverflow</a></li></ul>
+					</div>
+
+				
+			</div><!-- .columns -->
+
+
+			
+
+								<!-- 3x Most recent Articles component -->
+					<div class="three-x-post-block">
+						
+<style>
+		.related-articles .has-post-thumbnail img.wp-post-image { display: block !important; }          
+</style>
+
+	<h2 class="section-title section-title--secondary section-title--orange-underline">Related Articles</h2>
+
+<div class="columns is-mobile mobile-swipe related-articles">
+
+	
+		<div class="column is-three-quarters-mobile mobile-swipe">
+			
+<article id="post-12600" class="m-post-card m-post-card--portrait post-12600 post type-post status-publish format-standard has-post-thumbnail hentry category-bulletin category-code-for-a-living category-stackoverflow tag-bulletin tag-clive-thompson tag-coders tag-culture tag-joel-spolsky tag-programming tag-stackoverflow" itemscope itemtype="https://schema.org/BlogPosting">
+
+ 	<div class="columns">
+
+		 			<div class="m-post-card__image-column  column">
+
+
+				<div class="m-post-card__image" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+					<img width="630" height="450" src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2019/09/Clive_Johnson_and_Joel_Spolsky_discussion-630x450.jpg" class="attachment-post-card size-post-card wp-post-image" alt="" />					
+	 				<meta itemprop="url" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2019/09/Clive_Johnson_and_Joel_Spolsky_discussion.jpg" />
+											<meta itemprop="width" content="1920" />
+						<meta itemprop="height" content="1080" />
+									</div>
+
+ 			</div>
+ 		
+ 		<div class="m-post-card__content-column column">
+ 			<h2 class="m-post-card__title" itemprop="headline"><a href="https://stackoverflow.blog/2019/09/17/joel-spolsky-clive-thompson-discuss-coders-software-programming/">Joel Spolsky and Clive Thompson discuss the past, present, and future of coding</a></h2>
+
+			<div class="m-post-card__meta"><span class="posted-on-container"><span class="author vcard" itemprop="author"><a class="url fn n" href="https://stackoverflow.blog/authors/benpopper/"></a><span class="author-name">by <a class="url fn n" href="https://stackoverflow.blog/authors/benpopper/">Ben Popper</a></span></span><span class="date"> on <time class="entry-date published updated" datetime="2019-09-17T10:39:47-04:00">September 17, 2019</time></span></span></div>
+
+			<div class="m-post-card__excerpt" itemprop="articleBody">
+				What inspires someone to become a software developer? Joel Spolsky and Clive Thompson discuss how the culture of coding has evolved over the decades and where they hope it’s headed...
+							</div>
+
+			<div class="m-post-card__button"><a class="button -primary -blue" href="https://stackoverflow.blog/2019/09/17/joel-spolsky-clive-thompson-discuss-coders-software-programming/">Continue reading</a></div>
+
+			<!-- Publisher info is required. This code block doesn't output anything) -->
+			<div itemprop="publisher" itemscope="itemscope" itemtype="https://schema.org/Organization">
+				<div itemprop="logo" itemscope="itemscope" itemtype="https://schema.org/ImageObject">
+					<meta itemprop="url" content="https://placekitten.com/g/100/100" />
+					<meta itemprop="width" content="100" />
+					<meta itemprop="height" content="100" />
+				</div>
+				<meta itemprop="name" content="Client Company" />
+			</div><!--/.itemprop=publisher-->
+		</div>
+
+	</div>
+
+ </article>
+		</div>
+
+		
+		<div class="column is-three-quarters-mobile mobile-swipe">
+			
+<article id="post-12625" class="m-post-card m-post-card--portrait post-12625 post type-post status-publish format-standard has-post-thumbnail hentry category-bulletin category-code-for-a-living category-for-work category-stackoverflow tag-beginner tag-bulletin tag-career-advice tag-first-job tag-programming tag-stackoverflow" itemscope itemtype="https://schema.org/BlogPosting">
+
+ 	<div class="columns">
+
+		 			<div class="m-post-card__image-column  column">
+
+
+				<div class="m-post-card__image" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+					<img width="630" height="450" src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2019/09/First-Day-Of-Work-630x450.jpg" class="attachment-post-card size-post-card wp-post-image" alt="" />					
+	 				<meta itemprop="url" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2019/09/First-Day-Of-Work.jpg" />
+											<meta itemprop="width" content="1254" />
+						<meta itemprop="height" content="837" />
+									</div>
+
+ 			</div>
+ 		
+ 		<div class="m-post-card__content-column column">
+ 			<h2 class="m-post-card__title" itemprop="headline"><a href="https://stackoverflow.blog/2019/09/05/they-didnt-teach-us-this-a-crash-course-for-your-first-job-in-software/">&#8220;They Didn&#8217;t Teach Us This&#8221;: A Crash Course for Your First Job in Software</a></h2>
+
+			<div class="m-post-card__meta"><span class="posted-on-container"><span class="author vcard" itemprop="author"><a class="url fn n" href="https://stackoverflow.blog/authors/maxpekarsky/"></a><span class="author-name">by <a class="url fn n" href="https://stackoverflow.blog/authors/maxpekarsky/">Max Pekarsky</a></span></span><span class="date"> on <time class="entry-date published updated" datetime="2019-09-05T10:10:56-04:00">September 5, 2019</time></span></span></div>
+
+			<div class="m-post-card__excerpt" itemprop="articleBody">
+				From Personal Projects To Production Code
+							</div>
+
+			<div class="m-post-card__button"><a class="button -primary -blue" href="https://stackoverflow.blog/2019/09/05/they-didnt-teach-us-this-a-crash-course-for-your-first-job-in-software/">Continue reading</a></div>
+
+			<!-- Publisher info is required. This code block doesn't output anything) -->
+			<div itemprop="publisher" itemscope="itemscope" itemtype="https://schema.org/Organization">
+				<div itemprop="logo" itemscope="itemscope" itemtype="https://schema.org/ImageObject">
+					<meta itemprop="url" content="https://placekitten.com/g/100/100" />
+					<meta itemprop="width" content="100" />
+					<meta itemprop="height" content="100" />
+				</div>
+				<meta itemprop="name" content="Client Company" />
+			</div><!--/.itemprop=publisher-->
+		</div>
+
+	</div>
+
+ </article>
+		</div>
+
+		
+		<div class="column is-three-quarters-mobile mobile-swipe">
+			
+<article id="post-14747" class="m-post-card m-post-card--portrait post-14747 post type-post status-publish format-standard has-post-thumbnail hentry category-bulletin category-code-for-a-living category-stackoverflow tag-animation tag-react tag-react-spring" itemscope itemtype="https://schema.org/BlogPosting">
+
+ 	<div class="columns">
+
+		 			<div class="m-post-card__image-column  column">
+
+
+				<div class="m-post-card__image" itemprop="image" itemscope itemtype="http://schema.org/ImageObject">
+					<img width="1200" height="630" src="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-871479424-1200x630.jpg" class="attachment-post-card size-post-card wp-post-image" alt="" />					
+	 				<meta itemprop="url" content="https://149351115.v2.pressablecdn.com/wp-content/uploads/2020/01/iStock-871479424.jpg" />
+											<meta itemprop="width" content="2547" />
+						<meta itemprop="height" content="1177" />
+									</div>
+
+ 			</div>
+ 		
+ 		<div class="m-post-card__content-column column">
+ 			<h2 class="m-post-card__title" itemprop="headline"><a href="https://stackoverflow.blog/2020/01/16/how-to-create-micro-interactions-with-react-spring-part-1/">How to create micro-interactions with react-spring: Part 1</a></h2>
+
+			<div class="m-post-card__meta"><span class="posted-on-container"><span class="author vcard" itemprop="author"><a class="url fn n" href="https://stackoverflow.blog/authors/Emma%20Bostian/"></a><span class="author-name">by <a class="url fn n" href="https://stackoverflow.blog/authors/Emma%20Bostian/">Emma Bostian</a></span></span><span class="date"> on <time class="entry-date published updated" datetime="2020-01-16T10:00:00-05:00">January 16, 2020</time></span></span></div>
+
+			<div class="m-post-card__excerpt" itemprop="articleBody">
+				In this series, we’ll examine how to take your application from ordinary to exceptional by implementing micro-interactions with react-spring so you won’t be stuck thinking “I really wish I knew...
+							</div>
+
+			<div class="m-post-card__button"><a class="button -primary -blue" href="https://stackoverflow.blog/2020/01/16/how-to-create-micro-interactions-with-react-spring-part-1/">Continue reading</a></div>
+
+			<!-- Publisher info is required. This code block doesn't output anything) -->
+			<div itemprop="publisher" itemscope="itemscope" itemtype="https://schema.org/Organization">
+				<div itemprop="logo" itemscope="itemscope" itemtype="https://schema.org/ImageObject">
+					<meta itemprop="url" content="https://placekitten.com/g/100/100" />
+					<meta itemprop="width" content="100" />
+					<meta itemprop="height" content="100" />
+				</div>
+				<meta itemprop="name" content="Client Company" />
+			</div><!--/.itemprop=publisher-->
+		</div>
+
+	</div>
+
+ </article>
+		</div>
+
+		</div>
+					</div>
+					<!-- // 3x Most recent Articles component -->
+				
+			
+		</div><!-- .column .is-two-thirds -->
+
+	</div><!-- .columns -->
+
+</article>
+
+			
+
+<div class="comments-wrapper">
+<h2 class="section-title section-title--secondary section-title--orange-underline">Comments</h2>
+	<div id="comments" class="comments-area">
+
+					
+			<ol class="comment-list">
+				    <li class="comment even thread-even depth-1" id="comment-554074">        <div id="div-comment-554074" class="comment-body">        <div class="comment-author vcard grid ai-center mb16">
+			<img alt='' src='https://secure.gravatar.com/avatar/5a227fe9ea17e9ff2f5788af3015f3a9?s=32&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/5a227fe9ea17e9ff2f5788af3015f3a9?s=64&#038;d=mm&#038;r=g 2x' class='avatar avatar-32 photo' height='32' width='32' /><div class="lh-sm"><cite class="fw-bold fs-normal">Jeremy Banks</cite> <span class="fc-black-600 sm:d-none">says:</span></div>			
+			<div class="comment-meta commentmetadata ml-auto fc-black-400">
+				<a class="fc-black-400" href="https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/#comment-554074">January 20, 2020 at 11:27 am				</a>
+							</div>
+        </div>		<div class="comment-text px16 py12 bg-black-025 bar-sm ba bc-black-1 bbw2">
+			<p>This is the kind of content I love to see on this blog. Thanks for all you do, Shep</p>
+		</div>
+
+        <div class="reply"><a rel='nofollow' class='comment-reply-link' href='#comment-554074' data-commentid="554074" data-postid="14760" data-belowelement="div-comment-554074" data-respondelement="respond" aria-label='Reply to Jeremy Banks'>Reply</a>        </div>        </div></li><!-- #comment-## -->
+			</ol><!-- .comment-list -->
+
+				<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2020/01/20/what-is-rust-and-why-is-it-so-popular/#respond" style="display:none;">Cancel reply</a></small></h3><form action="https://stackoverflow.blog/wp-comments-post.php" method="post" id="commentform" class="comment-form"><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p><p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200" /></p>
+<p class="comment-form-cookies-consent"><input id="wp-comment-cookies-consent" name="wp-comment-cookies-consent" type="checkbox" value="yes" /> <label for="wp-comment-cookies-consent">Save my name, email, and website in this browser for the next time I comment.</label></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='14760' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="6d36745010" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="66"/></p></form>	</div><!-- #respond -->
+	<p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.</p>
+	</div><!-- #comments -->
+</div>
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+
+</div><!-- #content -->
+
+<div class="footer-ctas-wrapper">
+	<div class="wrapper">
+		<div class="columns is-gapless footer-column-wrapper">
+			<div class="column footer-left-cta">
+				<div class="m-footer-cta">
+	<h2 class="m-footer-cta__title">Developer Jobs</h2>
+	<div class="m-footer-cta__description">
+		Build your career with Stack Overflow, where developers come first.		</div>
+	<a href="http://stackoverflow.com/jobs?utm_source=so-owned&#038;utm_medium=blog&#038;utm_campaign=gen-blog&#038;utm_content=sidebar-btm-overview" class="m-footer-cta__button button -secondary -padded -white -outline">See all job openings now!</a>
+
+</div>
+			</div>
+
+			<div class="column footer-right-cta">
+				<div class="m-footer-cta">
+	<h2 class="m-footer-cta__title">Stack Overflow for Teams</h2>
+	<div class="m-footer-cta__description">
+		Discover and share internal knowledge in a private and secure environment.		</div>
+	<a href="https://www.stackoverflow.com/teams?utm_source=so-owned&#038;utm_medium=website&#038;utm_campaign=blog-footer" class="m-footer-cta__button button -secondary -padded -white -outline">Learn More</a>
+
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<script>
+		if (undefined === window.$ && undefined !== window.jQuery) {
+			window.$ = window.jQuery;
+		}
+	</script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.sstatic.net/shared/chrome/chrome-footer.css?v=1a6c2f059800" >
+    <footer id="footer" class="site-footer js-footer" role="contentinfo">
+        <div class="site-footer--container">
+                <div class="site-footer--logo">
+
+                    
+                    <a href="https://stackoverflow.com"><svg aria-hidden="true" class="svg-icon native iconLogoGlyphMd" width="32" height="37" viewBox="0 0 32 37"><path d="M26 33v-9h4v13H0V24h4v9h22z" fill="#BCBBBB"/><path d="M21.5 0l-2.7 2 9.9 13.3 2.7-2L21.5 0zM26 18.4L13.3 7.8l2.1-2.5 12.7 10.6-2.1 2.5zM9.1 15.2l15 7 1.4-3-15-7-1.4 3zm14 10.79l.68-2.95-16.1-3.35L7 23l16.1 2.99zM23 30H7v-3h16v3z" fill="#F48024"/></svg></a>
+                </div>
+            
+            <nav class="site-footer--nav">
+                    <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
+                        <h5 class="-title"><a href="https://stackoverflow.com" class="js-gps-track" data-gps-track="footer.click({ location: 0, link: 15})">Stack Overflow</a></h5>
+                        <ul class="-list js-primary-footer-links">
+                            <li class="-item"><a href="https://stackoverflow.com/questions" class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 16})">Questions</a></li>
+                                <li class="-item"><a href="https://stackoverflow.com/jobs" class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 17})">Jobs</a></li>
+                                <li class="-item"><a href="https://stackoverflow.com/jobs/directory/developer-jobs" class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 11})">Developer Jobs Directory</a></li>
+                                     <li class="-item"><a href="https://stackoverflow.com/jobs/salary" class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 28})">Salary Calculator</a></li>
+                                                    </ul>
+                    </div>
+                    <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
+                        <h5 class="-title"><a href="https://stackoverflowbusiness.com" class="js-gps-track" data-gps-track="footer.click({ location: 0, link: 19 })">Products</a></h5>
+                        <ul class="-list">
+                            <li class="-item"><a href="https://stackoverflow.com/teams" class="js-gps-track -link" 
+                                                 data-ga="[&quot;teams traffic&quot;,&quot;footer - site nav&quot;,&quot;stackoverflow.com/teams&quot;,null,{&quot;dimension4&quot;:&quot;teams&quot;}]"
+                                                 data-gps-track="footer.click({ location: 0, link: 29 })">Teams</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/talent" class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 20 })">Talent</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/advertising" class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 21 })">Advertising</a></li>
+                            <li class="-item"><a href="https://stackoverflow.com/enterprise" class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 22 })">Enterprise</a></li>
+                        </ul>
+                    </div>
+                <div class="site-footer--col site-footer--col__visible js-footer-col" data-name="default">
+                    <h5 class="-title"><a class="js-gps-track" data-gps-track="footer.click({ location: 0, link: 1 })" href="https://stackoverflow.com/company/about">Company</a></h5>
+                    <ul class="-list">
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 1 })" href="https://stackoverflow.com/company/about">About</a></li>
+                                                <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 27 })" href="https://stackoverflow.com/company/press">Press</a></li>
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 9 })" href="https://stackoverflow.com/company/work-here">Work Here</a></li>
+                        <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 7 })" href="https://stackoverflow.com/legal">Legal</a></li>
+                        <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 8 })" href="https://stackoverflow.com/legal/privacy-policy">Privacy Policy</a></li>
+                            <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link: 13 })" href="https://stackoverflow.com/company/contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="site-footer--col site-footer--categories-nav site-footer--col__visible">
+                    <a href="#" class="site-footer--back js-footer-back"><svg aria-hidden="true" class="svg-icon iconArrowLeftAlt" width="18" height="18" viewBox="0 0 18 18"><path d="M10.58 16L12 14.59 6.4 9 12 3.41 10.57 2l-7 7 7 7z"/></svg></a>
+                    <div>
+                        <h5 class="-title"><a href="https://stackexchange.com" data-gps-track="footer.click({ location: 0, link: 30 })">Stack Exchange<br> Network</a></h5>
+                        <ul class="-list">
+                            <li class="-item"><a href="#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 0, link: 24 })" data-target="Technology">Technology</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 0, link: 24 })" data-target="Life / Arts">Life / Arts</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 0, link: 24 })" data-target="Culture / Recreation">Culture / Recreation</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 0, link: 24 })" data-target="Science">Science</a></li>
+                            <li class="-item"><a href="#" class="-link _expandable js-footer-category-trigger js-gps-track" data-gps-track="footer.click({ location: 0, link: 24 })" data-target="Other">Other</a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="site-footer--categories">
+                    <div class="site-footer--col site-footer--category js-footer-col" data-name="Technology">
+        <ul class="-list">
+                <li class="-item"><a href="https://stackoverflow.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                <li class="-item"><a href="https://serverfault.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="system and network administrators">Server Fault</a></li>
+                <li class="-item"><a href="https://superuser.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="computer enthusiasts and power users">Super User</a></li>
+                <li class="-item"><a href="https://webapps.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="power users of web applications">Web Applications</a></li>
+                <li class="-item"><a href="https://askubuntu.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                <li class="-item"><a href="https://webmasters.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="pro webmasters">Webmasters</a></li>
+                <li class="-item"><a href="https://gamedev.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professional and independent game developers">Game Development</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://tex.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                <li class="-item"><a href="https://softwareengineering.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professionals, academics, and students working within the systems development life cycle">Software Engineering</a></li>
+                <li class="-item"><a href="https://unix.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                <li class="-item"><a href="https://apple.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                <li class="-item"><a href="https://wordpress.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="WordPress developers and administrators">WordPress Development</a></li>
+                <li class="-item"><a href="https://gis.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                <li class="-item"><a href="https://electronics.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://android.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                <li class="-item"><a href="https://security.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="information security professionals">Information Security</a></li>
+                <li class="-item"><a href="https://dba.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                <li class="-item"><a href="https://drupal.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="Drupal developers and administrators">Drupal Answers</a></li>
+                <li class="-item"><a href="https://sharepoint.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="SharePoint enthusiasts">SharePoint</a></li>
+                <li class="-item"><a href="https://ux.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="user experience researchers and experts">User Experience</a></li>
+                <li class="-item"><a href="https://mathematica.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="users of Wolfram Mathematica">Mathematica</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://salesforce.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                <li class="-item"><a href="https://expressionengine.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="administrators, end users, developers and designers for ExpressionEngine&#174; CMS">ExpressionEngine&#174; Answers</a></li>
+                <li class="-item"><a href="https://pt.stackoverflow.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="programadores profissionais e entusiastas">Stack Overflow em Portugu&#234;s</a></li>
+                <li class="-item"><a href="https://blender.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people who use Blender to create 3D graphics, animations, or games">Blender</a></li>
+                <li class="-item"><a href="https://networkengineering.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="network engineers">Network Engineering</a></li>
+                <li class="-item"><a href="https://crypto.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="software developers, mathematicians and others interested in cryptography">Cryptography</a></li>
+                <li class="-item"><a href="https://codereview.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="peer programmer code reviews">Code Review</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://magento.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="users of the Magento e-Commerce platform">Magento</a></li>
+                <li class="-item"><a href="https://softwarerecs.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people seeking specific software recommendations">Software Recommendations</a></li>
+                <li class="-item"><a href="https://dsp.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="practitioners of the art and science of signal, image and video processing">Signal Processing</a></li>
+                <li class="-item"><a href="https://emacs.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="those using, extending or developing Emacs">Emacs</a></li>
+                <li class="-item"><a href="https://raspberrypi.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="users and developers of hardware and software for Raspberry Pi">Raspberry Pi</a></li>
+                <li class="-item"><a href="https://ru.stackoverflow.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="программистов">Stack Overflow на русском</a></li>
+                <li class="-item"><a href="https://codegolf.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="programming puzzle enthusiasts and code golfers">Code Golf</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://es.stackoverflow.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="programadores y profesionales de la inform&#225;tica">Stack Overflow en espa&#241;ol</a></li>
+                <li class="-item"><a href="https://ethereum.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="users of Ethereum, the decentralized application platform and smart contract enabled blockchain">Ethereum</a></li>
+                <li class="-item"><a href="https://datascience.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="Data science professionals, Machine Learning specialists, and those interested in learning more about the field">Data Science</a></li>
+                <li class="-item"><a href="https://arduino.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="developers of open-source hardware and software that is compatible with Arduino">Arduino</a></li>
+                <li class="-item"><a href="https://bitcoin.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="Bitcoin crypto-currency enthusiasts">Bitcoin</a></li>
+                <li class="-item"><a href="https://sqa.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="software quality control experts, automation engineers, and software testers">Software Quality Assurance &amp; Testing</a></li>
+                <li class="-item"><a href="https://sound.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="sound engineers, producers, editors, and enthusiasts">Sound Design</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Technology"><ul class="-list">
+                <li class="-item"><a href="https://windowsphone.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="enthusiasts and power users of Windows Phone OS">Windows Phone</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#technology" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 26 })">
+                        <strong>
+                            more (27)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Life / Arts">
+        <ul class="-list">
+                <li class="-item"><a href="https://photo.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                <li class="-item"><a href="https://scifi.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                <li class="-item"><a href="https://graphicdesign.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                <li class="-item"><a href="https://movies.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                <li class="-item"><a href="https://music.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="musicians, students, and enthusiasts">Music: Practice &amp; Theory</a></li>
+                <li class="-item"><a href="https://worldbuilding.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="writers/artists using science, geography and culture to construct imaginary worlds and settings">Worldbuilding</a></li>
+                <li class="-item"><a href="https://video.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="engineers, producers, editors, and enthusiasts spanning the fields of video, and media creation">Video Production</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Life / Arts"><ul class="-list">
+                <li class="-item"><a href="https://cooking.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                <li class="-item"><a href="https://diy.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="contractors and serious DIYers">Home Improvement</a></li>
+                <li class="-item"><a href="https://money.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                <li class="-item"><a href="https://academia.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="academics and those enrolled in higher education">Academia</a></li>
+                <li class="-item"><a href="https://law.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="legal professionals, students, and others with experience or interest in law">Law</a></li>
+                <li class="-item"><a href="https://fitness.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="physical fitness professionals, athletes, trainers, and those providing health-related needs">Physical Fitness</a></li>
+                <li class="-item"><a href="https://gardening.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="gardeners and landscapers">Gardening &amp; Landscaping</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Life / Arts"><ul class="-list">
+                <li class="-item"><a href="https://parenting.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="parents, grandparents, nannies and others with a parenting role">Parenting</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#lifearts" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 26 })">
+                        <strong>
+                            more (11)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Culture / Recreation">
+        <ul class="-list">
+                <li class="-item"><a href="https://english.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                <li class="-item"><a href="https://skeptics.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="scientific skepticism">Skeptics</a></li>
+                <li class="-item"><a href="https://judaism.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                <li class="-item"><a href="https://travel.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="road warriors and seasoned travelers">Travel</a></li>
+                <li class="-item"><a href="https://christianity.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                <li class="-item"><a href="https://ell.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="speakers of other languages learning English">English Language Learners</a></li>
+                <li class="-item"><a href="https://japanese.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="students, teachers, and linguists wanting to discuss the finer points of the Japanese language">Japanese Language</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Culture / Recreation"><ul class="-list">
+                <li class="-item"><a href="https://chinese.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="students, teachers, and linguists wanting to discuss the finer points of the Chinese language">Chinese Language</a></li>
+                <li class="-item"><a href="https://french.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="students, teachers, and linguists wanting to discuss the finer points of the French language">French Language</a></li>
+                <li class="-item"><a href="https://german.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="speakers of German wanting to discuss the finer points of the language and translation">German Language</a></li>
+                <li class="-item"><a href="https://hermeneutics.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professors, theologians, and those interested in exegetical analysis of biblical texts">Biblical Hermeneutics</a></li>
+                <li class="-item"><a href="https://history.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="historians and history buffs">History</a></li>
+                <li class="-item"><a href="https://spanish.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="linguists, teachers, students and Spanish language enthusiasts in general wanting to discuss the finer points of the language">Spanish Language</a></li>
+                <li class="-item"><a href="https://islam.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="Muslims, experts in Islam, and those interested in learning more about Islam">Islam</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Culture / Recreation"><ul class="-list">
+                <li class="-item"><a href="https://rus.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="лингвистов и энтузиастов русского языка">Русский язык</a></li>
+                <li class="-item"><a href="https://russian.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="students, teachers, and linguists wanting to discuss the finer points of the Russian language">Russian Language</a></li>
+                <li class="-item"><a href="https://gaming.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                <li class="-item"><a href="https://bicycles.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                <li class="-item"><a href="https://rpg.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                <li class="-item"><a href="https://anime.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="anime and manga fans">Anime &amp; Manga</a></li>
+                <li class="-item"><a href="https://puzzling.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="those who create, solve, and study puzzles">Puzzling</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Culture / Recreation"><ul class="-list">
+                <li class="-item"><a href="https://mechanics.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="mechanics and DIY enthusiast owners of cars, trucks, and motorcycles">Motor Vehicle Maintenance &amp; Repair</a></li>
+                <li class="-item"><a href="https://boardgames.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people who like playing board games, designing board games or modifying the rules of existing board games">Board &amp; Card Games</a></li>
+                <li class="-item"><a href="https://bricks.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="LEGO&#174; and building block enthusiasts">Bricks</a></li>
+                <li class="-item"><a href="https://homebrew.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="dedicated home brewers and serious enthusiasts">Homebrewing</a></li>
+                <li class="-item"><a href="https://martialarts.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="students and teachers of all martial arts">Martial Arts</a></li>
+                <li class="-item"><a href="https://outdoors.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people who love being outdoors enjoying nature and wilderness, and learning about the required skills and equipment">The Great Outdoors</a></li>
+                <li class="-item"><a href="https://poker.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="serious players and enthusiasts of poker">Poker</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Culture / Recreation"><ul class="-list">
+                <li class="-item"><a href="https://chess.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="serious players and enthusiasts of chess">Chess</a></li>
+                <li class="-item"><a href="https://sports.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="participants in team and individual sport activities">Sports</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#culturerecreation" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 26 })">
+                        <strong>
+                            more (16)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Science">
+        <ul class="-list">
+                <li class="-item"><a href="https://mathoverflow.net" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professional mathematicians">MathOverflow</a></li>
+                <li class="-item"><a href="https://math.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                <li class="-item"><a href="https://stats.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                <li class="-item"><a href="https://cstheory.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                <li class="-item"><a href="https://physics.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="active researchers, academics and students of physics">Physics</a></li>
+                <li class="-item"><a href="https://chemistry.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="scientists, academics, teachers, and students in the field of chemistry">Chemistry</a></li>
+                <li class="-item"><a href="https://biology.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="biology researchers, academics, and students">Biology</a></li>
+                    </ul></div><div class="site-footer--col site-footer--category js-footer-col" data-name="Science"><ul class="-list">
+                <li class="-item"><a href="https://cs.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="students, researchers and practitioners of computer science">Computer Science</a></li>
+                <li class="-item"><a href="https://philosophy.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="those interested in the study of the fundamental nature of knowledge, reality, and existence">Philosophy</a></li>
+                <li class="-item"><a href="https://linguistics.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="professional linguists and others with an interest in linguistic research and theory">Linguistics</a></li>
+                <li class="-item"><a href="https://psychology.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="practitioners, researchers, and students in cognitive science, psychology, neuroscience, and psychiatry">Psychology &amp; Neuroscience</a></li>
+                <li class="-item"><a href="https://scicomp.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="scientists using computers to solve scientific problems">Computational Science</a></li>
+                            <li class="-item">
+                    <a href="https://stackexchange.com/sites#science" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 26 })">
+                        <strong>
+                            more (8)
+                        </strong>
+                    </a>
+                </li>
+        </ul>
+    </div>
+    <div class="site-footer--col site-footer--category js-footer-col" data-name="Other">
+        <ul class="-list">
+                <li class="-item"><a href="https://meta.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                <li class="-item"><a href="https://stackapps.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                <li class="-item"><a href="https://api.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="programmatic interaction with Stack Exchange sites">API</a></li>
+                <li class="-item"><a href="https://data.stackexchange.com" class="-link js-gps-track" data-gps-track="footer.click({ location: 2, link: 25 })" title="querying Stack Exchange data using SQL">Data</a></li>
+                    </ul>
+    </div>
+                </div>
+            </nav>
+            <div class="site-footer--copyright fs-fine">
+                <ul class="-list">
+                    <li class="-item"><a class="js-gps-track -link" data-gps-track="footer.click({ location: 0, link:4 })" href="https://stackoverflow.blog?blb=1">Blog</a></li>
+                    <li class="-item"><a href="https://www.facebook.com/officialstackoverflow/" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 31 })">Facebook</a></li>
+                    <li class="-item"><a href="https://twitter.com/stackoverflow" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 32 })">Twitter</a></li>
+                    <li class="-item"><a href="https://linkedin.com/company/stack-overflow" class="-link js-gps-track" data-gps-track="footer.click({ location: 0, link: 33 })">LinkedIn</a></li>
+                </ul>
+
+                <p class="mt-auto mb24">
+site design / logo &#169; 2020 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="js-gps-track" data-gps-track="footer.click({ location: 0, link: 34 })" rel="license">cc by-sa 4.0</a>
+                            with <a href="https://stackoverflow.blog/2009/06/25/attribution-required/"  class="js-gps-track" data-gps-track="footer.click({ location: 0, link:35 })" rel="license">attribution required</a>.
+                    <span id="svnrev">rev&nbsp;2020.1.20.35817</span>
+                </p>
+            </div>
+        </div>
+
+            </footer>
+        <script>
+            var $trigger = $('.js-footer-category-trigger'), $footer = $('.js-footer'), $back = $('.js-footer-back'), $cols = $('.js-footer-col');
+
+            function setCategory(target) {
+                var $picked = $cols.filter('[data-name="' + target + '"]');
+                $cols.removeClass('site-footer--col__visible');
+                $picked.addClass('site-footer--col__visible');
+            }
+
+            $trigger.on('click', function (e) {
+                e.preventDefault();
+
+                var target = $(this).data('target');
+
+                $trigger.removeClass('_active');
+                $(this).addClass('_active');
+
+                $footer.addClass('site-footer__open');
+                setCategory(target);
+            });
+
+            $back.on('click', function (e) {
+                e.preventDefault();
+
+                $trigger.removeClass('_active');
+                $footer.removeClass('site-footer__open');
+
+                setCategory('default');
+            });
+        </script>
+
+	<!-- Google Analytics -->
+	<script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-108242619-10', 'auto');
+		ga('set', 'dimension1', 'post');ga('set', 'dimension2', '61');ga('set', 'dimension3', '14760');
+		ga('send', 'pageview');
+	</script>
+	<!-- End Google Analytics -->
+	<!-- Start of HubSpot Embed Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/450622.js"></script>
+<!-- End of HubSpot Embed Code -->
+
+<script>
+(function(d,b,a,s,e){ var t = b.createElement(a),
+  fs = b.getElementsByTagName(a)[0]; t.async=1; t.id=e; t.src=s;
+  fs.parentNode.insertBefore(t, fs); })
+(window,document,'script','https://tag.demandbase.com/eee176b9.min.js','demandbase_js_lib');  
+</script>        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4ececeb97191880b"></script><script type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-content/themes/stackoverflow-oct-19/assets/js/stackoverflow-vendor.min.js?ver=20171013'></script>
+<script type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-content/themes/stackoverflow-oct-19/assets/js/stackoverflow.min.js?ver=20171013'></script>
+<script type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-includes/js/comment-reply.min.js?ver=5.3.2'></script>
+<script type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-includes/js/wp-embed.min.js?ver=5.3.2'></script>
+<script async="async" type='text/javascript' src='https://149351115.v2.pressablecdn.com/wp-content/plugins/akismet/_inc/form.js?ver=4.1.3'></script>
+	  <script type="text/javascript">
+		(function() {
+		  var t   = document.createElement( 'script' );
+		  t.type  = 'text/javascript';
+		  t.async = true;
+		  t.id    = 'gauges-tracker';
+		  t.setAttribute( 'data-site-id', '58a295c34b2ffa62041185f8' );
+		  t.src = '//secure.gaug.es/track.js';
+		  var s = document.getElementsByTagName( 'script' )[0];
+		  s.parentNode.insertBefore( t, s );
+		})();
+	  </script>
+	  <script type='text/javascript' src='https://stats.wp.com/e-202004.js' async='async' defer='defer'></script>
+<script type='text/javascript'>
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:8.1',blog:'162153688',post:'14760',tz:'-5',srv:'stackoverflow.blog'} ]);
+	_stq.push([ 'clickTrackerInit', '162153688', '14760' ]);
+</script>
+
+</body>
+</html>
+<!--
+	generated 194 seconds ago
+	generated in 0.130 seconds
+	served from batcache in 0.002 seconds
+	expires in 106 seconds
+-->
