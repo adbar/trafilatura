@@ -70,7 +70,7 @@ def examine_meta(tree):
     '''Search meta tags for relevant information'''
     title = author = url = description = site_name = None
     # test for potential OpenGraph tags
-    if tree.find('//head/meta[@property]') is not None:
+    if tree.find('.//head/meta[@property]') is not None:
         title, author, url, description, site_name = extract_opengraph(tree)
         # test if all return values have been assigned
         if all((title, author, url, description, site_name)):  # if they are all defined
@@ -162,7 +162,7 @@ def extract_date(tree, url):
 def extract_url(tree):
     '''Extract the URL from the canonical link'''
     # link[rel="alternate"][hreflang="x-default"] ?
-    element = tree.find('//head/link[@rel="canonical"]')
+    element = tree.find('.//head/link[@rel="canonical"]')
     if element is not None:
         return element.attrib['href']
     return None

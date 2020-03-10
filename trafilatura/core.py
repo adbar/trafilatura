@@ -614,10 +614,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         # url in xml
         if url is not None:
             output.set('source', url)
-        if doctitle is not None:
-            output.set('title', doctitle)
-        if docdate is not None:
-            output.set('date', docdate)
+        if docmeta and docmeta.title is not None:
+            output.set('title', docmeta.title)
+        if docmeta and docmeta.date is not None:
+            output.set('date', docmeta.date)
 
     # check duplicates at body level
     if duplicate_test(postbody) is True:

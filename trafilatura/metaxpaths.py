@@ -7,10 +7,10 @@ File containing XPath expressions to extract metadata.
 
 
 author_xpaths = [
-'//*[(self::a or self::link)][@rel="author" or @class="author" or rel="me"]',
+'//*[@rel="author" or @class="author" or rel="me"]', # [(self::a or self::link)]
 '//author',
 '//a[contains(@class, "author")]',
-'//span[contains(@class, "authors") or contains(@class, "author") or contains(@class, "posted-by") contains(@itemprop, "author")]',
+'//span[contains(@class, "authors") or contains(@class, "author") or contains(@class, "posted-by") or contains(@itemprop, "author")]',
 '//span[contains(@class, "byline")]',
 ]
 # json author

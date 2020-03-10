@@ -124,13 +124,13 @@ def write_teitree(postbody, commentsbody, docmeta):
     filedesc = etree.SubElement(header, 'fileDesc')
     titlestmt = etree.SubElement(filedesc, 'titleStmt')
     title = etree.SubElement(titlestmt, 'title')
-    if doctitle is not None:
+    if docmeta.title is not None:
         title.text = docmeta.title
     publicationstmt = etree.SubElement(filedesc, 'publicationStmt')
     publication_p = etree.SubElement(publicationstmt, 'publisher')
     publication_date = etree.SubElement(publicationstmt, 'date')
     publication_date.set('type', 'publication')
-    if docdate is not None:
+    if docmeta.date is not None:
         publication_date.text = docmeta.date
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_p = etree.SubElement(sourcedesc, 'p')
