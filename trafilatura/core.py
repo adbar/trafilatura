@@ -130,13 +130,20 @@ def sanitize_tree(tree):
     # cleaned_tree = manual_cleaning(tree, True)
     # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
     etree.strip_tags(tree, 'div')
-    cleaned_tree = convert_tags(tree)
-    for elem in cleaned_tree:
+    tree = prune_html(tree)
+    for elem in tree.iter():
         elem.attrib.clear()
-        if elem.tag in ('del', 'head', 'hi', 'item', 'p', 'quote'):
-            if elem.text is None or elem.text.isspace():
-                elem.getparent().remove(elem)
-    cleaned_tree = prune_html(cleaned_tree)
+    cleaned_tree = convert_tags(tree)
+    for elem in cleaned_tree.iter():
+        #if elem.tag in ('code', 'del', 'head', 'hi', 'item', 'p', 'quote'):
+        #    if elem.text is None or elem.text.isspace():
+        #        elem.getparent().remove(elem)
+        #        continue
+        if elem.text is not None:
+            elem.text = trim(sanitize(elem.text))
+        if elem.tail is not None:
+            elem.tail = trim(sanitize(elem.tail))
+    # cleaned_tree = prune_html(cleaned_tree)
     return cleaned_tree
 
 
