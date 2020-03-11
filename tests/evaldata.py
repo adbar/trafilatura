@@ -2945,7 +2945,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['Rudy Guede seinerzeit natürlich wahrgenommen', 'Muss man gesehen haben. Augenöffnend.', 'Eine neue Platte von Wilco also'],  # 3 segments
     'without': ['Diesen Artikel teilen:', 'Ähnliche Beiträge', 'Schreibe einen Kommentar: '],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -2959,7 +2959,7 @@ EVAL_PAGES = {
     'tags': ['Gespräch', 'Ham.Lit', 'HAM.LIT 2020', 'Interview', 'Literatur', 'Nora Bossong', 'Politik', 'Schutzzone', 'Audio'],
     'with': ['Nora Bossong erzählt von der Arbeit', 'ihre eigene Rolle als UN-Beauftragte', 'Positionierung und Hoffnung in der Desillusion.'],  # 3 segments
     'without': ['LANGE NACHT JUNGER LITERATUR UND MUSIK', 'Sharen mit:', 'Ähnliche Beiträge'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -2973,7 +2973,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['The incident has occurred at a time when Japan is seeing a shortage of face masks', 'Four of the 12 boxes of masks were gone', 'KOBE – A total of 6,000 surgical masks'],  # 3 segments
     'without': ['Do masks offer protection from new coronavirus? It depends', 'Mail the editor', 'RELATED STORIES'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -3015,7 +3015,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['The stakes are high for all of the candidates ahead of Tuesday', 'At a family fun run in the state', 'Asked why she called the group the Reckoning Crew,'],  # 3 segments
     'without': ['© 2020 CBS Interactive Inc. All Rights Reserved.', 'Email', 'Black voters in S.C. on the 2020 Democrats'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -3029,7 +3029,7 @@ EVAL_PAGES = {
     'tags': ['bill clinton', 'warner bros.'],
     'with': ['Dee Dee Myers — a White House press secretary for Bill Clinton', '“I’m going to take some time to figure out what’s next', 'Her last day is April 1'],  # 3 segments
     'without': ['Getty Images', 'Filed under', 'Most Popular This Week'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -3043,7 +3043,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['It’s no coincidence that the 30 year anniversary of the da', 'Still need convincing on why it’s our top record this week?', 'From its hypnotic synths to its brooding melodies, Luboku takes'],  # 3 segments
     'without': ['Grimes releases her new album Miss Anthropocene', 'Grimes has released her fifth album', 'Discover our latest editorial picks'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -3071,7 +3071,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['Lovato Elctric erweitert sein umfangreiches Produktprogramm im Bereich E-Managemnt jetzt mit Geräte die für den deutschen Markt besonders interessant sind.', '0,5s Genauigkeitsklasse', 'Nennversorgungsspannung: 380...415VAC (L-L)'],  # 3 segments
     'without': ['Angebote Lovato Electric', 'Die internationale Industrie-Plattform', 'Karriere'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
@@ -3085,7 +3085,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['Pour le néolibéralisme, la retraite', 'les grandes grèves de 1995 furent', 'Pour réaliser ce programme, il impose'],  # 3 segments
     'without': ['Pour lire la suite', 'Pour accéder en illimité', 'Pour rester informé inscrivez-vous à la newsletter'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -3113,7 +3113,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['With the 2008 financial crash and the Great Recession', 'Start with the economy. Over the course', 'The central question of our time'],  # 3 segments
     'without': ['Ganesh Sitaraman is a professor at Vanderbilt Law School', 'Read More', 'Most Popular'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -3141,7 +3141,7 @@ EVAL_PAGES = {
     'tags': ['Gala politique', 'président de la republique', 'Homme politique'],
     'with': ['Chargé de porter la réforme des retraites', 'Chirac le surnommaitle Grand Con, parce', 'un dirigeant de LREM dans un portrait'],  # 3 segments
     'without': ['Crédits photos : Bestimage', 'Articles les plus lus', "L'actu"],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
@@ -3155,7 +3155,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['kann verschlüsselte, virtuelle Laufwerke anlegen', 'Der integrierte Anti-Keylogger und', 'Homepage des Herstellers nachlesen'],  # 3 segments
     'without': ['BestCrypt : Alternative Downloads', 'UNSERE SHOPPING-GUTSCHEINE', ' Für Links auf dieser Seite erhält CHIP'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
@@ -3169,7 +3169,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['am meisten getragenen Lieblingsteilen in deiner Garderobe', 'Die Lösung für diese modische Herausforderung liegt in der', 'So geht die Tendenz nach Dad Sneaker und Ugly Sneaker'],  # 3 segments
     'without': ['Net Sustain: Die neue Plattform von', 'Zum Shop', 'Affiliatelink'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
@@ -3197,7 +3197,7 @@ EVAL_PAGES = {
     'tags': ['Augmented Reality', 'Kundenservice', 'Remote Support', 'Smart Glasses'],
     'with': ['Wie Sie sehen bietet der Remote Support mit Smart Glasses', 'Die Arbeit der Mitarbeiter im Karosseriebau vor Ort wird durch Smart Glasses', 'In der Industrie wird der Remote Support mit Smart Glasses immer beliebter'],  # 3 segments
     'without': ['Als Content Marketing Managerin betreue ich', 'Diese neuen Entwicklungen sollten Sie kennen', 'In unserem Seminar „Augmented Reality“ erarbeiten Sie anhand verschiedener Experience'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
@@ -3211,7 +3211,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['Die geplante Kooperation von creditshelf mit finleap', 'Beide Parteien streben den Abschluss des Erwerbs der Valendo', 'creditshelf eröffnet die geplante Akquisition der Valendo GmbH'],  # 3 segments
     'without': ['Jede Woche neu:', '(Noch keine Bewertungen)', 'Auch interessant'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
@@ -3225,7 +3225,7 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['Nun nicht im Staub, sondern mit ausgeprägten Sternstrahlen', 'Art der Aufnahme: Digitalfoto', 'Kasberg im Frankenland'],  # 3 segments
     'without': ['Hinterlasse jetzt einen Kommentar', 'Sie wollen Deep-Sky-Objekte am Himmel', 'Abenteuer Astronomie war eine Zeitschrift'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
@@ -3239,7 +3239,278 @@ EVAL_PAGES = {
     'tags': [''],
     'with': ['Wir NEOS stehen seit 2012 für ein Neues Österreich', 'Seit dem Bestehen von NEOS mussten wir ein paar Verluste', 'Demokratie braucht Parteien, die transparent'],  # 3 segments
     'without': ['Erfahre mehr', 'Ich stimme der elektronischen Verarbeitung', 'Folge uns'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://en.blog.wordpress.com/2019/06/19/want-to-see-a-more-diverse-wordpress-contributor-community-so-do-we/': {
+    'file': 'blog.wordpress.com.diverse.html',
+    'author': 'Andrea Middleton',
+    'title': 'Want to See a More Diverse WordPress Contributor Community? So Do We.',
+    'sitename': 'The WordPress.com Blog',
+    'date': '2019-06-19',
+    'description': 'More diverse speakers at WordCamps means a more diverse community contributing to WordPress — and that results in better software for everyone.',
+    'categories': [],
+    'tags': [],
+    'with': ['Why WordCamps?', 'which makes WordPress better for more people.', 'Get in touch with Jill'],  # 3 segments
+    'without': ['Missing out on the latest', 'Opens in new window', 'Jill Binder, speaking at a WordCamp'],  # 3 segments
+    'comments': ['Thank you.', 'Amazing!!!', 'Wow,'],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://creativecommons.org/about/': {
+    'file': 'creativecommons.org.html',
+    'author': '',
+    'title': 'What we do - Creative Commons',
+    'sitename': 'Creative Commons',
+    'date': '2016-05-22',
+    'description': 'What is Creative Commons? Creative Commons helps you legally share your knowledge and creativity to build a more equitable, accessible, and innovative world. We unlock the full potential of the internet to drive a new era of development, growth and productivity. With a network of staff, board, and affiliates around the world, Creative Commons provides … Read More "What we do"',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['With a network of', 'Our work is to build', 'Our work spans a variety'],  # 3 segments
+    'without': ['Connect with Creative Commons', 'Honoring Our Friend', 'In this section'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.creativecommons.at/faircoin-hackathon': {
+    'file': 'creativecommons.at.faircoin.html',
+    'author': 'rasos',
+    'title': 'FairCoin hackathon beim Sommercamp',
+    'sitename': '',
+    'date': '2017-07-24',
+    'description': '',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['Wir waren massgeblich', 'link is external'],  # 3 segments
+    'without': ['Publikationen in Forschung', 'Vorheriges', 'Nach fast zwei Jahren Arbeit'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': 'CC-BY',
+    'region': 'AT',
+},
+'https://netzpolitik.org/2016/die-cider-connection-abmahnungen-gegen-nutzer-von-creative-commons-bildern/': {
+    'file': 'netzpolitik.org.abmahnungen.html',
+    'author': 'Markus Reuter',
+    'title': 'Die Cider Connection: Abmahnungen gegen Nutzer von Creative-Commons-Bildern',
+    'sitename': 'netzpolitik.org',
+    'date': '2016-06-23',
+    'description': 'Seit Dezember 2015 verschickt eine Cider Connection zahlreiche Abmahnungen wegen fehlerhafter Creative-Commons-Referenzierungen. Wir haben recherchiert und legen jetzt das Netzwerk der Abmahner offen.',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['Seit Dezember 2015', 'VSGE', 'Dazu muss das überholte Urheberrecht', 'Dieser Artikel baut auf einer gemeinsamen Recherche'],  # 3 segments
+    'without': ['Markus Reuter beschäftigt sich', 'Ist Videoüberwachung beim Zahnarzt', 'Wir sind spendenfinanziert.'],  # 3 segments
+    'comments': ['News vom 31.10.2018', 'Hallo zusammen,', 'Selbstverständlich darf man den Namen'],  # 0 or 3 segments
+    'license': 'CC-BY-NC-SA',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.befifty.de/home/2017/7/12/unter-uns-montauk': {
+    'file': 'befifty.montauk.html',
+    'author': 'Beate Finken',
+    'title': 'Das vielleicht schönste Ende der Welt: Montauk',
+    'sitename': 'BeFifty',
+    'date': '2017-07-12',
+    'description': 'Ein Strand, ist ein Strand, ist ein Strand Ein Strand, ist ein Strand, ist ein Strand. Von wegen! In Italien ist alles wohl organisiert, Handtuch an Handtuch oder Liegestuhl an Liegestuhl. In der Karibik liegt man unter Palmen im Sand und in Marbella dominieren Beton und eine kerzengerade Promenade',  # in HTML source
+    'categories': ['Travel', 'Amerika'],
+    'tags': ['Long Island', 'Montauk', 'New York', 'Hamptons'],
+    'with': ['Im kurzen BeFifty Video', 'Und hier einige Impressionen', 'bodenständig und stilsicher'],  # 3 segments
+    'without': ['Um Ihnen ein besseres Nutzererlebnis', 'auf Linie gebracht', 'Tumblr'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.soundofscience.fr/1927': {
+    'file': 'soundofscience.fr.1927.html',  # stays empty until download
+    'author': 'Martin Clavey',
+    'title': 'Une candidature collective à la présidence du HCERES',
+    'sitename': 'The Sound Of Science',
+    'date': '2020-01-20',
+    'description': 'En réaction à la candidature du conseiller recherche d&#039;Emmanuel Macron, Thierry Coulhon, à la présidence du Haut Conseil de l&#039;évaluation de la recherche et de l&#039;enseignement supérieur (HCERES) annoncée récemment, plus de 2500 chercheur·eus·e·s annoncent faire acte de candidature collectivement à la tête de l&#039;autorité administrative indépendante chargée de l&#039;évaluation de l’enseignement supérie ...',
+    'categories': ['Politique scientifique française'],
+    'tags': ['évaluation', 'HCERES'],
+    'with': ['En réaction à la candidature', 'Une cible,', 'Sans recherche autonome,'],  # 3 segments
+    'without': ['Image illustrative', 'Votre adresse de messagerie', 'Le montage du CNRS'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.theguardian.com/education/2020/jan/20/thousands-of-uk-academics-treated-as-second-class-citizens': {
+    'file': 'theguardian.com.academics.html',  # stays empty until download
+    'author': 'Richard Adams',
+    'title': "Thousands of UK academics 'treated as second-class citizens'",
+    'sitename': 'the Guardian',
+    'date': '2020-01-20',
+    'description': 'Report claims higher education institutions have created pool of low-paid staff for teaching and research',
+    'categories': ['Higher education'],
+    'tags': ['Academics', "Lecturers' pay", 'Gig economy', 'Students', 'Trade unions', 'Office for Students', 'news'],
+    'with': ['It calls on the', 'But a spokesperson for'],  # , 'Report claims higher education institutions'
+    'without': ['Available for everyone, funded by readers', 'Make a contribution', 'Striking members of the UCU'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html': {
+    'file': 'phys.org.tool.html',  # stays empty until download
+    'author': 'Bob Yirka',
+    'title': 'Flint flake tool partially covered by birch tar adds to evidence of Neanderthal complex thinkin',
+    'sitename': '',
+    'date': '2019-10-22',
+    'description': 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.',  # in HTML source
+    'categories': ['Archaeology', 'Fossils'],
+    'tags': [],
+    'with': ['Prior work has turned up', 'the North Sea for most of its existence'],  # 3 segments
+    'without': ['Explore further', 'Feedback to editors', 'the very first glue'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://laviedesidees.fr/L-evaluation-et-les-listes-de.html': {
+    'file': 'laviedesidees.fr.evaluation.html',  # stays empty until download
+    'author': 'Florence Audier',
+    'title': 'L’évaluation et les listes de revues',
+    'sitename': 'La Vie des idées',
+    'date': '2009-09-15',
+    'description': 'L&#039;&#233;valuation, et la place qu&#039;y occupe la bibliom&#233;trie, sont au c&#339;ur des d&#233;bats actuels. Les enjeux sont majeurs : seront dot&#233;es en cr&#233;dits les universit&#233;s consid&#233;rant la bibliom&#233;trie comme l&#039;indicateur supr&#234;me de l&#039;activit&#233; et de la qualit&#233; de la recherche. Or, comme le montre Florence Audier, les Fran&#231;ais ont d&#233;sign&#233; comme cible d&#039;excellence des revues auxquelles ils n&#039;acc&#232;dent pas, sauf r&#233;seaux particuliers. Voir en annexe : Place des fran&#231;ais et des europ&#233;ens parmi les &#171; publiants &#187; des revues d&#233;pouill&#233;es dans (...) ',  # in HTML source # description.startswith("L'évaluation, et la place")
+    'categories': ['Essai', 'Économie'],
+    'tags': ['université', 'indicateurs', 'recherche', 'évaluation'],
+    'with': ['Depuis longtemps,', 'Retour sur les revues de rang', 'Quelques réflexions'],  # 3 segments
+    'without': ['enquêtes à propos des pratiques de publication', 'Si vous souhaitez critiquer ou développer cet article', 'Télécharger au format EPUB'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://gregoryszorc.com/blog/2020/01/13/mercurial%27s-journey-to-and-reflections-on-python-3/': {
+    'file': 'gregoryszorc.com.python3.html',  # stays empty until download
+    'author': 'Gregory Szorc',
+    'title': "Mercurial's Journey to and Reflections on Python 3",
+    'sitename': 'gregoryszorc',
+    'date': '2020-01-13',
+    'description': 'Description of the experience of making Mercurial work with Python 3',  # in HTML source
+    'categories': ['Python', 'Programming'],
+    'tags': [],
+    'with': ['This effort began in earnest', 'Within a few months,', 'Python had a wildly successful past'],  # 3 segments
+    'without': ["View the discussion thread.", 'January 13'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.pluralsight.com/tech-blog/managing-python-environments/': {
+    'file': 'pluralsight.com.python.html',  # stays empty until download
+    'author': 'John Walk',
+    'title': 'Managing Python Environments',
+    'sitename': 'Pluralsight',
+    'date': '2020-01-10',
+    'description': 'ros and cons of available tools for python setup',  # in HTML source
+    'categories': ['practices'],
+    'tags': ['python', 'docker', 'getting started'],
+    'with': ['self-contained = deployable', '<config files>'],  # 3 segments
+    'without': ['21 minutes', 'Tags:'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/': {
+    'file': 'stackoverflow.com.rust.html',  # stays empty until download
+    'author': 'Jake Goulding',
+    'title': 'What is Rust and why is it so popular?',
+    'sitename': 'Stack Overflow',
+    'date': '2020-01-20',
+    'description': 'Description of the Programming Language Rust',  # in HTML source
+    'categories': ['Rust', 'Programming'],
+    'tags': ['Bulletin', 'Code for a Living', 'Stackoverflow'],
+    'with': ['Rust has been', 'Going beyond technical points'],  # 3 segments
+    'without': ['Jake is the co-founder', 'What inspires someone', 'Discover and share internal knowledge'],  # 3 segments
+    'comments': ['Thanks for all you do'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+#### 2020-03-10
+'https://www.theplanetarypress.com/2020/01/management-of-intact-forestlands-by-indigenous-peoples-key-to-protecting-climate/': {
+    'file': 'theplanetarypress.com.forestlands.html',  # stays empty until download
+    'author': 'Julie Mollins',
+    'title': 'Management of Intact Forestlands by Indigenous Peoples Key to Protecting Climate',
+    'sitename': 'The Planetary Press',
+    'date': '2020-01-19',
+    'description': 'Advantages of Management of Intact Forestlands by Indigenous Peoples for the Climate',  # in HTML source
+    'categories': ['Indigenous People', 'Environment'],
+    'tags': [],
+    'with': ['The U.N.-backed principle', 'Overall, these landscapes'],  # 3 segments
+    'without': ['Management of Intact Forestlands by Indigenous Peoples Key to Protecting Climate', 'China has announced a new plan', 'TPP highlights sustainable solutions'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/': {
+    'file': 'wikimediafoundation.org.turkey.html',  # stays empty until download
+    'author': 'Wikimedia Foundation',
+    'title': 'Access to Wikipedia restored in Turkey after more than two and a half years',
+    'sitename': 'Wikimedia Foundation',
+    'date': '2020-01-15',
+    'description': 'Report about the restored accessibility of Wikipedia in Turkey',  # in HTML source
+    'categories': ['Politics', 'Turkey', 'Wikipedia'],
+    'tags': [],
+    'with': ['19th birthday', 'We will keep this statement updated'],  # 3 segments
+    'without': ['ECHR', 'As a nonprofit', 'Read further in the pursuit'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': {
+    'file': 'reuters.com.parasite.html',  # stays empty until download
+    'author': 'Jill Serjeant',
+    'title': "'Parasite' scores historic upset at SAG awards, boosting Oscar chances",
+    'sitename': 'Reuters',
+    'date': '2020-01-19',
+    'description': '“Parasite,” the Korean language social satire about the wealth gap in South Korea, was the first film in a foreign language to win the top prize of best cast ensemble in the 26 year-history of the SAG awards.',  # in HTML source
+    'categories': ['Parasite', 'SAG awards', 'Cinema'],
+    'tags': [],
+    'with': ['Despite an unknown cast', 'DISAPPOINTING NIGHT', 'Additional reporting by'],  # 3 segments
+    'without': ['Related Coverage', 'Slideshow', 'narrow-browser-and-phone', 'All Rights Reserved.', 'Updated 8 hours ago'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.nationalgeographic.co.uk/environment-and-conservation/2020/01/ravenous-wild-goats-ruled-island-over-century-now-its-being': {
+    'file': 'nationalgeographic.co.uk.goats.html',  # stays empty until download
+    'author': 'Michael Hingston',
+    'title': "Ravenous wild goats ruled this island for over a century. Now, it's being reborn.",
+    'sitename': 'National Geographic',
+    'date': '2020-01-06',
+    'description': 'The rocky island of Redonda, once stripped of its flora and fauna by invasive species, makes an astonishingly quick comeback. What’s the secret to its recovery?',  # in HTML source
+    'categories': ['Goats', 'Environment', 'Redonda'],
+    'tags': [],
+    'with': ['an imposing piece', 'Once the goats and rats', 'But they don’t know the work'],  # 3 segments
+    'without': ['Photograph by', 'Find More Information', 'What it’s like to live'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.nature.com/articles/d41586-019-02790-3': {
+    'file': 'nature.com.telescope.html',  # stays empty until download
+    'author': 'Elizabeth Gibney',
+    'title': 'Gigantic Chinese telescope opens to astronomers worldwide',
+    'sitename': 'Nature',
+    'date': '2019-09-24',
+    'description': 'FAST has superior sensitivity to detect cosmic phenomena, including fast radio bursts and pulsars.',  # in HTML source
+    'categories': ['Astronomy', 'Telescope', 'China'],
+    'tags': [],
+    'with': ['Since testing began', 'Eye in the sky', 'Li hopes that'],  # 3 segments
+    'without': ['You are using a browser version', 'PDF version', 'Latest on:', 'I agree my information will be'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/': {
+    'file': 'salon.com.emissions.html',  # stays empty until download
+    'author': 'Nathanael Johnson',
+    'title': 'Despite everything, U.S. emissions dipped in 2019',
+    'sitename': 'Salon',
+    'date': '2020-01-10',
+    'description': 'Coal has been in a slow-motion death spiral over the past ten years',  # in HTML source
+    'categories': ['Coal', 'Emmisions', 'Climate'],
+    'tags': [],
+    'with': ['This post originally', 'The same can’t be', 'Cleaning up the electrical grid'],  # 3 segments
+    'without': ['Credit:', 'Advertisement:', 'Reproduction of material from any'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
