@@ -157,10 +157,7 @@ def remove_control_characters(string):
     # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python/93029#93029
     return string.translate(NOPRINT_TRANS_TABLE)
     # XML invalid characters
-    # return re.sub(r'[\x00-\x1f\x7f-\x9f]', '', string)
-    # invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
-    # text = invalid_xml.sub('', text)
-    #\x0b\x0c\r\x1c\x1d\x1e\x1f \x85\xa0
+    # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
 
 
 def sanitize(text):
@@ -179,6 +176,7 @@ def sanitize(text):
     # spaces
     # text = text.replace('\u00A0', ' ')  # non-breaking spaces
     # text = UNICODE_WHITESPACE.sub('', text)
+    # https://stackoverflow.com/questions/16467479/normalizing-unicode
     # filter out empty lines
     returnlines = list()
     for line in text.splitlines():

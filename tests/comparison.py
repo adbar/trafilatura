@@ -92,7 +92,7 @@ def run_trafilatura_fallback(htmlstring):
 def run_goose(htmlstring):
     '''try with the goose algorithm'''
     article = g.extract(raw_html=htmlstring)
-    return article.cleaned_text) # sanitize(article.cleaned_text)
+    return article.cleaned_text # sanitize(article.cleaned_text)
 
 
 def run_readability(htmlstring):
