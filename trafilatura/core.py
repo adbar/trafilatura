@@ -42,7 +42,7 @@ from .settings import (HTML_CLEANER, JUSTEXT_DEFAULT, JUSTEXT_LANGUAGES,
                        MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv, HTML_PARSER
-from .xml import check_tei, validate_tei, write_teitree, xmltotxt
+from .xml import build_outputtree, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
@@ -88,9 +88,13 @@ def try_justext(tree, url, target_language):
     # determine language
     if target_language is not None and target_language in JUSTEXT_LANGUAGES:
         langsetting = JUSTEXT_LANGUAGES[target_language]
+        justext_stoplist = justext.get_stoplist(langsetting)
     else:
         langsetting = JUSTEXT_DEFAULT
-    justext_stoplist = justext.get_stoplist(langsetting)
+        justext_stoplist = set()
+        for language in justext.get_stoplists():
+            justext_stoplist.update(justext.get_stoplist(language))
+    # justext_stoplist = justext.get_stoplist(langsetting)
     # extract
     try:
         paragraphs = justext.justext(justtextstring, justext_stoplist)
@@ -584,34 +588,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     # del tree_cache[cleaned_tree]
 
     # XML (TEI) steps
-    if include_comments is False:
-        commentsbody = None
-    if tei_output is True:
-        # build TEI tree
-        output = write_teitree(postbody, commentsbody, docmeta)
-        # filter output (strip unwanted elements), just in case
-        # check and repair
-        output = check_tei(output, url)
-        # validate
-        # why is it necessary?
-        testtree = etree.fromstring(etree.tostring(output))
-        if tei_validation is True:
-            result = validate_tei(testtree)
-            LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)
-    else:
-        output = etree.Element('doc')
-        postbody.tag = 'main'
-        output.append(postbody)
-        if commentsbody is not None:
-            commentsbody.tag = 'comments'
-            output.append(commentsbody)
-        # url in xml
-        if url is not None:
-            output.set('source', url)
-        if docmeta and docmeta.title is not None:
-            output.set('title', docmeta.title)
-        if docmeta and docmeta.date is not None:
-            output.set('date', docmeta.date)
+    output = build_outputtree(record_id, postbody, commentsbody, docmeta, include_comments, tei_output, tei_validation)
 
     # check duplicates at body level
     if duplicate_test(postbody) is True:

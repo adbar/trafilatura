@@ -25,6 +25,47 @@ TEI_VALID_ATTRS = {'rendition', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
 
+def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comments, tei_output, tei_validation):
+    '''Build XML output tree based on options and extracted information'''
+    # clear comments if necessary
+    if include_comments is False:
+        commentsbody = None
+    # TEI-XML
+    if tei_output is True:
+        # build TEI tree
+        output = write_teitree(postbody, commentsbody, docmeta)
+        # filter output (strip unwanted elements), just in case
+        # check and repair
+        output = check_tei(output, docmeta.url)
+        # validate
+        # why is it necessary?
+        testtree = etree.fromstring(etree.tostring(output))
+        if tei_validation is True:
+            result = validate_tei(testtree)
+            LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
+    # XML
+    else:
+        output = etree.Element('doc')
+        postbody.tag = 'main'
+        output.append(postbody)
+        if commentsbody is not None:
+            commentsbody.tag = 'comments'
+            output.append(commentsbody)
+        # metadata
+        if docmeta:
+            if docmeta.sitename is not None:
+                output.set('sitename', docmeta.sitename)
+            if docmeta.title is not None:
+                output.set('title', docmeta.title)
+            if docmeta.author is not None:
+                output.set('author', docmeta.author)
+            if docmeta.date is not None:
+                output.set('date', docmeta.date)
+            if docmeta.url is not None:
+                output.set('source', docmeta.url)
+    return output
+
+
 def check_tei(tei, url):
     '''Check if the resulting XML file is conform and scrub remaining tags'''
     # convert head tags
