@@ -31,6 +31,7 @@ from trafilatura import extract
 ## TODO: time, best of 3
 
 from evaldata import EVAL_PAGES
+from trafilatura.utils import sanitize
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -68,7 +69,7 @@ def load_document(filename):
 def run_trafilatura(htmlstring):
     '''run trafilatura (without fallback) on content'''
     result = extract(htmlstring, no_fallback=True, include_comments=False, include_tables=True)
-    return result
+    return result # sanitize(result)
 
 
 def run_justext(htmlstring):
@@ -79,26 +80,26 @@ def run_justext(htmlstring):
         if not paragraph.is_boilerplate:
             valid.append(paragraph.text)
     result = ' '.join(valid)
-    return result
+    return result # sanitize(result)
 
 
 def run_trafilatura_fallback(htmlstring):
     '''run trafilatura (with fallback) on content'''
     result = extract(htmlstring, no_fallback=False, include_comments=False, include_tables=True)
-    return result
+    return result # sanitize(result)
 
 
 def run_goose(htmlstring):
     '''try with the goose algorithm'''
     article = g.extract(raw_html=htmlstring)
-    return article.cleaned_text
+    return article.cleaned_text) # sanitize(article.cleaned_text)
 
 
 def run_readability(htmlstring):
     '''try with the Python3 port of readability.js'''
     try:
         doc = Document(htmlstring)
-        return doc.summary()
+        return doc.summary() # sanitize(doc.summary())
     except Exception as err:
         print('Exception:', err)
         return ''
@@ -106,19 +107,19 @@ def run_readability(htmlstring):
 def run_inscriptis(htmlstring):
     '''try with the inscriptis module'''
     text = get_text(htmlstring)
-    return text
+    return text # sanitize(text)
 
 
 def run_html2text(htmlstring):
     '''try with the html2text module'''
     text = html2text.html2text(htmlstring)
-    return text
+    return text # sanitize(text)
 
 
 def run_newspaper(htmlstring):
     '''try with the newspaper module'''
     try:
-        text = fulltext(htmlstring)
+        text = fulltext(htmlstring) # sanitize(fulltext(htmlstring))
     except AttributeError:
         return ''
     return text
@@ -127,13 +128,14 @@ def run_newspaper(htmlstring):
 def run_dragnet(htmlstring):
     '''try with the dragnet module'''
     content = extract_content(htmlstring)
-    return content
+    return content # sanitize(content)
 
 
 def run_boilerpipe(htmlstring):
     '''try with the boilerpipe algorithm'''
     try:
         content = boilerpipe_extractor.get_content(htmlstring)
+        # sanitize(boilerpipe_extractor.get_content(htmlstring))
     except:
         content = ''
     return content
@@ -143,7 +145,7 @@ def run_newsplease(htmlstring):
     '''try with newsplease'''
     try:
         article = NewsPlease.from_html(htmlstring, url=None)
-        return article.maintext
+        return article.maintext # sanitize(article.maintext)
     except Exception as err:
         print('Exception:', err)
         return ''
@@ -159,9 +161,10 @@ def run_jparser(htmlstring):
     for x in result['content']:
         if x['type'] in ('text', 'html'):
             mylist.append(str(x['data']))
-    returnstring = re.sub(r'\s+', ' ', ' '.join(mylist))
-    returnstring = re.sub(r' ([.,;!?])', '\1', returnstring)
-    return returnstring
+    returnstring = ' '.join(mylist)
+    # returnstring = re.sub(r'\s+', ' ', returnstring)
+    returnstring = re.sub(r'\s+(p{P}+)', '\1', returnstring)
+    return sanitize(returnstring)
 
 
 #def run_libextract(htmlstring):
@@ -362,39 +365,50 @@ print(nothing)
 print('everything')
 print(everything)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(everything)))
+
 print('html2text')
 print(html2text_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
 print('inscriptis')
 print(inscriptis_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(inscriptis_result)))
-print('trafilatura')
-print(trafilatura_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_result)))
+
 print('justext')
 print(justext_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(justext_result)))
-print('trafilatura + X')
-print(trafilatura_X_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_X_result)))
-print('readability')
-print(readability_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
+
 print('goose')
 print(goose_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(goose_result)))
+
 print('newspaper')
 print(newspaper_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newspaper_result)))
+
 print('dragnet')
 print(dragnet_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(dragnet_result)))
+
 print('boilerpipe')
 print(boilerpipe_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(boilerpipe_result)))
+
 print('newsplease')
 print(newsplease_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newsplease_result)))
+
+print('readability')
+print(readability_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
+
 print('jparser')
 print(jparser_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
+
+print('trafilatura')
+print(trafilatura_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_result)))
+
+print('trafilatura + X')
+print(trafilatura_X_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_X_result)))
