@@ -10,6 +10,7 @@ Module bundling functions related to HTML and text processing.
 import logging
 import re
 import socket
+import sys
 import unicodedata
 import urllib3
 
@@ -31,7 +32,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
-UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
+# UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
+
+NOPRINT_TRANS_TABLE = {
+    i: None for i in range(0, sys.maxunicode + 1) if not chr(i).isprintable() and not i in ('\t', '\n')
+}
+# unicodedata.category(char)[0] != "C" or char in ('\t', '\n')
 
 
 def decode_response(response, chunk_size=65536):
@@ -144,10 +150,13 @@ def txttocsv(text, comments, docmeta):
 
 
 def remove_control_characters(string):
-    '''Prevent XML invalid character errors'''
-    # TODO: slow
+    '''Prevent non-printable and XML invalid character errors'''
+    # slow
     # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
-    return ''.join(char for char in string if unicodedata.category(char)[0] != "C" or char in ('\t', '\n'))
+    # return ''.join(char for char in string if unicodedata.category(char)[0] != "C" or char in ('\t', '\n'))
+    # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python/93029#93029
+    return string.translate(NOPRINT_TRANS_TABLE)
+    # XML invalid characters
     # return re.sub(r'[\x00-\x1f\x7f-\x9f]', '', string)
     # invalid_xml = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]')
     # text = invalid_xml.sub('', text)
@@ -156,17 +165,20 @@ def remove_control_characters(string):
 
 def sanitize(text):
     '''Convert text and discard incompatible unicode and invalid XML characters'''
-    text = remove_control_characters(text)
-    # HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
+    if text is None:
+        return None
+    # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     text = text.replace('&#13;', '\r')
     text = text.replace('&#10;', '\n')
+    # remove non-printable chars
+    text = remove_control_characters(text)
     # line endings
-    text = text.replace('\r\n', '\n')
+    # text = text.replace('\r\n', '\n')
     # unwanted characters
-    text = text.replace('\N{SOFT HYPHEN}', '')
+    # text = text.replace('\N{SOFT HYPHEN}', '')
     # spaces
-    text = text.replace('\u00A0', ' ')  # non-breaking spaces
-    text = UNICODE_WHITESPACE.sub('', text)
+    # text = text.replace('\u00A0', ' ')  # non-breaking spaces
+    # text = UNICODE_WHITESPACE.sub('', text)
     # filter out empty lines
     returnlines = list()
     for line in text.splitlines():
@@ -177,11 +189,13 @@ def sanitize(text):
 
 
 def trim(string):
-    '''Remove unnecesary spaces within a text string'''
+    '''Remove unnecessary spaces within a text string'''
     if string is not None:
-        # delete newlines that are not related to punctuation or markup
+        # remove newlines that are not related to punctuation or markup
         string = re.sub(r'(?<![p{P}>])\n', ' ', string)
         # proper trimming
-        string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
-        string = string.strip()
+        # string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
+        string = string.strip(' \t\n\r')
+        string = re.sub(r'\s+', ' ', string, flags=re.UNICODE|re.MULTILINE)
+        # string = string.strip()
     return string
