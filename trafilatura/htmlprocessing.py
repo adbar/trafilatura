@@ -73,7 +73,7 @@ def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # strip tags
     etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite',
-                     'font', 'ins', 'meta', 'span', 'small', 'wbr')
+                     'font', 'ins', 'meta', 'small', 'wbr')
     # 'dd', 'sub', 'sup',
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):

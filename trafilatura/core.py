@@ -397,6 +397,7 @@ def extract_content(tree, include_tables=False):
         subtree = subtree[0]
         # prune
         subtree = discard_unwanted(subtree)
+        etree.strip_tags(subtree, 'span')
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # define iteration strategy
@@ -493,7 +494,7 @@ def compare_extraction(tree, url, body, text, len_text):
         algo_flag = True
     elif len_text > 2*len_algo:
         algo_flag = False
-    elif len_algo > 2*len_text:
+    elif len_algo > 2*len_text: # or 0.95*len_text < len_algo < 0.99*len_text:
         algo_flag = True
     #elif len_text >= 500 and 0.9*len_text < len_algo < len_text:
     #    algo_flag = True
