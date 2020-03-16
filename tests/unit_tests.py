@@ -246,8 +246,8 @@ def test_extract(xmloutput=False):
     result = load_mock_page('https://www.ebrosia.de/beringer-zinfandel-rose-stone-cellars-lieblich-suess', xmloutput)
     assert 'Das Bukett präsentiert sich' in result and 'Kunden kauften auch' not in result and 'Gutschein sichern' not in result # and 'Besonders gut passt er zu asiatischen Gerichten' in result
 
-    result = load_mock_page('https://www.landwirt.com/Precision-Farming-Moderne-Sensortechnik-im-Kuhstall,,4229,,Bericht.html', xmloutput)
-    assert 'Überwachung der somatischen Zellen' in result and 'tragbaren Ultraschall-Geräten' in result and 'Kotkonsistenz' in result  and 'Anzeigentarife' not in result # and 'Aktuelle Berichte aus dieser Kategorie' not in result
+    #result = load_mock_page('https://www.landwirt.com/Precision-Farming-Moderne-Sensortechnik-im-Kuhstall,,4229,,Bericht.html', xmloutput)
+    #assert 'Überwachung der somatischen Zellen' in result and 'tragbaren Ultraschall-Geräten' in result and 'Kotkonsistenz' in result  and 'Anzeigentarife' not in result # and 'Aktuelle Berichte aus dieser Kategorie' not in result
 
     result = load_mock_page('http://www.rs-ingenieure.de/de/hochbau/leistungen/tragwerksplanung', xmloutput)
     assert 'Wir bearbeiten alle Leistungsbilder' in result and 'Brückenbau' not in result

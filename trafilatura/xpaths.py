@@ -38,15 +38,13 @@ BODY_XPATH = [
     '//div[contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]',
     """//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')
     or contains(@class, 'single-post')]""",
-    '//div[@class="cell"]',
-    '''//*[(self::div or self::section)][starts-with(@class, "content ") or
-    contains(@class, " content") or @class="content" or class="story-content"]''',
+    '//*[(self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main")]', 
     '//main',
 ]
-# '//*[(self::div or self::section)][]', \
+#     '''//*[(self::div or self::section)][starts-with(@class, "content ") or
+#    contains(@class, " content") or @class="content" or class="story-content"]''',
 #  or contains(@class, "story")
-# '//*[(self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main")]', \
-#  , \ '//main', \
+#     '//div[@class="cell"]',
 
 
 COMMENTS_XPATH = [
@@ -67,49 +65,46 @@ DISCARD_XPATH = [
     '''.//*[(self::div or self::section or self::ul)][contains(@id, "sidebar") or
     contains(@class, "sidebar") or contains(@id, "banner") or contains(@class, "banner")]''',
     './/*[@class="meta" or contains(@class, "meta-") or contains(@class, "-meta")]',
-    # .//header|.//footer # contains(@id, "header") or contains(@class, "header") or 
-    '''.//*[contains(@id, "footer")
-    or contains(@class, "footer") or contains(@id, "bottom") or contains(@class, "bottom")]''',
+    # .//header # contains(@id, "header") or contains(@class, "header") or
+    './/aside|.//footer',
+    '''.//*[contains(@id, "footer") or contains(@class, "footer") or
+    contains(@id, "bottom") or contains(@class, "bottom")]''',
     '''.//*[(self::a or self::div or self::p or self::section or self::span or self::ul)][contains(@id, "tags")
     or contains(@class, "tags")]''',
     # news outlets
-    '''.//*[(self::div or self::p or self::section or self::span )][contains(@id, "teaser") or
+    '''.//*[(self::div or self::p or self::section or self::span)][contains(@id, "teaser") or
     contains(@class, "teaser") or contains(@id, "newsletter") or contains(@class, "newsletter")
     or contains(@id, "cookie") or contains(@class, "cookie")]''',
-    #'.//*[(self::div or self::p or self::section)][]',
     # navigation
-    '''.//*[(self::div or self::ol or self::section or self::span or self::ul)][contains(@id, "menu") or
+    '''.//*[(self::div or self::li or self::ol or self::section or self::span or self::ul)][contains(@id, "menu") or
     contains(@class, "menu") or starts-with(@id, "nav-") or starts-with(@class, "nav-") or
     starts-with(@id, "nav ") or starts-with(@class, "nav ") or
     starts-with(@class, "post-nav") or starts-with(@id, "breadcrumbs") or
     contains(@id, "breadcrumb") or contains(@class, "breadcrumb") or
     contains(@id, "bread-crumb") or contains(@class, "bread-crumb")]''',
-    # related posts
+    # related posts, sharing jp-post-flair jp-relatedposts
     '''.//*[(self::div or self::section or self::span or self::ul)][contains(@id, "related") or
-    contains(@class, "related") or contains(@id, "viral") or contains(@class, "viral")]''',
-    # sharing jp-post-flair jp-relatedposts
-    '''.//*[(self::div or self::section or self::span or self::ul)][starts-with(@id, "shar") or
-    starts-with(@class, "shar") or contains(@class, "share-") or contains(@id, "social")
-    or contains(@class, "social") or contains(@class, "sociable") or contains(@id, "syndication")
-    or contains(@class, "syndication") or starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]''',
+    contains(@class, "related") or contains(@id, "viral") or contains(@class, "viral") or
+    starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or
+    contains(@id, "social") or contains(@class, "social") or contains(@class, "sociable") or
+    contains(@id, "syndication") or contains(@class, "syndication") or
+    starts-with(@id, "jp-") or starts-with(@id, "dpsp-content")]''',
     '''.//*[(self::div or self::p or self::section or self::span or self::ul)][contains(@id, "author")
     or contains(@class, "author") or contains(@id, "button") or contains(@class, "button")
     or starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@class, "noprint")]''',
-    '''.//*[(self::div or self::p or self::section or self::span )][contains(@id, "caption") or
+    '''.//*[(self::div or self::p or self::section or self::span)][contains(@id, "caption") or
     contains(@class, "caption")]''',
-    './/*[starts-with(@class, "widget")]',
     # other content
-    './/*[(self::div or self::section or self::span or self::ul)][contains(@class, "ratings")]',
-    '''.//*[contains(@class, "attachment") or contains(@class, "timestamp") or
+    '''.//*[contains(@class, "byline") or contains(@class, 'Byline')
+    or contains(@class, "ratings") or starts-with(@class, "widget") or
+    contains(@class, "attachment") or contains(@class, "timestamp") or
     contains(@class, "user-info") or contains(@class, "user-profile") or
     contains(@class, "-ad-") or contains(@class, "-icon") or contains(@class, "navbox")
     or contains(@class, "submeta") or contains(@class, "article-infos")]''',
-    '''.//*[(self::div or self::p or self::span or self::ul)][contains(@class, "byline") or
-    contains(@class, 'Byline')]''',
 ]
 # conflicts:
-# './/aside', contains(@class, "hidden")
+# './/*[contains(@class, "hidden")]',
 # './/*[(self::div or self::section)][contains(@class, "clearfix")]',
 # class contains cats
 
