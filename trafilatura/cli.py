@@ -6,6 +6,7 @@ Implementing a basic command-line interface.
 ## under GNU GPL v3 license
 
 import argparse
+import codecs
 import logging
 import sys
 
@@ -14,6 +15,20 @@ from time import sleep
 from .core import extract
 from .utils import fetch_url
 from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
+
+
+# fix output encoding on some systems
+try:
+    # > Python 3.7
+    if sys.stdout.encoding != 'UTF-8':
+        sys.stdout.reconfigure(encoding='utf-8')
+    if sys.stderr.encoding != 'UTF-8':
+        sys.stderr.reconfigure(encoding='utf-8')
+except AttributeError:
+    if sys.stdout.encoding != 'UTF-8':
+        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    if sys.stderr.encoding != 'UTF-8':
+        sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
 LOGGER = logging.getLogger(__name__)
 
