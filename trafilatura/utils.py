@@ -32,11 +32,12 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
-# UNICODE_WHITESPACE = re.compile(u'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
+# UNICODE_WHITESPACE = re.compile(r'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
 NOPRINT_TRANS_TABLE = {
-    i: None for i in range(0, sys.maxunicode + 1) if not chr(i).isprintable() and not i in ('\t', '\n')
+    i: None for i in range(0, sys.maxunicode + 1) if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
 }
+# .isspace()
 # unicodedata.category(char)[0] != "C" or char in ('\t', '\n')
 
 
@@ -167,15 +168,16 @@ def sanitize(text):
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     text = text.replace('&#13;', '\r')
     text = text.replace('&#10;', '\n')
+    # spaces
+    text = re.sub(r'\u00A0|\u2007|\u202F', ' ', text)  # non-breaking spaces
+    # text = UNICODE_WHITESPACE.sub('', text)
     # remove non-printable chars
     text = remove_control_characters(text)
+    # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python
     # line endings
     # text = text.replace('\r\n', '\n')
     # unwanted characters
     # text = text.replace('\N{SOFT HYPHEN}', '')
-    # spaces
-    # text = text.replace('\u00A0', ' ')  # non-breaking spaces
-    # text = UNICODE_WHITESPACE.sub('', text)
     # https://stackoverflow.com/questions/16467479/normalizing-unicode
     # filter out empty lines
     returnlines = list()

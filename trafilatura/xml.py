@@ -141,8 +141,6 @@ def xmltotxt(xmloutput):
             textelement = element.text
         else:
             textelement = element.tail
-        textelement = sanitize(textelement)
-        textelement = trim(textelement)
         if element.tag in ('code', 'fw', 'head', 'lb', 'p', 'quote', 'row', 'table'):
             returnstring += '\n' + textelement + '\n'
         elif element.tag == 'item':
@@ -154,7 +152,6 @@ def xmltotxt(xmloutput):
         else:
             returnstring += textelement + ' '
     returnstring = sanitize(returnstring)
-    # returnstring = trim(returnstring)
     return returnstring
 
 
