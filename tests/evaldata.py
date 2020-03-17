@@ -93,11 +93,6 @@ EVAL_PAGES = {
     'without': ['Originalbeitrag', 'Spektrum.de Newsletter', 'Beitragsbild'],
     'comments': ['Ich sperre nur Kommentare,'],
 },
-'https://www.sueddeutsche.de/kultur/genderdebatte-tief-in-der-sprache-lebt-die-alte-geschlechterordnung-fort-1.4003975': {
-    'file': 'sueddeutsche.de.genderdebatte.html',
-    'with': ['Es ist erstaunlich:', 'Damaris Nübling ist Professorin'],
-    'without': ['Der Fall Weinstein', 'Leser empfehlen'],
-},
 'https://www.rnz.de/nachrichten_artikel,-zz-dpa-Schlaglichter-Frank-Witzel-erhaelt-Deutschen-Buchpreis-2015-_arid,133484.html': {
     'file': 'rnz.de.witzel.html',
     'with': ['Für einen Roman', 'Auszeichnung der Branche.'],
@@ -209,7 +204,7 @@ EVAL_PAGES = {
 },
 'https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen': {
     'file': 'cnet.de.schutz.html',
-    'with': ['Auch der Verweis auf ehrverletzende Bewertungen'],
+    'with': ['liefert eine Einschätzung', 'Auch der Verweis auf ehrverletzende Bewertungen', 'Am 13. Mai 2014'],
     'without': ['Anja Schmoll-Trautmann', 'Fanden Sie diesen Artikel nützlich?', 'Aktuell', 'Kommentar hinzufügen', 'Zu seinen Tätigkeitsfeldern zählen'],
 },
 'https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage': {
@@ -250,7 +245,7 @@ EVAL_PAGES = {
 },
 'https://meedia.de/2016/03/08/einstieg-ins-tv-geschaeft-wie-freenet-privatkunden-fuer-antennen-tv-in-hd-qualitaet-gewinnen-will/': {
     'file': 'meedia.de.freenet.html',
-    'with': ['Welche Werbeeinnahmen erwarten Sie hier langfristig?', 'wir haben keinerlei Pläne, das zu verändern.'],
+    'with': ['Dadurch sollen Privatkunden', 'Welche Werbeeinnahmen erwarten Sie hier langfristig?', 'wir haben keinerlei Pläne, das zu verändern.'],
     'without': ['Nachrichtenüberblick abonnieren', 'über alle aktuellen Entwicklungen auf dem Laufenden.', 'Schlagworte', 'Dauerzoff um drohenden UKW-Blackout'],
     'comments': ['Mobilcom Debitel has charged me for third party'],
 },
@@ -426,7 +421,7 @@ EVAL_PAGES = {
 },
 'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': {
     'file': 'reuters.com.parasite.html',
-    'with': ['Despite an unknown cast,', 'Additional reporting by'],
+    'with': ['cementing their roles', 'Despite an unknown cast,', 'Additional reporting by'],
     'without': ['4 Min Read', 'The Thomson Reuters Trust Principles', 'Factbox: Key winners'],
 },
 'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': {
@@ -3298,7 +3293,7 @@ EVAL_PAGES = {
     'categories': [],
     'tags': [],
     'with': ['Seit Dezember 2015', 'VSGE', 'Dazu muss das überholte Urheberrecht', 'Dieser Artikel baut auf einer gemeinsamen Recherche'],  # 3 segments
-    'without': ['Markus Reuter beschäftigt sich', 'Ist Videoüberwachung beim Zahnarzt', 'Wir sind spendenfinanziert.'],  # 3 segments
+    'without': ['23.06.2016', 'Zum Vergrößern auf das Bild', 'Markus Reuter beschäftigt sich', 'Ist Videoüberwachung beim Zahnarzt', 'Wir sind spendenfinanziert.'],  # 3 segments
     'comments': ['News vom 31.10.2018', 'Hallo zusammen,', 'Selbstverständlich darf man den Namen'],  # 0 or 3 segments
     'license': 'CC-BY-NC-SA',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
