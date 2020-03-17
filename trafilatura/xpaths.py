@@ -6,12 +6,12 @@ X-Path expressions needed to extract and filter the main text content
 
 
 BODY_XPATH = [
-    '''//*[(self::div or self::section)][contains(@id, "content-main") or
+    '''//*[(self::div or self::main or self::section)][contains(@id, "content-main") or
     contains(@class, "content-main") or contains(@class, "content_main") or
     contains(@id, "content-body")  or contains(@class, "content-body") or
     @id="article" or @class="post" or @class="entry" or
     @id="story" or @class="story" or starts-with(@id, "story")]''',
-    '''//*[(self::div or self::section)][contains(@id, "entry-content") or
+    '''//*[(self::div or self::main or self::section)][contains(@id, "entry-content") or
     contains(@class, "entry-content") or contains(@id, "article-content") or
     contains(@class, "article-content") or contains(@id, "article__content") or
     contains(@class, "article__content") or contains(@id, "article-body") or
@@ -23,28 +23,25 @@ BODY_XPATH = [
     contains(@class, "postcontent") or contains(@class, "post-entry") or
     contains(@class, "postentry")]''',
     '//article',
-    '''//*[(self::div or self::main or self::section)][@id="content" or @id="articleContent" or
+    '''//*[(self::div or self::main or self::section)][@id="articleContent" or
     contains(@class, "ArticleContent") or contains(@class, "page-content") or
-    contains(@class, "text-content") or contains(@class, "content__body")]''',
-    """//*[(self::article or self::div or self::section)][starts-with(@id, 'article')
-    or starts-with(@class, 'article') or starts-with(@id, 'main') or
-    starts-with(@class, 'main') or starts-with(@role, 'main') or starts-with(@class, 'entry')
-    or @class='text' or starts-with(@id, 'primary')]""",
-    """//*[(self::div or self::section)][starts-with(@class, 'post-bodycopy') or
-    contains(@class, 'storycontent') or @class='postarea' or @class='art-postcontent']""",
-    """//*[(self::div or self::section)][starts-with(@class, 'theme-content') or
-    starts-with(@class, 'blog-content') or starts-with(@class, 'section-content')
-    or starts-with(@class, 'single-content')]""",
-    '//div[contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]',
-    """//*[(self::div or self::section)][starts-with(@class, 'wpb_text_column')
-    or contains(@class, 'single-post')]""",
-    '//*[(self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main")]', 
-    '//main',
+    contains(@class, "text-content") or contains(@class, "content__body")]''', #
+#    """//*[(self::article or self::div or self::section)][starts-with(@id, 'article')
+#    or starts-with(@class, 'article') or starts-with(@class, 'entry')
+#    or @class='text' or starts-with(@id, 'primary')]""",
+    """//*[(self::div or self::main or self::section)][starts-with(@class, 'post-bodycopy') or
+    contains(@class, 'storycontent') or @class='postarea' or @class='art-postcontent' or
+    starts-with(@class, 'theme-content') or starts-with(@class, 'blog-content') or
+    starts-with(@class, 'section-content') or starts-with(@class, 'single-content') or
+    starts-with(@class, 'wpb_text_column') or contains(@class, 'single-post')]""",
+    '//*[(self::div or self::main or self::section)][contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]',
+    '//*[(self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")]|//main',
 ]
 #     '''//*[(self::div or self::section)][starts-with(@class, "content ") or
 #    contains(@class, " content") or @class="content" or class="story-content"]''',
 #  or contains(@class, "story")
 #     '//div[@class="cell"]',
+#  @id="content" or 
 
 
 COMMENTS_XPATH = [
