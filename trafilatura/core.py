@@ -98,9 +98,9 @@ def try_justext(tree, url, target_language):
         for language in justext.get_stoplists():
             justext_stoplist.update(justext.get_stoplist(language))
     # justext_stoplist = justext.get_stoplist(langsetting)
-    # extract
+    # extract # 
     try:
-        paragraphs = justext.justext(justtextstring, justext_stoplist)
+        paragraphs = justext.justext(justtextstring, justext_stoplist, 50, 200, 0.1, 0.2, 0.2, 200, True)
     except ValueError as err:  # not an XML element: HtmlComment
         LOGGER.error('justext %s %s', err, url)
         result_body = None
@@ -561,20 +561,19 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables)
 
     # compare if necessary
-    if no_fallback is False or sure_thing is False:
+    if no_fallback is False: # and sure_thing is False:
         postbody, temp_text, len_text = compare_extraction(backup_tree, url, postbody, temp_text, len_text)
         # try with justext
         if len_text < MIN_EXTRACTED_SIZE:
             LOGGER.error('not enough text %s %s', record_id, url)
-            if no_fallback is False and justext is not None:
-                postbody, len_text, temp_text = justext_rescue(tree, url, target_language, postbody, len_text, temp_text)
-
-    # rescue: try to use original/dirty tree
-    if no_fallback is True and len_text < MIN_OUTPUT_SIZE:
-        tree = load_html(filecontent)
-        tree = convert_tags(tree)
-        postbody, temp_text, len_text, sure_thing = extract_content(tree)
-        LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
+            postbody, len_text, temp_text = justext_rescue(tree, url, target_language, postbody, len_text, temp_text)
+    else:
+        # rescue: try to use original/dirty tree
+        if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
+            tree = load_html(filecontent)
+            tree = convert_tags(tree)
+            postbody, temp_text, len_text, sure_thing = extract_content(tree)
+            LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
     if len_comments < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
