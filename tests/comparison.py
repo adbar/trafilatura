@@ -28,6 +28,7 @@ from readability import Document
 from trafilatura import extract
 ## add to tests?
 # https://github.com/nikitautiu/learnhtml
+# https://github.com/TeamHG-Memex/html-text
 ## TODO: time, best of 3
 
 from evaldata import EVAL_PAGES
@@ -37,7 +38,7 @@ from trafilatura.utils import sanitize
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
-boilerpipe_extractor = extractors.DefaultExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
+boilerpipe_extractor = extractors.ArticleExtractor()  # ArticleExtractor DefaultExtractor LargestContentExtractor
 
 g = Goose()
 
@@ -64,6 +65,20 @@ def load_document(filename):
         else:
             print('Encoding error')
     return htmlstring
+
+
+def run_baseline(htmlstring):
+    '''run bare text extraction within lxml'''
+    tree = html.fromstring(htmlstring)
+    resultlist = list()
+    # iterate potentially relevant elements
+    for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q'): # 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+        entry = element.text_content()
+        #if entry not in results and len(entry) > 10:
+        resultlist.append(entry)
+    result = '\n'.join(resultlist)
+    result = sanitize(result)
+    return result
 
 
 def run_trafilatura(htmlstring):
@@ -182,24 +197,34 @@ def evaluate_result(result, item):
     false_negatives = 0
     false_positives = 0
     true_negatives = 0
-    for to_include in item['with']:
-        if len(to_include) == 0:
-            print(item)
-        if result is not None:
+    # report if problematic
+    if len(item['with']) == 0 or len(item['with']) > 5:
+        print(item)
+    if len(item['without']) == 0 or len(item['without']) > 5:
+        print(item)
+    # internal report
+    #if result is None:
+    #    print('None', item['file'])
+    #elif type(result) is not str:
+    #    print('not str', item['file'])
+    # examine
+    if result is not None and type(result) is str:
+        # expected output
+        for to_include in item['with']:
             if to_include in result:
                 true_positives += 1
             else:
                 false_negatives += 1
-        else:
-            false_negatives += 1
-    for to_exclude in item['without']:
-        if result is not None:
+        # unwanted output
+        for to_exclude in item['without']:
             if to_exclude in result:
                 false_positives += 1
             else:
                 true_negatives += 1
-        else:
-            true_negatives += 1
+    # add up as bulk counts
+    else:
+        false_negatives += len(item['with'])
+        true_negatives += len(item['without'])
     return true_positives, false_negatives, false_positives, true_negatives
 
 
@@ -214,9 +239,10 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-everything, nothing, trafilatura_result, justext_result, trafilatura_X_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
-everything.update(template_dict)
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_X_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
+everything.update(template_dict)
+baseline_result.update(template_dict)
 trafilatura_result.update(template_dict)
 justext_result.update(template_dict)
 trafilatura_X_result.update(template_dict)
@@ -237,6 +263,7 @@ for item in EVAL_PAGES:
     if len(EVAL_PAGES[item]['file']) == 0:
         continue
     htmlstring = load_document(EVAL_PAGES[item]['file'])
+    print(item)
     # null hypotheses
     tp, fn, fp, tn = evaluate_result('', EVAL_PAGES[item])
     nothing['true positives'] += tp
@@ -266,6 +293,15 @@ for item in EVAL_PAGES:
     inscriptis_result['false positives'] += fp
     inscriptis_result['true negatives'] += tn
     inscriptis_result['false negatives'] += fn
+    # bare lxml
+    start = time.time()
+    result = run_baseline(htmlstring)
+    baseline_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    baseline_result['true positives'] += tp
+    baseline_result['false positives'] += fp
+    baseline_result['true negatives'] += tn
+    baseline_result['false negatives'] += fn
     # trafilatura
     start = time.time()
     result = run_trafilatura(htmlstring)
@@ -369,9 +405,14 @@ print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_s
 print('html2text')
 print(html2text_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
+
 print('inscriptis')
 print(inscriptis_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(inscriptis_result)))
+
+print('baseline')
+print(baseline_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(baseline_result)))
 
 print('justext')
 print(justext_result)
@@ -393,6 +434,10 @@ print('boilerpipe')
 print(boilerpipe_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(boilerpipe_result)))
 
+print('jparser')
+print(jparser_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
+
 print('newsplease')
 print(newsplease_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newsplease_result)))
@@ -400,10 +445,6 @@ print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_s
 print('readability')
 print(readability_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
-
-print('jparser')
-print(jparser_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
 
 print('trafilatura')
 print(trafilatura_result)
