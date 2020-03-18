@@ -16,12 +16,16 @@ import urllib3
 
 try:
     # this module is faster
-    import cchardet as chardet
+    import cchardet
 except ImportError:
-    import chardet
+    cchardet = None
+# https://charset-normalizer.readthedocs.io/en/latest/
+# https://ftfy.readthedocs.io/en/latest/
 
 import requests
 from lxml import etree, html
+from lxml.html.soupparser import fromstring as fromsoup
+
 
 from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE
 
@@ -30,7 +34,8 @@ LOGGER = logging.getLogger(__name__)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
-HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
+HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
+RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
 # UNICODE_WHITESPACE = re.compile(r'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
 
@@ -41,14 +46,43 @@ NOPRINT_TRANS_TABLE = {
 # unicodedata.category(char)[0] != "C" or char in ('\t', '\n')
 
 
-def decode_response(response, chunk_size=65536):
+def isUTF8(data):
+    """Simple heuristic to determine if a bytestring uses standard unicode encoding"""
+    try:
+        data.decode('UTF-8')
+    except UnicodeDecodeError:
+        return False
+    else:
+        return True
+
+
+def detect_encoding(bytesobject):
+    """Read the first chunk of input and return its encoding"""
+    # unicode-test
+    if isUTF8(bytesobject):
+        return 'UTF-8'
+    # try one of the installed detectors
+    if cchardet is not None:
+        guess = cchardet.detect(bytesobject)
+        LOGGER.debug('guessed encoding: %s', guess['encoding'])
+        return guess['encoding']
+    # fallback on full response
+    #if guess is None or guess['encoding'] is None: # or guess['confidence'] < 0.99:
+    #    guessed_encoding = chardet.detect(bytesobject)['encoding']
+    # return
+    return None
+
+
+def decode_response(response):
     """Read the first chunk of server response and decode it"""
-    guessed_encoding = chardet.detect(response.content[:chunk_size])['encoding']
+    guessed_encoding = detect_encoding(response.content)
     LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
+    # process
     if guessed_encoding is not None:
         try:
             htmltext = response.content.decode(guessed_encoding)
         except UnicodeDecodeError:
+            LOGGER.warning('encoding error: %s / %s', response.encoding, guessed_encoding)
             htmltext = response.text
     else:
         htmltext = response.text
@@ -102,26 +136,54 @@ def load_html(htmlobject):
     (accepted: LXML tree and string)
     """
     tree = None
+    # use tree directly
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
+    # try to detect encoding and convert to string
+    if isinstance(htmlobject, bytes):
+        guessed_encoding = detect_encoding(htmlobject)
+        if guessed_encoding is not None:
+            if guessed_encoding == 'UTF-8':
+                tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+            else:
+                try:
+                    htmlobject = htmlobject.decode(guessed_encoding)
+                except UnicodeDecodeError:
+                    LOGGER.warning('encoding issue: %s', guessed_encoding)
+                    tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+        else:
+            tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+    # use string if applicable
     if isinstance(htmlobject, str):
         try:
-            # encoding=guessed_encoding
             tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-        except UnicodeDecodeError as err:
-            LOGGER.error('unicode %s', err)
         except ValueError:
             # try to parse a bytestring
             try:
-                tree = html.fromstring(htmlobject.encode('utf8'))
+                tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
             except Exception as err:
                 LOGGER.error('parser bytestring %s', err)
-        except UnboundLocalError as err:
-            LOGGER.error('parsed string %s', err)
-        except (etree.XMLSyntaxError, AttributeError) as err:
-            LOGGER.error('parser %s', err)
-    else:
-        LOGGER.error('this type cannot be processed: %s', type(htmlobject))
+        #except UnicodeDecodeError as err:
+        #    LOGGER.error('unicode %s', err)
+        #except UnboundLocalError as err:
+        #    LOGGER.error('parsed string %s', err)
+        #except (etree.XMLSyntaxError, AttributeError) as err:
+        #    LOGGER.error('parser %s', err)
+        except Exception as err:
+            LOGGER.error('parsing failed: %s', err)
+    # default to None
+    #else:
+    #    LOGGER.error('this type cannot be processed: %s', type(htmlobject))
+    # further test
+    #if tree is not None:
+    #    try:
+    #       ignore = etree.tostring(tree, encoding='unicode')
+    #    except UnicodeDecodeError:
+    #       tree = None
+    #if tree is None:
+    #    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
+    #        # more robust parsing
+    #        tree = fromsoup(htmlobject)
     return tree
 
 
