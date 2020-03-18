@@ -31,7 +31,6 @@ try:
 except ImportError:
     justext = None
 
-
 # own
 from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLACKLIST
 from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
@@ -346,7 +345,7 @@ def recover_wild_paragraphs(tree, result_body):
     potential_tags = set(TAG_CATALOG)
     # prune
     search_tree = discard_unwanted(tree)
-    for element in search_tree.iter('p'):
+    for element in search_tree.iter('code', 'p', 'quote'): # 'head', 'list'
         # processed_element = handle_textnode(element, comments_fix=False)
         # if processed_element is not None:
         #    processed_element.attrib.clear()
@@ -419,6 +418,7 @@ def extract_content(tree, include_tables=False):
     # try parsing wild <p> elements if nothing found or text too short
     if len(result_body) == 0 or len(' '.join(result_body.itertext())) < MIN_EXTRACTED_SIZE:
         result_body = recover_wild_paragraphs(tree, result_body)
+        # result_body, _, _ = last_resort(tree)
     # parse tables
     if include_tables is True:
         result_body = handle_tables(tree, result_body)
@@ -515,6 +515,26 @@ def compare_extraction(tree, url, body, text, len_text):
     return body, text, len_text
 
 
+def last_resort(filecontent):
+    """Use baseline extraction function targeting text paragraphs"""
+    tree = load_html(filecontent)
+    postbody = etree.Element('body')
+    results = set()
+    resultlist = list()
+    for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
+        entry = element.text_content()
+        if entry not in results:
+            resultlist.append(entry)
+        results.add(entry)
+    for textpart in resultlist:
+        elem = etree.Element('p')
+        elem.text = textpart
+        postbody.append(elem)
+    temp_text = trim(' '.join(postbody.itertext()))
+    len_text = len(temp_text)
+    return postbody, len_text, temp_text
+
+
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             include_comments=True, csv_output=False, xml_output=False,
             tei_output=False, tei_validation=False, target_language=None,
@@ -567,12 +587,16 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         if len_text < MIN_EXTRACTED_SIZE:
             LOGGER.error('not enough text %s %s', record_id, url)
             postbody, len_text, temp_text = justext_rescue(tree, url, target_language, postbody, len_text, temp_text)
+        # second backup
+        # if len_text < MIN_EXTRACTED_SIZE:
+        #     postbody, len_text, temp_text = last_resort(filecontent)
     else:
         # rescue: try to use original/dirty tree
         if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
-            tree = load_html(filecontent)
-            tree = convert_tags(tree)
-            postbody, temp_text, len_text, sure_thing = extract_content(tree)
+            postbody, len_text, temp_text = last_resort(filecontent)
+            #tree = load_html(filecontent)
+            #tree = convert_tags(tree)
+            #postbody, temp_text, len_text, sure_thing = extract_content(tree)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
     if len_comments < MIN_EXTRACTED_COMM_SIZE:
