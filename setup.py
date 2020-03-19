@@ -67,7 +67,7 @@ setup(
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[
-        'htmldate >= 0.6.1',
+        'htmldate >= 0.6.2',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
         'lxml >= 4.4.2; python_version > "3.4"',
