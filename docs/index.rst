@@ -66,7 +66,9 @@ For first experimental results see the `evaluation page <evaluation.html>`_.
 Installation
 ------------
 
-Chiefly with ``pip`` or ``pipenv``, for more details see `installation documentation <installation.html>`_.
+Chiefly with the Python package manager ``pip``: ``pip install --upgrade trafilatura``.
+
+For more details see `installation documentation <installation.html>`_.
 
 
 Usage
@@ -118,7 +120,7 @@ Roadmap
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [-] Metadata integration
+-  [X] Metadata integration
 -  [-] Language detection on the extracted content
 -  [-] Preservation of in-line text formatting (bold, italic, etc.)
 -  [ ] Configuration and extraction parameters

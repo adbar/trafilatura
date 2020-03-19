@@ -84,7 +84,7 @@ trafilatura 0.4 (+ fallback)    0.925      0.904      **0.916** **0.914** 9.94
 Installation
 ------------
 
-Chiefly with ``pip`` or ``pipenv``.
+Chiefly with the Python package manager ``pip``: ``pip install --upgrade trafilatura``.
 
 For more details see `installation documentation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_.
 
@@ -140,7 +140,7 @@ Roadmap
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [-] Metadata integration
+-  [X] Metadata integration
 -  [-] Language detection on the extracted content
 -  [-] Preservation of in-line text formatting (bold, italic, etc.)
 -  [ ] Configuration and extraction parameters
@@ -172,4 +172,3 @@ This effort is part of methods to derive information from web documents in order
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
 You can contact me via my `contact page <http://adrien.barbaresi.eu/contact.html>`_ or `GitHub <https://github.com/adbar>`_.
-

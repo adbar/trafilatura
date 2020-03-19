@@ -132,7 +132,7 @@ def fetch_url(url):
 
 def load_html(htmlobject):
     """Load object given as input and validate its type
-    (accepted: LXML tree and string)
+    (accepted: LXML tree, bytestring and string)
     """
     tree = None
     # use tree directly
