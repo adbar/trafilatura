@@ -69,7 +69,11 @@ def load_document(filename):
 
 def run_baseline(htmlstring):
     '''run bare text extraction within lxml'''
-    tree = html.fromstring(htmlstring)
+    # binary/string as input tweak
+    try:
+        tree = html.fromstring(htmlstring)
+    except ValueError:
+        tree = html.fromstring(htmlstring.encode('utf8'))
     resultlist = list()
     # iterate potentially relevant elements
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q'): # 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
