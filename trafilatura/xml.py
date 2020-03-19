@@ -8,12 +8,13 @@ All functions related to XML generation, processing and validation.
 
 import logging
 import pickle
-import pkg_resources
 
 from io import StringIO
 from lxml import etree
 
-from .utils import sanitize, trim
+import pkg_resources
+
+from .utils import sanitize
 
 
 LOGGER = logging.getLogger(__name__)

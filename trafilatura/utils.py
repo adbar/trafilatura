@@ -11,7 +11,6 @@ import logging
 import re
 import socket
 import sys
-import unicodedata
 import urllib3
 
 try:
@@ -24,7 +23,7 @@ except ImportError:
 
 import requests
 from lxml import etree, html
-from lxml.html.soupparser import fromstring as fromsoup
+# from lxml.html.soupparser import fromstring as fromsoup
 
 
 from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE
@@ -46,7 +45,7 @@ NOPRINT_TRANS_TABLE = {
 # unicodedata.category(char)[0] != "C" or char in ('\t', '\n')
 
 
-def isUTF8(data):
+def isutf8(data):
     """Simple heuristic to determine if a bytestring uses standard unicode encoding"""
     try:
         data.decode('UTF-8')
@@ -59,7 +58,7 @@ def isUTF8(data):
 def detect_encoding(bytesobject):
     """Read the first chunk of input and return its encoding"""
     # unicode-test
-    if isUTF8(bytesobject):
+    if isutf8(bytesobject):
         return 'UTF-8'
     # try one of the installed detectors
     if cchardet is not None:

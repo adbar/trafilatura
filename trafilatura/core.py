@@ -97,7 +97,7 @@ def try_justext(tree, url, target_language):
         for language in justext.get_stoplists():
             justext_stoplist.update(justext.get_stoplist(language))
     # justext_stoplist = justext.get_stoplist(langsetting)
-    # extract # 
+    # extract
     try:
         paragraphs = justext.justext(justtextstring, justext_stoplist, 50, 200, 0.1, 0.2, 0.2, 200, True)
     except ValueError as err:  # not an XML element: HtmlComment

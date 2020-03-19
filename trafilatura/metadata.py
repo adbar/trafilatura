@@ -135,7 +135,7 @@ def extract_metainfo(tree, expressions):
         if len(target_elements) > 0:
             result = target_elements[0].text
             if len(target_elements) > 1:
-                LOGGER.debug('more than one result:', expression, len(target_elements))
+                LOGGER.debug('more than one result: %s %s', expression, len(target_elements))
             break
     return trim(result)
 
