@@ -59,28 +59,34 @@ Evaluation and alternatives
 For experimental results see the `evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 =============================== =========  ========== ========= ========= =====
-100 documents, 266 text and 294 boilerplate segments (2019-01-29)
+300 documents, 869 text and 878 boilerplate segments (2020-03-19)
 -------------------------------------------------------------------------------
 Python Package                  Precision  Recall     Accuracy  F-Score   Time
 =============================== =========  ========== ========= ========= =====
-*everything with markup*        0.492      0.902      0.511     0.637     0
-inscriptis 1.0 (html to txt)    0.504      **0.989**  0.532     0.668     0.87
-justext 2.2.0 (German stoplist) 0.886      0.553      0.754     0.681     2.22
-goose3 3.1.6                    **0.935**  0.594      0.787     0.726     7.64
-newspaper3k 0.2.8               0.920      0.609      0.789     0.733     5.34
-boilerpy3 1.0.2                 0.767      0.756      0.775     0.761     1.89
-dragnet 2.0.4                   0.904      0.673      0.811     0.772     1.25
-readability-lxml 0.7.1          0.894      0.699      0.818     0.785     2.34
-news-please 1.4.25              0.900      0.714      0.827     0.797     22.99
-trafilatura 0.3.1 (rule-based)  0.872      0.895      0.887     0.883     1.87
-trafilatura 0.3.1 (+ justext)   0.889      0.936      **0.914** **0.912** 2.19
+*raw HTML*                      0.519      0.885      0.535     0.654     0
+*baseline (text markup)*        0.726      0.776      0.742     0.750     1.14 
+html2text 2020.1.16             0.499      0.787      0.501     0.611     11.00
+inscriptis 1.0 (html to txt)    0.521      **0.962**  0.541     0.676     2.47
+justext 2.2.0 (German stoplist) 0.849      0.529      0.719     0.652     6.37
+newspaper3k 0.2.8               0.923      0.591      0.772     0.721     14.80
+goose3 3.1.6                    **0.957**  0.640      0.807     0.767     21.54
+boilerpy3 1.0.2 (article mode)  0.841      0.734      0.799     0.784     5.65
+dragnet 2.0.4                   0.909      0.722      0.825     0.804     3.64
+readability-lxml 0.7.1          0.928      0.743      0.844     0.826     6.59
+news-please 1.4.25              0.926      0.747      0.844     0.827     70.81
+trafilatura 0.3.1 (rule-based)  0.901      0.831      0.871     0.865     5.43
+trafilatura 0.3.1 (+ justext)   0.897      0.868      0.884     0.882     6.97
+trafilatura 0.4                 0.914      0.869      0.894     0.891     4.87
+trafilatura 0.4 (+ fallback)    0.925      0.904      **0.916** **0.914** 9.94
 =============================== =========  ========== ========= ========= =====
 
 
 Installation
 ------------
 
-Chiefly with ``pip`` or ``pipenv``, for more details see `installation documentation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_.
+Chiefly with ``pip`` or ``pipenv``.
+
+For more details see `installation documentation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_.
 
 
 Usage

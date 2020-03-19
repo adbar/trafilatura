@@ -1,5 +1,14 @@
 ## History / Changelog
 
+
+### 0.4
+
+- improved "fast" mode (accuracy and speed)
+- better fallbacks with readability-lxml and justext
+- metadata extraction added
+- more robust processing (tests, encoding handling)
+
+
 ### 0.3.1
 - support for Python 3.4 reactivated
 - bugs in XML output and discarding sections solved
