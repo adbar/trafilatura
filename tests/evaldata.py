@@ -606,10 +606,10 @@ EVAL_PAGES = {
 },
 'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html': {
     'file': 'faz.net.streaming.html',
-    'author': '',
-    'title': '',
+    'author': 'Benjamin Fischer und Marcus Theurer',
+    'title': 'Nutzerbasierte Abrechnung: Musik-Stars fordern neues Streaming-Modell',
     'date': '2020-01-28',
-    'description': '',  # in HTML source
+    'description': 'Die Abogebühr eines Nutzers soll nur noch unter den Künstlern verteilt werden, die er gehört hat, so das Ziel der Initiative. Dabei gehe es auch um „kulturelle Vielfalt“. Welche Chancen hat diese Forderung?',  # in HTML source
     'categories': [],
     'tags': [],
     'with': ['„Die Liste der Künstler', 'nicht bloß um höhere Einkünfte', 'Der Wandel der Musikbranche'],
@@ -3170,7 +3170,7 @@ EVAL_PAGES = {
 },
 'https://www.faz.net/aktuell/reise/reise-durch-sierra-leone-es-ist-zeit-fuer-den-tourismus-16306548.html': {
     'file': 'faz.net.leone.html',  # stays empty until download
-    'author': 'KARIN FINKENZELLER',
+    'author': 'Karin Finkenzeller',
     'title': 'Die Sonne geht auch wieder auf',
     'date': '2019-07-30',
     'description': 'Sierra Leone hat schwere B&uuml;rgerkriegszeiten hinter sich. Endlose Strände, grüne Hügel und die Hoffnung sind schon da. Jetzt fehlen nur...',  # in HTML source

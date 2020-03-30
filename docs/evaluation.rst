@@ -23,7 +23,7 @@ These packages focus on main text extraction:
 - `dragnet <https://github.com/dragnet-org/dragnet>`_ features combined and machine-learning approaches, but requires more dependencies and potentially fine-tuning
 - `goose3 <https://github.com/goose3/goose3>`_ can extract information for embedded content but doesn't preserve markup
 - `jusText <https://github.com/miso-belica/jusText>`_ is designed to preserve mainly text containing full sentences along with some markup, it has been explicitly developed to create linguistic resources
-- `newspaper3k <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
+- `newspaper <https://github.com/codelucas/newspaper>`_ is mostly geared towards newspaper texts, provides additional functions but no structured text or comment extraction
 - `news-please <https://github.com/fhamborg/news-please>`_ is a news crawler that extracts structured information
 - `python-readability <https://github.com/buriy/python-readability>`_ cleans the page and preserves some markup
 
@@ -35,11 +35,11 @@ The tools are compared to the raw page source and to a meaningful baseline consi
 Description
 -----------
 
-**Test set**: The experiments below are run on a collection of documents which are either typical for Internet articles (news outlets, blogs) or non-standard and thus harder to process. Some contain mixed content (lists, tables) and/or non-standard not fully valid HTML code. They were selected from `large collections of web pages in German <https://www.dwds.de/d/k-web>`_, for the sake of completeness a few documents in other languages are added (notably English, French, Chinese and Arabic).
+**Test set**: The experiments below are run on a collection of documents which are either typical for Internet articles (news outlets, blogs) or non-standard and thus harder to process. Some contain mixed content (lists, tables) and/or non-standard not fully valid HTML code. They were selected from `large collections of web pages in German <https://www.dwds.de/d/k-web>`_, for the sake of completeness a few documents in other languages are added (notably English, French, other European languages, Chinese and Arabic).
 
 **Evaluation**: Decisive document segments are singled out which are not statistically representative but very significant in the perspective of working with the texts, most notably left/right columns, additional header, author or footer information such as imprints or addresses, as well as affiliated and social network links, in short boilerplate. Raw text segments are expected which is also a way to evaluate the quality of HTML extraction in itself.
 
-**Time**: The execution time is not to be taken too seriously, the only conclusion at this stage is that *goose3* and *newspaper3k* are slower than the rest while *news-please*'s execution time isn't comparable because of operations unrelated to text extraction. Baseline extraction is simple and fast.
+**Time**: The execution time is not to be taken too seriously, the only conclusion at this stage is that *goose3* and *newspaper* are slower than the rest while *news-please*'s execution time isn't comparable because of operations unrelated to text extraction. Baseline extraction is simple and fast.
 
 **Errors**: The *newspaper* and *boilerpipe* modules do not work without errors on every HTML file in the test set, probably because of malformed HTML, encoding or parsing bugs.
 
@@ -63,7 +63,7 @@ Python Package                  Precision  Recall     Accuracy  F-Score   Time
 html2text 2020.1.16             0.499      0.787      0.501     0.611     11.00
 inscriptis 1.0 (html to txt)    0.521      **0.962**  0.541     0.676     2.47
 justext 2.2.0 (German stoplist) 0.849      0.529      0.719     0.652     6.37
-newspaper3k 0.2.8               0.923      0.591      0.772     0.721     14.80
+newspaper 0.2.8                 0.923      0.591      0.772     0.721     14.80
 goose3 3.1.6                    **0.957**  0.640      0.807     0.767     21.54
 boilerpy3 1.0.2 (article mode)  0.841      0.734      0.799     0.784     5.65
 dragnet 2.0.4                   0.909      0.722      0.825     0.804     3.64
@@ -88,7 +88,7 @@ Python Package                  Precision  Recall     Accuracy  F-Score   Time
 inscriptis 1.0 (html to txt)    0.504      **0.989**  0.532     0.668     0.87
 justext 2.2.0 (German stoplist) 0.886      0.553      0.754     0.681     2.22
 goose3 3.1.6                    **0.935**  0.594      0.787     0.726     7.64
-newspaper3k 0.2.8               0.920      0.609      0.789     0.733     5.34
+newspaper 0.2.8                 0.920      0.609      0.789     0.733     5.34
 boilerpy3 1.0.2 (default mode)  0.767      0.756      0.775     0.761     1.89
 dragnet 2.0.4                   0.904      0.673      0.811     0.772     1.25
 readability-lxml 0.7.1          0.894      0.699      0.818     0.785     2.34
