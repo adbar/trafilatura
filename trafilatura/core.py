@@ -76,7 +76,7 @@ def try_readability(htmlinput, url):
                     resultstring = doc.summary(html_partial=True)
         newtree = html.fromstring(resultstring, parser=HTML_PARSER)
         # remove unwanted sections
-        for elem in newtree.xpath('//button|//input|//svg'):  # //img
+        for elem in newtree.xpath('//aside|//button|//footer|//input|//svg'):  # //figure //img
             elem.getparent().remove(elem)
         return newtree
     except (etree.SerialisationError, Unparseable):
