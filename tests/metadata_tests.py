@@ -221,7 +221,6 @@ def test_pages():
     # <meta name="DC:type" content="journalArticle">
 
     metadata = scrape(load_mock_page('https://www.theguardian.com/education/2020/jan/20/thousands-of-uk-academics-treated-as-second-class-citizens'))
-    print(metadata)
     assert metadata.title == "Thousands of UK academics 'treated as second-class citizens'"
     # assert metadata.author == 'Richard Adams'
     assert metadata.description.startswith('Report claims higher education institutions')
@@ -232,7 +231,7 @@ def test_pages():
 
     metadata = scrape(load_mock_page('https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'))
     assert metadata.title == 'Flint flake tool partially covered by birch tar adds to evidence of Neanderthal complex thinking'
-    # assert metadata.author == 'Bob Yirka'
+    assert metadata.author == 'Bob Yirka'
     assert metadata.description == 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.'
     # assert metadata.sitename == 'Phys'
     # assert metadata.categories == ['Archaeology', 'Fossils']
@@ -259,6 +258,8 @@ def test_pages():
     # assert metadata.categories == ['Rust', 'Programming']
     
     # metadata = scrape(load_mock_page('https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'))
+    # print(metadata)
+    # sys.exit()
     # assert metadata.title == "Berlin confronts Germany's colonial past with new initiative"
     # assert metadata.author == 'Ben Knight'
     # assert metadata.description == "The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy."
@@ -266,6 +267,8 @@ def test_pages():
     # assert metadata.categories == ['Colonialism', 'History', 'Germany']
     
     # metadata = scrape(load_mock_page('https://www.theplanetarypress.com/2020/01/management-of-intact-forestlands-by-indigenous-peoples-key-to-protecting-climate/'))
+    # print(metadata)
+    # sys.exit()
     # assert metadata.title == 'Management of Intact Forestlands by Indigenous Peoples Key to Protecting Climate'
     # assert metadata.author == 'Julie Mollins'
     # assert metadata.description == 'Advantages of Management of Intact Forestlands by Indigenous Peoples for the Climate'
@@ -281,14 +284,15 @@ def test_pages():
     
     metadata = scrape(load_mock_page('https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH'))
     assert metadata.title == "'Parasite' scores historic upset at SAG awards, boosting Oscar chances"
-    # assert metadata.author == 'Jill Serjeant'
+    assert metadata.author == 'Jill Serjeant'
+    assert metadata.date == '2020-01-20'
     # assert metadata.description == '“Parasite,” the Korean language social satire about the wealth gap in South Korea, was the first film in a foreign language to win the top prize of best cast ensemble in the 26 year-history of the SAG awards.'
     # assert metadata.sitename == 'Reuters'
     # assert metadata.categories == ['Parasite', 'SAG awards', 'Cinema']
     
     metadata = scrape(load_mock_page('https://www.nationalgeographic.co.uk/environment-and-conservation/2020/01/ravenous-wild-goats-ruled-island-over-century-now-its-being'))
     assert metadata.title == "Ravenous wild goats ruled this island for over a century. Now, it's being reborn."
-    # assert metadata.author == 'Michael Hingston'
+    # assert metadata.author == 'Michael Hingston' # National Geographic
     # assert metadata.description == 'The rocky island of Redonda, once stripped of its flora and fauna by invasive species, makes an astonishingly quick comeback. What’s the secret to its recovery?'
     assert metadata.sitename == 'National Geographic'
     # assert metadata.categories == ['Goats', 'Environment', 'Redonda']
@@ -302,7 +306,8 @@ def test_pages():
     
     metadata = scrape(load_mock_page('https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'))
     assert metadata.title == 'Despite everything, U.S. emissions dipped in 2019'
-    # assert metadata.author == 'Nathanael Johnson'
+    # author in JSON-LD
+    assert metadata.author == 'Nathanael Johnson'
     assert metadata.description == 'Coal has been in a slow-motion death spiral over the past ten years'
     assert metadata.sitename == 'Salon'
     # assert metadata.categories == ['Coal', 'Emmisions', 'Climate']

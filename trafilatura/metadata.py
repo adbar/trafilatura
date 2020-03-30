@@ -32,10 +32,9 @@ def extract_json_author(tree):
     '''Crudely extract author name from JSON-LD data'''
     for elem in tree.xpath('//script[@type="application/ld+json"]'):
         if '"author":' in elem.text:
-            mymatch = re.search(r'"author":.+?"name\\?":\\?"([^"\\]+)', elem.text)
+            mymatch = re.search(r'"author":.+?"name\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch:
                 author = mymatch.group(1)
-                print(author)
                 return trim(author)
     return None
 
