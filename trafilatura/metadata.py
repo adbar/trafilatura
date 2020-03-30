@@ -28,6 +28,18 @@ def trim(string):
     return string
 
 
+def extract_json_author(tree):
+    '''Crudely extract author name from JSON-LD data'''
+    for elem in tree.xpath('//script[@type="application/ld+json"]'):
+        if '"author":' in elem.text:
+            mymatch = re.search(r'"author":.+?"name\\?":\\?"([^"\\]+)', elem.text)
+            if mymatch:
+                author = mymatch.group(1)
+                print(author)
+                return trim(author)
+    return None
+
+
 def extract_opengraph(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
     title = author = url = description = site_name = None
@@ -199,14 +211,19 @@ def scrape(filecontent, default_url=None):
         return None
     # meta tags
     mymeta = Metadata._make(examine_meta(tree))
-    # correction: author not a name
-    #if mymeta.author is not None:
-    #    if ' ' not in mymeta.author or mymeta.author.startswith('http'):
-    #        mymeta = mymeta._replace(author=None)
     # title
     if getattr(mymeta, 'title') is None:
         mymeta = mymeta._replace(title=extract_title(tree))
     # author
+    # correction: author not a name
+    if mymeta.author is not None:
+        if ' ' not in mymeta.author or mymeta.author.startswith('http'):
+            mymeta = mymeta._replace(author=None)
+    # fix: try json-ld metadata and override
+    jsonauthor = extract_json_author(tree)
+    if jsonauthor is not None and mymeta.author is None:
+        mymeta = mymeta._replace(author=jsonauthor)
+    # try with x-paths
     if getattr(mymeta, 'author') is None:
         mymeta = mymeta._replace(author=extract_author(tree))
     # url

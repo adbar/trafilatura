@@ -73,6 +73,8 @@ MOCK_PAGES = {
 'http://kulinariaathome.wordpress.com/2012/12/08/mandelplatzchen/': 'kulinariaathome.com.mandelplätzchen.html',
 'https://de.creativecommons.org/index.php/2014/03/20/endlich-wird-es-spannend-die-nc-einschraenkung-nach-deutschem-recht/': 'de.creativecommons.org.endlich.html',
 'https://blog.mondediplo.net/turpitude-et-architecture': 'mondediplo.net.turpitude.html',
+'https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be': 'scmp.com.playbook.html',
+'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html': 'faz.net.streaming.html',
 }
 
 
@@ -304,6 +306,14 @@ def test_pages():
     assert metadata.description == 'Coal has been in a slow-motion death spiral over the past ten years'
     assert metadata.sitename == 'Salon'
     # assert metadata.categories == ['Coal', 'Emmisions', 'Climate']
+
+    metadata = scrape(load_mock_page('https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be'))
+    # author in JSON-LD
+    assert metadata.author == 'Alice Wu'
+
+    metadata = scrape(load_mock_page('https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html'))
+    # author overriden from JSON-LD + double name
+    assert 'Benjamin Fischer' in metadata.author
 
 
 if __name__ == '__main__':
