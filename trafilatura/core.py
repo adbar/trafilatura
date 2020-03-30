@@ -593,7 +593,20 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     else:
         # rescue: try to use original/dirty tree
         if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
-            postbody, len_text, temp_text = last_resort(filecontent)
+            # temporary fix: scrape json text
+            for elem in tree.xpath('//script[@type="application/ld+json"]'):
+                if '"articleBody":' in elem.text:
+                    mymatch = re.search(r'"articleBody":"([^"]+)', elem.text)
+                    if mymatch:
+                        temp_text = mymatch.group(1)
+                        len_text = len(temp_text)
+                        postbody = etree.Element('body')
+                        elem = etree.Element('p')
+                        elem.text = temp_text
+                        postbody.append(elem)
+                        break
+            if len_text < MIN_EXTRACTED_SIZE:
+                postbody, len_text, temp_text = last_resort(filecontent)
             #tree = load_html(filecontent)
             #tree = convert_tags(tree)
             #postbody, temp_text, len_text, sure_thing = extract_content(tree)
