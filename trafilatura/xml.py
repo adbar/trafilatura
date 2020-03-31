@@ -161,16 +161,22 @@ def write_teitree(postbody, commentsbody, docmeta):
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
     filedesc = etree.SubElement(header, 'fileDesc')
-    titlestmt = etree.SubElement(filedesc, 'titleStmt')
-    title = etree.SubElement(titlestmt, 'title')
-    if docmeta.title is not None:
-        title.text = docmeta.title
+    #biblfull = etree.SubElement(sourcedesc, 'biblFull')
+    bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
+    bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
+    bib_titlemain.text = docmeta.title
+    bib_titlesub = etree.SubElement(bib_titlestmt, 'title', type='sub')
+    bib_titlesub.text = docmeta.description
+    bib_author = etree.SubElement(bib_titlestmt, 'author')
+    bib_author.text = docmeta.author
     publicationstmt = etree.SubElement(filedesc, 'publicationStmt')
-    publication_p = etree.SubElement(publicationstmt, 'publisher')
+    publication_publisher = etree.SubElement(publicationstmt, 'publisher')
+    publication_publisher.text = docmeta.sitename
+    publication_url = etree.SubElement(publicationstmt, 'idno', type='URL')
+    publication_url.text = docmeta.url
     publication_date = etree.SubElement(publicationstmt, 'date')
     publication_date.set('type', 'publication')
-    if docmeta.date is not None:
-        publication_date.text = docmeta.date
+    publication_date.text = docmeta.date
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_p = etree.SubElement(sourcedesc, 'p')
     source_p.text = docmeta.url
@@ -188,3 +194,4 @@ def write_teitree(postbody, commentsbody, docmeta):
         # commentselem = etree.SubElement(textbody, 'div', type='comments')
         textbody.append(commentsbody)
     return tei
+
