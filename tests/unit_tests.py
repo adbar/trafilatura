@@ -29,7 +29,7 @@ except ImportError:
     LANGID_FLAG = False
 
 import trafilatura.filters
-from trafilatura.core import extract, process_record, trim
+from trafilatura.core import baseline, extract, process_record, trim
 from trafilatura.filters import duplicate_test, put_in_cache, textfilter
 from trafilatura.lru import LRUCache
 from trafilatura import cli, utils, xml
@@ -361,7 +361,9 @@ def test_extract(xmloutput=False):
     assert 'Aufbau und Inhalt' in result and 'Verlag Dr. Otto Schmidt' in result and 'Handbuch' not in result and 'Drucken' not in result and 'Ähnliche Artikel' not in result # and 'Anzeige:' not in result and 'Kommentar schreiben' not in result
 
     result = load_mock_page('https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen', xmloutput)
-    assert 'Auch der Verweis auf ehrverletzende Bewertungen' in result and 'Anja Schmoll-Trautmann' not in result and 'Fanden Sie diesen Artikel nützlich?' not in result and 'Aktuell' not in result and 'Kommentar hinzufügen' not in result # and 'Zu seinen Tätigkeitsfeldern zählen' not in result
+    assert 'Auch der Verweis auf ehrverletzende Bewertungen' in result and 'Fanden Sie diesen Artikel nützlich?' not in result and 'Aktuell' not in result and 'Kommentar hinzufügen' not in result # and 'Zu seinen Tätigkeitsfeldern zählen' not in result
+    if xmloutput is False:
+        assert 'Anja Schmoll-Trautmann' not in result 
 
     result = load_mock_page('https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage', xmloutput)
     assert 'Alle Artikel zu unseren Recherchen' not in result and 'Vorweg: Die beteiligten AfD-Politiker' in result and 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal' in result and 'Wir informieren Sie regelmäßig zum Thema Neue Rechte' not in result and 'Kommentar verfassen' not in result and 'weiterlesen' not in result
@@ -412,7 +414,9 @@ def test_extract(xmloutput=False):
     assert 'Glücks-Trend Konkurrenz' in result and 'Praktiziere Dankbarkeit' in result and 'dein Ikigai schon gefunden?' in result and '14,90 Euro.' in result and 'Neu in Liebe' not in result and 'Erfahre mehr' not in result and 'Erfahrung mit privater Arbeitsvermittlung?' not in result
 
     result = load_mock_page('https://www.changelog.blog/zwischenbilanz-jan-kegelberg-ueber-tops-und-flops-bei-der-transformation-von-sportscheck/', xmloutput)
-    assert 'Gibt es weitere Top-Maßnahmen für Multi-Channel?' in result and 'Vielen Dank für das interessante Interview!' in result and 'Annette Henkel' not in result and 'akzeptiere die Datenschutzbestimmungen' not in result and 'Diese Beiträge solltest du nicht verpassen' not in result
+    assert 'Gibt es weitere Top-Maßnahmen für Multi-Channel?' in result and 'Vielen Dank für das interessante Interview!' in result and 'akzeptiere die Datenschutzbestimmungen' not in result and 'Diese Beiträge solltest du nicht verpassen' not in result
+    if xmloutput is False:
+        assert 'Annette Henkel' not in result
 
     result = load_mock_page('https://threatpost.com/android-ransomware-spreads-via-sex-simulation-game-links-on-reddit-sms/146774/', xmloutput)
     assert 'These messages include links to the ransomware' in result and 'using novel techniques to exfiltrate data.' in result and 'Share this article:' not in result and 'Write a comment' not in result and 'Notify me when new comments are added.' not in result and 'uses Akismet to reduce spam.' not in result
@@ -589,6 +593,13 @@ def test_formatting():
     assert my_result == 'Wild text'
 
 
+@patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
+def test_jsontext():
+    my_document = r'<html><body><script type="application/ld+json">{"description":"In letzter Zeit kam man am Begriff \"Hygge\", was so viel wie \"angenehm\" oder \"gemütlich\" bedeutet, ja nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend ...","image":[{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/uncropped-0-0\/7d00b2658fd0a3b19e1b161f4657cc20\/Xw\/ikigai--1-.jpg","width":"2048","height":"1366","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-1280-720\/bf947c7c24167d7c0adae0be10942d57\/Uf\/ikigai--1-.jpg","width":"1280","height":"720","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-938-528\/bf947c7c24167d7c0adae0be10942d57\/JK\/ikigai--1-.jpg","width":"938","height":"528","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/large1x1-622-622\/f5544b7d67e1be04f7729b130e7e0485\/KN\/ikigai--1-.jpg","width":"622","height":"622","@type":"ImageObject"}],"mainEntityOfPage":{"@id":"https:\/\/www.brigitte.de\/liebe\/persoenlichkeit\/ikigai-macht-dich-sofort-gluecklicher--10972896.html","@type":"WebPage"},"headline":"Ikigai macht dich sofort glücklicher!","datePublished":"2019-06-19T14:29:08+0000","dateModified":"2019-06-19T14:29:10+0000","author":{"name":"BRIGITTE.de","@type":"Organization"},"publisher":{"name":"BRIGITTE.de","logo":{"url":"https:\/\/image.brigitte.de\/11476842\/uncropped-0-0\/f19537e97b9189bf0f25ce924168bedb\/kK\/bri-logo-schema-org.png","width":"167","height":"60","@type":"ImageObject"},"@type":"Organization"},"articleBody":"In letzter Zeit kam man am Begriff \"Hygge\" (\"gemütlich\" oder \"angenehm\") nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend Konkurrenz: \"Ikigai\". Bist du glücklich? Schwierige Frage, nicht wahr? Viele von uns müssen da erst mal überlegen.","@type":"NewsArticle"}</script></body></html>'
+    _, _, result = baseline(my_document)
+    assert result.startswith('In letzter Zeit kam man') and result.endswith('erst mal überlegen.')
+
+
 def test_filters():
     '''Test content filtering'''
     if LANGID_FLAG is True:
@@ -625,6 +636,7 @@ if __name__ == '__main__':
     test_climain()
     test_formatting()
     test_filters()
+    test_jsontext()
     test_extract(xmloutput=False)
     test_extract(xmloutput=True)
     test_download()
