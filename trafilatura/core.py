@@ -650,7 +650,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         # necessary for cleaning
         control_parser = etree.XMLParser(remove_blank_text=True)
         output_tree = etree.fromstring(control_string, control_parser)
-        returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode')
+        returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
     return returnstring
 

@@ -119,8 +119,8 @@ def validate_tei(tei):  # , filename=""
     global TEI_RELAXNG
     if TEI_RELAXNG is None:
         # load validator
-        with open(TEI_SCHEMA, 'rb') as f:
-            schema_data = pickle.load(f)
+        with open(TEI_SCHEMA, 'rb') as schemafile:
+            schema_data = pickle.load(schemafile)
         relaxng_doc = etree.parse(StringIO(schema_data))
         TEI_RELAXNG = etree.RelaxNG(relaxng_doc)
     result = TEI_RELAXNG.validate(tei)
@@ -194,4 +194,3 @@ def write_teitree(postbody, commentsbody, docmeta):
         # commentselem = etree.SubElement(textbody, 'div', type='comments')
         textbody.append(commentsbody)
     return tei
-
