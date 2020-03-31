@@ -418,7 +418,7 @@ def extract_content(tree, include_tables=False):
     # try parsing wild <p> elements if nothing found or text too short
     if len(result_body) == 0 or len(' '.join(result_body.itertext())) < MIN_EXTRACTED_SIZE:
         result_body = recover_wild_paragraphs(tree, result_body)
-        # result_body, _, _ = last_resort(tree)
+        # result_body, _, _ = baseline(tree)
     # parse tables
     if include_tables is True:
         result_body = handle_tables(tree, result_body)
@@ -515,10 +515,25 @@ def compare_extraction(tree, url, body, text, len_text):
     return body, text, len_text
 
 
-def last_resort(filecontent):
-    """Use baseline extraction function targeting text paragraphs"""
+def baseline(filecontent):
+    """Use baseline extraction function targeting JSON metadata and/or text paragraphs"""
     tree = load_html(filecontent)
     postbody = etree.Element('body')
+    # scrape from json text
+    for elem in tree.xpath('//script[@type="application/ld+json"]'):
+        if elem.text and '"articleBody":' in elem.text:
+            mymatch = re.search(r'"articleBody":"(.+?)","', elem.text)
+            if mymatch:
+                temp_text = mymatch.group(1)
+                temp_text = temp_text.replace('\\"', '"')
+                # temp_text = trim(temp_text)
+                len_text = len(temp_text)
+                postbody = etree.Element('body')
+                elem = etree.Element('p')
+                elem.text = temp_text
+                postbody.append(elem)
+                return postbody, len_text, temp_text
+    # scrape from text paragraphs
     results = set()
     resultlist = list()
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
@@ -530,7 +545,7 @@ def last_resort(filecontent):
         elem = etree.Element('p')
         elem.text = textpart
         postbody.append(elem)
-    temp_text = trim(' '.join(postbody.itertext()))
+    temp_text = sanitize('\n'.join(postbody.itertext()))
     len_text = len(temp_text)
     return postbody, len_text, temp_text
 
@@ -589,24 +604,11 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             postbody, len_text, temp_text = justext_rescue(tree, url, target_language, postbody, len_text, temp_text)
         # second backup
         # if len_text < MIN_EXTRACTED_SIZE:
-        #     postbody, len_text, temp_text = last_resort(filecontent)
+        #     postbody, len_text, temp_text = baseline(filecontent)
     else:
         # rescue: try to use original/dirty tree
         if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
-            # temporary fix: scrape json text
-            for elem in tree.xpath('//script[@type="application/ld+json"]'):
-                if '"articleBody":' in elem.text:
-                    mymatch = re.search(r'"articleBody":"([^"]+)', elem.text)
-                    if mymatch:
-                        temp_text = mymatch.group(1)
-                        len_text = len(temp_text)
-                        postbody = etree.Element('body')
-                        elem = etree.Element('p')
-                        elem.text = temp_text
-                        postbody.append(elem)
-                        break
-            if len_text < MIN_EXTRACTED_SIZE:
-                postbody, len_text, temp_text = last_resort(filecontent)
+            postbody, len_text, temp_text = baseline(filecontent)
             #tree = load_html(filecontent)
             #tree = convert_tags(tree)
             #postbody, temp_text, len_text, sure_thing = extract_content(tree)

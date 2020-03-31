@@ -32,6 +32,7 @@ from trafilatura import extract
 ## TODO: time, best of 3
 
 from evaldata import EVAL_PAGES
+from trafilatura.core import baseline
 from trafilatura.utils import sanitize
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -69,19 +70,7 @@ def load_document(filename):
 
 def run_baseline(htmlstring):
     '''run bare text extraction within lxml'''
-    # binary/string as input tweak
-    try:
-        tree = html.fromstring(htmlstring)
-    except ValueError:
-        tree = html.fromstring(htmlstring.encode('utf8'))
-    resultlist = list()
-    # iterate potentially relevant elements
-    for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q'): # 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
-        entry = element.text_content()
-        #if entry not in results and len(entry) > 10:
-        resultlist.append(entry)
-    result = '\n'.join(resultlist)
-    result = sanitize(result)
+    _, _, result = baseline(htmlstring)
     return result
 
 
