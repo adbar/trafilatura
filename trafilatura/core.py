@@ -533,6 +533,17 @@ def baseline(filecontent):
                 elem.text = temp_text
                 postbody.append(elem)
                 return postbody, len_text, temp_text
+    # scrape from article tag
+    elems = tree.xpath('//article')
+    if len(elems) > 0:
+        article_elem = elems[0]
+        temp_text = sanitize(article_elem.text_content())
+        len_text = len(temp_text)
+        if len_text > 0:
+            elem = etree.Element('p')
+            elem.text = temp_text
+            postbody.append(elem)
+            return postbody, len_text, temp_text
     # scrape from text paragraphs
     results = set()
     resultlist = list()
