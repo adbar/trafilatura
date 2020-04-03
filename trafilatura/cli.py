@@ -8,8 +8,11 @@ Implementing a basic command-line interface.
 import argparse
 import codecs
 import logging
+import random
+import string
 import sys
 
+from os import makedirs, path
 from time import sleep
 
 from .core import extract
@@ -67,6 +70,9 @@ def parse_args(args):
     parser.add_argument("-i", "--inputfile",
                         help="name of input file for batch processing",
                         type=str)
+    parser.add_argument("-o", "--outputdir",
+                        help="write results in a specified directory (relative path)",
+                        type=str)
     parser.add_argument("--nocomments",
                         help="don't output any comments",
                         action="store_false")  # false = no comments
@@ -93,6 +99,33 @@ def parse_args(args):
     return parser.parse_args()
 
 
+def write_result(url, result, args):
+    '''Deal with result (write to STDOUT or to file)'''
+    if result is None:
+        sys.stdout.write('# ERROR: no valid result for url ' + url + '\n')
+    else:
+        if args.outputdir is None:
+            sys.stdout.write(result + '\n')
+        else:
+            # check the directory status
+            if not path.isdir(args.outputdir):
+                try:
+                    makedirs(args.outputdir)
+                except OSError:
+                    raise
+            # determine file name
+            randomslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+            extension = '.txt'
+            if args.xml or args.xmltei:
+                extension = '.xml'
+            elif args.csv:
+                extension = '.csv'
+            # write
+            output_path = path.join(args.outputdir, randomslug + extension)
+            with open(output_path, mode='w', encoding='utf-8') as outputfile:
+                outputfile.write(result)
+
+
 def main():
     """ Run as a command-line utility. """
     # arguments
@@ -110,12 +143,10 @@ def main():
                                      include_comments=args.nocomments, include_tables=args.notables,
                                      csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
                                      validation=args.validate, formatting=args.formatting)
-                    if result is None:
-                        result = '# ERROR: no valid result for url ' + url
                 # ugly but efficient
                 except Exception as err:
                     result = '# ERROR:' + err + sys.exc_info()[0] + ' for url ' + url + '\n'
-                sys.stdout.write(result + '\n')
+                write_result(url, result, args)
                 # sleep 2 sec between requests
                 sleep(2)
     else:
@@ -136,8 +167,7 @@ def main():
                          include_comments=args.nocomments, include_tables=args.notables,
                          csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
                          validation=args.validate, formatting=args.formatting)
-        if result is not None:
-            sys.stdout.write(result + '\n')
+        write_result(args.URL, result, args)
 
 
 if __name__ == '__main__':
