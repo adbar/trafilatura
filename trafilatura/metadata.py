@@ -157,18 +157,16 @@ def extract_metainfo(tree, expressions):
 def extract_title(tree):
     '''Extract the document title'''
     # only one h1-element: take it
-    #results = tree.xpath('//h1')
-    #if len(results) == 1:
-    #    title = results[0].text_content()
-    #else:
-    #    results = tree.xpath('//*[@class="entry-title" or @class="post-title"]')
-    #    if len(results) == 1:
-    #        title = results[0].text_content()
-    #    else:
-    #        # extract using x-paths
-    #        title = extract_metainfo(tree, title_xpaths)
-    # extract using x-paths
-    title = extract_metainfo(tree, title_xpaths)
+    results = tree.xpath('//h1')
+    if len(results) == 1:
+        title = results[0].text_content()
+    else:
+        results = tree.xpath('//*[@class="entry-title" or @class="post-title"]')
+        if len(results) == 1:
+            title = results[0].text_content()
+        else:
+            # extract using x-paths
+            title = extract_metainfo(tree, title_xpaths)
     return title
 
 

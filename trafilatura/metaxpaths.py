@@ -52,10 +52,10 @@ tags_xpaths = [
 # span class tag-links
 
 title_xpaths = [
-    '//h1',
     '//h1[contains(@class, "title") or contains(@id, "title")]',
     '//*[contains(@class, "post-title") or contains(@class, "entry-title")]',
     '//head/title',
+    '//h1',
     '//h2',
 ]
 # json headline
