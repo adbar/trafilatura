@@ -144,23 +144,43 @@ def extract_metainfo(tree, expressions):
     for expression in expressions:
         target_elements = tree.xpath(expression)
         if len(target_elements) > 0:
-            result = target_elements[0].text
+            result = target_elements[0].text_content()
+            # report potential errors
             if len(target_elements) > 1:
-                LOGGER.debug('more than one result: %s %s', expression, len(target_elements))
-            break
+                LOGGER.warning('more than one result: %s %s', expression, len(target_elements))
+            # exit loop if something has been found
+            if len(result) > 0:
+                break
     return trim(result)
 
 
 def extract_title(tree):
     '''Extract the document title'''
+    # only one h1-element: take it
+    #results = tree.xpath('//h1')
+    #if len(results) == 1:
+    #    title = results[0].text_content()
+    #else:
+    #    results = tree.xpath('//*[@class="entry-title" or @class="post-title"]')
+    #    if len(results) == 1:
+    #        title = results[0].text_content()
+    #    else:
+    #        # extract using x-paths
+    #        title = extract_metainfo(tree, title_xpaths)
+    # extract using x-paths
     title = extract_metainfo(tree, title_xpaths)
-    return trim(title)
+    return title
 
 
 def extract_author(tree):
     '''Extract the document author(s)'''
     author = extract_metainfo(tree, author_xpaths)
-    return trim(author)
+    if author:
+        # simple filter for German and English
+        author = re.sub(r'^([Bb]y|[Vv]on) ', '', author)
+        # special trimming
+        author = re.sub(r'[^\w]+$', '', trim(author))
+    return author
 
 
 def extract_date(tree, url):
@@ -211,7 +231,11 @@ def scrape(filecontent, default_url=None):
     # meta tags
     mymeta = Metadata._make(examine_meta(tree))
     # title
-    if getattr(mymeta, 'title') is None:
+    # override if something has been found
+    #mytitle = extract_title(tree)
+    #if mytitle is not None:
+    #    mymeta = mymeta._replace(title=mytitle)
+    if mymeta.title is None:
         mymeta = mymeta._replace(title=extract_title(tree))
     # author
     # correction: author not a name
