@@ -260,21 +260,24 @@ def test_pages():
     # assert metadata.categories == ['Python', 'Programming']
     assert metadata.url == 'https://www.pluralsight.com/tech-blog/managing-python-environments/'
 
-    metadata = scrape(load_mock_page('https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'))
+    url = 'https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'
+    metadata = scrape(load_mock_page(url))
     assert metadata.title == 'What is Rust and why is it so popular? - Stack Overflow Blog'
     # assert metadata.author == 'Jake Goulding'
     assert metadata.sitename == 'Stack Overflow Blog'
-    # assert metadata.categories == ['Rust', 'Programming']
-    assert metadata.url == 'https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'
+    assert metadata.categories == ['Bulletin']
+    assert metadata.tags == ['programming', 'rust']
+    assert metadata.url == url
 
-    metadata = scrape(load_mock_page('https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'))
+    url = 'https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'
+    metadata = scrape(load_mock_page(url))
     print(metadata)
     assert "Berlin confronts Germany's colonial past with new initiative" in metadata.title
     # assert metadata.author == 'Ben Knight' # "Deutsche Welle (www.dw.com)"
     assert metadata.description == "The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy."
     # assert metadata.sitename == 'DW - Deutsche Welle' # "DW.COM"
     # assert metadata.categories == ['Colonialism', 'History', 'Germany']
-    assert metadata.url == 'https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'
+    assert metadata.url == url
 
     metadata = scrape(load_mock_page('https://www.theplanetarypress.com/2020/01/management-of-intact-forestlands-by-indigenous-peoples-key-to-protecting-climate/'))
     #print(metadata)
@@ -323,16 +326,6 @@ def test_pages():
     # assert metadata.categories == ['Astronomy', 'Telescope', 'China']
     assert metadata.url == url
 
-    url = 'https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'
-    metadata = scrape(load_mock_page(url))
-    assert metadata.title == 'Despite everything, U.S. emissions dipped in 2019'
-    # author in JSON-LD
-    assert metadata.author == 'Nathanael Johnson'
-    assert metadata.description == 'Coal has been in a slow-motion death spiral over the past ten years'
-    assert metadata.sitename == 'Salon'
-    # assert metadata.categories == ['Coal', 'Emmisions', 'Climate']
-    assert metadata.url == url
-
     url = 'https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be'
     metadata = scrape(load_mock_page(url))
     assert metadata.title == 'Carrie Lam should study Tsai Ing-wen’s playbook' # '<h1 data-v-1223d442="" class="inner__main-headline main-headline">Taiwanese President Tsai Ing-wen’s political playbook should be essential reading for Hong Kong leader Carrie Lam</h1>'
@@ -376,6 +369,17 @@ def test_pages():
     assert metadata.title == 'Ein Albtraum'
     # print(metadata)
     # assert metadata.author == 'Clemens Höges'
+
+    url = 'https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'
+    metadata = scrape(load_mock_page(url))
+    assert metadata.title == 'Despite everything, U.S. emissions dipped in 2019'
+    # author in JSON-LD
+    assert metadata.author == 'Nathanael Johnson'
+    # in header
+    assert 'Science & Health' in metadata.categories
+    assert 'Gas Industry' in metadata.tags and 'coal emissions' in metadata.tags
+    assert metadata.sitename == 'Salon'
+    assert metadata.url == url
 
 
 if __name__ == '__main__':

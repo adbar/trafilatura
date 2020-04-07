@@ -73,7 +73,8 @@ def extract_opengraph(tree):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    title = author = url = description = site_name = None
+    title, author, url, description, site_name = (None,) * 5
+    tags = list()
     # test for potential OpenGraph tags
     if tree.find('.//head/meta[@property]') is not None:
         title, author, url, description, site_name = extract_opengraph(tree)
@@ -85,6 +86,11 @@ def examine_meta(tree):
         if len(elem.attrib) < 1:
             LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
             continue
+        # no opengraph a second time
+        if elem.get('property') and elem.get('property').startswith('og:'):
+            continue
+        # image info
+        # ...
         # name attribute
         if 'name' in elem.attrib: # elem.get('name') is not None:
             # safeguard
@@ -123,14 +129,16 @@ def examine_meta(tree):
             if elem.get('itemprop') == 'name':
                 if title is None:
                     title = elem.get('content')
-
+        # categories and tags
+        elif 'property' in elem.attrib and elem.get('property') == 'article:tag':
+            tags.append(elem.get('content'))
         # other types
         else:
             if elem.get('charset') is not None:
                 pass  # e.g. charset=UTF-8
             else:
                 LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
-    return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None, None)
+    return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None, tags)
 
 
 def extract_metainfo(tree, expressions):
@@ -259,6 +267,7 @@ def scrape(filecontent, default_url=None):
     # categories
     mymeta = mymeta._replace(categories=extract_catstags('category', tree))
     # tags
-    mymeta = mymeta._replace(tags=extract_catstags('tags', tree))
+    if mymeta.tags is None or len(mymeta.tags) == 0:
+        mymeta = mymeta._replace(tags=extract_catstags('tags', tree))
     # return
     return mymeta
