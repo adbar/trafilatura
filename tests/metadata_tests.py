@@ -170,23 +170,25 @@ def test_pages():
     metadata = scrape(load_mock_page('http://blog.python.org/2016/12/python-360-is-now-available.html'))
     assert metadata.title == 'Python 3.6.0 is now available!'
     assert metadata.description == 'Python 3.6.0 is now available! Python 3.6.0 is the newest major release of the Python language, and it contains many new features and opti...'
-    # author = span class="post-author"
+    assert metadata.author == 'Ned Deily'
+    assert metadata.url == 'http://blog.python.org/2016/12/python-360-is-now-available.html'
 
     metadata = scrape(load_mock_page('https://en.blog.wordpress.com/2019/06/19/want-to-see-a-more-diverse-wordpress-contributor-community-so-do-we/'))
     assert metadata.title == 'Want to See a More Diverse WordPress Contributor Community? So Do We.'
     assert metadata.description == 'More diverse speakers at WordCamps means a more diverse community contributing to WordPress — and that results in better software for everyone.'
     assert metadata.sitename == 'The WordPress.com Blog'
+    assert metadata.url == 'https://en.blog.wordpress.com/2019/06/19/want-to-see-a-more-diverse-wordpress-contributor-community-so-do-we/'
 
     metadata = scrape(load_mock_page('https://creativecommons.org/about/'))
     assert metadata.title == 'What we do - Creative Commons'
     assert metadata.description == 'What is Creative Commons? Creative Commons helps you legally share your knowledge and creativity to build a more equitable, accessible, and innovative world. We unlock the full potential of the internet to drive a new era of development, growth and productivity. With a network of staff, board, and affiliates around the world, Creative Commons provides … Read More "What we do"'
     assert metadata.sitename == 'Creative Commons'
+    assert metadata.url == 'https://creativecommons.org/about/'
     # date None
 
     metadata = scrape(load_mock_page('https://www.creativecommons.at/faircoin-hackathon'))
     assert metadata.title == 'FairCoin hackathon beim Sommercamp'
-    # url='/faircoin-hackathon'
-    # print(metadata)
+    # assert metadata.url='/faircoin-hackathon'
 
     metadata = scrape(load_mock_page('https://netzpolitik.org/2016/die-cider-connection-abmahnungen-gegen-nutzer-von-creative-commons-bildern/'))
     assert metadata.title == 'Die Cider Connection: Abmahnungen gegen Nutzer von Creative-Commons-Bildern'
@@ -194,6 +196,7 @@ def test_pages():
     assert metadata.description == 'Seit Dezember 2015 verschickt eine Cider Connection zahlreiche Abmahnungen wegen fehlerhafter Creative-Commons-Referenzierungen. Wir haben recherchiert und legen jetzt das Netzwerk der Abmahner offen.'
     assert metadata.sitename == 'netzpolitik.org'
     # cats + tags
+    assert metadata.url == 'https://netzpolitik.org/2016/die-cider-connection-abmahnungen-gegen-nutzer-von-creative-commons-bildern/'
 
     metadata = scrape(load_mock_page('https://www.befifty.de/home/2017/7/12/unter-uns-montauk'))
     assert metadata.title == 'Das vielleicht schönste Ende der Welt: Montauk'
@@ -201,16 +204,19 @@ def test_pages():
     assert metadata.description == 'Ein Strand, ist ein Strand, ist ein Strand Ein Strand, ist ein Strand, ist ein Strand. Von wegen! In Italien ist alles wohl organisiert, Handtuch an Handtuch oder Liegestuhl an Liegestuhl. In der Karibik liegt man unter Palmen im Sand und in Marbella dominieren Beton und eine kerzengerade Promenade'
     assert metadata.sitename == 'BeFifty'
     assert metadata.categories == ['Travel', 'Amerika']
- 
+    assert metadata.url == 'https://www.befifty.de/home/2017/7/12/unter-uns-montauk'
+
     metadata = scrape(load_mock_page('https://www.soundofscience.fr/1927'))
     assert metadata.title == 'Une candidature collective à la présidence du HCERES'
-    # assert metadata.author == 'Martin Clavey'
+    assert metadata.author == 'Martin Clavey'
     assert metadata.description.startswith('En réaction à la candidature du conseiller recherche')
     assert metadata.sitename == 'The Sound Of Science'
     assert metadata.categories == ['Politique scientifique française']
     # assert metadata.tags == ['évaluation', 'HCERES']
+    assert metadata.url == 'https://www.soundofscience.fr/1927'
 
-    metadata = scrape(load_mock_page('https://laviedesidees.fr/L-evaluation-et-les-listes-de.html'))
+    url = 'https://laviedesidees.fr/L-evaluation-et-les-listes-de.html'
+    metadata = scrape(load_mock_page(url))
     assert metadata.title == 'L’évaluation et les listes de revues'
     assert metadata.author == 'Florence Audier'
     assert metadata.description.startswith("L'évaluation, et la place")
@@ -219,15 +225,17 @@ def test_pages():
     assert metadata.tags == []
     # <meta property="og:type" content="article" />
     # <meta name="DC:type" content="journalArticle">
+    assert metadata.url == 'http://www.laviedesidees.fr/L-evaluation-et-les-listes-de.html'
 
     metadata = scrape(load_mock_page('https://www.theguardian.com/education/2020/jan/20/thousands-of-uk-academics-treated-as-second-class-citizens'))
     assert metadata.title == "Thousands of UK academics 'treated as second-class citizens'"
-    # assert metadata.author == 'Richard Adams'
+    assert metadata.author == 'Richard Adams'
     assert metadata.description.startswith('Report claims higher education institutions')
     assert metadata.sitename == 'the Guardian'
-    assert metadata.categories == []
-    assert metadata.tags == []
+    #assert metadata.categories == []
+    #assert metadata.tags == []
     # meta name="keywords"
+    assert metadata.url == 'http://www.theguardian.com/education/2020/jan/20/thousands-of-uk-academics-treated-as-second-class-citizens'
 
     metadata = scrape(load_mock_page('https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'))
     assert metadata.title == 'Flint flake tool partially covered by birch tar adds to evidence of Neanderthal complex thinking'
@@ -235,6 +243,7 @@ def test_pages():
     assert metadata.description == 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.'
     # assert metadata.sitename == 'Phys'
     # assert metadata.categories == ['Archaeology', 'Fossils']
+    assert metadata.url == 'https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'
 
     # metadata = scrape(load_mock_page('https://gregoryszorc.com/blog/2020/01/13/mercurial%27s-journey-to-and-reflections-on-python-3/'))
     # assert metadata.title == "Mercurial's Journey to and Reflections on Python 3"
@@ -242,83 +251,102 @@ def test_pages():
     # assert metadata.description == 'Description of the experience of making Mercurial work with Python 3'
     # assert metadata.sitename == 'gregoryszorc'
     # assert metadata.categories == ['Python', 'Programming']
-    
+
     metadata = scrape(load_mock_page('https://www.pluralsight.com/tech-blog/managing-python-environments/'))
     assert metadata.title == 'Managing Python Environments'
-    # assert metadata.author == 'John Walk'
-    # assert metadata.description == 'pros and cons of available tools for python setup'
+    assert metadata.author == 'John Walk'
+    assert metadata.description.startswith("If you're not careful,")
     # assert metadata.sitename == 'Pluralsight'
     # assert metadata.categories == ['Python', 'Programming']
-    
-    # metadata = scrape(load_mock_page('https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'))
-    # assert metadata.title == 'What is Rust and why is it so popular?'
+    assert metadata.url == 'https://www.pluralsight.com/tech-blog/managing-python-environments/'
+
+    metadata = scrape(load_mock_page('https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'))
+    assert metadata.title == 'What is Rust and why is it so popular? - Stack Overflow Blog'
     # assert metadata.author == 'Jake Goulding'
-    # assert metadata.description == 'Description of the Programming Language Rust'
-    # assert metadata.sitename == 'Stack Overflow'
+    assert metadata.sitename == 'Stack Overflow Blog'
     # assert metadata.categories == ['Rust', 'Programming']
-    
-    # metadata = scrape(load_mock_page('https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'))
-    # print(metadata)
-    # sys.exit()
-    # assert metadata.title == "Berlin confronts Germany's colonial past with new initiative"
-    # assert metadata.author == 'Ben Knight'
-    # assert metadata.description == "The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy."
-    # assert metadata.sitename == 'DW - Deutsche Welle'
+    assert metadata.url == 'https://stackoverflow.blog/2020/01/20/what-is-rust-and-why-is-it-so-popular/'
+
+    metadata = scrape(load_mock_page('https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'))
+    print(metadata)
+    assert "Berlin confronts Germany's colonial past with new initiative" in metadata.title
+    # assert metadata.author == 'Ben Knight' # "Deutsche Welle (www.dw.com)"
+    assert metadata.description == "The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy."
+    # assert metadata.sitename == 'DW - Deutsche Welle' # "DW.COM"
     # assert metadata.categories == ['Colonialism', 'History', 'Germany']
-    
-    # metadata = scrape(load_mock_page('https://www.theplanetarypress.com/2020/01/management-of-intact-forestlands-by-indigenous-peoples-key-to-protecting-climate/'))
-    # print(metadata)
-    # sys.exit()
+    assert metadata.url == 'https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'
+
+    metadata = scrape(load_mock_page('https://www.theplanetarypress.com/2020/01/management-of-intact-forestlands-by-indigenous-peoples-key-to-protecting-climate/'))
+    #print(metadata)
+    #sys.exit()
     # assert metadata.title == 'Management of Intact Forestlands by Indigenous Peoples Key to Protecting Climate'
     # assert metadata.author == 'Julie Mollins'
-    # assert metadata.description == 'Advantages of Management of Intact Forestlands by Indigenous Peoples for the Climate'
-    # assert metadata.sitename == 'The Planetary Press'
+    assert metadata.sitename == 'The Planetary Press'
     # assert metadata.categories == ['Indigenous People', 'Environment']
-    
-    metadata = scrape(load_mock_page('https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/'))
+    assert metadata.url == 'https://www.theplanetarypress.com/2020/01/management-of-intact-forestlands-by-indigenous-peoples-key-to-protecting-climate/'
+
+    url = 'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/'
+    metadata = scrape(load_mock_page(url))
     assert metadata.title == 'Access to Wikipedia restored in Turkey after more than two and a half years'
     assert metadata.author == 'Wikimedia Foundation'
     # assert metadata.description == 'Report about the restored accessibility of Wikipedia in Turkey'
     assert metadata.sitename == 'Wikimedia Foundation'
     # assert metadata.categories == ['Politics', 'Turkey', 'Wikipedia']
-    
-    metadata = scrape(load_mock_page('https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH'))
+    assert metadata.url == url
+
+    url = 'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH'
+    metadata = scrape(load_mock_page(url))
     assert metadata.title == "'Parasite' scores historic upset at SAG awards, boosting Oscar chances"
     assert metadata.author == 'Jill Serjeant'
     assert metadata.date == '2020-01-20'
     # assert metadata.description == '“Parasite,” the Korean language social satire about the wealth gap in South Korea, was the first film in a foreign language to win the top prize of best cast ensemble in the 26 year-history of the SAG awards.'
     # assert metadata.sitename == 'Reuters'
     # assert metadata.categories == ['Parasite', 'SAG awards', 'Cinema']
-    
-    metadata = scrape(load_mock_page('https://www.nationalgeographic.co.uk/environment-and-conservation/2020/01/ravenous-wild-goats-ruled-island-over-century-now-its-being'))
+    # print(metadata)
+    # assert metadata.url == 'https://www.reuters.com/article/us-awards-sag-idUSKBN1ZI0EH'
+
+    url = 'https://www.nationalgeographic.co.uk/environment-and-conservation/2020/01/ravenous-wild-goats-ruled-island-over-century-now-its-being'
+    metadata = scrape(load_mock_page(url))
     assert metadata.title == "Ravenous wild goats ruled this island for over a century. Now, it's being reborn."
-    # assert metadata.author == 'Michael Hingston' # National Geographic
-    # assert metadata.description == 'The rocky island of Redonda, once stripped of its flora and fauna by invasive species, makes an astonishingly quick comeback. What’s the secret to its recovery?'
+    assert metadata.author == 'National Geographic' # actually Michael Hingston
+    assert metadata.description.startswith('The rocky island of Redonda, once stripped of its flora and fauna')
     assert metadata.sitename == 'National Geographic'
     # assert metadata.categories == ['Goats', 'Environment', 'Redonda']
-    
-    metadata = scrape(load_mock_page('https://www.nature.com/articles/d41586-019-02790-3'))
+    assert metadata.url == url
+
+    url = 'https://www.nature.com/articles/d41586-019-02790-3'
+    metadata = scrape(load_mock_page(url))
     assert metadata.title == 'Gigantic Chinese telescope opens to astronomers worldwide'
     assert metadata.author == 'Elizabeth Gibney'
     assert metadata.description == 'FAST has superior sensitivity to detect cosmic phenomena, including fast radio bursts and pulsars.'
     # assert metadata.sitename == 'Nature'
     # assert metadata.categories == ['Astronomy', 'Telescope', 'China']
-    
-    metadata = scrape(load_mock_page('https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'))
+    assert metadata.url == url
+
+    url = 'https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'
+    metadata = scrape(load_mock_page(url))
     assert metadata.title == 'Despite everything, U.S. emissions dipped in 2019'
     # author in JSON-LD
     assert metadata.author == 'Nathanael Johnson'
     assert metadata.description == 'Coal has been in a slow-motion death spiral over the past ten years'
     assert metadata.sitename == 'Salon'
     # assert metadata.categories == ['Coal', 'Emmisions', 'Climate']
+    assert metadata.url == url
 
-    metadata = scrape(load_mock_page('https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be'))
+    url = 'https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be'
+    metadata = scrape(load_mock_page(url))
+    assert metadata.title == 'Carrie Lam should study Tsai Ing-wen’s playbook' # '<h1 data-v-1223d442="" class="inner__main-headline main-headline">Taiwanese President Tsai Ing-wen’s political playbook should be essential reading for Hong Kong leader Carrie Lam</h1>'
     # author in JSON-LD
     assert metadata.author == 'Alice Wu'
+    assert metadata.url == url
 
-    metadata = scrape(load_mock_page('https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html'))
+    url = 'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html'
+    metadata = scrape(load_mock_page(url))
+    assert metadata.title == 'Nutzerbasierte Abrechnung: Musik-Stars fordern neues Streaming-Modell'
     # author overriden from JSON-LD + double name
     assert 'Benjamin Fischer' in metadata.author
+    assert metadata.sitename == 'FAZ.NET'
+    assert metadata.url == 'https://www.faz.net/1.6604622'
 
 
 if __name__ == '__main__':
