@@ -11,31 +11,26 @@ from htmldate import find_date
 from lxml import html
 
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
-from .utils import load_html
+from .utils import load_html, trim
 
 
 LOGGER = logging.getLogger(__name__)
 
 
-def trim(string):
-    '''Remove unnecesary spaces within a text string'''
-    if string is not None:
-        # delete newlines that are not related to punctuation or markup
-        # string = re.sub(r'(?<![p{P}>])\n', ' ', string)
-        # proper trimming
-        string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
-        string = string.strip()
-    return string
-
-
 def extract_json_author(tree):
     '''Crudely extract author name from JSON-LD data'''
-    for elem in tree.xpath('//script[@type="application/ld+json"]'):
+    for elem in tree.xpath('//script[@type="application/ld+json"]|//script[@type="application/settings+json"]'):
         if elem.text and '"author":' in elem.text:
-            mymatch = re.search(r'"author":.+?"name\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
+            mymatch = re.search(r'"author":.+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch:
-                author = mymatch.group(1)
-                return trim(author)
+                author = trim(mymatch.group(1))
+                return author
+            #mymatch = re.search(r'"author".+?"names".+?"([^"]+)', elem.text, re.DOTALL)
+            #print(elem.text)
+            #print(mymatch)
+            #if mymatch:
+            #    author = trim(mymatch.group(1))
+            #    return author
     return None
 
 
@@ -175,7 +170,7 @@ def extract_author(tree):
     author = extract_metainfo(tree, author_xpaths)
     if author:
         # simple filter for German and English
-        author = re.sub(r'^([Bb]y|[Vv]on) ', '', author)
+        author = re.sub(r'^([A-ZÄÖÜa-zäöüß]+(ed|t))? ?([Bb]y|[Vv]on) ', '', author)
         # special trimming
         author = re.sub(r'[^\w]+$', '', trim(author))
     return author
@@ -190,7 +185,7 @@ def extract_date(tree, url):
 def extract_url(tree):
     '''Extract the URL from the canonical link'''
     # link[rel="alternate"][hreflang="x-default"] ?
-    element = tree.find('.//head/link[@rel="canonical"]')
+    element = tree.find('.//head//link[@rel="canonical"]')
     if element is not None:
         return element.attrib['href']
     return None
@@ -213,7 +208,12 @@ def extract_catstags(metatype, tree):
                 if 'href' in elem.attrib:
                     match = re.search(regexpr, elem.attrib['href'])
                     if match:
-                        results.append(elem.text_content())
+                        results.append(trim(elem.text_content()))
+    # category fallback
+    if metatype == 'category' and len(results) == 0:
+        element = tree.find('.//head//meta[@property="article:section"]')
+        if element is not None:
+            results.append(trim(element.attrib['content']))
     return results
 
 

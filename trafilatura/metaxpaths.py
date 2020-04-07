@@ -2,7 +2,7 @@
 File containing XPath expressions to extract metadata.
 """
 
-# code available from https://giuthub.com/adbar/kontext/
+# code available from https://github.com/adbar/trafilatura/
 # under GNU GPLv3+ license
 
 
@@ -14,7 +14,6 @@ author_xpaths = [
     '//span[contains(@class, "byline")]',
 ]
 # json author
-# '//address[@class="author"]',
 # screenname
 # '//*[@rel="author" or @class="author" or rel="me"]',
 
@@ -52,7 +51,7 @@ tags_xpaths = [
 # span class tag-links
 
 title_xpaths = [
-    '//h1[contains(@class, "title") or contains(@id, "title")]',
+    '//h1[contains(@class, "title") or contains(@id, "title") or contains(@class, "headline") or contains(@id, "headline")]',
     '//*[contains(@class, "post-title") or contains(@class, "entry-title")]',
     '//head/title',
     '//h1',

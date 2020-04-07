@@ -348,6 +348,35 @@ def test_pages():
     assert metadata.sitename == 'FAZ.NET'
     assert metadata.url == 'https://www.faz.net/1.6604622'
 
+    url = 'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html'
+    metadata = scrape(load_mock_page(url))
+    assert metadata.title == "Hating Millennials - the prejudice you're allowed to boast about"
+    assert metadata.author == 'Cory Doctorow'
+    assert metadata.sitename == 'Boing Boing'
+    assert metadata.url == url
+
+    url = 'https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html'
+    metadata = scrape(load_mock_page(url))
+    assert metadata.title == 'Wie kann ich schnell abnehmen? Der Schlachtplan zum Wunschgewicht'
+    assert metadata.author == 'Diane Buckstegge'
+    assert metadata.sitename == 'gofeminin'
+    assert metadata.url == url
+
+    url = 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/'
+    metadata = scrape(load_mock_page(url))
+    assert metadata.title == 'Leader spotlight: Erin Spiceland'
+    assert metadata.author == 'Jessica Rudder'
+    assert metadata.description.startswith('We’re spending Women’s History')
+    assert metadata.sitename == 'The GitHub Blog'
+    assert metadata.categories == ['Community']
+    assert metadata.url == url
+
+    url = 'https://www.spiegel.de/spiegel/print/d-161500790.html'
+    metadata = scrape(load_mock_page(url))
+    assert metadata.title == 'Ein Albtraum'
+    # print(metadata)
+    # assert metadata.author == 'Clemens Höges'
+
 
 if __name__ == '__main__':
     test_titles()
