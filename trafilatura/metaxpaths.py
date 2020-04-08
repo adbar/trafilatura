@@ -7,15 +7,13 @@ File containing XPath expressions to extract metadata.
 
 
 author_xpaths = [
-    '//*[(self::a or self::address or self::link)][@rel="author" or @class="author" or rel="me"]',
+    '//*[(self::a or self::address or self::link or self::p or self::span)][@rel="author" or @class="author" or rel="me"]',
     '//author',
     '//a[contains(@class, "author")]',
     '//span[contains(@class, "authors") or contains(@class, "author") or contains(@class, "posted-by") or contains(@itemprop, "author")]',
-    '//span[contains(@class, "byline")]',
+    '//*[(self::a or self::div or self::p or self::span)][contains(@class, "byline")]',
+    '//*[contains(@class, "author") or contains(@class, "screenname")]',
 ]
-# json author
-# screenname
-# '//*[@rel="author" or @class="author" or rel="me"]',
 
 
 categories_xpaths = [
@@ -49,6 +47,8 @@ tags_xpaths = [
     '//*[@class="entry-meta"]//a'
 ]
 # span class tag-links
+# https://github.com/grangier/python-goose/blob/develop/goose/extractors/tags.py
+
 
 title_xpaths = [
     '//*[@class="entry-title" or @class="post-title"]',

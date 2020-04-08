@@ -37,38 +37,35 @@ def extract_json_author(tree):
 
 def extract_opengraph(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
-    title = author = url = description = site_name = None
+    title, author, url, description, site_name = (None,) * 5
     for elem in tree.xpath('//head/meta[@property]'):
+        # detect OpenGraph schema
+        if not elem.get('property').startswith('og:'):
+            continue
         # safeguard
         if elem.get('content') is None or len(elem.get('content')) < 1:
             continue
-        # faster: detect OpenGraph schema
-        if elem.get('property').startswith('og:'):
-            # site name
-            if elem.get('property') == 'og:site_name':
-                site_name = elem.get('content')
-            # blog title
-            if elem.get('property') == 'og:title':
-                title = elem.get('content')
-            # orig URL
-            elif elem.get('property') == 'og:url':
-                url = elem.get('content')
-            # description
-            elif elem.get('property') == 'og:description':
-                description = elem.get('content')
-            # og:author
-            elif elem.get('property') in ('og:author', 'og:article:author'):
-                author = elem.get('content')
-            # og:type
-            #elif elem.get('property') == 'og:type':
-            #    pagetype = elem.get('content')
-            # og:locale
-            #elif elem.get('property') == 'og:locale':
-            #    pagelocale = elem.get('content')
-        else:
-            # author
-            if elem.get('property') in ('author', 'article:author'):
-                author = elem.get('content')
+        # site name
+        if elem.get('property') == 'og:site_name':
+            site_name = elem.get('content')
+        # blog title
+        if elem.get('property') == 'og:title':
+            title = elem.get('content')
+        # orig URL
+        elif elem.get('property') == 'og:url':
+            url = elem.get('content')
+        # description
+        elif elem.get('property') == 'og:description':
+            description = elem.get('content')
+        # og:author
+        elif elem.get('property') in ('og:author', 'og:article:author'):
+            author = elem.get('content')
+        # og:type
+        #elif elem.get('property') == 'og:type':
+        #    pagetype = elem.get('content')
+        # og:locale
+        #elif elem.get('property') == 'og:locale':
+        #    pagelocale = elem.get('content')
     return trim(title), trim(author), trim(url), trim(description), trim(site_name)
 
 
@@ -128,12 +125,17 @@ def examine_meta(tree):
             if elem.get('itemprop') == 'description':
                 if description is None:
                     description = elem.get('content')
-            if elem.get('itemprop') == 'name':
-                if title is None:
-                    title = elem.get('content')
+            # to verify:
+            #if elem.get('itemprop') == 'name':
+            #    if title is None:
+            #        title = elem.get('content')
         # categories and tags
-        elif 'property' in elem.attrib and elem.get('property') == 'article:tag':
-            tags.append(elem.get('content'))
+        elif 'property' in elem.attrib:
+            if elem.get('property') == 'article:tag':
+                tags.append(elem.get('content'))
+            elif elem.get('property') in ('author', 'article:author'):
+                if author is None:
+                    author = elem.get('content')
         # other types
         else:
             if elem.get('charset') is not None:
