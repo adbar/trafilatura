@@ -15,6 +15,7 @@ from .utils import load_html, trim
 
 
 LOGGER = logging.getLogger(__name__)
+logging.getLogger('htmldate').setLevel(logging.WARNING)
 
 
 def extract_json_author(tree):
@@ -98,7 +99,8 @@ def examine_meta(tree):
                 continue
             # author
             if elem.get('name') in ('author', 'byl', 'dc.creator', 'sailthru.author'):  # twitter:creator
-                author = elem.get('content')
+                if author is None:
+                    author = elem.get('content')
             # title
             elif elem.get('name') in ('title', 'dc.title', 'sailthru.title', 'twitter:title'):
                 if title is None:
@@ -108,7 +110,7 @@ def examine_meta(tree):
                 if description is None:
                     description = elem.get('content')
             # site name
-            elif elem.get('name') in ('publisher', 'DC.publisher'):  # in ('publisher', 'twitter:site'):
+            elif elem.get('name') in ('publisher', 'DC.publisher', 'twitter:site', 'application-name') or 'twitter:app:name' in elem.get('name'):
                 if site_name is None:
                     site_name = elem.get('content')
             # url
@@ -159,17 +161,32 @@ def extract_metainfo(tree, expressions):
 
 def extract_title(tree):
     '''Extract the document title'''
+    title = None
     # only one h1-element: take it
     results = tree.xpath('//h1')
     if len(results) == 1:
-        title = results[0].text_content()
+        title = results[0].text
     else:
-        results = tree.xpath('//*[@class="entry-title" or @class="post-title"]')
-        if len(results) == 1:
-            title = results[0].text_content()
-        else:
-            # extract using x-paths
-            title = extract_metainfo(tree, title_xpaths)
+        # extract using x-paths
+        title = extract_metainfo(tree, title_xpaths)
+        # extract using title tag
+        if title is None:
+            try:
+                title = tree.find('.//head/title').text
+                if '-' in title or '|' in title:
+                    mymatch = re.search(r'^(.+)?\s+[-|]\s+.*$', title_elem.text)
+                    if mymatch:
+                        title = mymatch.group(1)
+            except AttributeError:
+                LOGGER.warning('no main title found')
+        # take first h1-title
+        if title is None and len(results) > 0:
+            title = results[0].text
+        # take first h2-title
+        if title is None:
+            results = tree.xpath('//h2')
+            if len(results) > 0:
+                title = results[0].text
     return title
 
 
@@ -192,10 +209,26 @@ def extract_date(tree, url):
 
 def extract_url(tree):
     '''Extract the URL from the canonical link'''
-    # link[rel="alternate"][hreflang="x-default"] ?
+    # try canonical link first
     element = tree.find('.//head//link[@rel="canonical"]')
     if element is not None:
         return element.attrib['href']
+    # try default language link
+    element = tree.find('.//head//link[@rel="alternate"]')
+    if element is not None and hreflang in element.attrib and element.attrib['hreflang'] == 'x-default':
+        return element.attrib['href']
+    return None
+
+
+def extract_sitename(tree):
+    '''Extract the name of a site from the main title'''
+    try:
+        title_elem = tree.find('.//head/title')
+        mymatch = re.search(r'^.*?[-|]\s+(.*)$', title_elem.text)
+        if mymatch:
+            return mymatch.group(1)
+    except AttributeError:
+        pass
     return None
 
 
@@ -253,17 +286,20 @@ def scrape(filecontent, default_url=None):
     if jsonauthor is not None and mymeta.author is None:
         mymeta = mymeta._replace(author=jsonauthor)
     # try with x-paths
-    if getattr(mymeta, 'author') is None:
+    if mymeta.author is None:
         mymeta = mymeta._replace(author=extract_author(tree))
     # url
-    if getattr(mymeta, 'url') is None:
+    if mymeta.url is None:
         mymeta = mymeta._replace(url=extract_url(tree))
     # default url
-    if getattr(mymeta, 'url') is None and default_url is not None:
+    if mymeta.url is None and default_url is not None:
         mymeta = mymeta._replace(url=default_url)
     # date
-    # if getattr(mymeta, 'date') is None:
-    mymeta = mymeta._replace(date=extract_date(tree, url=mymeta.url))
+    if mymeta.date is None:
+        mymeta = mymeta._replace(date=extract_date(tree, url=mymeta.url))
+    # sitename
+    if mymeta.sitename is None:
+        mymeta = mymeta._replace(sitename=extract_sitename(tree))
     # categories
     mymeta = mymeta._replace(categories=extract_catstags('category', tree))
     # tags

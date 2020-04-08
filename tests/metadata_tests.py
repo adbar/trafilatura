@@ -104,6 +104,7 @@ def test_titles():
     metadata = scrape('<html><head><title>Test Title</title></head><body></body></html>')
     assert metadata.title == 'Test Title'
     metadata = scrape('<html><body><h1>First</h1><h1>Second</h1></body></html>')
+    print(metadata.title)
     assert metadata.title == 'First'
     metadata = scrape('<html><body><h2>First</h2><h1>Second</h1></body></html>')
     assert metadata.title == 'Second'
