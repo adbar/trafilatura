@@ -195,12 +195,6 @@ def txttocsv(text, comments, docmeta):
         comments = trim(' '.join(comments.splitlines()))
     else:
         comments = ''
-    if docmeta.url is None:
-        docmeta.url = ''
-    if docmeta.title is None:
-        docmeta.title = ''
-    if docmeta.date is None:
-        docmeta.date = ''
     tsv_output = '{url}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(
         url=docmeta.url,
         doctitle=docmeta.title,

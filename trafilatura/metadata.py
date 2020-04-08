@@ -265,7 +265,7 @@ def scrape(filecontent, default_url=None):
     '''Main process for metadata extraction'''
     # create named tuple
     Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
-    Metadata.__new__.__defaults__ = (None,) * len(Metadata._fields)
+    # Metadata.__new__.__defaults__ = (None,) * len(Metadata._fields)
     # load contents
     tree = load_html(filecontent)
     if tree is None:

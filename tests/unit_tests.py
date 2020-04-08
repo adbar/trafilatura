@@ -7,7 +7,7 @@ import logging
 import os
 import sys
 
-
+from collections import namedtuple
 from unittest.mock import patch
 
 import pytest
@@ -200,16 +200,13 @@ def test_climain():
     #assert exit_status == 0
 
 
-#test_matrix = [(('a', 'b', 'c', 'd', 'e'), 'c\td\te\ta\tb\n'), \
-#               (('a', None, 'c', 'd', 'e'), 'c\td\te\ta\t\n'), \
-#               (('a', 'b', None, 'd', 'e'), '\td\te\ta\tb\n'), \
-#               (('a', 'b', 'c', None, 'e'), 'c\t\te\ta\tb\n'), \
-#               (('a', 'b', 'c', 'd', None), 'c\td\t\ta\tb\n'), \
-#               (('l1\nl2\nl3', 'b', None, None, None), '\t\t\tl1 l2 l3\tb\n')]
-
-#@pytest.mark.parametrize('test_input, expected', test_matrix)
-#def test_txttocsv(test_input, expected):
-#    assert utils.txttocsv(*test_input) == expected
+def test_txttocsv():
+    Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
+    mymeta = Metadata._make((None,) * len(Metadata._fields))
+    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\t\t\n'
+    mymeta = mymeta._replace(title='Test title')
+    mymeta = mymeta._replace(url='https://example.org')
+    assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\tTest title\tNone\tTest text\tTest comment\n'
 
 
 def test_download():
@@ -637,9 +634,9 @@ if __name__ == '__main__':
     test_formatting()
     test_filters()
     test_jsontext()
+    test_txttocsv()
+    test_exotic_tags()
     test_extract(xmloutput=False)
     test_extract(xmloutput=True)
     test_download()
     test_tei()
-    test_exotic_tags()
-    # test_txttocsv()
