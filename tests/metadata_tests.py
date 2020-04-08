@@ -140,7 +140,6 @@ def test_dates():
     metadata = scrape('<html><head><meta property="og:published_time" content="2017-09-01"/></head><body></body></html>')
     assert metadata.date == '2017-09-01'
     metadata = scrape('<html><head><meta property="og:url" content="https://example.org/2017/09/01/content.html"/></head><body></body></html>')
-    print(metadata)
     assert metadata.date == '2017-09-01'
 
 
@@ -232,8 +231,8 @@ def test_pages():
     assert metadata.author == 'Richard Adams'
     assert metadata.description.startswith('Report claims higher education institutions')
     assert metadata.sitename == 'the Guardian'
-    #assert metadata.categories == []
-    #assert metadata.tags == []
+    assert metadata.categories == ['Education']
+    #assert metadata.tags == [] ## TODO: check tags
     # meta name="keywords"
     assert metadata.url == 'http://www.theguardian.com/education/2020/jan/20/thousands-of-uk-academics-treated-as-second-class-citizens'
 
@@ -243,6 +242,7 @@ def test_pages():
     assert metadata.description == 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.'
     # assert metadata.sitename == 'Phys'
     # assert metadata.categories == ['Archaeology', 'Fossils']
+    assert metadata.tags == ['birch', 'carbon dating', 'tool']
     assert metadata.url == 'https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'
 
     # metadata = scrape(load_mock_page('https://gregoryszorc.com/blog/2020/01/13/mercurial%27s-journey-to-and-reflections-on-python-3/'))
@@ -275,7 +275,7 @@ def test_pages():
     assert "Berlin confronts Germany's colonial past with new initiative" in metadata.title
     # assert metadata.author == 'Ben Knight' # "Deutsche Welle (www.dw.com)"
     assert metadata.description == "The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy."
-    # assert metadata.sitename == 'DW - Deutsche Welle' # "DW.COM"
+    assert metadata.sitename == 'DW.COM' # 'DW - Deutsche Welle'
     # assert metadata.categories == ['Colonialism', 'History', 'Germany']
     assert metadata.url == url
 

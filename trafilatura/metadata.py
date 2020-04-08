@@ -176,7 +176,7 @@ def extract_title(tree):
             try:
                 title = tree.find('.//head/title').text
                 if '-' in title or '|' in title:
-                    mymatch = re.search(r'^(.+)?\s+[-|]\s+.*$', title_elem.text)
+                    mymatch = re.search(r'^(.+)?\s+[-|]\s+.*$', title)
                     if mymatch:
                         title = mymatch.group(1)
             except AttributeError:
@@ -216,9 +216,10 @@ def extract_url(tree):
     if element is not None:
         return element.attrib['href']
     # try default language link
-    element = tree.find('.//head//link[@rel="alternate"]')
-    if element is not None and hreflang in element.attrib and element.attrib['hreflang'] == 'x-default':
-        return element.attrib['href']
+    for element in tree.xpath('.//head//link[@rel="alternate"]'):
+        if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib['hreflang'] == 'x-default':
+            print(html.tostring(element, pretty_print=False, encoding='unicode').strip())
+            return element.attrib['href']
     return None
 
 
