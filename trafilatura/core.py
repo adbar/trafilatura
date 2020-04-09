@@ -534,7 +534,7 @@ def baseline(filecontent):
                 postbody.append(elem)
                 return postbody, len_text, temp_text
     # scrape from article tag
-    elems = tree.xpath('//article')
+    elems = tree.xpath('//article') # |//main
     if len(elems) > 0:
         article_elem = elems[0]
         temp_text = sanitize(article_elem.text_content())

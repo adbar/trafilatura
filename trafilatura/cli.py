@@ -112,7 +112,8 @@ def write_result(url, result, args):
                 try:
                     makedirs(args.outputdir)
                 except OSError:
-                    raise
+                    sys.stderr.write('# ERROR: Destination directory cannot be created: ' + args.outputdir + '\n')
+                    raise OSError()
             # determine file name
             randomslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
             extension = '.txt'

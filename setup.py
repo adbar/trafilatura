@@ -29,7 +29,7 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.4',
+    version='0.4.1',
     description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, XML & TEI-XML',
     long_description=readme(),
     classifiers=[
@@ -39,6 +39,7 @@ setup(
         #'Development Status :: 6 - Mature',
         'Environment :: Console',
         'Intended Audience :: Developers',
+        'Intended Audience :: Education',
         'Intended Audience :: Information Technology',
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
