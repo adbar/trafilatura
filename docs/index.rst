@@ -165,6 +165,7 @@ Further documentation
    installation
    usage
    validation
+   tutorial1
 
 
 Indices and tables
