@@ -136,6 +136,9 @@ def main():
         # optional: errors='strict', buffering=1
         with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
             for line in inputfile:
+                if not line.startswith('http'):
+                    LOGGER.warning('Not an URL, discarding line: %s', line)
+                    continue
                 url = line.strip()
                 htmlstring = fetch_url(url)
                 try:
