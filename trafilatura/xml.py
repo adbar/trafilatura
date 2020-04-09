@@ -64,6 +64,14 @@ def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comment
                 output.set('date', docmeta.date)
             if docmeta.url is not None:
                 output.set('source', docmeta.url)
+            if docmeta.description is not None:
+                output.set('excerpt', docmeta.description)
+            if docmeta.categories is not None:
+                cats = ';'.join(docmeta.categories)
+                output.set('categories', cats)
+            if docmeta.tags is not None:
+                tags = ';'.join(docmeta.tags)
+                output.set('categories', tags)
     return output
 
 
@@ -165,7 +173,7 @@ def write_teitree(postbody, commentsbody, docmeta):
     bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
     bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
     bib_titlemain.text = docmeta.title
-    bib_titlesub = etree.SubElement(bib_titlestmt, 'title', type='sub')
+    bib_titlesub = etree.SubElement(bib_titlestmt, 'title', type='excerpt')
     bib_titlesub.text = docmeta.description
     bib_author = etree.SubElement(bib_titlestmt, 'author')
     bib_author.text = docmeta.author
@@ -179,7 +187,17 @@ def write_teitree(postbody, commentsbody, docmeta):
     publication_date.text = docmeta.date
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_p = etree.SubElement(sourcedesc, 'p')
-    source_p.text = docmeta.url
+    if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
+        if len(docmeta.categories) > 0:
+            cat_list = etree.SubElement(source_p, 'list', type='categories')
+            for cat in docmeta.categories:
+                item = etree.SubElement(cat_list, 'item')
+                item.text = cat
+        if len(docmeta.tags) > 0:
+            tags_list = etree.SubElement(source_p, 'list', type='tags')
+            for tag in docmeta.tags:
+                item = etree.SubElement(tags_list, 'item')
+                item.text = tag
     textelem = etree.SubElement(tei, 'text')
     textbody = etree.SubElement(textelem, 'body')
     # post
@@ -190,7 +208,7 @@ def write_teitree(postbody, commentsbody, docmeta):
     # comments
     if commentsbody is not None:
         commentsbody.tag = 'div'
-        commentsbody.set('type', 'comments')# rendition='#cmt'
+        commentsbody.set('type', 'comments') # rendition='#cmt'
         # commentselem = etree.SubElement(textbody, 'div', type='comments')
         textbody.append(commentsbody)
     return tei
