@@ -66,10 +66,10 @@ def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comment
                 output.set('source', docmeta.url)
             if docmeta.description is not None:
                 output.set('excerpt', docmeta.description)
-            if docmeta.categories is not None:
+            if docmeta.categories is not None and len(docmeta.categories) > 0:
                 cats = ';'.join(docmeta.categories)
                 output.set('categories', cats)
-            if docmeta.tags is not None:
+            if docmeta.tags is not None and len(docmeta.tags) > 0:
                 tags = ';'.join(docmeta.tags)
                 output.set('categories', tags)
     return output

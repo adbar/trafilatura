@@ -153,7 +153,8 @@ def handle_titles(element):
     element.text = trim(element.text)
     # maybe needs attention
     if element.tail and re.search(r'\w', element.tail):
-        LOGGER.debug('tail in title: %s', element.tail)
+        LOGGER.debug('tail in title, stripping: %s', element.tail)
+    element.tail = None
     if element.text and re.search(r'\w', element.text):
         return element
     return None
