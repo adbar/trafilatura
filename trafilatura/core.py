@@ -297,53 +297,44 @@ def handle_paragraphs(element, potential_tags):
     return None
 
 
-def handle_tables(tree, result_body):
-    '''Process table elements'''
-    LOGGER.debug('Using table extraction')
-    search_tree = discard_unwanted(tree)
-    for table_elem in search_tree.xpath('//table'):
-        # print(html.tostring(table_elem))
-        # iterate through elements in table
-        for subelement in table_elem.xpath('.//*'):
-            # print(subelement.tag, subelement.text)
-            subelement.attrib.clear()
-            subelement.text = trim(subelement.text)
-            if subelement.tag == 'tr':
-                subelement.tag = 'row'
-                rowtext = ' '.join(subelement.itertext())
-                if rowtext is None: # or len(rowtext) < 50
-                    subelement.getparent().remove(subelement)
-                    continue
-                # subelement.text = trim(rowtext)
-            elif subelement.tag == 'th':
-                subelement.tag = 'head' # 'cell'
-            elif subelement.tag == 'td':
-                subelement.tag = 'cell'
-            # handle spaces?? # elif subelement.tag == 'lb':
-            else:
-                etree.strip_tags(table_elem, subelement.tag)
-        # insert
-        if len(' '.join(table_elem.itertext())) > MIN_EXTRACTED_SIZE:
-            table_elem.attrib.clear()
-            for element in table_elem.iter():
-                if not re.search(r'[p{L}]+', ''.join(element.itertext())):
-                    element.clear()
-                    # element.getparent().remove(element)
-            # prune recursively empty elements
-            context = etree.iterwalk(table_elem)
-            for _, elem in context:
-                parent = elem.getparent()
-                if recursively_empty(elem):
-                    parent.remove(elem)
-            result_body.append(table_elem)
-    return result_body
+def handle_table(table_elem):
+    '''Process single table element'''
+    for subelement in table_elem.xpath('.//*'):
+        # print(subelement.tag, subelement.text)
+        subelement.attrib.clear()
+        subelement.text = trim(subelement.text)
+        if subelement.tag == 'tr':
+            subelement.tag = 'row'
+            rowtext = ' '.join(subelement.itertext())
+            if rowtext is None: # or len(rowtext) < 50
+                subelement.getparent().remove(subelement)
+                continue
+            # subelement.text = trim(rowtext)
+        elif subelement.tag == 'th':
+            subelement.tag = 'head' # 'cell'
+        elif subelement.tag == 'td':
+            subelement.tag = 'cell'
+        # handle spaces?? # elif subelement.tag == 'lb':
+        else:
+            etree.strip_tags(table_elem, subelement.tag)
+    # insert
+    table_elem.attrib.clear()
+    for element in table_elem.iter():
+        if not re.search(r'[p{L}]+', ''.join(element.itertext())):
+            element.clear()
+    # prune recursively empty elements
+    context = etree.iterwalk(table_elem)
+    for _, elem in context:
+        parent = elem.getparent()
+        if parent is not None and recursively_empty(elem):
+            parent.remove(elem)
+    return table_elem
 
 
 def recover_wild_paragraphs(tree, result_body):
     '''Look for all p-elements, including outside of the determined frame
        and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Taking all p-elements')
-    potential_tags = set(TAG_CATALOG)
     # prune
     search_tree = discard_unwanted(tree)
     for element in search_tree.iter('code', 'p', 'quote'): # 'head', 'list'
@@ -376,6 +367,8 @@ def handle_textelem(element, potential_tags):
             return processed_element
     elif element.tag == 'hi':
         new_element = handle_formatting(element)
+    elif element.tag == 'table' and 'table' in potential_tags:
+        new_element = handle_table(element)
     else:
         # other elements (div, ??, ??)
         new_element = handle_other_elements(element, potential_tags)
@@ -402,6 +395,8 @@ def extract_content(tree, include_tables=False):
         # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?
+        if include_tables is True:
+            potential_tags.add('table')
         # no paragraphs containing text
         if len(subtree.xpath('//p//text()')) == 0:
             potential_tags.add('div')
@@ -420,9 +415,6 @@ def extract_content(tree, include_tables=False):
     if len(result_body) == 0 or len(' '.join(result_body.itertext())) < MIN_EXTRACTED_SIZE:
         result_body = recover_wild_paragraphs(tree, result_body)
         # result_body, _, _ = baseline(tree)
-    # parse tables
-    if include_tables is True:
-        result_body = handle_tables(tree, result_body)
     # filter output
     etree.strip_elements(result_body, 'done')
     etree.strip_tags(result_body, 'div')
