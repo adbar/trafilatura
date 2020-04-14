@@ -32,6 +32,8 @@ BODY_XPATH = [
     contains(@class, 'wpb_text_column') or contains(@class, 'single-post') or
     starts-with(@id, 'primary') or @class="text" or @class="cell" or @id="story" or @class="story" or
     contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]""",
+    '''//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
+    contains(@class, "main-content") or contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "page-content")]''',
     '//*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")]|//main',
 ]
 # starts-with(@id, "article") or
@@ -83,11 +85,14 @@ DISCARD_XPATH = [
     or starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@class, "noprint") or contains(@id, "caption") or
     contains(@class, "caption") or contains(@class, "byline") or contains(@class, 'Byline')
-    or contains(@class, "ratings") or starts-with(@class, "widget") or
+    or contains(@class, "rating") or starts-with(@class, "widget") or
     contains(@class, "attachment") or contains(@class, "timestamp") or
     contains(@class, "user-info") or contains(@class, "user-profile") or
     contains(@class, "-ad-") or contains(@class, "-icon")
     or contains(@class, "submeta") or contains(@class, "article-infos")]''',
+    # comment debris
+    '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
+    contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
 ]
 # conflicts:
 # .//header # contains(@id, "header") or contains(@class, "header") or
@@ -102,6 +107,6 @@ COMMENTS_DISCARD_XPATH = [
     './/quote',
     './/*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments")]',
     '''.//*[starts-with(@id, "reply-") or starts-with(@class, "reply-") or
-    contains(@class, "-reply-")]''',
+    contains(@class, "-reply-") or contains(@class, "message")]''',
     './/*[contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]',
 ]

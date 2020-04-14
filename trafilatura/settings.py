@@ -60,8 +60,9 @@ MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure',
                     'picture', 'script', 'style', 'svg', 'time', 'video']
                     # 'frame' 'frameset' 'source', 'img',
 
-TAG_CATALOG = frozenset(['code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'quote'])
+TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'q', 'quote'])
 # 'span', 'item'
+# 'blockquote', 'code', 'p', 'pre', 'q', 'quote'
 
 JUSTEXT_DEFAULT = 'German'
 

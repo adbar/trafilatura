@@ -76,8 +76,14 @@ def try_readability(htmlinput, url):
                     resultstring = doc.summary(html_partial=True)
         newtree = html.fromstring(resultstring, parser=HTML_PARSER)
         # remove unwanted sections
-        for elem in newtree.xpath('//aside|//button|//footer|//input|//svg'):  # //figure //img
+        for elem in newtree.xpath('//aside|//button|//footer|//input|//noscript|//svg'):  # //figure //img
             elem.getparent().remove(elem)
+        # remove empty elements
+        # for elem in newtree.xpath('//*'):
+        #    if len(elem) == 0 and elem.text is None and elem.tail is None:
+        #        parent = elem.getparent()
+        #        if parent is not None:
+        #            parent.remove(elem)
         return newtree
     except (etree.SerialisationError, Unparseable):
         return etree.Element('div')
@@ -337,7 +343,7 @@ def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG):
     LOGGER.debug('Taking all p-elements')
     # prune
     search_tree = discard_unwanted(tree)
-    for element in search_tree.iter('code', 'p', 'quote'): # 'head', 'list'
+    for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'): # 'head', 'list'
         # processed_element = handle_textnode(element, comments_fix=False)
         # if processed_element is not None:
         #    processed_element.attrib.clear()
@@ -469,7 +475,7 @@ def extract_comments(tree):
     return comments_body, temp_comments, len_comments, tree
 
 
-def compare_extraction(tree, url, body, text, len_text):
+def compare_extraction(tree, url, body, text, len_text, sure_thing):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     if tree is None:
@@ -489,6 +495,9 @@ def compare_extraction(tree, url, body, text, len_text):
         algo_flag = False
     elif len_algo > 2*len_text: # or 0.95*len_text < len_algo < 0.99*len_text:
         algo_flag = True
+    # override unsure extraction
+    #elif sure_thing is False and len_algo > len_text:
+    #    algo_flag = True
     #elif len_text >= 500 and 0.9*len_text < len_algo < len_text:
     #    algo_flag = True
     elif len(body.xpath('//p')) == 0 and len_algo > 0:
@@ -601,11 +610,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
 
     # compare if necessary
     if no_fallback is False: # and sure_thing is False:
-        postbody, temp_text, len_text = compare_extraction(backup_tree, url, postbody, temp_text, len_text)
+        postbody, temp_text, len_text = compare_extraction(backup_tree, url, postbody, temp_text, len_text, sure_thing)
         # try with justext
         if len_text < MIN_EXTRACTED_SIZE:
             LOGGER.error('not enough text %s %s', record_id, url)
             postbody, len_text, temp_text = justext_rescue(tree, url, target_language, postbody, len_text, temp_text)
+            LOGGER.error('justext length %s', len_text)
         # second backup
         # if len_text < MIN_EXTRACTED_SIZE:
         #     postbody, len_text, temp_text = baseline(filecontent)
