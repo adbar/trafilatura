@@ -33,40 +33,34 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 Description
 -----------
 
-*Trafilatura* can seamlessly download, parse and convert web documents: it scrapes the main body text while preserving part of the text formatting and page structure and converts to TXT, CSV, XML & TEI-XML. 
+*Trafilatura* seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output is converted to TXT, CSV, XML & TEI-XML.
 
-Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
+Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it deals with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
 
-It has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of documents.
+It has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of web documents.
 
 
 Features
 ~~~~~~~~
 
--  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input
--  Focus on main text and/or comments
--  Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
--  Extraction of metadata (currently title and date, more to come)
--  Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
--  Computationally efficient (relies on `lxml <http://lxml.de/>`_)
--  Robust extraction and generic `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ algorithms used as fallback
+-  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input. Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
+-  Focus on main text and/or comments, with structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
+-  Extraction of metadata
+-  Robust extraction and generic `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ algorithms used as fallback, reasonably efficient processing thanks to `lxml <http://lxml.de/>`_
 -  Optional language detection on the extracted content
 
 
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For experimental results see the `evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
+For more detailed results see the `evaluation page <https://github.com/adbar/trafilatura/blob/master/docs/evaluation.rst>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 =============================== =========  ========== ========= ========= =====
 300 documents, 869 text and 878 boilerplate segments (2020-03-19)
 -------------------------------------------------------------------------------
 Python Package                  Precision  Recall     Accuracy  F-Score   Time
 =============================== =========  ========== ========= ========= =====
-*raw HTML*                      0.519      0.885      0.535     0.654     0
 *baseline (text markup)*        0.726      0.776      0.742     0.750     1.14 
-html2text 2020.1.16             0.499      0.787      0.501     0.611     11.00
-inscriptis 1.0 (html to txt)    0.521      **0.962**  0.541     0.676     2.47
 justext 2.2.0 (German stoplist) 0.849      0.529      0.719     0.652     6.37
 newspaper3k 0.2.8               0.923      0.591      0.772     0.721     14.80
 goose3 3.1.6                    **0.957**  0.640      0.807     0.767     21.54
@@ -74,8 +68,6 @@ boilerpy3 1.0.2 (article mode)  0.841      0.734      0.799     0.784     5.65
 dragnet 2.0.4                   0.909      0.722      0.825     0.804     3.64
 readability-lxml 0.7.1          0.928      0.743      0.844     0.826     6.59
 news-please 1.4.25              0.926      0.747      0.844     0.827     70.81
-trafilatura 0.3.1 (rule-based)  0.901      0.831      0.871     0.865     5.43
-trafilatura 0.3.1 (+ justext)   0.897      0.868      0.884     0.882     6.97
 trafilatura 0.4                 0.914      0.869      0.894     0.891     4.87
 trafilatura 0.4 (+ fallback)    0.925      0.904      **0.916** **0.914** 9.94
 =============================== =========  ========== ========= ========= =====
@@ -86,7 +78,7 @@ Installation
 
 Chiefly with the Python package manager ``pip``: ``pip install --upgrade trafilatura``.
 
-For more details see `installation documentation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_.
+For more details please read the `installation documentation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_.
 
 
 Usage
@@ -138,11 +130,11 @@ Going further
 Roadmap
 ~~~~~~~
 
+-  [X] Metadata integration
+-  [-] Preservation of in-line text formatting (bold, italic, etc.)
+-  [-] Language detection on the extracted content
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [X] Metadata integration
--  [-] Language detection on the extracted content
--  [-] Preservation of in-line text formatting (bold, italic, etc.)
 -  [ ] Configuration and extraction parameters
 
 
@@ -151,7 +143,7 @@ Contributing
 
 `Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome!
 
-Feel free to file bug reports on the `issues page <https://github.com/adbar/htmldate/issues>`_.
+Feel free to file bug reports on the `issues page <https://github.com/adbar/trafilatura/issues>`_.
 
 Thanks to these contributors who submitted features and bugfixes:
 

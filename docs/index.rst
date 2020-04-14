@@ -35,23 +35,20 @@ trafilatura: Scrapes the main text of web pages while preserving some structure
 Description
 -----------
 
-*Trafilatura* can seamlessly download, parse and convert web documents: it scrapes the main body text while preserving part of the text formatting and page structure and converts to TXT, CSV, XML & TEI-XML. 
+*Trafilatura* seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output is converted to TXT, CSV, XML & TEI-XML.
 
-Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it can help with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
+Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it deals with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
 
-It has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of documents.
+It has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of web documents.
 
 
 Features
 ~~~~~~~~
 
--  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input
--  Focus on main text and/or comments
--  Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
--  Extraction of metadata (currently title and date, more to come)
--  Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
--  Computationally efficient (relies on `lxml <http://lxml.de/>`_)
--  Robust extraction and generic `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ algorithms used as fallback
+-  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input. Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
+-  Focus on main text and/or comments, with structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
+-  Extraction of metadata
+-  Robust extraction and generic `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ algorithms used as fallback, reasonably efficient processing thanks to `lxml <http://lxml.de/>`_
 -  Optional language detection on the extracted content
 
 
@@ -68,7 +65,7 @@ Installation
 
 Chiefly with the Python package manager ``pip``: ``pip install --upgrade trafilatura``.
 
-For more details see `installation documentation <installation.html>`_.
+For more details please read the `installation documentation <installation.html>`_.
 
 
 Usage
@@ -118,11 +115,11 @@ Going further
 Roadmap
 ~~~~~~~
 
+-  [X] Metadata integration
+-  [-] Preservation of in-line text formatting (bold, italic, etc.)
+-  [-] Language detection on the extracted content
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
--  [X] Metadata integration
--  [-] Language detection on the extracted content
--  [-] Preservation of in-line text formatting (bold, italic, etc.)
 -  [ ] Configuration and extraction parameters
 
 
@@ -131,7 +128,7 @@ Contributing
 
 `Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome!
 
-Feel free to file bug reports on the `issues page <https://github.com/adbar/htmldate/issues>`_.
+Feel free to file bug reports on the `issues page <https://github.com/adbar/trafilatura/issues>`_.
 
 Thanks to these contributors who submitted features and bugfixes:
 
