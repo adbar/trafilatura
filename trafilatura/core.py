@@ -331,7 +331,7 @@ def handle_table(table_elem):
     return table_elem
 
 
-def recover_wild_paragraphs(tree, result_body):
+def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG):
     '''Look for all p-elements, including outside of the determined frame
        and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Taking all p-elements')
