@@ -140,9 +140,12 @@ def validate_tei(tei):  # , filename=""
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     returnstring = ''
-    # returnstring = ' '.join(xmloutput.itertext())
     for element in xmloutput.iter():
+        # process text
         if element.text is None and element.tail is None:
+            # newlines for textless elements
+            if element.tag in ('row', 'table'):
+                returnstring += '\n'
             continue
         if element.text is not None and element.tail is not None:
             textelement = element.text + ' ' + element.tail

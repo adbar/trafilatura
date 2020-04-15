@@ -205,36 +205,40 @@ def handle_paragraphs(element, potential_tags):
 
 def handle_table(table_elem):
     '''Process single table element'''
-    for subelement in table_elem.xpath('.//*'):
-        # print(subelement.tag, subelement.text)
-        subelement.attrib.clear()
-        subelement.text = trim(subelement.text)
+    newtable = etree.Element('table')
+    newrow = etree.Element('row')
+    i = 0
+    # explore sub-elements
+    for subelement in table_elem.iter():
+        i += 1
         if subelement.tag == 'tr':
-            subelement.tag = 'row'
-            rowtext = ' '.join(subelement.itertext())
-            if rowtext is None: # or len(rowtext) < 50
-                subelement.getparent().remove(subelement)
+            # process existing row
+            if len(newrow) > 0:
+                newtable.append(newrow)
+                newrow = etree.Element('row')
+            # skip rows empty of text
+            #textcontent = ''.join(subelement.itertext())
+            #if len(textcontent) == 0 or not re.search(r'[p{L}]+', textcontent):
+            #    continue
+        elif subelement.tag in ('td', 'th'):
+            # define tag
+            newsub = etree.Element('cell')
+            if subelement.tag == 'th':
+                newsub.set('role', 'head')
+            # process
+            newsub.text = trim(subelement.text)
+            if newsub.text is None or len(newsub.text) < 1:
                 continue
-            # subelement.text = trim(rowtext)
-        elif subelement.tag == 'th':
-            subelement.tag = 'head' # 'cell'
-        elif subelement.tag == 'td':
-            subelement.tag = 'cell'
-        # handle spaces?? # elif subelement.tag == 'lb':
-        else:
-            etree.strip_tags(table_elem, subelement.tag)
-    # insert
-    table_elem.attrib.clear()
-    for element in table_elem.iter():
-        if not re.search(r'[p{L}]+', ''.join(element.itertext())):
-            element.clear()
-    # prune recursively empty elements
-    context = etree.iterwalk(table_elem)
-    for _, elem in context:
-        parent = elem.getparent()
-        if parent is not None and recursively_empty(elem):
-            parent.remove(elem)
-    return table_elem
+            newrow.append(newsub)
+        # beware of nested tables
+        elif subelement.tag == 'table' and i > 1:
+            break
+    # end of processing
+    if len(newrow) > 0:
+        newtable.append(newrow)
+    if len(newtable) > 0:
+        return newtable
+    return None
 
 
 def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG):
