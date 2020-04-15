@@ -207,13 +207,8 @@ def txttocsv(text, comments, docmeta):
 
 def remove_control_characters(string):
     '''Prevent non-printable and XML invalid character errors'''
-    # slow
-    # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
-    # return ''.join(char for char in string if unicodedata.category(char)[0] != "C" or char in ('\t', '\n'))
     # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python/93029#93029
     return string.translate(NOPRINT_TRANS_TABLE)
-    # XML invalid characters
-    # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
 
 
 def sanitize(text):

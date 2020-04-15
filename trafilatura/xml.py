@@ -20,10 +20,13 @@ from .utils import sanitize
 LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = pkg_resources.resource_filename('trafilatura', 'data/tei-schema.pickle')
-TEI_VALID_TAGS = {'cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
-                  'lb', 'list', 'p', 'quote', 'row'}
-TEI_VALID_ATTRS = {'rendition', 'type'}
+TEI_VALID_TAGS = set(['cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
+                  'lb', 'list', 'p', 'quote', 'row', 'table'])
+TEI_VALID_ATTRS = set(['rendition', 'role', 'type'])
 TEI_RELAXNG = None # to be downloaded later if necessary
+
+# XML invalid characters
+# https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
 
 
 def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comments, tei_output, tei_validation):
@@ -39,10 +42,8 @@ def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comment
         # check and repair
         output = check_tei(output, docmeta.url)
         # validate
-        # why is it necessary?
-        testtree = etree.fromstring(etree.tostring(output))
         if tei_validation is True:
-            result = validate_tei(testtree)
+            result = validate_tei(output)
             LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
     # XML
     else:
@@ -71,7 +72,7 @@ def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comment
                 output.set('categories', cats)
             if docmeta.tags is not None and len(docmeta.tags) > 0:
                 tags = ';'.join(docmeta.tags)
-                output.set('categories', tags)
+                output.set('tags', tags)
     return output
 
 
