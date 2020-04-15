@@ -56,13 +56,13 @@ def sanitize_tree(tree):
 
 def handle_titles(element):
     '''Process head elements (titles)'''
-    element.text = trim(element.text)
     # maybe needs attention
     if element.tail and re.search(r'\w', element.tail):
         LOGGER.debug('tail in title, stripping: %s', element.tail)
     element.tail = None
-    if element.text and re.search(r'\w', element.text):
-        return element
+    title = handle_light(element)
+    if title is not None and title.text and re.search(r'\w', title.text):
+        return title
     return None
 
 
@@ -98,6 +98,7 @@ def handle_lists(element):
                     newsub.append(deepcopy(processed_subchild))
                     # processed_element.append(processed_subchild)
                 subelem.tag = 'done'
+            etree.strip_tags(newsub, 'item')
             processed_element.append(newsub)
     # avoid double tags??
     if len(processed_element) > 0:  # if it has children
@@ -253,15 +254,16 @@ def handle_table(table_elem):
             #if len(textcontent) == 0 or not re.search(r'[p{L}]+', textcontent):
             #    continue
         elif subelement.tag in ('td', 'th'):
+            # process
+            processed_cell = handle_light(subelement)
+            if processed_cell is None or processed_cell.text is None or len(processed_cell.text) < 1:
+                continue
             # define tag
-            newsub = etree.Element('cell')
+            newsub = etree.SubElement(newrow, 'cell')
             if subelement.tag == 'th':
                 newsub.set('role', 'head')
-            # process
-            newsub.text = trim(subelement.text)
-            if newsub.text is None or len(newsub.text) < 1:
-                continue
-            newrow.append(newsub)
+            newsub.text = processed_cell.text
+            #newrow.append(newsub)
         # beware of nested tables
         elif subelement.tag == 'table' and i > 1:
             break
