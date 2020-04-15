@@ -20,9 +20,9 @@ from .utils import sanitize
 LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = pkg_resources.resource_filename('trafilatura', 'data/tei-schema.pickle')
-TEI_VALID_TAGS = set(['cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
-                  'lb', 'list', 'p', 'quote', 'row', 'table'])
-TEI_VALID_ATTRS = set(['rendition', 'role', 'type'])
+TEI_VALID_TAGS = {'cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
+                  'lb', 'list', 'p', 'quote', 'row', 'table'}
+TEI_VALID_ATTRS = {'rendition', 'role', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
 # XML invalid characters
@@ -141,6 +141,7 @@ def validate_tei(tei):  # , filename=""
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     returnlist = []
+    etree.strip_tags(xmloutput, 'hi')
     for element in xmloutput.iter():
         # process text
         if element.text is None and element.tail is None:

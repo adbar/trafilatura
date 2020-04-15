@@ -14,7 +14,8 @@ BODY_XPATH = [
     contains(@class, "post_text") or contains(@class, "post-body") or
     contains(@class, "post-content") or contains(@class, "post_content") or
     contains(@class, "postcontent") or contains(@class, "post-entry") or
-    contains(@class, "postentry")]''',
+    contains(@class, "postentry") or contains(@class, "article-text")
+    or contains(@class, "articletext") or contains(@class, "articleText")]''',
     '''//*[(self::article or self::div or self::main or self::section)][contains(@id, "entry-content") or
     contains(@class, "entry-content") or contains(@id, "article-content") or
     contains(@class, "article-content") or contains(@id, "article__content") or
@@ -40,6 +41,9 @@ BODY_XPATH = [
 # or starts-with(@id, "story") or contains(@class, "story")
 # or @class="content" or @id="content"
 # starts-with(@class, "content ") or contains(@class, " content")
+# '//body',
+# '//div[contains(@class, "text")]',
+# '//div[contains(@class, "article-wrapper") or contains(@class, "content-wrapper")]',
 
 
 COMMENTS_XPATH = [
