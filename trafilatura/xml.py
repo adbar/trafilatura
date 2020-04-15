@@ -139,13 +139,13 @@ def validate_tei(tei):  # , filename=""
 
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
-    returnstring = ''
+    returnlist = []
     for element in xmloutput.iter():
         # process text
         if element.text is None and element.tail is None:
             # newlines for textless elements
             if element.tag in ('row', 'table'):
-                returnstring += '\n'
+                returnlist.append('\n')
             continue
         if element.text is not None and element.tail is not None:
             textelement = element.text + ' ' + element.tail
@@ -154,16 +154,16 @@ def xmltotxt(xmloutput):
         else:
             textelement = element.tail
         if element.tag in ('code', 'fw', 'head', 'lb', 'p', 'quote', 'row', 'table'):
-            returnstring += '\n' + textelement + '\n'
+            returnlist.append('\n' + textelement + '\n')
         elif element.tag == 'item':
-            returnstring += '\n- ' + textelement + '\n'
+            returnlist.append('\n- ' + textelement + '\n')
         elif element.tag == 'cell':
-            returnstring += '|' + textelement + '|'
+            returnlist.append('|' + textelement + '|')
         elif element.tag == 'comments':
-            returnstring += '\n\n'
+            returnlist.append('\n\n')
         else:
-            returnstring += textelement + ' '
-    returnstring = sanitize(returnstring)
+            returnlist.append(textelement + ' ')
+    returnstring = sanitize(''.join(returnlist))
     return returnstring
 
 
