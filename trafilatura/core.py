@@ -18,7 +18,7 @@ from lxml import etree, html
 # own
 from .external import justext_rescue, try_readability
 from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLACKLIST
-from .htmlprocessing import (convert_tags, handle_textnode, manual_cleaning,
+from .htmlprocessing import (convert_tags, handle_light, handle_textnode, manual_cleaning,
                              prune_html, recursively_empty, discard_unwanted,
                              discard_unwanted_comments)
 from .metadata import scrape as extract_metadata
@@ -82,23 +82,55 @@ def handle_formatting(element):
 def handle_lists(element):
     '''Process lists elements'''
     processed_element = etree.Element(element.tag)
-    for child in element.iter():
-        # list-specific check
-        if child.tag not in ('dd', 'dt', 'li'):
-            continue  # 'item'
-        # proceed with iteration, fix for nested elements
+    for child in element.iter('item'):
+        if len(child) == 0:
+            processed_child = handle_light(child) # handle_textnode(child, comments_fix=False)
+            if processed_child is not None:
+                processed_element.append(deepcopy(processed_child))
+            child.tag = 'done'
+        else:
+            newsub = etree.Element('item')
+            # proceed with iteration, fix for nested elements
+            for subelem in child.iter():
+                processed_subchild = handle_light(subelem) # handle_textnode(subelem, comments_fix=False)
+                # add child element to processed_element
+                if processed_subchild is not None:
+                    newsub.append(deepcopy(processed_subchild))
+                    # processed_element.append(processed_subchild)
+                subelem.tag = 'done'
+            processed_element.append(newsub)
+    # avoid double tags??
+    if len(processed_element) > 0:  # if it has children
+        # test if it has text
+        #teststring = ''.join(processed_element.itertext())
+        #if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
+        return processed_element
+    return None
+
+
+def handle_lists_2(element):
+    '''Process lists elements'''
+    processed_element = etree.Element(element.tag)
+    for child in element.iter('item'):
+        # if len(child) == 0:
+            # proceed with iteration, fix for nested elements
+        #    processed_child = handle_light(child)
+        #else:
         processed_child = handle_textnode(child, comments_fix=True)
         # add child element to processed_element
         if processed_child is not None:
             newsub = etree.SubElement(processed_element, 'item')
-            newsub.text = processed_child.text
+            if processed_child.text:
+                newsub.text = processed_child.text
+            if processed_child.tail:
+                newsub.text = processed_child.tail
         child.tag = 'done'
     # avoid double tags??
     if len(processed_element) > 0:  # if it has children
         # test if it has text
-        teststring = ''.join(processed_element.itertext())
-        if len(teststring) > 0 and re.search(r'[a-z]', teststring):
-            return processed_element
+        # teststring = ''.join(processed_element.itertext())
+        # if len(teststring) > 0 and re.search(r'[a-z]', teststring):
+        return processed_element
     return None
 
 

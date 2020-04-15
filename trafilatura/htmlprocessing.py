@@ -89,6 +89,9 @@ def convert_tags(tree):
     for elem in tree.iter('ul', 'ol', 'dl'):
         elem.tag = 'list'
         elem.attrib.clear()
+        for subelem in elem.iter('dd', 'dt', 'li'):
+            subelem.tag = 'item'
+            subelem.attrib.clear()
     # blockquote, pre, q → quote
     for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
@@ -140,8 +143,6 @@ def handle_textnode(element, comments_fix=True):
         #     return None
         # duplicate_test(subelement)?
         return element
-    if element.tag in ('dl', 'head', 'ol', 'ul'):
-        element.attrib.clear()
     if element.text is None:
         # try the tail
         # LOGGER.debug('using tail for element %s', element.tag)
@@ -162,4 +163,23 @@ def handle_textnode(element, comments_fix=True):
             return None
     else:
         return None
+    return element
+
+
+def handle_light(element):
+    '''Convert, format, and probe potential text elements (light format)'''
+    if element.tag == 'done':
+        return None
+    if len(element) == 0 and not element.text and not element.tail:
+        return None
+    # trim
+    if element.text:
+        element.text = trim(element.text)
+    if element.tail:
+        element.tail = trim(element.tail)
+    if element.tag != 'lb' and not element.text and element.tail:
+        element.text = element.tail
+    if element.text or element.tail:
+        if textfilter(element) is True or duplicate_test(element) is True:
+            return None
     return element
