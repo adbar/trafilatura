@@ -132,7 +132,8 @@ def examine_meta(tree):
         # categories and tags
         elif 'property' in elem.attrib:
             if elem.get('property') == 'article:tag':
-                tags.append(elem.get('content'))
+                if elem.get('content') is not None:
+                    tags.append(elem.get('content'))
             elif elem.get('property') in ('author', 'article:author'):
                 if author is None:
                     author = elem.get('content')
@@ -155,8 +156,8 @@ def extract_metainfo(tree, expressions):
             # report potential errors
             if len(target_elements) > 1:
                 LOGGER.warning('more than one result: %s %s', expression, len(target_elements))
-            # exit loop if something has been found
-            if len(result) > 0:
+            # exit loop if something usable has been found
+            if 0 < len(result) < 200:
                 break
     return trim(result)
 
@@ -252,7 +253,9 @@ def extract_catstags(metatype, tree):
                 if 'href' in elem.attrib:
                     match = re.search(regexpr, elem.attrib['href'])
                     if match:
-                        results.append(trim(elem.text_content()))
+                        result = trim(elem.text_content())
+                        if result is not None:
+                            results.append(result)
     # category fallback
     if metatype == 'category' and len(results) == 0:
         element = tree.find('.//head//meta[@property="article:section"]')
