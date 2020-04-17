@@ -19,8 +19,7 @@ from lxml import etree, html
 from .external import justext_rescue, try_readability
 from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLACKLIST
 from .htmlprocessing import (convert_tags, handle_light, handle_textnode, manual_cleaning,
-                             prune_html, recursively_empty, discard_unwanted,
-                             discard_unwanted_comments)
+                             prune_html, discard_unwanted, discard_unwanted_comments)
 from .metadata import scrape as extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
@@ -109,37 +108,11 @@ def handle_lists(element):
     return None
 
 
-def handle_lists_2(element):
-    '''Process lists elements'''
-    processed_element = etree.Element(element.tag)
-    for child in element.iter('item'):
-        # if len(child) == 0:
-            # proceed with iteration, fix for nested elements
-        #    processed_child = handle_light(child)
-        #else:
-        processed_child = handle_textnode(child, comments_fix=True)
-        # add child element to processed_element
-        if processed_child is not None:
-            newsub = etree.SubElement(processed_element, 'item')
-            if processed_child.text:
-                newsub.text = processed_child.text
-            if processed_child.tail:
-                newsub.text = processed_child.tail
-        child.tag = 'done'
-    # avoid double tags??
-    if len(processed_element) > 0:  # if it has children
-        # test if it has text
-        # teststring = ''.join(processed_element.itertext())
-        # if len(teststring) > 0 and re.search(r'[a-z]', teststring):
-        return processed_element
-    return None
-
-
 def handle_quotes(element):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
-        processed_child = handle_textnode(child, comments_fix=True)
+        processed_child = handle_textnode(child, comments_fix=True)  # handle_light(child)
         if processed_child is not None:
             newsub = etree.SubElement(processed_element, child.tag)
             newsub.text = processed_child.text
@@ -149,9 +122,9 @@ def handle_quotes(element):
         # avoid double/nested tags
         etree.strip_tags(processed_element, 'quote')
         # test if it has text
-        teststring = ''.join(processed_element.itertext())
-        if len(teststring) > 0 and re.search(r'[a-z]', teststring):
-            return processed_element
+        # teststring = ''.join(processed_element.itertext())
+        # if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
+        return processed_element
     return None
 
 
@@ -162,7 +135,7 @@ def handle_other_elements(element, potential_tags):
         # LOGGER.debug('discarding: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
-        processed_element = handle_textnode(element, comments_fix=False)
+        processed_element = handle_textnode(element, comments_fix=False)  # handle_light(element)
         if processed_element is not None:
             processed_element.attrib.clear()
             # small div-correction # could be moved elsewhere
@@ -181,7 +154,7 @@ def handle_paragraphs(element, potential_tags):
     element.attrib.clear()
     # no children
     if len(element) == 0:
-        processed_element = handle_textnode(element, comments_fix=False)
+        processed_element = handle_light(element)  # handle_textnode(element, comments_fix=False)
         if processed_element is not None:
             return processed_element
         return None
@@ -204,7 +177,11 @@ def handle_paragraphs(element, potential_tags):
                     newsub.set('rend', child.get('rend'))
                 # handle line breaks
                 elif child.tag == 'lb':
-                    processed_child.tail = handle_textnode(child, comments_fix=False).tail
+                    #processed_child.tail = handle_textnode(child, comments_fix=False).tail
+                    try:
+                        processed_child.tail = handle_light(child).tail
+                    except AttributeError:  # no text
+                        pass
                 # needing attention!
                 elif child.tag == 'p':
                     LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
@@ -306,9 +283,9 @@ def handle_textelem(element, potential_tags):
         new_element = handle_paragraphs(element, potential_tags)
     elif element.tag == 'lb':
         if element.tail is not None and not element.tail.isspace():
-            processed_element = etree.Element('p')
-            processed_element.text = handle_textnode(element, comments_fix=False).tail
-            return processed_element
+            new_element = etree.Element('p')
+            new_element.text = handle_light(element).tail
+            # new_element.text = handle_textnode(element, comments_fix=False).tail
     elif element.tag == 'hi':
         new_element = handle_formatting(element)
     elif element.tag == 'table' and 'table' in potential_tags:
@@ -346,7 +323,7 @@ def extract_content(tree, include_tables=False):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
-        for element in subtree.xpath('.//*'):
+        for element in subtree.xpath('.//*'):  # iter(potential_tags):
             processed_elem = handle_textelem(element, potential_tags)
             if processed_elem is not None:
                 result_body.append(processed_elem)
@@ -356,15 +333,17 @@ def extract_content(tree, include_tables=False):
             LOGGER.debug(expr)
             break
     # try parsing wild <p> elements if nothing found or text too short
-    if len(result_body) == 0 or len(' '.join(result_body.itertext())) < MIN_EXTRACTED_SIZE:
+    temp_text = trim(' '.join(result_body.itertext()))
+    len_text = len(temp_text)
+    if len(result_body) == 0 or len_text < MIN_EXTRACTED_SIZE:
         result_body = recover_wild_paragraphs(tree, result_body)
         # result_body, _, _ = baseline(tree)
+        temp_text = trim(' '.join(result_body.itertext()))
+        len_text = len(temp_text)
     # filter output
     etree.strip_elements(result_body, 'done')
     etree.strip_tags(result_body, 'div')
     # return
-    temp_text = trim(' '.join(result_body.itertext()))
-    len_text = len(temp_text)
     return result_body, temp_text, len_text, sure_thing
 
 
