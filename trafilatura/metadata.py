@@ -306,8 +306,19 @@ def scrape(filecontent, default_url=None):
     # sitename
     if mymeta.sitename is None:
         mymeta = mymeta._replace(sitename=extract_sitename(tree))
+    if mymeta.sitename and mymeta.sitename.startswith('@'):
+        # scrap Twitter ID
+        newsitename = re.sub(r'^@', '',  mymeta.sitename)
+        mymeta = mymeta._replace(sitename=newsitename)
+    if mymeta.sitename is None:
+        # use URL
+        if mymeta.url:
+            mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', mymeta.url)
+            if mymatch:
+                mymeta = mymeta._replace(sitename=mymatch.group(1))
     # categories
-    mymeta = mymeta._replace(categories=extract_catstags('category', tree))
+    if mymeta.categories is None or len(mymeta.categories) == 0:
+        mymeta = mymeta._replace(categories=extract_catstags('category', tree))
     # tags
     if mymeta.tags is None or len(mymeta.tags) == 0:
         mymeta = mymeta._replace(tags=extract_catstags('tags', tree))

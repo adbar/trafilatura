@@ -171,6 +171,7 @@ def test_pages():
     assert metadata.description == 'Python 3.6.0 is now available! Python 3.6.0 is the newest major release of the Python language, and it contains many new features and opti...'
     assert metadata.author == 'Ned Deily'
     assert metadata.url == 'http://blog.python.org/2016/12/python-360-is-now-available.html'
+    assert metadata.sitename == 'blog.python.org'
 
     metadata = scrape(load_mock_page('https://en.blog.wordpress.com/2019/06/19/want-to-see-a-more-diverse-wordpress-contributor-community-so-do-we/'))
     assert metadata.title == 'Want to See a More Diverse WordPress Contributor Community? So Do We.'
