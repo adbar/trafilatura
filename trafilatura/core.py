@@ -37,8 +37,8 @@ def sanitize_tree(tree):
     # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
     etree.strip_tags(tree, 'div')
     tree = prune_html(tree)
-    for elem in tree.iter():
-        elem.attrib.clear()
+    #for elem in tree.iter():
+    #    elem.attrib.clear()
     cleaned_tree = convert_tags(tree)
     for elem in cleaned_tree.iter():
         #if elem.tag in ('code', 'del', 'head', 'hi', 'item', 'p', 'quote'):
@@ -46,9 +46,9 @@ def sanitize_tree(tree):
         #        elem.getparent().remove(elem)
         #        continue
         if elem.text is not None:
-            elem.text = trim(sanitize(elem.text))
+            elem.text = sanitize(elem.text)
         if elem.tail is not None:
-            elem.tail = trim(sanitize(elem.tail))
+            elem.tail = sanitize(elem.tail)
     # cleaned_tree = prune_html(cleaned_tree)
     return cleaned_tree
 
@@ -83,28 +83,37 @@ def handle_lists(element):
     processed_element = etree.Element(element.tag)
     for child in element.iter('item'):
         if len(child) == 0:
-            processed_child = handle_light(child) # handle_textnode(child, comments_fix=False)
+            processed_child = handle_light(child)
             if processed_child is not None:
-                processed_element.append(deepcopy(processed_child))
-            child.tag = 'done'
+                # processed_element.append(deepcopy(processed_child))
+                childelem = etree.SubElement(processed_element, processed_child.tag)
+                childelem.text = processed_child.text
+                childelem.tail = processed_child.tail
         else:
+            # print(child.tag, child.text, child.tail)
             newsub = etree.Element('item')
             # proceed with iteration, fix for nested elements
             for subelem in child.iter():
-                processed_subchild = handle_light(subelem) # handle_textnode(subelem, comments_fix=False)
+                # newsub = etree.Element('item')
+                processed_subchild = handle_light(subelem)  # handle_textnode(subelem, comments_fix=False)
                 # add child element to processed_element
                 if processed_subchild is not None:
-                    newsub.append(deepcopy(processed_subchild))
+                    subchildelem = etree.SubElement(newsub, processed_subchild.tag)
+                    subchildelem.text = processed_subchild.text
+                    subchildelem.tail = processed_subchild.tail
+                    # newsub.append(deepcopy(processed_subchild))
                     # processed_element.append(processed_subchild)
                 subelem.tag = 'done'
             etree.strip_tags(newsub, 'item')
+            #if len(''.join(newsub.itertext())) > 0:
             processed_element.append(newsub)
+        child.tag = 'done'
     # avoid double tags??
     if len(processed_element) > 0:  # if it has children
         # test if it has text
-        #teststring = ''.join(processed_element.itertext())
-        #if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
-        return processed_element
+        teststring = ''.join(processed_element.itertext())
+        if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
+            return processed_element
     return None
 
 
@@ -112,8 +121,9 @@ def handle_quotes(element):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
-        processed_child = handle_textnode(child, comments_fix=True)  # handle_light(child)
+        processed_child = handle_light(child) # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
+            # processed_element.append(deepcopy(processed_child))
             newsub = etree.SubElement(processed_element, child.tag)
             newsub.text = processed_child.text
             newsub.tail = processed_child.tail
@@ -152,6 +162,7 @@ def handle_paragraphs(element, potential_tags):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
+    # etree.strip_tags(element, 'p')
     # no children
     if len(element) == 0:
         processed_element = handle_light(element)  # handle_textnode(element, comments_fix=False)
@@ -160,51 +171,52 @@ def handle_paragraphs(element, potential_tags):
         return None
     # children
     processed_element = etree.Element(element.tag)
-    processed_element.text = ''
     for child in element.iter():
-        if child.tag in potential_tags:
-            processed_child = handle_textnode(child, comments_fix=False)
-            if processed_child is not None:
-                newsub = etree.Element(child.tag)
-                # handle formatting
-                if child.tag == 'hi':
-                    # check depth and clean
-                    if len(child) > 0:
-                        for item in child:  # children are lists
-                            if item.text is not None and not item.text.isspace():
-                                item.text = ' ' + item.text
-                            etree.strip_tags(child, item.tag)
-                    newsub.set('rend', child.get('rend'))
-                # handle line breaks
-                elif child.tag == 'lb':
-                    #processed_child.tail = handle_textnode(child, comments_fix=False).tail
-                    try:
-                        processed_child.tail = handle_light(child).tail
-                    except AttributeError:  # no text
-                        pass
-                # needing attention!
-                elif child.tag == 'p':
-                    LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
-                    processed_element.text = ' ' + child.text
-                    processed_element.text = trim(processed_element.text)
-                    continue
-                # prepare text
-                if processed_child.text is None or processed_child.text.isspace():
-                    processed_child.text = ''
-                # if there are already children
-                if len(processed_element) > 0:
-                    if processed_child.tail is not None and not processed_child.tail.isspace():
-                        newsub.tail = processed_child.text + processed_child.tail
-                    else:
-                        newsub.tail = processed_child.text
+        if child.tag not in potential_tags:
+            LOGGER.debug('unexpected elem in paragraph: %s %s %s', child.tag, child.text, child.tail)
+            continue
+        processed_child = handle_textnode(child, comments_fix=False)
+        if processed_child is not None:
+            # needing attention!
+            if child.tag == 'p':
+                LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
+                processed_element.text = ' ' + child.text
+                processed_element.text = trim(processed_element.text)
+                continue
+            newsub = etree.Element(child.tag)
+            # handle formatting
+            if child.tag == 'hi':
+                # check depth and clean
+                if len(child) > 0:
+                    for item in child:  # children are lists
+                        if item.text is not None and not item.text.isspace():
+                            item.text = ' ' + item.text
+                        etree.strip_tags(child, item.tag)
+                newsub.set('rend', child.get('rend'))
+            # handle line breaks
+            elif child.tag == 'lb':
+                #processed_child.tail = handle_textnode(child, comments_fix=False).tail
+                try:
+                    processed_child.tail = handle_light(child).tail
+                except AttributeError:  # no text
+                    pass
+            # prepare text
+            if processed_child.text is None or processed_child.text.isspace():
+                processed_child.text = ''
+            # if there are already children
+            if len(processed_element) > 0:
+                if processed_child.tail is not None and not processed_child.tail.isspace():
+                    newsub.tail = processed_child.text + processed_child.tail
                 else:
-                    newsub.text = processed_child.text
-                    newsub.tail = processed_child.tail
-                processed_element.append(newsub)
-                # print(html.tostring(processed_element))
+                    newsub.tail = processed_child.text
+            else:
+                newsub.text = processed_child.text
+                newsub.tail = processed_child.tail
+            processed_element.append(newsub)
+            # print(html.tostring(processed_element))
             child.tag = 'done'
     # finish
-    if len(processed_element) > 0 or len(processed_element.text) > 0:
+    if len(processed_element) > 0 or processed_element.text:
         # clean trailing lb-elements
         if len(processed_element) > 0 and processed_element[-1].tag == 'lb' and processed_element[-1].tail is None:
             processed_element[-1].getparent().remove(processed_element[-1])
@@ -337,7 +349,9 @@ def extract_content(tree, include_tables=False):
     len_text = len(temp_text)
     if len(result_body) == 0 or len_text < MIN_EXTRACTED_SIZE:
         result_body = recover_wild_paragraphs(tree, result_body)
-        # result_body, _, _ = baseline(tree)
+        #search_tree = discard_unwanted(tree)
+        #search_tree = prune_html(search_tree)
+        #result_body, _, _ = baseline(search_tree)
         temp_text = trim(' '.join(result_body.itertext()))
         len_text = len(temp_text)
     # filter output
@@ -417,7 +431,7 @@ def compare_extraction(tree, url, body, text, len_text, sure_thing):
     #    algo_flag = True
     #elif len_text >= 500 and 0.9*len_text < len_algo < len_text:
     #    algo_flag = True
-    elif len(body.xpath('//p')) == 0 and len_algo > 0:
+    elif len(body.xpath('//p//text()')) == 0 and len_algo > 0:
         algo_flag = True  # borderline case
     else:
         # print(sure_thing, len_text, len_algo)
@@ -466,6 +480,8 @@ def baseline(filecontent):
     # scrape from text paragraphs
     results = set()
     resultlist = list()
+    # search_tree = discard_unwanted(tree)
+    # search_tree = prune_html(tree)
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
         entry = element.text_content()
         if entry not in results:
