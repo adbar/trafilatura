@@ -173,6 +173,26 @@ def write_teitree(postbody, commentsbody, docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
+    #if simplified is True:
+    #    header = write_simpleheader(header, docmeta)
+    #else:
+    header = write_fullheader(header, docmeta)
+    textelem = etree.SubElement(tei, 'text')
+    textbody = etree.SubElement(textelem, 'body')
+    # post
+    postbody.tag = 'div'
+    postbody.set('type', 'entry') # rendition='#pst'
+    textbody.append(postbody)
+    # comments
+    if commentsbody is not None and len(commentsbody) > 0:
+        commentsbody.tag = 'div'
+        commentsbody.set('type', 'entry') # rendition='#cmt'
+        textbody.append(commentsbody)
+    return tei
+
+
+def write_fullheader(header, docmeta):
+    '''Write TEI header based on gathered metadata'''
     filedesc = etree.SubElement(header, 'fileDesc')
     bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
     bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
@@ -180,10 +200,12 @@ def write_teitree(postbody, commentsbody, docmeta):
     if docmeta.author:
         bib_author = etree.SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta.author
+    publicationstmt_a = etree.SubElement(filedesc, 'publicationStmt')
+    publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_bibl = etree.SubElement(sourcedesc, 'bibl')
     if docmeta.sitename and docmeta.date:
-        sigle = docmeta.sitename + ' – ' + docmeta.date
+        sigle = docmeta.sitename + ', ' + docmeta.date
     elif not docmeta.sitename and docmeta.date:
         sigle = docmeta.date
     elif docmeta.sitename and not docmeta.date:
@@ -198,7 +220,7 @@ def write_teitree(postbody, commentsbody, docmeta):
     bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
     bib_titlemain.text = docmeta.title
     if docmeta.author:
-        bib_author = etree.SubElement(biblfull, 'author')
+        bib_author = etree.SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta.author
     publicationstmt = etree.SubElement(biblfull, 'publicationStmt')
     publication_publisher = etree.SubElement(publicationstmt, 'publisher')
@@ -214,26 +236,43 @@ def write_teitree(postbody, commentsbody, docmeta):
         textclass = etree.SubElement(profiledesc, 'textClass')
         keywords = etree.SubElement(textclass, 'keywords')
         if len(docmeta.categories) > 0:
-            cat_list = etree.SubElement(keywords, 'list', type='categories')
-            for cat in docmeta.categories:
-                item = etree.SubElement(cat_list, 'item')
-                item.text = cat
+            cat_list = etree.SubElement(keywords, 'term', type='categories')
+            cat_list.text = ','.join(docmeta.categories)
         if len(docmeta.tags) > 0:
-            tags_list = etree.SubElement(keywords, 'list', type='tags')
-            for tag in docmeta.tags:
-                item = etree.SubElement(tags_list, 'item')
-                item.text = tag
-    textelem = etree.SubElement(tei, 'text')
-    textbody = etree.SubElement(textelem, 'body')
-    # post
-    postbody.tag = 'div'
-    postbody.set('type', 'entry') # rendition='#pst'
-    # postelem = etree.SubElement(textbody, 'div', type='entry')
-    textbody.append(postbody)
-    # comments
-    if commentsbody is not None:
-        commentsbody.tag = 'div'
-        commentsbody.set('type', 'comments') # rendition='#cmt'
-        # commentselem = etree.SubElement(textbody, 'div', type='comments')
-        textbody.append(commentsbody)
-    return tei
+            tags_list = etree.SubElement(keywords, 'term', type='tags')
+            tags_list.text = ','.join(docmeta.tags)
+    return header
+
+
+#def write_simpleheader(header, docmeta):
+#    filedesc = etree.SubElement(header, 'fileDesc')
+#    #biblfull = etree.SubElement(sourcedesc, 'biblFull')
+#    bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
+#    bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
+#    bib_titlemain.text = docmeta.title
+#    bib_titlesub = etree.SubElement(bib_titlestmt, 'title', type='excerpt')
+#    bib_titlesub.text = docmeta.description
+#    bib_author = etree.SubElement(bib_titlestmt, 'author')
+#    bib_author.text = docmeta.author
+#    publicationstmt = etree.SubElement(filedesc, 'publicationStmt')
+#    publication_publisher = etree.SubElement(publicationstmt, 'publisher')
+#    publication_publisher.text = docmeta.sitename
+#    publication_url = etree.SubElement(publicationstmt, 'idno', type='URL')
+#    publication_url.text = docmeta.url
+#    publication_date = etree.SubElement(publicationstmt, 'date')
+#    publication_date.set('type', 'publication')
+#    publication_date.text = docmeta.date
+#    sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
+#    source_p = etree.SubElement(sourcedesc, 'p')
+#    if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
+#        if len(docmeta.categories) > 0:
+#            cat_list = etree.SubElement(source_p, 'list', type='categories')
+#            for cat in docmeta.categories:
+#                item = etree.SubElement(cat_list, 'item')
+#                item.text = cat
+#        if len(docmeta.tags) > 0:
+#            tags_list = etree.SubElement(source_p, 'list', type='tags')
+#            for tag in docmeta.tags:
+#                item = etree.SubElement(tags_list, 'item')
+#                item.text = tag
+#    return header
