@@ -231,7 +231,7 @@ def test_pages():
     assert metadata.title == "Thousands of UK academics 'treated as second-class citizens'"
     assert metadata.author == 'Richard Adams'
     assert metadata.description.startswith('Report claims higher education institutions')
-    assert metadata.sitename == 'the Guardian'
+    assert metadata.sitename == 'The Guardian' # originally "the Guardian"
     assert metadata.categories == ['Education']
     #assert metadata.tags == [] ## TODO: check tags
     # meta name="keywords"
@@ -353,7 +353,7 @@ def test_pages():
     metadata = scrape(load_mock_page(url))
     assert metadata.title == 'Wie kann ich schnell abnehmen? Der Schlachtplan zum Wunschgewicht'
     assert metadata.author == 'Diane Buckstegge'
-    assert metadata.sitename == 'gofeminin'
+    assert metadata.sitename == 'Gofeminin' # originally "gofeminin"
     assert metadata.url == url
 
     url = 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/'
