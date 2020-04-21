@@ -82,39 +82,70 @@ def handle_lists(element):
     '''Process lists elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter('item'):
+        newchildelem = etree.Element('item')
         if len(child) == 0:
             processed_child = handle_light(child)
             if processed_child is not None:
                 # processed_element.append(deepcopy(processed_child))
-                childelem = etree.SubElement(processed_element, processed_child.tag)
-                childelem.text = processed_child.text
-                childelem.tail = processed_child.tail
+                # childelem = etree.SubElement(processed_element, processed_child.tag)
+                newchildelem.text = processed_child.text
+                newchildelem.tail = processed_child.tail
+                processed_element.append(newchildelem)
         else:
             # print(child.tag, child.text, child.tail)
-            newsub = etree.Element('item')
             # proceed with iteration, fix for nested elements
             for subelem in child.iter():
                 # newsub = etree.Element('item')
-                processed_subchild = handle_light(subelem)  # handle_textnode(subelem, comments_fix=False)
+                processed_subchild = handle_textnode(subelem, comments_fix=False)  # handle_light(subelem)
                 # add child element to processed_element
                 if processed_subchild is not None:
-                    subchildelem = etree.SubElement(newsub, processed_subchild.tag)
+                    subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
                     subchildelem.text = processed_subchild.text
                     subchildelem.tail = processed_subchild.tail
                     # newsub.append(deepcopy(processed_subchild))
                     # processed_element.append(processed_subchild)
                 subelem.tag = 'done'
-            etree.strip_tags(newsub, 'item')
-            #if len(''.join(newsub.itertext())) > 0:
-            processed_element.append(newsub)
+            etree.strip_tags(newchildelem, 'item')
+        if newchildelem.text or len(newchildelem) > 0:
+            processed_element.append(newchildelem)
         child.tag = 'done'
     # avoid double tags??
     if len(processed_element) > 0:  # if it has children
         # test if it has text
         teststring = ''.join(processed_element.itertext())
-        if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
+        if len(teststring) > 0 and re.search(r'\S', teststring):
             return processed_element
     return None
+
+
+#def handle_lists_2(element):
+#    '''Process lists elements'''
+#    processed_element = etree.Element(element.tag)
+#    for child in element.iter('item'):
+#        if len(child) == 0:
+#            processed_child = handle_light(child) # handle_textnode(child, comments_fix=False)
+#            if processed_child is not None:
+#                processed_element.append(deepcopy(processed_child))
+#        else:
+#            newsub = etree.Element('item')
+#            # proceed with iteration, fix for nested elements
+#            for subelem in child.iter():
+#                processed_subchild = handle_light(subelem) # handle_textnode(subelem, comments_fix=False)
+#                # add child element to processed_element
+#                if processed_subchild is not None:
+#                   newsub.append(deepcopy(processed_subchild))
+#                   # processed_element.append(processed_subchild)
+#                subelem.tag = 'done'
+#            etree.strip_tags(newsub, 'item')
+#            processed_element.append(newsub)
+#        child.tag = 'done'
+#    # avoid double tags??
+#    if len(processed_element) > 0:  # if it has children
+#        # test if it has text
+#        #teststring = ''.join(processed_element.itertext())
+#        #if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
+#        return processed_element
+#    return None
 
 
 def handle_quotes(element):
