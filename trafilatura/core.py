@@ -24,7 +24,7 @@ from .metadata import scrape as extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
-from .xml import build_outputtree, xmltotxt
+from .xml import build_outputtree, validate_tei, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
@@ -628,6 +628,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         # necessary for cleaning
         control_parser = etree.XMLParser(remove_blank_text=True)
         output_tree = etree.fromstring(control_string, control_parser)
+        # validate
+        if tei_output is True and tei_validation is True:
+            result = validate_tei(output_tree)
+            LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
     return returnstring

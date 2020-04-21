@@ -41,10 +41,6 @@ def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comment
         # filter output (strip unwanted elements), just in case
         # check and repair
         output = check_tei(output, docmeta.url)
-        # validate
-        if tei_validation is True:
-            result = validate_tei(output)
-            LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
     # XML
     else:
         output = etree.Element('doc')

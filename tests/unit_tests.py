@@ -624,7 +624,7 @@ def test_tei():
     result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=True)
     assert result is not None
     mytree = etree.fromstring(result)
-    assert xml.validate_tei(mytree) is not None # problem here: True
+    assert xml.validate_tei(mytree) is True
 
 
 if __name__ == '__main__':
