@@ -306,11 +306,16 @@ def scrape(filecontent, default_url=None):
     # sitename
     if mymeta.sitename is None:
         mymeta = mymeta._replace(sitename=extract_sitename(tree))
-    if mymeta.sitename and mymeta.sitename.startswith('@'):
-        # scrap Twitter ID
-        newsitename = re.sub(r'^@', '',  mymeta.sitename)
-        mymeta = mymeta._replace(sitename=newsitename)
-    if mymeta.sitename is None:
+    if mymeta.sitename:
+        if mymeta.sitename.startswith('@'):
+            # scrap Twitter ID
+            newsitename = re.sub(r'^@', '',  mymeta.sitename)
+            mymeta = mymeta._replace(sitename=newsitename)
+        # capitalize
+        if not '.' in mymeta.sitename and not mymeta.sitename[0].isupper():
+            newsitename = mymeta.sitename.title()
+            mymeta = mymeta._replace(sitename=newsitename)
+    else:
         # use URL
         if mymeta.url:
             mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', mymeta.url)
