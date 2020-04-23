@@ -166,7 +166,7 @@ def handle_textnode(element, comments_fix=True):
     return element
 
 
-def handle_light(element):
+def process_node(element):
     '''Convert, format, and probe potential text elements (light format)'''
     if element.tag == 'done':
         return None
@@ -177,6 +177,7 @@ def handle_light(element):
         element.text = trim(element.text)
     if element.tail:
         element.tail = trim(element.tail)
+    # content checks
     if element.tag != 'lb' and not element.text and element.tail:
         element.text = element.tail
     if element.text or element.tail:

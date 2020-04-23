@@ -162,9 +162,10 @@ def test_trim():
     assert trim('	Test  ') == 'Test'
     assert trim('\t\tTest  Test\r\n') == 'Test Test'
     my_elem = etree.Element('body')
-    #my_elem.text = 'Test Text'
-    #assert textfilter(my_elem) is False
-    my_elem.text = 'Tags: Arbeit, Urlaub'
+    my_elem.text = 'Test Text'
+    assert textfilter(my_elem) is False
+    # my_elem.text = 'Tags: Arbeit, Urlaub'
+    my_elem.text = 'Instagram'
     assert textfilter(my_elem) is True
 
 

@@ -17,10 +17,11 @@ from lxml import etree, html
 
 # own
 from .external import justext_rescue, try_readability
-from .filters import duplicate_test, language_filter, put_in_cache, COMMENTS_BLACKLIST
-from .htmlprocessing import (convert_tags, handle_light, handle_textnode, manual_cleaning,
-                             prune_html, discard_unwanted, discard_unwanted_comments)
-from .metadata import scrape as extract_metadata
+from .filters import duplicate_test, language_filter, put_in_cache
+from .htmlprocessing import (convert_tags, discard_unwanted,
+                             discard_unwanted_comments, handle_textnode,
+                             manual_cleaning, process_node, prune_html)
+from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
@@ -59,7 +60,7 @@ def handle_titles(element):
     if element.tail and re.search(r'\w', element.tail):
         LOGGER.debug('tail in title, stripping: %s', element.tail)
     element.tail = None
-    title = handle_light(element)
+    title = process_node(element)
     if title is not None and title.text and re.search(r'\w', title.text):
         return title
     return None
@@ -84,7 +85,7 @@ def handle_lists(element):
     for child in element.iter('item'):
         newchildelem = etree.Element('item')
         if len(child) == 0:
-            processed_child = handle_light(child)
+            processed_child = process_node(child)
             if processed_child is not None:
                 # processed_element.append(deepcopy(processed_child))
                 # childelem = etree.SubElement(processed_element, processed_child.tag)
@@ -96,7 +97,7 @@ def handle_lists(element):
             # proceed with iteration, fix for nested elements
             for subelem in child.iter():
                 # newsub = etree.Element('item')
-                processed_subchild = handle_textnode(subelem, comments_fix=False)  # handle_light(subelem)
+                processed_subchild = handle_textnode(subelem, comments_fix=False)  # process_node(subelem)
                 # add child element to processed_element
                 if processed_subchild is not None:
                     subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
@@ -123,14 +124,14 @@ def handle_lists(element):
 #    processed_element = etree.Element(element.tag)
 #    for child in element.iter('item'):
 #        if len(child) == 0:
-#            processed_child = handle_light(child) # handle_textnode(child, comments_fix=False)
+#            processed_child = process_node(child) # handle_textnode(child, comments_fix=False)
 #            if processed_child is not None:
 #                processed_element.append(deepcopy(processed_child))
 #        else:
 #            newsub = etree.Element('item')
 #            # proceed with iteration, fix for nested elements
 #            for subelem in child.iter():
-#                processed_subchild = handle_light(subelem) # handle_textnode(subelem, comments_fix=False)
+#                processed_subchild = process_node(subelem) # handle_textnode(subelem, comments_fix=False)
 #                # add child element to processed_element
 #                if processed_subchild is not None:
 #                   newsub.append(deepcopy(processed_subchild))
@@ -152,7 +153,7 @@ def handle_quotes(element):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
-        processed_child = handle_light(child) # handle_textnode(child, comments_fix=True)
+        processed_child = process_node(child) # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
             # processed_element.append(deepcopy(processed_child))
             newsub = etree.SubElement(processed_element, child.tag)
@@ -176,7 +177,7 @@ def handle_other_elements(element, potential_tags):
         # LOGGER.debug('discarding: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
-        processed_element = handle_textnode(element, comments_fix=False)  # handle_light(element)
+        processed_element = handle_textnode(element, comments_fix=False)  # process_node(element)
         if processed_element is not None:
             processed_element.attrib.clear()
             # small div-correction # could be moved elsewhere
@@ -196,7 +197,7 @@ def handle_paragraphs(element, potential_tags):
     # etree.strip_tags(element, 'p')
     # no children
     if len(element) == 0:
-        processed_element = handle_light(element)  # handle_textnode(element, comments_fix=False)
+        processed_element = process_node(element)  # handle_textnode(element, comments_fix=False)
         if processed_element is not None:
             return processed_element
         return None
@@ -228,7 +229,7 @@ def handle_paragraphs(element, potential_tags):
             elif child.tag == 'lb':
                 #processed_child.tail = handle_textnode(child, comments_fix=False).tail
                 try:
-                    processed_child.tail = handle_light(child).tail
+                    processed_child.tail = process_node(child).tail
                 except AttributeError:  # no text
                     pass
             # prepare text
@@ -275,7 +276,7 @@ def handle_table(table_elem):
             #    continue
         elif subelement.tag in ('td', 'th'):
             # process
-            processed_cell = handle_light(subelement)
+            processed_cell = process_node(subelement)
             if processed_cell is None or processed_cell.text is None or len(processed_cell.text) < 1:
                 continue
             # define tag
@@ -327,7 +328,7 @@ def handle_textelem(element, potential_tags):
     elif element.tag == 'lb':
         if element.tail is not None and not element.tail.isspace():
             new_element = etree.Element('p')
-            new_element.text = handle_light(element).tail
+            new_element.text = process_node(element).tail
             # new_element.text = handle_textnode(element, comments_fix=False).tail
     elif element.tag == 'hi':
         new_element = handle_formatting(element)
@@ -398,7 +399,7 @@ def process_comments_node(elem, potential_tags):
         # print(elem.tag, elem.text_content())
         processed_element = handle_textnode(elem, comments_fix=True)
         # test length and remove
-        if processed_element is not None and processed_element.text not in COMMENTS_BLACKLIST:
+        if processed_element is not None: # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
             # if textfilter(elem) is True: # ^Pingback
             #    return None

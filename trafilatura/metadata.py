@@ -264,7 +264,7 @@ def extract_catstags(metatype, tree):
     return results
 
 
-def scrape(filecontent, default_url=None):
+def extract_metadata(filecontent, default_url=None):
     '''Main process for metadata extraction'''
     # create named tuple
     Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
