@@ -89,7 +89,7 @@ On the command-line:
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
 
-For more information please refer to the `usage documentation <usage.html>`_.
+For more information please refer to `quickstart <quickstart.html>`_, `usage documentation <usage.html>`_ and `tutorial <tutorial1.html>`_.
 
 
 License
@@ -160,6 +160,7 @@ Further documentation
    corefunctions
    evaluation
    installation
+   quickstart
    usage
    validation
    tutorial1

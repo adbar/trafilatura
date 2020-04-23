@@ -86,7 +86,7 @@ The ``-i/--inputfile`` option allows for bulk download and processing of a list 
 
 For all usage instructions see ``trafilatura -h``:
 
-``usage: trafilatura [-h] [-f] [--formatting] [-i INPUTFILE] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
+``usage: trafilatura [-h] [-f] [--formatting] [-i INPUTFILE] [-i OUTPUTDIR] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -94,6 +94,8 @@ optional arguments:
   --formatting          include text formatting (bold, italic, etc.)
   -i INPUTFILE, --inputfile INPUTFILE
                      name of input file for batch processing
+  -o OUTPUTDIR, --outputdir OUTPUTDIR
+                     write results in a specified directory (relative path)
   --nocomments       don't output any comments
   --notables         don't output any table elements
   --csv              CSV output
