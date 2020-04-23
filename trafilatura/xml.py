@@ -29,46 +29,49 @@ TEI_RELAXNG = None # to be downloaded later if necessary
 # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
 
 
-def build_outputtree(record_id, postbody, commentsbody, docmeta, include_comments, tei_output, tei_validation):
-    '''Build XML output tree based on options and extracted information'''
-    # clear comments if necessary
-    if include_comments is False:
-        commentsbody = None
-    # TEI-XML
-    if tei_output is True:
-        # build TEI tree
-        output = write_teitree(postbody, commentsbody, docmeta)
-        # filter output (strip unwanted elements), just in case
-        # check and repair
-        output = check_tei(output, docmeta.url)
-    # XML
-    else:
-        output = etree.Element('doc')
-        postbody.tag = 'main'
-        output.append(postbody)
-        if commentsbody is not None:
-            commentsbody.tag = 'comments'
-            output.append(commentsbody)
-        # metadata
-        if docmeta:
-            if docmeta.sitename is not None:
-                output.set('sitename', docmeta.sitename)
-            if docmeta.title is not None:
-                output.set('title', docmeta.title)
-            if docmeta.author is not None:
-                output.set('author', docmeta.author)
-            if docmeta.date is not None:
-                output.set('date', docmeta.date)
-            if docmeta.url is not None:
-                output.set('source', docmeta.url)
-            if docmeta.description is not None:
-                output.set('excerpt', docmeta.description)
-            if docmeta.categories is not None and len(docmeta.categories) > 0:
-                cats = ';'.join(docmeta.categories)
-                output.set('categories', cats)
-            if docmeta.tags is not None and len(docmeta.tags) > 0:
-                tags = ';'.join(docmeta.tags)
-                output.set('tags', tags)
+def build_xml_output(postbody, commentsbody):
+    '''Build XML output tree based on extracted information'''
+    output = etree.Element('doc')
+    postbody.tag = 'main'
+    output.append(postbody)
+    if commentsbody is not None:
+        commentsbody.tag = 'comments'
+        output.append(commentsbody)
+    return output
+
+
+def add_xml_meta(output, docmeta):
+    '''Add extracted metadata to the XML output tree'''
+    # metadata
+    if docmeta:
+        if docmeta.sitename is not None:
+            output.set('sitename', docmeta.sitename)
+        if docmeta.title is not None:
+            output.set('title', docmeta.title)
+        if docmeta.author is not None:
+            output.set('author', docmeta.author)
+        if docmeta.date is not None:
+            output.set('date', docmeta.date)
+        if docmeta.url is not None:
+            output.set('source', docmeta.url)
+        if docmeta.description is not None:
+            output.set('excerpt', docmeta.description)
+        if docmeta.categories is not None and len(docmeta.categories) > 0:
+            cats = ';'.join(docmeta.categories)
+            output.set('categories', cats)
+        if docmeta.tags is not None and len(docmeta.tags) > 0:
+            tags = ';'.join(docmeta.tags)
+            output.set('tags', tags)
+    return output
+
+
+def build_tei_output(postbody, commentsbody, docmeta):
+    '''Build TEI-XML output tree based on extracted information'''
+    # build TEI tree
+    output = write_teitree(postbody, commentsbody, docmeta)
+    # filter output (strip unwanted elements), just in case
+    # check and repair
+    output = check_tei(output, docmeta.url)
     return output
 
 

@@ -309,7 +309,7 @@ def extract_metadata(filecontent, default_url=None):
     if mymeta.sitename:
         if mymeta.sitename.startswith('@'):
             # scrap Twitter ID
-            newsitename = re.sub(r'^@', '',  mymeta.sitename)
+            newsitename = re.sub(r'^@', '', mymeta.sitename)
             mymeta = mymeta._replace(sitename=newsitename)
         # capitalize
         if not '.' in mymeta.sitename and not mymeta.sitename[0].isupper():

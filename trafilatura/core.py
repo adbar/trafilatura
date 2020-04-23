@@ -25,7 +25,7 @@ from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
-from .xml import build_outputtree, validate_tei, xmltotxt
+from .xml import add_xml_meta, build_tei_output, build_xml_output, validate_tei, xmltotxt
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
@@ -438,7 +438,7 @@ def extract_comments(tree):
     return comments_body, temp_comments, len_comments, tree
 
 
-def compare_extraction(tree, url, body, text, len_text, sure_thing):
+def compare_extraction(tree, url, body, text, len_text):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     if tree is None:
@@ -568,14 +568,14 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     if include_comments is True:
         commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree)
     else:
-        commentsbody, temp_comments, len_comments = etree.Element('body'), '', 0
+        commentsbody, temp_comments, len_comments = None, '', 0
 
     # extract content
     postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables)
 
     # compare if necessary
     if no_fallback is False: # and sure_thing is False:
-        postbody, temp_text, len_text = compare_extraction(backup_tree, url, postbody, temp_text, len_text, sure_thing)
+        postbody, temp_text, len_text = compare_extraction(backup_tree, url, postbody, temp_text, len_text)
         # try with justext
         if len_text < MIN_EXTRACTED_SIZE:
             LOGGER.error('not enough text %s %s', record_id, url)
@@ -603,26 +603,22 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     if language_filter(temp_text, temp_comments, target_language, record_id, url) is True:
         return None
 
-    # cache elements
-    put_in_cache(postbody)
-    put_in_cache(commentsbody)
-    # del tree_cache[cleaned_tree]
-
-    # XML (TEI) steps
-    output = build_outputtree(record_id, postbody, commentsbody, docmeta, include_comments, tei_output, tei_validation)
-
     # check duplicates at body level
     if duplicate_test(postbody) is True:
         return None
 
-    if xml_output is False and tei_output is False:
-        if csv_output is False:
-            returnstring = xmltotxt(output)
-        else:
-            posttext = xmltotxt(postbody)
-            commentstext = xmltotxt(commentsbody)
-            returnstring = txttocsv(posttext, commentstext, docmeta)
-    else:
+    # cache elements
+    put_in_cache(postbody)
+    if commentsbody is not None:
+        put_in_cache(commentsbody)
+
+    # XML (TEI) steps
+    if xml_output is True or tei_output is True:
+        if xml_output is True:
+            output = build_xml_output(postbody, commentsbody)
+            output = add_xml_meta(output, docmeta)
+        elif tei_output is True:
+            output = build_tei_output(postbody, commentsbody, docmeta)
         # can be improved
         control_string = etree.tostring(output, encoding='unicode')
         control_string = sanitize(control_string)
@@ -634,6 +630,15 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             result = validate_tei(output_tree)
             LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
+    # CSV + TXT output
+    else:
+        if csv_output is True:
+            posttext = xmltotxt(postbody)
+            commentstext = xmltotxt(commentsbody)
+            returnstring = txttocsv(posttext, commentstext, docmeta)
+        else:
+            output = build_xml_output(postbody, commentsbody)
+            returnstring = xmltotxt(output)
 
     return returnstring
 
