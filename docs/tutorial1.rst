@@ -1,5 +1,5 @@
-Tutorial: from a list of links to a vocabulary list
-===================================================
+Tutorial: from a list of links to a frequency list
+==================================================
 
 
 Get your system up and running
@@ -8,10 +8,6 @@ Get your system up and running
 -  Installation: see `dedicated page <installation.html>`_
 -  Making sure you have the latest version: ``pip install -U trafilatura``
 -  Additional software for this tutorial: ``pip install -U SoMaJo``
-
-*Temporary advice: parts of this tutorial require a cutting-edge version of the software which can be installed straight from the software repository:*
-
-``pip install -U git+https://github.com/adbar/trafilatura.git``
 
 The following consists of command-line instructions. For general information see `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems), `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_, or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_.
 

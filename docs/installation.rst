@@ -25,6 +25,7 @@ Installing Python packages
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 -  Straightforward: `Installing packages in python using pip <https://thepythonguru.com/installing-packages-in-python-using-pip/>`_ (& `official documentation <https://pip.pypa.io/en/stable/>`_)
+   -  `Using pip on Windows <https://projects.raspberrypi.org/en/projects/using-pip-on-windows/2>`_
 -  Advanced: `Pipenv & Virtual Environments <https://docs.python-guide.org/dev/virtualenvs/>`_
 
 

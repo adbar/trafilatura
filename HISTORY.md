@@ -1,8 +1,13 @@
 ## History / Changelog
 
 
-### 0.4
+### 0.4.1
+- better metadata extraction and integration (XML & XML-TEI)
+- more efficient processing
+- output directory as CLI-option
 
+
+### 0.4
 - improved "fast" mode (accuracy and speed)
 - better fallbacks with readability-lxml and justext
 - metadata extraction added
