@@ -18,31 +18,33 @@ LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
 
-def extract_json(tree):
+def extract_json(tree, mymeta):
     '''Crudely extract metadata from JSON-LD data'''
-    author, sitename, categories = (None,) * 3
     for elem in tree.xpath('//script[@type="application/ld+json"]|//script[@type="application/settings+json"]'):
         if elem.text and '"author":' in elem.text:
             mymatch = re.search(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch and ' ' in mymatch.group(1):
-                author = trim(mymatch.group(1))
+                mymeta = mymeta._replace(author=trim(mymatch.group(1)))
             else:
                 mymatch = re.search(r'"author"[^}]+?"names?".+?"([^"]+)', elem.text, re.DOTALL)
                 if mymatch and ' ' in mymatch.group(1):
-                    author = trim(mymatch.group(1))
+                    mymeta = mymeta._replace(author=trim(mymatch.group(1)))
         # try to extract publisher
         if 'publisher' in elem.text:
             mymatch = re.search(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch and not ',' in mymatch.group(1):
-                sitename = trim(mymatch.group(1))
+                mymeta = mymeta._replace(sitename=trim(mymatch.group(1)))
         # category
         if 'articleSection' in elem.text:
             mymatch = re.search(r'"articleSection": ?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch:
-                categories = [trim(mymatch.group(1))]
-            # try to extract title
-            # if 'headline' in elem.text:
-    return author, sitename, categories
+                mymeta = mymeta._replace(categories=[trim(mymatch.group(1))])
+        # try to extract title
+        if 'headline' in elem.text and mymeta.title is None:
+            mymatch = re.search(r'"headline": ?"([^"\\]+)', elem.text, re.DOTALL)
+            if mymatch:
+                mymeta = mymeta._replace(title=trim(mymatch.group(1)))
+    return mymeta
 
 
 def extract_opengraph(tree):
@@ -286,27 +288,17 @@ def extract_metadata(filecontent, default_url=None):
         return None
     # meta tags
     mymeta = Metadata._make(examine_meta(tree))
-    # title
-    # override if something has been found
-    #mytitle = extract_title(tree)
-    #if mytitle is not None:
-    #    mymeta = mymeta._replace(title=mytitle)
-    if mymeta.title is None:
-        mymeta = mymeta._replace(title=extract_title(tree))
-    # author
     # correction: author not a name
     if mymeta.author is not None:
         if ' ' not in mymeta.author or mymeta.author.startswith('http'):
             mymeta = mymeta._replace(author=None)
     # fix: try json-ld metadata and override
-    json_author, json_sitename, json_categories = extract_json(tree)
-    if json_author is not None and mymeta.author is None:
-        mymeta = mymeta._replace(author=json_author)
-    if json_sitename is not None:
-        mymeta = mymeta._replace(sitename=json_sitename)
-    if json_categories is not None:
-        mymeta = mymeta._replace(categories=json_categories)
+    mymeta = extract_json(tree, mymeta)
     # try with x-paths
+    # title
+    if mymeta.title is None:
+        mymeta = mymeta._replace(title=extract_title(tree))
+    # author
     if mymeta.author is None:
         mymeta = mymeta._replace(author=extract_author(tree))
     # url
