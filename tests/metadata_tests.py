@@ -339,7 +339,7 @@ def test_pages():
     assert metadata.title == 'Nutzerbasierte Abrechnung: Musik-Stars fordern neues Streaming-Modell'
     # author overriden from JSON-LD + double name
     assert 'Benjamin Fischer' in metadata.author
-    assert metadata.sitename == 'FAZ.NET'
+    assert metadata.sitename == 'Frankfurter Allgemeine Zeitung'
     assert metadata.url == 'https://www.faz.net/1.6604622'
 
     url = 'https://boingboing.net/2013/07/19/hating-millennials-the-preju.html'
@@ -374,12 +374,12 @@ def test_pages():
     url = 'https://www.salon.com/2020/01/10/despite-everything-u-s-emissions-dipped-in-2019_partner/'
     metadata = extract_metadata(load_mock_page(url))
     assert metadata.title == 'Despite everything, U.S. emissions dipped in 2019'
-    # author in JSON-LD
+    # in JSON-LD
     assert metadata.author == 'Nathanael Johnson'
+    assert metadata.sitename == 'Salon.com'
     # in header
     assert 'Science & Health' in metadata.categories
     assert 'Gas Industry' in metadata.tags and 'coal emissions' in metadata.tags
-    assert metadata.sitename == 'Salon'
     assert metadata.url == url
 
 

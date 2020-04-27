@@ -18,21 +18,25 @@ LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
 
-def extract_json_author(tree):
-    '''Crudely extract author name from JSON-LD data'''
+def extract_json(tree):
+    '''Crudely extract metadata from JSON-LD data'''
+    author = None
+    sitename = None
     for elem in tree.xpath('//script[@type="application/ld+json"]|//script[@type="application/settings+json"]'):
         if elem.text and '"author":' in elem.text:
-            mymatch = re.search(r'"author":.+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
-            if mymatch:
+            mymatch = re.search(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
+            if mymatch and ' ' in mymatch.group(1):
                 author = trim(mymatch.group(1))
-                return author
-            #mymatch = re.search(r'"author".+?"names".+?"([^"]+)', elem.text, re.DOTALL)
-            #print(elem.text)
-            #print(mymatch)
-            #if mymatch:
-            #    author = trim(mymatch.group(1))
-            #    return author
-    return None
+            else:
+                mymatch = re.search(r'"author"[^}]+?"names?".+?"([^"]+)', elem.text, re.DOTALL)
+                if mymatch and ' ' in mymatch.group(1):
+                    author = trim(mymatch.group(1))
+            # try to extract publisher
+            if 'publisher' in elem.text:
+                mymatch = re.search(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
+                if mymatch:
+                    sitename = trim(mymatch.group(1))
+    return author, sitename
 
 
 def extract_opengraph(tree):
@@ -288,9 +292,11 @@ def extract_metadata(filecontent, default_url=None):
         if ' ' not in mymeta.author or mymeta.author.startswith('http'):
             mymeta = mymeta._replace(author=None)
     # fix: try json-ld metadata and override
-    jsonauthor = extract_json_author(tree)
-    if jsonauthor is not None and mymeta.author is None:
-        mymeta = mymeta._replace(author=jsonauthor)
+    json_author, json_sitename = extract_json(tree)
+    if json_author is not None and mymeta.author is None:
+        mymeta = mymeta._replace(author=json_author)
+    if json_sitename is not None:
+        mymeta = mymeta._replace(sitename=json_sitename)
     # try with x-paths
     if mymeta.author is None:
         mymeta = mymeta._replace(author=extract_author(tree))
