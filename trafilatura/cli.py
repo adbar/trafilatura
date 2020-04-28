@@ -49,12 +49,16 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
         sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
-        result = extract(htmlstring, url, '0000', no_fallback=no_fallback,
+        try:
+            result = extract(htmlstring, url, '0000', no_fallback=no_fallback,
                          include_comments=include_comments, include_tables=include_tables,
                          csv_output=csv_output, xml_output=xml_output,
                          tei_output=tei_output, tei_validation=validation,
                          include_formatting=formatting)
-        return result
+            return result
+        # ugly but efficient
+        except Exception as err:
+             LOGGER.error('%s for %s\nDetails: %s', err, url, sys.exc_info()[0])
     return None
 
 
@@ -102,7 +106,7 @@ def parse_args(args):
 def write_result(url, result, args):
     '''Deal with result (write to STDOUT or to file)'''
     if result is None:
-        sys.stdout.write('# ERROR: no valid result for url ' + url + '\n')
+        sys.stdout.write('# ERROR: no valid result for ' + url + '\n')
     else:
         if args.outputdir is None:
             sys.stdout.write(result + '\n')
@@ -134,38 +138,37 @@ def main():
     if args.verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     if args.inputfile:
-        # optional: errors='strict', buffering=1
-        with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
-            for line in inputfile:
-                if not line.startswith('http'):
-                    LOGGER.warning('Not an URL, discarding line: %s', line)
-                    continue
-                url = line.strip()
-                htmlstring = fetch_url(url)
-                try:
+        try:
+            # optional: errors='strict', buffering=1
+            with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
+                for line in inputfile:
+                    if not line.startswith('http'):
+                        LOGGER.warning('Not an URL, discarding line: %s', line)
+                        continue
+                    url = line.strip()
+                    htmlstring = fetch_url(url)
                     result = examine(htmlstring, url=url, no_fallback=args.fast,
                                      include_comments=args.nocomments, include_tables=args.notables,
                                      csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
                                      validation=args.validate, formatting=args.formatting)
-                # ugly but efficient
-                except Exception as err:
-                    result = '# ERROR:' + err + sys.exc_info()[0] + ' for url ' + url + '\n'
-                write_result(url, result, args)
-                # sleep 2 sec between requests
-                sleep(2)
+                    write_result(url, result, args)
+                    # sleep 2 sec between requests
+                    sleep(2)
+        except UnicodeDecodeError:
+            sys.exit('# ERROR: system, file type or buffer encoding')
     else:
         # process input URL
         if args.URL:
             htmlstring = fetch_url(args.URL)
             if htmlstring is None:
-                sys.exit('# ERROR no valid result for url: ' + args.URL + '\n')
+                sys.exit('# ERROR: no valid result for url: ' + args.URL + '\n')
         # process input on STDIN
         else:
-            # unicode check
+            # file type and unicode check
             try:
                 htmlstring = sys.stdin.read()
-            except UnicodeDecodeError as err:
-                sys.exit('# ERROR system/buffer encoding: ' + err + '\n')
+            except UnicodeDecodeError:
+                sys.exit('# ERROR: system, file type or buffer encoding')
         # process
         result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
                          include_comments=args.nocomments, include_tables=args.notables,

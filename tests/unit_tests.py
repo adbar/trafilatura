@@ -628,12 +628,21 @@ def test_tei():
     assert xml.validate_tei(mytree) is True
 
 
+def test_input_type():
+    '''test input type errors'''
+    testfile = 'docs/trafilatura-demo.gif'
+    with open(testfile, 'rb') as f:
+        teststring = f.read(1024)
+    assert cli.examine(teststring) is None
+
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
     test_input()
     test_parser()
     test_climain()
+    test_input_type()
     test_formatting()
     test_filters()
     test_jsontext()

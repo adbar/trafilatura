@@ -139,40 +139,41 @@ def load_html(htmlobject):
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
     # try to detect encoding and convert to string
-    if isinstance(htmlobject, bytes):
-        guessed_encoding = detect_encoding(htmlobject)
-        if guessed_encoding is not None:
-            if guessed_encoding == 'UTF-8':
-                tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+    elif isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
+        if isinstance(htmlobject, bytes):
+            guessed_encoding = detect_encoding(htmlobject)
+            if guessed_encoding is not None:
+                if guessed_encoding == 'UTF-8':
+                    tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+                else:
+                    try:
+                        htmlobject = htmlobject.decode(guessed_encoding)
+                    except UnicodeDecodeError:
+                        LOGGER.warning('encoding issue: %s', guessed_encoding)
+                        tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
             else:
-                try:
-                    htmlobject = htmlobject.decode(guessed_encoding)
-                except UnicodeDecodeError:
-                    LOGGER.warning('encoding issue: %s', guessed_encoding)
-                    tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+                tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+        # use string if applicable
         else:
-            tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-    # use string if applicable
-    if isinstance(htmlobject, str):
-        try:
-            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-        except ValueError:
-            # try to parse a bytestring
             try:
-                tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+                tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+            except ValueError:
+                # try to parse a bytestring
+                try:
+                    tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
+                except Exception as err:
+                    LOGGER.error('parser bytestring %s', err)
             except Exception as err:
-                LOGGER.error('parser bytestring %s', err)
-        #except UnicodeDecodeError as err:
-        #    LOGGER.error('unicode %s', err)
-        #except UnboundLocalError as err:
-        #    LOGGER.error('parsed string %s', err)
-        #except (etree.XMLSyntaxError, AttributeError) as err:
-        #    LOGGER.error('parser %s', err)
-        except Exception as err:
-            LOGGER.error('parsing failed: %s', err)
+                LOGGER.error('parsing failed: %s', err)
+        # test if it's HTML
+        if tree is not None:
+            elements = tree.xpath('.//*')
+            if len(elements) == 0 or (len(elements) == 1 and elements[0].tag in ('p', 's')):
+                LOGGER.error('Parse tree empty: not valid HTML')
+                tree = None
     # default to None
-    #else:
-    #    LOGGER.error('this type cannot be processed: %s', type(htmlobject))
+    else:
+        LOGGER.error('this type cannot be processed: %s', type(htmlobject))
     # further test
     #if tree is not None:
     #    try:
