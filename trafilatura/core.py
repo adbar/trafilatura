@@ -484,6 +484,8 @@ def baseline(filecontent):
     """Use baseline extraction function targeting JSON metadata and/or text paragraphs"""
     tree = load_html(filecontent)
     postbody = etree.Element('body')
+    if tree is None:
+        return postbody, 0, ''
     # scrape from json text
     for elem in tree.xpath('//script[@type="application/ld+json"]'):
         if elem.text and '"articleBody":' in elem.text:

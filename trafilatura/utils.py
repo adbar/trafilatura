@@ -134,13 +134,17 @@ def load_html(htmlobject):
     """Load object given as input and validate its type
     (accepted: LXML tree, bytestring and string)
     """
-    tree = None
     # use tree directly
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
+    tree = None
     # try to detect encoding and convert to string
-    elif isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
+    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
+        check_flag = False
         if isinstance(htmlobject, bytes):
+            # test
+            if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore'):
+                check_flag = True
             guessed_encoding = detect_encoding(htmlobject)
             if guessed_encoding is not None:
                 if guessed_encoding == 'UTF-8':
@@ -155,6 +159,9 @@ def load_html(htmlobject):
                 tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
         # use string if applicable
         else:
+            # test
+            if 'html' not in htmlobject[:50]:
+                check_flag = True
             try:
                 tree = html.fromstring(htmlobject, parser=HTML_PARSER)
             except ValueError:
@@ -166,9 +173,13 @@ def load_html(htmlobject):
             except Exception as err:
                 LOGGER.error('parsing failed: %s', err)
         # test if it's HTML
-        if tree is not None:
-            elements = tree.xpath('.//*')
-            if len(elements) == 0 or (len(elements) == 1 and elements[0].tag in ('p', 's')):
+        if tree is not None and check_flag is True:
+            i = 0
+            for element in tree.xpath('.//*'):
+                i += 1
+                if i > 1:
+                    break
+            if i == 0 or (i == 1 and element.tag in ('p', 's')):
                 LOGGER.error('Parse tree empty: not valid HTML')
                 tree = None
     # default to None
