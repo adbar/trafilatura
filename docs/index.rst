@@ -162,8 +162,9 @@ Further documentation
    installation
    quickstart
    usage
-   validation
+   tutorial0
    tutorial1
+   tutorial2
 
 
 Indices and tables

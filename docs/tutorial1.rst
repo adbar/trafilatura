@@ -1,4 +1,4 @@
-Tutorial: from a list of links to a frequency list
+Tutorial: From a list of links to a frequency list
 ==================================================
 
 
@@ -14,6 +14,8 @@ The following consists of command-line instructions. For general information see
 
 Process a list of links
 -----------------------
+
+For the collection and filtering of links see `this tutorial <tutorial0.html>`_ and this `blog post <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
 
 Two major options are necessary here:
 
