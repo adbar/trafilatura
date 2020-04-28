@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html  xmlns="http://www.w3.org/1999/xhtml" prefix="" lang="de-DE">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">    <link rel="shortcut icon" href="https://neunzehn72.de/wp-content/uploads/2016/12/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://neunzehn72.de/wp-content/themes/soho/img/apple_icons_57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://neunzehn72.de/wp-content/themes/soho/img/apple_icons_72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://neunzehn72.de/wp-content/themes/soho/img/apple_icons_114x114.png">
+    <title>iMac 5K Lightroom Performance gelöst – Danke an die Community | Neunzehn72</title>
+    <link rel="pingback" href="https://neunzehn72.de/xmlrpc.php">
+    <script type="text/javascript">
+        var gt3_ajaxurl = "https://neunzehn72.de/wp-admin/admin-ajax.php";
+    </script>
+    <style>/* roboto-300 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: url('https://neunzehn72.de/fonts/roboto-v18-latin-300.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Light'), local('Roboto-Light'),
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-300.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-300.woff2') format('woff2'), /* Super Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-300.woff') format('woff'), /* Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-300.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-300.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://neunzehn72.de/fonts/roboto-v18-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Roboto'), local('Roboto-Regular'),
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-regular.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+/* roboto-500 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: url('https://neunzehn72.de/fonts/roboto-v18-latin-500.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Medium'), local('Roboto-Medium'),
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-500.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-500.woff2') format('woff2'), /* Super Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-500.woff') format('woff'), /* Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-500.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-500.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+/* roboto-700 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: url('https://neunzehn72.de/fonts/roboto-v18-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-700.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+/* roboto-900 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  src: url('https://neunzehn72.de/fonts/roboto-v18-latin-900.eot'); /* IE9 Compat Modes */
+  src: local('Roboto Black'), local('Roboto-Black'),
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-900.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-900.woff2') format('woff2'), /* Super Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-900.woff') format('woff'), /* Modern Browsers */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-900.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('https://neunzehn72.de/fonts/roboto-v18-latin-900.svg#Roboto') format('svg'); /* Legacy iOS */
+}
+/* Responsive Videos */
+.video-container {
+	position: relative;
+	padding-bottom: 56.25%;
+	padding-top: 30px;
+	height: 0;
+	overflow: hidden;
+}
+
+.video-container iframe,
+.video-container object,
+.video-container embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}</style><!-- Facebook Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1947699938791833'); // Insert your pixel ID here.
+fbq('track', 'PageView');
+</script>
+
+
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1947699938791833&ev=PageView&noscript=1"
+/></noscript>
+<!-- DO NOT MODIFY -->
+<!-- End Facebook Pixel Code -->
+<meta property="fb:pages" content="109948869047172" />
+
+<!-- BEGIN Metadata added by the Add-Meta-Tags WordPress plugin -->
+<meta name="description" content="Ich freue mich wie ein kleines Kind. Nachdem ich in meinem letzten VLog die Performance von Lightroom auf meinem neuen iMac Pro beklagt hatte, bekam ich von drei Lesern einen sehr hilfreichen Tipp." />
+<meta name="keywords" content="mac, imac, lightroom, performance" />
+<!-- END Metadata added by the Add-Meta-Tags WordPress plugin -->
+
+	<script type="text/javascript">
+		/* Google Analytics Opt-Out WordPress by WP-Buddy | https://wp-buddy.com/products/plugins/google-analytics-opt-out */
+				var gaoop_property    = 'UA-298605-15';
+		var gaoop_disable_str = 'ga-disable-' + gaoop_property;
+		if ( document.cookie.indexOf( gaoop_disable_str + '=true' ) > -1 ) {
+			window[ gaoop_disable_str ] = true;
+		}
+
+		function gaoop_analytics_optout() {
+			document.cookie             = gaoop_disable_str + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+			window[ gaoop_disable_str ] = true;
+			alert('Vielen Dank. Wir haben ein Cookie gesetzt damit Google Analytics bei Deinem nächsten Besuch keine Daten mehr sammeln kann.');		}
+			</script>
+	
+<!-- All in One SEO Pack 2.4.2 by Michael Torbert of Semper Fi Web Designob_start_detected [-1,-1] -->
+<meta name="keywords"  content="imac,lightroom,performance" />
+
+<link rel="canonical" href="https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/" />
+<!-- /all in one seo pack -->
+<link rel="alternate" type="application/rss+xml" title="Neunzehn72 &raquo; Feed" href="https://neunzehn72.de/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Neunzehn72 &raquo; Kommentar-Feed" href="https://neunzehn72.de/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Neunzehn72 &raquo; iMac 5K Lightroom Performance gelöst &#8211; Danke an die Community Kommentar-Feed" href="https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.3\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/neunzehn72.de\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.8"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,56826,8203,55356,56819),0,0),c=j.toDataURL(),b===c&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55358,56794,8205,9794,65039),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55358,56794,8203,9794,65039),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='validate-engine-css-css'  href='https://neunzehn72.de/wp-content/plugins/wysija-newsletters/css/validationEngine.jquery.css?ver=2.11' type='text/css' media='all' />
+<link rel='stylesheet' id='aalb_basics_css-css'  href='https://neunzehn72.de/wp-content/plugins/amazon-associates-link-builder/css/aalb_basics.css?ver=1.9.2' type='text/css' media='all' />
+<link rel='stylesheet' id='stcr-font-awesome-css'  href='https://neunzehn72.de/wp-content/plugins/subscribe-to-comments-reloaded/includes/css/font-awesome.min.css?ver=4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='cookie-consent-style-css'  href='https://neunzehn72.de/wp-content/plugins/uk-cookie-consent/assets/css/style.css?ver=4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='gt3_default_style-css'  href='https://neunzehn72.de/wp-content/themes/soho/style.css?ver=4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='gt3_theme-css'  href='https://neunzehn72.de/wp-content/themes/soho/css/theme.css?ver=4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='gt3_responsive-css'  href='https://neunzehn72.de/wp-content/themes/soho/css/responsive.css?ver=4.8' type='text/css' media='all' />
+<link rel='stylesheet' id='gt3_custom-css'  href='https://neunzehn72.de/wp-content/uploads/custom.css?ver=4.8' type='text/css' media='all' />
+
+<link rel='stylesheet' id='instag-slider-css'  href='https://neunzehn72.de/wp-content/plugins/instagram-slider-widget/assets/css/instag-slider.css?ver=1.4.3' type='text/css' media='all' />
+<link rel='stylesheet' id='fancybox-css'  href='https://neunzehn72.de/wp-content/plugins/easy-fancybox/fancybox/jquery.fancybox-1.3.8.min.css?ver=1.6' type='text/css' media='screen' />
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js?ver=1.12.4'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/respondjs/js/respond.min.js?ver=1.4.2'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/instagram-slider-widget/assets/js/jquery.flexslider-min.js?ver=2.2'></script>
+<link rel='https://api.w.org/' href='https://neunzehn72.de/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://neunzehn72.de/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://neunzehn72.de/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Lightroom &#8211; Mein Workflow / 13 Effekte, Kamerakalibrierung und der Orange &#038; Teal-Look' href='https://neunzehn72.de/lightroom-mein-workflow-13-effekte-kamerakalibrierung-und-der-orange-teal-look/' />
+<link rel='next' title='Kennzeichnungspflicht: Nicht jeder Furz ist Werbung' href='https://neunzehn72.de/kennzeichnungspflicht-nicht-jeder-furz-ist-werbung/' />
+<meta name="generator" content="WordPress 4.8" />
+<link rel='shortlink' href='https://neunzehn72.de/?p=35057' />
+<link rel="alternate" type="application/json+oembed" href="https://neunzehn72.de/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fneunzehn72.de%2Fimac-5k-lightroom-performance-geloest-danke-an-die-community%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://neunzehn72.de/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fneunzehn72.de%2Fimac-5k-lightroom-performance-geloest-danke-an-die-community%2F&#038;format=xml" />
+<!-- afb Instant Articles -->
+			<meta property="fb:pages" content="109948869047172" /><style type="text/css">/** Google Analytics Opt Out Custom CSS **/.gaoop {color: #ffffff; line-height: 2; position: fixed; bottom: 0; left: 0; width: 100%; -webkit-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); -moz-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); background-color: #0E90D2; padding: 0; margin: 0; } .gaoop a {color: #67C2F0; text-decoration: none; } .gaoop a:hover {color: #ffffff; text-decoration: underline; } .gaoop-info-icon {position: relative; margin: 0; padding: 0; text-align: center; vertical-align: top; display: inline-block; width: 5%; } .gaoop-close-icon {position: relative; opacity: 0.5; ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; filter: alpha(opacity=50); -moz-opacity: 0.5; -khtml-opacity: 0.5; margin: 0; padding: 0; text-align: center; vertical-align: top; display: inline-block; width: 5%; } .gaoop-close-icon:hover {z-index: 1; opacity: 1; ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: alpha(opacity=100); -moz-opacity: 1; -khtml-opacity: 1; } .gaoop_closed .gaoop-opt-out-link, .gaoop_closed .gaoop-close-icon {display: none; } .gaoop_closed {width: 55px; right: 0; left: auto; opacity: 0.5; ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; filter: alpha(opacity=50); -moz-opacity: 0.5; -khtml-opacity: 0.5; } .gaoop_closed:hover {opacity: 1; ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: alpha(opacity=100); -moz-opacity: 1; -khtml-opacity: 1; } .gaoop_closed .gaoop-opt-out-content {display: none; } .gaoop_closed .gaoop-info-icon {width: 100%; } .gaoop-opt-out-content {display: inline-block; width: 90%; vertical-align: top; } </style><style id="ctcc-css" type="text/css" media="screen">
+				#catapult-cookie-bar {
+					box-sizing: border-box;
+					max-height: 0;
+					opacity: 0;
+					z-index: 99999;
+					overflow: hidden;
+					color: #ddd;
+					position: fixed;
+					left: 0;
+					top: 0;
+					width: 100%;
+					background-color: #464646;
+				}
+				#catapult-cookie-bar a {
+					color: #fff;
+				}
+				#catapult-cookie-bar .x_close span {
+					background-color: ;
+				}
+				button#catapultCookie {
+					background:;
+					color: ;
+					border: 0; padding: 6px 9px; border-radius: 3px;
+				}
+				#catapult-cookie-bar h3 {
+					color: #ddd;
+				}
+				.has-cookie-bar #catapult-cookie-bar {
+					opacity: 1;
+					max-height: 999px;
+					min-height: 30px;
+				}</style><script>var soho_var = true;</script>
+<!-- Easy FancyBox 1.6 using FancyBox 1.3.8 - RavanH (http://status301.net/wordpress-plugins/easy-fancybox/) -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var fb_timeout = null;
+var fb_opts = { 'overlayShow' : true, 'hideOnOverlayClick' : true, 'showCloseButton' : true, 'margin' : 20, 'centerOnScroll' : true, 'enableEscapeButton' : true, 'autoScale' : true };
+var easy_fancybox_handler = function(){
+	/* IMG */
+	var fb_IMG_select = 'a[href*=".jpg"]:not(.nolightbox,li.nolightbox>a), area[href*=".jpg"]:not(.nolightbox), a[href*=".gif"]:not(.nolightbox,li.nolightbox>a), area[href*=".gif"]:not(.nolightbox), a[href*=".png"]:not(.nolightbox,li.nolightbox>a), area[href*=".png"]:not(.nolightbox)';
+	jQuery(fb_IMG_select).addClass('fancybox image').attr('rel', 'gallery');
+	jQuery('a.fancybox, area.fancybox, li.fancybox a').fancybox( jQuery.extend({}, fb_opts, { 'transitionIn' : 'elastic', 'easingIn' : 'easeOutBack', 'transitionOut' : 'elastic', 'easingOut' : 'easeInBack', 'opacity' : false, 'hideOnContentClick' : false, 'titleShow' : true, 'titlePosition' : 'over', 'titleFromAlt' : true, 'showNavArrows' : true, 'enableKeyboardNav' : true, 'cyclic' : false }) );
+}
+var easy_fancybox_auto = function(){
+	/* Auto-click */
+	setTimeout(function(){jQuery('#fancybox-auto').trigger('click')},1000);
+}
+/* ]]> */
+</script>
+</head>
+
+<body class="post-template-default single single-post postid-35057 single-format-standard page_with_custom_background_image">
+	    <header class="main_header ">
+        <div class="header_wrapper">
+            <a href="https://neunzehn72.de/" class="logo"><img src="https://neunzehn72.de/wp-content/uploads/2016/11/1972_Logo_s40.png" alt=""  width="97" height="40" class="logo_def"><img src="https://neunzehn72.de/wp-content/uploads/2016/11/1972_Logo_l-3.png" alt="" width="97" height="40" class="logo_retina"></a>
+            <nav>
+                <div class="menu-navigation-container"><ul id="menu-navigation" class="menu"><li id="menu-item-31893" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-31893 parent-menu-1"><a href="http://shop.neunzehn72.de/produkt-kategorie/kameragurte/"><span><i  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-31893 parent-menu-1"></i>Kameragurte</span></a></li>
+<li id="menu-item-32182" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32182 parent-menu-2"><a href="http://shop.neunzehn72.de"><span><i  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32182 parent-menu-2"></i>Shop</span></a></li>
+<li id="menu-item-32984" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32984 parent-menu-3"><a href="https://shop.neunzehn72.de/produkt-kategorie/buch/"><span><i  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-32984 parent-menu-3"></i>Bücher &#038; Magazine</span></a></li>
+<li id="menu-item-34133" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-34133 parent-menu-4"><a href="https://shop.neunzehn72.de/produkt-kategorie/workshops/"><span><i  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-34133 parent-menu-4"></i>Workshops</span></a></li>
+<li id="menu-item-31159" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31159 parent-menu-5"><a href="https://neunzehn72.de/uber-mich/"><span><i  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31159 parent-menu-5"></i>Ich</span></a></li>
+<li id="menu-item-31230" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31230 parent-menu-6"><a href="https://neunzehn72.de/meine-fototasche/"><span><i  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-31230 parent-menu-6"></i>Fototasche</span></a></li>
+<li id="menu-item-21347" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21347 parent-menu-7"><a href="https://neunzehn72.de/impressum/"><span><i  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21347 parent-menu-7"></i>Impressum</span></a></li>
+<li id="menu-item-33556" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-33556 parent-menu-8"><a href="https://neunzehn72.de/datenschutz/"><span><i  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-33556 parent-menu-8"></i>Datenschutz</span></a></li>
+</ul></div>            </nav>
+            
+                                    
+            <div class="socials">
+                <ul class='socials_list'><li><a class='ico_social_facebook' target='_blank' href='https://www.facebook.com/neunzehn72' title='Facebook'></a></li><li><a class='ico_social_twitter' target='_blank' href='https://twitter.com/Neunzehn72' title='Twitter'></a></li><li><a class='ico_social_instagram' target='_blank' href='https://www.instagram.com/paddy.lu/' title='Instagram'></a></li><li><a class='ico_social_youtube' target='_blank' href='https://www.youtube.com/user/daspaddy' title='Youtube'></a></li></ul>            </div>
+            <!-- WPML Code Start -->
+                        <!-- WPML Code End -->			
+            <div class="phone"></div>
+        </div><!-- Header Wrapper -->
+        <div class="clear"></div>
+	</header>
+        <div class="site_wrapper simple-post">
+	    <div class="main_wrapper">    <div class="content_wrapper">
+        <div class="container simple-post-container">
+            <div class="content_block right-sidebar row">
+                <div
+                    class="fl-container hasRS">
+                    <div class="row">						
+                        <div class="posts-block simple-post ">
+                            <div class="contentarea">
+                                <div class="row">
+                                    <div class="span12 module_cont module_blog module_none_padding module_blog_page">
+                                        <div class="blog_post_page blog_post_preview">
+
+                                            <div class="preview_top">
+                                                <div class="preview_title">
+                                                                                                                    <h1 class="blogpost_title">iMac 5K Lightroom Performance gelöst &#8211; Danke an die Community</h1>
+                                                          
+                                                    <div class="listing_meta">
+                                                        <span>Paddy</span>
+                                                        <span class="middot">&middot;</span>
+                                                        <span>April 19, 2019</span>
+                                                        <span class="middot">&middot;</span>
+                                                        <span><a href="https://neunzehn72.de/category/mac/" rel="category tag">Mac</a></span>
+                                                        <span class="middot">&middot;</span>
+                                                        <span><a href="https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/#comments">7 comments</a></span>                                                    
+                                                    </div>
+                                                </div><!-- .preview_title -->
+                                                
+												<div class="preview_likes gallery_likes_add " data-attachid="35057" data-modify="like_post">
+													<i class="stand_icon icon-heart-o"></i>
+													<span>17</span>
+												</div>                                            </div>
+                                            
+                                            <div class="clear"></div>
+				                        	<div class="pf_output_container"><img class="featured_image_standalone" src="https://neunzehn72.de/wp-content/uploads/2019/04/iMac-Lightroom-Performance-Boost-1170x658.jpg" alt="" /></div>                                            <div class="blog_post_content">
+                                                <article class="contentarea">
+                                                    <p>Ich freue mich wie ein kleines Kind. Nachdem ich in meinem letzten VLog die Performance von Lightroom auf meinem neuen iMac Pro beklagt hatte, bekam ich von drei Lesern einen sehr hilfreichen Tipp. Ich hatte ja schon festgestellt, dass die Probleme mit der hohen Auflösung der 5K-Displays zu tun hat und habe dann als Workaround die Auflösung mit Hilfe der kleinen App SwitchResX geändert. Aber das ist natürlich irgendwie nervig, wenn man ständig die Auflösung ändern muss. Das geht deutlich eleganter. Genau den Tipp kannte ich bisher nicht und muss daher ein fettes Dankeschön an die Tippgeber raushauen. Natürlich will ich das nicht für mich behalten. Ich kann mir vorstellen, dass auch andere iMac-User ein ähnliches Problem haben. Jetzt rennt der iMac Pro wie Hulle.</p>
+<p><div class="video-container"><iframe width="940" height="529" src="https://www.youtube.com/embed/diFY0_lN-7A?feature=oembed&wmode=opaque" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></p>
+<div class="saboxplugin-wrap" itemtype="http://schema.org/Person" itemscope itemprop="author"><div class="saboxplugin-gravatar"><img alt='' src='https://secure.gravatar.com/avatar/1305d6a6c0bc2017500b17899826fcc2?s=100&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/1305d6a6c0bc2017500b17899826fcc2?s=200&amp;d=mm&amp;r=pg 2x' class='avatar avatar-100 photo' height='100' width='100' itemprop="image"/></div><div class="saboxplugin-authorname"><a href="https://neunzehn72.de/author/admin/" class="vcard author" rel="author" itemprop="url"><span class="fn" itemprop="name">Paddy</span></a></div><div class="saboxplugin-desc"><div itemprop="description"><p>Patrick Ludolph, Fotograf aus Hamburg und Gründer von Neunzehn72.<br />
+Ich mag jede Art von Fotografie, aber ein Mensch muss bei meinen Fotos meistens mit drauf sein.<br />
+Folgt mir gerne auf <a href="https://www.instagram.com/paddy.lu/" target="_blank" rel="noopener">Instagram</a>. Da gibt es die meisten aktuellen Fotos.</p>
+</div></div><div class="clearfix"></div><div class="saboxplugin-socials "><a target="_blank" href="https://www.facebook.com/neunzehn72/" rel="nofollow" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-facebook" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264 512"><path fill="currentColor" d="M76.7 512V283H0v-91h76.7v-71.7C76.7 42.4 124.3 0 193.8 0c33.3 0 61.9 2.5 70.2 3.6V85h-48.2c-37.8 0-45.1 18-45.1 44.3V192H256l-11.7 91h-73.6v229"></path></svg></span></a><a target="_blank" href="https://www.flickr.com/photos/patrickludolph/" rel="nofollow" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-flickr" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM144.5 319c-35.1 0-63.5-28.4-63.5-63.5s28.4-63.5 63.5-63.5 63.5 28.4 63.5 63.5-28.4 63.5-63.5 63.5zm159 0c-35.1 0-63.5-28.4-63.5-63.5s28.4-63.5 63.5-63.5 63.5 28.4 63.5 63.5-28.4 63.5-63.5 63.5z"></path></svg></span></a><a target="_blank" href="https://www.instagram.com/paddy.lu/" rel="nofollow" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-instagram" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg></span></a><a target="_blank" href="https://twitter.com/Neunzehn72" rel="nofollow" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-twitter" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg></span></a><a target="_blank" href="https://www.youtube.com/user/daspaddy" rel="nofollow" class="saboxplugin-icon-grey"><svg aria-hidden="true" class="sab-youtube" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></svg></span></a></div></div>                                                    <div class="dn"></div>
+                                                </article>
+                                            </div>
+                                            <div class="blogpost_footer">
+                                            	<div class="blogpost_share">
+                                                    <a target="_blank"
+                                                       href="http://www.facebook.com/share.php?u=https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/"
+                                                       class="top_socials share_facebook"><i
+                                                            class="stand_icon icon-facebook-square"></i>&nbsp;&nbsp;Facebook</a>
+                                                    <a target="_blank"
+                                                       href="http://pinterest.com/pin/create/button/?url=https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/&media=https://neunzehn72.de/wp-content/uploads/2019/04/iMac-Lightroom-Performance-Boost.jpg"
+                                                       class="top_socials share_pinterest"><i class="stand_icon icon-pinterest"></i>&nbsp;&nbsp;Pinterest</a>
+                                                    <a target="_blank"
+                                                       href="https://twitter.com/intent/tweet?text=iMac 5K Lightroom Performance gelöst &#8211; Danke an die Community&amp;url=https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/"
+                                                       class="top_socials share_tweet"><i class="stand_icon icon-twitter"></i>&nbsp;&nbsp;Twitter</a>
+                                                    <a target="_blank"
+                                                       href="https://plus.google.com/share?url=https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/"
+                                                       class="top_socials share_gplus"><i class="icon-google-plus-square"></i>&nbsp;&nbsp;Google+</a>
+                                                    <div class="clear"></div>
+                                                </div>
+                                                <div class="blogpost_tags">
+                                                    <span><a href="https://neunzehn72.de/tag/imac/" rel="tag">iMac</a><a href="https://neunzehn72.de/tag/lightroom/" rel="tag">lightroom</a><a href="https://neunzehn72.de/tag/performance/" rel="tag">performance</a></span>                                                    <div class="clear"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--.blog_post_page -->
+										
+                                        <!-- About The Author -->
+                                        <!--
+                                        <div class="blogpost_user_meta">
+	                                        <h5>About the Author: <a href="https://neunzehn72.de/author/admin/" title="Beiträge von Paddy" rel="author">Paddy</a></h5>
+                                        	<div class="user_meta_content">
+                                                <div class="author-ava">
+                                                    <img alt='' src='https://secure.gravatar.com/avatar/1305d6a6c0bc2017500b17899826fcc2?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/1305d6a6c0bc2017500b17899826fcc2?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />                                                </div>
+                                                <div class="author-description">Patrick Ludolph, Fotograf aus Hamburg und Gründer von Neunzehn72.
+Ich mag jede Art von Fotografie, aber ein Mensch muss bei meinen Fotos meistens mit drauf sein.
+Folgt mir gerne auf <a href="https://www.instagram.com/paddy.lu/" target="_blank" rel="noopener">Instagram</a>. Da gibt es die meisten aktuellen Fotos.</div>
+                                            </div>
+                                        </div>
+                                        -->
+                                                                                
+                                    </div>
+                                </div>
+                                                                <div class="row">
+                                    <div class="span12">
+                                        
+
+<div id="comments">
+    
+    <!-- You can start editing here. -->
+                <h5 class="headInModule postcomment">7 Comments: </h5>
+        <ol class="commentlist">
+            <li class="comment even thread-even depth-1" id="li-comment-368797">
+    <div id="comment-368797" class="stand_comment">
+        <div class="commentava wrapped_img">
+            <img alt='' src='https://secure.gravatar.com/avatar/abf760fc8137a50f9be59398b55fbc5b?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/abf760fc8137a50f9be59398b55fbc5b?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />            <div class="img_inset"></div>
+        </div>
+        <div class="thiscommentbody">
+            <div class="comment_content">
+            	<div class="comment_box">
+					                    <p>Ein kurzer Tipp noch von mir, man braucht kein Switchres X. Wenn man mit &#8222;Alt&#8220; in den Systemeinstellungen für das Display auf &#8222;Skaliert&#8220; klickt, bekommt man eine Auswahl von Auflösungen und einen Haken für &#8222;Modi für niedrige Auflösung anzeigen&#8220;.</p>
+<p>Hier gibt es Screenshots: <a href="https://everymac.com/systems/apple/imac/imac-aluminum-tapered-edge-faq/how-to-run-imac-retina-5k-at-full-resolution.html" rel="nofollow">https://everymac.com/systems/apple/imac/imac-aluminum-tapered-edge-faq/how-to-run-imac-retina-5k-at-full-resolution.html</a></p>
+                     <span class="comments"><a rel='nofollow' class='comment-reply-link' href='https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/?replytocom=368797#respond' onclick='return addComment.moveForm( "comment-368797", "368797", "respond", "35057" )' aria-label='Antworte auf Tobsen'></a></span>				</div>				
+            </div>
+            <div class="comment_info">            
+                <span class="author_name">Tobsen </span>
+                <span class="middot">&middot;</span>
+                <span class="comment_date">April 19, 2019</span>
+            </div>            
+        </div>
+    </div>
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-369267">
+    <div id="comment-369267" class="stand_comment">
+        <div class="commentava wrapped_img">
+            <img alt='' src='https://secure.gravatar.com/avatar/5826b618250fca21010ac6ccd839a82b?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/5826b618250fca21010ac6ccd839a82b?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />            <div class="img_inset"></div>
+        </div>
+        <div class="thiscommentbody">
+            <div class="comment_content">
+            	<div class="comment_box">
+					                    <p>Freuen weil man Lightroom performant nur noch in niedriger Auflösung nutzen kann? Hmmm&#8230; Man kauft sich einen sauteuren Rechner mit 5K Auflösung, damit man die Fotos in hoher Auflösung bearbeiten kann und muss dann ausgerechnet Lightroom mit &#8222;niedriger Auflösung&#8220; starten? 🙁 Das Das wäre für mich mehr als nervig, auch wenn es dank des Tipps immerhin wieder flüssig läuft. Aber unscharfe Schriften? Wofür hat man da so viel Geld für das 5K Display ausgegeben? Dennoch natürlich danke für den Tipp! Ich hoffe, Adobe bessert hier noch nach, so dass die Community nicht Probleme lösen muss, die nicht sein müssten!</p>
+                     <span class="comments"><a rel='nofollow' class='comment-reply-link' href='https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/?replytocom=369267#respond' onclick='return addComment.moveForm( "comment-369267", "369267", "respond", "35057" )' aria-label='Antworte auf Markus'></a></span>				</div>				
+            </div>
+            <div class="comment_info">            
+                <span class="author_name"><a href='http://www.cremerseele.de' rel='external nofollow' class='url'>Markus</a> </span>
+                <span class="middot">&middot;</span>
+                <span class="comment_date">Mai 05, 2019</span>
+            </div>            
+        </div>
+    </div>
+</li><!-- #comment-## -->
+<li class="comment even thread-even depth-1" id="li-comment-369338">
+    <div id="comment-369338" class="stand_comment">
+        <div class="commentava wrapped_img">
+            <img alt='' src='https://secure.gravatar.com/avatar/0a2a5c70323df8904c8875f62d8a6f57?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/0a2a5c70323df8904c8875f62d8a6f57?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />            <div class="img_inset"></div>
+        </div>
+        <div class="thiscommentbody">
+            <div class="comment_content">
+            	<div class="comment_box">
+					                    <p>Hi Paddy, was für einen Konfiguration hat dein Imac Pro?</p>
+<p>Gruss aus der Schweiz</p>
+                     <span class="comments"><a rel='nofollow' class='comment-reply-link' href='https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/?replytocom=369338#respond' onclick='return addComment.moveForm( "comment-369338", "369338", "respond", "35057" )' aria-label='Antworte auf Beat'></a></span>				</div>				
+            </div>
+            <div class="comment_info">            
+                <span class="author_name">Beat </span>
+                <span class="middot">&middot;</span>
+                <span class="comment_date">Mai 08, 2019</span>
+            </div>            
+        </div>
+    </div>
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-369509">
+    <div id="comment-369509" class="stand_comment">
+        <div class="commentava wrapped_img">
+            <img alt='' src='https://secure.gravatar.com/avatar/115dfa9091ddba245bd2f50cc1ec63dc?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/115dfa9091ddba245bd2f50cc1ec63dc?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />            <div class="img_inset"></div>
+        </div>
+        <div class="thiscommentbody">
+            <div class="comment_content">
+            	<div class="comment_box">
+					                    <p>Jedoch liest man auch, das diese Probleme lediglich auf dem iMac, nicht jedoch auf einem Macbook Pro mit externem 5k Monitor auftreten&#8230;.das wäre ja dann eher nicht das Verschulden von Adobe</p>
+                     <span class="comments"><a rel='nofollow' class='comment-reply-link' href='https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/?replytocom=369509#respond' onclick='return addComment.moveForm( "comment-369509", "369509", "respond", "35057" )' aria-label='Antworte auf Helmut Kruse'></a></span>				</div>				
+            </div>
+            <div class="comment_info">            
+                <span class="author_name">Helmut Kruse </span>
+                <span class="middot">&middot;</span>
+                <span class="comment_date">Mai 14, 2019</span>
+            </div>            
+        </div>
+    </div>
+<ul class="children">
+<li class="comment even depth-2" id="li-comment-369533">
+    <div id="comment-369533" class="stand_comment">
+        <div class="commentava wrapped_img">
+            <img alt='' src='https://secure.gravatar.com/avatar/abf760fc8137a50f9be59398b55fbc5b?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/abf760fc8137a50f9be59398b55fbc5b?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />            <div class="img_inset"></div>
+        </div>
+        <div class="thiscommentbody">
+            <div class="comment_content">
+            	<div class="comment_box">
+					                    <p>Ich habe das MBP mit sogar zwei 5Ks. Das Problem ist da auch. Es ist mit den letzten Updates von LR aber schon besser geworden. Es gab Zeiten, da brauchte es 5+ Sekunden, bis ein Bild angezeigt wurde im Entwickelnmodul.</p>
+                     <span class="comments"><a rel='nofollow' class='comment-reply-link' href='https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/?replytocom=369533#respond' onclick='return addComment.moveForm( "comment-369533", "369533", "respond", "35057" )' aria-label='Antworte auf Tobsen'></a></span>				</div>				
+            </div>
+            <div class="comment_info">            
+                <span class="author_name">Tobsen </span>
+                <span class="middot">&middot;</span>
+                <span class="comment_date">Mai 15, 2019</span>
+            </div>            
+        </div>
+    </div>
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+<li class="comment odd alt thread-even depth-1" id="li-comment-380814">
+    <div id="comment-380814" class="stand_comment">
+        <div class="commentava wrapped_img">
+            <img alt='' src='https://secure.gravatar.com/avatar/caef8e1f59c672a32a17cd3eeaa26e3b?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/caef8e1f59c672a32a17cd3eeaa26e3b?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />            <div class="img_inset"></div>
+        </div>
+        <div class="thiscommentbody">
+            <div class="comment_content">
+            	<div class="comment_box">
+					                    <p>Hallo Patrick,<br />
+eine generelle Frage zum iMac:<br />
+Wie kommst Du persönlich mit dem Glossy Display zu Rande?<br />
+Ich fotografiere nebenberuflich (Hochzeiten &amp; Events) und verbringe somit einige Zeit am Rechner (Lightroom only). Auch was die Farbtreue des Displays angeht, so soll der iMac nicht gerade die erste Wahl sein (recht &#8222;knallig&#8220; / suboptimal für Druck). Kannst du mal so als Profi-Fotograf Deine persönlichen Erfahrungen mit uns teilen? Ich würde mir gerne einen zulegen. Aber derzeit empfiehlt man mir eher einen &#8222;anständigen&#8220; Hardware kalibrierten Monitor angebunden an MacBook Pro (Notebook brauche ich aber nicht) oder MacMini (Grafikchip nicht sonderlich gut). Ich arbeite ausschliesslich mit Lightroom, Photoshop fast gar nichts und Video auch nicht. Noch nicht 🙂</p>
+<p>Freue mich auf Dein Feedback. 1000 Dank</p>
+                     <span class="comments"><a rel='nofollow' class='comment-reply-link' href='https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/?replytocom=380814#respond' onclick='return addComment.moveForm( "comment-380814", "380814", "respond", "35057" )' aria-label='Antworte auf Tino'></a></span>				</div>				
+            </div>
+            <div class="comment_info">            
+                <span class="author_name">Tino </span>
+                <span class="middot">&middot;</span>
+                <span class="comment_date">Oktober 18, 2019</span>
+            </div>            
+        </div>
+    </div>
+<ul class="children">
+<li class="comment byuser comment-author-admin bypostauthor even depth-2" id="li-comment-380956">
+    <div id="comment-380956" class="stand_comment">
+        <div class="commentava wrapped_img">
+            <img alt='' src='https://secure.gravatar.com/avatar/1305d6a6c0bc2017500b17899826fcc2?s=128&#038;d=mm&#038;r=pg' srcset='https://secure.gravatar.com/avatar/1305d6a6c0bc2017500b17899826fcc2?s=256&amp;d=mm&amp;r=pg 2x' class='avatar avatar-128 photo' height='128' width='128' />            <div class="img_inset"></div>
+        </div>
+        <div class="thiscommentbody">
+            <div class="comment_content">
+            	<div class="comment_box">
+					                    <p>Ich kann nur sagen, dass ich mit dem iMac und dem Monitor mehr als zufrieden bin.</p>
+                     <span class="comments"><a rel='nofollow' class='comment-reply-link' href='https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/?replytocom=380956#respond' onclick='return addComment.moveForm( "comment-380956", "380956", "respond", "35057" )' aria-label='Antworte auf Paddy'></a></span>				</div>				
+            </div>
+            <div class="comment_info">            
+                <span class="author_name"><a href='http://neunzehn72.de' rel='external nofollow' class='url'>Paddy</a> </span>
+                <span class="middot">&middot;</span>
+                <span class="comment_date">Oktober 19, 2019</span>
+            </div>            
+        </div>
+    </div>
+</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        </ol>
+
+        <div class="dn"></div>
+    
+    
+    	<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Comment! <small><a rel="nofollow" id="cancel-comment-reply-link" href="/imac-5k-lightroom-performance-geloest-danke-an-die-community/#respond" style="display:none;">Antworten abbrechen</a></small></h3>			<form action="https://neunzehn72.de/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+				<p class="comment-notes"><span id="email-notes">Deine E-Mail-Adresse wird nicht veröffentlicht.</span> Erforderliche Felder sind mit <span class="required">*</span> markiert.</p><label class="label-message"></label><textarea name="comment" cols="45" rows="5" placeholder="Message..." id="comment-message" class="form_field"></textarea><label class="label-name"></label><input type="text" placeholder="Name *" title="Name *" id="author" name="author" class="form_field">
+<label class="label-email"></label><input type="text" placeholder="Email *" title="Email *" id="email" name="email" class="form_field">
+<label class="label-web"></label><input type="text" placeholder="URL" title="URL" id="web" name="url" class="form_field">
+<!-- Subscribe to Comments Reloaded version 190412 --><!-- Subscribe to comments Reloaded MP: '/comment-subscriptions/' --><!-- BEGIN: subscribe to comments reloaded --><p class='comment-form-subscriptions'><label for='subscribe-reloaded'><input style='width:30px' type='checkbox' name='subscribe-reloaded' id='subscribe-reloaded' value='yes' /> E-Mail-Benachrichtigung bei weiteren Kommentaren.<br>Auch möglich: <a href='https://neunzehn72.de/comment-subscriptions/?srp=35057&amp;srk=6ba941526858a4bd4e78599cffa4d5f4&amp;sra=s&amp;srsrc=f'>Abo ohne Kommentar</a>.</label></p><!-- END: subscribe to comments reloaded --><p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='35057' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="b8a6fb0c15" /></p><p class="wysija-after-comment"><label for="wysija-box-after-comment"><input type="checkbox" id="wysija-box-after-comment" value="1" name="wysija[comment_subscribe]">Ja, ich möchte den wöchentlichen Newsletter bekommen.</label></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="145"/></p>			</form>
+			</div><!-- #respond -->
+	</div>
+<script>
+	jQuery(document).ready(function(){
+		jQuery('.commentlist').find('li').each(function(){
+			if (jQuery(this).find('ul').size() > 0) {
+				jQuery(this).addClass('has_ul');
+			}
+		});
+		jQuery('.form-allowed-tags').width(jQuery('#commentform').width() - jQuery('.form-submit').width() - 13);
+		jQuery('.comment-reply-link').click(function(){
+			jQuery('.form-allowed-tags').width(jQuery('#commentform').width() - jQuery('.form-submit').width() - 13);
+		});
+	});	
+	jQuery(window).resize(function(){
+		jQuery('.form-allowed-tags').width(jQuery('#commentform').width() - jQuery('.form-submit').width() - 13);
+	});
+</script>                                    </div>
+                                </div>
+                            </div>
+                            <!-- .contentarea -->
+                        </div>
+                                            </div>
+                    <div class="clear"><!-- ClearFix --></div>
+                </div>
+                <!-- .fl-container -->
+                <div class='right-sidebar-block'><div class="sidepanel widget_search"><form name="search_form" method="get" action="https://neunzehn72.de/" class="search_form">
+    <input type="text" name="s" value="" placeholder="Search the site..." class="field_search">
+</form></div><div class="sidepanel widget_wysija"><h6 class="sidebar_header">Melde Dich für unseren Newsletter an</h6><div class="widget_wysija_cont"><div id="msg-form-wysija-3" class="wysija-msg ajax"></div><form id="form-wysija-3" method="post" action="#wysija" class="widget_wysija">
+<p class="wysija-paragraph">
+    <label>E-Mail <span class="wysija-required">*</span></label>
+    
+    	<input type="text" name="wysija[user][email]" class="wysija-input validate[required,custom[email]]" title="E-Mail"  value="" />
+    
+    
+    
+    <span class="abs-req">
+        <input type="text" name="wysija[user][abs][email]" class="wysija-input validated[abs][email]" value="" />
+    </span>
+    
+</p>
+<p class="wysija-checkbox-label">Liste(n) auswählen:</p>
+
+    <p class="wysija-checkbox-paragraph"><label><input class="wysija-checkbox validate[required]" name="wysija[user_list][list_id][]" type="checkbox" value="4" checked="checked" /> Wöchentlicher Newsletter</label></p>
+
+    <p class="wysija-checkbox-paragraph"><label><input class="wysija-checkbox validate[required]" name="wysija[user_list][list_id][]" type="checkbox" value="6"  /> Direkte Benachrichtigung bei neuen Artikeln</label></p>
+
+
+<input class="wysija-submit wysija-submit-field" type="submit" value="Anmelden!" />
+
+    <input type="hidden" name="form_id" value="1" />
+    <input type="hidden" name="action" value="save" />
+    <input type="hidden" name="controller" value="subscribers" />
+    <input type="hidden" value="1" name="wysija-page" />
+
+    
+ </form></div></div><div class="sidepanel widget_text"><h6 class="sidebar_header">Die nächsten Liveshows</h6>			<div class="textwidget"></div>
+		</div><div class="sidepanel widget_text">			<div class="textwidget"><p>Meine Presets für Lightroom</p>
+<p><a href="https://shop.neunzehn72.de/produkt/presets-lightroom/"><img src="https://shop.neunzehn72.de/wp-content/uploads/2018/06/Lightroom_Presets.jpg" /></a></p>
+</div>
+		</div><div class="sidepanel widget_text">			<div class="textwidget"><p>Chief Mate, der Quick-Release Gurt</p>
+<p><a href="https://shop.neunzehn72.de/produkt-kategorie/kameragurte/"><img src="https://neunzehn72.de/wp-content/uploads/2017/07/L1190326.jpg" /></a></p>
+</div>
+		</div></div>                <div class="clear"><!-- ClearFix --></div>
+            </div>
+        </div>
+        <!-- .container -->
+    </div><!-- .content_wrapper -->
+    <script>
+		jQuery(document).ready(function(){
+			if (window_w < 1025) {
+				iframe16x9(jQuery('.pf_output_container'));
+			}
+			jQuery('.pf_output_container').each(function(){
+				if (jQuery(this).html() == '') {
+					jQuery(this).parents('.blog_post_page').addClass('no_pf');
+				} else {
+					jQuery(this).parents('.blog_post_page').addClass('has_pf');
+				}
+			});		
+		});
+	</script>
+	    
+        </div><!-- .main_wrapper -->
+	</div>
+    <footer class="main_footer">
+	    <div class="copyright">Copyright &copy; 2018 Patrick Ludolph</div>
+		<div class="phone phone_ipad"></div>
+        <div class="socials">
+			<ul class='socials_list'><li><a class='ico_social_facebook' target='_blank' href='https://www.facebook.com/neunzehn72' title='Facebook'></a></li><li><a class='ico_social_twitter' target='_blank' href='https://twitter.com/Neunzehn72' title='Twitter'></a></li><li><a class='ico_social_instagram' target='_blank' href='https://www.instagram.com/paddy.lu/' title='Instagram'></a></li><li><a class='ico_social_youtube' target='_blank' href='https://www.youtube.com/user/daspaddy' title='Youtube'></a></li></ul>        </div>
+        <div class="phone"></div>        
+        <div class="clear"></div>
+    </footer>
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-298605-15', 'auto');
+  ga('set', 'anonymizeIp', true);
+  ga('send', 'pageview');
+
+</script>
+
+
+
+
+		<script>
+			jQuery(document).ready(function($) {
+				jQuery('.gallery_likes_add').click(function(){
+				var gallery_likes_this = jQuery(this);
+				if (!jQuery.cookie(gallery_likes_this.attr('data-modify')+gallery_likes_this.attr('data-attachid'))) {
+					jQuery.post(gt3_ajaxurl, {
+						action:'add_like_attachment',
+						attach_id:jQuery(this).attr('data-attachid')
+					}, function (response) {
+						jQuery.cookie(gallery_likes_this.attr('data-modify')+gallery_likes_this.attr('data-attachid'), 'true', { expires: 7, path: '/' });
+						gallery_likes_this.addClass('already_liked');
+						gallery_likes_this.find('i').removeClass('icon-heart-o').addClass('icon-heart');
+						gallery_likes_this.find('span').text(response);
+					});
+				}
+				});
+			});
+		</script>
+		<style type="text/css">.saboxplugin-wrap{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box;border:1px solid #eee;width:100%;clear:both;display:block;overflow:hidden;word-wrap:break-word;position:relative}.saboxplugin-wrap .saboxplugin-gravatar{float:left;padding:20px}.saboxplugin-wrap .saboxplugin-gravatar img{max-width:100px;height:auto;border-radius:0;}.saboxplugin-wrap .saboxplugin-authorname{font-size:18px;line-height:1;margin:20px 0 0 20px;display:block}.saboxplugin-wrap .saboxplugin-authorname a{text-decoration:none}.saboxplugin-wrap .saboxplugin-authorname a:focus{outline:0}.saboxplugin-wrap .saboxplugin-desc{display:block;margin:5px 20px}.saboxplugin-wrap .saboxplugin-desc a{text-decoration:underline}.saboxplugin-wrap .saboxplugin-desc p{margin:5px 0 12px}.saboxplugin-wrap .saboxplugin-web{margin:0 20px 15px;text-align:left}.saboxplugin-wrap .sab-web-position{text-align:right}.saboxplugin-wrap .saboxplugin-web a{color:#ccc;text-decoration:none}.saboxplugin-wrap .saboxplugin-socials{position:relative;display:block;background:#fcfcfc;padding:5px;border-top:1px solid #eee}.saboxplugin-wrap .saboxplugin-socials a svg{width:20px;height:20px}.saboxplugin-wrap .saboxplugin-socials a svg .st2{fill:#fff}.saboxplugin-wrap .saboxplugin-socials a svg .st1{fill:rgba(0,0,0,.3)}.saboxplugin-wrap .saboxplugin-socials a:hover{opacity:.8;-webkit-transition:opacity .4s;-moz-transition:opacity .4s;-o-transition:opacity .4s;transition:opacity .4s;box-shadow:none!important;-webkit-box-shadow:none!important}.saboxplugin-wrap .saboxplugin-socials .saboxplugin-icon-color{box-shadow:none;padding:0;border:0;-webkit-transition:opacity .4s;-moz-transition:opacity .4s;-o-transition:opacity .4s;transition:opacity .4s;display:inline-block;color:#fff;font-size:0;text-decoration:inherit;margin:5px;-webkit-border-radius:0;-moz-border-radius:0;-ms-border-radius:0;-o-border-radius:0;border-radius:0;overflow:hidden}.saboxplugin-wrap .saboxplugin-socials .saboxplugin-icon-grey{text-decoration:inherit;box-shadow:none;position:relative;display:-moz-inline-stack;display:inline-block;vertical-align:middle;zoom:1;margin:10px 5px;color:#444}.clearfix:after,.clearfix:before{content:' ';display:table;line-height:0;clear:both}.ie7 .clearfix{zoom:1}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-twitch{border-color:#38245c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-addthis{border-color:#e91c00}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-behance{border-color:#003eb0}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-delicious{border-color:#06c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-deviantart{border-color:#036824}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-digg{border-color:#00327c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-dribbble{border-color:#ba1655}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-facebook{border-color:#1e2e4f}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-flickr{border-color:#003576}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-github{border-color:#264874}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-google{border-color:#0b51c5}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-googleplus{border-color:#96271a}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-html5{border-color:#902e13}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-instagram{border-color:#1630aa}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-linkedin{border-color:#00344f}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-pinterest{border-color:#5b040e}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-reddit{border-color:#992900}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-rss{border-color:#a43b0a}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-sharethis{border-color:#5d8420}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-skype{border-color:#00658a}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-soundcloud{border-color:#995200}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-spotify{border-color:#0f612c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-stackoverflow{border-color:#a95009}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-steam{border-color:#006388}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-user_email{border-color:#b84e05}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-stumbleUpon{border-color:#9b280e}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-tumblr{border-color:#10151b}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-twitter{border-color:#0967a0}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-vimeo{border-color:#0d7091}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-windows{border-color:#003f71}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-wordpress{border-color:#0f3647}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-yahoo{border-color:#14002d}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-youtube{border-color:#900}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-xing{border-color:#000202}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-mixcloud{border-color:#2475a0}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-vk{border-color:#243549}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-medium{border-color:#00452c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-quora{border-color:#420e00}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-meetup{border-color:#9b181c}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-goodreads{border-color:#000}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-snapchat{border-color:#999700}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-500px{border-color:#00557f}.saboxplugin-socials.sabox-colored .saboxplugin-icon-color .sab-mastodont{border-color:#185886}.sabox-plus-item{margin-bottom:20px}@media screen and (max-width:480px){.saboxplugin-wrap{text-align:center}.saboxplugin-wrap .saboxplugin-gravatar{float:none;padding:20px 0;text-align:center;margin:0 auto;display:block}.saboxplugin-wrap .saboxplugin-gravatar img{float:none;display:inline-block;display:-moz-inline-stack;vertical-align:middle;zoom:1}.saboxplugin-wrap .saboxplugin-desc{margin:0 10px 20px;text-align:center}.saboxplugin-wrap .saboxplugin-authorname{text-align:center;margin:10px 0 20px}}body .saboxplugin-authorname a,body .saboxplugin-authorname a:hover{box-shadow:none;-webkit-box-shadow:none}a.sab-profile-edit{font-size:16px!important;line-height:1!important}.sab-edit-settings a,a.sab-profile-edit{color:#0073aa!important;box-shadow:none!important;-webkit-box-shadow:none!important}.sab-edit-settings{margin-right:15px;position:absolute;right:0;z-index:2;bottom:10px;line-height:20px}.sab-edit-settings i{margin-left:5px}.saboxplugin-socials{line-height:1!important}.rtl .saboxplugin-wrap .saboxplugin-gravatar{float:right}.rtl .saboxplugin-wrap .saboxplugin-authorname{display:flex;align-items:center}.rtl .saboxplugin-wrap .saboxplugin-authorname .sab-profile-edit{margin-right:10px}.rtl .sab-edit-settings{right:auto;left:0}img.sab-custom-avatar{max-width:75px;}.saboxplugin-wrap .saboxplugin-desc a, .saboxplugin-wrap .saboxplugin-desc  {color:0 !important;}.saboxplugin-wrap .saboxplugin-authorname {font-family:"none";}.saboxplugin-wrap .saboxplugin-desc {font-family:none;}.saboxplugin-wrap {margin-top:0px; margin-bottom:45px; padding: 0px 0px }.saboxplugin-wrap .saboxplugin-authorname {font-size:18px; line-height:25px;}.saboxplugin-wrap .saboxplugin-desc p, .saboxplugin-wrap .saboxplugin-desc {font-size:14px !important; line-height:21px !important;}.saboxplugin-wrap .saboxplugin-web {font-size:14px;}.saboxplugin-wrap .saboxplugin-socials a svg {width:18px;height:18px;}</style><script defer  type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/google-analytics-opt-out/js/frontend.js?ver=4.8'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/fitvids-for-wordpress/jquery.fitvids.js?ver=1.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var ctcc_vars = {"expiry":"30","method":"1","version":"1"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/uk-cookie-consent/assets/js/uk-cookie-consent-js.js?ver=2.3.0'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/themes/soho/js/jquery.mousewheel.js?ver=4.8'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/themes/soho/js/theme.js?ver=4.8'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-includes/js/wp-embed.min.js?ver=4.8'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/themes/soho/js/jquery.cookie.js?ver=4.8'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-includes/js/comment-reply.min.js?ver=4.8'></script>
+<script async="async" type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/akismet/_inc/form.js?ver=4.1.1'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/wysija-newsletters/js/validate/languages/jquery.validationEngine-de.js?ver=2.11'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/wysija-newsletters/js/validate/jquery.validationEngine.js?ver=2.11'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wysijaAJAX = {"action":"wysija_ajax","controller":"subscribers","ajaxurl":"https:\/\/neunzehn72.de\/wp-admin\/admin-ajax.php","loadingTrans":"Wird geladen...","is_rtl":""};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/wysija-newsletters/js/front-subscribers.js?ver=2.11'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/easy-fancybox/fancybox/jquery.fancybox-1.3.8.min.js?ver=1.6'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/easy-fancybox/js/jquery.easing.min.js?ver=1.4.0'></script>
+<script type='text/javascript' src='https://neunzehn72.de/wp-content/plugins/easy-fancybox/js/jquery.mousewheel.min.js?ver=3.1.13'></script>
+		<script type="text/javascript">
+		jQuery(document).ready(function () {
+			jQuery('.blog_post_content').fitVids({customSelector: "iframe[src^='http://mycoolvideosite.com']"});
+		});
+		</script><script type="text/javascript">
+jQuery(document).on('ready post-load', function(){ jQuery('.nofancybox,a.pin-it-button,a[href*="pinterest.com/pin/create/button"]').addClass('nolightbox'); });
+jQuery(document).on('ready post-load',easy_fancybox_handler);
+jQuery(document).on('ready',easy_fancybox_auto);</script>
+			
+				<script type="text/javascript">
+					jQuery(document).ready(function($){
+												if(!catapultReadCookie("catAccCookies")){ // If the cookie has not been set then show the bar
+							$("html").addClass("has-cookie-bar");
+							$("html").addClass("cookie-bar-top-bar");
+							$("html").addClass("cookie-bar-bar");
+															// Wait for the animation on the html to end before recalculating the required top margin
+								$("html").on('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
+									// code to execute after transition ends
+									var barHeight = $('#catapult-cookie-bar').outerHeight();
+									$("html").css("margin-top",barHeight);
+									$("body.admin-bar").css("margin-top",barHeight-32); // Push the body down if the admin bar is active
+								});
+													}
+																	});
+				</script>
+			
+			<div id="catapult-cookie-bar" class=""><div class="ctcc-inner "><span class="ctcc-left-side">Diese Webseite verwendet Cookies, um Dienste bereitzustellen, die Nutzung der Website zu verbessern und Zugriffe zu analysieren. Informationen darüber, wie Sie diese Webseite verwenden, werden anonymisiert an Google weitergegeben. Wenn Sie die Webseite weiter nutzen, stimmen Sie der Verwendung von Cookies zu. <a class="ctcc-more-info-link" tabindex=0 target="_blank" href="https://neunzehn72.de/datenschutz/">Weitere Informationen finden Sie in unserer Datenschutzerklärung</a></span><span class="ctcc-right-side"><button id="catapultCookie" tabindex=0 onclick="catapultAcceptCookies();">Okay, danke</button></span></div><!-- custom wrapper class --></div><!-- #catapult-cookie-bar --></body>
+</html>

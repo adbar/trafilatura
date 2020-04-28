@@ -3508,37 +3508,36 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-#### 2020-04
 'https://web.archive.org/web/20160526181643/http://ordnungsrausch.com/orga-life-das-leben-organisieren/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.ordnungsrausch.com.orga-life.html',  # stays empty until download
     'author': '',
     'title': '{orga your life} – das Leben organisieren ',
     'date': '',
     'description': 'Neben meinen Beiträgen zur Zeitplanung seht ihr hier auch übersichtlich alles zum Thema Finanzen organisieren und Selbstmanagement.',  # in HTML source
     'categories': ['{orga your life}'],
     'tags': [],
-    'with': ['{orga your life} – das Leben organisieren', 'Mehr aus der vorhandenen Zeit zu machen', 'alles zum Thema Finanzen'],  # 3 segments
-    'without': ['Beliebte Artikel', 'Copyright', 'Powered by WordPress'],  # 3 segments
+    'with': ['Wenn der Tag mal wieder zu wenige Stunden hat'],  # 3 segments
+    'without': ['#19 Kuchen im Glas', '2016 Ordnungsrausch', 'Suche'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://weselpower.wordpress.com/2009/12/23/monstergesprche-1/': {
-    'file': '',  # stays empty until download
+    'file': 'weselpower.wordpress.com.monstergesprche.html',  # stays empty until download
     'author': 'Rolf Tschochohei',
     'title': 'Monstergespräche #1',
     'date': '2009-12-23',
     'description': 'M:Wer rutscht als n&auml;chstes aus auf dem Glatteis? Ich: Ich wette,dass du als n&auml;chstes ausr&#8230;aah. ..paff. ..aua. M: Gewonnen!',  # in HTML source
     'categories': ['meins'],
     'tags': ['Monster', 'winter'],
-    'with': ['M:Wer rutscht als', 'aus auf dem Glatteis', 'Ich wette,dass du als'],  # 3 segments
-    'without': ['Teilen Sie dies mit:', 'Bloggern gefällt das.', 'Ähnliche Beiträge'],  # 3 segments
+    'with': ['M:Wer rutscht als nächstes aus auf dem Glatteis?'],  # 3 segments
+    'without': ['Teilen Sie dies mit:', 'Bloggern gefällt das.', 'Ähnliche Beiträge', ' Kommentare sind geschlossen. '],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-    'https://bigdata.ypart.eu/page/Digitale_Datenerhebung_und_verwertung_als_Herausforderung_f%C3%BCr_Medienbildung_und_Gesellschaft.html': {
-    'file': '',  # stays empty until download
+'https://bigdata.ypart.eu/page/Digitale_Datenerhebung_und_verwertung_als_Herausforderung_f%C3%BCr_Medienbildung_und_Gesellschaft.html': {
+    'file': 'bigdata.ypart.eu.datenerhebung.html',  # stays empty until download
     'author': '',
     'title': 'Digitale Datenerhebung und -verwertung als Herausforderung für Medienbildung und Gesellschaft',
     'date': '',
@@ -3551,458 +3550,358 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-    'https://web.archive.org/web/20131110121040/http://www.peptalks.de/haben-sich-mozarts-eltern-wegen-seiner-schulnoten-gesorgt/': {
-    'file': '',  # stays empty until download
+'https://web.archive.org/web/20131110121040/http://www.peptalks.de/haben-sich-mozarts-eltern-wegen-seiner-schulnoten-gesorgt/': {
+    'file': 'archive.peptalks.de.schulnoten.html',  # stays empty until download
     'author': 'Günter W. Kienitz',
     'title': 'Haben sich Mozarts Eltern je wegen seiner Schulnoten gesorgt?',
     'date': '2013-04-04',
     'description': 'Was meinen Sie: haben sie? Haben sich die Eltern von Wolfgang Amadeus Mozart jemals Sorgen wegen der Schulnoten ihres &quot;Wolferls&quot; gemacht? Ich kann Ihnen versichern, das war nie der Fall. Wie ich mi...',  # in HTML source
     'categories': ['Bildung', 'Homeschooling', 'Schule'],
     'tags': ['bildung', 'Eltern', 'Hausschule', 'Homeschooling', 'Lehranstalt', 'Lernen', 'Musik', 'Schule', 'Schülereltern', 'schulnoten', 'Schulpflicht', 'Wolfgang Amadeus Mozart', 'Wunderkind'],
-    'with': ['Was meinen Sie', 'Anfang 1762 nach München und anschließend', 'War das “Wolferl”'],  # 3 segments
-    'without': ['Sie möchten gerne automatisch über jeden', 'PepTalks @ Twitter', 'Kommentar verfassen '],  # 3 segments
+    'with': ['Was meinen Sie', 'Anfang 1762 nach München und anschließend', 'Er lebte still und unscheinbar'],  # 3 segments
+    'without': ['Dichter und Denker zu Schule und Bildung', 'Sie möchten gerne automatisch über jeden', 'Trage deine Daten unten ein'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
-}
+'https://web.archive.org/web/20190717140047/http://www.modabot.de/paris-haute-couture-ss14-serkan-cura': {
+    'file': 'archive.modabot.de.serkan.html',  # stays empty until download
+    'author': 'Barbara Russ',
+    'title': 'Paris Haute Couture SS14: Serkan Cura',
+    'date': '2014-01-27',
+    'description': 'Haute Couture ist die Krone der Mode-Schöpfung - und Serkan Cura ist ein würdiger Nachfolger der alten Meister seiner Zunft.',  # in HTML source
+    'categories': ['Event', 'Fashion'],
+    'tags': ['Haute Couture', 'Paris', 'Serkan Cura', 'SS14'],
+    'with': ['die diesmal leider keine Präsentation', 'Die dabei entstehenden Silhouetten'],  # 3 segments
+    'without': ['to see what your friends like', 'Bild via'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
 
-ADDITIONAL_PAGES = {
-'00a7adc4e44c4dff9cae8ef3d77da9e8.html': {
-    'file': '00a7adc4e44c4dff9cae8ef3d77da9e8.html',
-    'author': 'Patrick Hyslop',
-    'title': 'Daniela Katzenberger will romantischen Abend, doch Lucas hat keinen Bock auf diesen Film',
+'https://www.welt.de/regionales/hamburg/article202159566/Verhaertete-Fronten-nach-Tumulten-bei-Luckes-Vorlesung.html': {
+    'file': 'd90b19386e2b48559082547016cbe5ec.html',
+    'author': 'dpa/lno',
+    'title': 'Verhärtete Fronten nach Tumulten bei Luckes Vorlesung',
     'date': '2019-10-19',
-    'description': 'Ein romantischer Filmabend auf der heimischen Couch. Das hatte Daniela Katzenberger mit ihrem Lucas vor...',
-    'categories': [],
+    'description': 'Hamburg (dpa/lno) &#8211; Trotz eines Gespräches zwischen AfD-Mitbegründer Bernd Lucke und der Studierendenvertretung AStA der Universität Hamburg bleiben die Fronten verhärtet. Der AStA (Allgemeiner Studierendenausschuss) verkläre die Vorfälle, sagte Lucke am Samstag der Deutschen Presse-Agentur in Hamburg. Der AStA entziehe sich seiner Verantwortung, indem er in grotesker Weise die Opfer zu Tätern mache, kritisierte Lucke weiter. Ein Gespräch nur mit ... Mehr lesen',
+    'categories': ['Hamburg'],
     'tags': [],
-    'with': ['Ein gemeinsamer Filmabend daheim', 'Trotz Starbesetzung (u.a. Bruce Willis, Meryl Streep', 'Übrigens: Zum romantischen Filmeabend'],  # 3 segments
-    'without': ['DANIELA KATZENBERGER VERRÄT, WAS SIE AM', 'Wir bei WhatsApp', 'Kurden-Großdemo in Köln'],  # 3 segments
+    'with': ['Der AStA (Allgemeiner Studierendenausschuss) verkläre die Vorfälle', 'betonte, nicht zu den Störungen im Hörsaal aufgerufen zu haben', 'hieß es anschließend.'],  # 3 segments
+    'without': ['Lesedauer: 3 Minuten', 'Vom Oma-Schoßhund zurück zum Trend-Hund', 'Newsticker'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': 'DE',
 },
-'00a5953050ea47de888a73806010cffe.html': {
-    'file': '00a5953050ea47de888a73806010cffe.html',
-    'author': 'MASH',
-    'title': 'Rittersport für 0,79€ (REWE+reebate)',
-    'date': '2019-10-16',
-    'description': 'Rittersport ist aktuell im REWE für 0,99€ im Angebot. Bei reebate gibt es 0,20€ Cashback. reebate ist bis 27.10.2019 einlösbar, das Angebot im REWE ist',
-    'categories': [],
-    'tags': [],
-    'with': ['Rittersport ist aktuell im REWE', 'reebate ist bis 27.10.2019 einlösbar', 'bis zum 19.10.2019 gültig.'],  # 3 segments
-    'without': ['Deal abgelaufen? Jetzt melden!', 'Kostenlos zum Newsletter anmelden und ', 'GRATIS-Jahresabo abstauben'],  # 3 segments
-    'comments': ['0,99 ist aber ein sehr hoher (Angebots-)Preis. Oder sprechen wir hier über die Nussklasse?', 'Aber auch die gibt es bei Müller', 'Die gute alte Ritterspirtschikolade'],  # 0 or 3 segments
+'https://www.hessenschau.de/kultur/buchmesse/buecher-autoren/die-minze-als-mutmacher--deniz-yuecels-bericht-aus-dem-tuerkischen-knast,deniz-yuecel-buchmesse-agentterrorist-100.html': {
+    'file': 'd76cf81a74fa4633bd19d7060f5c05ee.html',
+    'author': 'hessenschau.de/bb',
+    'title': 'Die Minze als Mutmacher – Deniz Yücels Bericht aus dem türkischen Knast',
+    'date': '2019-10-19',
+    'description': 'Deniz Yücel saß im türkischen Gefängnis – im Auftrag der Öffentlichkeit, wie er bei seiner Buchvorstellung auf der Buchmesse in Frankfurt sagt. Der Flörsheimer berichtet über angstvolle Momente, Erdogans Copyright und die besondere Kraft der Minze. ',
+    'categories': ['Kultur'],
+    'tags': ['Bücher', 'Frankfurter Buchmesse 2019', 'Literatur', 'Medien'],
+    'with': ['Gefängnis – im Auftrag der Öffentlichkeit', 'diese triste Umgebung schlug Deniz Yücel aufs Gemüt', 'Verfasst mithilfe von Tomatensoße und einer Plastikgabel'],  # 3 segments
+    'without': ['Navigation der Marken des Hessischen Rundfunks', 'Weitere Informationen ', 'Frankfurter Buchmesse 2019'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',
     'region': 'DE',
 },
-'00ac25bb2cb74241beb26a2cb76201fc.html': {
-    'file': '00ac25bb2cb74241beb26a2cb76201fc.html',
-    'author': 'Jan Michelsen, Christian Just',
-    'title': 'Samsung Galaxy S10: Fingerabdrucksensor unsicher, Hersteller verspricht Update',
+'https://www.tag24.de/nachrichten/rostow-russland-fuenf-kinder-und-zwei-erwachsene-sterben-bei-schrecklichem-wohnhausbrand-1255262': {
+    'file': 'd76bb5cda4cd4621a04c1b166d6cad9f.html',
+    'author': '',
+    'title': 'Fünf Kleinkinder und zwei Erwachsene sterben bei schrecklichem Wohnhausbrand',
+    'date': '2019-10-19',
+    'description': 'Fünf kleine Kinder, unter ihnen ein Baby, sterben zusammen mit zwei Erwachsenen bei einem Brand in Russland.',
+    'categories': ['Feuerwehreinsätze'],
+    'tags': [],
+    'with': ['als sich das Feuer im Treppenhaus ausbreitete', 'Dachgeschoss brannte vollkommen aus.', 'ob der Brand wegen eines defekten Elektrogerätes'],  # 3 segments
+    'without': ['Letzter Auftritt bei', 'FAMILIENDRAMA: MUTTER', 'Wir bei WhatsApp'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.grazia-magazin.de/beauty/lange-haare-dank-dieser-lebensmittel-wachsen-sie-viel-schneller-43980.html': {
+    'file': 'd73e0fa055834b2dbb2036ba27d46597.html',
+    'author': 'Isabella.DiBiase',
+    'title': 'Lange Haare: Dank dieser Lebensmittel wachsen sie viel schneller',
+    'date': '2019-10-19',
+    'description': '"Wusstet ihr, dass ihr mit der richtigen Ernährung das Wachstum eurer Haare beschleunigen könnt? Mit diesen Lebensmitteln bekommt ihr im Handumdrehen eine lange Löwenmähne...',
+    'categories': [],
+    'tags': ['Lange Haare', 'Haare', 'Lebensmittel'],
+    'with': ['Haare beschleunigen könnt?', 'sowie Kalzium, Eisen, Zink und Biotin enthalten', 'Für Rapunzelhaare sorgt übrigens auch'],  # 3 segments
+    'without': ['Weitere Themen', 'Richtig frühstücken', 'Hinweis ausblenden', 'Klambt Style-Verlag GmbH & Co. KG'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.monsterdealz.de/user-deals/deals/gratisartikel-kostenlos/rewe-produkttest-10-000-produkttester-fuer-leibniz-keksn-cream-milk-oder-choco': {
+    'file': 'd71bfdce9dd246c9a6ee6d08c8b39e4c.html',
+    'author': 'HansEhrlich',
+    'title': '*Ab Montag* 10000 Produkttester für Leibniz Keks’n Cream Milk oder Choco *REWE Produkttest*',
+    'date': '2019-10-17',
+    'description': '&quot;Außen knusprig, innen cremig&quot; So beschreibt Leibniz ihr neues Produkt &quot;Keks´n Cream&quot;. Das beste kommt jetzt: Beim Rewe Produkttest der nächsten Woche',
+    'categories': [],
+    'tags': ['Gratisartikel & Kostenlos'],
+    'with': ['„Außen knusprig, innen cremig“', 'Das beste kommt jetzt:', 'Euer HansEhrlich'],  # 3 segments
+    'without': ['Kostenlos zum Newsletter anmelden', 'GRATIS-Jahresabo abstauben', 'Top-Vergleiche', 'Noch nicht angemeldet?'],  # 3 segments
+    'comments': ['Prospekt next week', 'unserem Markt waren aber keine mehr da', 'ich gerne mit, klingt leck'],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.stern.de/politik/ausland/niederlage-fuer-johnson--parlament-vertagt-votum-ueber-brexit-deal-8961728.html?utm_campaign=alle&utm_medium=rss-feed&utm_source=standard': {
+    'file': 'd70fab3adde74d5fb63552855c981395.html',
+    'author': 'dsw / DPA',
+    'title': 'Unterhaus vertagt Votum über Brexit-Deal - es drohen Chaos-Tage',
+    'date': '2019-10-19',
+    'description': 'Der Premierminister muss eine Verlängerung der Brexit-Frist beantragen. Kann er sein Versprechen einhalten, das Land am 31. Oktober aus der EU zu ...',
+    'categories': ['Politik'],
+    'tags': ['Boris Johnson' 'EU', 'Premierminister' 'Niederlage', 'Abstimmung', 'EU-Gipfel', 'Brüssel'],
+    'with': ['Der Premierminister muss eine Verlängerung', 'empfindliche Niederlage zugefügt.', 'mit knapper Mehrheit in einem Referendum für den Austritt'],  # 3 segments
+    'without': ['Themen in diesem Artikel', 'Video', 'Drucken'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.computerbild.de/artikel/cb-News-Freizeit-Bundesliga-Dortmund-Moenchengladbach-live-sehen-24356155.html': {
+    'file': 'd60caba9d12c467b9708ec8981cad8aa.html',
+    'author': '	Dennis Kochinky',
+    'title': 'Bundesliga: Dortmund - Gladbach live sehen!',
+    'date': '2019-10-19',
+    'description': 'Am 8. Spieltag der Bundesliga treffen Borussia Dortmund und Borussia Mönchengladbach aufeinander. So sehen Sie das Spiel live im TV und im Stream.',
+    'categories': [],
+    'tags': [],
+    'with': ['So sehen Sie das Spiel live', 'dennoch ist die Gladbacher Verletztenliste weiterhin lang', '» Zum Angebot: Borussia Dortmund', 'Tipp: Die Sport-App'],  # 3 segments
+    'without': ['Kein Bild, kein Ton und trotzdem bestens informiert', ' Sehen Sie die Highlights der europäischen Top-Ligen', 'Gefällt Ihnen dieser Artikel?', 'Aktuelle Testberichte von Hard- und Software'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.express.de/duesseldorf/duesseldorf-tote-tauben-im-iss-dome-gefunden----peta--erstattet-strafanzeige-33335766': {
+    'file': 'd57cfadc540842ebb09971e28df123ec.html',
+    'author': 'Dieter Sieckmeyer',
+    'title': 'Düsseldorf ISS Dome: Peta erstattet Anzeige wegen toten Tauben ',
+    'date': '2019-10-19',
+    'description': 'Immer wieder werden am ISS Dome tote Tauben gefunden. Viele verenden qualvoll in den Netzen, die unter dem Dach der Halle angebracht wurden.',
+    'categories': ['Düsseldorf'],
+    'tags': [],
+    'with': ['Viele verenden qualvoll in den Netzen', 'Das soll das Problem lösen', 'em städtischen Veterinäramt umgesetzt.'],  # 3 segments
+    'without': ['zwischen türkischer und kurdischer Mannschaft', 'URL zum Kopieren', 'Inhalt teilen', 'Sei der/die Erste deiner Freunde'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.ln-online.de/Lokales/Luebeck/Luebeck-So-war-die-Auktion-fuer-St.-Johannes-in-Kuecknitz': {
+    'file': 'd51e75d9e53a472bb7708191899aa6b4.html',
+    'author': 'Cosima Künzel',
+    'title': 'So lief die Auktion der Schätzchen von St. Johannes',
+    'date': '2019-10-19',
+    'description': 'Stühle, Leuchten und ein Abendmahl aus Gips. Im Kücknitzer Kirchen-Forum wurden Dachboden-Schätze der Kirche St. Johannes versteigert. Für die Neugestaltung des Gotteshauses kam viel Geld zusammen.',
+    'categories': [],
+    'tags': [],
+    'with': ['wurden Dachboden-Schätze der Kirche St. Johannes versteigert', 'Kirchenvorsteher Niels Sönnichsen hat alle Schätze', 'Gemälde werden hoch gehandelt'],  # 3 segments
+    'without': ['Newsletter abonnieren', "Die Kultkneipe schließt: Jutta's Eck", 'Weitere LN+ Artikel'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://appen.com/blog/artificial-intelligence-and-machine-learning-industry-news-ai-in-patient-care-and-operations-ai-as-a-preventive-tool-and-how-major-hospitals-are-already-using-ai/': {
+    'file': 'd44c5ef50718437984dca47627dee96b.html',
+    'author': 'Joe S.',
+    'title': 'Artificial Intelligence and Machine Learning Industry News: AI in Patient Care and Operations, AI as a Preventive Tool, and How Major Hospitals are Already Using AI',
     'date': '2019-10-18',
-    'description': 'Der Fingerabdruck gilt als sicheres Mittel zur Entsperrung des Handys. Ein Irrtum, wie das Galaxy S10 zeigt: Theoretisch funktioniert jeder Finger! Aber nur unter bestimmten Bedinungen. Welche das sind, verrät der Artikel.',
-    'categories': [],
-    'tags': [],
-    'with': ['Der Fingerabdruck gilt als sicheres Mitte', 'als sicher, Samsung tritt mit dem Galaxy S10', 'Bei Geräten, auf die bestimmte Silikon-Schutzhüllen'],  # 3 segments
-    'without': ['Weiterführende Links', 'Gefällt Ihnen dieser Artikel?', 'Aktuelle News'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'00ae61f7c9c44508ad3fdbebfe3af5e1.html': {
-    'file': '00ae61f7c9c44508ad3fdbebfe3af5e1.html',
-    'author': '',
-    'title': 'Halbe Hundert',
-    'date': '',
-    'description': 'Halbe Hundert im Fernsehen - TV Programm: Ja, wenn Falten zu Furchen werden und der Hintern hängt, ist’s zum Heulen!',
-    'categories': [],
-    'tags': [],
-    'with': ['Matthias Tiefenbacher', 'Stoff für starke Frauen – erfrischend frech!', 'Heute, 09:45 - 11:15, ONE'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'Das große TV-Quiz', 'Das könnte Sie auch interessieren'],  # 3 segments
-    'comments': ['kann man sich meiner Ansicht nach komplett sparen.'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'00b9b6ffc0a749cfafb8030b92a426dc.html': {
-    'file': '00b9b6ffc0a749cfafb8030b92a426dc.html',
-    'author': '',
-    'title': 'Heidi Klum befeuert Männerträume - Verruchtes Outfit bei Premiere',
-    'date': '2019-10-19',
-    'description': 'index,follow',
-    'categories': [],
-    'tags': [],
-    'with': ['Verheiratet und züchtig? Von wegen', 'Update vom 1. Oktober', 'Detail lässt vermuten, dass sie danach in die Kiste stiegen'],  # 3 segments
-    'without': ['Unsere Services für Sie im Überblick', 'Die mit Stern (*) markierten Felder sind Pflichtfelder', 'Nachrichten von tz'],  # 3 segments
-    'comments': ['Da schrieb wohl wieder so ein pubertierender Verbalerotiker', 'Selbst wenn sie es getan haben', 'Spinnt ihr eigentlich???'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'00b113ffc64e4155a08d2069fd1d3525.html': {
-    'file': '00b113ffc64e4155a08d2069fd1d3525.html',
-    'author': '',
-    'title': 'Pop Giganten',
-    'date': '',
-    'description': 'Pop Giganten im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['2000er - Popdoku', 'In den 90er-Jahren erobert der Techno', 'DJ BoBo oder Alex Christensen'],  # 3 segments
-    'without': ['Alle News: Die aktuellen News aus TV, Film, Serien, Stars', '© TV SPIELFILM', 'Weitere Angebote von Hubert Burda Media'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a3d0b2ca1264a1d82d3f8d67baad0b2.html': {
-    'file': '0a3d0b2ca1264a1d82d3f8d67baad0b2.html',
-    'author': 'textOmatic',
-    'title': 'American Express notiert mit 1,2 Prozent Verluste',
-    'date': '2019-10-19',
-    'description': 'Der Wert American Express gehörte mit einer negativen Entwicklung von 1,2 Prozent zu den Verlierern des Tages. Das Wertpapier notierte bei Börsenschluss mit 105,86 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Der Wert American Express gehörte mit einer negativen', 'Bis um 17:45 Uhr belief sich', 'Zu diesem Zeitpunkt waren am'],  # 3 segments
-    'without': ['Artikel kommentieren', 'Lesen Sie auch', 'Er wurde von der FOCUS-Online-Redaktion'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a3e1f354da44480aebccecfa975b304.html': {
-    'file': '0a3e1f354da44480aebccecfa975b304.html',
-    'author': 'AFP',
-    'title': 'Demonstrationen in Köln und anderen Städten gegen türkische Militäroffensive',
-    'date': '2019-10-19',
-    'description': 'Ungeachtet der zwischen den USA und der Türkei vereinbarten Waffenruhe für Nordsyrien wollen am Samstag mehrere tausend Menschen in Köln gegen die ...',
-    'categories': [],
-    'tags': ['Köln', 'USA', 'Türkei', 'Militäroffensive', 'Nordsyrien', 'Waffenruhe'],
-    'with': ['Angemeldet wurde die Kölner Demonstration', 'Ungeachtet der zwischen den USA und der Türkei vereinbarten', 'mehrere tausend Menschen in Köln gegen'],  # 3 segments
-    'without': ['Wissenscommunity', 'Newsticker', 'Pferde anbinden in Wester'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a4a8ab61c054192b1ec70cc3570cf45.html': {
-    'file': '0a4a8ab61c054192b1ec70cc3570cf45.html',
-    'author': ' David',
-    'title': 'DB Lounge: Kein Zugang mehr mit Sparpreis-Ticket',
-    'date': '2019-10-18',
-    'description': 'Die Bahn ändert die Zutrittsbestimmungen zur DB Lounge: Fahrgäste mit einem Sparpreis der ersten Klasse müssen künftig draußen bleiben.',
-    'categories': [],
-    'tags': ['bahn', 'deutschland'],
-    'with': ['Die Deutsche Bahn streicht den Zutritt zu ihrer DB Lounge', 'Die Deutsche Bahn ändert zum Fahrplanwechsel', 'Neues gastronomisches Konzept'],  # 3 segments
-    'without': ['Das könnte Dich auch interessieren …', 'Schreibe einen Kommentar ', 'Wo bin ich hier?'],  # 3 segments
-    'comments': ['Mir ist auch schon aufgefallen, dass es speziell in München', 'Glückwunsch an den Autor', 'Warum will man das abschaffen ?'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a4a78c301f14266a989253c243d8080.html': {
-    'file': '0a4a78c301f14266a989253c243d8080.html',
-    'author': '',
-    'title': 'Tatort: Inferno',
-    'date': '',
-    'description': 'atort: Inferno im Fernsehen - TV Programm: TV-Krimi mit dem Dortmunder Ermittlerteam.',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 20:15 - 21:45, WDR', 'TV-Krimi mit dem Dortmunder Ermittlerteam.', 'Überspannt, aber starke Darsteller'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'https://www.facebook.com/TVspielfilm', 'Getty, Verleih (20), ZDF, Salzgeber & Co. Medien GmbH'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a5a869851124f2e910fb200c64abf38.html': {
-    'file': '0a5a869851124f2e910fb200c64abf38.html',
-    'author': 'dpa',
-    'title': 'Bundesliga: Augsburg schockt Bayern im Derby - Wölfe bleiben unbesiegt',
-    'date': '2019-10-19',
-    'description': 'Mit einem Tor in der Nachspielzeit hat der FC Augsburg den FC Bayern München im Derby geschockt.',
-    'categories': [],
-    'tags': [],
-    'with': ['Durch das 2:2 (1:1) verpasste ', 'Borussia Mönchengladbach ging nach dem späten', 'Bas Dost hatte Eintracht Frankfurt'],  # 3 segments
-    'without': ['Wir setzen auf unserer Website Cookies und andere Technologien', 'www.facebook.com/saarbrueckerzeitung', 'Bestellen Sie hier unseren kostenlosen Newsletter'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a6f51f753784fd19264ded53b5444aa.html': {
-    'file': '0a6f51f753784fd19264ded53b5444aa.html',
-    'author': 'krofisch',
-    'title': 'Ein Jahr lang kostenlose StadtBus-Fahrten an Samstagen in Bocholt -regional-',
-    'date': '2019-10-18',
-    'description': 'Ab dem 1.11.2019 kann man in Bocholt an allen Samstagen bis 31.10.2020 kostenlos mit den StadtBus- und TaxiBus-Linien der StadtBus Bocholt GmbH und auf',
-    'categories': [],
-    'tags': [],
-    'with': ['Ab dem 1.11.2019 kann', 'Eine Erstattung entsprechend erworbener', '„0-Euro-Tickets“'],  # 3 segments
-    'without': ['Kommentar verfassen', 'Top Partnershops', 'Kostenlose Girokonten mit Prämie im Vergleich'],  # 3 segments
-    'comments': ['Schönes Angebot für die, die in der Region wohnen!', 'Ja, ich auch.', '@BettyFordBoy:'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a7beecf93da4ddd84a7b11c0a87dcdc.html': {
-    'file': '0a7beecf93da4ddd84a7b11c0a87dcdc.html',
-    'author': '',
-    'title': 'College Football',
-    'date': '',
-    'description': 'College Football im Fernsehen - TV Programm: Louisville Cardinals – Clemson Tigers',
-    'categories': [],
-    'tags': [],
-    'with': ['American Football, 2019, 255 Min.', 'Gäste: Experte: Björn Werner', 'Teams aus Kalifornien, u. a. die UCLA, auszuschließen.'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Neu auf TV SPIELFILM.de', '© TV SPIELFILM: College Football im TV - Sendung - TV Spielfilm'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a7e52b47a6945ac96f1add57dbb8f05.html': {
-    'file': '0a7e52b47a6945ac96f1add57dbb8f05.html',
-    'author': 'Embrace',
-    'title': 'Time Machine Backup fehlgeschlagen (Speicherplatz) ',
-    'date': '2019-10-18',
-    'description': 'Immer aktuelle Apple-News, Tipps, Tricks und Testberichte rund um Mac, iPhone, iPad und Co.',
-    'categories': [],
-    'tags': [],
-    'with': ['kann mir jemand erklären, warum ich von meinem MBP', 'Soll ich dann lieber ein CCC Backup', 'Was soll denn das? Ich dachte, dass es'],  # 3 segments
-    'without': ['Nutzungsbedingungen', 'Sie müssen sich einloggen', 'Kommentieren'],  # 3 segments
-    'comments': ['Irgendwie hast du das Konzept von TimeMachine nicht verstanden.', 'Für den Notfall habe ich ein Time Machine Backup auf dem NAS'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a8fafecd4fd4f5e86c1cb6da13c2543.html': {
-    'file': '0a8fafecd4fd4f5e86c1cb6da13c2543.html',
-    'author': 'AFP',
-    'title': 'Kramp-Karrenbauer und Parteireform zum Abschluss des CSU-Parteitags',
-    'date': '2019-10-19',
-    'description': 'Die CSU will am Samstag zum Abschluss ihres zweitägigen Parteitags eine Parteireform beschließen (9.00 Uhr). Ein vom Parteivorstand ...',
-    'categories': [],
-    'tags': ['CSU', 'Annegret Kramp-Karrenbauer', 'Leitantrag', 'Parteivorstand'],
-    'with': ['Leitantrag sieht 75 Punkte vor, die', 'Kanzlerkandidaten für die nächste Bundestagswahl werden. ', 'führen sollen. Außerdem will'],  # 3 segments
-    'without': ['Erfahren Sie mehr:', 'Das könnte sie auch interessieren', 'Meist beantwortete'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a9db68f5a1b438d9aa0a6cf54cb762c.html': {
-    'file': '0a9db68f5a1b438d9aa0a6cf54cb762c.html',
-    'author': 'red, ORF.at/Agenturen',
-    'title': 'Dortmund stoppt Gladbachs Erfolgslauf',
-    'date': '2019-10-19',
-    'description': 'Die deutsche Bundesliga ist spannend wie schon lange nicht. Nach den Samstag-Spielen der achten Runde trennen die ersten neun Teams – sprich die halbe Liga – nur zwei Punkte. Zum Abschluss eines ereignisreichen Nachmittags stoppte Borussia Dortmund die Siegesserie von Borussia Mönchengaldbach mit einem knappen 1:0-Heimerfolg.',
-    'categories': [],
-    'tags': [],
-    'with': ['Die deutsche Bundesliga ist spannend wie schon lange nicht', 'BVB setzt sich hauchdünn durch', 'Ein weiterer BVB-Treffer wurde ebenfalls wege'],  # 3 segments
-    'without': ['Alle ORF-Angebote', 'ORF.at im Überblick', 'Impressum/Offenlegung'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'AT',
-},
-'0a10b85c7f7d4e17b314a4afa5c321cf.html': {
-    'file': '0a10b85c7f7d4e17b314a4afa5c321cf.html',
-    'author': 'Florian Beer',
-    'title': 'Johannes Meier, der glückliche Winzer vom Ottenberg, führt das Weingut in der achten Generation',
-    'date': '2019-10-18',
-    'description': 'Er wäre ein schlechter Beamter geworden, sagt Johannes Meier. Mit dem Beruf als Winzer ist er nun vollauf zufrieden. Er ist Geschäftsführer des Weinguts Bachtobel auf dem Ottenberg und das mit voller Leidenschaft.',
-    'categories': [],
-    'tags': [],
-    'with': ['Was hat Sie in letzter Zeit besonders beschäftigt?', 'Yoga, fahre Velo und gehe raus in die Natur', 'Johannes Meier ist am 14. März 1976'],  # 3 segments
-    'without': ['Online Inserat aufgeben', '«Michael Götte verdient Ihre Stimme»: ', 'Nutzungsbedingungen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'CH',
-},
-'0a12d7cfd4fe4934953a152199859987.html': {
-    'file': '0a12d7cfd4fe4934953a152199859987.html',
-    'author': '',
-    'title': 'Woyzeck',
-    'date': '',
-    'description': 'Woyzeck im Fernsehen - TV Programm: TV-Psychodrama, das Georg Büchners Stück von 1837 modernisiert.',
-    'categories': [],
-    'tags': [],
-    'with': ['TV-Psychodrama, D 2012, 90 Min.', 'Cast und Crew', 'Bilder zum Film '],  # 3 segments
-    'without': ['noch 999 Zeichen übrig', 'Das könnte Sie auch interessieren', 'Weitere Angebote von Hubert Burda Media'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a12df42d1764095989ab078ee0f940b.html': {
-    'file': '0a12df42d1764095989ab078ee0f940b.html',
-    'author': 'Heike Buchter',
-    'title': 'Bohren, bis es heiß wird',
-    'date': '2019-10-16',
-    'description': 'Weltweit finanzieren Banken und Investoren Unternehmungen, die dem Klima schaden.',
-    'categories': [],
-    'tags': [],
-    'with': ['ine Fracking-Anlage zur Förderung von Gas im US-Bundesstaat Pennsylvania', 'Weltweit finanzieren Banken und Investoren Unternehmungen, die dem Klima schaden.'],  # 3 segments
-    'without': ['Wählen Sie Ihren Zugang und lesen Sie weiter: ', 'Sie sind bereits Digital-Abonnent? Hier anmelden ', ' Cookies & Tracking '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a22badf97334984a2ff9bbf2a7297cf.html': {
-    'file': '0a22badf97334984a2ff9bbf2a7297cf.html',
-    'author': 'textOmatic',
-    'title': 'Broadcom mit Kursverlusten von 1,3 Prozent',
-    'date': '2019-10-19',
-    'description': 'Mit einem Rückgang von 1,3 Prozent gehörte das Wertpapier des Halbleiterhersteller Broadcom zu den Verlierern des Tages. Bei Börsenschluss notierte der Wert mit 256,90 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Die Anteilseigner von Broadcom haben keinen Grund zur Freude. ', 'Auf 39,7 Tausend Euro Umsatz kam die Aktie', '(11,0 Prozent über dem aktuellen Kurs), das 52-'],  # 3 segments
-    'without': ['Artikel kommentieren', ' Bitte loggen Sie sich vor dem Kommentieren ein', 'Verfolgen Sie die neuesten Artikel zum Thema „Aktien“'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a33b21d7fde40499edf03cf6a985cbd.html': {
-    'file': '0a33b21d7fde40499edf03cf6a985cbd.html',
-    'author': '',
-    'title': 'Das Supertalent',
-    'date': '',
-    'description': 'Das Supertalent im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Castingshow, D 2019, 135 Min.', 'Im Gegensatz zu „DSDS“ wird beim „Supertalent“ nicht nur gesungen.', 'Gäste: Jury: Dieter Bohlen, Bruce Darnell, Sarah Lombardi'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars ', '© TV SPIELFILM: Das Supertalent im TV - Sendung - TV Spielfilm'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a79d07649ec45409ca2aa0399e099e8.html': {
-    'file': '0a79d07649ec45409ca2aa0399e099e8.html',
-    'author': 'textOmatic',
-    'title': 'Abbott Laboratories legt 0,7 Prozent zu',
-    'date': '2019-10-19',
-    'description': 'Der Anteilschein Pharmakonzern und Pharmakonzern Abbott Laboratories gehörte mit einem Plus von 0,7 Prozent zu den Erfolgreichen des Tages. Die Aktie notierte bei Börsenschluss mit 74,57 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Nur kaum spürbar ging es heute mit dem Wert der Abbott Laboratories', 'Laboratories-Aktie mit 74,57 Euro gehandelt.', 'Bis um 17:45 Uhr belief sich'],  # 3 segments
-    'without': ['Top-Anlageempfehlungen zu Aktien wie', 'Bitte loggen Sie sich vor dem Kommentieren ein', ' Netiquette'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a93a8fb24c248608eeb7217bd7eece3.html': {
-    'file': '0a93a8fb24c248608eeb7217bd7eece3.html',
-    'author': 'textOmatic',
-    'title': 'Ford Motor gewinnt 1,4 Prozent',
-    'date': '2019-10-19',
-    'description': 'Mit einem Zuwachs von 1,4 Prozent gehörte der Wert des Autohersteller Ford Motor zu den Gewinnern des Tages. Das Wertpapier notierte bei Börsenschluss mit 8,30 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Die Anteilseigner von Ford Motor haben Grund zur Freude. ', 'im Wert von 11,7 Tausend Euro', 'Auf 62,7 Tausend Euro Umsatz '],  # 3 segments
-    'without': ['(Partnerangebot)', 'Meistgelesen', 'Finanzen100: Börsenbriefe, die sich auszahlen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a97b3f1a2da436fa9e4c8e2a3ee8868.html': {
-    'file': '0a97b3f1a2da436fa9e4c8e2a3ee8868.html',
-    'author': '',
-    'title': '360° Geo Reportage',
-    'date': '',
-    'description': '360° Geo Reportage im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Wh. vom 13.10., Wh. am 25.10.', 'Wolfgang Mertin', 'Cast und Crew'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Technischer Support', 'Fotos weder reproduziert noch wiederverwendet werden dürfen.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a286e003ec54b1f825b314c4978bf43.html': {
-    'file': '0a286e003ec54b1f825b314c4978bf43.html',
-    'author': '',
-    'title': 'das aktuelle sportstudio',
-    'date': '',
-    'description': 'das aktuelle sportstudio im Fernsehen - TV Programm: U. a. der 8. Spieltag der Fußball-Bundesliga: FC Augsburg – FC Bayern München, RB Leipzig – VfL Wolfsburg, Werder Bremen – Hertha BSC Berlin, Fortuna Düsseldorf – 1. FSV Mainz 05, 1. FC Union Berlin – SC Freiburg und Borussia Dortmund – Borussia Mönchengladbach',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 23:00 - 00:25, ZDF', 'SC Freiburg und Borussia Dortmund – Borussia Mönchengladbach', 'Gäste: Cacau (Intergrationsbeauftragter des DFB)'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Mein schöner Garten', 'Montage (2), Montage: Getty Images'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a886f1c6ff643d3a4059f8085135da0.html': {
-    'file': '0a886f1c6ff643d3a4059f8085135da0.html',
-    'author': '',
-    'title': 'Schlechtes Hören erhöht Demenzrisiko',
-    'date': '2019-10-19',
-    'description': 'Für viele gehört schlechtes Hören einfach zum Alter dazu, doch laut Experten sollte man eine Hörminderung nicht auf die leichte Schulter nehmen: Wer schlecht hört, hat ein fünf Mal größeres Risiko, an Demenz zu erkranken.',
-    'categories': [],
-    'tags': [],
-    'with': ['Für viele gehört schlechtes Hören einfach zum Alter dazu', 'Doch das alles muss nicht sein, so die Experten', 'HNO-Arzt gehen und einen Hörtest machen.'],  # 3 segments
-    'without': ['Publikumsrat', 'Aktuell in steiermark', 'Mehr zum Thema'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'AT',
-},
-'0a962f6bcd5649f7a7e6effa338df80d.html': {
-    'file': '0a962f6bcd5649f7a7e6effa338df80d.html',
-    'author': 'Paddy',
-    'title': 'iMac 5K Lightroom Performance gelöst – Danke an die Community',
-    'date': '2019-04-19',
-    'description': 'Ich freue mich wie ein kleines Kind. Nachdem ich in meinem letzten VLog die Performance von Lightroom auf meinem neuen iMac Pro beklagt hatte, bekam ich von drei Lesern einen sehr hilfreichen Tipp.',
-    'categories': ['Mac'],
-    'tags': ['iMac', 'lightroom', 'performance'],
-    'with': ['Ich freue mich wie ein kleines Kind.', 'Jetzt rennt der iMac Pro wie Hulle', 'Auflösung der 5K-Displays'],  # 3 segments
-    'without': ['Ich mag jede Art von Fotografie', 'Leave a Comment! ', 'Ja, ich möchte den wöchentlichen Newsletter bekommen'],  # 3 segments
-    'comments': ['Ein kurzer Tipp noch von mir, man braucht kein Switchres X', 'Freuen weil man Lightroom performant', 'Gruss aus der Schweiz'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a3108e507c54157a95fe7a1338f5e9c.html': {
-    'file': '0a3108e507c54157a95fe7a1338f5e9c.html',
-    'author': 'IWB',
-    'title': 'Biggest money laundering scheme in history uncovered in Ukraine',
-    'date': '2019-10-19',
-    'description': '',
-    'categories': [],
-    'tags': ['biggest', 'history', 'laundering', 'money', 'scheme', 'ukraine', 'uncovered'],
-    'with': ['Jewish oligarchs Igor Kolomoisky and', 'The Chairwoman of Ukraine’s Central Bank', 'Now as to those missing IMF billions, '],  # 3 segments
-    'without': ['Privacy & Cookies: This site uses ', '37 views ', 'Subscribe to our mailing list!'],  # 3 segments
+    'description': 'With the integration of AI into the work of both medical professionals and hospital systems, expect to see dramatic changes in both patient health outcomes and in the operational efficiency of hospitals. ',
+    'categories': ['Blog Home AI', 'Machine Learning'],
+    'tags': ['AI', 'Artificial Intelligence', 'Industry News Roundup', 'machine learning', 'Video'],
+    'with': ['Follow us to stay up to date on industry trends.', 'How Major Hospitals are Already Using AI', 'With predictive analytics,'],  # 3 segments
+    'without': ['Trending Posts', 'Subscribe to email updates', 'Receive our monthly newsletter'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': '',
 },
-'0a6291ebbce449b3b04256b43c73e39d.html': {
-    'file': '0a6291ebbce449b3b04256b43c73e39d.html',
-    'author': 'red, wien.ORF.at/Agenturen',
-    'title': 'Lotte Tobisch ist tot',
+'https://www.mactechnews.de/forum/discussion/kein-App-Store-mehr-ueber-Mobile-Daten-mit-iOS-13--338679.html.html': {
+    'file': 'd43f330cbaf74e92b9aec85e937cb904.html',
+    'author': 'macbacchi',
+    'title': 'kein App Store mehr über Mobile Daten mit iOS 13 ?',
+    'date': '2019-09-28',
+    'description': 'Immer aktuelle Apple-News, Tipps, Tricks und Testberichte rund um Mac, iPhone, iPad und Co.',
+    'categories': ['iPhone'],
+    'tags': [],
+    'with': ['one 11 und xs und ipads sind keinen zugriff mehr auf den appstore', 'und bevor wieder die übliche häme'],  # 3 segments
+    'without': ['Kommentieren', 'Sie müssen sich einloggen, um sich an einer Diskussion beteiligen zu können.', 'wo immer es sinnvoll erscheint. Sie unterstützen'],  # 3 segments
+    'comments': ['ntr mobilen Daten auf den App Store zugreifen', 'erst kürzlich hier im Forum?', 'Ist aber nicht von Dauer.'],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.nzz.ch/international/der-nervenkrieg-um-den-brexit-geht-in-die-naechste-runde-ld.1516516': {
+    'file': 'd42c68f1b0f4408b81cf8f00bbe1a631.html',
+    'author': 'Markus M. Haefliger, London, Beat Bumbacher',
+    'title': 'Der Nervenkrieg um den Brexit geht in die nächste Runde',
     'date': '2019-10-19',
-    'description': 'Die Opernball-Grande-Dame und Burgschauspielerin Lotte Tobisch ist Samstagfrüh im Alter von 93 Jahren gestorben. Die Wienerin prägte unter anderem 16 turbulente Jahre lang den Opernball als Organisatorin.',
+    'description': 'Das britische Unterhaus hat die Entscheidung über das neue EU-Austrittsabkommen verschoben und Premierminister Boris Johnson damit eine weitere Niederlage zugefügt. Wie vom Gesetz verlangt, ersucht die britische Regierung die EU nun um eine Verschiebung des für 31. Oktober geplanten EU-Austritts',
     'categories': [],
     'tags': [],
-    'with': ['Die Opernball-Grande-Dame und Burgschauspielerin Lotte Tobisch', 'Ihre Ausbildung erhielt sie im Internat Schloss Marquartstein', 'Sie habe mit ihrer Zeit als Opernball-Lady abgeschlossen'],  # 3 segments
-    'without': ['Zurück zur Startseite', 'Impressum', 'Aktuell in wien'],  # 3 segments
+    'with': ['eine Brexit-Verschiebung bei der EU beantragt', 'über den EU-Austritt Grossbritanniens gebracht. Eine Mehrheit ', 'Dies könnte aus ihrer Sicht als Ersatz für den Grundsatzentscheid vom Samstag herhalten'],  # 3 segments
+    'without': ['Niederlage für Boris Johnson – Britische Regierung will Brexit-Verschiebung beantragen', 'Wagen Sie den anderen Blick mit unlimitiertem Zugang zur digitalen NZZ', 'Haben Sie schon ein Benutzerkonto?'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.gamestar.de/videos/der-landwirtschafts-simulator-19-wird-ein-jahr-nach-release-groesser-trailer-stellt-platinum-edition-vor,99770.html': {
+    'file': 'd041d20a0bc04fdf8cef73f750f20bf6.html',
+    'author': '',
+    'title': 'Der Landwirtschafts-Simulator 19 wird ein Jahr nach Release größer - Trailer stellt Platinum Edition vor',
+    'date': '2019-10-19',
+    'description': 'Am 22. Oktober 2019 erscheint die Platinum Edition des Landwirtschaft-Simulator 2019 mit einer Menge neuen Content auf Windows PCs, Mac, Xbox One und..." ',
+    'categories': [],
+    'tags': ['Spiele-Trailer', 'Landwirtschafts-Simulator 19', 'Video', 'Trailer', 'PC', 'PlayStation 4', 'Xbox One', 'PlayStation', 'Xbox'],
+    'with': ['auf Windows PCs, Mac, Xbox One und PS4. Der Trailer gibt euch einen kurzen Überblick zu den zusätzlichen Inhalten.', 'als eigenständiges Spiel und wird zudem'],  # 3 segments
+    'without': ['Kommentare', 'alle anzeigen', 'Nur angemeldete Benutzer können kommentieren und bewerten.', 'Steam'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': '',
+},
+'https://www.ndr.de/sport/fussball/Eintracht-Braunschweig-Ein-Remis-als-Mutmacher,eintracht2488.html': {
+    'file': 'd36b1d6cdc2c41e18bc5324b41629e0b.html',
+    'author': '',
+    'title': 'Eintracht Braunschweig: Ein Remis als Mutmacher',
+    'date': '2019-10-19',
+    'description': 'Eintracht Braunschweig ist in der Dritten Liga seit dem 1. September sieglos. Das Remis im Testspiel gegen den HSV macht den Niedersachsen Mut für das heutige Heimspiel gegen Spitzenreiter Unterhaching.',
+    'categories': ['Fußball'],
+    'tags': [],
+    'with': ['Das Gefühl, nach dem Schlusspfiff die Hände nach oben', 'Bis auf Nehrig und Fürstner', 'hmann sprach auf der Pressekonferenz am Freitag von einem "sehr guten Test" und freute sich darüber, dass bis auf die Langzeitverletzten Bernd Nehrig und Stepha'],  # 3 segments
+    'without': ['Mögliche Aufstellung', 'Sail United: Das Meer ist barrierefrei ', 'Ergebnisse, Tabellenstände und die Spieltage im Überblick.'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.tichyseinblick.de/kolumnen/spahns-spitzwege/no-peace-for-our-time-pence-syrien-und-die-tuerkei/': {
+    'file': 'd32ad974a4b04657bb6e4d91852bd52d.html',
+    'author': 'Tomas Spahn',
+    'title': 'No Peace for Our Time – Pence, Syrien und die Türkei',
+    'date': '2019-10-18',
+    'description': 'Peace for our time“ war 1938 der Auftakt zur bisher größten Katastrophe, die die Menschheit sich selbst geschaffen hat. Hoffen wir inständig, dass das aktuelle US-Appeasement nicht eines Tages ähnlich beurteilt werden muss.',
+    'categories': [],
+    'tags': [],
+    'with': ['war 1938 der Auftakt zur bisher größten', 'Frieden in unserer Zeit?', 'Außer Kuscheleinheiten nichts gewesen.'],  # 3 segments
+    'without': ['Täglich schreiben unabhängige', 'Unterstützen Sie diese Form', 'Türkei: Der euroamerikanische Abschied aus der Weltpolitik'],  # 3 segments
+    'comments': [],  # new comments online!!
+    'license': '',
+    'region': 'DE',
+},
+'https://www.mopo.de/sport/hsv/fuer-den-hsv-in-der-oberliga--jansen-kaempft-um-trochowskis-comeback-33334622': {
+    'file': 'd27eb719099b43639104995806e07d00.html',
+    'author': 'Simon Braasch',
+    'title': 'Ex-Nationalspieler in der Oberliga: Marcell Jansen kämpft um Piotr Trochowskis HSV-Comeback ',
+    'date': '2019-10-19',
+    'description': 'Läuft Piotr Trochowski künftig wieder für den HSV auf? Seit dieser Woche trainiert der 35-Jährige bei der dritten Mannschaft des Vereins mit, könnte schon bald in der Oberliga Hamburg zum Einsatz kommen. Dann würde der HSV auf gleich zwei Ex-Nationalspieler zurückgreifen können – denn Marcell Jansen (33) ist bereits fester Bestandteil des Teams. Nun hofft „Cello“, dass Trochowski es ihm nachmacht, sagte der MOPO: „Ich werde sehr stark auf ihn einreden, damit er auch wirklich bei uns ...',
+    'categories': ['Sport'],
+    'tags': [],
+    'with': ['künftig wieder für den HSV auf? ', 'Es bringt riesigen Spaß, die Liga hat sehr viel Tradition', 'Oberliga ist keine Pillepalle-Liga'],  # 3 segments
+    'without': ['haben einen guten Draht.', '4 Tsd. Abonnenten', 'Kommentieren Sie hier', 'URL zum Kopieren', 'Messenger'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.nachrichten.at/meine-welt/gesundheit/was-bringen-alternative-therapien-bei-krebs;art114,3177663': {
+    'file': '0b96fc66e2c94f45a1b923ec9a31fcf2.html',
+    'author': 'Claudia Riedler',
+    'title': 'Was bringen "alternative" Therapien bei Krebs?',
+    'date': '2019-10-19',
+    'description': 'Krebskongress in Linz über Schul- und Komplementärmedizin.',
+    'categories': ['Gesundheit'],
+    'tags': [],
+    'with': ['Darüber diskutieren Experten seit gestern', 'Wer sollte also die Komplementärmedizin anbieten?', 'www.selbertun.at'],  # 3 segments
+    'without': ['Leiterin Redaktion Leben', 'Die OÖNachrichten nehmen den Schutz Ihrer Privatsphäre sehr ernst.', '3:1 - Vorwärts Steyr half der SV Ried '],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': 'AT',
 },
-'0a6859e372984f57911b64b6c76c88c9.html': {
-    'file': '0a6859e372984f57911b64b6c76c88c9.html',
-    'author': 'sda',
-    'title': 'Basel bleibt Leader dank Pflichtsieg',
-    'date': '2019-10-19',
-    'description': 'Der FC Basel bleibt Leader in der Super League dank eines 3:1 gegen das Schlusslicht Thun. Der FCB glänzt nicht, tut aber das für den Erfolg Nötige.',
+'https://www.ardmediathek.de/swr/player/Y3JpZDovL3N3ci5kZS9hZXgvbzExNjIyMjY/nahrungsergaenzungsmittel-das-dubiose-geschaeft-mit-der-hoffnung': {
+    'file': '0b4609a864eb4fa0bbcb2b395f6be9eb.html',
+    'author': 'SWR Fernsehen',
+    'title': 'betrifft: ...: Nahrungsergänzungsmittel - Das dubiose Geschäft mit der Hoffnung | Video der Sendung vom 16.10.2019 18:15 Uhr (16.1.2019)',
+    'date': '2019-10-16',
+    'description': 'Nahrungsergänzungsmittel - Das dubiose Geschäft mit der Hoffnung | Video | Dubiose Händler versprechen Hilfe bei Schlafstörungen, Gelenkschmerzen, erhöhten Cholesterinwerten oder sogar Krebs. &quot;betrifft&quot; beleuchtet, wie es Gesetzeslücken ermöglichen, dass sogar gefährliche Nahrungsergänzungsmittel völlig unkontrolliert auf den Markt gelangen.',
     'categories': [],
     'tags': [],
-    'with': ['Nach dem die Basler den frühen Führungstreffer', 'Überschattet wurde die Partie', 'Heimteam mit zwei weiteren Toren innert elf Minuten.'],  # 3 segments
-    'without': ['Auch interessant', 'Was geschah bisher', 'Sponsor:'],  # 3 segments
-    'comments': ['Ruhe in Frieden lieber FCB Fan'],  # 0 or 3 segments
+    'with': ['Dubiose Händler versprechen Hilfe bei Schlafstörungen'],  # 3 segments
+    'without': ['Navigation schliessen', 'Mehr aus der Sendung', 'Unfallbetrüger'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://jungefreiheit.de/debatte/kommentar/2019/kaisers-royaler-wochenrueckblick-31/': {
+    'file': '0b66696af800472190a76b26faa845d4.html',
+    'author': 'Boris T. Kaiser',
+    'title': 'Kaisers royaler Wochenrückblick',
+    'date': '2019-10-19',
+    'description': 'Während Mesut Özil mit Deutschland abrechnet, geben die Auseinandersetzungen zwischen Kurden und Türken in deutschen Straßen einen Vorgeschmack auf die Zukunft. In Essen mußte ein Diskogast seine Kreuzkette verbergen. Der Türsteher wollte es so. <i>Boris T. Kaiser blickt zurück.',
+    'categories': [],
+    'tags': [],
+    'with': ['Im Interview mit dem Sportportal', 'Ist Özil ein verkappter Feingeist?', 'nicht für einen Rosenkranz hält.'],  # 3 segments
+    'without': ['Der nächste Beitrag', 'Die Kommentarfunktion wird 2 Tage nach Veröffentlichungsdatum des Beitrages geschlossen.', 'Meistkommentiert'],  # 3 segments
+    'comments': ['wichtig ist lebenswichtig, Christen sind böse und die Räume der Frankfurter Buchmesse sind frei'],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.handelsblatt.com/finanzen/banken-versicherungen/dsgv-sparkassenpraesident-helmut-schleweis-fordert-mehr-staatliche-investitionen/25132278.html?ticket=ST-305736-xrZByjo6IdvdbvOYqy5a-ap1': {
+    'file': 'd20cc6511c6f4cb3bad3a1e57435456d.html',
+    'author': 'Elisabeth Atzler',
+    'title': 'Sparkassenpräsident will mehr staatliche Investitionen',
+    'date': '2019-10-18',
+    'description': 'Schleweis,EZB,Sparkassen,Geldpolitik,Niedrigzinsen,DSGV,Fusion,Helaba,Konjunktur,Investition,LBBW,IW Köln,Deutsche Bank,S-Finanzgruppe,DekaBank,IMF,Helmut Schleweis,Michael Hüther',
+    'categories': [],
+    'tags': ['EZB', 'Bild', 'Landesbanken', 'Banken in Deutschland', 'Sparkassen', 'Helmut Schleweis', 'Konjunktur', 'Europäische Union', 'Deutscher Sparkassen- und Giroverband (DSGV)'],
+    'with': ['Der oberste Sparkassenvertreter hält wegen der Konjunkturabkühlung', 'Damit reiht sich Schleweis bei denjenigen ein', 'Nukleus einer Sparkassenzentralbank'],  # 3 segments
+    'without': ['Deutsche Banken haben den Niedrigzinsen', 'Benachrichtigung aktivieren', 'Flipboard'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://telebasel.ch/2019/10/19/junge-lenker-schrotten-corvette-und-audi-in-einer-nacht/?channel=105100': {
+    'file': '0afd671fc2b64f3caa83a91537e8d343.html',
+    'author': 'telebasel',
+    'title': 'Junge Lenker schrotten Corvette und Audi in einer Nacht',
+    'date': '2019-10-19',
+    'description': 'Am Freitagabend krachte ein 19-jähriger Neulenker in Lenzburg in eine Leitplanke. Am Auto und an der Leitplanke entstand ein Sachschaden von 80&#039;000 Franken.',
+    'categories': [],
+    'tags': [],
+    'with': ['In der Nacht auf Samstag haben zwei junge Lenker', 'Ein Neulenker ist in der Nacht auf Samstag um 23:50', 'Schweizer schrottet Corvette'],  # 3 segments
+    'without': ['1 Kommentar', 'Mehr aus dem Channel', 'Fruchtiger Pinot Grigio zu Saiblingsfilet mit Buttermilch-Dashi'],  # 3 segments
+    'comments': ['Und ich (A) LOCHmuss'],  # 0 or 3 segments
     'license': '',
     'region': 'CH',
 },
-'0a7416a53644447a901d4c231ab65eff.html': {
-    'file': '0a7416a53644447a901d4c231ab65eff.html',
-    'author': 'sda',
-    'title': 'YB erwacht gegen Xamax erst nach der Pause',
-    'date': '2019-10-19',
-    'description': 'Die Young Boys stehen auch nach der elften Runde der Super League ohne Niederlage da. Die Berner gewinnen gegen Neuchâtel Xamax 4:1.',
+'https://www.dealdoktor.de/user-deals/deals/gutscheine-deals/jacobs-gold-instant-kaffee-2-glaeser-fuer-480-e/': {
+    'file': '0ac0531f1f0543f4a3f68159e5fd1875.html',
+    'author': 'MikeNils' ,
+    'title': 'Jacobs Gold Instant Kaffee 2 Gläser für 4,80 €',
+    'date': '2019-10-18',
+    'description': 'Im Aktionszeitraum gleichzeitig zwei Gläser Jacobs Gold instant 200g bei Edeka kaufen. Bei einsendung des Kassenbons und ausgefüllten',
     'categories': [],
     'tags': [],
-    'with': ['Die Young Boys stehen auch nach der elften', 'Entscheidung, ehe YB den Gästen durch Gaëtan', 'Feyenoord Rotterdam geben. '],  # 3 segments
-    'without': ['Mehr aus dem Channel', 'Sponsor:', 'Auch interessant'],  # 3 segments
+    'with': ['Bei einsendung des Kassenbons', '4. 6 € Gutschein für den Einkauf bei Edeka erhalten.', 'Einsendeschluss: 03.11.2019 (Poststempel)'],  # 3 segments
+    'without': ['Deal abgelaufen? Jetzt melden!', 'Kostenlos zum Newsletter anmelden und', 'Du musst angemeldet sein, um einen Kommentar abzugeben.'],  # 3 segments
+    'comments': ['Der 10 Euro Gutschein Deal vor 3 Wochen über Rewe war lukrativer', 'Hast recht, gerade erst gesehen.', 'Der Link geht zu EDEKA-Nordbayern'],  # 0 or 3 segments
+    'license': '',
+    'region': 'DE',
+},
+'https://www.tagblatt.ch/kultur/mit-allen-wassern-gewaschen-ld.1161246': {
+    'file': '0a29620f9c4347758c146ed06dab6f3e.html',
+    'author': 'Bettina Kugler',
+    'title': 'Tanz in der St. Galler Lokremise: Mit allen Wassern gewaschen',
+    'date': '2019-10-19',
+    'description': 'Die Tanzkompanie des Theaters St.Gallen öffnet mit &quot;Rain&quot;, Kinsun Chans erster choreografischer Arbeit als neuer Tanzchef, traumleicht und bildstark Assoziationsräume.',
+    'categories': [],
+    'tags': [],
+    'with': ['Nirgends und überall ist das Gedicht,', 'Rund 75 Minuten lang spürt man den', 'die Kunst, das Leben auf sich herabregnen zu lassen.'],  # 3 segments
+    'without': ['Ein Kippmoment in', 'Abonnemente', 'Online Inserat aufgeben'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': 'CH',
 },
-'0a24692a9ea846c1819bd6a5f92a8874.html': {
+'https://www.watson.ch/leben/drinks/453207266-sazerac-alles-ueber-den-cocktail-klassiker-aus-new-orleans': {
     'file': '0a24692a9ea846c1819bd6a5f92a8874.html',
     'author': 'Oliver Baroni',
     'title': 'Sazerac - alles über den Cocktail-Klassiker aus New Orleans',
@@ -4016,2119 +3915,607 @@ ADDITIONAL_PAGES = {
     'license': '',
     'region': '',
 },
-'0a29620f9c4347758c146ed06dab6f3e.html': {
-    'file': '0a29620f9c4347758c146ed06dab6f3e.html',
-    'author': 'Bettina Kugler',
-    'title': 'Tanz in der St. Galler Lokremise: Mit allen Wassern gewaschen',
+'https://wien.orf.at/stories/3017954/': {
+    'file': '0a6291ebbce449b3b04256b43c73e39d.html',
+    'author': 'red, wien.ORF.at/Agenturen',
+    'title': 'Lotte Tobisch ist tot',
     'date': '2019-10-19',
-    'description': 'Die Tanzkompanie des Theaters St.Gallen öffnet mit &quot;Rain&quot;, Kinsun Chans erster choreografischer Arbeit als neuer Tanzchef, traumleicht und bildstark Assoziationsräume.',
+    'description': 'Die Opernball-Grande-Dame und Burgschauspielerin Lotte Tobisch ist Samstagfrüh im Alter von 93 Jahren gestorben. Die Wienerin prägte unter anderem 16 turbulente Jahre lang den Opernball als Organisatorin.',
     'categories': [],
     'tags': [],
-    'with': ['Nirgends und überall ist das Gedicht,', 'Rund 75 Minuten lang spürt man den', 'die Kunst, das Leben auf sich herabregnen zu lassen.'],  # 3 segments
-    'without': ['Abonnemente', 'Online Inserat aufgeben', 'CH Media'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'CH',
-},
-'0a80910f4e9848bd949761af863b680b.html': {
-    'file': '0a80910f4e9848bd949761af863b680b.html',
-    'author': 'dpa',
-    'title': 'ICE liegengeblieben',
-    'date': '2019-10-19',
-    'description': 'Gernsheim - Wegen eines Schadens an der Oberleitung ist es am Abend zwischen Mannheim und Frankfurt zu deutlichen Verzögerungen im Fern- und',
-    'categories': [],
-    'tags': ['Oberleitung', 'Frankfurt', 'Mannheim', 'Verzögerung', 'Regionalverkehr', 'ICE'],
-    'with': ['Schadens an der Oberleitung ist es am Abend', 'die Bahn noch bis in den Nachmittag ', 'etwa 10 bis 15 Minuten auf der Strecke'],  # 3 segments
-    'without': ['Themen in diesem Artikel', 'Erfahren Sie mehr:', 'Industrie stellt Koalition schlechtes Zeugnis aus'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a723622cd5c4b638a66969b194591b4.html': {
-    'file': '0a723622cd5c4b638a66969b194591b4.html',
-    'author': '',
-    'title': 'Engpass bei heimischem Saatgut',
-    'date': '2019-10-19',
-    'description': 'Nicht nur in der Landwirtschaft – auch in den heimischen Wäldern wird derzeit geerntet. Heimische Jungpflanzen werden professionell eingesammelt, um sie zu züchten. Derzeit müssen viele aus dem Ausland zugekauft werden, denn es fehlt an heimischem Saatgut.',
-    'categories': [],
-    'tags': [],
-    'with': ['Nicht nur in der Landwirtschaft – auch in den heimischen Wäldern wird', 'weil wir nicht ausreichendes inländisches Pflanzenmaterial zur Verfügung haben.“', 'ahlflächen zur Wiederaufforstung'],  # 3 segments
-    'without': ['Aktuell in kaernten', 'Impressum', 'Erfahren Sie mehr:'],  # 3 segments
+    'with': ['Die Opernball-Grande-Dame und Burgschauspielerin Lotte Tobisch', 'Zahlreiche Auszeichnungen', 'Auch bei der jüngsten Wahl'],  # 3 segments
+    'without': ['ORF2 zeigt in memoriam', 'die Funktionalität dieser Website zu gewährleisten', 'Aktuell in wien', 'Viele Freunde, Verwandte und Fans haben sich', 'Georg Hochmuth'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': 'AT',
 },
-'0a735835a2cd4628ae2c7c857879155f.html': {
-    'file': '0a735835a2cd4628ae2c7c857879155f.html',
-    'author': 'PCGH-Redaktion',
-    'title': 'Jetzt ist Ihre Meinung gefragt zu Blizzard: US-Abgeordnete kritisieren das Unternehmen für die Sperre von blitzchung',
-    'date': '',
-    'description': 'Jetzt ist Ihre Meinung gefragt zu Blizzard: US-Abgeordnete kritisieren das Unternehmen für die Sperre von blitzchung Neben zahlreichen Spielern und so',
-    'categories': [],
-    'tags': [],
-    'with': ['Neben zahlreichen Spielern und sogar', 'Bitte beachten Sie: Der Kommentarbereich wird', 'Hearthstone-Spielers blitzchung rückgängig zu machen. Die Akt'],  # 3 segments
-    'without': ['Bitte einloggen, um diese Anzeige auszublenden. ', 'Zitieren ', 'Wenn dies Ihr erster Besuch hier ist'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a850792fe4d427b87817a7758a308e8.html': {
-    'file': '0a850792fe4d427b87817a7758a308e8.html',
-    'author': 'Thilo Sarrazin',
-    'title': 'Hört euch zu!',
+'https://www.investmentwatchblog.com/biggest-money-laundering-scheme-in-history-uncovered-in-ukraine/': {
+    'file': '0a3108e507c54157a95fe7a1338f5e9c.html',
+    'author': 'IWB',
+    'title': 'Biggest money laundering scheme in history uncovered in Ukraine',
     'date': '2019-10-19',
     'description': '',
     'categories': [],
-    'tags': [],
-    'with': ['Ich hatte stets Freude daran, Situationen und Probleme rational zu analysieren', 'Aus diesem Interesse heraus studierte ich Volkswirtschaft', 'Als rationaler Charakter kann ich gar nicht'],  # 3 segments
-    'without': ['picture alliance', 'Unterstützen Sie die JF', 'Kommentare anzeigen'],  # 3 segments
-    'comments': ['Es geht nicht nur darum', 'ZUSTIMMUNG', 'wohl eher Hochradfahrer'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a874311bbb240fab884e1a8d8f1fe7d.html': {
-    'file': '0a874311bbb240fab884e1a8d8f1fe7d.html',
-    'author': '',
-    'title': 'Unser Bauch – Die wunderbare Welt des Mikrobioms',
-    'date': '',
-    'description': 'Unser Bauch – Die wunderbare Welt des Mikrobioms im Fernsehen - TV Programm: Die Darmflora und unsere Gesundheit',
-    'categories': [],
-    'tags': [],
-    'with': ['Wh. am 26.10.', 'Lange ein anrüchiges Thema, wurde der Darm', 'Cast und Crew'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Home /', 'Weitere Angebote von Hubert Burda Media'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a956786ecb74ab2bc1879e7afd6ea37.html': {
-    'file': '0a956786ecb74ab2bc1879e7afd6ea37.html',
-    'author': 'textOmatic',
-    'title': 'Corning praktisch unverändert',
-    'date': '2019-10-19',
-    'description': 'Ohne große Bewegung zeigte sich der Wert des Glashersteller Corning. Der Anteilschein notierte bei Handelsende mit 26,50 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Bis um 17:45 Uhr belief sich', 'uletzt wird die Corning-Aktie mit 26,50 Euro gehandelt.', 'große Bewegung zeigte sich der Wert des Glashersteller '],  # 3 segments
-    'without': ['Kommentar-Text', 'Finanzen100: Börsenbriefe, die sich auszahlen', 'Lesen Sie auch'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0a5631017b1d4517856613c1cec23e25.html': {
-    'file': '0a5631017b1d4517856613c1cec23e25.html',
-    'author': '',
-    'title': 'Indiana Jones und der letzte Kreuzzug',
-    'date': '',
-    'description': 'Indiana Jones und der letzte Kreuzzug , im TV, im Fernsehen, im Fernsehprogramm, im TV Programm',
-    'categories': [],
-    'tags': [],
-    'with': ['(Sean Connery) nach dem Heiligen Gral', 'Deren Reize lassen', 'Action, Spannung, Komik'],  # 3 segments
-    'without': ['Sendung in Kalender eintragen', 'https://www.facebook.com/TVspielfilm', 'Paramount', 'legt die Meßlatte in nahezu'],  # 3 segments
-    'comments': ['Früher habe ich das abgelehnt.', 'nt, trotzdem irgendwie liebensw', 'indeutig Sean Connery! Ich habe noch nie'],  # 0 or 3 segments
-    'license': ' 24 Bilder Filmagentur',
-    'region': 'DE',
-},
-'0aa9b90930db42d68c1cc2b5aa8c341f.html': {
-    'file': '0aa9b90930db42d68c1cc2b5aa8c341f.html',
-    'author': '',
-    'title': 'Indiana Jones und der letzte Kreuzzug',
-    'date': '',
-    'description': 'Indiana Jones und der letzte Kreuzzug im Fernsehen - TV Programm: In dem Actionabenteuer sucht Archäologe Jones (Harrison Ford) mit seinem Vater (Sean Connery) nach dem Heiligen Gral und legt sich wieder mit Nazis an.',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 20:10 - 22:10', 'Indiana Jones und der letzte Kreuzzug bei Streaming-Anbietern', 'Gestapo Offizier'],  # 3 segments
-    'without': ['Das große TV-Quiz', 'Frage von luba1977', 'Erinnerung aktivieren'],  # 3 segments
-    'comments': ['Klar - die Chemie stimmt und die Action ist perfekt. ', 'Harrison Ford und Sean Connery tauchen briliant', 'Action und jeder Menge Humor Unterhalten'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0aa29c15bfb043bd8c4e5b963bbd42ec.html': {
-    'file': '0aa29c15bfb043bd8c4e5b963bbd42ec.html',
-    'author': '',
-    'title': 'Hunde brechen aus Käfig aus und zerfleischen Mädchen',
-    'date': '2019-10-19',
-    'description': 'Drei Hunde sind aus einem Tierheim in Oklahoma ausgebrochen und haben anschließend ein Mädchen zerfleischt.',
-    'categories': ['Hunde'],
-    'tags': [],
-    'with': ['Drei Hunde sind aus einem Tierheim in Oklahoma ausgebrochen', 'Allein von den Verletzungen her konnte man erahnen', 'Die Hunde befinden sich demnach aktuell in Quarantäne'],  # 3 segments
-    'without': ['"Unter uns" feiert Geburtstag: Dieses Spezial gab es noch nie', 'Viktoria Köln bietet Fans künftig Live-Radio', 'Impressum'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ab8e69051294a2b9371bfa9f8f3b0dd.html': {
-    'file': '0ab8e69051294a2b9371bfa9f8f3b0dd.html',
-    'author': '',
-    'title': '"Unter uns" feiert Geburtstag: Dieses Spezial gab es noch nie',
-    'date': '2019-10-19',
-    'description': 'Die RTL-Serie Unter Uns feiert 25. Geburtstag. Eine Spezial-Folge gibt es - aber nur für Premium-Nutzer.',
-    'categories': ['TV & Shows '],
-    'tags': [],
-    'with': ['Die RTL-Serie Unter Uns feiert 25. Geburtstag', 'nur mit viel Drama, sondern auch mit einigen Überraschungen auf. ', 'Irene Weigel (Petra Blossey, 63)'],  # 3 segments
-    'without': ['SPORTLICHER NEUZUGANG BEI "UNTER UNS" ', 'Gewaltige Finanzprobleme: Traditionsverein muss aufgelöst werden!', 'Junge Frau fragt ihren Vater, ob er Binden kaufen könne, doch er ist überfordert'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ac79c5c9d934d2097d3efd2f3924114.html': {
-    'file': '0ac79c5c9d934d2097d3efd2f3924114.html',
-    'author': 'Albert Jelica',
-    'title': 'Microsoft: “Android ist das beste mobile Betriebssystem”',
-    'date': '2019-10-19',
-    'description': 'Microsoft hat im Zuge des eigenen Surface-Events sehr überraschend das eigene Surface Duo präsentiert.',
-    'categories': [],
-    'tags': [],
-    'with': ['Microsoft hat im Zuge des eigenen Surface-Events', 'Im Zuge eines Events in London', 'wird die Zukunft zeigen.'],  # 3 segments
-    'without': ['23 Jahre alt', 'Surface Phone trifft Nintendo DS', '1 Comment threads', 'sofern es nicht iOS ist'],  # 3 segments
-    'comments': ['Es kann dem Anwender doch egal sein', 'Ich finde es vernüftig auf Android zu setzen', 'Pfff. Microsoft hat nur Angst mit einem eigenen O'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ac0531f1f0543f4a3f68159e5fd1875.html': {
-    'file': '0ac0531f1f0543f4a3f68159e5fd1875.html',
-    'author': 'MikeNils' ,
-    'title': 'Jacobs Gold Instant Kaffee 2 Gläser für 4,80 €',
-    'date': '2019-10-18',
-    'description': 'Im Aktionszeitraum gleichzeitig zwei Gläser Jacobs Gold instant 200g bei Edeka kaufen. Bei einsendung des Kassenbons und ausgefüllten',
-    'categories': [],
-    'tags': [],
-    'with': ['1. Zwei Gläser Jacobs Instant Kaffee bei Edeka kaufen.', 'm Aktionszeitraum gleichzeitig zwei Gläser Jacobs Gold ins', 'Einsendeschluss: 03.11.2019 (Poststempel)'],  # 3 segments
-    'without': ['Deal abgelaufen? Jetzt melden!', 'Kostenlos zum Newsletter anmelden und ', 'Du musst angemeldet sein, um einen Kommentar abzugeben.'],  # 3 segments
-    'comments': ['Der 10 Euro Gutschein Deal vor 3 Wochen über Rewe war lukrativer', 'Hast recht, gerade erst gesehen.', 'Der Link geht zu EDEKA-Nordbayern'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ac4388131844158916f47c3e908eb56.html': {
-    'file': '0ac4388131844158916f47c3e908eb56.html',
-    'author': '',
-    'title': 'Monsieur Claude und seine Töchter',
-    'date': '',
-    'description': '"Monsieur Claude und seine Töchter im Fernsehen - TV Programm: Komödie mit Christian Clavier in der Titelrolle.',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 16:55 - 18:30, Sky Cinema Hits HD', 'Erotik', 'Teil zwei kam im April ins Kino.'],  # 3 segments
-    'without': ['Das große TV-Quiz', 'noch 999 Zeichen übrig', 'V SPIELFILM:'],  # 3 segments
-    'license': '',
-    'comments': ['ch bin ein Fan guten französischen Kino', 'auf der Klaviatur der political incorrectness, dass man aus dem Lachen kaum noch herauskommt. Unbedingt sehenswert!', 'zeln mit Ungarisch-uigurisch-uruguaiisch oder dänisch-deutsch-dschibuti angeben - dann ist es vielleicht etwas schwerer, auf die an'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ace29f1ba624960bab5d72697844c51.html': {
-    'file': '0ace29f1ba624960bab5d72697844c51.html',
-    'author': 'textOmatic',
-    'title': 'IBM fällt 1,2 Prozent',
-    'date': '2019-10-19',
-    'description': 'Mit einem Minus von 1,2 Prozent gehörte der Wert des Softwarehersteller IBM zu den Verlustbringern des Tages. Bei Börsenschluss betrug der Preis des Anteilscheins 119,15 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Mit einem Minus von 1,2 Prozent gehörte', 'hen-Hoch der IBM-Aktie wurde am 01.08.2019 notiert. Derzeit handelt die Börse den Anteilschein 13,7 Prozent unter dem Hoch. Mit 95,59 Euro war das 52-Wochen-Tief am 27.1', '5 Euro ist der Anteilschein am Freitag in den Handel gegangen und erreicht'],  # 3 segments
-    'without': ['Mobile-App: Börse aktuell', 'Meistgelesen', 'Lernen Sie hier die Gewinner-Aktien 2019 kennen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ad390d222b3426293e400aba6590b53.html': {
-    'file': '0ad390d222b3426293e400aba6590b53.html',
-    'author': '',
-    'title': 'AfD-Laster brennt lichterloh vor Landtagswahl',
-    'date': '2019-10-19',
-    'description': 'Im thüringischen Reinsdorf brannte ein AfD-Laster lichterloh. Ein politisches Motiv kann nicht ausgeschlossen werden.',
-    'categories': [],
-    'tags': [],
-    'with': ['Die Polizei hat die Ermittlungen zur Klärung der Brandursache aufgenommen.', 'Der Thüringer AfD-Chef Björn Höcke zeigte sich von einer politischen Tat überzeugt', 'In Thüringen wird am 27. Oktober'],  # 3 segments
-    'without': ['Hunde brechen aus Käfig aus und zerfleischen Mädchen Neu ', 'Schwesta-Ewa-Fan? Dieser Ex-"BTN"-Star legt Gesangseinlage im Auto hin Neu ', 'Heute wird in Köln ein riesiger Ansturm erwartet! Das ist der Grund! 6.529 Anzeige'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0adfb677d8484aa0a383334e80ada240.html': {
-    'file': '0adfb677d8484aa0a383334e80ada240.html',
-    'author': '',
-    'title': 'So stark boomt das Geschäft mit der käuflichen Liebe in Hessen',
-    'date': '2019-10-19',
-    'description': 'Seit der Einführung des Prositituiertenschutzgesetzes ist ein Antrag auf die Genehmigung eines Bordells Pflicht. So viele Anträge gab es seit 2017.',
-    'categories': [],
-    'tags': [],
-    'with': ['Seit der Einführung des Prositituiertenschutzgesetzes ist ein Antrag', 'Die Erlaubnis ist Pflicht, seit 2017 das Prostituiertenschutzgesetz', 'Ob Anträge abgelehnt wurden, geht aus der Antwort des Sozialministeriums'],  # 3 segments
-    'without': ['Dieses Mega-Event wird zur neuen TOP-Adresse für Gaming-Fans', 'Selfie mit Kult-Star: Hier ist "Maddin" Schneider selbst Fan', 'Hund attackiert Frau und richtet sie übel zu'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ae7a9e714c24c0c849c0471e5bc8e8a.html': {
-    'file': '0ae7a9e714c24c0c849c0471e5bc8e8a.html',
-    'author': '',
-    'title': 'Wir sind die Millers',
-    'date': '',
-    'description': 'Wir sind die Millers im Fernsehen - TV Programm: Jason Sudeikis und Jennifer Aniston spielen eine schrecklich nette Familie.',
-    'categories': [],
-    'tags': [],
-    'with': ['Komödie, USA 2013, 101/135 Min.', 'Krasser Klamauk mit Herz für Typen', 'Wir sind die Millers bei Streaming-Anbietern'],  # 3 segments
-    'without': ['Erinnerung aktivieren', 'Das könnte Sie auch interessieren', 'Weitere Angebote von Hubert Burda Media'],  # 3 segments
-    'comments': ['ber wilde und hemmungslose Komödie und ist im Keim dann doch deutlich „zarter“. Das macht nichts, aber es ', 'verpickeltes Weichei oder auch Emma Roberts als schnodderige Au', 'Die damit einhergehende plumpe Dramaturgie läs'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ae0997c50b244c6b1a654ec34579304.html': {
-    'file': '0ae0997c50b244c6b1a654ec34579304.html',
-    'author': 'Steven Montero und Kyra Funk',
-    'title': '"Ich bin die Meryl Streep unter den Generälen": Ex-US-Verteidigungsminister gelingt genialer Konter gegen Trump',
-    'date': '2019-10-19',
-    'description': 'Im Januar 2017 schreibt Donald Trump auf Twitter, Schauspielerin Meryl Streep sei &#034;überbewertet&#034;. Letztens bezeichnete er auch Jim Mattis so. Doch ...',
-    'categories': [],
-    'tags': ['Jim Mattis', 'Meryl Streep', 'Donald Trump', 'Ex-Verteidigungsminister', 'Twitter'],
-    'with': ['Im Januar 2017 schreibt Donald Trump auf Twitter, Schauspielerin Meryl Streep sei "überbewertet".', 'Im Januar 2017 schreibt Donald Trump ', 'Doch der Ex-Verteidigungsminister gibt ihm Kontra.'],  # 3 segments
-    'without': ['Weitere Videos aus dem Ressort', 'Erfahren Sie mehr:', 'Newsticker'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ae8506e3c78493ab8eb8b6a3b765d77.html': {
-    'file': '0ae8506e3c78493ab8eb8b6a3b765d77.html',
-    'author': '',
-    'title': 'Hawaii Five-0',
-    'date': '',
-    'description': 'Hawaii Five-0 im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['20:15 - 21:15', 'Auflösung des Cliffhangers von letzter Woche', 'Hochexplosiv'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars', 'bei welchem Anbieter'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0ae8655bb12243e08e26aa6aa7215e46.html': {
-    'file': '0ae8655bb12243e08e26aa6aa7215e46.html',
-    'author': 'textOmatic',
-    'title': 'United Technologies mit Kursverlusten von 0,7 Prozent',
-    'date': '2019-10-19',
-    'description': '"Mit einem Minus von 0,7 Prozent gehörte das Wertpapier des Technologiekonzern United Technologies zu den Verlustbringern des Tages. Bei Handelsschluss betrug der Preis des Anteilscheins 123,32 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Mit einem Minus von 0,7 Prozent gehörte das Wertpapier des Technologiekonzern United ', 'Euro hatte sie sich um 86 Cent unwesentlich auf 123,32 Euro unwesentlich verschlechtert', ' Umsatz kam die Aktie bis um 17:45 Uhr. Dabei wurden 296 Papiere gehandelt. Zu diesem Z'],  # 3 segments
-    'without': ['er-Aktien 2019 kennen und profitieren Sie von der Expertise der Bernecker Profis', 'Meistgelesen', 'Partnerinhalt'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0af5bc1160bd47db8c03cb5737fcba8f.html': {
-    'file': '0af5bc1160bd47db8c03cb5737fcba8f.html',
-    'author': '',
-    'title': 'Mühlviertler IT-Team bringt Ordnung in den Sportkalender',
-    'date': '2019-10-19',
-    'description': 'NAARN IM MACHLAND.&nbsp;Wie vier Programmierer eine Plattform für Hobbysportler entwickelten.',
-    'categories': [],
-    'tags': [],
-    'with': ['Hier ein Beachvolleyball-Turnier, dort ein Stockschützen-Event', 'Damit wollen sie erreichen, dass sich ', 't, hat es nicht leicht, die Vielzahl an angebotenen Sportveranstaltungen im Blick zu behalten.  Genau vor diesem Problem standen in der Vergangenheit auch Da'],  # 3 segments
-    'without': ['Jetzt sofort weiterlesen mit OÖNplus:', 'Nach oben ', 'menu Menu close Menu'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'AT',
-},
-'0af62102bb2a49c397a46c635c202e82.html': {
-    'file': '0af62102bb2a49c397a46c635c202e82.html',
-    'author': '',
-    'title': 'Frankensteins Braut',
-    'date': '',
-    'description': 'Frankensteins Braut im Fernsehen - TV Programm: Boris Karloff bekommt seine Gespielin „gebaut“.',
-    'categories': [],
-    'tags': [],
-    'with': ['Horrorklassiker, USA 1935, 72/70 Min.', 'Frankensteins Monster (Karloff) entwickelt Gefühle', 'William Hurlbut'],  # 3 segments
-    'without': ['weitere Starporträts finden Sie hier', 'Netiquette', 'Das könnte Sie auch interessieren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0af9eecbab424289a20fb87e1eab0a16.html': {
-    'file': '0af9eecbab424289a20fb87e1eab0a16.html',
-    'author': '',
-    'title': 'The Taste',
-    'date': '',
-    'description': 'The Taste im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Kochwettbewerb, D 2019, 140 Min.', 'Gäste: Jury: Maria Groß, Tim Raue, Frank Rosin, Alexander Herrmann', 'Heute, 20:15 - 22:35, sixx'],  # 3 segments
-    'without': ['Sendung in Kalender eintragen', 'Home /', 'https://www.facebook.com/TVspielfilm'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0afd671fc2b64f3caa83a91537e8d343.html': {
-    'file': '0afd671fc2b64f3caa83a91537e8d343.html',
-    'author': 'telebasel',
-    'title': 'Junge Lenker schrotten Corvette und Audi in einer Nacht',
-    'date': '2019-10-19',
-    'description': 'Am Freitagabend krachte ein 19-jähriger Neulenker in Lenzburg in eine Leitplanke. Am Auto und an der Leitplanke entstand ein Sachschaden von 80&#039;000 Franken.',
-    'categories': [],
-    'tags': [],
-    'with': ['In der Nacht auf Samstag haben zwei junge Lenker unabhängig voneinander einen Unfall', 'Ein Neulenker ist in der Nacht auf Samstag um 23:50', 'und mussten die Feuerwehr verständigen. Der Lenker wurde dabei leicht verletzt, seine 19-jährige Beifahrerin zog sich s'],  # 3 segments
-    'without': ['Auch interessant', 'Mehr aus dem Channel', 'Fruchtiger Pinot Grigio zu Saiblingsfilet mit Buttermilch-Dashi', 'Auch interessant'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'CH',
-},
-'0afdfce0b5c943868a5448b4751bc3fb.html': {
-    'file': '0afdfce0b5c943868a5448b4751bc3fb.html',
-    'author': 'Sebastian Kolar',
-    'title': 'Windows 7/8/10: PowerShell – Musik abspielen im WAV-Format',
-    'date': '2019-10-19',
-    'description': 'Neben grafischen Bordmitteln ermöglicht die PowerShell, Musik abzuspielen. Dass das geht, reizt. Bedientechnisch ist es mangels Steuerungsbuttons unbequem.',
-    'categories': [],
-    'tags': [],
-    'with': ['enannte verlustbehaftete Formate. Anders sieht es bei WAV aus: Das ist ein verlustfreies Format, darin vorlieg', 'd eines Pfads. Mit Code-Schnipseln haben Sie in der PowerShell generell zu tun, zur Audiounterhaltung „einfach so“ sind Sie aber sicherlich eher den in Fleisch und Blut übergegangenen Dop', ', der sieht eine Fehlermeldung in roter Farbe: „(...) Datei ist keine gültige Wavedatei.“'],  # 3 segments
-    'without': ['Weiterführende Links', 'Gefällt Ihnen dieser Artikel?', 'Special: Windows 10'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b00a768cfd047f1b620438121505761.html': {
-    'file': '0b00a768cfd047f1b620438121505761.html',
-    'author': 'dpa',
-    'title': 'Militäroffensive in Nordsyrien: Kurden-Demo in Köln verläuft friedlich - weniger Teilnehmer',
-    'date': '2019-10-19',
-    'description': 'Tausende pro-kurdische Demonstranten haben in Köln gegen die türkische Militäroffensive in Nordsyrien protestiert und die Bundesregierung zum Handeln aufgefordert. Die Demonstration verlief nach Angaben der Polizei bis zur Abschlusskundgebung am Nachmittag weitestgehend friedlich.',
-    'categories': [],
-    'tags': [],
-    'with': ['Tausende pro-kurdische Demonstranten haben in Köln gegen die türkische Militäroffensive in Nordsyrien protestiert ', ' hatten 15.000 Demonstrierende angemeldet. Die Polizei hatte sich mit einem Großaufgebot an Sicherheitskräften sogar auf mehr als 20.000 e', 'ierten Führers der verbotenen kurdischen Arbeiterpartei PKK eingezogen worden. Wegen solcher Vorfälle würden „vereinzelt“ Anzeige'],  # 3 segments
-    'without': ['Zum Thema', 'Schlappe für Johnson: Votum über Brexit-Deal vertagt', 'www.facebook.com/saarbrueckerzeitung'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b0a35338d514739924d236aef88725c.html': {
-    'file': '0b0a35338d514739924d236aef88725c.html',
-    'author': 'Michael Thiele',
-    'title': 'CFC-Trainer Patrick Glöckner treibt seine Elf an',
-    'date': '2019-10-19',
-    'description': 'Gut gelaunt betrat CFC-Coach Patrick Glöckner zur Spieltags-Pressekonferenz das Podium. Er hatte auch allen Grund dazu.',
-    'categories': [],
-    'tags': [],
-    'with': ['Gut gelaunt betrat CFC-Coach Patrick Glöckner zur Spieltags-Pressekonferenz ', 'sind es vier Punkte. Der Duisburg-Sieg, so schön er war, brachte nur eins: Drei Zähler, keinen mehr! "Es ist extrem wichtig, dass wir kons', ') muss er auf zwei zentrale Mittelfeldspieler verzichten. "Eventuell ersetzen wir eins zu eins oder wir spielen mit zwei Stürmern", lässt sich Glöckner n'],  # 3 segments
-    'without': ['Mehr zum Thema', 'Politik & Wirtschaft', 'Fernseher, Smartphones und Co.! Hier staubt Ihr Sonntag Technik besonders günstig ab Anzeige '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b0c32b0cac54dcfbbb150ff0ecd6a7f.html': {
-    'file': '0b0c32b0cac54dcfbbb150ff0ecd6a7f.html',
-    'author': 'Lara Westphal',
-    'title': 'Alicija Köhler offiziell wieder Single',
-    'date': '2019-10-19',
-    'description': 'Seit ihrem Aus bei Germanys Next Topmodel hat sich im Leben von Kandidatin Alicija Köhler viel verändert - nicht nur ihre Frisur.',
-    'categories': [],
-    'tags': [],
-    'with': ['Germany´s Next Topmodel 2019" wurde Alicija Köhler (18) bekannt. Doch seit dem Ende der Sendung hat sich im Leben der hübschen Niedersächsin viel verändert.', '"Wieso bist du nicht mit deinem Freund zusammengezoge', 'DE'],  # 3 segments
-    'without': ['Politik & Wirtschaft', 'Bis zu 52% Rabatt: MediaMarkt Alzey haut am Sonntag Technik super günstig raus 2.347 Anzeige', '0160 - 24 24 24 0 '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b0ebfc67380423aaa223bc1bd590e62.html': {
-    'file': '0b0ebfc67380423aaa223bc1bd590e62.html',
-    'author': 'Freddy',
-    'title': 'Joyn: Premium-Abo wird 6,99 Euro pro Monat kosten',
-    'date': '2019-10-19',
-    'description': 'Die Streaming-Plattform Joyn (App Store-Link) gehört der ProSiebenSat1-Gruppe und bietet Live-TV, Streaming und Originalinhalte. Im August hatte man bekanntgegeben, dass man nach nur 50 Tagen mehr als 3,8 Millionen Nutzer zählt, kurz darauf konnte man sich auch ein Nutzerkonto anlegen. Nun zeigt die Beta-App, die ich auf meinem iPad installiert habe, einen voraussichtlichen Preis der Premium-Version &hellip;',
-    'categories': [],
-    'tags': ['appNews', 'iPad', 'iPhone', 'MaciPad', 'iPhone', 'Joyn', 'Mac', 'Update'],
-    'with': ['lattform Joyn (App Store-Link) gehört der ProSiebenSat1-Gruppe und bietet Live-TV, Streaming und Original', 'Aktuelle Top-Filme wie Der Marsianer, John Wick oder Elysium', 'Preis: Kostenlos'],  # 3 segments
-    'without': ['Anker PowerCore Essential 20000: Neue Powerbank mit Einführungs-Rabatt', 'ber um mir Serien anzuschauen die im TV laufen werde ich mir kaum das Abo holen. Das habe ich auch b', 'gefahren überblickt das Durcheinander im App Store. '],  # 3 segments
-    'comments': ['en bei den Live-TV Sendern auch die anderen Privaten dabei sein? Dann', 'tream und welcher Qualität zur Verfügung gestellt werden.', ' Premium für joyn ist ziemlich un-joyn – das Geld inve'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b2eb2daa60d448f93c81a3d390bb059.html': {
-    'file': '0b2eb2daa60d448f93c81a3d390bb059.html',
-    'author': '',
-    'title': 'Quincy',
-    'date': '',
-    'description': 'Quincy im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 10:10 - 11:05, SAT.1 Gold', 'Quincy im Abseits ', 'Cast und Crew'],  # 3 segments
-    'without': ['Sendung in Kalender eintragen', 'In Kooperation mit', 'Das könnte Sie auch interessieren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b2fb346935e4ed880307efa0acec220.html': {
-    'file': '0b2fb346935e4ed880307efa0acec220.html',
-    'author': 'blk/dpa',
-    'title': 'Barcelona erlebt gewalttätige Nacht',
-    'date': '2019-10-19',
-    'description': 'Die Proteste von Befürwortern der Unabhängigkeit in Katalonien reißen nicht ab. Am Freitagabend brach in der Regionalhauptstadt Barcelona eine besonders gewalttätige Nacht an. Einige glauben derweil, dass es noch viel schlimmer kommen kann.',
-    'categories': [],
-    'tags': [],
-    'with': ['Die Proteste von Befürwortern der Unabhängigkeit in Katalonien reißen nicht ab. ', 'Barcelona hat die gewalttätigste Nacht seit dem Wiederaufflammen des katalanischen Unabhängigkeitskonflikts am vorigen Montag erlebt.', 'Für das Wochenende waren aber vorerst keine neuen offiziellen Protestkundgebungen angesetzt.'],  # 3 segments
-    'without': ['"Das ist Volksverdummung“: Gabriel geht CSU-Weber im TV wegen Syrien-Flüchtlingen hart an', 'Zum Thema', 'Artikel kommentieren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b3ab5a16c4a48bb851c40408ed297f4.html': {
-    'file': '0b3ab5a16c4a48bb851c40408ed297f4.html',
-    'author': '',
-    'title': 'Ein Fünkchen Hollywood bei Fridays-for-Future: Diese Schauspielerin ist Teil der Bewegung',
-    'date': '2019-10-19',
-    'description': 'Die 48-jährige Schauspielerin zeigte zugleich Sympathien für die Bewegung Extinction Rebellion.',
-    'categories': [],
-    'tags': [],
-    'with': ['Die 48-jährige Schauspielerin zeigte', 'nicht jeden Freitag. Aber wir sind in Berlin schon häufiger auf der Straße dabei. Und der Klimawandel ist bei uns auch Thema am Frühstückstisch", sagt', 'ige Filme in Hollywood drehte, hofft'],  # 3 segments
-    'without': ['0160 - 24 24 24 0 ', '"Unter uns" feiert Geburtstag: Dieses Spezial gab es noch nie Neu ', '"Hundert Prozent zerstört": Schock-Gutachten für historisches Segelschiff Neu '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b3d5d9a24df4cf980b7e4c6d1bd3588.html': {
-    'file': '0b3d5d9a24df4cf980b7e4c6d1bd3588.html',
-    'author': 'Red Heat',
-    'title': '',
-    'date': '',
-    'description': 'Red Heat im Fernsehen - TV Programm: Auf den Kalten Krieg folgt die Hitze. Actionkrimi im Zeichen der Perestroika mit Arnold Schwarzenegger.',
-    'categories': [],
-    'tags': [],
-    'with': ['Wh. am 19.10.', 'Anspruch', 'Red Heat bei Streaming-Anbietern'],  # 3 segments
-    'without': ['noch 999 Zeichen übrig', 'Das könnte Sie auch interessieren', 'Neu auf TV SPIELFILM.de'],  # 3 segments
-    'comments': ['lten Schule. Der Osten trifft Wes', 'gut harmonierende Hauptdarsteller in einer netten typi', 'arzenegger als Russe optimal besetzt werden konnte und in der auch James Belushi nicht in seiner "Nebe'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b4f3ed15ddf4ce5a3a712d0bc95a2c4.html': {
-    'file': '0b4f3ed15ddf4ce5a3a712d0bc95a2c4.html',
-    'author': '',
-    'title': 'Apple iPhone 11 (64GB / alle Farben) für 99€ + Original Vodafone Allnet-Flat mit 7GB/12GB LTE für mtl. 36,99€ + 0,00€ AG',
-    'date': '2019-10-18',
-    'description': 'Jetzt Vodafone Smart L+ Handytarif mit Top-Smartphone im Angebot sichern ✅ Allnet-Flat ✅ SMS-Flat ✅ 5GB LTE Max. mit bis zu 500MBit/s',
-    'categories': [],
-    'tags': [],
-    'with': ['Der Tarif: Vodafone Smart L+', 'Für junge Leute bis inkl. 27 Jahre: 12GB LTE', 'Vodafone Vorteile: GigaKombi & Vodafone Pass?'],  # 3 segments
-    'without': ['Abgelaufene Tarif-Aktionen anzeigen', 'Deal abgelaufen? Jetzt melden!', 'Kostenlos zum Newsletter anmelden und'],  # 3 segments
-    'comments': ['Also ich sehe da nichts was auf deinen Bonus', 'Finde dieses angebot viel besser mit 19 GB.', 'S10+: Gerätepreis nun 149€'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b4fff26139c48a19f55d29cae5aed4a.html': {
-    'file': '0b4fff26139c48a19f55d29cae5aed4a.html',
-    'author': 'dpa',
-    'title': 'CSU-Parteitag billigt abgeschwächte Ausweitung der Frauenquote',
-    'date': '2019-10-19',
-    'description': 'Die CSU-Spitze um Parteichef Markus Söder und Generalsekretär Markus Blume ist auf dem Parteitag nur mit Mühe einer schweren Schlappe entgangen: Nach langer, strittiger Debatte billigten die Delegierten mehrheitlich eine Ausweitung der Frauenquote - allerdings gegenüber dem ursprünglichen Leitantrag des CSU-Vorstands für die Parteireform nur in abgeschwächter Form.',
-    'categories': [],
-    'tags': [],
-    'with': ['ist auf dem Parteitag nur mit Mühe', '40-Prozent-Quote im Landes-'],  # 3 segments
-    'without': ['Mehr von Saarbrücker Zeitung', 'Wir setzen auf unserer Website Cookies und and', 'Merkel: Chancengerechtigkeit in Bildung muss verbessert werden', '@szaktuell'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b5ab006ce264ac794c6240ceaf6d642.html': {
-    'file': '0b5ab006ce264ac794c6240ceaf6d642.html',
-    'author': '',
-    'title': 'Kylie Jenner singt drei Worte – und die Fans flippen aus (Nur Töchterchen Stormy ist nicht begeistert)',
-    'date': '2019-10-19',
-    'description': 'Kylie Jenner singt ihrer Tochter Stormy am Morgen eine Begrüßung entgegen. Das Internet feiert die kurze Gesamgseinlage – die kleine Stormy ...',
-    'categories': [],
-    'tags': [],
-    'with': ['Manchmal reichen nur drei Worte aus'],  # 3 segments
-    'without': ['Weitere Videos aus dem Ressort', 'Newsticker', 'Laura Müller'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b5d194048284ebc9c1b34030fed8a18.html': {
-    'file': '0b5d194048284ebc9c1b34030fed8a18.html',
-    'author': '',
-    'title': 'Steel Buddies – Stahlharte Geschäfte',
-    'date': '',
-    'description': 'Steel Buddies – Stahlharte Geschäfte im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Abgesoffen! - Doku, D 2019, 60 Min.', '21:15, DMAX', 'Heute, 20:15'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Sendung in Kalender eintragen', '© TV SPIELFILM: Steel Buddies – Stahlharte Geschäfte im TV - Sendung - TV Spielfilm'],  # 3 segments
+    'tags': ['biggest', 'history', 'laundering', 'money', 'scheme', 'ukraine', 'uncovered'],
+    'with': ['Jewish oligarchs Igor Kolomoisky and', 'The Chairwoman of Ukraine’s Central Bank', 'Now as to those missing IMF billions, '],  # 3 segments
+    'without': ['Privacy & Cookies: This site uses', 'If you’re running an ad-blocker' , "Don't have time to read every single post"],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': '',
 },
-'0b10b3c68b104cb290485ea7fd8e57ad.html': {
-    'file': '0b10b3c68b104cb290485ea7fd8e57ad.html',
-    'author': 'dpa',
-    'title': 'München: CSU-Parteitag erwartet Parteireform und Kramp-Karrenbauer',
-    'date': '2019-10-19',
-    'description': 'Nach der Wiederwahl von Markus Söder als Parteichef steht der CSU-Parteitag in München heute ganz im Zeichen der großen Parteireform.',
-    'categories': [],
-    'tags': [],
-    'with': ['München Nach der Wiederwahl von Markus Söder als Parteichef steht der CSU-Pa', 'den von Söder vorangetriebenen politischen Kurs. Der Franke hatte der CSU in den vergangenen Wochen einen deutlich „grüneren Kurs“ verordnet, weil er hofft, dass die CSU den Grünen Wählerstimmen abjagen kann.', 'parenz und Mitsprachemöglichkeiten kritisiert wurde, soll unter anderem die 40-Prozent-Frauenquote vom Landes- und den Bezi'],  # 3 segments
-    'without': [' dienen der Ausspielung von Werbung. Sie können auch zu Analysezwecken gesetzt werden. Durch die weitere Nutzung unserer Website erklären Sie ', 'Mehr von Saarbrücker Zeitung', 'Aus dem Ressort'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+'https://neunzehn72.de/imac-5k-lightroom-performance-geloest-danke-an-die-community/': {
+    'file': '0a962f6bcd5649f7a7e6effa338df80d.html',
+    'author': 'Paddy',
+    'title': 'iMac 5K Lightroom Performance gelöst – Danke an die Community',
+    'date': '2019-04-19',
+    'description': 'Ich freue mich wie ein kleines Kind. Nachdem ich in meinem letzten VLog die Performance von Lightroom auf meinem neuen iMac Pro beklagt hatte, bekam ich von drei Lesern einen sehr hilfreichen Tipp.',
+    'categories': ['Mac'],
+    'tags': ['iMac', 'lightroom', 'performance'],
+    'with': ['Ich freue mich wie ein kleines Kind.', 'Jetzt rennt der iMac Pro wie Hulle', 'Auflösung der 5K-Displays'],  # 3 segments
+    'without': ['Ich mag jede Art von Fotografie', 'Leave a Comment! ', 'Ja, ich möchte den wöchentlichen Newsletter bekommen'],  # 3 segments
+    'comments': ['Ein kurzer Tipp noch von mir, man braucht kein Switchres X', 'Freuen weil man Lightroom performant', 'Gruss aus der Schweiz'],  # 0 or 3 segments
     'license': '',
     'region': 'DE',
 },
-'0b16b6f484e1444e8047ab3eb398db8c.html': {
-    'file': '0b16b6f484e1444e8047ab3eb398db8c.html',
-    'author': 'Christoph de Leuw, Robert Ladenthin',
-    'title': 'Amazon Echo 2019 im Test: Ein alter Bekannter?',
-    'date': '2019-10-19',
-    'description': 'Amazon erneuert den Echo nicht nur äußerlich. Wie gut der smarte Lautsprecher klingt und wie schlau er wirklich ist, erfahren Sie im Test.',
-    'categories': [],
-    'tags': [],
-    'with': ['Amazon erneuert den Echo nicht nur äußerlich. Wie gut der smarte Lautsprecher klingt un', 'Testfazit: Das müssen Sie wissen', ' wie Spotify ab. Was der Amazon Echo 2019 anders als seine Vorgänger macht, verrät COMPUTER BILD im Test. '],  # 3 segments
-    'without': ['Gutscheine und Rabatte', 'Dieses Produkt kaufen', 'Weiterführende Links'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b35d1bce2fc4c009db3446dcac35750.html': {
-    'file': '0b35d1bce2fc4c009db3446dcac35750.html',
-    'author': '',
-    'title': 'Fuchs am Moskauer Flughafen von Jumbojet unbeeindruckt',
-    'date': '2019-10-19',
-    'description': 'Ein Fuchs zeigte sich jetzt unbeeindruckt vom Flughafengeschehen in Moskau und spazierte über die Landebahn.',
-    'categories': ['Tiere'],
-    'tags': [],
-    'with': ['mmert es mich, dass hier hunderte Passagiere warten...So oder so ähnlich dachte sich das jetzt offenbar ein Fuchs am Moskauer Flughafen Scheremetjewo. Er zeigte sich von den St', ' einem anderen Flugzeug aufgenommen hatte, zeigt die zum Start bereitstehende Boeing 747 und den von der Seite heranlaufenden Fuchs, der dann', 'e Boeing 747 und den von '],  # 3 segments
-    'without': ['Wir bei WhatsApp', 'Widerlich: Frauen bekommen Porno-Briefe mit pikantem Inhalt!', 'Warum hat diese Frau so viele Klamotten an?'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b25d83980b64600ade1ebcb3f4e580b.html': {
-    'file': '0b25d83980b64600ade1ebcb3f4e580b.html',
-    'author': 'SWR3',
-    'title': 'Lebensmittelrückruf: Zott ruft mehrere Sorten Sahnejoghurt zurück',
-    'date': '2019-10-19',
-    'description': 'Die Molkerei Zott ruft vorsorglich mehrere Sahnejoghurts zurück, weil sie möglicherweise durch Schimmelkeime verdorben sind.',
-    'categories': [],
-    'tags': [],
-    'with': ['ott ruft mehrere Sahnejoghurts zurück, weil sie Schimmelkeime enthalten können. Die Kennung f', 'Im Rahmen einer Routinekontrolle wurde vereinzelt eine Belastung mit einem Schimmelkeim (Fusarium) festgestellt.', ' deutlich auffälliger Produkte zu Unwohlsein und Durchfall kommen könnte. Ob'],  # 3 segments
-    'without': ['Die neuesten SWR3-Nachrichten', 'Meistgelesen', 'Aktuelle Themen bei SWR3'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b38f103fc364df98e3e12d19e0f1cd7.html': {
-    'file': '0b38f103fc364df98e3e12d19e0f1cd7.html',
-    'author': 'cw',
-    'title': 'Queen: Mann will Irrwitziges von Elizabeth II - Außereheliche Affäre?',
-    'date': '2019-10-19',
-    'description': 'index,follow',
-    'categories': [],
-    'tags': [],
-    'with': ['Queen Elizabeth II schweigt zu den Affären-Vorwürfen', 'Dazu ist der 73-Jährige entschlossen, der seine Herkunft schon seit 1994 recherchiert', 'ichtlich gegen die Queen vorgehen. Laut britischem Gesetz können die Royals weder zivil- noch strafrechtlich verfolgt werden. Allerdings kö'],  # 3 segments
-    'without': ['Nachrichten von Merkur.de', 'Herzogin Kate postet dieses Foto: Detail sorgt für wilde Reaktionen - ob das beabsichtigt war? ', 'Zur Startseite'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b51e5cc168040c283050d35652643b1.html': {
-    'file': '0b51e5cc168040c283050d35652643b1.html',
-    'author': '',
-    'title': 'Seltener Fall: Junge ohne Penis geboren',
-    'date': '2019-10-19',
-    'description': 'Da staunten die Mediziner bestimmt nicht schlecht. In der Türkei wurde ein Junge ohne Penis geboren.',
-    'categories': ['Gesundheit'],
-    'tags': [],
-    'with': ['Dieser Geburtsfehler kommt nur alle 10 bis 30 Millionen männlichen Babys vor', ' Penis und dieser Fistel sei der erste Fall we', ' Blasen-Rektum-Fistel festgestellt, eine abnormale Verbindung zwischen seiner Blase und dem Rektum. Die führt dazu, dass Patienten häufig Fäkalien im Urin haben.'],  # 3 segments
-    'without': ['Wir bei WhatsApp:  0160 - 24 24 24 0 ', 'Dieses Mega-Event wird zur neuen TOP-Adresse für Gaming-Fans', 'Viktoria Köln bietet Fans künftig Live-Radio'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b51f1e73aeb4dc9ba9c81e5c018ab03.html': {
-    'file': '0b51f1e73aeb4dc9ba9c81e5c018ab03.html',
-    'author': 'textOmatic',
-    'title': 'Michael Kors mit Kursverlusten von 1,1 Prozent',
-    'date': '2019-10-19',
-    'description': 'Mit einem Minus von 1,1 Prozent gehörte der Anteilschein des Modekonzern Michael Kors zu den Verlierern des Tages. Die Aktie notierte bei Handelsschluss mit 27,55 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['n 1,1 Prozent gehörte der Anteilschein des Modekonzern Michael Kors zu den ', ' Bei Börsenschluss verlor der Wert des Modekonzern deutliche 30 Cent und notierte mit 1,06 Prozent Minus im Vergleich zum Vortages-Schlusswert von 27,8', 'Dabei wurden 5 Papiere gehandelt. Am vorausgehenden Handelstag wurden zur gleichen Zeit 170 Papiere im Wert von 4,2 Tausend Euro gehandelt.'],  # 3 segments
-    'without': ['ernen Sie hier die Gewinner-Aktien 2019', 'Artikel kommentieren', 'Kommentar-Text'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b61be129e6c45b69b614aed6434adde.html': {
-    'file': '0b61be129e6c45b69b614aed6434adde.html',
-    'author': 'textOmatic',
-    'title': 'Abbott Laboratories gewinnt 0,7 Prozent',
-    'date': '2019-10-19',
-    'description': 'Der Anteilschein Pharmakonzern und Pharmakonzern Abbott Laboratories gehörte mit einem Plus von 0,7 Prozent zu den Gewinnern des Tages. Die Aktie notierte bei Börsenschluss mit 74,57 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Der Anteilschein Pharmakonzern und Pharmakonzern Abbott Laboratories gehörte', 't erreicht die Aktie den Stand von 74,57 Euro und konnte sich damit im Vergleich zu', 'Am vorausgehenden Handelstag wurden zur gleichen Zeit 882 Papiere im We'],  # 3 segments
-    'without': ['Lernen Sie hier die Gewinner-Aktien 2019 kennen und profitieren Sie von der Expertise der Bernecker Profis', 'Top-Anlageempfehlungen zu Aktien wie Abbott Laboratories & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'Mobile-App: Börse aktuell'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b61c876be75440aaf0a6fe3402c3e52.html': {
-    'file': '0b61c876be75440aaf0a6fe3402c3e52.html',
-    'author': 'dpa',
-    'title': 'Werder Bremen versus Hertha BSC: Vedad Ibisevic fordert Gelbe Karte für sich selbst ',
-    'date': '2019-10-19',
-    'description': 'Das erlebt Schiedsrichter Felix Brych wohl auch eher selten: Nachdem der erfahrene Bundesliga-Referee einen Zweikampf von Herthas Vedad Ibisevic und Werder Bremens Keeper Jiri Pavlenka nicht als elfmeterwürdig bewertet hatte, forderte der Berliner Stürmer aus Protest eine Gelbe Karte für sich ...',
-    'categories': [],
-    'tags': [],
-    'with': ['Das erlebt Schiedsrichter Felix Brych wohl auch eher selten', '„Ich wollte eine Gelbe Karte haben. Ich habe keine Gelbe Karte bekommen, aber auch keinen Elfmeter,', ' Keeper Jiri Pavlenka nicht als elfmeterwürdig bewertet hatte'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Weitere interessante News', 'Service'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b83a419191e47b1968b5d31b6089256.html': {
-    'file': '0b83a419191e47b1968b5d31b6089256.html',
-    'author': '',
-    'title': 'Indiana Jones und der letzte Kreuzzug',
-    'date': '',
-    'description': 'Indiana Jones und der letzte Kreuzzug im Fernsehen - TV Programm: In dem Actionabenteuer sucht Archäologe Jones (Harrison Ford) mit seinem Vater (Sean Connery) nach dem Heiligen Gral und legt sich wieder mit Nazis an.',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 20:10 - 22:10, SRF zwei', 'Auch der dritte „Indiana Jones“-Film ist reich an packender, mit Humor gewürzter Action.', 'Action, Spannung, Komik – perfektes Kino'],  # 3 segments
-    'without': ['AGB', '© TV SPIELFILM: Indiana Jones und der letzte Kreuzzug im TV - Sendung - TV Spielfilm', 'HolidayCheck'],  # 3 segments
-    'comments': ['umherum ist das eigentliche Highlight Sean Connery als Indys Vater: versnobt, arrogant, trotzdem irgendwie liebenswert und dabei entsetzlich tollpatschig. Die fiesen Nazis die wieder als Schießbudenfiguren herhalten ', 'inen Schauspieler erlebt, der Offensichtlich so extrem viel Spaß an seiner Rolle hatte wie Sean Conne', 'hen Suche nach dem Heiligen Gral, also den Kelch, aus dem Jesus von Nazaret und seine Jünger beim le'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b88c96536274a1db897cbd258480e32.html': {
-    'file': '0b88c96536274a1db897cbd258480e32.html',
-    'author': 'Tanja Goldbecher',
-    'title': 'Investor wird verprellt: Warum er nun die Entwicklung des Schlachthofs in Frage stellt? ',
-    'date': '2019-10-19',
-    'description': 'Die Stadträte stellen sich gegen den Umzug von Kik in Ammendorf. Der Grundstückseigentümer stellt nun auch die Entwicklung des Schlachthofs in Frage.',
-    'categories': [],
-    'tags': [],
-    'with': ['Sollte sich der Stadtrat gegen den Umzug des Textildiscounters Kik in Ammendorf entscheiden, könnte das Konsequenzen nach sich ziehen. Dem Thüringer Investor Karl-Heinz Zehentne', 'ue Globus-Markt ist eine Ausnahme“, sagt Stadträtin Anja Krimmling-Schoeffler (Linke). Das Warenhaus sei eine Bereicherung für Halle und werte ein ', 'Die Analyse überzeugt jedoch nicht alle Stadträte. „Für uns wird in dem Gutachten mit zu vielen Wahrsche'],  # 3 segments
-    'without': ['Trauerportal', 'Auch interessant', 'MZ Halle auf Facebook'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b89dd6419e24b3e8222edfb2f01f11f.html': {
-    'file': '0b89dd6419e24b3e8222edfb2f01f11f.html',
-    'author': '',
-    'title': 'Brisant',
-    'date': '',
-    'description': 'Brisant im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['So 20.10., 04:50 - 05:30, Das Erste', 'Boulevardmagazin', 'Das Erste'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Home /', 'Mein schöner Garten'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b96fc66e2c94f45a1b923ec9a31fcf2.html': {
-    'file': '0b96fc66e2c94f45a1b923ec9a31fcf2.html',
-    'author': 'Claudia Riedler',
-    'title': 'Was bringen "alternative" Therapien bei Krebs?',
-    'date': '2019-10-19',
-    'description': 'Krebskongress in Linz über Schul- und Komplementärmedizin.',
-    'categories': ['Gesundheit'],
-    'tags': [],
-    'with': ['pien bei Krebs leisten? Darüber diskutieren Experten seit gestern bei einem Kongress in Linz. Die OÖN ', 't wichtig und dass man die Ängste nicht kleinredet. Ich hätte auch Angst.', 'www.selbertun.at findet ma'],  # 3 segments
-    'without': ['Alle Infos zu OÖNplus', 'Die OÖNachrichten nehmen den Schutz Ihrer Privatsphäre sehr ernst.', '3:1 - Vorwärts Steyr half der SV Ried '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'AT',
-},
-'0b293f7b4d7c42b499d6e9eb773d9559.html': {
-    'file': '0b293f7b4d7c42b499d6e9eb773d9559.html',
-    'author': 'dpa',
-    'title': 'SPD-Urgestein Erhard Eppler ist tot – Quelle: https://www.shz.de/26053502 ©2020',
-    'date': '2019-10-19',
-    'description': 'Einst galt Erhard Eppler in seiner Partei als Unruhestifter. Doch manches von dem, was der Vordenker sagte, bewahrheitete sich später. Nun ist das Urgestein der SPD gestorben.',
-    'categories': [],
-    'tags': [],
-    'with': ['tuttgart | Der SPD-Politiker Erhard Eppler ist tot', 'Schwäbisch Hall, wie die SPD ', 'ppler galt als Urgestein der'],  # 3 segments
-    'without': ['Kontakt', '	zur Startseite', 'Weitere Artikel'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b484a86933a46c1b94a77bcbd3fb9c3.html': {
-    'file': '0b484a86933a46c1b94a77bcbd3fb9c3.html',
-    'author': '',
-    'title': 'Monsieur Claude und seine Töchter',
-    'date': '',
-    'description': 'Monsieur Claude und seine Töchter im Fernsehen - TV Programm: Komödie mit Christian Clavier in der Titelrolle.',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 16:55 - 18:30, Sky Cinema Hits HD', 'Komödie mit Christian Clavier in der Titelrolle', 'Monsieur Claude und seine Töchter bei Streaming-Anbietern'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'Das könnte Sie auch interessieren', 'Neu auf TV SPIELFILM.de'],  # 3 segments
-    'comments': ['Verschenkt - 2 Sterne', 'e Monsieur Claude sicherlich auch. Aber das wird ihm ebensowenig gelingen weil hier der altbekannte Fall vorliegt: der Film hat eine tolle Story und einen tollen Aufbau, aber verwe', 'smus, jüdischen Rassismus, somalischen, französischen... Jeder ist heilger als der Nächste. Hoffentlich '],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b2916fa0c454616ad11fcf283a1a84f.html': {
-    'file': '0b2916fa0c454616ad11fcf283a1a84f.html',
-    'author': '',
-    'title': 'Inas Nacht',
-    'date': '',
-    'description': 'Inas Nacht im Fernsehen - TV Programm: Ina Müller bechert, musiziert und klönt mit Prominenten in einer Hamburger Hafenkneipe.',
-    'categories': [],
-    'tags': [],
-    'with': ['Ina Müller bechert, musiziert und klönt mit Prominenten in einer Hamburger Hafenkneipe.', 'ßballprofi erzählt dann Sportkommentatorin Laura Wontorra. Für Musik sorgt US-Songwriter W', 'Gäste: Elton, Laura Wontorra, Wilder Woods, AnnenMayKantereit'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars ', 'Weitere Angebote von Hubert Burda Media'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b4609a864eb4fa0bbcb2b395f6be9eb.html': {
-    'file': '0b4609a864eb4fa0bbcb2b395f6be9eb.html',
-    'author': 'SWR Fernsehen',
-    'title': 'betrifft: ...: Nahrungsergänzungsmittel - Das dubiose Geschäft mit der Hoffnung | Video der Sendung vom 16.10.2019 18:15 Uhr (16.1.2019)',
+'https://www.zeit.de/2019/43/klimaschutz-banken-unternehmen-fracking-oelfoerderung-fossile-brennstoffe': {
+    'file': '0a12df42d1764095989ab078ee0f940b.html',
+    'author': 'Heike Buchter',
+    'title': 'Bohren, bis es heiß wird',
     'date': '2019-10-16',
-    'description': 'Nahrungsergänzungsmittel - Das dubiose Geschäft mit der Hoffnung | Video | Dubiose Händler versprechen Hilfe bei Schlafstörungen, Gelenkschmerzen, erhöhten Cholesterinwerten oder sogar Krebs. &quot;betrifft&quot; beleuchtet, wie es Gesetzeslücken ermöglichen, dass sogar gefährliche Nahrungsergänzungsmittel völlig unkontrolliert auf den Markt gelangen.',
+    'description': 'Weltweit finanzieren Banken und Investoren Unternehmungen, die dem Klima schaden.',
     'categories': [],
     'tags': [],
-    'with': ['Dubiose Händler versprechen Hilfe bei Schlafstörungen', 'SWR'],  # 3 segments
-    'without': ['Navigation schliessen', 'Mehr aus der Sendung', 'Unfallbetrüger'],  # 3 segments
+    'with': ['Weltweit finanzieren Banken und Investoren Unternehmungen', 'wollten damit vor zwei Wochen die Verbindung zwischen der Wall Street', 'JPMorgan Chase'],  # 3 segments
+    'without': ['Bundesstaat Pennsylvania', 'Wählen Sie Ihren Zugang und lesen Sie weiter:', 'Cookies & Tracking'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': 'DE',
 },
-'0b7191e2b44c4972b74a63ccce862c3a.html': {
-    'file': '0b7191e2b44c4972b74a63ccce862c3a.html',
-    'author': '',
-    'title': 'Broadway Therapy',
-    'date': '',
-    'description': 'Broadway Therapy im Fernsehen - TV Programm: Komödie von Altmeister Peter Bogdanovich.',
-    'categories': [],
-    'tags': [],
-    'with': ['Nach der Liebesnacht mit dem verheirateten Broadway-Regisseur Arnold (Owen Wilson) gerät das Callgirl Izzy (Imogen Poots) in die chaotisch- neurotische Welt einer ', 'Bogdanovichs erster Kinofilm seit 2001 ist eine rasante Ode an die aufgekratzten', 'Umwerfend komische Boulevardkomödie'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'https://www.facebook.com/TVspielfilm', 'AGB'],  # 3 segments
-    'comments': ['n sich ruhig mal ansehen. Die Schauspieler sind', 'ben nur wirklich endlos lange zurück. Das bedeute', 'Tolle Darsteller in einer ungewöhnlichen aber unterhaltsamen Story.'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b24826dcc4c4704901c1e84bf9e1f87.html': {
-    'file': '0b24826dcc4c4704901c1e84bf9e1f87.html',
-    'author': '',
-    'title': 'Großeinsatz der Polizei in Schweinfurt am Freitag: SEK-stürmt Schnellimbiss und nimmt 60-Jährigen fest',
-    'date': '2019-10-19',
-    'description': 'Wegen Morddrohung: Ein Spezialeinsatzkommando (SEK) der Polizei stürmte am Freitag einen Schnellimbiss in Schweinfurt (Unterfranken).',
-    'categories': [],
-    'tags': [],
-    'with': ['egen Morddrohung: Ein Spezialeinsatzkommando (SEK) der Polizei stürmte am Freitag einen Schnellim', 'Der Grund hierfür war eine Morddrohung: Ein 60-Jähriger hatte am Donnerstag im Gespräch mit seiner 32-jährigen Tochter damit ', '"Die weiteren Ermittlungen ergaben, dass er in seinem Geschäft zwei erlaubnisfreie Waffen,'],  # 3 segments
-    'without': ['Politik & Wirtschaft', 'KRASSE BILDER: HIER STÜRMT EIN BANKRÄUBER MIT PISTOLE IN EINE FILIALE ', 'Mehr zum Thema:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b66696af800472190a76b26faa845d4.html': {
-    'file': '0b66696af800472190a76b26faa845d4.html',
-    'author': 'Boris T. Kaiser',
-    'title': 'Kaisers royaler Wochenrückblick',
-    'date': '2019-10-19',
-    'description': 'Während Mesut Özil mit Deutschland abrechnet, geben die Auseinandersetzungen zwischen Kurden und Türken in deutschen Straßen einen Vorgeschmack auf die Zukunft. In Essen mußte ein Diskogast seine Kreuzkette verbergen. Der Türsteher wollte es so. <i>Boris T. Kaiser blickt zurück.',
-    'categories': [],
-    'tags': [],
-    'with': ['Mesut Özil hat in dieser Woche mit Deutschland abgerechnet. Im Interview mit dem Sportportal „The Athletic“ läßt der gegelte Fußballstar', 'allerdings auch nicht wirklich zu, daß er in der Lage war, all diese paßgenauen Antworten vorher auswendig zu lernen.', ' Hallen der Frankfurter Buchmesse. Vielleicht zumindest ein guter Grund, es dieses Wochenen'],  # 3 segments
-    'without': ['Der nächste Beitrag', 'HINWEIS: Die Kommentarfunktion wird 2 Tage nach Veröffentlichungsdatum des Beitrages geschlossen.', 'Meistkommentiert'],  # 3 segments
-    'comments': ['wichtig ist lebenswichtig, Christen sind böse und die Räume der Frankfurter Buchmesse sind frei'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'0b71429e5a8f40a9bdc4d960268ef6ee.html': {
-    'file': '0b71429e5a8f40a9bdc4d960268ef6ee.html',
-    'author': '',
-    'title': 'Meine Nachbarn mit dem dicken Hund',
-    'date': '',
-    'description': 'Meine Nachbarn mit dem dicken Hund im Fernsehen - TV Programm: TV-Dramödie – besser als der doofe Titel.',
-    'categories': [],
-    'tags': [],
-    'with': ['TV-Dramödie – besser als der doofe Titel.', 'Dank schöner Bildideen, amüsanter Dialoge und einem durchweg tollen Ensemble entwickelt der Film aber beachtlichen Charme', 'Cast und Crew'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'Das könnte Sie auch interessieren', 'zu "Meine Nachbarn mit dem dicken Hund" liegt noch keine Community-Kritik vor '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d9c637d22d294265845cda27ee31852c.html': {
-    'file': 'd9c637d22d294265845cda27ee31852c.html',
-    'author': 'dpa/lno)',
-    'title': 'Auto prallt gegen Ampelmast und überschlägt sich',
-    'date': '2019-10-19',
-    'description': 'Hamburg (dpa/lno) &#8211; Eine 51-Jährige ist in Hamburg-Borgfelde mit ihrem Auto gegen einen Ampelmast geprallt und verletzt worden. Der Wagen habe sich nach dem Zusammenprall am frühen Samstagmorgen überschlagen, teilte die Polizei mit. Die Frau wurde in ein Krankenhaus gebracht. Der Ampelmast wurde bei dem Unfall komplett zerstört. Einem Sprecher zufolge war die Frau alleine in dem Auto unterwegs, als ... Mehr lesen',
-    'categories': [],
-    'tags': [],
-    'with': ['Hamburg (dpa/lno) – Eine 51-Jährige ist in Hamburg-Borgfelde mit ihrem Auto gegen einen Ampelmast', 'Laut Polizei stand die Fahrerin vermutlich unter Alkoholeinfluss.', 'llt und verletzt worden. Der Wagen habe sich nach dem Zusammenprall am frühen '],  # 3 segments
-    'without': ['Niedersachsen und Bremen', 'MEISTGEKLICKTE BEITRÄGE', '„Gefangen – Alltag im Knast“: Die Arbeit einer Justizvollzugsbeamtin in der JVA Hannover'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d9d9d2ffbae148cea8b0ea2959890935.html': {
-    'file': 'd9d9d2ffbae148cea8b0ea2959890935.html',
-    'author': 'Berthold_',
-    'title': 'eBay Verkaufsaktion: Maximal 2€ Verkaufsgebühr vom 19.10. bis 21.10.',
-    'date': '2019-10-17',
-    'description': 'Vom 19.10. bis 21.10. gibt es wieder eine eBay Verkaufsaktion. Ihr zahlt dabei maximal 2€ Verkaufsgebühr. Unter dem Deallink könnt ihr das Angebot',
-    'categories': [],
-    'tags': [],
-    'with': ['Vom 19.10. bis 21.10. gibt es wieder eine eBay Verkaufsaktion. ', 'Bis Montag: Exklusiv für eingelade', 'n u.a. für Zusatzoptionen und PayPal können anfallen.'],  # 3 segments
-    'without': ['GRATIS-Jahresabo abstauben', 'Kommentar verfassen ', 'Top Partnershops Alle ansehen'],  # 3 segments
-    'comments': ['Ich bin dabei – danke für den Hinweis 👍', 'Passt gerade gut. Wollte noch ein gebrauchtes Handy verkaufen, danke', 'Danke für den Hinweis!!!'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d9d4360943b04041aae9b07db06f8dfd.html': {
-    'file': 'd9d4360943b04041aae9b07db06f8dfd.html',
-    'author': '',
-    'title': 'Das Gespenst von Canterville',
-    'date': '',
-    'description': 'Das Gespenst von Canterville im Fernsehen - TV Programm: TV-Geisterkomödie nach Oscar Wilde.',
-    'categories': [],
-    'tags': [],
-    'with': ['TV-Geisterkomödie, USA 1996, 88/110 Min.', 'TV-Geisterkomödie nach Oscar Wilde', 'Patrick Stewart'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'noch 999 Zeichen übrig', 'Das könnte Sie auch interessieren'],  # 3 segments
-    'comments': ['de, Langweilig und Unlustig! Patrick Stewart als Gespenst ist eine glatte Fehlbesetzung! Er nimmt sich und sein Rolle viel zu ernst und es'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d9dc32a9ed1e4be29d4393fdf287f017.html': {
-    'file': 'd9dc32a9ed1e4be29d4393fdf287f017.html',
-    'author': '',
-    'title': 'Milchtransporter umgekippt - Lenker verbrannte in Führerhaus',
-    'date': '2019-10-19',
-    'description': '"PASSAU. Zu einem schweren Verkehrsunfall ist es Samstagfrüh in Rotthalmünster (Landkreis Passau) gekommen. Der Lenker eines Milchtransporters ist im Führerhaus verbrannt.',
-    'categories': [],
-    'tags': [],
-    'with': ['m schweren Verkehrsunfall ist es Samstagfrüh in Rotthalmünster (Landkreis Passau) gekommen. ', 'Samstag gegen 6 Uhr Früh von der Fahrbahn ab, überfuhr mehrere Büsche, prallte gegen einen Baum und kippte nach links um. Dabei streifte der Sattelanhänger einen entgegenkommender ', 'tität des Fahrers ist derzeit noch unklar, der Sattelschlepper hat eine Österreichische Zulassung.'],  # 3 segments
-    'without': ['Anwälte & Notare in Linz und Umgebung', ' turned_in  Merkliste ', 'Generalstreik als Protesthöhepunkt in Katalonien'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': '',
-},
-'d9ec8efd262b42f29f0f1f5e2f578ab4.html': {
-    'file': 'd9ec8efd262b42f29f0f1f5e2f578ab4.html',
-    'author': 'textOmatic',
-    'title': 'CBS verzeichnet mit 1,7 Prozent Verluste',
-    'date': '2019-10-19',
-    'description': 'Der Anteilschein Medienkonzern und Medienkonzern CBS gehörte mit einem Rückgang von 1,7 Prozent zu den Verlustbringern des Tages. Der Anteilschein notierte bei Handelsende mit 34,00 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Der Anteilschein Medienkonzern und Medienkonzern CBS gehörte mit einem Rückgang von 1,7 Prozent zu den Ve', 'Am 01.11.2018 wurde das 52-Wochen-Hoch der CBS-Aktie mit 51,20 ', 'ausgehenden Handelstag wurden zur gleichen Zeit 175 Papiere im Wert von 7,0 Tausend Euro gehandelt.'],  # 3 segments
-    'without': ['Mobile-App: Börse aktuell', 'Meistgelesen', 'Partnerinhalt'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d9edbfbdca0c44bb816a7199b881d0f6.html': {
-    'file': 'd9edbfbdca0c44bb816a7199b881d0f6.html',
-    'author': '',
-    'title': 'Harry Potter und der Feuerkelch',
-    'date': '',
-    'description': 'Harry Potter und der Feuerkelch im Fernsehen - TV Programm: Fantasymärchen und vierter Teil der erfolgreichen Kinoreihe nach J. K. Rowlings Bestsellern.',
-    'categories': [],
-    'tags': [],
-    'with': ['Fantasymärchen, GB/USA 2005, 138/190 Min.', 'Fantasymärchen und vierter Teil der erfolgreichen Kinoreihe nach J. K. Rowlings Bestsellern.', 'Harry Potter und der Feuerkelch bei Streaming-'],  # 3 segments
-    'without': ['Das große TV-Quiz', 'ELLE', 'otocredits: Warner Bros. Pictures (9), Sender (4), Marina Tantscher, Getty (15), Verleih (3), getty, TVS Montage: Getty Image'],  # 3 segments
-    'comments': ['Ein sehr spanendes Fantasy Abenteuer mit Zauberei', 'Darth Vaders. Es hätte keinen besseren Schauspieler für diese Rolle geben können als Ralph', 'Buchvorlage einen Zweiteiler machen weil die Vorlage eben so massig wa'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d9f899f029324e45882e2671c8b4b895.html': {
-    'file': 'd9f899f029324e45882e2671c8b4b895.html',
-    'author': '',
-    'title': 'Ich wünsch Dir Liebe ohne Leiden – 85 Jahre Udo Jürgens',
-    'date': '',
-    'description': 'Ich wünsch Dir Liebe ohne Leiden – 85 Jahre Udo Jürgens im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Doku, D 2019, 240 Min.', 'Mit mehr als 100 Millionen verkauften Tonträgern war Jürgens ein echter Ausnahmekünstler, im Dezember 2014 erlag', 'ie Doku beleuchtet seine Karriere als Musiker und sein weniger glückliches Privatleben. Zu'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'olidayCheck', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d13cab5aedf54889810bf2fc1a1161d3.html': {
-    'file': 'd13cab5aedf54889810bf2fc1a1161d3.html',
-    'author': '',
-    'title': 'Das Supertalent',
-    'date': '',
-    'description': 'Das Supertalent im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Castingshow, D 2019, 135 Min.', 'm Gegensatz zu „DSDS“ wird beim „Supertalent“ nicht nur gesungen. Dennoch setze', 'Gäste: Jury: Dieter Bohlen, Bruce Darnell, Sarah LombardiDas könnte Sie auch interessieren'],  # 3 segments
-    'without': ['Das könnte Sie auch interessieren', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars ', '© TV SPIELFILM: Das Supertalent im TV - Sendung - TV Spielfilm'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d13e5477aa9245359578418e391e5639.html': {
-    'file': 'd13e5477aa9245359578418e391e5639.html',
-    'author': 'textOmatic',
-    'title': 'Boeing fällt 1,9 Prozent',
-    'date': '2019-10-19',
-    'description': 'Mit einer negativen Entwicklung von 1,9 Prozent gehörte das Wertpapier des Flugzeughersteller Boeing zu den Verlierern des Tages. Bei Handelsende notierte der Anteilschein mit 326,80 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['twicklung von 1,9 Prozent gehörte das Wertpapier des Flugzeughersteller Boeing zu den Verlierern des Tages. Bei Handelsende notierte der Anteilschein mit 326,80 Euro.', 'nd es wurden 647 Stück gehandelt. Am vorausgehenden Handelstag wurden zur gleichen Zeit 955 Papiere im Wert von 284,6 Tausend Euro ', 'n Handel gegangen und erreichte zwischenzeitlich ein Tageshoch von 331,95 Eur'],  # 3 segments
-    'without': ['Mobile-App: Börse aktuell', 'Top-Anlageempfehlungen zu Aktien wie Boeing & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'ernen Sie hier die Gewinner-Aktien 2019 kennen und profitieren Sie von der Expertise der Bernecker Profis'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d14f921cfb0b482ca479a0be088a7fcd.html': {
-    'file': 'd14f921cfb0b482ca479a0be088a7fcd.html',
-    'author': '',
-    'title': 'Woyzeck',
-    'date': '',
-    'description': 'Woyzeck im Fernsehen - TV Programm: TV-Psychodrama, das Georg Büchners Stück von 1837 modernisiert.',
-    'categories': [],
-    'tags': [],
-    'with': ['V-Psychodrama, das Georg Büchners Stück von 1837 modernisiert.', 'n Blick für Freundin Marie (Nora von Waldstätten), die er heiraten will… ', 'Intensive, harsche Außenseitertragödie'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'zu "Woyzeck" liegt noch keine Community-Kritik vor ', 'as könnte Sie auch interessieren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': 'DE',
-    'region': 'DE',
-},
-'d16e9ca44949443bba9a43728bc1e975.html': {
-    'file': 'd16e9ca44949443bba9a43728bc1e975.html',
-    'author': 'dpa/lni',
-    'title': 'Bremen: 17-Jähriger durch Stich in Rücken schwer verletzt',
-    'date': '2019-10-19',
-    'description': 'Bremen (dpa/lni) &#8211; Ein 17-Jähriger ist in Bremen durch einen Stich in den Rücken schwer verletzt worden. Der Jugendliche sei in der Nacht zu Samstag von zwei Männern von hinten attackiert worden, teilte die Polizei mit. Er wurde in ein Krankenhaus gebracht. Der junge Mann war mit seinem Cousin in der Innenstadt unterwegs, als sich zwei Männer näherten und versuchten, ... Mehr lesen',
-    'categories': [],
-    'tags': [],
-    'with': ['Am frühen Samstagmorgen gaben sich zwei Männer gegenüber einem 18-Jährigen als Kripobeamte aus', 'nnern von hinten attackiert worden, teilte die Polizei mit. Er wurde in ein Krankenhaus ', 'ttler untersuchen, ob die beiden Festgenommenen auch für den ersten Überfall in Frage kommen. Die Haftprüfungen dauern an.'],  # 3 segments
-    'without': ['MEISTGEKLICKTE BEITRÄGE', '„Gefangen – Alltag im Knast“: Die Arbeit einer Justizvollzugsbeamtin in der JVA Hannover', '„Follow the Greens“: Hamburg Airport bekommt intelligentes Leitverfahren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': '',
-},
-'d17a0ad2182841deace01e941188638f.html': {
-    'file': 'd17a0ad2182841deace01e941188638f.html',
-    'author': 'dpa',
-    'title': 'Richtungskampf in London: Was will Johnson nach dem Brexit?',
-    'date': '2019-10-19',
-    'description': 'London - Niemand wolle Arbeitnehmerrechte und Umweltstandards senken. Mit diesem Satz rief Premierminister Boris Johnson bei der Debatte über seinen',
-    'categories': [],
-    'tags': ['Boris Johnson', 'Premierminister', 'EU', 'Großbritannien', 'Richtungskampf', 'Arbeitnehmerrechte', 'London', 'Umweltstandard', 'Brüssel', 'Nordirland', 'Irland'],
-    'with': ['Niemand wolle Arbeitnehmerrechte und Umweltstandards senken. Mit diesem Satz rief Premierminister', 'ätte eine Tür für eine dauerhafte Zollunion zwischen Großbritannien und der EU offen gelassen - genau deshalb war er Johnson so verhasst. Im Gege', ' sein Deal im Parlament auch in der Zukunft wenig Chancen haben.'],  # 3 segments
-    'without': ['Wissenscommunity', 'Newsticker', 'Handy Gadgets'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d18cbe9a241a4564ae3bcd5939ea41f1.html': {
-    'file': 'd18cbe9a241a4564ae3bcd5939ea41f1.html',
-    'author': 'SpotOnNews',
-    'title': 'Spruch des Tages',
-    'date': '2019-10-19',
-    'description': 'Geld war für Dirk Nowitzki nie entscheidend',
-    'categories': [],
-    'tags': ['Dirk Nowitzki', 'NBA'],
-    'with': ['Geld war für Dirk Nowitzki nie entscheidend', 'Die neue NBA-Saison steht vor der Tür. Dirk Nowitzki', 'danken machen muss". Materialismus ist dem ehemaligen Basketball-Su'],  # 3 segments
-    'without': ['Themen in diesem Artikel', 'Neu in Lifestyle', 'Erfahren Sie mehr:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d20cc6511c6f4cb3bad3a1e57435456d.html': {
-    'file': 'd20cc6511c6f4cb3bad3a1e57435456d.html',
-    'author': 'Elisabeth Atzler',
-    'title': 'Sparkassenpräsident will mehr staatliche Investitionen',
+'https://www.zugreiseblog.de/db-lounge-zutritt-sparpreis/': {
+    'file': '0a4a8ab61c054192b1ec70cc3570cf45.html',
+    'author': 'David',
+    'title': 'DB Lounge: Kein Zugang mehr mit Sparpreis-Ticket',
     'date': '2019-10-18',
-    'description': 'Schleweis,EZB,Sparkassen,Geldpolitik,Niedrigzinsen,DSGV,Fusion,Helaba,Konjunktur,Investition,LBBW,IW Köln,Deutsche Bank,S-Finanzgruppe,DekaBank,IMF,Helmut Schleweis,Michael Hüther',
+    'description': 'Die Bahn ändert die Zutrittsbestimmungen zur DB Lounge: Fahrgäste mit einem Sparpreis der ersten Klasse müssen künftig draußen bleiben.',
     'categories': [],
-    'tags': [],
-    'with': ['Der oberste Sparkassenvertreter hält wegen der Konjunkturabkühlung mehr öffentliche Investitionen für notwendig. Die Geldpolitik der EZB greift er scharf an.', 'Damit reiht sich Schleweis bei denjenigen ein, die – seit langem oder neuerdings – auf mehr staatliche Investitionen drängen. So plädieren Ökonomen wie der Würzburger Wirtschaftsprofessor Peter Bofinger', 'Nukleus einer Sparkassenzentralbank könnten die Landesbank Hessen-Thüringen (Helaba) und das Fondshaus der Sparkassen, die Dekabank, sein. Beide sitzen in Frankfurt, sie gehören mehrheitlich beziehungsweise komplett den Sparkassen. '],  # 3 segments
-    'without': [' Benachrichtigung aktivieren Dürfen wir Sie in Ihrem Browser über die wichtigsten Nachrichten des Handelsblatts informieren? Sie erhalten 2-5 Meldungen pro Tag. ', 'E-Mail Pocket Flipboard ', 'SitzungsprotokolleEZB-Rat diskutierte über Nebenwirkungen der Niedrigzinsen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'tags': ['bahn', 'deutschland'],
+    'with': ['Die Deutsche Bahn streicht den Zutritt zu ihrer DB Lounge', 'Die Deutsche Bahn ändert zum Fahrplanwechsel', 'Neues gastronomisches Konzept'],  # 3 segments
+    'without': ['Das könnte Dich auch interessieren', 'Sder Gründer des Zugreiseblog', 'Erfahre zudem,', 'Mit meinem kostenlosen Newsletter verpasst'],  # 3 segments
+    'comments': ['Mir ist auch schon aufgefallen, dass es speziell in München', 'Glückwunsch an den Autor', 'Warum will man das abschaffen ?'],  # 0 or 3 segments
     'license': '',
     'region': 'DE',
 },
-'d21a0c7d11b743798dd668a10c8f9e83.html': {
-    'file': 'd21a0c7d11b743798dd668a10c8f9e83.html',
-    'author': 'dpa',
-    'title': 'Vater von isolierter Familie ließ sich als Auswanderer melden',
-    'date': '2019-10-19',
-    'description': 'Der Vater der isolierten Familie in den Niederlanden sagte den Beh&ouml;rden vor zehn Jahren, dass er auswandere. Er soll seine Kinder sechs...',
-    'categories': [],
-    'tags': [],
-    'with': ['Die Familie wurde Anfang der Woche entdeckt, nachdem ein 25-jähriger Sohn in einer Kneipe um Hilfe gebeten hatte.', '„Es wurde aber kein weiteres Geld gefunden“, sagte Sprecher Bart Olmer. Zuvor war ein „substanzieller Betrag“ gefunden worden.', 'Er hat sich 2009 aus der niederländischen Einwohnermeldeliste streichen lassen, wie ein Sprecher der Staatsanwaltschaft am Samstag in Groningen mitteilte und damit entsprechende '],  # 3 segments
-    'without': ['Weitere Themen', 'Folgende Karrierechancen könnten Sie interessieren:', 'en Niederlanden hat eine Gruppe jahrelang isoliert von der Außenwelt gelebt. Der Mieter des Hauses – ein Wiener – wurd'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d21c2e2c526649019b06aaa4d32ff4c7.html': {
-    'file': 'd21c2e2c526649019b06aaa4d32ff4c7.html',
-    'author': 'Julia Franz',
-    'title': 'Wetter im Saarland : Die Sonne lässt sich kaum blicken ',
-    'date': '2019-10-19',
-    'description': 'In den kommenden Tagen müssen die Saarländer wieder ihre Regenjacken auspacken.',
-    'categories': [],
-    'tags': [],
-    'with': ['Am Sonntag sei es stark bewölkt und teils regne es sogar über längere Zeit. Allein in der Vorderpfalz kämen nur wenige Tropfen herab.', 'Nachmittag weitgehend auf. Die Höchstwerte klettern laut den Meteorologen auf 14 bis 17 Grad, im höheren Bergland ist es wieder ', 'auf. Es werde 14 bis 18 Grad warm und der Wind wehe nur schwach.'],  # 3 segments
-    'without': ['Weiterleiten ', 'Mehr von Saarbrücker Zeitung', 'Aus dem Ressort'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d24c572d1fa7455bad6f8bb1f4c1d7d5.html': {
-    'file': 'd24c572d1fa7455bad6f8bb1f4c1d7d5.html',
-    'author': 'textOmatic',
-    'title': 'JPMorgan Chase praktisch unverändert',
-    'date': '2019-10-19',
-    'description': 'Die Aktie der Bank JPMorgan Chase zeigte wenig Änderung. Bei Handelsende notierte das Wertpapier mit 108,36 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['Die Aktie der Bank JPMorgan Chase zeigte wenig Änderung. Bei Handelsende notierte das Wertpapier mit 108,36 Euro.', '10,20 Euro notiert (1,7 Prozent über dem aktuellen Kurs), das 52-Wochen-Tief wurde mit 82,00 Euro am 27.12.2018 verzeichnet.', 'Am vorausgehenden Handelstag wurden zur gleichen Zeit 557 Papiere im Wert von 53,5 Tausend Euro gehandelt.'],  # 3 segments
-    'without': ['Top-Anlageempfehlungen zu Aktien wie JPMorgan Chase & Co. & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'Lernen Sie hier die Gewinner-Aktien 2019 kennen und profitieren Sie von der Expertise der Bernecker Profis', 'Artikel kommentieren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d24c6461c95b40dba5383d4dc00bb618.html': {
-    'file': 'd24c6461c95b40dba5383d4dc00bb618.html',
+'https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html': {
+    'file': 'ndr.de.podcastcoronavirus140.html',
     'author': '',
-    'title': 'Woyzeck',
-    'date': '',
-    'description': 'Woyzeck im Fernsehen - TV Programm: TV-Psychodrama, das Georg Büchners Stück von 1837 modernisiert.',
-    'categories': [],
-    'tags': [],
-    'with': ['TV-Psychodrama, D 2012, 90 Min.', 'Intensive, harsche Außenseitertragödie', 'Nora von Waldstätten'],  # 3 segments
-    'without': ['Das große TV-Quiz', 'Bewerten Sie den Film:', 'noch 999 Zeichen übrig'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d24f198476ca4e3eaa4b2edfe1cb7629.html': {
-    'file': 'd24f198476ca4e3eaa4b2edfe1cb7629.html',
-    'author': '',
-    'title': 'Mieten in Berlin sollen fünf Jahre lang eingefroren werden',
-    'date': '2019-10-18',
-    'description': 'In Berlin sollen die zuletzt stark gestiegenen Mieten fünf Jahre lang eingefroren werden. Darauf hat sich der Koalitionsausschuss bei seiner rund sechsstündigen Sitzung am Freitagabend verständigt, wie Teilnehmer mitteilten. ´Habemus Mietendeckel´, twitterte Berlins Grünen-Fraktionschefin Antje Kapek.',
-    'categories': [],
-    'tags': [],
-    'with': ['hatte der Senat erste Eckpunkte dazu beschlossen. Geplant sind neben dem eigent', '. "Habemus Mietendeckel", twitterte Berlins Grünen-Fraktionschefin Antje Kapek.', 'Das sorgt für aufgeheizte Diskussionen in der Stadt, eine Initiative hat sogar ein Volksbegehren für die Enteignung großer Wohnungskonzerne angestrengt.'],  # 3 segments
-    'without': ['"Das ist Volksverdummung“: Gabriel geht CSU-Weber im TV wegen Syrien-Flüchtlingen hart an', 'Baufinanzierung Vergleich', 'Gutscheine für Ihr Zuhause'],  # 3 segments
-    'comments': ['r Sozialismus. Endlich wieder Wohnverhältnisse wie in der DDR. Ich hoffe, es werden nun statt Wohnungen Büros oder Ladenflächen gebaut, denn damit sind die Baukosten wieder reinzuh'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d26b224dd6f042faaa91f256db4ddf34.html': {
-    'file': 'd26b224dd6f042faaa91f256db4ddf34.html',
-    'author': 'Dushan Wegner',
-    'title': '258 PS, Diesel und die Kunst des Reispflanzens',
-    'date': '2019-10-19',
-    'description': 'Seid nicht wie die Grünen, denn sie wissen selbst nicht, was ihre Verbote bedeuten. Seid nicht wie die Grünen, sondern denkt, bevor ihr fordert.',
-    'categories': [],
-    'tags': [],
-    'with': [' fahren mit dickem Pick-Up-Truck zum Wahlkampf vor. Begründung: Sie mussten einen schweren Lehmofen transportieren. Ja, die Grünen sind DIE Heuchlerpa', 'Er setzte die Setzlinge in die nasse Erde, doch er setzte sie krumm und schief, jeden zweiten Setzling ertränkte er gleich ganz.', 't, und in unruhigen Zeiten hat jede Wahl hohe Symbolkraft. Thüringen ist Wahlheimat (im doppelten Sinn) des AfD-Politikers Björn Höcke, für den das Etikett »umstritten« einmal passt (sonst wird es ja im Sinne von »stört das Establishment« verwendet, wobei das im Fall von H'],  # 3 segments
-    'without': ['Josef Kraus: Lernen und Bildung', 'Kommentare ( 11 )', 'Wenn Ihnen unser Artikel gefallen hat: Unterstützen Sie diese Form des'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d26beb56af0c4d5e90144107ed537814.html': {
-    'file': 'd26beb56af0c4d5e90144107ed537814.html',
-    'author': 'textOmatic',
-    'title': 'Ford Motor mit Kursgewinnen',
-    'date': '2019-10-19',
+    'title': '(16) Coronavirus-Update: Brauchen Abkürzungen bei der Impfstoffzulassung',
+    'date': '2020-03-18',
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Mit einer positiven Entwicklung von 1,4 Prozent gehörte der Wert des Autohersteller Ford Motor zu den Gewinnern des Tages. Bei Börsenschluss notierte das Wertpapier mit 8,30 Euro.', 'Bei Börsenschluss notierte das Wertpapier mit 8,30 Euro.', '95 Stück gehandelt. Am vorausgehenden Handelstag wurden zur gleichen Ze'],  # 3 segments
-    'without': ['Top-Anlageempfehlungen zu Aktien wie Ford & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'ernen Sie hier die Gewinner-Aktien 2019 kennen und profitieren Sie von der Expertise der Bernecker Profis', ' Bitte loggen Sie sich vor dem Kommentieren ein'],  # 3 segments
+    'with': ['Das ist die zweithöchste von vier Stufen', 'Die zentralen Fragen der Folge im Überblick', 'Was sagt Professor Drosten dazu?', 'Aus China.', 'On-Off-Mechanismus', 'Gerne. Bis morgen.'],
+    'without': ['Regelmäßig beantwortet Virus-Forscher', 'Dieses Skript als PDF herunterladen', 'Themen: Kritik aus dem Internet', 'Was Sie zum Coronavirus wissen müssen', 'Drucken'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': 'DE',
 },
-'d26e3843f1f148e8a2761ead70f5c692.html': {
-    'file': 'd26e3843f1f148e8a2761ead70f5c692.html',
+'https://verfassungsblog.de/expertinnen-in-der-krise/': {
+    'file': 'verfassungsblog.de.expertinnen.html',
+    'author': 'Heiko Sauer',
+    'title': 'Expert*innen in der Krise',
+    'date': '2020-04-09',
+    'description': '',
+    'categories': [],
+    'tags': ['Coronavirus', 'Rechtswissenschaft'],
+    'with': ['Die verfassungsrechtswissenschaftliche Begleitung', 'Selbstgewissheit abrüsten', 'eine besondere Vorbildfunktion.'],
+    'without': ['is a Professor of Public', 'I know that I may withdraw my consent', 'If you enjoyed reading this post', 'VerfBlog', 'Comments under pseudonym are allowed', 'European constitutional space and beyond.'],  # 3 segments
+    'comments': ['Ich fürchte, das überzeugt mich nicht.', 'Binnennormierung innerhalb', 'etwas sauer aufgestoßen sind.'],  # 0 or 3 segments
+    'license': 'CC BY-NC-ND',
+    'region': 'DE',
+},
+'https://www.lecker.de/schneewittchen-kuchen-mit-mini-marshmallows-77975.html': {
+    'file': 'lecker.de.schneewittchen.html',
     'author': '',
-    'title': 'Hawaii Five-0',
+    'title': 'Schneewittchen-Kuchen mit Mini-Marshmallows',
     'date': '',
-    'description': 'Hawaii Five-0 im Fernsehen - TV Programm:',
+    'description': '',
     'categories': [],
-    'tags': [],
-    'with': ['Wh. um 0.10 Uhr, Folge 162 um 21.15 Uhr, Folge 162 am 19.10.', 'will mit kürzlich gestohlenem Uran im Dschungel eine Bombe bauen.', ' Hochexplosiv '],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'Hubert Burda Media', 'och wiederverwendet werden dürfen.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d27eb719099b43639104995806e07d00.html': {
-    'file': 'd27eb719099b43639104995806e07d00.html',
-    'author': 'Simon Braasch',
-    'title': 'Ex-Nationalspieler in der Oberliga: Marcell Jansen kämpft um Piotr Trochowskis HSV-Comeback ',
-    'date': '2019-10-19',
-    'description': 'Läuft Piotr Trochowski künftig wieder für den HSV auf? Seit dieser Woche trainiert der 35-Jährige bei der dritten Mannschaft des Vereins mit, könnte schon bald in der Oberliga Hamburg zum Einsatz kommen. Dann würde der HSV auf gleich zwei Ex-Nationalspieler zurückgreifen können – denn Marcell Jansen (33) ist bereits fester Bestandteil des Teams. Nun hofft „Cello“, dass Trochowski es ihm nachmacht, sagte der MOPO: „Ich werde sehr stark auf ihn einreden, damit er auch wirklich bei uns ...',
-    'categories': [],
-    'tags': [],
-    'with': ['howski künftig wieder für den HSV auf? Seit dieser Woche trainiert der 35-Jährige bei der dritten Mannschaft des Vereins mit, könnte schon bald in der Oberliga Hambu', 's Grundniveau. Es bringt riesigen Spaß, die Liga hat sehr viel Tradition, ist richtig geil.“ Jansen, der in dieser Serie nur wenige Spiele verpasste, stellt ', 'ringt riesigen Spaß, die Liga hat sehr viel Tradition, ist richtig geil.“ Jansen, der in dieser Serie nur wenige Spiele verpasste, stellt aber auc'],  # 3 segments
-    'without': ['4 Tsd. Abonnenten', 'Kommentieren Sie hier', 'URL zum Kopieren '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d28ad2c21c374e7690aa20791bac1719.html': {
-    'file': 'd28ad2c21c374e7690aa20791bac1719.html',
-    'author': 'textOmatic',
-    'title': 'AT&T nahezu konstant',
-    'date': '2019-10-19',
-    'description': 'Der Anteilschein des Telekommunikationskonzern AT&amp;T zeigte wenig Änderung. Bei Handelsende notierte die Aktie mit 34,13 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['schein des Telekommunikationskonzern den Stand von 34,13 Euro und verbesserte sich damit i', 'andelt. Am vorausgehenden Handelstag wurden zur gleichen Zeit 12.694', 'urs), das 52-Wochen-Tief wurde mit 23,78 Euro am 27.12.2018 verzeichnet.'],  # 3 segments
-    'without': ['Top-Anlageempfehlungen zu Aktien wie AT&T & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'Lernen Sie hier die Gewinner-Aktien 2019 kenn', 'Kommentar-Text'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d30db8e8d59843a1b591cf55f679793d.html': {
-    'file': 'd30db8e8d59843a1b591cf55f679793d.html',
-    'author': '',
-    'title': 'Steel Buddies – Stahlharte Geschäfte',
-    'date': '2019-10-19',
-    'description': 'Steel Buddies – Stahlharte Geschäfte im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 20:15 - 21:15, DMAX', 'Heute, 20:15 - 21:15, DMAX'],  # 3 segments
-    'without': ['ndung in Kalender eintragen', 'Neu auf TV SPIELFILM.de', 'Star-News'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d31a2af601f14366a08465874f560a5e.html': {
-    'file': 'd31a2af601f14366a08465874f560a5e.html',
-    'author': 'cvh/dpa',
-    'title': 'Vor Kracher gegen Gladbach: Dortmund schmeißt Sancho aus dem Kader',
-    'date': '2019-10-19',
-    'description': 'Nach der Länderspielpause geht es in der Bundesliga ordentlich zur Sache: Dortmund trifft auf Spitzenreiter Borussia Mönchengladbach - und tritt dabei offenbar ohne Offensiv-Star Jadon Sancho an.',
-    'categories': [],
-    'tags': [],
-    'with': ['lpause geht es in der Bundesliga ordentlich zur Sache: Dortmund trifft auf Spitzenreiter Borussia Möncheng', 'ppalen Infekt. In der Offensive startet Dortmund mit Thorgan Hazard, Julian Brandt und Marc', 'bach steht Kapitän Stindl nach sechsmonatiger Verletzungspause vor dem Comeback. Nationalspieler Ginter fehlt.'],  # 3 segments
-    'without': ['24-Stunden Newsticker', 'm Video: Luxus-Yacht kracht ungebremst in mehrere Boote und richtet erheblichen Sachschaden an', 'Online sparen mit Sport-Gutscheinen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d32a7c71ea6a433ab4d08cda07f0bda6.html': {
-    'file': 'd32a7c71ea6a433ab4d08cda07f0bda6.html',
-    'author': '',
-    'title': 'Agatha Christie – Mörderische Spiele: Blausäure',
-    'date': '',
-    'description': 'Agatha Christie – Mörderische Spiele: Blausäure im Fernsehen - TV Programm: TV-Krimi. Zweiter Fall der nostalgischen Reihe nach Motiven der britischen Krimikönigin.',
-    'categories': [],
-    'tags': [],
-    'with': ['V-Krimikomödie, F 2013, 90 Min.', 'V-Krimi. Zweiter Fall der nostalgischen Reihe nach Motiven der britischen Krimikönigin.', 'Die mit hübschem Fifties-Flair ausgestattete französische Serie ist ein heiterer Krimispaß.'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'Neu auf TV SPIELFILM.de', 'zu "Agatha Christie – Mörderische Spiele: Blausäure" liegt noch keine Community-Kritik vo'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d32ad974a4b04657bb6e4d91852bd52d.html': {
-    'file': 'd32ad974a4b04657bb6e4d91852bd52d.html',
-    'author': 'Tomas Spahn',
-    'title': 'No Peace for Our Time – Pence, Syrien und die Türkei',
-    'date': '2019-10-18',
-    'description': 'Peace for our time“ war 1938 der Auftakt zur bisher größten Katastrophe, die die Menschheit sich selbst geschaffen hat. Hoffen wir inständig, dass das aktuelle US-Appeasement nicht eines Tages ähnlich beurteilt werden muss.',
-    'categories': [],
-    'tags': [],
-    'with': ['gelten als besonders zu ächtende Kampfmittel. Allerdings ist bei derartigen Meldungen Vorsicht geboten, solange sie nicht durch neutr', ' our time“ war 1938 der Auftakt zur bisher größten Katastrophe, die die Menschheit sich selbst geschaffen hat. Hoffen wir inständig, dass das aktuelle', 'verlangte, sollte nicht einmal ein halbes Jahr währen. Mitte März 1939 rollten die deutschen Panzer aus dem Sudetenland heraus in die Rest-Tschechei, schufen das G'],  # 3 segments
-    'without': ['Skip to content', 'Bitte loggen Sie sich ein', 'Menetekel Syrien'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d34d3d66ff0f47239de0c16b826bc95b.html': {
-    'file': 'd34d3d66ff0f47239de0c16b826bc95b.html',
-    'author': 'mm/tz',
-    'title': 'Netto: Provokante Oben-ohne-Werbung empört Kunden - „Welche Zielgruppe soll das ansprechen?“',
-    'date': '2019-10-19',
-    'description': '2019-10-19T09:46"',
-    'categories': [],
-    'tags': [],
-    'with': [' Männern und Frauen in Adamskostümen. Die werfen dem Discounter auf Facebook vor, Werbung ohne Sinn und Verstand zu machen.', 'n. Eine Nutzerin auf Twitter bezweifelt, dass sich die Mehrheit der Kunden von den Plakaten angesprochen fühlt und fragt: „Welche Zielgrupp', 'er Discounter hatte bereits vor seinen verpönten Werbeplakaten angekündigt, mehr Plastik sparen zu wollen.'],  # 3 segments
-    'without': [' 0 Kommentare ', 'Rückruf: Vorsicht, Schimmelkeime in beliebtem Joghurt - gewisse Sorten besonders betroffen', 'Unsere Services für Sie im Überblick'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d35c27156d1c49e382d0576ef4340610.html': {
-    'file': 'd35c27156d1c49e382d0576ef4340610.html',
-    'author': '',
-    'title': 'Das Supertalent',
-    'date': '',
-    'description': 'Das Supertalent im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['eute, 20:15 - 22:30, RTL', 'Er gewann 2007 die erste Staffel von „Britain’s Got Talent“, 2013 wurde sein Leben sogar verfilmt.', 'Cast und Crew'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', '© TV SPIELFILM: Das Supertalent im TV - Sendung - TV Spielfilm', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d35de23c927e4ff2926ad4f8bb43d947.html': {
-    'file': 'd35de23c927e4ff2926ad4f8bb43d947.html',
-    'author': 'dpa',
-    'title': 'ICE liegengeblieben',
-    'date': '2019-10-19',
-    'description': 'Gernsheim - Wegen eines Schadens an der Oberleitung ist es am Abend zwischen Mannheim und Frankfurt zu deutlichen Verzögerungen im Fern- und',
-    'categories': [],
-    'tags': ['Oberleitung', 'Frankfurt', 'Mannheim', 'Verzögerung', 'Regionalverkehr', '     ICE'],
-    'with': [' und der eingeschränkten Streckenkapazität erwartete die Bahn noch bis in den Nachmittag Verspätungen von etwa 10 bis 15 Minuten auf der Strecke, zahlreiche ICE-Verbindungen waren davon betroffen - etwa Hamburg-München', 'fen - etwa Hamburg-München, Berlin-Basel, Kiel-Stuttgart sowie di', ' Verzögerungen im Fern- und Regionalverkehr der Bahn gekommen. Ein Gleis w'],  # 3 segments
-    'without': ['hemen in diesem Artikel', 'Erfahren Sie mehr:', 'Wissenscommunity'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d36b1d6cdc2c41e18bc5324b41629e0b.html': {
-    'file': 'd36b1d6cdc2c41e18bc5324b41629e0b.html',
-    'author': '',
-    'title': 'Eintracht Braunschweig: Ein Remis als Mutmacher',
-    'date': '2019-10-19',
-    'description': 'Eintracht Braunschweig ist in der Dritten Liga seit dem 1. September sieglos. Das Remis im Testspiel gegen den HSV macht den Niedersachsen Mut für das heutige Heimspiel gegen Spitzenreiter Unterhaching.',
-    'categories': [],
-    'tags': [],
-    'with': ['Das Gefühl, nach dem Schlusspfiff die Hände nach oben recken und den Gewinn vo', 'Angriff: Nick Proschwitz', 'hmann sprach auf der Pressekonferenz am Freitag von einem "sehr guten Test" und freute sich darüber, dass bis auf die Langzeitverletzten Bernd Nehrig und Stepha'],  # 3 segments
-    'without': ['Sail United: Das Meer ist barrierefrei ', 'Weitere Informationen', 'Sail United: Das Meer ist barrierefrei '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d36b31ae4eb94be38fdbd3b24a78d92e.html': {
-    'file': 'd36b31ae4eb94be38fdbd3b24a78d92e.html',
-    'author': 'SpotOnNews',
-    'title': 'Kein WhatsApp für EU-Parlamentarier',
-    'date': '2019-10-19',
-    'description': 'Die IT-Abteilung des EU-Parlaments empfiehlt Abgeordneten nicht mehr, WhatsApp zu nutzen. Stattdessen soll Jabber benutzt werden.',
-    'categories': [],
-    'tags': ['WhatsApp', 'EU-Parlament', 'EU', 'Nachrichten', 'Telegram'],
-    'with': ['n verschickt, auch von Abgeordneten des EU-Parlaments. Die müssen für ihre Online-Kommunikation allerdings besonders auf die Sicherheit ihr', 'nd zugelassen wird", heißt es zur Begründung in einer Email der IT-Abteilung, aus der ', ', dass sie nur Sender und Empfänger nutzen können. Der Messenger liefert seiner Konzernmutter den'],  # 3 segments
-    'without': ['Themen in diesem Artikel', 'Erfahren Sie mehr:', 'Meist beantwortete'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d38dcbb4adc34728953ada3dcbe6f0f6.html': {
-    'file': 'd38dcbb4adc34728953ada3dcbe6f0f6.html',
-    'author': '',
-    'title': 'Flugzeug muss warten: Was läuft denn hier über die Landebahn?',
-    'date': '2019-10-19',
-    'description': 'Ein Fuchs zeigte sich jetzt unbeeindruckt vom Flughafengeschehen in Moskau und spazierte über die Landebahn.',
-    'categories': ['Tiere '],
-    'tags': [],
-    'with': ['art bereitstehende Boeing 747 und den von der Seite heranlaufenden Fuchs, der dann vor dem Bug der riesigen Maschine seelenruhig die Piste überquert. ', 'er Airliner abgestoppt habe, um dem Fuchs den Vortritt zu überlassen, berichteten russische Medien am ', 'Ein Fuchs zeigte sich jetzt unbeeindruckt vom Flughafengeschehen in Moskau und spazierte über die Landebahn.'],  # 3 segments
-    'without': ['WhatsApp:  0160 - 24 24 24 0 ', 'Dieses Mega-Event wird zur neuen TOP-Adresse für Gaming-Fans 1.525 Anzeige', 'Führerhaus zertrümmert: Lkw-Fahrer (58) stirbt bei Unfall auf der A44 Düsseldorf '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d40ce51de44548c18f691c75ca921eb4.html': {
-    'file': 'd40ce51de44548c18f691c75ca921eb4.html',
-    'author': '',
-    'title': 'The Dressmaker',
-    'date': '',
-    'description': 'The Dressmaker im Fernsehen - TV Programm: Kleinstadtgroteske mit Kate Winslet als tapferer Schneiderin.',
-    'categories': [],
-    'tags': [],
-    'with': ['Kleinstadtgroteske, AUS 2015, 114/120 Min.', 'Dramatisch-skurrile Haute-Couture-Show', 'elegante Myrtle (Winslet) in ihre Heimat zurückkehrt. Vor 25 Jahren soll sie den Tod '],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'zu "The Dressmaker" liegt noch keine Community-Kritik vor ', 'noch 999 Zeichen übrig'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d041d20a0bc04fdf8cef73f750f20bf6.html': {
-    'file': 'd041d20a0bc04fdf8cef73f750f20bf6.html',
-    'author': '',
-    'title': 'Der Landwirtschafts-Simulator 19 wird ein Jahr nach Release größer - Trailer stellt Platinum Edition vor ',
-    'date': '2019-10-19',
-    'description': 'Am 22. Oktober 2019 erscheint die Platinum Edition des Landwirtschaft-Simulator 2019 mit einer Menge neuen Content auf Windows PCs, Mac, Xbox One und..." ',
-    'categories': [],
-    'tags': ['Spiele-Trailer', 'Landwirtschafts-Simulator 19', 'Video', 'Trailer', 'PC', 'PlayStation 4', 'Xbox One', 'PlayStation', 'Xbox'],
-    'with': ['Content auf Windows PCs, Mac, Xbox One und PS4. Der Trailer gibt euch einen kurzen Überblick zu den zusätzlichen Inhalten.', 'erten Fassung werdet ihr Zugriff auf mehr als 380 Fahr- und Werkzeuge haben, um zuhause Landwirtschaft zu betreiben. 35 von diesen sind neu. Fokus ist die Marke', 'Spiel und wird zudem als kostenpflichtiges Upgrade für Besitzer des Landwirtschafts-Simulator 2019 veröffentlicht.'],  # 3 segments
-    'without': ['Kommentare(0)', 'Empfohlen', 'Nur angemeldete Benutzer können kommentieren und bewerten.'],  # 3 segments
+    'tags': ['vegetarisch', 'Kuchen & Gebäck', 'süß', 'fruchtig', 'Desserts & Backen', 'einfach', 'LECKER-Sonderheft 1/2019'],
+    'with': ['Mini-Marshmallows getoppt wird', 'Vanillepuddingpulver', 'Frischhaltefolie', '300 Minuten Wartezeit', 'Zum Servieren Kuchen vorsichtig', '390 kcal'],
+    'without': ['Pin it', 'Versenden', 'Gebratener Blumenkohlsalat'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': '',
 },
-'d41d08cec53943f5af1f30c12e9e7e93.html': {
-    'file': 'd41d08cec53943f5af1f30c12e9e7e93.html',
-    'author': '',
-    'title': 'Unser Bauch – Die wunderbare Welt des Mikrobioms',
-    'date': '2019-10-19',
-    'description': 'Unser Bauch – Die wunderbare Welt des Mikrobioms im Fernsehen - TV Programm: Die Darmflora und unsere Gesundheit',
+'https://www.chefkoch.de/rezepte/607331160490733/Mandarinen-Schmand-Kuchen.html': {
+    'file': 'chefkoch.de.mandarinen.html',
+    'author': 'jesusfreak',
+    'title': 'Mandarinen-Schmand-Kuchen',
+    'date': '2006-10-10',
+    'description': '',
     'categories': [],
-    'tags': [],
-    'with': ['Lange ein anrüchiges Thema, wurde der Darm zu einem Star der medizinisch', 'Cast und Crew', 'Erstausstrahlung'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars ', 'Weitere Angebote von Hubert Burda Medi'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'tags': ['Backen', 'Vegetarisch', 'Kuchen', 'Frucht', 'Gluten', 'Lactose'],
+    'with': ['der cremigste Kuchen', 'Für den Mürbeteig:', 'Margarine oder Butter', 'Mandarine(n), je ca.', 'Koch-/Backzeit ca.', 'Für eine 26er Springform.'],
+    'without': ['Für dieses Rezept gibt es noch', 'Lactose', 'Tipp falls bei euch'],  # 3 segments
+    'comments': ['Hallo zusammen, könnte ich', 'LG steinchen71', 'ja natürlich.'],  # 0 or 3 segments
     'license': '',
     'region': '',
 },
-'d41da0e521a1491daf53085b1996b49d.html': {
-    'file': 'd41da0e521a1491daf53085b1996b49d.html',
+'https://www.oetker.de/rezepte/r/bienenstich-muffins': {
+    'file': 'oetker.de.bienenstich.html',
     'author': '',
-    'title': 'Ich wünsch Dir Liebe ohne Leiden – 85 Jahre Udo Jürgens',
-    'date': '2019-10-19',
-    'description': 'Ich wünsch Dir Liebe ohne Leiden – 85 Jahre Udo Jürgens im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Doku, D 2019, 240 Min.', 'seine Karriere als Musiker und sein weniger glückliches', 'seine Kinder, Weggefährten, Kolleg'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars ', 'Weitere Angebote von Hubert Burda Media'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d42c68f1b0f4408b81cf8f00bbe1a631.html': {
-    'file': 'd42c68f1b0f4408b81cf8f00bbe1a631.html',
-    'author': 'Markus M. Haefliger, London, Beat Bumbacher',
-    'title': 'Der Nervenkrieg um den Brexit geht in die nächste Runde',
-    'date': '2019-10-19',
-    'description': 'Das britische Unterhaus hat die Entscheidung über das neue EU-Austrittsabkommen verschoben und Premierminister Boris Johnson damit eine weitere Niederlage zugefügt. Wie vom Gesetz verlangt, ersucht die britische Regierung die EU nun um eine Verschiebung des für 31. Oktober geplanten EU-Austritts',
-    'categories': [],
-    'tags': [],
-    'with': ['n eine Brexit-Verschiebung bei der EU beantragt. Laut der Nachrichtenagent', 'storische Entscheidung über den EU-Austritt Grossbritanniens gebracht. Eine Mehrheit ', 'nt. Dies könnte aus ihrer Sicht als Ersatz für den Grundsatzentscheid vom Samstag herhalten – und jede '],  # 3 segments
-    'without': ['Niederlage für Boris Johnson – Britische Regierung will Brexit-Verschiebung beantragen', 'Wagen Sie den anderen Blick mit unlimitiertem Zugang zur digitalen NZZ', 'Haben Sie schon ein Benutzerkonto? Anmelden.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d42d9b24af034c88b8abaf4a3fcd5ff3.html': {
-    'file': 'd42d9b24af034c88b8abaf4a3fcd5ff3.html',
-    'author': '',
-    'title': 'Agatha Christie – Mörderische Spiele: Blausäure',
+    'title': 'Bienenstich-Muffins',
     'date': '',
-    'description': 'Agatha Christie – Mörderische Spiele: Blausäure im Fernsehen - TV Programm: TV-Krimi. Zweiter Fall der nostalgischen Reihe nach Motiven der britischen Krimikönigin.',
-    'categories': [],
-    'tags': [],
-    'with': [' den Champagner von Filmstar Elvire? Kommissar Laurence ermittelt in deren Todesfall, Reporterin A', ' mit hübschem Fifties-Flair ausgestattete französische Serie ist ein heiterer ', 'C’est bon: wie Krimi unter „Mad Men“'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'noch 999 Zeichen übrig', 'Alle News: Die aktuellen News aus TV, Film, Serien, Stars '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': '',
-},
-'d42dd80c1a094844ba29f4c5706ba1d2.html': {
-    'file': 'd42dd80c1a094844ba29f4c5706ba1d2.html',
-    'author': '',
-    'title': 'Ghostbusters – Die Geisterjäger',
-    'date': '',
-    'description': 'Ghostbusters – Die Geisterjäger im Fernsehen - TV Programm: Drei geschäftstüchtige Ex-Professoren gehen auf Gespensterjagd. Fantasykomödie von Ivan Reitman.',
-    'categories': [],
-    'tags': [],
-    'with': ['antasykomödie, USA 1984, 96/125 Min', 'dann meldet sich die schöne Kundin Dana (Sigourney Weaver) mit einem ganz speziellen Problem…', 'ilde Actionklamauk wurde 1984 zum Megahit – vor allem dank der prachtvoll getricksten Glibbergeister und Höllenhunde von Effektspezi Richard Edlu'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'noch 999 Zeichen übrig', 'eu auf TV SPIELFILM.de'],  # 3 segments
-    'comments': ['ne Eltern ihn mit meinem älteren Bruder im Kino der ihn mir munter erzählte - ich selber sah in erst 5 Jahre später als er zum ersten Mal im Fernsehen lief und nachdem ich selber den zweiten Teil 1989 im Kino gesehen hat', 'eute empfinde ich das meiste als relativ müde, der trockene Humor zündet bei mir kaum, Mu', 'ner Menge Wortwitz und lustigen Anekdote für die richtige Mischung Humor.'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d43f330cbaf74e92b9aec85e937cb904.html': {
-    'file': 'd43f330cbaf74e92b9aec85e937cb904.html',
-    'author': 'macbacchi',
-    'title': 'kein App Store mehr über Mobile Daten mit iOS 13 ?',
-    'date': '2019-09-28',
-    'description': 'Immer aktuelle Apple-News, Tipps, Tricks und Testberichte rund um Mac, iPhone, iPad und Co.',
-    'categories': [],
-    'tags': [],
-    'with': ['one 11 und xs und ipads sind keinen zugriff mehr auf den appstore, wenn ich ', 'riff über mobile daten auf den appstore ist freigegeben, ich hab das gerät ', 'lemlos. jemand eine idee? betrifft bisher alle ios 13 versionen bis zu gestrigen'],  # 3 segments
-    'without': ['Kommentieren', 'Sie müssen sich einloggen, um sich an einer Diskussion beteiligen zu können.', 'wo immer es sinnvoll erscheint. Sie unterstützen '],  # 3 segments
-    'comments': ['ch kann mit 13.1.1 untr mobilen Daten auf den App Store zugreifen und diesen durchsuchen.', 'cht erst kürzlich hier im Forum? Per WLAN ging alles, über Mobilfunk nicht. Lag (wenn ich', 'rmal. Ist aber nicht von Dauer. Wenn man den Appstore neu aufruft, wieder das gleiche '],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d44c5ef50718437984dca47627dee96b.html': {
-    'file': 'd44c5ef50718437984dca47627dee96b.html',
-    'author': 'Joe S.',
-    'title': 'Artificial Intelligence and Machine Learning Industry News: AI in Patient Care and Operations, AI as a Preventive Tool, and How Major Hospitals are Already Using AI',
-    'date': '2019-10-18',
-    'description': 'With the integration of AI into the work of both medical professionals and hospital systems, expect to see dramatic changes in both patient health outcomes and in the operational efficiency of hospitals. ',
-    'categories': ['Blog Home AI', 'Machine Learning'],
-    'tags': ['AI', 'Artificial Intelligence', 'Industry News Roundup', 'machine learning', 'Video'],
-    'with': ['ppen, we provide high-quality training data for machine learning and artificial intelligence. Follow us to stay up to date on industry trends. In this edition of ou', 'y alter the future of healthcare. With the integration of AI into the work of both medical professionals and hospital systems, expect to see dramatic changes in both patient health outcomes and in the operational efficiency of hospitals. ', 'ers are at the forefront of this, having built a Virtual Interventional Radiologist (VIR) prototype that lets patients quickly receive answers to common questions about th'],  # 3 segments
-    'without': ['Trending Posts', 'Subscribe to email updates', 'Receive our monthly newsletter to stay on top of the latest articles and announcements from Appen.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': '',
-},
-'d44c13f6a344417d9246118fc95293c6.html': {
-    'file': 'd44c13f6a344417d9246118fc95293c6.html',
-    'author': '',
-    'title': 'Das Supertalent',
-    'date': '',
-    'description': 'Das Supertalent im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Castingshow, D 2019, 135 Min.', 'Gäste: Jury: Dieter Bohlen, Bruce Darnell, Sarah Lombardi', 'Cast und Crew'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'lle News: Die aktuellen News aus TV, Film, Serien, Stars ', 'Burdastyle'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d45a060caec146229b4f58c9e7fec18a.html': {
-    'file': 'd45a060caec146229b4f58c9e7fec18a.html',
-    'author': '',
-    'title': 'South Park',
-    'date': '',
-    'description': 'South Park im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Zeichentrickserie, USA 2002, 30/35 Min.', 'South Park im Serienguide', 'South Park: Most Infamous bei Streaming-Anbietern'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'https://www.facebook.com/TVspielfilm', 'Star-News'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d46a9410c77a48ef99a83089d1fa664d.html': {
-    'file': 'd46a9410c77a48ef99a83089d1fa664d.html',
-    'author': 'dedik ',
-    'title': 'Zdjęli krzyż ze ściany urzędu stanu cywilnego.',
-    'date': '2019-10-19',
-    'description': 'Warszawa, Białołęka ( ͡° ͜ʖ ͡°)ﾉ⌐■-■ Urzędnicy zdecydowali o zdjęciu krzyża ze ściany białołęckiego urzędu stanu cywilnego. To efekt interpelacji jednej z radnych.',
-    'categories': [],
-    'tags': ['krzyz', 'usc', 'slub', 'warszawa', 'zwiazki'],
-    'with': ['Warszawa, Białołęka ( ͡° ͜ʖ ͡°)ﾉ⌐■-■ Urzędnicy zdecydowali o zdjęciu krzyża ze ściany białołęckiego urzędu stanu cywilnego. To efekt interpelacji jednej z radnych. '],  # 3 segments
-    'without': ['Komentarze (92) : ', 'Wykopalisko 371', 'Ostatnio popularne'],  # 3 segments
-    'comments': ['kazuje to jest Urząd Stanu CYWILNEGO', 'co ma z tym wspólnego słowo cywilny? Cywilny', 'ale wciąż, to urząd świeckiego państwa.'],  # 0 or 3 segments
-    'license': '',
-    'region': '',
-},
-'d47a3954fd3148c694c9b09980e0d36d.html': {
-    'file': 'd47a3954fd3148c694c9b09980e0d36d.html',
-    'author': '',
-    'title': 'Columbo: Etüde in Schwarz',
-    'date': '',
-    'description': 'Columbo: Etüde in Schwarz im Fernsehen - TV Programm: TV-Krimi mit Peter Falk im Kulttrenchcoat.',
-    'categories': [],
-    'tags': [],
-    'with': ['TV-Krimi, USA 1972, 100 Min.', 'den Mord als Suizid, doch Columbo (Peter Falk) w', 'Kleines Krimikonzert mit großen Solisten'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'Neu auf TV SPIELFILM.de', 'https://www.facebook.com/TVspielfilm'],  # 3 segments
-    'comments': ['ines lahmen Tempos. Zu früh wird sichtbar, womit Columbo den Mörder überführen wird. Die ', 'Mörder und Columbo braucht sich garnicht besonders anzustrengen! Es bleibt eine mittelwertige '],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d48f743117704f1c886959fe915ac01f.html': {
-    'file': 'd48f743117704f1c886959fe915ac01f.html',
-    'author': '	Dennis Kochinky',
-    'title': 'Bundesliga: Frankfurt - Leverkusen live sehen!',
-    'date': '2019-10-18',
-    'description': 'Eintracht Frankfurt und Bayer Leverkusen eröffnen am 18. Oktober 2019 den achten Bundesliga-Spieltag. So sehen Sie die Partie live im Stream.',
-    'categories': [],
-    'tags': [],
-    'with': ['chten Bundesliga-Spieltag. So sehen Sie die Partie live im Stream.', 'Relegation. Sie sind kein DAZN-Nutzer? Ein Probemonat beim Anbieter ist kostenlos; danach zahlen Sie 11,99 Euro pro ', 'ts der europäischen Top-Ligen, der Champions League und Europa League auf Ihrem Smartphone od'],  # 3 segments
-    'without': ['Weiterführende Links', 'Gefällt Ihnen dieser Artikel?', 'Tests der Woche'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d051e038341e4e4a9e8ea4833b96cd9e.html': {
-    'file': 'd051e038341e4e4a9e8ea4833b96cd9e.html',
-    'author': '',
-    'title': 'Wegen Bischof Rentzing: Sachsens Landeskirche in tiefer Krise',
-    'date': '2019-10-19',
-    'description': 'Er polarisiert seit Beginn seiner Amtszeit. Nun hat Sachsens Landesbischof Carsten Rentzing seinen Rücktritt angeboten. Das macht es nicht besser.',
-    'categories': [],
-    'tags': [],
-    'with': ['iert seit Beginn seiner Amtszeit. Nun hat Sachsens Landesbischof Carsten Rentzing seinen Rücktritt angeboten. Das macht es nicht besser.', 'hstenliebe verlangt Klarheit", heißt es in der Petition, die unter anderem vom Pfarrer der Peterskirche Leipzig, Andreas Dohrn (52), unterzeichnet wurde. ', '): "In der Tat gibt es ein Zerwürfnis", so der Kirchenjurist. "Umso wichtiger ist es, in christlichem Umgang miteinander Lösungen zu suchen'],  # 3 segments
-    'without': ['Mehr zum Thema:', 'DER BLICK ZU DEN STERNEN: VON LANDESBISCHOF CARSTEN RENTZING ', 'WhatsApp:  0160 - 24 24 24 0 '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d51e75d9e53a472bb7708191899aa6b4.html': {
-    'file': 'd51e75d9e53a472bb7708191899aa6b4.html',
-    'author': 'Cosima Künzel',
-    'title': 'So lief die Auktion der Schätzchen von St. Johannes ',
-    'date': '2019-10-19',
-    'description': 'Stühle, Leuchten und ein Abendmahl aus Gips. Im Kücknitzer Kirchen-Forum wurden Dachboden-Schätze der Kirche St. Johannes versteigert. Für die Neugestaltung des Gotteshauses kam viel Geld zusammen.',
-    'categories': [],
-    'tags': [],
-    'with': ['knitzer Kirchen-Forum wurden Dachboden-Schätze der Kirche St. Johannes versteigert. Für die Neugestaltung des Gotteshauses kam viel Geld zusammen.', 'die Dinge. Kirchenvorsteher Niels Sönnichsen hat alle Schätze, Kuriositäten und Nostalgisches aufgelistet und steht als „Buchhalter“ bereit, als es los', 'ch über rund 1400 Euro für das Gotteshaus. Der Beginn der Bauarbeiten ist für 2020 geplant. Die Fundraising-Kampagne läuft unter dem Motto „'],  # 3 segments
-    'without': ['Newsletter abonnieren', 'n die Arkaden an Lübecks Rathaus hübsch gemacht werden. Dort wird der Belag erneuert. Eigentlich hätte der schon 2011 bei der Sanierung des Germanistenkellers gemacht werden s', 'Nach Oben'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d51f328dcb8f428b9a6f358a556fe37e.html': {
-    'file': 'd51f328dcb8f428b9a6f358a556fe37e.html',
-    'author': '',
-    'title': 'Line of Duty',
-    'date': '',
-    'description': 'Line of Duty im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Heute, 02:25 - 03:25, ZDF', 'Es wird immer deutlicher, dass jemand innerhalb der Polizei die Ermittlunge', 'John Strickland'],  # 3 segments
-    'without': ['Alle News: Die aktuellen News aus TV, Film, Serien, Stars ', '© TV SPIELFILM: Line of Duty im TV - Sendung - TV Spielfilm', 'Weitere Angebote von Hubert Burda '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d52cbcd94e0a486193b54ebc2a3437f6.html': {
-    'file': 'd52cbcd94e0a486193b54ebc2a3437f6.html',
-    'author': 'dpa',
-    'title': 'Betrunkener bringt mit Auto Bundeswehr-Konvoi zum Stillstand',
-    'date': '2019-10-19',
-    'description': 'Malchow - Ein betrunkener Berliner hat in Mecklenburg-Vorpommern einen Militärkonvoi zum Stillstand gebracht. Der Mann habe parkend die rechte ...',
-    'categories': [],
-    'tags': ['Mecklenburg-Vorpommern', 'Militärkonvoi', 'Fahrspur', 'Polizei', 'Bundeswehr', 'Auto', 'Militär'],
-    'with': [' die rechte Fahrspur einer Brücke bei Malchow blockiert, teilte die Polizei mit. Ein Bundeswehrkonvoi habe die Brücke deshalb am Morgen nicht passi', 'nnen und anhalten müssen. Die Militärs hätten daraufhin den Wagen - nach Rücksprache mit dem 36-', 'Fahrspur einer Brücke bei Malchow blockiert, teilte die '],  # 3 segments
-    'without': ['Erfahren Sie mehr:', 'Wissenscommunity', 'Johnson: Werde nicht mit Brüssel über Brexit-Aufschub verhandeln'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d52e0feb14644be5ac2524a3736e3a50.html': {
-    'file': 'd52e0feb14644be5ac2524a3736e3a50.html',
-    'author': '',
-    'title': 'South Park',
-    'date': '',
-    'description': 'South Park im Fernsehen - TV Programm:',
-    'categories': [],
-    'tags': [],
-    'with': ['Wh. vom 13.10., Folge 86 um 20.50 Uhr', 'Cast und Crew', 'Trey Parker'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'netmoms', ' imago, Sender/PR/Montage, Jupiter Award '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d054f6a57cff432daaaac2f4eab90254.html': {
-    'file': 'd054f6a57cff432daaaac2f4eab90254.html',
-    'author': '',
-    'title': '60 Minutes: Pelosi Insider Trading (2011)',
-    'date': '2019-10-18',
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['ge! Her hand immediately goes up as if to suggest a ', 'er with the slime that oozes off him.', 'he incoming assault. I don’t '],  # 3 segments
-    'without': ['insider, minutes, pelosi, trading', 'As long as you keep liking, sharing, ', '35 views '],  # 3 segments
+    'with': ['Saftig-weiche Muffins aus Hefeteig', 'für das Rezept Bienenstich-Muffins', 'Dr. Oetker Vanillin-Zucker', 'Belag:', 'Heißluft etwa 180 °C', 'ein großes Brett legen.'],
+    'without': ['Merken', 'Verwendete Dr. Oetker Produkte', '(24 Rezepte)'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
     'region': '',
 },
-'d54bb3b5dbb04db1a9512b22c8a8da76.html': {
-    'file': 'd54bb3b5dbb04db1a9512b22c8a8da76.html',
-    'author': 'dpa',
-    'title': 'Vor Topspiel: Medien: BVB-Trainer Favre streicht Sancho aus dem Kader',
-    'date': '2019-10-19',
-    'description': 'Trainer Lucien Favre vom Fußball-Bundesligisten Borussia Dortmund hat Offensivspieler Jadon Sancho Medienberichten zufolge aus dem Kader für das Topspiel gegen Tabellenführer Borussia Mönchengladbach gestrichen.',
-    'categories': [],
-    'tags': [],
-    'with': ['rtmund Trainer Lucien Favre vom Fußball-Bundesligisten Borussia Dortmund hat Offensivspieler Ja', ' verspätete Rückkehr des 19-Jährigen von den Länderspielen der englischen Nationalmannschaft. Von Borussia Dortmund gab es wenige Stunden vor dem Anpfiff am Samstagabend (18.30 Uhr) auf dpa-Anfrage keinen Kommentar zu dem Vorgang.', 'Am Donnerstag hatte Favre noch die sportlichen Qualitäten Sanchos h'],  # 3 segments
-    'without': ['Bericht auf kicker.de', ' Ehemaliger DFB-Chefankläger : Der Fußball trauert um Horst Hilpert ', 'Bestellen Sie hier unseren kostenlosen Newsletter:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d55a8bb2510d4ea5b98ecf86c991e09f.html': {
-    'file': 'd55a8bb2510d4ea5b98ecf86c991e09f.html',
+'https://backen.de/rezept/maulwurfkuchen-mit-erdbeeren': {
+    'file': 'backen.de.maulwurfkuchen.html',
     'author': '',
-    'title': 'Klein gegen Groß – Das unglaubliche Duell',
+    'title': 'Maulwurfkuchen mit Erdbeeren',
     'date': '',
-    'description': 'Klein gegen Groß – Das unglaubliche Duell im Fernsehen - TV Programm:',
+    'description': '',
     'categories': [],
     'tags': [],
-    'with': ['ab 7 Jahren', 'as Duell der beiden ist Auftakt der neuen Rubrik „Klein gegen Vogel“. Außerdem ', 'Moderation: Kai Pflaume'],  # 3 segments
-    'without': ['Neu auf TV SPIELFILM.de', 'ttps://www.facebook.com/TVspielfilm', 'aktuellen News aus TV, Film, Serien,'],  # 3 segments
+    'with': ['für 12 Stück', 'z.B. Dr. Oetker Gelatine fix (15 g)', 'Für dieses Rezept benötigst', 'Teigschaber', 'und schneide sie in kleine Würfel.'],
+    'without': ['Bild anzeigen', 'Schreib du doch einen', 'Neugierig geworden?'],  # 3 segments
     'comments': [],  # 0 or 3 segments
     'license': '',
-    'region': 'DE',
+    'region': '',
 },
-'d55f92c77cab4e4d8557ae7e75bff576.html': {
-    'file': 'd55f92c77cab4e4d8557ae7e75bff576.html',
-    'author': 'dpa / Jens Kalaene',
-    'title': '42-Jähriger flieht mit E-Scooter vor Polizei - und prallt gegen eine Hauswand ',
-    'date': '2019-10-19',
-    'description': 'index,follow',
+'https://www.backenmachtgluecklich.de/rezepte/saftiger-zitronenkuchen-vom-blech.html': {
+    'file': 'backenmachtgluecklich.de.zitronenkuchen.html',
+    'author': 'Kathrin',
+    'title': 'Saftiger Zitronenkuchen vom Blech: einfach köstlich!',
+    'date': '2020-02-17',
+    'description': '',
     'categories': [],
     'tags': [],
-    'with': ['te eine Streife ein Pärchen, welches unzulässigerweise zu zweit auf einem E-Scooter unterwegs war. Der 42-Jährige lenkte den E-Scooter, die Frau (35) stand hinter ihm', 'en des Verdachts der Gefährdung des Straßenverkehrs und der fahrlässigen Körperverletzung eingeleitet.', 'ünchen kontrollierte bei einem Aktionstag E-Scooter-Fahrer - und zog eine unerfreuliche Bilanz.'],  # 3 segments
-    'without': [' Katarina AmtmannAutorKatarina Amtmann ', 'Auch interessant', 'Verfahren gegen Regensburger OB Wolbergs nicht eingestellt - Verteidiger stellt Befangenheitsantrag'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['einen echten Klassiker aus der Backstube.', 'Sobald der Kuchen gebacken', 'Diesen Beitrag habe ich 2017', '6 mittelgroße Eier', 'Rührteig auf dem Blech verteilen', 'Du möchtest Zutaten ersetzen?'],
+    'without': ['Pinnen', 'Rezept drucken', 'Zudem erhältst du jede Woche', 'Hallo, ich bin Foodbloggerin'],  # 3 segments
+    'comments': ['Danke schonmals für die Antwort', 'Du solltest 1-2 Eigelb weg lassen', 'Puh,eine ganz normale Blechgröße'],  # 0 or 3 segments
     'license': '',
-    'region': 'DE',
+    'region': '',
 },
-'d56bc0fdfdb74640993c8c052bc68fd1.html': {
-    'file': 'd56bc0fdfdb74640993c8c052bc68fd1.html',
-    'author': 'tib/DPA',
-    'title': 'Tschechien verbietet Selfies in Knochenkirche',
+## 2020-04-27
+   '': {
+    'file': '0af99c85f22b451a93a75bbf99ac412e.html',  # stays empty until download
+    'author': 'Thomas Steinberg',
+    'title': 'Hingucker beim Flugplatzfest in Dessau: Zweite F13 kurz vor der Zulassung',
     'date': '2019-10-19',
-    'description': 'Wegen unangemessenen Verhaltens der Besucher ist das Fotografieren in der Knochenkirche im tschechischen Kutna Hora künftig verboten.',
-    'categories': [],
-    'tags': ['Tschechien', 'Prag'],
-    'with': ['n Verhaltens der Besucher ist das Fotografieren in der Knochenkirche im tschechischen Kutna Hora künftig verboten. Ab Ja', 'Die Kirche zieht jährlich rund 500.0', 'rbeiten bei laufendem Besucherbetrieb sollen bis 2024 abgeschlossen se'],  # 3 segments
-    'without': ['Erfahren Sie mehr:', 'Wissenscommunity', 'Nachrichten vom 19.10.2019 | © stern.de GmbH | Tschechien verbietet Selfies in Knochenkirche'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d57cfadc540842ebb09971e28df123ec.html': {
-    'file': 'd57cfadc540842ebb09971e28df123ec.html',
-    'author': 'Dieter Sieckmeyer',
-    'title': 'Düsseldorf ISS Dome: Peta erstattet Anzeige wegen toten Tauben ',
-    'date': '2019-10-19',
-    'description': 'Immer wieder werden am ISS Dome tote Tauben gefunden. Viele verenden qualvoll in den Netzen, die unter dem Dach der Halle angebracht wurden.',
+    'description': '"Vor eineinhalb Jahren war das von Hugo Junkers entwickelte erste Ganzmetallflugzeug der Welt der Hingucker beim Flugplatzfest in Dessau.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['gestellt, dass in den Netzen mehrere große Löcher sind. Die Tauben finden hinein, aber nicht mehr wieder nach draußen.“ Die Folgen sind dramatisch. Denn wenn ', 'ützer laufen seit Monaten Sturm: Immer wieder werden am ISS Dome tote Tauben gefunden. Viele verenden qualvoll in den Netzen, die unter dem Dach de', 'schutz übergeben werden: Diese Maßnahmen würden in enger Abstimmung mit dem Tiernotruf und dem städtischen Veterinäramt umgesetzt.'],  # 3 segments
-    'without': ['URL zum Kopieren', 'über 142.000 Follower', 'Inhalt teilen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['ell, doch den Hangar hat sie am vorletzten Donnerstag schon einmal verlassen: eine F13. Es ist der zweite Nachbau der Junkers-Maschine, entstanden ist er am Flughafen Dübendorf nahe Zürich.', 'Z, die zweite Maschine sei „noch schöner“ als die erste geworden, bei der es sich um einen Prototyp gehandelt habe. Zugleich habe man das Fahrwerk verbessert.', 'au und soll nach Fertigstellung in den USA präsentiert werden. Dort, auf dem mutmaßlich größten Flugzeugmarkt, solle dann auch die vierte Maschine gebaut und zugelassen werden.'],  # 3 segments
+    'without': ['MZ Dessau-Roßlau bei Facebook', 'polinturner suchen Meister: Stelldichein der deutschen Hoffnungen in Dessau', 'zu die einwandfreie Funktion der Webse'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
 },
-'d59eaa786c34456da2012896d0a5c205.html': {
-    'file': 'd59eaa786c34456da2012896d0a5c205.html',
-    'author': 'textOmatic',
-    'title': 'Marriott International fällt 0,9 Prozent',
+   '': {
+    'file': '0b5db24739704283849ca3ed20ce09d4.html',  # stays empty until download
+    'author': 'Claus Boelen-Theile',
+    'title': 'Bergisch Gladbach: die Stadt verklagt die Baufirma wegen schlechter Pflastersteine',
     'date': '2019-10-19',
-    'description': 'Mit einer negativen Entwicklung von 0,9 Prozent gehörte der Anteilschein des Hotelunternehmen Marriott International zu den Verlierern des Tages. Bei Börsenschluss betrug der Preis der Aktie 108,38 Euro.',
+    'description': 'Diese Flaniermeile ähnelt einer übergroßen Stolperfalle. Dabei ist das Pflaster der Gladbacher Fußgängerzone erst sechs Jahre alt.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['punkt waren am Vortag 35 Papiere im Wert von 4,0 Tausend Euro gehandelt worden', '7.07.2019 erreicht worden. Das 52-Wochen-Tief stammt vom 20.12.2018 und be', 'te mit einem Minus von minimalen 0,91 Prozent zu den Verlustbringern des Tages. Im Vergleich zum Vortagsstand von 109,38 Euro hatte sie sich um'],  # 3 segments
-    'without': ['Artikel kommentieren', 'Finanzen100: Börsenbriefe, die sich auszahlen', 'Lesen Sie auch'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['er gehalten werden: An manchen Stellen wirkt das Straßenpflaster deutlich in die Jahre gekommen. Ecken an den Pflastersteinen sind unschön abgeplatzt. Fugen sind offen. In der Nähe ', 'chtig für die Beweisaufnahme seien, könnten sie von der Stadt aus nachvollziehbaren Gründen nicht repariert werden, erklärt der Sprecher: „Wir hätten es auch lieber anders, aber das Ver', 'alls derzeit nicht. Aus Sicht der Stadt wäre ein zeitnaher Beweissicherungstermin wünschenswert. Auf den Zeitrahmen des Verfahrens habe die Stadt allerdings keinen Einfluss.'],  # 3 segments
+    'without': ['Weitere interessante News', 'Aktuelle Artikel', 'heben. Und mehr nicht. Auch diese unaufschiebbaren Arbeiten im Untergrund würden umfassend dokumentiert - damit die Stadt in einem Gerichtsverfahren Indizien vorlegen könne.'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
 },
-'d60a043e92f44c49bd3e0305a2c6c654.html': {
-    'file': 'd60a043e92f44c49bd3e0305a2c6c654.html',
-    'author': 'textOmatic',
-    'title': 'JPMorgan Chase praktisch unverändert',
-    'date': '2019-10-19',
-    'description': 'Der Wert der Bank JPMorgan Chase zeigte wenig Änderung. Der Wert notierte bei Börsenschluss mit 108,36 Euro.',
+    'https://www.finanztip.de/betriebliche-altersvorsorge/': {
+    'file': '',  # stays empty until download
+    'author': 'Sara Zinnecker ',
+    'title': 'Mit Hilfe des Chefs für die Rente sparen',
+    'date': '2020-02-05',
+    'description': 'Betriebliche Altersvorsorge sichert eine Zusatzrente im Alter. Das Modell lohnt besonders, wenn der Chef mit einzahlt.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['zeigte wenig Änderung. Der Wert notierte bei Börsenschluss mit 108,36 Eur', 'rozent unter dem Hoch. Mit 82,00 Euro war das 52-Wochen-Tief am 27.12.2018 erreicht ', 'ren am Vortag 557 Papiere im Wert von 53,5 Tausend Euro gehandelt worden'],  # 3 segments
-    'without': ['op-Anlageempfehlungen zu Aktien wie JPMorgan Chase & Co. & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'ennen und profitieren Sie von der Expertise der Bernecker Profis', 'Meistgelesen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['Altersvorsorge (bAV) versteht man den Aufbau einer Zusatzrente über den Arbeitgeber.', 'u bringen, eine bAV anzubieten und auch mitzufinanzieren. Davon würden dann auch Arbeitn', 'Unabhängig von den verschiedenen Begriffen stehen Angestellte vor allem vor der Frage: Lohnt sich das für'],  # 3 segments
+    'without': ['Weitere Themen', ' Angebot empfehlen, kann der entsprechende Anbieter einen Link zu diesem Angebot setzen lassen. Solche Links kennzeichnen wir mit einem Sternchen (*). Geld erhalten wir, wenn Sie di', 'Aktuelle Ausgabe des Newsletters'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
-'d60b33f715e6471aac9e718063b88da5.html': {
-    'file': 'd60b33f715e6471aac9e718063b88da5.html',
-    'author': 'dpa / Matthias Balk',
-    'title': 'Niklas Süle/FC Bayern: Kreuzbandriss? Horror-Moment bei Augsburg-Spiel ',
-    'date': '2019-10-19',
-    'description': 'index,follow',
-    'categories': [],
-    'tags': [],
-    'with': [', verwenden wir Cookies. Durch Nutzung unserer Dienste stimmen Sie unserer ', 'Wie lange fällt der Abwehrboss aus?', ': Niklas Süle hat das Stadion verlassen, nachdem der Innenverteidiger lange in der Kabine behandelt worden war.'],  # 3 segments
-    'without': ['Mehr zum Thema', 'FC Bayern: Die Noten der FCB-Stars aus der Partie gegen den FC Augsburg', 'Unsere Services für Sie im Überblick'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d60c39b0bfd540d9bceceab23ae5d0a9.html': {
-    'file': 'd60c39b0bfd540d9bceceab23ae5d0a9.html',
+    'https://www.smava.de/privatkredit/privatkredit-zinsen/': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Mega-Blamage perfekt: Briten beantragen allen Ernstes noch eine Brexit-Verschiebung!',
-    'date': '2019-10-19',
-    'description': 'Das britische Parlament hat eine Entscheidung über den Brexit-Deal von Premierminister Boris Johnson am Samstag verschoben.',
-    'categories': [],
-    'tags': [],
-    'with': ['ntscheidung über den Brexit-Deal von Premierminister Boris Johnson verschoben und ihm damit eine empfindliche Niederlage zugefügt.', 's Gesetzes anstehen. Würde das Gesetz diese Hürde passieren, könnte Johnson damit rechnen, die Unterstützung für den Deal doch noch zu bekommen.', 'will im Namen ihres Premiers Boris Johnson noch am Samstagabend in einem Brief wie vom Gesetz verlangt eine Brexit-Verschiebung bei der EU beantragen. Das tei'],  # 3 segments
-    'without': ['Wir bei WhatsApp:  0160 - 24 24 24 0 ', 'Nach Union-Spiel gegen Freiburg: Zug-Waggon brennt lichterloh! Neu ', 's diese Technnik so günstig 2.241 Anzeige'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d60c518c2b49414c848b53dffb1630e9.html': {
-    'file': 'd60c518c2b49414c848b53dffb1630e9.html',
-    'author': '',
-    'title': 'Wir sind die Millers',
+    'title': 'Wie hoch sind die Zinsen für einen Privatkredit? ',
     'date': '',
-    'description': 'Wir sind die Millers im Fernsehen - TV Programm: Jason Sudeikis und Jennifer Aniston spielen eine schrecklich nette Familie.',
+    'description': 'Die Höhe der Zinsen für Ihren Privatkredit bestimmt, wie viel Geld Sie insgesamt zurückzahlen müssen. Tipps zur Berechnung finden Sie hier!',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Heute, 20:15 - 22:30, ProSieben', ' Thurber („Voll auf die Nüsse“) mixt hemmungslos überzogene Gags ', 'Krasser Klamauk mit Herz für Typen'],  # 3 segments
-    'without': ['Das große TV-Quiz', 'ten Sie den Film:', 'https://www.facebook.com/TVspielfilm'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['Bleibt der Zinssatz für meinen Privatkredit während der gesamten Laufzeit gleich?', 'effektiver Jahreszins', 'n für einen besseren Kreditzins, dazu gehören: ein hohes, frei verfügbares Einkommen, ein unbefristetes Arbeitsverh'],  # 3 segments
+    'without': ['Erhalten Sie kostenlos aktuelle Kredit-News und Informationen zu Sonderzins-Aktionen ', 'Kostenlose Beratung', 'smava.de Newsletter'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
-'d60caba9d12c467b9708ec8981cad8aa.html': {
-    'file': 'd60caba9d12c467b9708ec8981cad8aa.html',
-    'author': '	Dennis Kochinky',
-    'title': 'Bundesliga: Dortmund - Gladbach live sehen!',
-    'date': '2019-10-19',
-    'description': 'Am 8. Spieltag der Bundesliga treffen Borussia Dortmund und Borussia Mönchengladbach aufeinander. So sehen Sie das Spiel live im TV und im Stream.',
-    'categories': [],
-    'tags': [],
-    'with': ['chengladbach aufeinander. So sehen Sie das Spiel live im TV und im Str', 'rückkehren, dennoch ist die Gladbacher Verletztenliste weiterhin lang: Es fehlen vermutlich Matthi', 'ntschieden hinaus. Das Endergebnis im Auswärtsspiel gegen den SC Freiburg lautete – wi'],  # 3 segments
-    'without': ['» Zum Angebot: Die Bundesliga bei SKY TICKET', 'Kein Bild, kein Ton und trotzdem bestens informiert: Mit dem', ' App. Sehen Sie die Highlights der europäischen Top-Ligen, der Champions League und Europa League auf Ihrem Smartph'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d60e2bcc280b4e2487b1fd84583d0455.html': {
-    'file': 'd60e2bcc280b4e2487b1fd84583d0455.html',
-    'author': 'Hubert Popiolek, Thomas Glenk, Timo Schurwanz, Markus Schmidt, Dennis Kochinky, Paol Hergert',
-    'title': 'Sicher durch den Verkehr: Navigation für Sehbehinderte',
-    'date': '2019-10-19',
-    'description': 'Google Maps entwickelt sich permanent weiter. Jetzt hat Google eine neue Fußgänger-Navigation für Menschen mit Sehbehinderung angekündigt.',
-    'categories': [],
-    'tags': [],
-    'with': ['elle Fußgänger-Navigation für Sehbehinderte auszurollen. COMPUTER BILD nennt die Details.', 'nähert. Google wirbt damit, dass die neue Navigation von Sehbehinderten für Sehbehinderte entwickelt wurde. Wann', 'einigen Ländern informiert auch die Polizei den Dienst. In Großbritannien, Dänemark und de'],  # 3 segments
-    'without': ['Special: Google', 'Übersicht: Das Wichtigste über Google', 'Alle Gutscheine im Überblick'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d61fa1cdbf564b75be2967fd6b18a92b.html': {
-    'file': 'd61fa1cdbf564b75be2967fd6b18a92b.html',
-    'author': '	Sebastian Kolar',
-    'title': 'Windows 7/8/10: PowerShell – Musik abspielen im WAV-Format',
-    'date': '2019-10-19',
-    'description': 'Neben grafischen Bordmitteln ermöglicht die PowerShell, Musik abzuspielen. Dass das geht, reizt. Bedientechnisch ist es mangels Steuerungsbuttons unbequem.',
-    'categories': [],
-    'tags': [],
-    'with': ['Musik abzuspielen. Dass das geht, reizt. Bedientechnisch', ': Statt doppelt auf ein Audiofile zu klicken, ist eine gewisse Akrobatik gefragt aufgrund des Einfügens vo', 'n Sie sie per Lautsprecher-Symbol im Infobereich vor (Taskleisten-Bereich neben der Window'],  # 3 segments
-    'without': ['Weiterführende Links', 'Gefällt Ihnen dieser Artikel?', 'Testkandidaten im Video'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d64cab2d94934256b7c82ad161cbd167.html': {
-    'file': 'd64cab2d94934256b7c82ad161cbd167.html',
-    'author': 'dpa',
-    'title': 'AfD-Laster brennt: Polizei schließt politisches Tatmotiv nicht aus ',
-    'date': '2019-10-19',
-    'description': 'Nach dem Brand eines Wahlkampf-Lasters der AfD in Thüringen schließt die Polizei einen politischen Hintergrund nicht aus. „Die Polizei hat die Ermittlungen zur Klärung der Brandursache aufgenommen. Diese erstrecken sich derzeit in alle Richtungen“, teilte die Landespolizeiinspektion Nordhausen mit. „Ein politisches Tatmotiv kann nicht ausgeschlossen ...',
-    'categories': [],
-    'tags': [],
-    'with': ['e Ermittlungen zur Klärung der Brandursache aufgenommen. Diese erstrecken sich derzeit in alle Richtungen“, teilte die Landespolizeiinspektion Nordh', 'andelte. Nur dem Glück und dem schnellen Einsatz der Feuerwehr ist es zu verdanken, dass keine Menschen zu Schaden gekommen sind.“', 'Die AfD setze ihren Wahlkampf wie geplant fort. In Thüringen wird am 27. Oktober ein neuer Landtag gewählt. L'],  # 3 segments
-    'without': ['Allgemeine Geschäftsbedingungen', 'Weitere Angebote: BERLINER KURIER', 'Was ist heute los in Berlin? '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d68dd1a6fe304db8b2e22dfb872f0dea.html': {
-    'file': 'd68dd1a6fe304db8b2e22dfb872f0dea.html',
-    'author': 'dpa ',
-    'title': 'Unterhaus vertagt Votum über Johnsons Brexit-Deal',
-    'date': '2019-10-19',
-    'description': 'Schwere Schlappe für Boris Johnson: Der Premierminister muss eine Verlängerung der Brexit-Frist beantragen. Kann er sein Versprechen einhalten, das Land am 31. Oktober aus der EU zu führen?',
-    'categories': [],
-    'tags': [],
-    'with': ['ris Johnson verschoben und ihm damit eine empfindliche Niederlage zugefügt. – Quelle: https://www.shz.de/26051622 ©2020', ' Gesetzes anstehen. Würde das Gesetz diese Hürde passieren, könnte Johnson damit rechnen, – Quelle: https://www.shz.de/26051622 ©2020', '- mit knapper Mehrheit in einem Referendum für den Austritt aus der EU gestimm – Quelle: https://www.shz.de/26051622 ©2020'],  # 3 segments
-    'without': ['Diskutieren Sie mit.', 'Die Kommentare wurden für diesen Artikel deaktiviert – Quelle: https://www.shz.de/26051622 ©2020', ' zur Startseite'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d69d5c3254194c0a8c196b2b0d46a8b9.html': {
-    'file': 'd69d5c3254194c0a8c196b2b0d46a8b9.html',
+    'https://www.finanzcheck.de/autokredit/leasing-oder-finanzierung/': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Selfie mit Kult-Star: Hier ist "Maddin" Schneider selbst Fan',
-    'date': '2019-10-19',
-    'description': 'Im Hotel hat Martin Schneider zufällig Sänger und Schauspieler Peter Kraus getroffen. Mit seinem Idol hat der Comedian dann auch gleich ein Selfie geschossen.',
-    'categories': ['Promis & Stars '],
-    'tags': [],
-    'with': ['Schneider zufällig Sänger und Schauspieler Peter Kraus getroffen. Mit seinem Idol hat der Comedian dann auch gleich ein Selfie geschossen.', 'n: Peter Kraus steht mit seinen 80 Jahren immer noch topfit auf der Bühne und unterhält seine vielen Fans mit Hits wie "Sugar Baby" oder "Sweety".', ' grinsen, dann sogar noch eine Gemeinsamkeit auf. "Huch", schreibt sie. "Ihr beide habt jeder einen braunen Zahn. Aber sonst sehr sexy."'],  # 3 segments
-    'without': ['GUT GERÖHRT: MADDIN SCHNEIDER "REDET" MIT BRÜNFTIGEM HIRSCH ', 'hatsApp:  0160 - 24 24 24 0 ', 'Grausamer Fund in Leipzig! Wo kommt dieser Kopf her? 5.005 Anzeige'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d69e7f6100684f25a8bfe86495d81359.html': {
-    'file': 'd69e7f6100684f25a8bfe86495d81359.html',
-    'author': '',
-    'title': 'Verlockende Falle',
+    'title': 'Leasing oder Finanzierung – was lohnt sich mehr?',
     'date': '',
-    'description': 'Verlockende Falle im Fernsehen - TV Programm: Catherine Zeta-Jones stiehlt Sean Connery das Herz.',
+    'description': '',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Thrillerkomödie, USA 1999, 100 Min.', 'Edles, knisterndes Gaunerstück', 'Christopher Young'],  # 3 segments
-    'without': ['Bewerten Sie den Film:', 'Neu auf TV SPIELFILM.de', 'e News: Die aktuellen News aus TV, Film, Serien, Stars '],  # 3 segments
-    'comments': ['Auch Catherine Zeta-Jones gefällt es! So wie sie sich unter die roten Fäden schlängelt, sieht sie ', 'en den Hauptdarstellern stimmt, hinzukommt eine spannende Story.', 'sen sollen.Trotz einiger überraschenden Wendungen zum Ende hin kommt keine echte '],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['e, hat dafür verschiedene Möglichkeiten. Das Auto kann gekauft, finanziert oder geleast werden. Im Vergleich zum Leasing gehört bei der Finanzierung das Fahrzeug am Ende dem Halter, beim Leasen jedoch müssen die Kund', ' lassen sich auch die Leasingraten senken, indem die Kunden eine Anzahlung leisten. Manche Anbieter fordern diese sogar vor der Überlassung des Fahrzeugs. ', 'höheres Verschleißrisiko aufgrund einer längeren Nutzungsdauer'],  # 3 segments
+    'without': ['Gemeinsam finden wir Ihren passenden Kredit! Kostenlose Hotline.', '© 2020 FINANZCHECK.deWinterstraße 222765 Hamburg', 'Kundenbewertungen'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
-'d70fab3adde74d5fb63552855c981395.html': {
-    'file': 'd70fab3adde74d5fb63552855c981395.html',
-    'author': 'DPA',
-    'title': 'Niederlage für Johnson: Parlament vertagt Votum über Brexit-Deal - wie geht es jetzt weiter?',
-    'date': '2019-10-19',
-    'description': 'Der Premierminister muss eine Verlängerung der Brexit-Frist beantragen. Kann er sein Versprechen einhalten, das Land am 31. Oktober aus der EU zu ...',
-    'categories': [],
-    'tags': ['Boris Johnson' 'EU', 'Premierminister' 'Niederlage', 'Abstimmung', 'EU-Gipfel', 'Brüssel'],
-    'with': [' empfindliche Niederlage zugefügt. Die Abgeordneten stimmten mit 322 zu 306 für einen Antrag, de', 'war die Frage, wie eine offene Grenze zwischen dem britischen ', 'ommer 2016 - mit knapper Mehrheit in einem Referendum für den Austritt aus de'],  # 3 segments
-    'without': ['Themen in diesem Artikel', 'Erfahren Sie mehr:', 'Wissenscommunity'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d71bfdce9dd246c9a6ee6d08c8b39e4c.html': {
-    'file': 'd71bfdce9dd246c9a6ee6d08c8b39e4c.html',
-    'author': 'HansEhrlich',
-    'title': '*Ab Montag* 10000 Produkttester für Leibniz Keks’n Cream Milk oder Choco *REWE Produkttest*',
-    'date': '2019-10-17',
-    'description': '&quot;Außen knusprig, innen cremig&quot; So beschreibt Leibniz ihr neues Produkt &quot;Keks´n Cream&quot;. Das beste kommt jetzt: Beim Rewe Produkttest der nächsten Woche',
-    'categories': [],
-    'tags': [],
-    'with': ['„Außen knusprig, innen cremig“ ', 'nnt ihr mit etwas Glück diese leckere Sünde GRATIS in eurem REWE Markt abholen!', 'Euer HansEhrlich'],  # 3 segments
-    'without': ['Kostenlos zum Newsletter anmelden und ', 'GRATIS-Jahresabo abstauben', 'Top-Vergleiche'],  # 3 segments
-    'comments': ['Prospekt next week', ' unserem Markt waren aber keine mehr da und w', 'hme ich gerne mit, klingt leck'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d73e0fa055834b2dbb2036ba27d46597.html': {
-    'file': 'd73e0fa055834b2dbb2036ba27d46597.html',
-    'author': 'Isabella.DiBiase',
-    'title': 'Lange Haare: Dank dieser Lebensmittel wachsen sie viel schneller',
-    'date': '2019-10-19',
-    'description': '"Wusstet ihr, dass ihr mit der richtigen Ernährung das Wachstum eurer Haare beschleunigen könnt? Mit diesen Lebensmitteln bekommt ihr im Handumdrehen eine lange Löwenmähne...',
-    'categories': [],
-    'tags': ['Lange Haare', 'Haare', 'Lebensmittel'],
-    'with': ['mit der richtigen Ernährung das Wachstum eurer Haare beschleunigen könnt? Mit diesen Lebensmitteln be', 'owie Kalzium, Eisen, Zink und Biotin enthalten, auf der Liste. Auch trinken solltet ihr übrigens genug: Ca. 2 L Wasser am Tag sin', 'n. Für Rapunzelhaare sorgt übrigens auch das Superfood Avocado: Die Butterbirne steckt nämlich voller Vitamin '],  # 3 segments
-    'without': ['Weitere Themen ', 'Webseiten der Mediengruppe KLAMBT', '© 2019 Klambt Style-Verlag GmbH & Co. KG'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d76bb5cda4cd4621a04c1b166d6cad9f.html': {
-    'file': 'd76bb5cda4cd4621a04c1b166d6cad9f.html',
+    'https://www.vergleich.de/auto-leasen-finanzieren-oder-kaufen.html': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Fünf Kleinkinder und zwei Erwachsene sterben bei schrecklichem Wohnhausbrand',
-    'date': '2019-10-19',
-    'description': 'Fünf kleine Kinder, unter ihnen ein Baby, sterben zusammen mit zwei Erwachsenen bei einem Brand in Russland.',
-    'categories': ['Feuerwehreinsätze '],
-    'tags': [],
-    'with': ['kommen, als sich das Feuer im Treppenhaus ausbreitete, teilte der Zivilschutz am Sam', 'Dachgeschoss brannte vollkommen aus. Die Kinder waren nach Angaben der Agentur Tass zwischen anderthalb ', 'enden Haus retten. Ermittler untersuchten, ob der Brand wegen eines defekten Elektrogerätes oder aus Fahrlässigkeit ausgebrochen ist. '],  # 3 segments
-    'without': ['Ingo Kantorek (†44): Letzter Auftritt bei "Köln 50667" nach Unfall-Tod Köln Top', 'FAMILIENDRAMA: MUTTER UND IHRE DREI KINDER TOT ', 'Wir bei WhatsApp:  0160 - 24 24 24 0 '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d76cf81a74fa4633bd19d7060f5c05ee.html': {
-    'file': 'd76cf81a74fa4633bd19d7060f5c05ee.html',
-    'author': 'hessenschau.de/bb',
-    'title': 'Die Minze als Mutmacher – Deniz Yücels Bericht aus dem türkischen Knast',
-    'date': '2019-10-19',
-    'description': 'Deniz Yücel saß im türkischen Gefängnis – im Auftrag der Öffentlichkeit, wie er bei seiner Buchvorstellung auf der Buchmesse in Frankfurt sagt. Der Flörsheimer berichtet über angstvolle Momente, Erdogans Copyright und die besondere Kraft der Minze. ',
+    'title': 'Auto leasen, finanzieren oder kaufen – was ist günstiger?',
+    'date': '',
+    'description': 'Das neue Auto leasen, finanzieren oder kaufen? Viele Wege führen zum eigenen Auto. Wir zeigen, ob sich Barkauf, Leasing oder eine Finanzierung für Sie lohnt',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['efängnis – im Auftrag der Öffentlichkeit, wie er bei seiner Buchvorstellung auf der Buchmesse in Frankfurt sagt. Der Flörsheimer berichtet über angstvolle Momente, Erdogans Copyright und die besondere Kraft der Minze. ', ' – diese triste Umgebung schlug Deniz Yücel aufs Gemüt im Hochsicherheitsgefängnis Silivri westlich von Istanbul. Der inhaftierte Journalist und Autor au', 'ng "Die Welt". Verfasst mithilfe von Tomatensoße und einer Plastikgabel, später mit geklauten Kugelschreibern. Deniz Yücel ließ sich von diesem "Gangster-Regime" wirklich nicht mundtot machen. Und will irgendwann zurück in die Türkei.'],  # 3 segments
-    'without': ['Navigation der Marken des Hessischen Rundfunks', 'Weitere Informationen ', ' Frankfurt'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['Sie Ihr Auto lieber leasen oder kaufen sollten und welche Vor- und Nachteile es dabei gibt.', 'Vorteile bei der Finanzierung über einen Autokredit:', 'Das Fahrzeug muss bei der Rückgabe in seinem ursprünglichen Zustand sein, Kratzer und Beulen kommen Sie teuer zu stehen.'],  # 3 segments
+    'without': ['Zahnzusatzversicherung Vergleich', 'So hoch sind die Kreditzinsen 2020', 'Können wir helfen?'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
-'d76d0080d3574994b91cc8f8cbb54751.html': {
-    'file': 'd76d0080d3574994b91cc8f8cbb54751.html',
+    'https://www.focus.de/auto/experten/auto-leasen-oder-kaufen-fuer-wen-lohnt-sich-was_id_9209161.html': {
+    'file': '',  # stays empty until download
+    'author': 'Robin Tschöpe',
+    'title': 'Auto leasen oder kaufen: Für wen lohnt sich was?',
+    'date': '2018-07-06',
+    'description': 'Leasen, finanzieren oder kaufen? Wer ein neues Auto will, hat mehrere Möglichkeiten. Jede bringt ihr Vor- und Nachteile mit. FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['teile mit. FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.', 'ichen mit der Finanzierung die kostengünstigere Option. Mit einem Schlag ist d', 'hrzeugs zu werden. Wer es gerne flexibel mag, nicht länger als ein bis drei Jahre planen möchte oder einfach immer in den neuesten Modellen unterwegs '],  # 3 segments
+    'without': [' Bitte loggen Sie sich vor dem Kommentieren ein', '„Experten“ abonnieren', 'Persönlicher Newsletter'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+    'https://www.comparis.ch/leasing/info/autofinanzierung': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Broadway Therapy',
-    'date': '2019-10-19',
-    'description': 'Broadway Therapy im Fernsehen - TV Programm: Komödie von Altmeister Peter Bogdanovich.',
+    'title': 'Finanzierung Ihres Autos',
+    'date': '',
+    'description': '',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Heute, 20:15 - 21:40, ZDFneo', 'gerät das Callgirl Izzy (Imogen Poots) in die chaotisch- neurotische Welt ein', 'Broadway Therapy bei Streaming-Anbietern'],  # 3 segments
-    'without': ['n Kooperation mit', 'Bewerten Sie den Film:', 'noch 999 Zeichen übrig'],  # 3 segments
-    'comments': ['er große Überflieger ist es aber definitiv nicht.', 'einerseits an frühere Erfolge, die liegen eben nur wirklich endlos lange zurück. Das bedeutet, er ', 'ller in einer ungewöhnlichen aber unterhaltsamen Story'],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['Eine häufig gestellte Frage: Leasing oder Autokredit?', 'Total Differenz (Ersparnis beim Leasing)', 'racht gezogen, was später zu Ärgernissen führen könnte. Welche Art der Autofinanzierung ideal ist, sollte deshalb eher v'],  # 3 segments
+    'without': ['Immer aktuell informiert über Sparmöglichkeiten sowie Experten-Tipps rund um die Themen Gesundheit, Finanzen und Steuern. ', '108, 8003 Zürich, +41 44 360 52 62', 'Mit der Anmeldung stimme ich der Bearbeitung '],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'CH',  # if obvious: DE, CH, AT
 },
-'d81bd70e1777421aaa3e859806ca778f.html': {
-    'file': 'd81bd70e1777421aaa3e859806ca778f.html',
-    'author': 'Rolf Ziehm',
-    'title': 'Sven Reents und Carsten Hegenberg: „Schwalebräu war ein Spaß-Projekt“',
-    'date': '2019-10-19',
-    'description': 'Die Schwalebräu-Macher gehen mit neuen Projekten getrennte Wege. Das Schwalebräu-Bier könnte wieder aufleben.',
-    'categories': [],
-    'tags': [],
-    'with': ['Eventmanager und Gastronom. Das Kapitel „Schwalebräu“ im G ', 'Schwalebräu-Macher gehen mit neuen Projekt', 'Neumünster'],  # 3 segments
-    'without': ['Top Nachrichten', 'Diskutieren Sie mit.', 'Weitere Angebote, Produkte und Unternehmen der mh:n MEDIEN'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d81d6146c39f438d9187712b59990350.html': {
-    'file': 'd81d6146c39f438d9187712b59990350.html',
+    'https://www.verivox.de/kredit/leasing-oder-finanzierung/': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Hund attackiert Frau und richtet sie übel zu',
-    'date': '2019-10-19',
-    'description': 'Eine 73-Jährige wurde in Leeds von einem Pitbull angegriffen. Sechs Wochen musste sie im Krankenhaus bleiben.',
-    'categories': ['Hunde'],
+    'title': 'Leasing oder Finanzierung? Jetzt Angebote berechnen!',
+    'date': '',
+    'description': 'Leasing oder Finanzierung? Die Verivox-Tarifexperten zeigen, ob Sie Ihr Auto leasen oder kaufen sollten – mit Rechnern, Beispielen, Vor- und Nachteilen.',  # in HTML source
+    'categories': [],
     'tags': [],
-    'with': ['73-Jährige wurde in Leeds von einem Pitbull angegriffen. Sechs Wochen musste sie im Krankenhaus bleiben', 'Als sie versuchte, sich zu wehren, biss er ein Stück ihres linken Mittelfingers ab. Doch ', 'nd einen Hund wie diesen halten kann, es war ein absolutes Monster", ist der 71-Jährige noch immer schockiert nach der Attacke auf seine Frau.'],  # 3 segments
-    'without': ['Wir bei WhatsApp:  0160 - 24 24 24 0 ', 'Snapchat und Kölner Zoo verbünden sich beim Artenschutz Köln ', 'Horror-Unfall: Mädchen (11) von Lastwagen erfasst und eingeklemmt 8.427 '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['uelle Ratenkreditangebote von einer Vielzahl an Banken. In diesem Ratgeber finden Sie Rechenbeis', ' Wer den Autokauf außerdem nicht durch den Händler, sondern durch eine dritte Bank finanzieren lässt, kann als Barzahler auftreten und einen Rabatt aushandeln.', 'Die Drei-Wege-, Ballon- bzw. Vario-Finanzierung'],  # 3 segments
+    'without': ['Freundlich , sachlich und geduldig. Danke!', 'Der Verivox-Newsletter: immer bestens informiert! Mehr Informationen', 'in den Bereichen Energie, Telekommunikation, Versicherungen, Finanzen, '],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
-'d81de0119fde48b098dd585f495f3425.html': {
-    'file': 'd81de0119fde48b098dd585f495f3425.html',
+    'https://fincompare.de/firmenwagen-leasing-oder-finanzierung': {
+    'file': '',  # stays empty until download
+    'author': 'Martin Junker',
+    'title': 'Firmenwagen: Leasing oder Finanzierung?',
+    'date': '2019-10-07',
+    'description': 'Leasen oder Finanzieren eines Firmenwagens - Erfahren Sie die Besonderheiten sowie die Vor- und Nachteile ✔ für Ihr Unternehmen!',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': [' ein Unternehmen? In diesem Artikel stellen wir die wichtigsten Punkte und vor allem die steuerlichen Aspekte einer Firmenwagen-Finanzierung sowie eines Firmenwagen-Leasings gegenüber.', 'ko beim Restwertleasing besteht, ist die Höhe der Monatsraten dementsprechend niedriger als beim Kilometerleasing. Falls der Restwe', 'Kann nicht steuerlich geltend gemacht werden'],  # 3 segments
+    'without': ['Umsatzsteuererstattung bei Leasing und Mietkauf?', 'Nutzen Sie FinCompare als Wettbewerbsvorteil', 'ität der Beratung, Aktualität, vielfältige Suchoptionen, Transparenz, Übersichtlichkeit, Datenschutz.'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+    'https://www.giromatch.com/online-kredit/1000-euro-kredit': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'EK-Einsatz, weil Mann droht, seine Ex-Frau umzubringen',
-    'date': '2019-10-19',
-    'description': 'Wegen Morddrohung: Ein Spezialeinsatzkommando (SEK) der Polizei stürmte am Freitag einen Schnellimbiss in Schweinfurt (Unterfranken).',
-    'categories': ['Polizeimeldungen - aktuelle Polizei Nachrichten aus Deutschland'],
-    'tags': [],
-    'with': ['ddrohung: Ein Spezialeinsatzkommando (SEK) der Polizei stürmte am Freitag einen Schnellimbiss in Schwein', 'wischenzeitlich hatte die Familie auch die Polizei über die Morddrohung des 60-Jährigen informiert. ', ' den Mann aus Schweinfurt wurde eine Ermittlungsverfahrne wegen Bedrohung eingeleitet.'],  # 3 segments
-    'without': ['WILDGEWORDENER STIER BÜXT AUS UND RAMMT STREIFENWAGEN ', 'Mehr zum Thema:', 'Flucht aufs Dach: Dramatische Rettung in Sozialunterkunft! 1.054 '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d0083e90f4c04520b9b9e00dfd67c7b9.html': {
-    'file': 'd0083e90f4c04520b9b9e00dfd67c7b9.html',
-    'author': '	Dennis Kochinky',
-    'title': 'Bundesliga: Frankfurt - Leverkusen live sehen!',
-    'date': '2019-10-19',
-    'description': 'Eintracht Frankfurt und Bayer Leverkusen eröffnen am 18. Oktober 2019 den achten Bundesliga-Spieltag. So sehen Sie die Partie live im Stream.',
+    'title': '1000 Euro Kredit',
+    'date': '',
+    'description': '1000 Euro Kredit von GIROMATCH ✓ Günstig & unkompliziert ✓ Auszahlung direkt aufs Konto ✓ 100% Unverbindlich ➤ Jetzt 1000 Euro Kredit sichern ',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['ankfurt und Bayer Leverkusen eröffnen am 18. Oktober 2019 den achten', ' anderes Spiel als in der letzten Rückrunde. Gegen Eintracht Frankfurt braucht man immer sehr viel Energie, sie sind sehr gradlinig und aggressiv.“ Zum Personal: Bei den Gästen fehlen vermutli', 'der Bundesliga steht der achte Spieltag an. Im Freitagsspiel empfängt der Neunte (Eintracht Frankfurt) den Si'],  # 3 segments
-    'without': ['Alternative: Radio und Ticker', 'sungen und kurze Einblendungen gibt es beim ARD-Hörfunk. Kein Bild, kein Ton und trotzdem bestens informier', 'Tipp: Die Sport-App von BILD und SPORT BIL'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['e Überbrückung bis zum nächsten Gehaltseingang oder gar ein Kurzurlaub auf den Malediven? Fragen Sie noch heute den Kredit an und Sie haben bestenfalls morgen 1000 Euro sofort auf dem Konto! ', 'Grundeinkommen bzw. keine Überschuldung', 'is bzw. Reisepass) für die Online-Identifikation und ggf. 4) Onlinebanking für Nachweis der Kontoauszüge. Durch die geringe Summe ist der 1000 Euro Kredit mit Expressüberweisung auch als Blitzkredit auszahlbar.'],  # 3 segments
+    'without': ['info@giromatch.com ', 'Ausgewählte Kreditprodukte', 'Bewerten Sie dieses Produkt'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
 },
-'d83db914dd274fbc904bf406c6af6dc6.html': {
-    'file': 'd83db914dd274fbc904bf406c6af6dc6.html',
-    'author': 'Björn Finke und Alexander Mühlauer',
-    'title': 'Was der Brexit für EU-Bürger und Unternehmen bedeutet',
-    'date': '2019-10-19',
-    'description': 'Sollte Großbritannien die Europäische Union nun tatsächlich mit einem Deal am 1. November verlassen, würde sich zunächst nicht viel ändern.',
-    'categories': [],
-    'tags': [' Brexit', 'Politik', 'Großbritannien'],
-    'with': ['erlassen, würde sich zunächst nicht viel ändern. Ein spürbarer Wandel käme erst später.', '2020, kann aber um bis zu zwei Jahre verlängert werden. Größter Unterschied ist, dass die britische', 'n. Bis etwa der Handelsvertrag zwischen der EU und Kanada (Ceta) fertig war, dauerte'],  # 3 segments
-    'without': ['Flipboard', 'Mehr zum Thema ', 'Verlagsangebote'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d84eff54a4264fe3b79c77acb168638c.html': {
-    'file': 'd84eff54a4264fe3b79c77acb168638c.html',
-    'author': 'textOmatic',
-    'title': 'Aetna nahezu konstant',
-    'date': '2019-10-19',
-    'description': 'Ohne große Bewegung zeigte sich die Aktie des Versicherungskonzern Aetna. Der Wert notierte bei Handelsende mit 212,70 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['cherungskonzern 70 Cent im Vergleich zum Schlusswert von 212,00 Euro des Vortages und machte ', '.1970 erreicht worden. Das 52-Wochen-Tief stammt vom 01.01.1970 und beträgt 166,89 Euro', 'handelt. Zu diesem Zeitpunkt waren am Vortag 11.862.705 Papiere im Wert von 2,1 Millionen Euro gehandelt worden.'],  # 3 segments
-    'without': ['op-Anlageempfehlungen zu Aktien wie Aetna Inc. & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'Mobile-App: Börse aktuell', 'Meistgelesen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d086c2232b4947feb93eddb6e4209b0f.html': {
-    'file': 'd086c2232b4947feb93eddb6e4209b0f.html',
+    'https://www.financescout24.de/kredit/autokredit': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Bayern Horror-Unfall: Fahrer verbrennt in Milchtransporter ',
-    'date': '2019-10-19',
-    'description': 'Schrecklicher Unfall in Niederbayern: Ein Milchtransporter kommt von der Straße ab, prallt gegen einen Baum und gerät in Brand. Für den Fahrer kommt jede Hilfe zu spät.',
-    'categories': ['Panorama'],
-    'tags': [],
-    'with': ['chrecklicher Unfall in Niederbayern: Ein Milchtransporter kommt von der Straße ab, prallt gegen einen Baum und gerät in Brand. Für den Fahrer kommt jede Hilfe zu spät.', ' Baum", sagte ein Polizeisprecher. Dabei sei die Sattelzugmaschine in Brand geraten. Der Fahrer oder die Fahrerin konnte sich nicht rechtzeitig befreien und', 'nhänger beim Umkippen streifte, wurde leicht verletzt. Bei dem Unfall gelangten Öl oder Diesel in die Erde. Das Wasserwirtschaftsamt wurde informiert'],  # 3 segments
-    'without': ['Startseite', 'Eine Frau aus San Diego ist obdachlos und lebt in ihrem Auto. Aber nicht allein, sondern mit 320 Ratten. Wie es dazu kam und wie ihr jetzt geholfen wird.', '© Verlagsgesellschaft Madsack GmbH & Co. KG'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d88a9bb8a13642cdac9c7d88800328a5.html': {
-    'file': 'd88a9bb8a13642cdac9c7d88800328a5.html',
-    'author': 'textOmatic',
-    'title': 'Aetna mit wenig Bewegung',
-    'date': '2019-10-19',
-    'description': 'Die Aktie des Versicherungskonzern Aetna zeigte wenig Änderung. Die Aktie notierte bei Börsenschluss mit 212,70 Euro.',
+    'title': 'Jetzt günstigen Autokredit finden',
+    'date': '',
+    'description': 'Jeder zweite Neuwagen wird mit Hilfe eines Kredits gekauft. Vergleichen Sie Jetzt bequem online, unverbindlich und schufa-neutral günstige Autokredite.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['nzern Aetna zeigte wenig Änderung. Die Aktie notierte bei Börsenschluss mit 212,70 Euro.', 'tuellen Kurs), das 52-Wochen-Tief wurde mit 166,89 Euro am 01.01.1970 verzeichnet.', 'eitpunkt waren am Vortag 11.862.705 Papiere im Wert von 2,1 Millionen Euro '],  # 3 segments
-    'without': ['etna Inc. & Co. bekommen Sie von den Bernecker-Experten. (Partnerangebot)', 'ernen Sie hier die Gewinner-Aktien 2019 kennen und profitieren Sie von der Expertise der Bernecker Profis', ' Bitte loggen Sie sich vor dem Kommentieren ein'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['Autobanken fordern oft eine Vollkasko-Versicherung für das Fahrzeug. Diese bringt weitere Kosten mit sich.', 'nötigt werden, hat der Finanzierer größere Chancen auf eine Vergütung ohne Abschläge, etwa bedingt durch Vorschäden ', ' Wieso sind Autobank-Kredite trotz niedriger Zinsen oft teurer? '],  # 3 segments
+    'without': ['Der Marktführer: Die Nr. 1 rund um Immobilien ', '© Copyright 2000 - 2020 by FinanceScout24 ', 'Aktuelle News'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
-'d88be1e5fd7f4029b1e19bb226f811c9.html': {
-    'file': 'd88be1e5fd7f4029b1e19bb226f811c9.html',
-    'author': 'Max Wochinger',
-    'title': 'Seltenes Interview: Greta Thunberg gesteht schwere Depressionen',
-    'date': '2019-10-19',
-    'description': 'index,follow',
+    'https://web.archive.org/web/20140226054445/http://www.time4talks.com/2013/08/07/weitere-digitalisierung-der-schweizer-kinos/': {
+    'file': '',  # stays empty until download
+    'author': 'R. R.',
+    'title': 'Weitere Digitalisierung der Schweizer Kinos',
+    'date': '2013-08-07',
+    'description': 'Digitalisierung der Schweizer Kinos',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Greta Thunberg: Das sagt sie über ihr Treffen mit Angela Merkel', 'nm. d. Red.) hat ein wenig geredet und natürlich gefragt, ob es in Ordnung wäre, wenn s', 'a mich weckte und sagte: Es hat heute Nacht so viel geschneit, dass du nicht zur Schule musst. Und übrigens, Trump hat gewonnen", so Thunberg. Ihr erster Gedank'],  # 3 segments
-    'without': ['Auch interessant', 'Meistgelesene Artikel', ' aktuell in den Norden Syriens. Dort ist die Türkei einmarschiert. Im schlimmsten Fall droht der NATO-Bündnisfall, bei dem Deutschland in den …'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['er stark investieren müssen. Die Umstellung auf Hightech-Beamer hat nämlich kein Kinosterben verursacht, sondern das Geschä', 'hier leistet das Bundesamt für Kultur finanzielle Hilfe. Das BAK will mit diesen Beiträgen die Digitalisierung in den', 'Cinema sind inzwischen 514 Kinosäle umgerüstet. Das entspricht 94 Prozent aller Säle. Auf 270 Leinwänden sind auch 3-D-Filme zu sehen.'],  # 3 segments
+    'without': ['Bisher keine Kommentare', 'eMail (erforderlich) (wird nicht veröffentlicht)', 'eMail (erforderlich) (wird nicht veröffentlicht)'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
 },
-'d88c735e94f04b17944f2e37cafbf7f2.html': {
-    'file': 'd88c735e94f04b17944f2e37cafbf7f2.html',
-    'author': 'krk/ag',
-    'title': 'Verfassungsschutz warnt vor linksextremer Unterwanderung',
-    'date': '2019-10-18',
-    'description': 'Der Hamburger Verfassungsschutzchef Torsten Voß hat vor einer Unterwanderung des bürgerlichen Milieus durch Linksextremisten gewarnt. So könnten diese „über populäre Themen quasi wie ein schleichendes Gift in die demokratische Gesellschaft eindringen“, betonte er. ',
-    'categories': [],
-    'tags': [],
-    'with': ['rch Linksextremisten gewarnt. Linksextremisten mißbrauchten „gesellschaftlich breit akzepti', 'in die demokratische Gesellschaft eindringen“, betonte Voß. Das sei eine nicht zu unterschätzende Herausforderung für unsere ', 'zbereitschaft bekannt ist, versucht laut Verfassungsschutz seit Jahren, durch „gezielte taktisch-'],  # 3 segments
-    'without': ['Meistgelesen', 'Meistkommentiert', 'Wenn Ihnen der Artikel gefallen hat: Unterstützen Sie die JF mit einer Spende.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'https://web.archive.org/web/20181206101316/https://swap-stop.org/de/filmswap/zusammenarbeit-shuji-walter-april-2018-i/': {
+    'file': '',  # stays empty until download
+    'author': ' Walter von Aachen',
+    'title': 'Zusammenarbeit Shuji ./. Walter April 2018 I',
+    'date': '2018-04-11',
+    'description': 'Standorte: Shuji: Japan. Walter: Deutschland. Filmmaterial: Fuji X-TRA 400. Kameras: Shuji: Widelux. Walter: PENTAX Z-1 p. Belichtungsfolge: Shuji. Walter.',  # in HTML source
+    'categories': ['Filmswap', 'Shuji-Walter'],
+    'tags': [' Deutschland', 'Doppelbelichtung', 'Filmswap', 'Fujifilm X-TRA 400', 'Japan', 'PENTAX Z-1p', 'Shuji', 'Walter', 'zusammenarbeit'],
+    'with': ['Fuji X-TRA 400.', 'Walter: PENTAX Z-1 p.', 'Belichtungsfolge'],  # 3 segments
+    'without': ['Gefällt mir Wird geladen...', 'Teilen mit:', '(c) 2016 - 2018 swap-stop.org '],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
 },
-'d89ab54308be4c87a7991c37be43efc2.html': {
-    'file': 'd89ab54308be4c87a7991c37be43efc2.html',
-    'author': ' Berthold_',
-    'title': 'Burger King App: 20 King Nuggets für 4€ (inkl. 3 Dips)',
-    'date': '2019-10-19',
-    'description': 'Mit der Burger King App bekommt ihr heute 20 King Nuggets für 4€. Dazu gibt es 3 Dips. Im Weihnachtscountdown bei McDonalds bekommt ihr übrigens ebenfalls',
-    'categories': [],
-    'tags': [],
-    'with': ['Mit der Burger King App bekommt ihr heute 20 King Nuggets für 4€. Dazu gibt es 3 Dips. ', 'bei McDonalds bekommt ihr übrigens ebenfalls 20 Nuggets + Gratis Socken für 4€. Wer ab', 'ndigung-mc-donalds-weihnachtscountdown-vom-17-10-bis-13-11-z-b-big-mac-fuer-1e/'],  # 3 segments
-    'without': ['Kostenlos zum Newsletter anmelden und ', ' Kommentar verfassen ', 'Top Partnershops'],  # 3 segments
-    'comments': ['ressant, wie Burger King versucht mitz', 'Guter Deal', ' Nuggets bei MäcDoof probiert hab, weiß ich, '],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d89c5d0876a044ab978a32114a86d2ac.html': {
-    'file': 'd89c5d0876a044ab978a32114a86d2ac.html',
+    'https://web.archive.org/web/20160401095740/http://www.welpenkaufen24.de/': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Liveblog zur Großdemo in Kölner Innenstadt: RWE-Problemfans attackieren Demo-Teilnehmer ',
-    'date': '2019-10-19',
-    'description': 'Zwei linke Bündnisse haben zu einer Demo gegen die türkische Millitär-Offensive in Nordsyrien aufgerufen.',
+    'title': 'Welpen kaufen – Tipps zu jeder Hunderasse',
+    'date': '',
+    'description': 'Blog zum Thema Welpen-Kaufen. Tipps zum Welpenkauf in jeder Hunderasse. Augen auf beim Welpen-Kauf!',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['er Kölner Innenstadt eine Großdemonstration gegen die türkische Militär-Offensive in Nordsyrien stattgefunden. Zu dem Protest  haben zwei linke Bün', 'achmittag ein Punktspiel bei der SV Bergisch Gladbach (2:1) bestritten. Auf der Rückreise nach Essen kam es zum Aufeinandertreffen mit den kurdischen Demonstrationsteilnehmern. Über etwaige Festnahmen oder Verletzte lagen zunächst keine Informationen vor.', 'ft die Rednerin auf dem Demonstrationswagen. Das Projekt eines freien kurdischen Gebiets sei eng mit den Rechten der Frauen verbunden, sagt sie. Auf vielen Tra'],  # 3 segments
-    'without': ['URL zum Kopieren', 'Jeckes.net', 'DuMont Rheinland'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['dass Bekannte bei unseriösen Züchtern oder gar Vermehrern Welpen kaufen und', ' nie aus und bin für Bereicherungen durch Experten dankbar. Beschimpfungen akzeptiere ich aber nicht unter den Kommentaren.', 'Stich gelassen wird und nie mehr etwas von ihm hört, möchte ich in diesem Blog den ein oder a'],  # 3 segments
+    'without': ['Hunderassen', 'Welcher Hund passt zu mir?', 'Deine E-Mail-Adresse wird nicht veröffentlicht. Erforderliche Felder sind markiert *'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
-'d90b19386e2b48559082547016cbe5ec.html': {
-    'file': 'd90b19386e2b48559082547016cbe5ec.html',
-    'author': 'dpa/lno',
-    'title': 'Verhärtete Fronten nach Tumulten bei Luckes Vorlesung',
-    'date': '2019-10-19',
-    'description': 'Hamburg (dpa/lno) &#8211; Trotz eines Gespräches zwischen AfD-Mitbegründer Bernd Lucke und der Studierendenvertretung AStA der Universität Hamburg bleiben die Fronten verhärtet. Der AStA (Allgemeiner Studierendenausschuss) verkläre die Vorfälle, sagte Lucke am Samstag der Deutschen Presse-Agentur in Hamburg. Der AStA entziehe sich seiner Verantwortung, indem er in grotesker Weise die Opfer zu Tätern mache, kritisierte Lucke weiter. Ein Gespräch nur mit ... Mehr lesen',
-    'categories': [],
-    'tags': [],
-    'with': ['verhärtet. Der AStA (Allgemeiner Studierendenausschuss) verkläre die Vorfälle', 'utz benutzt. Der AStA betonte, nicht zu den Störungen im Hörsaal aufgerufen zu haben. Man habe vorher lediglich ', '. Dabei sei Einvernehmen über die Tatsachen der Ereignisse des Vortags erzielt worden, hieß es anschließend.'],  # 3 segments
-    'without': ['MEISTGEKLICKTE BEITRÄGE', 'udel-Hype: Vom Oma-Schoßhund zurück zum Trend-Hund', 'Newsticker'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d90cd1a35f384d73b53e18cf3185be24.html': {
-    'file': 'd90cd1a35f384d73b53e18cf3185be24.html',
-    'author': 'textOmatic',
-    'title': 'Kraft Heinz Co mit Kursgewinnen',
-    'date': '2019-10-19',
-    'description': 'Die Aktie des Lebensmittelkonzern Kraft Heinz Co gehörte mit einer Steigerung von 0,7 Prozent zu den Erfolgreichen des Tages. Der Wert notierte bei Börsenschluss mit 25,15 Euro.',
-    'categories': [],
-    'tags': [],
-    'with': ['aben keinen richtigen Grund zur Freude. Bisher kann der Wert unwesentlich zulegen. Bei Handelssc', 'tpapier am Freitag in den Handel gegangen und erreichte zwischenzeitlich ein Tageshoch von 25', 'msatz mit der Aktie auf 314,6 Tausend Euro und es wurden 12.567 Stück gehandelt. Am vorausgehenden Handelstag wurden zur gleichen Zeit 55.464 Papiere i'],  # 3 segments
-    'without': ['Börsenbriefe von Finanzen100', 'ie Gewinner-Aktien 2019 kennen und profitieren Sie von der Expertise der Bernecker Profis', 'Meistgelesen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
-},
-'d90dd9e87f7c4f4a805274679a198843.html': {
-    'file': 'd90dd9e87f7c4f4a805274679a198843.html',
+    'https://web.archive.org/web/20160330101229/http://muffinrezept.net/muffin-grundrezept': {
+    'file': '',  # stays empty until download
     'author': '',
-    'title': 'Horror-Fund in der Wüste: Instagram-Model getötet und einbetoniert',
-    'date': '2019-10-19',
-    'description': 'Ermittler sind sich sicher: Instagram-Model Esmeralda Merlot (24) wurde auf grausame Art und Weise umgebracht.',
+    'title': 'Muffin Grundrezept',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': ['Grundrezept', 'Rezepte'],
+    'tags': [],
+    'with': [' Kreativität keine Grenzen gesetzt sind. Ob Schokostückchen, Kokosraspeln, Kakaopulver, Erdbeeren, Kirschen oder anderes Obst ist hierbei völlig unerheblich. Erlaubt ist alles, was gefällt und schmeckt!', 'en bei 180 Grad auf mittlerer Schiene zwischen 15 und 30 Minuten backen (abhängig von Größe der Muffins und Art der zusätzlichen ', '15 – 30 Min'],  # 3 segments
+    'without': ['Fluffige Himbeermuffins', 'Kommentieren', 'Bildquellen'],  # 3 segments
+    'comments': ['Warum 2mal Zucker ?:-)', 'te man auch Lebensmittelfarbe hinzufügen?', 'eim 2. Mal waren sie so schwammig… Könnt ihr mir sagen, ob die Silikonform daran schuld war?'],  # 0 or 3 segments
+    'license': 'CC-BY-SA',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://web.archive.org/web/20160218174457/http://bewegliche-lettern.de/2010/05/literatur-und-animated-typography/': {
+    'file': '',  # stays empty until download
+    'author': '',
+    'title': 'Literatur und Animated Typography',
+    'date': '2010-05-19',
+    'description': 'bewegliche lettern ist das private blog von Thomas Rohde über Literatur und die Buchindustrie im Medienwandel.',  # in HTML source
+    'categories': ['Lesenswert', 'Literatur', 'Medienwandel'],
+    'tags': ['Animated', 'Typography', 'iPad', 'Vook'],
+    'with': ['tern”. Ich schlage darin vor, in der Remix-Kunst der Animated Typography ein Beispiel dafür zu sehen, wie Literatur von den neuen digitalen Möglichkeiten ästhetisch und expressiv', ' eine entscheidende – und der Literatur vielleicht besonders gerechte – Möglichkeit bis', 'Neueste Artikel'],  # 3 segments
+    'without': ['Lesenswert: Interview über Google Editions in Deutschland', '', ''],  # 3 segments
+    'comments': [],
+    'license': 'CC BY-NC-SA 3.0 DE',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://web.archive.org/web/20150721045344/http://rent-a-pastor.com/2015/05/18/neue-hochzeitslokation-in-roedermark-hessen-geheimtipp/': {
+    'file': '',  # stays empty until download
+    'author': 'Samuel Diekmann ',
+    'title': ' Neue Hochzeitslokation in Rödermark/ Hessen – Geheimtipp',
+    'date': '',
+    'description': 'Blog über freie und kirchliche Trauungen, Hochzeiten und Eheschließungen. Alles rund ums Heiraten, Hochzeitsfeiern, Rituale und Zeremonien.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['agram-Model Esmeralda Merlot (24) wurde auf grausame Art und Weise umgebracht.', 'zei in der Wüste von Nevada die Leiche einer Frau in einer mit Beton gefüllten Holzkiste. Bei der Toten soll es sich um das 24-jährige Model handeln.', 'Er soll dem Model vor der Tat Drogen verabreicht haben. '],  # 3 segments
-    'without': ['hatsApp:  0160 - 24 24 24 0 ', 'ieses Mega-Event wird zur neuen TOP-Adresse für Gaming-Fans 1.514 Anzeige', 'egner Paderborn: Einsatz von zwei Spielern auf der Kippe Köln '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',
-    'region': 'DE',
+    'with': ['in ich am Parkhotel vorbei gefahren und habe über das weiträumige Gelände gestaunt. Jetzt war ich also als Hochzeitsredner aus professionel', 'uten von der Autobahn A3 entfernt), sondern hat auch einen unglaublichen 5000 m2 Park mit See und Springbrunnen – wirklich traumhaft schön.', 'Redner in der Region findest Du zB. hier:'],  # 3 segments
+    'without': ['Kommentar verfassen ', 'Melden Sie sich für unseren Newsletter an', 'Di-Fr 10-18:00 Uhr. '],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://web.archive.org/web/20171008220355/http://juergenheitmann.com/essays/2017/01/aggression-fotografie/': {
+    'file': '',  # stays empty until download
+    'author': 'Jürgen Heitmann',
+    'title': 'Aggression Fotografie',
+    'date': '2017-01-26',
+    'description': 'Fotografie ein Akt der Aggression? Fotos schießen, Schnappschuss, Fotoshooting ... Das geschossene Foto als Trophäe. Das klingt schon recht aggressiv, nach jage…',  # in HTML source
+    'categories': [],
+    'tags': ['aggression', 'kontemplativ'],
+    'with': ['ession implicit in every use of the camera" oder "To photograph people is to violate them". ', 'rafie in vergangenen Kulturen und unserer aktuellen Gesellschaft (70er Jahre), "On ', 'annten, kontemplativen Fotografie könnte es durchaus interessant sein, mal ihren Sprachgebrauch zu analysieren und zu schauen, welche alternativen Ausdrücke die empfangenden Haltung för'],  # 3 segments
+    'without': ['View all essays by tag ', 'View all essays by month ', 'Mindfulness und kontemplative Fotografie'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://web.archive.org/web/20080731095558/http://www.dimido.de/2008/07/29/was-ist-virales-marketing/': {
+    'file': '',  # stays empty until download
+    'author': 'Martin Weber',
+    'title': 'Was ist Virales Marketing?',
+    'date': '',
+    'description': 'Was ist Virales Marketing?',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['s Marketing halten, habe aber keine Lust dazu, dies zu machen, um nur zu zeigen, was ich mich angelesen habe. Um doch euch eine Erklärung zu geben, verweise ich auf ein kleines Video, was ich bei Youtube wiedermal gefunden habe. Es zeigt ', 'n Beitrag aus der Sendung “Nano”, die nicht nur auf 3Sat zu sehen ist, was unter Virales Marketing zu verstehen ist und wie wir unbewusst dadurch beeinflusst werden:', 'von Virales Marketing, habe ich festgestellt. Viel mehr '],  # 3 segments
+    'without': ['besserwisser: Stecker ziehen für ne neue IP bringt nix. Downloadgeschwindi...', 'übernimmt Cherry Corporation Microsoft’s Trick für XP-User: Windows Mojave', ' E-Mail (wird benötigt und nicht veröffentlicht)'],  # 3 segments
+    'comments': [],
+    'license': 'CC BY-NC-SA 2.0 DE',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+    'https://web.archive.org/web/20140109030403/http://nesselsetzer.wordpress.com/2013/12/09/rebloggt-von-gnaddrig-ad-libitum-antipoden-die-wahrheit/': {
+    'file': '',  # stays empty until download
+    'author': 'Nesselsetzer',
+    'title': 'Rebloggt von gnaddrig ad libitum: Antipoden: Die Wahrheit ',
+    'date': '2013-12-09',
+    'description': 'Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie zu einer offensichtlich aus dem Nichts aufgetauchten Schuhsohle soll heute als lehrreiches Stück und Vorbild für die Entwi...',  # in HTML source
+    'categories': ['Just For Fun', 'Rebloggt'],
+    'tags': ['Antipoden', 'Hirngespinst', 'Kasparei', 'Theorie', 'Weltwissen'],
+    'with': ['Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie zu einer offensichtlich aus dem Nichts aufgetauchte', 'lehrte erhitzte Debatten darum lieferten, ob auf der anderen Seite der Erde überhaupt Menschen leben können. Die Antipoden würden ja, glaubte man, mit dem Kopf nach unten da herumlaufen müssen und würde', ' musste so sein, weil wir hier ja nachweislich mit den Füßen nach unten und dem Kopf nach oben herumlaufen und immer in Richtung Erde fallen. (weiter bei gnaddrig ad libitum)'],  # 3 segments
+    'without': ['Die dümmste aller Verschwörungstheorien: Chemtrails', 'Gefällt mir Lade...', 'Ähnliche Beiträge'],  # 3 segments
+    'comments': ['Schöne Einleitung', ' Ich verbringe meine Tage normalerweise nicht damit, auf die ', 'Same her'],  # 0 or 3 segments
+    'license': '(',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://web.archive.org/web/20150206075900/http://www.steinzeitwissen.de/artefakttypen/werkzeuge-des-neandertalers-und-des-modernen-menschen': {
+    'file': '',  # stays empty until download
+    'author': '',
+    'title': 'Werkzeuge des Neandertalers und des Modernen Menschen',
+    'date': '',
+    'description': 'Werkzeuge des Neandertalers und des Modernen Menschen',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['erk­zeug­ty­pen und ihre Lauf­zei­ten be­han­delt.', 'uge und sah sich of­fen­bar nicht ver­an­lasst, die Kern­werk­zeuge zu übernehmen.', 'm Alt­pa­läo­li­thi­kum bis in die Neu­zeit, Tü­bin­gen 2012, Kerns Ver­lag, S. 426'],  # 3 segments
+    'without': ['Proudly powered by WordPress.', 'Überblick + Schülerhilfe', 'Artikel Mittelpaläolithikum'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://web.archive.org/web/20160820205919/http://www.medialepfade.de/2016/01/medienpaedagogin-in-muenchen-gesucht/': {
+    'file': '',  # stays empty until download
+    'author': 'Danilo Dietsch',
+    'title': 'MedienpädagogIn in München gesucht',
+    'date': '2016-01-15',
+    'description': 'Wir suchen eine MedienpädagogIn in München in Teilzeitanstellung (60%) “medialepfade.de – Agentur für Medienbildung” ist eine Agentur im Bereich der Medienbildung und Medienpädagogik. Zu unseren Aktivitäten gehören die Konzeption und Durchführung von Aktionen, Projekten und Fortbildungen in den Bereichen Mobiles Lernen, Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpunkt liegt auf der …',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpun', 'Professionalität und Souveränität im Umgang mit Partnern und Förderern', 'ngabe des möglichen Eintrittstermins bis zum 01. Februar 2016 an '],  # 3 segments
+    'without': ['lauffähiges Wifi, angetrieben durch ein Fahrrad, um zum Umweltschutz zu animieren @jhacktost https://t.co/8elCKJjm3o', 'Blog-Themen:', 'Möchten Sie unseren Newsletter erhalten?'],  # 3 segments
+    'comments': [],
+    'license': 'CC BY-SA 3.0 DE',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+    'http://www.modabot.de/paris-haute-couture-ss14-serkan-cura': {
+    'file': '',  # stays empty until download
+    'author': 'Barbara Russ',
+    'title': 'Paris Haute Couture SS14: Serkan Cura',
+    'date': '2014-01-27',
+    'description': '',  # in HTML source
+    'categories': ['Event', 'Fashion'],
+    'tags': ['Haute Couture', 'Paris', 'Serkan Cura', 'SS14'],
+    'with': ['Herpen, die diesmal leider keine Präsentation zur Pariser Couture Woche gab, als die  Prinzessin der ', 'tlich eher Kunstwerke. Eben so wie Haute Couture eigentlich sein soll: Die Krone der Mode-Schöpfu', ''],  # 3 segments
+    'without': ['t ist nicht verantwortlich für de', 'Weiterlesen', 'na Wintour Ausstel'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://www.vnv-business.ch/comment-proteger-son-local-commercial/': {
+    'file': '',  # stays empty until download
+    'author': '',
+    'title': 'comment protéger son local commercial ?',
+    'date': '2020-02-18',
+    'description': 'Sécuriser son local commercial est indispensable. En dehors des biens qu&rsquo;il contient, les différentes personnes à l&rsquo;intérieur du commerce doivent également être en sécurité. Dans un contexte où l&rsquo;insécurité va de plus en plus grandissant, il s&rsquo;avère donc nécessaire que certains outils soient utilisés pour assurer la sécurité du local commercial. De plus, un local &hellip;',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['ntient, les différentes personnes à l’intérieur du commerce doivent également être en sécurité.', 'alintentionnés. Le fait de savoir qu’ils ont la possibilité de déclencher en tout temps une alarme offre un ', 'es innovations en matière de technologie sont vos meilleurs alliés pour protéger votre local commercial.'],  # 3 segments
+    'without': ['et de reconnaissance du commerce équitable, ', 'Thème WordPress pour blogs vnv-business.ch le portail business', 'Les archives'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://www.piratenpartei-hessen.de/blog/2020/03/31/solidaritaet-nachbarschaftshilfe/': {
+    'file': '',  # stays empty until download
+    'author': 'Martina Scharmann',
+    'title': 'Solidarität = Nachbarschaftshilfe',
+    'date': '2020-03-31',
+    'description': 'Piraten rufen zur Einhaltung der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf! Die Corona-Pandemie breitet sich aus. Ungeachtet der zahlreichen inzwischen eingeleiteten Maßnahmen steigt die&hellip;',  # in HTML source
+    'categories': [],
+    'tags': ['Corona', 'Covid-19', 'Covid19', 'Hilfe', 'Piraten', 'Piratenpartei', 'RKI', 'Robert-Koch-Institut'],
+    'with': [' anbieten und ihren Beitrag leisten, um die weitere Ausdehnung des Virus einzudämmen.', 'Wohle der Allgemeinheit riskieren. Auch die zahlreichen privaten Initiativen zur gegens', 'ng der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf'],  # 3 segments
+    'without': ['0 Piratenpartei Hes', 'Bundesschiedsgericht', 'vKV Kassel Stadt-Land-Web'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+    'https://gormulus.wordpress.com/2012/12/11/das-wird-man-ja-wohl-noch-sagen-durfen/': {
+    'file': '',  # stays empty until download
+    'author': '',
+    'title': '„Das wird man ja wohl noch sagen dürfen!“',
+    'date': '2012-12-11',
+    'description': 'Dieser Artikel folgt auf einen betont sachlich gehaltenen Beitrag über die Diskussionsunkultur beim Thema israelisch-palästinensischer Konflikt. Der @tarzun würde sagen, dass wir mal wieder reden m…',  # in HTML source
+    'categories': ['Inland', 'Politik', 'Rant'],
+    'tags': ['Antisemitismus'],
+    'with': ['uszudrücken, leicht beratungsresistent erscheint. Und ja, es handelt sich hier um ein Mitglied der Piratenpartei, nicht um eine außenstehende Person, ', 'igen. Ein regelrechter Hammer ist dann die Gleichsetzung von Gaza mit einem KZ. Glaubt ihr nicht? Ist aber vorgekommen.', 'rfallen, sobald ihre abstruse Gedankenwelt etwas näher beleuchtet wird: sie verfallen in die Opferrolle.'],  # 3 segments
+    'without': ['Mielke 2.0', 'icken des JMStV gewidmet.', 'Updates, ich brauch‘ Updates!'],  # 3 segments
+    'comments': ['ie gemeint sind. Vielmehr soll jede kritische Stimme der Politik im Nahen und Mittleren Osten zum Schweig', 'mir einen offen Brief mit Unterschriftenliste gewuenscht.', ' offenem Antisemitismus zu garnieren und das ganze Paket unter dem Deckmäntelchen der Mei'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CC BY-NC-SA 3.0 DE',  # if obvious: DE, CH, AT
+},
+    'http://diy-expeditions.com/expeditionen-planen/expeditionen-in-uebersee/': {
+    'file': '',  # stays empty until download
+    'author': '',
+    'title': 'Expeditionen in Übersee',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['n die eine wichtige Info? Fragen Sie bei uns nach… Wir gehen gerne mit Ihnen Ihr Expeditionskonzept durch.', 'önlich. Falls Sie sich für ein vorgeschlagenes Reise-Paket der auf unserer News-Seite vertretenen Tour-Veranstalter entscheiden, so konta', 'ostenlos. Sie bezahlen Ihren Guide, Transport, Unterkunft etc. vor Ort und direkt bei Ihrem von uns vermittelten Kontakt.'],  # 3 segments
+    'without': ['Fahrzeug samt Fahrer', 'Neuigkeiten aus unseren Destinationen', 'y-expeditions.com. All rights reserved'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://kleinegruenemonster.wordpress.com/2016/01/01/ein-entspannter-start-ins-neue-jahr-2016-be-happy/': {
+    'file': '',  # stays empty until download
+    'author': 'KleineGrüneMonster',
+    'title': 'Ein entspannter Start ins neue Jahr 2016 – be happy! Alles andere kann warten…',
+    'date': '2016-01-01',
+    'description': 'Das Wichtigste zuerst: Euch allen ein wunderschönes, neues Jahr 2016, voller Glück, Freude und Schabernack :) Ein neues Jahr beginnt. Auch wenn jedem Morgen ein Neuanfang innewohnt, so hat für mich…',  # in HTML source
+    'categories': ['Empfehlung', 'Plattformen', 'Schöne Dinge'],
+    'tags': ['Entspannung', 'Glück', 'Neues Jahr', 'Rituale, Wellness'],
+    'with': [' geht es um Themen wie Entspannung, Meditation und Wellness, aber auch Essen, Leben und Fitness. Einfach mal abschlaten und sich inspirieren lassen. Unter dem Slogan „10 minutes a day. 31 days. A brigther you.“ bekommt ihr im Januar je', ' mich Neujahr doch irgendwie immer etwas Magisches, Reinigendes. Man zieht Bilanz. Was hat das vergangene Jahr gebracht? ', 'te – Wer, verdammt noch mal, hat die 40 Stunden Arbeitswoche erfunden? Es bleibt so wenig Zeit für die anderen Dinge des '],  # 3 segments
+    'without': ['r unter Namensnennung bzw. Linksetzung. Danke. ', 'enachrichtigungen über neue Beiträge zu', ' Start ins neue Jahr 2016 – be '],  # 3 segments
+    'comments': ['r nochmal bewusst mache. Man denkt immer, es ist nicht viel passiert, aber wenn man es genau nimmt, dann tut sich doch immer einiges …. bei m'],  # 0 or 3 segments
+    'license': 'CC BY-NC 3.0 DE',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://www.markeich.de/kontakt/impressum-werbeagentur-soltau/': {
+    'file': '',  # stays empty until download
+    'author': '',
+    'title': 'Impressum',
+    'date': '',
+    'description': 'Impressum der Werbeagentur MARKE ICH in Soltau im Heidekreis. ',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['ngaben gemäß § 5 TMG', 'bieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtsw', 'rtlich für den Inhalt nach § 55 Abs. 2 RStV'],  # 3 segments
+    'without': ['Auszeichnungen', '© 2020 Agentur MARKE ICH ', 'Es gilt die Datenschutzerklärung. '],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+    'http://www.schlosswirtjuval.it/hof-geschichte/': {
+    'file': '',  # stays empty until download
+    'author': '',
+    'title': 'Zur Geschichte des „Oberortlhofs“',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [],
+    'tags': [],
+    'with': ['t aufblühte. Leider war dies nicht von langer Dauer, denn bereits 1581 sahen sich die Söhne Sinkmoser genötigt, die Burg wieder dem Landesfürsten auf zusenden. Dieser verlieh sie an die Grafen ', 'est Henry Shackleton. Den Möglichkeiten des Kommunikationszeitalters setzt er sein Unterwegssein als Fußgänger gegenüber und verzichtet auf Sauerstoffmasken und Satellitentelefon – ', 'n sich alle 6 bis 14-jährigen Kinder der Juvaler Höfe zum Unterricht. Die Lernerfolge hingen sehr v'],  # 3 segments
+    'without': ['Messner Mountain Museum Juval', '+39 389 1976362 info@schlosswirtjuval.it', 'Weingut & Hofbrennerei Unterortl'],  # 3 segments
+    'comments': [],
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
 },
 }

@@ -8,6 +8,8 @@ import re
 import time
 
 from lxml import etree, html
+#from lxml.html.clean import Cleaner
+#HTML_CLEANER = Cleaner()
 
 try:
     import cchardet as chardet
@@ -32,7 +34,10 @@ from trafilatura import extract
 ## TODO: time, best of 3
 
 from evaldata import EVAL_PAGES
-from trafilatura.core import baseline
+try:
+    from trafilatura.core import baseline
+except ImportError:
+    baseline = None
 from trafilatura.utils import sanitize
 
 # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -44,11 +49,36 @@ boilerpipe_extractor = extractors.ArticleExtractor()  # ArticleExtractor Default
 g = Goose()
 
 
-def load_document(filename):
+def trim(string):
+    '''Remove unnecessary spaces within a text string'''
+    if string is not None:
+        # delete newlines that are not related to punctuation or markup
+        # string = re.sub(r'(?<![p{P}>])\n', ' ', string)
+        # proper trimming
+        string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
+        string = string.strip()
+    return string
+
+
+def load_document_binary(filename):
     '''load mock page from samples'''
     mypath = os.path.join(TEST_DIR, 'cache', filename)
     if not os.path.isfile(mypath):
         mypath = os.path.join(TEST_DIR, 'eval', filename)
+    #if not os.path.isfile(mypath):
+    #    mypath = os.path.join(TEST_DIR, 'additional', filename)
+    with open(mypath, 'rb') as inputf:
+        htmlstring = inputf.read()
+    return htmlstring
+
+
+def load_document_string(filename):
+    '''load mock page from samples'''
+    mypath = os.path.join(TEST_DIR, 'cache', filename)
+    if not os.path.isfile(mypath):
+        mypath = os.path.join(TEST_DIR, 'eval', filename)
+    #if not os.path.isfile(mypath):
+    #    mypath = os.path.join(TEST_DIR, 'additional', filename)
     try:
         with open(mypath, 'r') as inputf:
             htmlstring = inputf.read()
@@ -68,22 +98,78 @@ def load_document(filename):
     return htmlstring
 
 
+def run_baseline_2(htmlstring):
+    '''run bare text extraction within lxml'''
+    # binary/string as input tweak
+    try:
+        tree = html.fromstring(htmlstring)
+    except ValueError:
+        tree = html.fromstring(htmlstring.encode('utf8'))
+    result = None
+    # try json-ld
+    for elem in tree.xpath('//script[@type="application/ld+json"]'):
+        if elem.text and '"articleBody":' in elem.text:
+            mymatch = re.search(r'"articleBody":"(.+?)","', elem.text)
+            if mymatch:
+                result = mymatch.group(1)
+                result = result.replace('\\"', '"')
+                # result = trim(result)
+                break
+    if result is not None:
+        return result
+    #results = set()
+    resultlist = list()
+    # iterate potentially relevant elements
+    for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q'): # 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+        #if element.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+        #    if not element.text or len(element.text) < 20:
+        #        continue
+        #    entry = element.text
+        #else:
+        entry = element.text_content()
+        #if entry not in results and len(entry) > 10:
+        resultlist.append(entry)
+        #results.add(entry)
+    # if nothing has been found
+    #if len(resultlist) < 1:
+    #    for element in tree.iter('b', 'em', 'i', 'strong'):
+    #        entry = element.text_content()
+    #        #if entry not in results: # and len(entry) > 15:
+    #        resultlist.append(entry)
+    #        #results.add(entry)
+    #if len(resultlist) == 0:
+    #    cleaned_tree = HTML_CLEANER.clean_html(tree)
+    #    for element in tree.iter('div'):
+    #        entry = element.text_content()
+            #if len(entry) > 15:
+    #        resultlist.append(entry)
+    #        #results.add(entry)
+    #print(len(resultlist))
+    result = '\n'.join(resultlist)
+    # result = sanitize(result)
+    # print(result)
+    return result
+
+
 def run_baseline(htmlstring):
     '''run bare text extraction within lxml'''
-    _, _, result = baseline(htmlstring)
+    if baseline is not None:
+        _, _, result = baseline(htmlstring)
+        return result
+    result = run_baseline_2(htmlstring)
     return result
 
 
 def run_trafilatura(htmlstring):
     '''run trafilatura (without fallback) on content'''
-    result = extract(htmlstring, no_fallback=True, include_comments=False, include_tables=True)
-    return result # sanitize(result)
+    result = extract(htmlstring, no_fallback=True, include_comments=False, include_tables=True, include_formatting=False)
+    return result
 
 
 def run_justext(htmlstring):
     '''try with the generic algorithm justext'''
     valid = list()
-    paragraphs = justext.justext(htmlstring, justext.get_stoplist("German"))
+    paragraphs = justext.justext(htmlstring, justext.get_stoplist("German")) , 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
             valid.append(paragraph.text)
@@ -93,8 +179,8 @@ def run_justext(htmlstring):
 
 def run_trafilatura_fallback(htmlstring):
     '''run trafilatura (with fallback) on content'''
-    result = extract(htmlstring, no_fallback=False, include_comments=False, include_tables=True)
-    return result # sanitize(result)
+    result = extract(htmlstring, no_fallback=False, include_comments=False, include_tables=True, include_formatting=False)
+    return result
 
 
 def run_goose(htmlstring):
@@ -191,10 +277,10 @@ def evaluate_result(result, item):
     false_positives = 0
     true_negatives = 0
     # report if problematic
-    if len(item['with']) == 0 or len(item['with']) > 5:
-        print(item)
-    if len(item['without']) == 0 or len(item['without']) > 5:
-        print(item)
+    if len(item['with']) == 0 or len(item['with']) > 6:
+        print('counter', item)
+    if len(item['without']) == 0 or len(item['without']) > 6:
+        print('counter', item)
     # internal report
     #if result is None:
     #    print('None', item['file'])
@@ -232,13 +318,13 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_X_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
 everything.update(template_dict)
 baseline_result.update(template_dict)
 trafilatura_result.update(template_dict)
 justext_result.update(template_dict)
-trafilatura_X_result.update(template_dict)
+trafilatura_fallback_result.update(template_dict)
 goose_result.update(template_dict)
 readability_result.update(template_dict)
 inscriptis_result.update(template_dict)
@@ -255,8 +341,10 @@ i = 0
 for item in EVAL_PAGES:
     if len(EVAL_PAGES[item]['file']) == 0:
         continue
-    htmlstring = load_document(EVAL_PAGES[item]['file'])
-    print(item)
+    # print(EVAL_PAGES[item]['file'])
+    htmlstring = load_document_binary(EVAL_PAGES[item]['file'])
+    if htmlstring is None:
+        continue
     # null hypotheses
     tp, fn, fp, tn = evaluate_result('', EVAL_PAGES[item])
     nothing['true positives'] += tp
@@ -316,12 +404,12 @@ for item in EVAL_PAGES:
     # trafilatura + X
     start = time.time()
     result = run_trafilatura_fallback(htmlstring)
-    trafilatura_X_result['time'] += time.time() - start
+    trafilatura_fallback_result['time'] += time.time() - start
     tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    trafilatura_X_result['true positives'] += tp
-    trafilatura_X_result['false positives'] += fp
-    trafilatura_X_result['true negatives'] += tn
-    trafilatura_X_result['false negatives'] += fn
+    trafilatura_fallback_result['true positives'] += tp
+    trafilatura_fallback_result['false positives'] += fp
+    trafilatura_fallback_result['true negatives'] += tn
+    trafilatura_fallback_result['false negatives'] += fn
     # readability
     start = time.time()
     result = run_readability(htmlstring)
@@ -395,54 +483,66 @@ print('everything')
 print(everything)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(everything)))
 
-print('html2text')
-print(html2text_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
-
-print('inscriptis')
-print(inscriptis_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(inscriptis_result)))
-
 print('baseline')
 print(baseline_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(baseline_result)))
 
+print('html2text')
+print(html2text_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
+print("time diff.: %.2f" % (html2text_result['time'] / baseline_result['time']))
+
+print('inscriptis')
+print(inscriptis_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(inscriptis_result)))
+print("time diff.: %.2f" % (inscriptis_result['time'] / baseline_result['time']))
+
 print('justext')
 print(justext_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(justext_result)))
+print("time diff.: %.2f" % (justext_result['time'] / baseline_result['time']))
 
 print('goose')
 print(goose_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(goose_result)))
+print("time diff.: %.2f" % (goose_result['time'] / baseline_result['time']))
 
 print('newspaper')
 print(newspaper_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newspaper_result)))
+print("time diff.: %.2f" % (newspaper_result['time'] / baseline_result['time']))
 
 print('dragnet')
 print(dragnet_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(dragnet_result)))
+print("time diff.: %.2f" % (dragnet_result['time'] / baseline_result['time']))
 
 print('boilerpipe')
 print(boilerpipe_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(boilerpipe_result)))
+print("time diff.: %.2f" % (boilerpipe_result['time'] / baseline_result['time']))
 
 print('jparser')
 print(jparser_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
+print("time diff.: %.2f" % (jparser_result['time'] / baseline_result['time']))
 
 print('newsplease')
 print(newsplease_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(newsplease_result)))
+print("time diff.: %.2f" % (newsplease_result['time'] / baseline_result['time']))
 
 print('readability')
 print(readability_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
+print("time diff.: %.2f" % (readability_result['time'] / baseline_result['time']))
 
 print('trafilatura')
 print(trafilatura_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_result)))
+print("time diff.: %.2f" % (trafilatura_result['time'] / baseline_result['time']))
 
 print('trafilatura + X')
-print(trafilatura_X_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_X_result)))
+print(trafilatura_fallback_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_fallback_result)))
+print("time diff.: %.2f" % (trafilatura_fallback_result['time'] / baseline_result['time']))
