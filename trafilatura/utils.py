@@ -138,59 +138,49 @@ def load_html(htmlobject):
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
     tree = None
+    check_flag = False
     # try to detect encoding and convert to string
-    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
-        check_flag = False
-        if isinstance(htmlobject, bytes):
-            # test
-            if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore'):
-                check_flag = True
-            guessed_encoding = detect_encoding(htmlobject)
-            if guessed_encoding is not None:
-                if guessed_encoding == 'UTF-8':
-                    tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-                else:
-                    try:
-                        htmlobject = htmlobject.decode(guessed_encoding)
-                    except UnicodeDecodeError:
-                        LOGGER.warning('encoding issue: %s', guessed_encoding)
-                        tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-            else:
-                tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-        # use string if applicable
-        else:
-            # test
-            if 'html' not in htmlobject[:50]:
-                check_flag = True
-            try:
+    if isinstance(htmlobject, bytes):
+        # test
+        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore'):
+            check_flag = True
+        guessed_encoding = detect_encoding(htmlobject)
+        if guessed_encoding is not None:
+            if guessed_encoding == 'UTF-8':
                 tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-            except ValueError:
-                # try to parse a bytestring
+            else:
                 try:
-                    tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
-                except Exception as err:
-                    LOGGER.error('parser bytestring %s', err)
+                    htmlobject = htmlobject.decode(guessed_encoding)
+                    tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+                except UnicodeDecodeError:
+                    LOGGER.warning('encoding issue: %s', guessed_encoding)
+                    tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+        else:
+            tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+    # use string if applicable
+    elif isinstance(htmlobject, str):
+        # test
+        if 'html' not in htmlobject[:50]:
+            check_flag = True
+        try:
+            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+        except ValueError:
+            # try to parse a bytestring
+            try:
+                tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
             except Exception as err:
-                LOGGER.error('parsing failed: %s', err)
-        # test if it's HTML
-        if tree is not None and check_flag is True:
-            i = 0
-            for element in tree.xpath('.//*'):
-                i += 1
-                if i > 1:
-                    break
-            if i == 0 or (i == 1 and element.tag in ('p', 's')):
-                LOGGER.error('Parse tree empty: not valid HTML')
-                tree = None
+                LOGGER.error('parser bytestring %s', err)
+        except Exception as err:
+            LOGGER.error('parsing failed: %s', err)
     # default to None
     else:
         LOGGER.error('this type cannot be processed: %s', type(htmlobject))
     # further test
-    #if tree is not None:
-    #    try:
-    #       ignore = etree.tostring(tree, encoding='unicode')
-    #    except UnicodeDecodeError:
-    #       tree = None
+    # test if it's HTML
+    if tree is not None and check_flag is True:
+        if len(tree) < 2:
+            LOGGER.error('Parse tree empty: not valid HTML')
+            tree = None
     #if tree is None:
     #    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
     #        # more robust parsing

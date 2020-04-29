@@ -634,11 +634,10 @@ def test_input_type():
     with open(testfile, 'rb') as f:
         teststring = f.read(1024)
     assert cli.examine(teststring) is None
-    #testfile = 'docs/index.rst'
-    #with open(testfile, 'r') as f:
-    #    teststring = f.read()
-    #result = cli.examine(teststring)
-    #assert result is None
+    testfile = 'docs/index.rst'
+    with open(testfile, 'r') as f:
+        teststring = f.read()
+    assert cli.examine(teststring) is None
 
 
 if __name__ == '__main__':
