@@ -185,20 +185,36 @@ def test_parser():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
         #assert args.fast is True # doesn't work!
-        assert args.notables is False
         #assert args.verbose is True # doesn't work!
+        assert args.notables is False
         assert args.xmltei is True
         assert args.URL == 'https://www.example.org'
 
 
 def test_climain():
     '''test arguments and main CLI entrypoint'''
-    exit_status = os.system('trafilatura --help')
-    assert exit_status == 0
-    #exit_status = os.system('trafilatura -f -u https://httpbin.org/html')
-    #assert exit_status == 0
-    #exit_status = os.system('curl -s https://httpbin.org/html | trafilatura')
-    #assert exit_status == 0
+    assert os.system('trafilatura --help') == 0  # exit status
+    # assert os.system('trafilatura -f -u https://httpbin.org/html') == 0
+    # assert os.system('curl -s https://httpbin.org/html | trafilatura') == 0
+    # input directory walking and processing
+    assert os.system('trafilatura --inputdir "trafilatura/data/"') == 0
+    assert os.system('trafilatura --inputdir "tests/resources/"') == 0
+    #testargs = ['--inputdir tests/resources/']
+    #with patch.object(sys, 'argv', testargs):
+    #    result = cli.main()
+    #print(result)
+
+
+def test_input_type():
+    '''test input type errors'''
+    testfile = 'docs/trafilatura-demo.gif'
+    with open(testfile, 'rb') as f:
+        teststring = f.read(1024)
+    assert cli.examine(teststring) is None
+    testfile = 'docs/index.rst'
+    with open(testfile, 'r') as f:
+        teststring = f.read()
+    assert cli.examine(teststring) is None
 
 
 def test_txttocsv():
@@ -626,18 +642,6 @@ def test_tei():
     assert result is not None
     mytree = etree.fromstring(result)
     assert xml.validate_tei(mytree) is True
-
-
-def test_input_type():
-    '''test input type errors'''
-    testfile = 'docs/trafilatura-demo.gif'
-    with open(testfile, 'rb') as f:
-        teststring = f.read(1024)
-    assert cli.examine(teststring) is None
-    testfile = 'docs/index.rst'
-    with open(testfile, 'r') as f:
-        teststring = f.read()
-    assert cli.examine(teststring) is None
 
 
 if __name__ == '__main__':

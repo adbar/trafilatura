@@ -12,7 +12,7 @@ import random
 import string
 import sys
 
-from os import makedirs, path
+from os import makedirs, path, walk
 from time import sleep
 
 from .core import extract
@@ -73,6 +73,9 @@ def parse_args(args):
                         action="store_true")
     parser.add_argument("-i", "--inputfile",
                         help="name of input file for batch processing",
+                        type=str)
+    parser.add_argument("--inputdir",
+                        help="read files from a specified directory (relative path)",
                         type=str)
     parser.add_argument("-o", "--outputdir",
                         help="write results in a specified directory (relative path)",
@@ -156,6 +159,23 @@ def main():
                     sleep(2)
         except UnicodeDecodeError:
             sys.exit('# ERROR: system, file type or buffer encoding')
+    elif args.inputdir:
+        #if not args.outputdir:
+        #    sys.exit('# ERROR: please specify an output directory along with the input directory')
+        # walk the directory tree
+        for root, _, inputfiles in walk(args.inputdir):
+            for fname in inputfiles:
+                inputfile = path.join(root, fname)
+                try:
+                    with open(inputfile, mode='r', encoding='utf-8') as inputfh:
+                        htmlstring = inputfh.read()
+                    result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
+                                 include_comments=args.nocomments, include_tables=args.notables,
+                                 csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
+                                 validation=args.validate, formatting=args.formatting)
+                    write_result(args.URL, result, args)
+                except UnicodeDecodeError:
+                    LOGGER.warning('Discarding (file type issue): %s', inputfile)
     else:
         # process input URL
         if args.URL:
