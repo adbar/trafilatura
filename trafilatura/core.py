@@ -484,7 +484,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             body, len_text, text = body2, len_text2, text2
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
-        LOGGER.error('not enough text %s %s', url)  # record_id,
+        LOGGER.error('not enough text %s', url)  # record_id,
         body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
     # second backup
@@ -550,7 +550,10 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
         # last cleaning
         for element in postbody.iter():
             if recursively_empty(element):
-                element.getparent().remove(element)
+                try:
+                    element.getparent().remove(element)
+                except AttributeError:
+                    pass  # element is None
         # build output trees
         if xml_output is True:
             output = build_xml_output(postbody, commentsbody)
