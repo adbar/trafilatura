@@ -51,14 +51,14 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
     else:
         try:
             result = extract(htmlstring, url, '0000', no_fallback=no_fallback,
-                         include_comments=include_comments, include_tables=include_tables,
-                         csv_output=csv_output, xml_output=xml_output,
-                         tei_output=tei_output, tei_validation=validation,
-                         include_formatting=formatting)
+                             include_comments=include_comments, include_tables=include_tables,
+                             csv_output=csv_output, xml_output=xml_output,
+                             tei_output=tei_output, tei_validation=validation,
+                             include_formatting=formatting)
             return result
         # ugly but efficient
         except Exception as err:
-             LOGGER.error('%s for %s\nDetails: %s', err, url, sys.exc_info()[0])
+            LOGGER.error('%s for %s\nDetails: %s', err, url, sys.exc_info()[0])
     return None
 
 
@@ -131,23 +131,22 @@ def determine_filename(args):
     return path.join(args.outputdir, randomslug + extension)
 
 
-def write_result(url, result, args):
+def write_result(result, args):
     '''Deal with result (write to STDOUT or to file)'''
     if result is None:
-        sys.stdout.write('# ERROR: no valid result for ' + url + '\n')
+        return
+    if args.outputdir is None:
+        sys.stdout.write(result + '\n')
     else:
-        if args.outputdir is None:
-            sys.stdout.write(result + '\n')
-        else:
-            # check the directory status
-            if check_outputdir_status(args) is True:
-                # pick a new file name
+       # check the directory status
+        if check_outputdir_status(args) is True:
+            # pick a new file name
+            output_path = determine_filename(args)
+            while path.exists(output_path):
                 output_path = determine_filename(args)
-                while path.exists(output_path):
-                    output_path = determine_filename(args)
-                # write
-                with open(output_path, mode='w', encoding='utf-8') as outputfile:
-                    outputfile.write(result)
+            # write
+            with open(output_path, mode='w', encoding='utf-8') as outputfile:
+                outputfile.write(result)
 
 
 def main():
@@ -170,7 +169,7 @@ def main():
                                      include_comments=args.nocomments, include_tables=args.notables,
                                      csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
                                      validation=args.validate, formatting=args.formatting)
-                    write_result(url, result, args)
+                    write_result(result, args)
                     # sleep 2 sec between requests
                     sleep(2)
         except UnicodeDecodeError:
@@ -186,10 +185,10 @@ def main():
                     with open(inputfile, mode='r', encoding='utf-8') as inputfh:
                         htmlstring = inputfh.read()
                     result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
-                                 include_comments=args.nocomments, include_tables=args.notables,
-                                 csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
-                                 validation=args.validate, formatting=args.formatting)
-                    write_result(args.URL, result, args)
+                                     include_comments=args.nocomments, include_tables=args.notables,
+                                     csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
+                                     validation=args.validate, formatting=args.formatting)
+                    write_result(result, args)
                 except UnicodeDecodeError:
                     LOGGER.warning('Discarding (file type issue): %s', inputfile)
     else:
@@ -210,7 +209,7 @@ def main():
                          include_comments=args.nocomments, include_tables=args.notables,
                          csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
                          validation=args.validate, formatting=args.formatting)
-        write_result(args.URL, result, args)
+        write_result(result, args)
 
 
 if __name__ == '__main__':

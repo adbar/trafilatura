@@ -530,27 +530,58 @@ def baseline(filecontent):
     return postbody, len_text, temp_text
 
 
+def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_output, tei_output, tei_validation, record_id):
+    '''Convert XML tree to chosen format, clean the result and output it as a string'''
+    # XML (TEI) steps
+    if xml_output is True or tei_output is True:
+        if xml_output is True:
+            output = build_xml_output(postbody, commentsbody)
+            output = add_xml_meta(output, docmeta)
+        elif tei_output is True:
+            output = build_tei_output(postbody, commentsbody, docmeta)
+        # can be improved
+        control_string = etree.tostring(output, encoding='unicode')
+        control_string = sanitize(control_string)
+        # necessary for cleaning
+        control_parser = etree.XMLParser(remove_blank_text=True)
+        output_tree = etree.fromstring(control_string, control_parser)
+        # validate
+        if tei_output is True and tei_validation is True:
+            result = validate_tei(output_tree)
+            LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
+        returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
+    # CSV + TXT output
+    else:
+        if csv_output is True:
+            posttext = xmltotxt(postbody)
+            commentstext = xmltotxt(commentsbody)
+            returnstring = txttocsv(posttext, commentstext, docmeta)
+        else:
+            output = build_xml_output(postbody, commentsbody)
+            returnstring = xmltotxt(output)
+    return returnstring
+
+
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             include_comments=True, csv_output=False, xml_output=False,
             tei_output=False, tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False):
     '''Main process for text extraction'''
-    # init
+    # load data
     tree = load_html(filecontent)
     if tree is None:
         return None
+    # backup (or not) for further processing
+    if no_fallback is False:
+        backup_tree = deepcopy(tree)
+    else:
+        backup_tree = None
 
     # Metadata here
     if csv_output is True or xml_output is True or tei_output is True:
         docmeta = extract_metadata(tree, default_url=url)
     else:
         docmeta = None
-
-    # backup (or not) for further processing
-    if no_fallback is False:
-        backup_tree = deepcopy(tree)
-    else:
-        backup_tree = None
 
     # clean
     cleaned_tree = manual_cleaning(tree, include_tables)
@@ -595,18 +626,19 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             #postbody, temp_text, len_text, sure_thing = extract_content(tree)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
+    # size checks
     if len_comments < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
     if len_text < MIN_OUTPUT_SIZE and len_comments < MIN_OUTPUT_COMM_SIZE:
         LOGGER.info('text and comments not long enough: %s %s', len_text, len_comments)
         return None
 
-    # sanity check on language
-    if language_filter(temp_text, temp_comments, target_language, record_id, url) is True:
-        return None
-
     # check duplicates at body level
     if duplicate_test(postbody) is True:
+        return None
+
+    # sanity check on language
+    if language_filter(temp_text, temp_comments, target_language, record_id, url) is True:
         return None
 
     # cache elements
@@ -614,34 +646,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     if commentsbody is not None:
         put_in_cache(commentsbody)
 
-    # XML (TEI) steps
-    if xml_output is True or tei_output is True:
-        if xml_output is True:
-            output = build_xml_output(postbody, commentsbody)
-            output = add_xml_meta(output, docmeta)
-        elif tei_output is True:
-            output = build_tei_output(postbody, commentsbody, docmeta)
-        # can be improved
-        control_string = etree.tostring(output, encoding='unicode')
-        control_string = sanitize(control_string)
-        # necessary for cleaning
-        control_parser = etree.XMLParser(remove_blank_text=True)
-        output_tree = etree.fromstring(control_string, control_parser)
-        # validate
-        if tei_output is True and tei_validation is True:
-            result = validate_tei(output_tree)
-            LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
-        returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
-    # CSV + TXT output
-    else:
-        if csv_output is True:
-            posttext = xmltotxt(postbody)
-            commentstext = xmltotxt(commentsbody)
-            returnstring = txttocsv(posttext, commentstext, docmeta)
-        else:
-            output = build_xml_output(postbody, commentsbody)
-            returnstring = xmltotxt(output)
-
+    returnstring = determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_output, tei_output, tei_validation, record_id)
     return returnstring
 
 
