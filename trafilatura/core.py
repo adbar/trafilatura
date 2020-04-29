@@ -437,13 +437,13 @@ def extract_comments(tree):
     return comments_body, temp_comments, len_comments, tree
 
 
-def compare_extraction(tree, url, body, text, len_text):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     if tree is None:
         return body, text, len_text
     # try with readability
-    temppost_algo = try_readability(tree, url)
+    temppost_algo = try_readability(backup_tree, url)
     algo_text = trim(' '.join(temppost_algo.itertext()))
     len_algo = len(algo_text)
     # compare
@@ -476,6 +476,20 @@ def compare_extraction(tree, url, body, text, len_text):
         LOGGER.info('using generic algorithm: %s', url)
     else:
         LOGGER.info('using custom extraction: %s', url)
+    # override faulty extraction
+    if body.xpath('//img'): # //figure
+        body2, len_text2, text2 = justext_rescue(tree, url, target_language, body, 0, '')
+        LOGGER.debug('justext length %s', len_text2)
+        if len_text2 >= MIN_EXTRACTED_SIZE:
+            body, len_text, text = body2, len_text2, text2
+    # try with justext
+    elif len_text < MIN_EXTRACTED_SIZE:
+        LOGGER.error('not enough text %s %s', url)  # record_id,
+        body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
+        LOGGER.debug('justext length %s', len_text)
+    # second backup
+    # if len_text < MIN_EXTRACTED_SIZE:
+    #     postbody, len_text, temp_text = baseline(filecontent)
     return body, text, len_text
 
 
@@ -612,15 +626,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
 
     # compare if necessary
     if no_fallback is False: # and sure_thing is False:
-        postbody, temp_text, len_text = compare_extraction(backup_tree, url, postbody, temp_text, len_text)
-        # try with justext
-        if len_text < MIN_EXTRACTED_SIZE:
-            LOGGER.error('not enough text %s %s', record_id, url)
-            postbody, len_text, temp_text = justext_rescue(tree, url, target_language, postbody, len_text, temp_text)
-            LOGGER.error('justext length %s', len_text)
-        # second backup
-        # if len_text < MIN_EXTRACTED_SIZE:
-        #     postbody, len_text, temp_text = baseline(filecontent)
+        postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language)
     else:
         # rescue: try to use original/dirty tree
         if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
