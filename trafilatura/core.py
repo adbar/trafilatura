@@ -20,7 +20,7 @@ from .external import justext_rescue, try_readability
 from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
-                             manual_cleaning, process_node, prune_html)
+                             manual_cleaning, process_node, prune_html, recursively_empty)
 from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
@@ -245,7 +245,6 @@ def handle_paragraphs(element, potential_tags):
                 newsub.text = processed_child.text
                 newsub.tail = processed_child.tail
             processed_element.append(newsub)
-            # print(html.tostring(processed_element))
             child.tag = 'done'
     # finish
     if len(processed_element) > 0 or processed_element.text:
@@ -534,6 +533,11 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if xml_output is True or tei_output is True:
+        # last cleaning
+        for element in postbody.iter():
+            if recursively_empty(element):
+                element.getparent().remove(element)
+        # build output trees
         if xml_output is True:
             output = build_xml_output(postbody, commentsbody)
             output = add_xml_meta(output, docmeta)
@@ -549,6 +553,7 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
         if tei_output is True and tei_validation is True:
             result = validate_tei(output_tree)
             LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
+        # output as string
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
     # CSV + TXT output
     else:
@@ -589,7 +594,6 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     cleaned_tree = prune_html(cleaned_tree)
     # use LXML cleaner
     cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-    # tree_cache[cleaned_tree] = list(cleaned_tree.iter())
 
     # convert tags, the rest does not work without conversion
     cleaned_tree = convert_tags(cleaned_tree)
