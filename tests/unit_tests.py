@@ -181,11 +181,11 @@ def test_input():
 
 def test_parser():
     '''test argument parsing for the command-line interface'''
-    testargs = ['-fv', '--xmltei', '--notables', '-u', 'https://www.example.org']
+    testargs = ['', '-fv', '--xmltei', '--notables', '-u', 'https://www.example.org']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-        #assert args.fast is True # doesn't work!
-        #assert args.verbose is True # doesn't work!
+        assert args.fast is True
+        assert args.verbose is True
         assert args.notables is False
         assert args.xmltei is True
         assert args.URL == 'https://www.example.org'
@@ -215,6 +215,16 @@ def test_input_type():
     with open(testfile, 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring) is None
+
+
+def test_sysoutput():
+    '''test output: ...'''
+    testargs = ['', '--csv', '-o', '/root/forbidden/']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    filename = cli.determine_filename(args)
+    assert len(filename) >= 10 and filename.endswith('.csv')
+    assert cli.check_outputdir_status(args) is False
 
 
 def test_txttocsv():
@@ -648,6 +658,7 @@ if __name__ == '__main__':
     test_trim()
     test_lrucache()
     test_input()
+    test_sysoutput()
     test_parser()
     test_climain()
     test_input_type()

@@ -106,6 +106,31 @@ def parse_args(args):
     return parser.parse_args()
 
 
+
+def check_outputdir_status(args):
+    '''Check if the output directory is within reach and writable'''
+    # check the directory status
+    if not path.exists(args.outputdir) or not path.isdir(args.outputdir):
+        try:
+            makedirs(args.outputdir)
+        except OSError:
+            sys.stderr.write('# ERROR: Destination directory cannot be created: ' + args.outputdir + '\n')
+            # raise OSError()
+            return False
+    return True
+
+
+def determine_filename(args):
+    '''Pick a file name based on output type'''
+    randomslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+    extension = '.txt'
+    if args.xml or args.xmltei:
+        extension = '.xml'
+    elif args.csv:
+        extension = '.csv'
+    return path.join(args.outputdir, randomslug + extension)
+
+
 def write_result(url, result, args):
     '''Deal with result (write to STDOUT or to file)'''
     if result is None:
@@ -115,23 +140,14 @@ def write_result(url, result, args):
             sys.stdout.write(result + '\n')
         else:
             # check the directory status
-            if not path.isdir(args.outputdir):
-                try:
-                    makedirs(args.outputdir)
-                except OSError:
-                    sys.stderr.write('# ERROR: Destination directory cannot be created: ' + args.outputdir + '\n')
-                    raise OSError()
-            # determine file name
-            randomslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-            extension = '.txt'
-            if args.xml or args.xmltei:
-                extension = '.xml'
-            elif args.csv:
-                extension = '.csv'
-            # write
-            output_path = path.join(args.outputdir, randomslug + extension)
-            with open(output_path, mode='w', encoding='utf-8') as outputfile:
-                outputfile.write(result)
+            if check_outputdir_status(args) is True:
+                # pick a new file name
+                output_path = determine_filename(args)
+                while path.exists(output_path):
+                    output_path = determine_filename(args)
+                # write
+                with open(output_path, mode='w', encoding='utf-8') as outputfile:
+                    outputfile.write(result)
 
 
 def main():
