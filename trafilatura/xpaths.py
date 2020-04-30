@@ -32,7 +32,8 @@ BODY_XPATH = [
     contains(@class, 'theme-content') or contains(@class, 'blog-content') or
     contains(@class, 'section-content') or contains(@class, 'single-content') or
     contains(@class, 'wpb_text_column') or contains(@class, 'single-post') or
-    starts-with(@id, 'primary') or @class="text" or @class="cell" or @id="story" or @class="story" or
+    starts-with(@id, 'primary') or @class="text" or
+    @class="cell" or @id="story" or @class="story" or
     contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]""",
     '''//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
     contains(@class, "main-content") or contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "page-content")]''',
@@ -45,11 +46,16 @@ BODY_XPATH = [
 # '//body',
 # '//div[contains(@class, "text")]',
 # '//div[contains(@class, "article-wrapper") or contains(@class, "content-wrapper")]',
+# |//*[(self::article or self::div or self::main or self::section)][contains(@class, "article") or contains(@class, "Article")]
+# or @class="content" or @class="Content"
+# or starts-with(@class, 'post ')
 
 
 COMMENTS_XPATH = [
-    """//*[(self::div or self::section or self::ol or self::ul)][contains(@id, 'commentlist')
-    or contains(@class, 'commentlist') or contains(@class, 'comments-content')]""",
+    """//*[(self::div or self::ol or self::section or self::ul)][contains(@id, 'commentlist')
+    or contains(@class, 'commentlist')  or contains(@class, 'comment-page') or
+    contains(@class, 'comment-list') or contains(@class, 'comments-list') or
+    contains(@class, 'comments-content')]""",
     """//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments')
     or starts-with(@class, 'comments') or starts-with(@class, 'Comments') or
     starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or
@@ -65,6 +71,7 @@ DISCARD_XPATH = [
     '''.//aside|.//footer|.//*[contains(@id, "footer") or contains(@class, "footer") or
     contains(@id, "bottom") or contains(@class, "bottom")]''',
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
+    # or self::article
     '''.//*[(self::a or self::div or self::li or self::ol or self::p or self::section or self::span or self::ul)][
     contains(@id, "related") or contains(@class, "related") or contains(@class, "Related") or
     contains(@id, "viral") or contains(@class, "viral") or
@@ -95,7 +102,8 @@ DISCARD_XPATH = [
     contains(@class, "attachment") or contains(@class, "timestamp") or
     contains(@class, "user-info") or contains(@class, "user-profile") or
     contains(@class, "-ad-") or contains(@class, "-icon")
-    or contains(@class, "submeta") or contains(@class, "article-infos")]''',
+    or contains(@class, "submeta") or contains(@class, "article-infos") or
+    contains(@class, "infoline") or contains(@class, "Infoline")]''',
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
@@ -107,6 +115,7 @@ DISCARD_XPATH = [
 # .//header # contains(@id, "header") or contains(@class, "header") or
 # './/*[(self::div or self::section)][contains(@class, "clearfix")]',
 # contains(@id, "link") or contains(@class, "link")
+# contains(@class, "infobox") or
 # class contains cats
 
 

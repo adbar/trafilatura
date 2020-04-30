@@ -21,7 +21,9 @@ logging.getLogger('htmldate').setLevel(logging.WARNING)
 def extract_json(tree, mymeta):
     '''Crudely extract metadata from JSON-LD data'''
     for elem in tree.xpath('//script[@type="application/ld+json"]|//script[@type="application/settings+json"]'):
-        if elem.text and '"author":' in elem.text:
+        if elem.text is None:
+            continue
+        if '"author":' in elem.text:
             mymatch = re.search(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch and ' ' in mymatch.group(1):
                 mymeta = mymeta._replace(author=trim(mymatch.group(1)))
@@ -30,17 +32,17 @@ def extract_json(tree, mymeta):
                 if mymatch and ' ' in mymatch.group(1):
                     mymeta = mymeta._replace(author=trim(mymatch.group(1)))
         # try to extract publisher
-        if 'publisher' in elem.text:
+        if '"publisher"' in elem.text:
             mymatch = re.search(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch and not ',' in mymatch.group(1):
                 mymeta = mymeta._replace(sitename=trim(mymatch.group(1)))
         # category
-        if 'articleSection' in elem.text:
+        if '"articleSection"' in elem.text:
             mymatch = re.search(r'"articleSection": ?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch:
                 mymeta = mymeta._replace(categories=[trim(mymatch.group(1))])
         # try to extract title
-        if 'headline' in elem.text and mymeta.title is None:
+        if '"headline"' in elem.text and mymeta.title is None:
             mymatch = re.search(r'"headline": ?"([^"\\]+)', elem.text, re.DOTALL)
             if mymatch:
                 mymeta = mymeta._replace(title=trim(mymatch.group(1)))
