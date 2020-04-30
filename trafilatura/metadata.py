@@ -152,26 +152,34 @@ def examine_meta(tree):
                     author = elem.get('content')
         # other types
         else:
-            if elem.get('charset') is not None:
+            if 'http-equiv' in elem.attrib or 'property' in elem.attrib:
                 pass  # e.g. charset=UTF-8
             else:
                 LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
     return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None, tags)
 
 
-def extract_metainfo(tree, expressions):
+def extract_metainfo(tree, expressions, len_limit=200):
     '''Extract meta information'''
     result = None
+    # try all XPath expressions
     for expression in expressions:
         target_elements = tree.xpath(expression)
-        if len(target_elements) > 0:
-            result = target_elements[0].text_content()
-            # report potential errors
-            if len(target_elements) > 1:
-                LOGGER.warning('more than one result: %s %s', expression, len(target_elements))
+        # report potential errors
+        if len(target_elements) > 1:
+            LOGGER.debug('more than one result: %s %s', expression, len(target_elements))
+        # examine all results
+        for elem in target_elements:
+            if elem.text_content() is not None:
+                candidate = elem.text_content()
+                if len(candidate) < len_limit:
+                    result = candidate
             # exit loop if something usable has been found
-            if 0 < len(result) < 200:
+            if result is not None:
                 break
+        # exit loop if something usable has been found
+        if result is not None:
+            break
     return trim(result)
 
 
@@ -208,7 +216,7 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    author = extract_metainfo(tree, author_xpaths)
+    author = extract_metainfo(tree, author_xpaths, len_limit=75)
     if author:
         # simple filter for German and English
         author = re.sub(r'^([A-ZÄÖÜa-zäöüß]+(ed|t))? ?([Bb]y|[Vv]on) ', '', author)
