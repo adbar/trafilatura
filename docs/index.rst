@@ -1,5 +1,5 @@
-trafilatura: Scrapes the main text of web pages while preserving some structure
-===============================================================================
+Welcome to Trafilatura's documentation!
+=======================================
 
 .. image:: https://img.shields.io/pypi/v/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura

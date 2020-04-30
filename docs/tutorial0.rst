@@ -54,6 +54,13 @@ The output directory can be created on demand, it has to be writable.
 
 The second instruction creates a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_ which can be edited with a basic notepad or a full-fledged text-editing software such as `Atom <https://atom.io/>`_.
 
+Alternatively, you can download a series of web documents with generic command-line tools such as `wget <https://en.wikipedia.org/wiki/Wget>`_ and (re-)process the downloaded files at a later stage:
+
+.. code-block:: bash
+
+    $ wget --directory-prefix=download/ --wait 5 --input-file=mylist.txt
+    $ trafilatura --inputdir download/ --outputdir corpus/ --xmltei --nocomments
+
 
 Work with the data
 ------------------
