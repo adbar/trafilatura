@@ -218,10 +218,11 @@ def extract_author(tree):
     '''Extract the document author(s)'''
     author = extract_metainfo(tree, author_xpaths, len_limit=75)
     if author:
-        # simple filter for German and English
-        author = re.sub(r'^([A-ZÄÖÜa-zäöüß]+(ed|t))? ?([Bb]y|[Vv]on) ', '', author)
-        # special trimming
-        author = re.sub(r'[^\w]+$', '', trim(author))
+        # simple filters for German and English
+        author = re.sub(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', '', author, flags=re.IGNORECASE)
+        author = re.sub(r'\d.+?$', '', author)
+        author = re.sub(r'[^\w]+$|( am| on)', '', trim(author))
+        author = author.title()
     return author
 
 

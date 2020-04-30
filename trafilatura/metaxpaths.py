@@ -41,12 +41,13 @@ categories_xpaths = [
 tags_xpaths = [
     '//div[@class="tags"]//a',
     "//p[starts-with(@class, 'entry-tags')]//a",
-    '''//div[@class="row" or @class="jp-relatedposts" or @class="entry-utility" or
-    starts-with(@class, 'tag') or starts-with(@class, 'postmeta') or
-    starts-with(@class, 'meta')]//a''',
-    '//*[@class="entry-meta"]//a'
+    '''//div[@class="row" or @class="jp-relatedposts" or
+    @class="entry-utility" or starts-with(@class, 'tag') or
+    starts-with(@class, 'postmeta') or starts-with(@class, 'meta')]//a''',
+    '//*[@class="entry-meta" or contains(@class, "topics")]//a',
 ]
 # span class tag-links
+# "related-topics"
 # https://github.com/grangier/python-goose/blob/develop/goose/extractors/tags.py
 
 
