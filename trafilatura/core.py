@@ -20,7 +20,7 @@ from .external import justext_rescue, try_readability
 from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
-                             manual_cleaning, process_node, prune_html, recursively_empty)
+                             manual_cleaning, process_node, prune_html)
 from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
@@ -119,36 +119,6 @@ def handle_lists(element):
     return None
 
 
-#def handle_lists_2(element):
-#    '''Process lists elements'''
-#    processed_element = etree.Element(element.tag)
-#    for child in element.iter('item'):
-#        if len(child) == 0:
-#            processed_child = process_node(child) # handle_textnode(child, comments_fix=False)
-#            if processed_child is not None:
-#                processed_element.append(deepcopy(processed_child))
-#        else:
-#            newsub = etree.Element('item')
-#            # proceed with iteration, fix for nested elements
-#            for subelem in child.iter():
-#                processed_subchild = process_node(subelem) # handle_textnode(subelem, comments_fix=False)
-#                # add child element to processed_element
-#                if processed_subchild is not None:
-#                   newsub.append(deepcopy(processed_subchild))
-#                   # processed_element.append(processed_subchild)
-#                subelem.tag = 'done'
-#            etree.strip_tags(newsub, 'item')
-#            processed_element.append(newsub)
-#        child.tag = 'done'
-#    # avoid double tags??
-#    if len(processed_element) > 0:  # if it has children
-#        # test if it has text
-#        #teststring = ''.join(processed_element.itertext())
-#        #if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
-#        return processed_element
-#    return None
-
-
 def handle_quotes(element):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
@@ -227,7 +197,6 @@ def handle_paragraphs(element, potential_tags):
                 newsub.set('rend', child.get('rend'))
             # handle line breaks
             elif child.tag == 'lb':
-                #processed_child.tail = handle_textnode(child, comments_fix=False).tail
                 try:
                     processed_child.tail = process_node(child).tail
                 except AttributeError:  # no text
@@ -457,11 +426,6 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_algo > 2*len_text: # or 0.95*len_text < len_algo < 0.99*len_text:
         algo_flag = True
-    # override unsure extraction
-    #elif sure_thing is False and len_algo > len_text:
-    #    algo_flag = True
-    #elif len_text >= 500 and 0.9*len_text < len_algo < len_text:
-    #    algo_flag = True
     elif len(body.xpath('//p//text()')) == 0 and len_algo > 0:
         algo_flag = True  # borderline case
     else:
@@ -480,20 +444,23 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     if body.xpath('//aside|//button|//figure|//footer|//img|//input|//noscript|//svg'):
         body2, len_text2, text2 = justext_rescue(tree, url, target_language, body, 0, '')
         LOGGER.debug('justext length %s', len_text2)
-        if len_text2 >= MIN_EXTRACTED_SIZE:
+        if len_text2 > 0: #MIN_EXTRACTED_SIZE:
             body, len_text, text = body2, len_text2, text2
-        # post-processing: emove unwanted sections
-        for elem in body.xpath('//aside|//button|//footer|//input|//noscript|//svg'):
-            elem.getparent().remove(elem)
-        etree.strip_tags(body, 'figure', 'img')
+        else:
+            # post-processing: remove unwanted sections
+            for elem in body.xpath('//aside|//button|//figure|//footer|//img|//input|//noscript|//svg'):
+                elem.getparent().remove(elem)
+            #etree.strip_tags(body, 'figure', 'img')
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)  # record_id,
         body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
     # second backup
-    # if len_text < MIN_EXTRACTED_SIZE:
-    #     postbody, len_text, temp_text = baseline(filecontent)
+    #if len_text < MIN_EXTRACTED_SIZE:
+    #     body2, len_text2, temp_text2 = baseline(backup_tree)
+    #     if len_text2 > MIN_EXTRACTED_SIZE:
+    #         body, text, len_text = body2, len_text2, temp_text2
     return body, text, len_text
 
 
@@ -553,17 +520,10 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
     if xml_output is True or tei_output is True:
         # last cleaning
         for element in postbody.iter():
-            if recursively_empty(element):
-                try:
-                    element.getparent().remove(element)
-                except AttributeError:
-                    pass  # element is None
-        # remove empty elements
-        # for elem in newtree.xpath('//*'):
-        #    if len(elem) == 0 and elem.text is None and elem.tail is None:
-        #        parent = elem.getparent()
-        #        if parent is not None:
-        #            parent.remove(elem)
+            if len(element) == 0 and (element.text is None or len(element.text) == 0) and (element.tail is None or len(element.tail) == 0):
+                parent = element.getparent()
+                if parent is not None:
+                    parent.remove(element)
         # build output trees
         if xml_output is True:
             output = build_xml_output(postbody, commentsbody)
@@ -638,7 +598,8 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables)
 
     # compare if necessary
-    if no_fallback is False: # and sure_thing is False:
+    if no_fallback is False:
+        #if sure_thing is False:
         postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language)
     else:
         # rescue: try to use original/dirty tree

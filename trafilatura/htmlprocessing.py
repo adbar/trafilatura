@@ -1,3 +1,4 @@
+# pylint:disable-msg=I1101
 """
 Functions to process nodes in HTML code.
 """
@@ -33,24 +34,19 @@ def manual_cleaning(tree, include_tables):
 
 
 def prune_html(tree):
-    '''delete empty elements'''
-    # empty tags
+    '''delete selected empty elements'''
     for element in tree.xpath(".//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
             element.getparent().remove(element)
-    # for expression in CUT_EMPTY_ELEMS:
-    #    for element in tree.getiterator(expression):
-    #        if recursively_empty(element):
-    #            element.getparent().remove(element)
     return tree
 
 
-def recursively_empty(elem):
-    '''return recursively empty elements'''
-    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-    if elem.text:
-        return False
-    return all((recursively_empty(c) for c in elem.iterchildren()))
+#def recursively_empty(elem):
+#    '''return recursively empty elements'''
+#    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
+#    if elem.text:
+#        return False
+#    return all((recursively_empty(c) for c in elem.iterchildren()))
 
 
 def discard_unwanted(tree):
