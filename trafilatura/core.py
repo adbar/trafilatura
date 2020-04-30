@@ -477,11 +477,15 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     else:
         LOGGER.info('using custom extraction: %s', url)
     # override faulty extraction
-    if body.xpath('//img'): # //figure
+    if body.xpath('//aside|//button|//figure|//footer|//img|//input|//noscript|//svg'):
         body2, len_text2, text2 = justext_rescue(tree, url, target_language, body, 0, '')
         LOGGER.debug('justext length %s', len_text2)
         if len_text2 >= MIN_EXTRACTED_SIZE:
             body, len_text, text = body2, len_text2, text2
+        # post-processing: emove unwanted sections
+        for elem in body.xpath('//aside|//button|//footer|//input|//noscript|//svg'):
+            elem.getparent().remove(elem)
+        etree.strip_tags(body, 'figure', 'img')
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)  # record_id,
@@ -554,6 +558,12 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
                     element.getparent().remove(element)
                 except AttributeError:
                     pass  # element is None
+        # remove empty elements
+        # for elem in newtree.xpath('//*'):
+        #    if len(elem) == 0 and elem.text is None and elem.tail is None:
+        #        parent = elem.getparent()
+        #        if parent is not None:
+        #            parent.remove(elem)
         # build output trees
         if xml_output is True:
             output = build_xml_output(postbody, commentsbody)

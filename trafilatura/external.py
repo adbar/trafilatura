@@ -25,11 +25,14 @@ from readability.readability import Unparseable
 # try this option
 try:
     import justext
+    JT_STOPLIST = set()
+    for language in justext.get_stoplists():
+        JT_STOPLIST.update(justext.get_stoplist(language))
 except ImportError:
-    justext = None
+    justext = JT_STOPLIST = None
 
 # own
-from .settings import JUSTEXT_DEFAULT, JUSTEXT_LANGUAGES
+from .settings import JUSTEXT_LANGUAGES
 from .utils import trim, HTML_PARSER
 
 
@@ -57,15 +60,6 @@ def try_readability(htmlinput, url):
                 with redirect_stderr(devnull):
                     resultstring = doc.summary(html_partial=True)
         newtree = html.fromstring(resultstring, parser=HTML_PARSER)
-        # remove unwanted sections
-        for elem in newtree.xpath('//aside|//button|//footer|//input|//noscript|//svg'):  # //figure //img
-            elem.getparent().remove(elem)
-        # remove empty elements
-        # for elem in newtree.xpath('//*'):
-        #    if len(elem) == 0 and elem.text is None and elem.tail is None:
-        #        parent = elem.getparent()
-        #        if parent is not None:
-        #            parent.remove(elem)
         return newtree
     except (etree.SerialisationError, Unparseable):
         return etree.Element('div')
@@ -87,11 +81,8 @@ def try_justext(tree, url, target_language):
         langsetting = JUSTEXT_LANGUAGES[target_language]
         justext_stoplist = justext.get_stoplist(langsetting)
     else:
-        langsetting = JUSTEXT_DEFAULT
-        justext_stoplist = set()
-        for language in justext.get_stoplists():
-            justext_stoplist.update(justext.get_stoplist(language))
-    # justext_stoplist = justext.get_stoplist(langsetting)
+        #justext_stoplist = justext.get_stoplist(JUSTEXT_DEFAULT)
+        justext_stoplist = JT_STOPLIST
     # extract
     try:
         paragraphs = justext.justext(justtextstring, justext_stoplist, 50, 200, 0.1, 0.2, 0.2, 200, True)

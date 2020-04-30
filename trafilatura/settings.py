@@ -18,6 +18,7 @@ MIN_EXTRACTED_COMM_SIZE = 10
 MIN_DUPLCHECK_SIZE = 100
 MIN_OUTPUT_SIZE = 25
 MIN_OUTPUT_COMM_SIZE = 10
+# PROCESSING_TIMEOUT = 10
 
 LRU_SIZE = 65536
 MAX_REPETITIONS = 2
@@ -64,7 +65,8 @@ TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 
 # 'span', 'item'
 # 'blockquote', 'code', 'p', 'pre', 'q', 'quote'
 
-JUSTEXT_DEFAULT = 'German'
+# JUSTEXT_DEFAULT = 'German'
+# JT_STOPLIST = None  # could be a list
 
 JUSTEXT_LANGUAGES = {
     'ar': 'Arabic',
