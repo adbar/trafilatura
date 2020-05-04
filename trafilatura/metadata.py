@@ -304,7 +304,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
     # extract date with external module htmldate
     if date_config is None:
         date_config = HTMLDATE_CONFIG
-    mymeta = mymeta._replace(date=find_date(tree, **date_config, url=mymeta.url))
+    date_config['url'] = mymeta.url
+    mymeta = mymeta._replace(date=find_date(tree, **date_config))
     # try with x-paths
     # title
     if mymeta.title is None:
