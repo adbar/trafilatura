@@ -255,7 +255,8 @@ def test_download():
     assert cli.examine(teststring, url) is not None
 
 
-def test_extract(xmloutput=False):
+@pytest.mark.parametrize("xmloutput", [False, True])
+def test_extract(xmloutput): # xmloutput=False
     '''test extraction from HTML'''
     result = load_mock_page('https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/', xmloutput)
     assert 'Impressum' not in result and 'Die GEMA dreht völlig am Zeiger!' in result
@@ -672,7 +673,7 @@ if __name__ == '__main__':
     test_jsontext()
     test_txttocsv()
     test_exotic_tags()
-    test_extract(xmloutput=False)
-    test_extract(xmloutput=True)
+    test_extract(False)
+    test_extract(True)
     test_download()
     test_tei()
