@@ -55,9 +55,15 @@ All currently available options, along with their default values:
 
 .. code-block:: python
 
-    >>> trafilatura.extract(downloaded, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True, include_formatting=False)
+    >>> trafilatura.extract(downloaded, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True, include_formatting=False, date_extraction_params=None)
 
 For further configuration see the variables in ``settings.py`` and re-compile the package locally.
+
+
+Date extraction
+^^^^^^^^^^^^^^^
+
+Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably: ``extensive_search`` (boolean), to activate pattern-based opportunistic text search,  ``original_date`` (boolean) to look for the original publication date, ``outputformat`` (string), to provide a custom datetime format, and ``max_date`` (string), to set the latest acceptable date manually (YYYY-MM-DD format).
 
 
 On the command-line

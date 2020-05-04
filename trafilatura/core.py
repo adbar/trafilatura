@@ -557,7 +557,8 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             include_comments=True, csv_output=False, xml_output=False,
             tei_output=False, tei_validation=False, target_language=None,
-            include_tables=True, include_formatting=False):
+            include_tables=True, include_formatting=False,
+            date_extraction_params=None):
     '''Main process for text extraction'''
     # load data
     tree = load_html(filecontent)
@@ -571,7 +572,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
 
     # Metadata here
     if csv_output is True or xml_output is True or tei_output is True:
-        docmeta = extract_metadata(tree, default_url=url)
+        docmeta = extract_metadata(tree, url, date_extraction_params)
     else:
         docmeta = None
 

@@ -17,6 +17,8 @@ from .utils import load_html, trim
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
+HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
+
 
 def extract_json(tree, mymeta):
     '''Crudely extract metadata from JSON-LD data'''
@@ -228,12 +230,6 @@ def extract_author(tree):
     return author
 
 
-def extract_date(tree, url):
-    '''Extract the date using external module htmldate'''
-    docdate = find_date(tree, extensive_search=False, url=url)
-    return docdate
-
-
 def extract_url(tree):
     '''Extract the URL from the canonical link'''
     # try canonical link first
@@ -288,7 +284,7 @@ def extract_catstags(metatype, tree):
     return results
 
 
-def extract_metadata(filecontent, default_url=None):
+def extract_metadata(filecontent, default_url=None, date_config=None):
     '''Main process for metadata extraction'''
     # create named tuple
     Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
@@ -305,6 +301,10 @@ def extract_metadata(filecontent, default_url=None):
             mymeta = mymeta._replace(author=None)
     # fix: try json-ld metadata and override
     mymeta = extract_json(tree, mymeta)
+    # extract date with external module htmldate
+    if date_config is None:
+        date_config = HTMLDATE_CONFIG
+    mymeta = mymeta._replace(date=find_date(tree, **date_config, url=mymeta.url))
     # try with x-paths
     # title
     if mymeta.title is None:
@@ -318,9 +318,6 @@ def extract_metadata(filecontent, default_url=None):
     # default url
     if mymeta.url is None and default_url is not None:
         mymeta = mymeta._replace(url=default_url)
-    # date
-    if mymeta.date is None:
-        mymeta = mymeta._replace(date=extract_date(tree, url=mymeta.url))
     # sitename
     if mymeta.sitename is None:
         mymeta = mymeta._replace(sitename=extract_sitename(tree))
