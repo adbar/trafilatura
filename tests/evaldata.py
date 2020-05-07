@@ -4083,303 +4083,302 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-## 2020-04-27
-   '': {
-    'file': '0af99c85f22b451a93a75bbf99ac412e.html',  # stays empty until download
+   'https://www.mz-web.de/dessau-rosslau/hingucker-beim-flugplatzfest-zweite-f13-kurz-vor-der-zulassung-33328852': {
+    'file': '0af99c85f22b451a93a75bbf99ac412e.html',
     'author': 'Thomas Steinberg',
     'title': 'Hingucker beim Flugplatzfest in Dessau: Zweite F13 kurz vor der Zulassung',
     'date': '2019-10-19',
     'description': '"Vor eineinhalb Jahren war das von Hugo Junkers entwickelte erste Ganzmetallflugzeug der Welt der Hingucker beim Flugplatzfest in Dessau.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['ell, doch den Hangar hat sie am vorletzten Donnerstag schon einmal verlassen: eine F13. Es ist der zweite Nachbau der Junkers-Maschine, entstanden ist er am Flughafen Dübendorf nahe Zürich.', 'Z, die zweite Maschine sei „noch schöner“ als die erste geworden, bei der es sich um einen Prototyp gehandelt habe. Zugleich habe man das Fahrwerk verbessert.', 'au und soll nach Fertigstellung in den USA präsentiert werden. Dort, auf dem mutmaßlich größten Flugzeugmarkt, solle dann auch die vierte Maschine gebaut und zugelassen werden.'],  # 3 segments
+    'with': ['entstanden ist er am Flughafen Dübendorf nahe Zürich.', 'Zugleich habe man das Fahrwerk verbessert.', 'dann auch die vierte Maschine gebaut und zugelassen werden.'],  # 3 segments
     'without': ['MZ Dessau-Roßlau bei Facebook', 'polinturner suchen Meister: Stelldichein der deutschen Hoffnungen in Dessau', 'zu die einwandfreie Funktion der Webse'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-   '': {
-    'file': '0b5db24739704283849ca3ed20ce09d4.html',  # stays empty until download
+   'https://www.rundschau-online.de/region/rhein-berg/bergischgladbach/pflaster-desaster-gladbacher-fussgaengerzone-in-schlechtem-zustand-33335514': {
+    'file': '0b5db24739704283849ca3ed20ce09d4.html',
     'author': 'Claus Boelen-Theile',
     'title': 'Bergisch Gladbach: die Stadt verklagt die Baufirma wegen schlechter Pflastersteine',
     'date': '2019-10-19',
     'description': 'Diese Flaniermeile ähnelt einer übergroßen Stolperfalle. Dabei ist das Pflaster der Gladbacher Fußgängerzone erst sechs Jahre alt.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['er gehalten werden: An manchen Stellen wirkt das Straßenpflaster deutlich in die Jahre gekommen. Ecken an den Pflastersteinen sind unschön abgeplatzt. Fugen sind offen. In der Nähe ', 'chtig für die Beweisaufnahme seien, könnten sie von der Stadt aus nachvollziehbaren Gründen nicht repariert werden, erklärt der Sprecher: „Wir hätten es auch lieber anders, aber das Ver', 'alls derzeit nicht. Aus Sicht der Stadt wäre ein zeitnaher Beweissicherungstermin wünschenswert. Auf den Zeitrahmen des Verfahrens habe die Stadt allerdings keinen Einfluss.'],  # 3 segments
-    'without': ['Weitere interessante News', 'Aktuelle Artikel', 'heben. Und mehr nicht. Auch diese unaufschiebbaren Arbeiten im Untergrund würden umfassend dokumentiert - damit die Stadt in einem Gerichtsverfahren Indizien vorlegen könne.'],  # 3 segments
+    'with': ['An manchen Stellen wirkt das Straßenpflaster deutlich in die Jahre gekommen.', '„Wir hätten es auch lieber anders, aber das Ver', 'Auf den Zeitrahmen des Verfahrens habe die Stadt allerdings keinen Einfluss.'],  # 3 segments
+    'without': ['Weitere interessante News', 'Aktuelle Artikel', 'damit die Stadt in einem Gerichtsverfahren Indizien vorlegen'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://www.finanztip.de/betriebliche-altersvorsorge/': {
-    'file': '',  # stays empty until download
+    'file': 'finanztip.de.altersvorsorge.html',  # stays empty until download
     'author': 'Sara Zinnecker ',
     'title': 'Mit Hilfe des Chefs für die Rente sparen',
     'date': '2020-02-05',
     'description': 'Betriebliche Altersvorsorge sichert eine Zusatzrente im Alter. Das Modell lohnt besonders, wenn der Chef mit einzahlt.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Altersvorsorge (bAV) versteht man den Aufbau einer Zusatzrente über den Arbeitgeber.', 'u bringen, eine bAV anzubieten und auch mitzufinanzieren. Davon würden dann auch Arbeitn', 'Unabhängig von den verschiedenen Begriffen stehen Angestellte vor allem vor der Frage: Lohnt sich das für'],  # 3 segments
-    'without': ['Weitere Themen', ' Angebot empfehlen, kann der entsprechende Anbieter einen Link zu diesem Angebot setzen lassen. Solche Links kennzeichnen wir mit einem Sternchen (*). Geld erhalten wir, wenn Sie di', 'Aktuelle Ausgabe des Newsletters'],  # 3 segments
+    'with': ['20,2 Mio.', 'Altersvorsorge (bAV) versteht man den Aufbau einer Zusatzrente über den Arbeitgeber.', 'vor allem vor der Frage: Lohnt sich das für', 'erläutern wir diese genauer.', 'So viel spart ein Durchschnittsverdiener', 'Im Beispiel verliert der Durchschnittsverdiener durch die Entgeltumwandlung'],  # 3 segments
+    'without': ['Weitere Themen', 'Geld erhalten wir, wenn Sie di', 'Aktuelle Ausgabe des Newsletters', 'Unser Tipp: Bleiben Sie zum Thema', '05. Februar 2020 '],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://www.smava.de/privatkredit/privatkredit-zinsen/': {
-    'file': '',  # stays empty until download
+    'file': 'smava.de.privatkredit.html',  # stays empty until download
     'author': '',
     'title': 'Wie hoch sind die Zinsen für einen Privatkredit? ',
     'date': '',
     'description': 'Die Höhe der Zinsen für Ihren Privatkredit bestimmt, wie viel Geld Sie insgesamt zurückzahlen müssen. Tipps zur Berechnung finden Sie hier!',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Bleibt der Zinssatz für meinen Privatkredit während der gesamten Laufzeit gleich?', 'effektiver Jahreszins', 'n für einen besseren Kreditzins, dazu gehören: ein hohes, frei verfügbares Einkommen, ein unbefristetes Arbeitsverh'],  # 3 segments
-    'without': ['Erhalten Sie kostenlos aktuelle Kredit-News und Informationen zu Sonderzins-Aktionen ', 'Kostenlose Beratung', 'smava.de Newsletter'],  # 3 segments
+    'with': ['und wie die Berechnung Ihrer Privatkredit-Zinsen erfolgt, erfahren Sie hier.', '286,35 €', 'ein unbefristetes Arbeitsverhältnis sowie Vermögenswerte bzw. Sicherheiten', 'Änderung der Zinshöhe bei Privatkrediten', 'Wie wird die Höhe der fälligen Zinsen für meinen Privatkredit bestimmt?', 'Gilt die vereinbarte Zinsbindung für die gesamte Kreditlaufzeit,'],  # 3 segments
+    'without': ['Erhalten Sie kostenlos aktuelle Kredit-News und Informationen zu Sonderzins-Aktionen', 'Kostenlose Beratung', 'zum Kreditvergleich'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://www.finanzcheck.de/autokredit/leasing-oder-finanzierung/': {
-    'file': '',  # stays empty until download
+    'file': 'finanzcheck.de.finanzierung.html',  # stays empty until download
     'author': '',
     'title': 'Leasing oder Finanzierung – was lohnt sich mehr?',
     'date': '',
     'description': '',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['e, hat dafür verschiedene Möglichkeiten. Das Auto kann gekauft, finanziert oder geleast werden. Im Vergleich zum Leasing gehört bei der Finanzierung das Fahrzeug am Ende dem Halter, beim Leasen jedoch müssen die Kund', ' lassen sich auch die Leasingraten senken, indem die Kunden eine Anzahlung leisten. Manche Anbieter fordern diese sogar vor der Überlassung des Fahrzeugs. ', 'höheres Verschleißrisiko aufgrund einer längeren Nutzungsdauer'],  # 3 segments
-    'without': ['Gemeinsam finden wir Ihren passenden Kredit! Kostenlose Hotline.', '© 2020 FINANZCHECK.deWinterstraße 222765 Hamburg', 'Kundenbewertungen'],  # 3 segments
+    'with': ['Im Vergleich zum Leasing gehört bei der Finanzierung das Fahrzeug am Ende dem Halter', 'auch die Leasingraten senken, indem die Kunden eine Anzahlung leisten.', 'Leasingverträge erstrecken sich meist', 'Effektiver Jahreszins: 3,9 Prozent', 'höheres Verschleißrisiko aufgrund einer längeren Nutzungsdauer'],  # 3 segments
+    'without': ['Gemeinsam finden wir Ihren passenden Kredit!', '0,00% fester Sollzins', '3737 Bewertungen'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://www.vergleich.de/auto-leasen-finanzieren-oder-kaufen.html': {
-    'file': '',  # stays empty until download
+    'file': 'vergleich.de.leasen.html',  # stays empty until download
     'author': '',
     'title': 'Auto leasen, finanzieren oder kaufen – was ist günstiger?',
     'date': '',
     'description': 'Das neue Auto leasen, finanzieren oder kaufen? Viele Wege führen zum eigenen Auto. Wir zeigen, ob sich Barkauf, Leasing oder eine Finanzierung für Sie lohnt',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Sie Ihr Auto lieber leasen oder kaufen sollten und welche Vor- und Nachteile es dabei gibt.', 'Vorteile bei der Finanzierung über einen Autokredit:', 'Das Fahrzeug muss bei der Rückgabe in seinem ursprünglichen Zustand sein, Kratzer und Beulen kommen Sie teuer zu stehen.'],  # 3 segments
+    'with': ['welche Vor- und Nachteile es dabei gibt.', 'Vorteile bei der Finanzierung über einen Autokredit:', 'Kratzer und Beulen kommen Sie teuer zu stehen.'],  # 3 segments
     'without': ['Zahnzusatzversicherung Vergleich', 'So hoch sind die Kreditzinsen 2020', 'Können wir helfen?'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://www.focus.de/auto/experten/auto-leasen-oder-kaufen-fuer-wen-lohnt-sich-was_id_9209161.html': {
-    'file': '',  # stays empty until download
+    'file': 'focus.de.leasen.html',  # stays empty until download
     'author': 'Robin Tschöpe',
     'title': 'Auto leasen oder kaufen: Für wen lohnt sich was?',
     'date': '2018-07-06',
     'description': 'Leasen, finanzieren oder kaufen? Wer ein neues Auto will, hat mehrere Möglichkeiten. Jede bringt ihr Vor- und Nachteile mit. FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['teile mit. FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.', 'ichen mit der Finanzierung die kostengünstigere Option. Mit einem Schlag ist d', 'hrzeugs zu werden. Wer es gerne flexibel mag, nicht länger als ein bis drei Jahre planen möchte oder einfach immer in den neuesten Modellen unterwegs '],  # 3 segments
-    'without': [' Bitte loggen Sie sich vor dem Kommentieren ein', '„Experten“ abonnieren', 'Persönlicher Newsletter'],  # 3 segments
+    'with': ['FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.', 'Mit einem Schlag ist d', 'Wer es gerne flexibel mag'],  # 3 segments
+    'without': ['Bitte loggen Sie sich vor dem Kommentieren ein', '„Experten“ abonnieren', 'Persönlicher Newsletter'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://www.comparis.ch/leasing/info/autofinanzierung': {
-    'file': '',  # stays empty until download
+    'file': 'comparis.ch.autofinanzierung.html',  # stays empty until download
     'author': '',
     'title': 'Finanzierung Ihres Autos',
     'date': '',
     'description': '',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Eine häufig gestellte Frage: Leasing oder Autokredit?', 'Total Differenz (Ersparnis beim Leasing)', 'racht gezogen, was später zu Ärgernissen führen könnte. Welche Art der Autofinanzierung ideal ist, sollte deshalb eher v'],  # 3 segments
-    'without': ['Immer aktuell informiert über Sparmöglichkeiten sowie Experten-Tipps rund um die Themen Gesundheit, Finanzen und Steuern. ', '108, 8003 Zürich, +41 44 360 52 62', 'Mit der Anmeldung stimme ich der Bearbeitung '],  # 3 segments
+    'with': ['Eine häufig gestellte Frage: Leasing oder Autokredit?', 'Total Differenz (Ersparnis beim Leasing)', 'Welche Art der Autofinanzierung ideal ist'],  # 3 segments
+    'without': ['Immer aktuell informiert über Sparmöglichkeiten sowie Experten-Tipps', '8003 Zürich', 'Mit der Anmeldung stimme ich der Bearbeitung'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'CH',  # if obvious: DE, CH, AT
 },
     'https://www.verivox.de/kredit/leasing-oder-finanzierung/': {
-    'file': '',  # stays empty until download
+    'file': 'verivox.de.finanzierung.html',  # stays empty until download
     'author': '',
     'title': 'Leasing oder Finanzierung? Jetzt Angebote berechnen!',
     'date': '',
     'description': 'Leasing oder Finanzierung? Die Verivox-Tarifexperten zeigen, ob Sie Ihr Auto leasen oder kaufen sollten – mit Rechnern, Beispielen, Vor- und Nachteilen.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['uelle Ratenkreditangebote von einer Vielzahl an Banken. In diesem Ratgeber finden Sie Rechenbeis', ' Wer den Autokauf außerdem nicht durch den Händler, sondern durch eine dritte Bank finanzieren lässt, kann als Barzahler auftreten und einen Rabatt aushandeln.', 'Die Drei-Wege-, Ballon- bzw. Vario-Finanzierung'],  # 3 segments
-    'without': ['Freundlich , sachlich und geduldig. Danke!', 'Der Verivox-Newsletter: immer bestens informiert! Mehr Informationen', 'in den Bereichen Energie, Telekommunikation, Versicherungen, Finanzen, '],  # 3 segments
+    'with': ['In diesem Ratgeber finden Sie Rechenbeis', 'kann als Barzahler auftreten und einen Rabatt aushandeln.', 'Die Drei-Wege-, Ballon- bzw. Vario-Finanzierung'],  # 3 segments
+    'without': ['sachlich und geduldig', 'Der Verivox-Newsletter', 'in den Bereichen Energie, Telekommunikation, Versicherungen'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://fincompare.de/firmenwagen-leasing-oder-finanzierung': {
-    'file': '',  # stays empty until download
+    'file': 'fincompare.de.firmenwagen.html',  # stays empty until download
     'author': 'Martin Junker',
     'title': 'Firmenwagen: Leasing oder Finanzierung?',
     'date': '2019-10-07',
     'description': 'Leasen oder Finanzieren eines Firmenwagens - Erfahren Sie die Besonderheiten sowie die Vor- und Nachteile ✔ für Ihr Unternehmen!',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': [' ein Unternehmen? In diesem Artikel stellen wir die wichtigsten Punkte und vor allem die steuerlichen Aspekte einer Firmenwagen-Finanzierung sowie eines Firmenwagen-Leasings gegenüber.', 'ko beim Restwertleasing besteht, ist die Höhe der Monatsraten dementsprechend niedriger als beim Kilometerleasing. Falls der Restwe', 'Kann nicht steuerlich geltend gemacht werden'],  # 3 segments
-    'without': ['Umsatzsteuererstattung bei Leasing und Mietkauf?', 'Nutzen Sie FinCompare als Wettbewerbsvorteil', 'ität der Beratung, Aktualität, vielfältige Suchoptionen, Transparenz, Übersichtlichkeit, Datenschutz.'],  # 3 segments
+    'with': ['In diesem Artikel stellen wir die wichtigsten Punkte und vor allem die steuerlichen Aspekte', 'ist die Höhe der Monatsraten dementsprechend niedriger als beim Kilometerleasing.', 'Kann nicht steuerlich geltend gemacht werden'],  # 3 segments
+    'without': ['Umsatzsteuererstattung bei Leasing und Mietkauf?', 'Nutzen Sie FinCompare als Wettbewerbsvorteil', 'vielfältige Suchoptionen, Transparenz, Übersichtlichkeit'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://www.giromatch.com/online-kredit/1000-euro-kredit': {
-    'file': '',  # stays empty until download
+    'file': 'giromatch.com.kredit.html',  # stays empty until download
     'author': '',
     'title': '1000 Euro Kredit',
     'date': '',
     'description': '1000 Euro Kredit von GIROMATCH ✓ Günstig & unkompliziert ✓ Auszahlung direkt aufs Konto ✓ 100% Unverbindlich ➤ Jetzt 1000 Euro Kredit sichern ',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['e Überbrückung bis zum nächsten Gehaltseingang oder gar ein Kurzurlaub auf den Malediven? Fragen Sie noch heute den Kredit an und Sie haben bestenfalls morgen 1000 Euro sofort auf dem Konto! ', 'Grundeinkommen bzw. keine Überschuldung', 'is bzw. Reisepass) für die Online-Identifikation und ggf. 4) Onlinebanking für Nachweis der Kontoauszüge. Durch die geringe Summe ist der 1000 Euro Kredit mit Expressüberweisung auch als Blitzkredit auszahlbar.'],  # 3 segments
-    'without': ['info@giromatch.com ', 'Ausgewählte Kreditprodukte', 'Bewerten Sie dieses Produkt'],  # 3 segments
+    'with': ['Fragen Sie noch heute den Kredit an und Sie haben bestenfalls morgen', 'Grundeinkommen bzw. keine Überschuldung', 'mit Expressüberweisung auch als Blitzkredit auszahlbar.'],  # 3 segments
+    'without': ['info@giromatch.com', 'Ausgewählte Kreditprodukte', 'Bewerten Sie dieses Produkt'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://www.financescout24.de/kredit/autokredit': {
-    'file': '',  # stays empty until download
+    'file': 'financescout24.de.autokredit.html',  # stays empty until download
     'author': '',
     'title': 'Jetzt günstigen Autokredit finden',
     'date': '',
     'description': 'Jeder zweite Neuwagen wird mit Hilfe eines Kredits gekauft. Vergleichen Sie Jetzt bequem online, unverbindlich und schufa-neutral günstige Autokredite.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Autobanken fordern oft eine Vollkasko-Versicherung für das Fahrzeug. Diese bringt weitere Kosten mit sich.', 'nötigt werden, hat der Finanzierer größere Chancen auf eine Vergütung ohne Abschläge, etwa bedingt durch Vorschäden ', ' Wieso sind Autobank-Kredite trotz niedriger Zinsen oft teurer? '],  # 3 segments
-    'without': ['Der Marktführer: Die Nr. 1 rund um Immobilien ', '© Copyright 2000 - 2020 by FinanceScout24 ', 'Aktuelle News'],  # 3 segments
+    'with': ['Diese bringt weitere Kosten mit sich.', 'hat der Finanzierer größere Chancen auf eine Vergütung ohne Abschläge', 'Wieso sind Autobank-Kredite trotz niedriger Zinsen oft teurer?'],  # 3 segments
+    'without': ['Die Nr. 1 rund um Immobilien', '© Copyright 2000', 'Aktuelle News'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20140226054445/http://www.time4talks.com/2013/08/07/weitere-digitalisierung-der-schweizer-kinos/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.time4talks.com.kinos.html',  # stays empty until download
     'author': 'R. R.',
     'title': 'Weitere Digitalisierung der Schweizer Kinos',
     'date': '2013-08-07',
     'description': 'Digitalisierung der Schweizer Kinos',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['er stark investieren müssen. Die Umstellung auf Hightech-Beamer hat nämlich kein Kinosterben verursacht, sondern das Geschä', 'hier leistet das Bundesamt für Kultur finanzielle Hilfe. Das BAK will mit diesen Beiträgen die Digitalisierung in den', 'Cinema sind inzwischen 514 Kinosäle umgerüstet. Das entspricht 94 Prozent aller Säle. Auf 270 Leinwänden sind auch 3-D-Filme zu sehen.'],  # 3 segments
-    'without': ['Bisher keine Kommentare', 'eMail (erforderlich) (wird nicht veröffentlicht)', 'eMail (erforderlich) (wird nicht veröffentlicht)'],  # 3 segments
+    'with': ['Die Umstellung auf Hightech-Beamer hat nämlich kein Kinosterben verursacht', 'Das BAK will mit diesen Beiträgen die Digitalisierung', 'Auf 270 Leinwänden sind auch 3-D-Filme zu sehen.'],  # 3 segments
+    'without': ['Bisher keine Kommentare', '(erforderlich)', 'Nutzen Sie unsere Tools'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20181206101316/https://swap-stop.org/de/filmswap/zusammenarbeit-shuji-walter-april-2018-i/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.swap-stop.org.shuji.html',  # stays empty until download
     'author': ' Walter von Aachen',
     'title': 'Zusammenarbeit Shuji ./. Walter April 2018 I',
     'date': '2018-04-11',
     'description': 'Standorte: Shuji: Japan. Walter: Deutschland. Filmmaterial: Fuji X-TRA 400. Kameras: Shuji: Widelux. Walter: PENTAX Z-1 p. Belichtungsfolge: Shuji. Walter.',  # in HTML source
     'categories': ['Filmswap', 'Shuji-Walter'],
     'tags': [' Deutschland', 'Doppelbelichtung', 'Filmswap', 'Fujifilm X-TRA 400', 'Japan', 'PENTAX Z-1p', 'Shuji', 'Walter', 'zusammenarbeit'],
-    'with': ['Fuji X-TRA 400.', 'Walter: PENTAX Z-1 p.', 'Belichtungsfolge'],  # 3 segments
-    'without': ['Gefällt mir Wird geladen...', 'Teilen mit:', '(c) 2016 - 2018 swap-stop.org '],  # 3 segments
+    'with': ['Fuji X-TRA 400.', 'Walter: PENTAX Z-1', 'Belichtungsfolge'],  # 3 segments
+    'without': ['Wird geladen', 'Teilen mit:', '(c) 2016'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20160401095740/http://www.welpenkaufen24.de/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.welpenkaufen24.de.html',  # stays empty until download
     'author': '',
     'title': 'Welpen kaufen – Tipps zu jeder Hunderasse',
     'date': '',
     'description': 'Blog zum Thema Welpen-Kaufen. Tipps zum Welpenkauf in jeder Hunderasse. Augen auf beim Welpen-Kauf!',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['dass Bekannte bei unseriösen Züchtern oder gar Vermehrern Welpen kaufen und', ' nie aus und bin für Bereicherungen durch Experten dankbar. Beschimpfungen akzeptiere ich aber nicht unter den Kommentaren.', 'Stich gelassen wird und nie mehr etwas von ihm hört, möchte ich in diesem Blog den ein oder a'],  # 3 segments
-    'without': ['Hunderassen', 'Welcher Hund passt zu mir?', 'Deine E-Mail-Adresse wird nicht veröffentlicht. Erforderliche Felder sind markiert *'],  # 3 segments
+    'with': ['dass Bekannte bei unseriösen Züchtern', 'Beschimpfungen akzeptiere ich aber nicht unter den Kommentaren.', 'möchte ich in diesem Blog den ein oder'],  # 3 segments
+    'without': ['Hunderassen', 'Welcher Hund passt zu mir?', 'Erforderliche Felder sind markiert'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20160330101229/http://muffinrezept.net/muffin-grundrezept': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.muffinrezept.net.grundrezept.html',  # stays empty until download
     'author': '',
     'title': 'Muffin Grundrezept',
     'date': '',
     'description': '',  # in HTML source
     'categories': ['Grundrezept', 'Rezepte'],
     'tags': [],
-    'with': [' Kreativität keine Grenzen gesetzt sind. Ob Schokostückchen, Kokosraspeln, Kakaopulver, Erdbeeren, Kirschen oder anderes Obst ist hierbei völlig unerheblich. Erlaubt ist alles, was gefällt und schmeckt!', 'en bei 180 Grad auf mittlerer Schiene zwischen 15 und 30 Minuten backen (abhängig von Größe der Muffins und Art der zusätzlichen ', '15 – 30 Min'],  # 3 segments
+    'with': ['Ob Schokostückchen, Kokosraspeln, Kakaopulver, Erdbeeren, Kirschen oder anderes Obst', 'bei 180 Grad auf mittlerer Schiene', '15 – 30 Min'],  # 3 segments
     'without': ['Fluffige Himbeermuffins', 'Kommentieren', 'Bildquellen'],  # 3 segments
-    'comments': ['Warum 2mal Zucker ?:-)', 'te man auch Lebensmittelfarbe hinzufügen?', 'eim 2. Mal waren sie so schwammig… Könnt ihr mir sagen, ob die Silikonform daran schuld war?'],  # 0 or 3 segments
+    'comments': ['Warum 2mal Zucker ?:-)', 'man auch Lebensmittelfarbe hinzufügen?', 'Könnt ihr mir sagen, ob die Silikonform daran schuld war?'],  # 0 or 3 segments
     'license': 'CC-BY-SA',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20160218174457/http://bewegliche-lettern.de/2010/05/literatur-und-animated-typography/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.bewegliche-lettern.de.typography.html',  # stays empty until download
     'author': '',
     'title': 'Literatur und Animated Typography',
     'date': '2010-05-19',
     'description': 'bewegliche lettern ist das private blog von Thomas Rohde über Literatur und die Buchindustrie im Medienwandel.',  # in HTML source
     'categories': ['Lesenswert', 'Literatur', 'Medienwandel'],
     'tags': ['Animated', 'Typography', 'iPad', 'Vook'],
-    'with': ['tern”. Ich schlage darin vor, in der Remix-Kunst der Animated Typography ein Beispiel dafür zu sehen, wie Literatur von den neuen digitalen Möglichkeiten ästhetisch und expressiv', ' eine entscheidende – und der Literatur vielleicht besonders gerechte – Möglichkeit bis', 'Neueste Artikel'],  # 3 segments
-    'without': ['Lesenswert: Interview über Google Editions in Deutschland', '', ''],  # 3 segments
+    'with': ['Ich schlage darin vor, in der Remix-Kunst der Animated Typography ein Beispiel dafür zu sehen', 'und der Literatur vielleicht besonders gerechte'],  # 3 segments
+    'without': ['Lesenswert: Interview über Google Editions in Deutschland', 'Comments are closed.', 'Alle redaktionellen Eigenbeiträge'],  # 3 segments
     'comments': [],
     'license': 'CC BY-NC-SA 3.0 DE',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20150721045344/http://rent-a-pastor.com/2015/05/18/neue-hochzeitslokation-in-roedermark-hessen-geheimtipp/': {
-    'file': '',  # stays empty until download
-    'author': 'Samuel Diekmann ',
+    'file': 'archive.org.rent-a-pastor.com.hochzeitslokation.html',  # stays empty until download
+    'author': 'Samuel Diekmann',
     'title': ' Neue Hochzeitslokation in Rödermark/ Hessen – Geheimtipp',
     'date': '',
     'description': 'Blog über freie und kirchliche Trauungen, Hochzeiten und Eheschließungen. Alles rund ums Heiraten, Hochzeitsfeiern, Rituale und Zeremonien.',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['in ich am Parkhotel vorbei gefahren und habe über das weiträumige Gelände gestaunt. Jetzt war ich also als Hochzeitsredner aus professionel', 'uten von der Autobahn A3 entfernt), sondern hat auch einen unglaublichen 5000 m2 Park mit See und Springbrunnen – wirklich traumhaft schön.', 'Redner in der Region findest Du zB. hier:'],  # 3 segments
-    'without': ['Kommentar verfassen ', 'Melden Sie sich für unseren Newsletter an', 'Di-Fr 10-18:00 Uhr. '],  # 3 segments
+    'with': ['am Parkhotel vorbei gefahren und habe über das weiträumige Gelände gestaunt', 'auch einen unglaublichen 5000 m2 Park mit See und Springbrunnen', 'Redner in der Region findest Du'],  # 3 segments
+    'without': ['Kommentar verfassen', 'Melden Sie sich für unseren Newsletter an', 'Di-Fr 10-18:00 Uhr. '],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20171008220355/http://juergenheitmann.com/essays/2017/01/aggression-fotografie/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.juergenheitmann.com.aggression.html',  # stays empty until download
     'author': 'Jürgen Heitmann',
     'title': 'Aggression Fotografie',
     'date': '2017-01-26',
     'description': 'Fotografie ein Akt der Aggression? Fotos schießen, Schnappschuss, Fotoshooting ... Das geschossene Foto als Trophäe. Das klingt schon recht aggressiv, nach jage…',  # in HTML source
     'categories': [],
     'tags': ['aggression', 'kontemplativ'],
-    'with': ['ession implicit in every use of the camera" oder "To photograph people is to violate them". ', 'rafie in vergangenen Kulturen und unserer aktuellen Gesellschaft (70er Jahre), "On ', 'annten, kontemplativen Fotografie könnte es durchaus interessant sein, mal ihren Sprachgebrauch zu analysieren und zu schauen, welche alternativen Ausdrücke die empfangenden Haltung för'],  # 3 segments
-    'without': ['View all essays by tag ', 'View all essays by month ', 'Mindfulness und kontemplative Fotografie'],  # 3 segments
+    'with': ['"To photograph people is to violate them"', 'in vergangenen Kulturen und unserer aktuellen Gesellschaft (70er Jahre)', 'welche alternativen Ausdrücke die empfangenden Haltung'],  # 3 segments
+    'without': ['View all essays by tag', '#kontemplativ', 'Mindfulness und kontemplative Fotografie'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20080731095558/http://www.dimido.de/2008/07/29/was-ist-virales-marketing/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.dimido.de.marketing.html',  # stays empty until download
     'author': 'Martin Weber',
     'title': 'Was ist Virales Marketing?',
     'date': '',
     'description': 'Was ist Virales Marketing?',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['s Marketing halten, habe aber keine Lust dazu, dies zu machen, um nur zu zeigen, was ich mich angelesen habe. Um doch euch eine Erklärung zu geben, verweise ich auf ein kleines Video, was ich bei Youtube wiedermal gefunden habe. Es zeigt ', 'n Beitrag aus der Sendung “Nano”, die nicht nur auf 3Sat zu sehen ist, was unter Virales Marketing zu verstehen ist und wie wir unbewusst dadurch beeinflusst werden:', 'von Virales Marketing, habe ich festgestellt. Viel mehr '],  # 3 segments
-    'without': ['besserwisser: Stecker ziehen für ne neue IP bringt nix. Downloadgeschwindi...', 'übernimmt Cherry Corporation Microsoft’s Trick für XP-User: Windows Mojave', ' E-Mail (wird benötigt und nicht veröffentlicht)'],  # 3 segments
+    'with': ['Marketing halten, habe aber keine Lust dazu, dies zu machen', 'was unter Virales Marketing zu verstehen ist und wie wir unbewusst dadurch beeinflusst werden', 'von Virales Marketing, habe ich festgestellt.'],  # 3 segments
+    'without': ['besserwisser: Stecker ziehen für ne neue IP bringt nix.', 'übernimmt Cherry Corporation', ' E-Mail (wird benötigt und nicht veröffentlicht)'],  # 3 segments
     'comments': [],
     'license': 'CC BY-NC-SA 2.0 DE',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20140109030403/http://nesselsetzer.wordpress.com/2013/12/09/rebloggt-von-gnaddrig-ad-libitum-antipoden-die-wahrheit/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.nesselsetzer.wordpress.com.antipoden.html',  # stays empty until download
     'author': 'Nesselsetzer',
-    'title': 'Rebloggt von gnaddrig ad libitum: Antipoden: Die Wahrheit ',
+    'title': 'Rebloggt von gnaddrig ad libitum: Antipoden: Die Wahrheit',
     'date': '2013-12-09',
     'description': 'Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie zu einer offensichtlich aus dem Nichts aufgetauchten Schuhsohle soll heute als lehrreiches Stück und Vorbild für die Entwi...',  # in HTML source
     'categories': ['Just For Fun', 'Rebloggt'],
     'tags': ['Antipoden', 'Hirngespinst', 'Kasparei', 'Theorie', 'Weltwissen'],
-    'with': ['Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie zu einer offensichtlich aus dem Nichts aufgetauchte', 'lehrte erhitzte Debatten darum lieferten, ob auf der anderen Seite der Erde überhaupt Menschen leben können. Die Antipoden würden ja, glaubte man, mit dem Kopf nach unten da herumlaufen müssen und würde', ' musste so sein, weil wir hier ja nachweislich mit den Füßen nach unten und dem Kopf nach oben herumlaufen und immer in Richtung Erde fallen. (weiter bei gnaddrig ad libitum)'],  # 3 segments
-    'without': ['Die dümmste aller Verschwörungstheorien: Chemtrails', 'Gefällt mir Lade...', 'Ähnliche Beiträge'],  # 3 segments
-    'comments': ['Schöne Einleitung', ' Ich verbringe meine Tage normalerweise nicht damit, auf die ', 'Same her'],  # 0 or 3 segments
-    'license': '(',  # if CC-...
+    'with': ['Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie', 'ob auf der anderen Seite der Erde überhaupt Menschen leben können.', 'musste so sein, weil wir hier ja nachweislich mit den Füßen nach unten und dem Kopf nach oben herumlaufen'],  # 3 segments
+    'without': ['Die dümmste aller Verschwörungstheorien: Chemtrails', 'Gefällt mir', 'Ähnliche Beiträge'],  # 3 segments
+    'comments': ['Schöne Einleitung', ' Ich verbringe meine Tage normalerweise nicht damit, auf die', 'Same here'],  # 0 or 3 segments
+    'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20150206075900/http://www.steinzeitwissen.de/artefakttypen/werkzeuge-des-neandertalers-und-des-modernen-menschen': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.steinzeitwissen.de.werkzeuge.html',  # stays empty until download
     'author': '',
     'title': 'Werkzeuge des Neandertalers und des Modernen Menschen',
     'date': '',
@@ -4393,105 +4392,91 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://web.archive.org/web/20160820205919/http://www.medialepfade.de/2016/01/medienpaedagogin-in-muenchen-gesucht/': {
-    'file': '',  # stays empty until download
+    'file': 'archive.org.medialepfade.de.medienpaedagogin.html',  # stays empty until download
     'author': 'Danilo Dietsch',
     'title': 'MedienpädagogIn in München gesucht',
     'date': '2016-01-15',
     'description': 'Wir suchen eine MedienpädagogIn in München in Teilzeitanstellung (60%) “medialepfade.de – Agentur für Medienbildung” ist eine Agentur im Bereich der Medienbildung und Medienpädagogik. Zu unseren Aktivitäten gehören die Konzeption und Durchführung von Aktionen, Projekten und Fortbildungen in den Bereichen Mobiles Lernen, Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpunkt liegt auf der …',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpun', 'Professionalität und Souveränität im Umgang mit Partnern und Förderern', 'ngabe des möglichen Eintrittstermins bis zum 01. Februar 2016 an '],  # 3 segments
+    'with': ['Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpun', 'Professionalität und Souveränität im Umgang mit Partnern und Förderern', 'ngabe des möglichen Eintrittstermins bis zum 01. Februar 2016 an'],  # 3 segments
     'without': ['lauffähiges Wifi, angetrieben durch ein Fahrrad, um zum Umweltschutz zu animieren @jhacktost https://t.co/8elCKJjm3o', 'Blog-Themen:', 'Möchten Sie unseren Newsletter erhalten?'],  # 3 segments
     'comments': [],
     'license': 'CC BY-SA 3.0 DE',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'http://www.modabot.de/paris-haute-couture-ss14-serkan-cura': {
-    'file': '',  # stays empty until download
+    'file': 'modabot.de.serkan.html',  # stays empty until download
     'author': 'Barbara Russ',
     'title': 'Paris Haute Couture SS14: Serkan Cura',
     'date': '2014-01-27',
     'description': '',  # in HTML source
     'categories': ['Event', 'Fashion'],
     'tags': ['Haute Couture', 'Paris', 'Serkan Cura', 'SS14'],
-    'with': ['Herpen, die diesmal leider keine Präsentation zur Pariser Couture Woche gab, als die  Prinzessin der ', 'tlich eher Kunstwerke. Eben so wie Haute Couture eigentlich sein soll: Die Krone der Mode-Schöpfu', ''],  # 3 segments
+    'with': ['Herpen, die diesmal leider keine Präsentation zur Pariser Couture Woche gab', 'Eben so wie Haute Couture eigentlich sein soll: Die Krone der Mode-Schöpfu'],  # 3 segments
     'without': ['t ist nicht verantwortlich für de', 'Weiterlesen', 'na Wintour Ausstel'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-    'https://www.vnv-business.ch/comment-proteger-son-local-commercial/': {
-    'file': '',  # stays empty until download
-    'author': '',
-    'title': 'comment protéger son local commercial ?',
-    'date': '2020-02-18',
-    'description': 'Sécuriser son local commercial est indispensable. En dehors des biens qu&rsquo;il contient, les différentes personnes à l&rsquo;intérieur du commerce doivent également être en sécurité. Dans un contexte où l&rsquo;insécurité va de plus en plus grandissant, il s&rsquo;avère donc nécessaire que certains outils soient utilisés pour assurer la sécurité du local commercial. De plus, un local &hellip;',  # in HTML source
-    'categories': [],
-    'tags': [],
-    'with': ['ntient, les différentes personnes à l’intérieur du commerce doivent également être en sécurité.', 'alintentionnés. Le fait de savoir qu’ils ont la possibilité de déclencher en tout temps une alarme offre un ', 'es innovations en matière de technologie sont vos meilleurs alliés pour protéger votre local commercial.'],  # 3 segments
-    'without': ['et de reconnaissance du commerce équitable, ', 'Thème WordPress pour blogs vnv-business.ch le portail business', 'Les archives'],  # 3 segments
-    'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
-},
     'https://www.piratenpartei-hessen.de/blog/2020/03/31/solidaritaet-nachbarschaftshilfe/': {
-    'file': '',  # stays empty until download
+    'file': 'piratenpartei-hessen.de.nachbarschaftshilfe.html',  # stays empty until download
     'author': 'Martina Scharmann',
     'title': 'Solidarität = Nachbarschaftshilfe',
     'date': '2020-03-31',
     'description': 'Piraten rufen zur Einhaltung der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf! Die Corona-Pandemie breitet sich aus. Ungeachtet der zahlreichen inzwischen eingeleiteten Maßnahmen steigt die&hellip;',  # in HTML source
     'categories': [],
     'tags': ['Corona', 'Covid-19', 'Covid19', 'Hilfe', 'Piraten', 'Piratenpartei', 'RKI', 'Robert-Koch-Institut'],
-    'with': [' anbieten und ihren Beitrag leisten, um die weitere Ausdehnung des Virus einzudämmen.', 'Wohle der Allgemeinheit riskieren. Auch die zahlreichen privaten Initiativen zur gegens', 'ng der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf'],  # 3 segments
+    'with': ['anbieten und ihren Beitrag leisten,', 'Wohle der Allgemeinheit riskieren. Auch die zahlreichen privaten Initiativen', 'ng der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf'],  # 3 segments
     'without': ['0 Piratenpartei Hes', 'Bundesschiedsgericht', 'vKV Kassel Stadt-Land-Web'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'https://gormulus.wordpress.com/2012/12/11/das-wird-man-ja-wohl-noch-sagen-durfen/': {
-    'file': '',  # stays empty until download
+    'file': 'gormulus.wordpress.com.durfen.html',  # stays empty until download
     'author': '',
     'title': '„Das wird man ja wohl noch sagen dürfen!“',
     'date': '2012-12-11',
     'description': 'Dieser Artikel folgt auf einen betont sachlich gehaltenen Beitrag über die Diskussionsunkultur beim Thema israelisch-palästinensischer Konflikt. Der @tarzun würde sagen, dass wir mal wieder reden m…',  # in HTML source
     'categories': ['Inland', 'Politik', 'Rant'],
     'tags': ['Antisemitismus'],
-    'with': ['uszudrücken, leicht beratungsresistent erscheint. Und ja, es handelt sich hier um ein Mitglied der Piratenpartei, nicht um eine außenstehende Person, ', 'igen. Ein regelrechter Hammer ist dann die Gleichsetzung von Gaza mit einem KZ. Glaubt ihr nicht? Ist aber vorgekommen.', 'rfallen, sobald ihre abstruse Gedankenwelt etwas näher beleuchtet wird: sie verfallen in die Opferrolle.'],  # 3 segments
-    'without': ['Mielke 2.0', 'icken des JMStV gewidmet.', 'Updates, ich brauch‘ Updates!'],  # 3 segments
-    'comments': ['ie gemeint sind. Vielmehr soll jede kritische Stimme der Politik im Nahen und Mittleren Osten zum Schweig', 'mir einen offen Brief mit Unterschriftenliste gewuenscht.', ' offenem Antisemitismus zu garnieren und das ganze Paket unter dem Deckmäntelchen der Mei'],  # 0 or 3 segments
+    'with': ['leicht beratungsresistent erscheint.', 'Ein regelrechter Hammer ist dann die Gleichsetzung von Gaza mit einem KZ.', 'sobald ihre abstruse Gedankenwelt etwas näher beleuchtet wird'],  # 3 segments
+    'without': ['Mielke 2.0', 'icken des JMStV gewidmet.', 'Updates!'],  # 3 segments
+    'comments': ['ie gemeint sind. Vielmehr soll jede kritische Stimme der Politik im Nahen und Mittleren Osten zum Schweig', 'mir einen offen Brief mit Unterschriftenliste gewuenscht.', 'offenem Antisemitismus zu garnieren und das ganze Paket unter dem Deckmäntelchen der Mei'],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'CC BY-NC-SA 3.0 DE',  # if obvious: DE, CH, AT
 },
     'http://diy-expeditions.com/expeditionen-planen/expeditionen-in-uebersee/': {
-    'file': '',  # stays empty until download
+    'file': 'diy-expeditions.com.uebersee.html',  # stays empty until download
     'author': '',
     'title': 'Expeditionen in Übersee',
     'date': '',
     'description': '',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['n die eine wichtige Info? Fragen Sie bei uns nach… Wir gehen gerne mit Ihnen Ihr Expeditionskonzept durch.', 'önlich. Falls Sie sich für ein vorgeschlagenes Reise-Paket der auf unserer News-Seite vertretenen Tour-Veranstalter entscheiden, so konta', 'ostenlos. Sie bezahlen Ihren Guide, Transport, Unterkunft etc. vor Ort und direkt bei Ihrem von uns vermittelten Kontakt.'],  # 3 segments
+    'with': ['Wir gehen gerne mit Ihnen Ihr Expeditionskonzept durch.', 'Falls Sie sich für ein vorgeschlagenes Reise-Paket der auf unserer News-Seite vertretenen Tour-Veranstalter entscheiden', 'Sie bezahlen Ihren Guide, Transport, Unterkunft etc. vor Ort und direkt bei Ihrem von uns vermittelten Kontakt.'],  # 3 segments
     'without': ['Fahrzeug samt Fahrer', 'Neuigkeiten aus unseren Destinationen', 'y-expeditions.com. All rights reserved'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://kleinegruenemonster.wordpress.com/2016/01/01/ein-entspannter-start-ins-neue-jahr-2016-be-happy/': {
-    'file': '',  # stays empty until download
+    'file': 'kleinegruenemonster.wordpress.com.start.html',  # stays empty until download
     'author': 'KleineGrüneMonster',
     'title': 'Ein entspannter Start ins neue Jahr 2016 – be happy! Alles andere kann warten…',
     'date': '2016-01-01',
     'description': 'Das Wichtigste zuerst: Euch allen ein wunderschönes, neues Jahr 2016, voller Glück, Freude und Schabernack :) Ein neues Jahr beginnt. Auch wenn jedem Morgen ein Neuanfang innewohnt, so hat für mich…',  # in HTML source
     'categories': ['Empfehlung', 'Plattformen', 'Schöne Dinge'],
     'tags': ['Entspannung', 'Glück', 'Neues Jahr', 'Rituale, Wellness'],
-    'with': [' geht es um Themen wie Entspannung, Meditation und Wellness, aber auch Essen, Leben und Fitness. Einfach mal abschlaten und sich inspirieren lassen. Unter dem Slogan „10 minutes a day. 31 days. A brigther you.“ bekommt ihr im Januar je', ' mich Neujahr doch irgendwie immer etwas Magisches, Reinigendes. Man zieht Bilanz. Was hat das vergangene Jahr gebracht? ', 'te – Wer, verdammt noch mal, hat die 40 Stunden Arbeitswoche erfunden? Es bleibt so wenig Zeit für die anderen Dinge des '],  # 3 segments
-    'without': ['r unter Namensnennung bzw. Linksetzung. Danke. ', 'enachrichtigungen über neue Beiträge zu', ' Start ins neue Jahr 2016 – be '],  # 3 segments
-    'comments': ['r nochmal bewusst mache. Man denkt immer, es ist nicht viel passiert, aber wenn man es genau nimmt, dann tut sich doch immer einiges …. bei m'],  # 0 or 3 segments
+    'with': ['geht es um Themen wie Entspannung, Meditation und Wellness, aber auch Essen, Leben und Fitness.', 'Man zieht Bilanz. Was hat das vergangene Jahr gebracht?', 'Wer, verdammt noch mal, hat die 40 Stunden Arbeitswoche erfunden?'],  # 3 segments
+    'without': ['r unter Namensnennung bzw. Linksetzung. Danke.', 'Benachrichtigungen über neue Beiträge zu', ' Verwendung, Vervielfältigung und Weitergabe der Inhalte'],  # 3 segments
+    'comments': ['Man denkt immer, es ist nicht viel passiert, aber wenn man es genau nimmt, dann tut sich doch immer einiges'],  # 0 or 3 segments
     'license': 'CC BY-NC 3.0 DE',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
     'https://www.markeich.de/kontakt/impressum-werbeagentur-soltau/': {
-    'file': '',  # stays empty until download
+    'file': 'markeich.de.impressum.html',  # stays empty until download
     'author': '',
     'title': 'Impressum',
     'date': '',
@@ -4499,20 +4484,20 @@ EVAL_PAGES = {
     'categories': [],
     'tags': [],
     'with': ['ngaben gemäß § 5 TMG', 'bieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtsw', 'rtlich für den Inhalt nach § 55 Abs. 2 RStV'],  # 3 segments
-    'without': ['Auszeichnungen', '© 2020 Agentur MARKE ICH ', 'Es gilt die Datenschutzerklärung. '],  # 3 segments
+    'without': ['Auszeichnungen', '© 2020 Agentur MARKE ICH', 'Es gilt die Datenschutzerklärung.'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
     'http://www.schlosswirtjuval.it/hof-geschichte/': {
-    'file': '',  # stays empty until download
+    'file': 'schlosswirtjuval.it.geschichte.html',  # stays empty until download
     'author': '',
     'title': 'Zur Geschichte des „Oberortlhofs“',
     'date': '',
     'description': '',  # in HTML source
     'categories': [],
     'tags': [],
-    'with': ['t aufblühte. Leider war dies nicht von langer Dauer, denn bereits 1581 sahen sich die Söhne Sinkmoser genötigt, die Burg wieder dem Landesfürsten auf zusenden. Dieser verlieh sie an die Grafen ', 'est Henry Shackleton. Den Möglichkeiten des Kommunikationszeitalters setzt er sein Unterwegssein als Fußgänger gegenüber und verzichtet auf Sauerstoffmasken und Satellitentelefon – ', 'n sich alle 6 bis 14-jährigen Kinder der Juvaler Höfe zum Unterricht. Die Lernerfolge hingen sehr v'],  # 3 segments
+    'with': ['Leider war dies nicht von langer Dauer, denn bereits 1581', 'Den Möglichkeiten des Kommunikationszeitalters setzt er sein Unterwegssein', 'alle 6 bis 14-jährigen Kinder der Juvaler Höfe zum Unterricht'],  # 3 segments
     'without': ['Messner Mountain Museum Juval', '+39 389 1976362 info@schlosswirtjuval.it', 'Weingut & Hofbrennerei Unterortl'],  # 3 segments
     'comments': [],
     'license': '',  # if CC-...
