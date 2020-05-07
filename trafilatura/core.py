@@ -409,8 +409,8 @@ def extract_comments(tree):
 def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
-    if tree is None:
-        return body, text, len_text
+    #if tree is None:
+    #    return body, text, len_text
     # try with readability
     temppost_algo = try_readability(backup_tree, url)
     algo_text = trim(' '.join(temppost_algo.itertext()))
@@ -446,11 +446,11 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.debug('justext length %s', len_text2)
         if len_text2 > 0: #MIN_EXTRACTED_SIZE:
             body, len_text, text = body2, len_text2, text2
-        else:
-            # post-processing: remove unwanted sections
-            for elem in body.xpath('//aside|//button|//figure|//footer|//img|//input|//noscript|//svg'):
-                elem.getparent().remove(elem)
-            #etree.strip_tags(body, 'figure', 'img')
+        #else:
+        #    # post-processing: remove unwanted sections
+        #    for elem in body.xpath('//aside|//button|//figure|//footer|//img|//input|//noscript|//svg'):
+        #        elem.getparent().remove(elem)
+        #    #etree.strip_tags(body, 'figure', 'img')
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)  # record_id,
@@ -546,7 +546,10 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
     else:
         if csv_output is True:
             posttext = xmltotxt(postbody)
-            commentstext = xmltotxt(commentsbody)
+            if commentsbody is not None:
+                commentstext = xmltotxt(commentsbody)
+            else:
+                commentstext = ''
             returnstring = txttocsv(posttext, commentstext, docmeta)
         else:
             output = build_xml_output(postbody, commentsbody)

@@ -241,37 +241,3 @@ def write_fullheader(header, docmeta):
             tags_list = etree.SubElement(keywords, 'term', type='tags')
             tags_list.text = ','.join(docmeta.tags)
     return header
-
-
-#def write_simpleheader(header, docmeta):
-#    filedesc = etree.SubElement(header, 'fileDesc')
-#    #biblfull = etree.SubElement(sourcedesc, 'biblFull')
-#    bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
-#    bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
-#    bib_titlemain.text = docmeta.title
-#    bib_titlesub = etree.SubElement(bib_titlestmt, 'title', type='excerpt')
-#    bib_titlesub.text = docmeta.description
-#    bib_author = etree.SubElement(bib_titlestmt, 'author')
-#    bib_author.text = docmeta.author
-#    publicationstmt = etree.SubElement(filedesc, 'publicationStmt')
-#    publication_publisher = etree.SubElement(publicationstmt, 'publisher')
-#    publication_publisher.text = docmeta.sitename
-#    publication_url = etree.SubElement(publicationstmt, 'idno', type='URL')
-#    publication_url.text = docmeta.url
-#    publication_date = etree.SubElement(publicationstmt, 'date')
-#    publication_date.set('type', 'publication')
-#    publication_date.text = docmeta.date
-#    sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
-#    source_p = etree.SubElement(sourcedesc, 'p')
-#    if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
-#        if len(docmeta.categories) > 0:
-#            cat_list = etree.SubElement(source_p, 'list', type='categories')
-#            for cat in docmeta.categories:
-#                item = etree.SubElement(cat_list, 'item')
-#                item.text = cat
-#        if len(docmeta.tags) > 0:
-#            tags_list = etree.SubElement(source_p, 'list', type='tags')
-#            for tag in docmeta.tags:
-#                item = etree.SubElement(tags_list, 'item')
-#                item.text = tag
-#    return header
