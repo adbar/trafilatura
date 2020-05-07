@@ -58,7 +58,7 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
             return result
         # ugly but efficient
         except Exception as err:
-            sys.stderr.write('# ERROR: %s for %s\nDetails: %s', err, url, sys.exc_info()[0])
+            sys.stderr.write('# ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
     return None
 
 
