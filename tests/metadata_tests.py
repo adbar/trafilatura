@@ -75,6 +75,7 @@ MOCK_PAGES = {
 'https://blog.mondediplo.net/turpitude-et-architecture': 'mondediplo.net.turpitude.html',
 'https://www.scmp.com/comment/opinion/article/3046526/taiwanese-president-tsai-ing-wens-political-playbook-should-be': 'scmp.com.playbook.html',
 'https://www.faz.net/aktuell/wirtschaft/nutzerbasierte-abrechnung-musik-stars-fordern-neues-streaming-modell-16604622.html': 'faz.net.streaming.html',
+'https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html': 'ndr.de.podcastcoronavirus140.html',
 }
 
 
@@ -381,6 +382,12 @@ def test_pages():
     assert 'Science & Health' in metadata.categories
     assert 'Gas Industry' in metadata.tags and 'coal emissions' in metadata.tags
     assert metadata.url == url
+
+    url = 'https://www.ndr.de/nachrichten/info/16-Coronavirus-Update-Wir-brauchen-Abkuerzungen-bei-der-Impfstoffzulassung,podcastcoronavirus140.html'
+    metadata = extract_metadata(load_mock_page(url))
+    assert metadata.url == url
+    assert 'Korinna Hennig' in metadata.author
+    assert 'Ältere Menschen' in str(metadata.tags)
 
 
 if __name__ == '__main__':

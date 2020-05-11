@@ -232,16 +232,33 @@ def extract_author(tree):
 
 def extract_url(tree):
     '''Extract the URL from the canonical link'''
+    url = None
     # try canonical link first
     element = tree.find('.//head//link[@rel="canonical"]')
     if element is not None:
-        return element.attrib['href']
+        url = element.attrib['href']
     # try default language link
-    for element in tree.xpath('.//head//link[@rel="alternate"]'):
-        if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib['hreflang'] == 'x-default':
-            print(html.tostring(element, pretty_print=False, encoding='unicode').strip())
-            return element.attrib['href']
-    return None
+    else:
+        for element in tree.xpath('//head//link[@rel="alternate"]'):
+            if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib['hreflang'] == 'x-default':
+                LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
+                url = element.attrib['href']
+    # add domain name if it's missing
+    if url is not None and url.startswith('/'):
+        for element in tree.xpath('//head//meta[@content]'):
+            if 'name' in element.attrib:
+                attrtype = element.attrib['name']
+            elif 'property' in element.attrib:
+                attrtype = element.attrib['property']
+            else:
+                continue
+            if attrtype.startswith('og:') or attrtype.startswith('twitter:'):
+                match = re.match(r'https?://[^/]+', element.attrib['content'])
+                if match:
+                    # prepend URL
+                    url = match.group(0) + url
+                    break
+    return url
 
 
 def extract_sitename(tree):
