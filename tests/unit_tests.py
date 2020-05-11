@@ -36,6 +36,10 @@ from trafilatura import cli, utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
+
+TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+
+
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
 'https://die-partei.net/luebeck/2012/05/31/das-ministerium-fur-club-kultur-informiert/': 'die-partei.net.luebeck.html',
@@ -127,9 +131,6 @@ MOCK_PAGES = {
 # '': '', \
 
 
-TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-
-
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
     '''load mock page from samples'''
     try:
@@ -167,6 +168,8 @@ def test_trim():
     # my_elem.text = 'Tags: Arbeit, Urlaub'
     my_elem.text = 'Instagram'
     assert textfilter(my_elem) is True
+    # sanitize logic
+    assert utils.sanitize(None) is None
 
 
 def test_input():
@@ -664,11 +667,19 @@ def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
     resources_dir = os.path.join(TEST_DIR, 'resources')
-    html_filepath = os.path.join(resources_dir, 'httpbin_sample.html')
-    with open(html_filepath) as f:
+    with open(os.path.join(resources_dir, 'httpbin_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
-    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=True)
+    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False)
+    assert result is not None
+    mytree = etree.fromstring(result)
+    assert xml.validate_tei(mytree) is True
+    assert xml.validate_tei(teststring) is False
+    # test with another file
+    with open(os.path.join(resources_dir, 'http_sample.html')) as f:
+        teststring = f.read()
+    # download, parse and validate simple html file
+    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False)
     assert result is not None
     mytree = etree.fromstring(result)
     assert xml.validate_tei(mytree) is True
