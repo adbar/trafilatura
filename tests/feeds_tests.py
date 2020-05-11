@@ -47,3 +47,9 @@ def test_cli_behavior():
     with patch.object(sys, 'argv', testargs):
         assert cli.main() is None
 
+
+if __name__ == '__main__':
+   test_atom_extraction()
+   test_rss_extraction()
+   test_feeds_helpers()
+   test_cli_behavior()

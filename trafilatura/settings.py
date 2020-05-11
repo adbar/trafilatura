@@ -11,6 +11,8 @@ from lxml.html.clean import Cleaner
 
 MAX_FILE_SIZE = 20000000
 MIN_FILE_SIZE = 10
+SLEEP_TIME = 2
+
 
 ## extract
 MIN_EXTRACTED_SIZE = 200

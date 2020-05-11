@@ -18,7 +18,7 @@ from time import sleep
 from .core import extract
 from .feeds import fetch_feed
 from .utils import fetch_url
-from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
+from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, SLEEP_TIME
 
 
 # fix output encoding on some systems
@@ -155,13 +155,34 @@ def write_result(result, args):
                 outputfile.write(result)
 
 
+def processing_pipeline(args, input_urls, sleeptime):
+    '''Aggregated functions to show a list and download and process an input list'''
+    if input_urls is None or len(input_urls) == 0:
+        return
+    for url in input_urls:
+        if args.list:
+            write_result(url, args)  # print('\n'.join(input_urls))
+        else:
+            htmlstring = fetch_url(url)
+            result = examine(htmlstring, url=url, no_fallback=args.fast,
+                             include_comments=args.nocomments, include_tables=args.notables,
+                             csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
+                             validation=args.validate, formatting=args.formatting)
+            write_result(result, args)
+            # sleep between requests
+            sleep(sleeptime)
+
+
 def main():
     """ Run as a command-line utility. """
     # arguments
     args = parse_args(sys.argv[1:])
     if args.verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    # processing according to mutually exclusive options
+    # read url list from input file
     if args.inputfile:
+        input_urls = list()
         try:
             # optional: errors='strict', buffering=1
             with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
@@ -169,17 +190,15 @@ def main():
                     if not line.startswith('http'):
                         LOGGER.warning('Not an URL, discarding line: %s', line)
                         continue
-                    url = line.strip()
-                    htmlstring = fetch_url(url)
-                    result = examine(htmlstring, url=url, no_fallback=args.fast,
-                                     include_comments=args.nocomments, include_tables=args.notables,
-                                     csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
-                                     validation=args.validate, formatting=args.formatting)
-                    write_result(result, args)
-                    # sleep 2 sec between requests
-                    sleep(2)
+                    input_urls.append(line.strip())
         except UnicodeDecodeError:
             sys.exit('# ERROR: system, file type or buffer encoding')
+        processing_pipeline(args, input_urls, SLEEP_TIME)
+    # fetch urls from a feed
+    elif args.feed:
+        links = fetch_feed(args.feed)
+        processing_pipeline(args, links, SLEEP_TIME)
+    # read files from an input directory
     elif args.inputdir:
         #if not args.outputdir:
         #    sys.exit('# ERROR: please specify an output directory along with the input directory')
@@ -197,19 +216,7 @@ def main():
                     write_result(result, args)
                 except UnicodeDecodeError:
                     LOGGER.warning('Discarding (file type issue): %s', inputfile)
-    elif args.feed:
-        links = fetch_feed(args.feed)
-        if args.list:
-            if links is not None and len(links) > 0:
-                print('\n'.join(links))
-        else:
-            for link in links:
-                htmlstring = fetch_url(link)
-                result = examine(htmlstring, url=url, no_fallback=args.fast,
-                                 include_comments=args.nocomments, include_tables=args.notables,
-                                 csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
-                                 validation=args.validate, formatting=args.formatting)
-                write_result(result, args)
+    # read from input directly
     else:
         # process input URL
         if args.URL:

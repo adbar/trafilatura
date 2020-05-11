@@ -32,7 +32,6 @@ def extract_links(feed):
         for item in re.findall(r'<link>(.+?)</link>', feed):
             links.append(item)
     else:
-        LOGGER.debug('Does not seem to ba a valid feed')
         return links
     # control output for validity
     for item in links:
@@ -48,4 +47,5 @@ def fetch_feed(feed_url):
         feed_links = extract_links(feed_download)
         if len(feed_links) > 0:
             return feed_links
+    LOGGER.debug('Does not seem to be a valid feed')
     return None

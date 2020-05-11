@@ -32,7 +32,7 @@ import trafilatura.filters
 from trafilatura.core import baseline, extract, process_record, trim
 from trafilatura.filters import duplicate_test, put_in_cache, textfilter
 from trafilatura.lru import LRUCache
-from trafilatura import cli, utils, xml
+from trafilatura import utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -182,59 +182,6 @@ def test_input():
     assert process_record(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
 
 
-def test_parser():
-    '''test argument parsing for the command-line interface'''
-    testargs = ['', '-fv', '--xmltei', '--notables', '-u', 'https://www.example.org']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-        assert args.fast is True
-        assert args.verbose is True
-        assert args.notables is False
-        assert args.xmltei is True
-        assert args.URL == 'https://www.example.org'
-
-
-def test_climain():
-    '''test arguments and main CLI entrypoint'''
-    assert os.system('trafilatura --help') == 0  # exit status
-    # assert os.system('trafilatura -f -u https://httpbin.org/html') == 0
-    # assert os.system('curl -s https://httpbin.org/html | trafilatura') == 0
-    # input directory walking and processing
-    assert os.system('trafilatura --inputdir "trafilatura/data/"') == 0
-    assert os.system('trafilatura --inputdir "tests/resources/"') == 0
-    #testargs = ['--inputdir tests/resources/']
-    #with patch.object(sys, 'argv', testargs):
-    #    result = cli.main()
-    #print(result)
-
-
-def test_input_type():
-    '''test input type errors'''
-    testfile = 'docs/trafilatura-demo.gif'
-    with open(testfile, 'rb') as f:
-        teststring = f.read(1024)
-    assert cli.examine(teststring) is None
-    testfile = 'docs/index.rst'
-    with open(testfile, 'r') as f:
-        teststring = f.read()
-    assert cli.examine(teststring) is None
-
-
-def test_sysoutput():
-    '''test output: ...'''
-    testargs = ['', '--csv', '-o', '/root/forbidden/']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    filename = cli.determine_filename(args)
-    assert len(filename) >= 10 and filename.endswith('.csv')
-    assert cli.check_outputdir_status(args) is False
-    testargs = ['', '--xml', '-o', '/tmp/you-touch-my-tralala']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    assert cli.check_outputdir_status(args) is True
-    assert cli.determine_filename(args).endswith('.xml')
-
-
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_txttocsv():
     Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
@@ -245,25 +192,6 @@ def test_txttocsv():
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\tTest title\tNone\tTest text\tTest comment\n'
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True) is not None
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True, include_comments=False).endswith('\t\n')
-
-
-def test_download():
-    '''test page download and command-line interface'''
-    assert cli.examine(' ') is None
-    assert cli.examine('0'*int(10e7), True) is None
-    assert utils.fetch_url('https://httpbin.org/status/404') is None
-    url = 'https://httpbin.org/status/200'
-    teststring = utils.fetch_url(url)
-    assert teststring is None  # too small
-    assert cli.examine(teststring, url) is None
-    url = 'https://httpbin.org/links/2/2'
-    teststring = utils.fetch_url(url)
-    assert teststring is not None
-    assert cli.examine(teststring, url) is None
-    url = 'https://httpbin.org/html'
-    teststring = utils.fetch_url(url)
-    assert teststring is not None
-    assert cli.examine(teststring, url) is not None
 
 
 @pytest.mark.parametrize("xmloutput", [False, True])
@@ -404,7 +332,7 @@ def test_extract(xmloutput): # xmloutput=False
     result = load_mock_page('https://www.cnet.de/88130484/so-koennen-internet-user-nach-dem-eugh-urteil-fuer-den-schutz-sensibler-daten-sorgen', xmloutput)
     assert 'Auch der Verweis auf ehrverletzende Bewertungen' in result and 'Fanden Sie diesen Artikel nützlich?' not in result and 'Kommentar hinzufügen' not in result # and 'Zu seinen Tätigkeitsfeldern zählen' not in result
     if xmloutput is False:
-        assert 'Anja Schmoll-Trautmann' not in result and 'Aktuell' not in result 
+        assert 'Anja Schmoll-Trautmann' not in result and 'Aktuell' not in result
 
     result = load_mock_page('https://correctiv.org/aktuelles/neue-rechte/2019/05/14/wir-haben-bereits-die-zusage', xmloutput)
     assert 'Alle Artikel zu unseren Recherchen' not in result and 'Vorweg: Die beteiligten AfD-Politiker' in result and 'ist heute Abend um 21 Uhr auch im ZDF-Magazin Frontal' in result and 'Wir informieren Sie regelmäßig zum Thema Neue Rechte' not in result and 'Kommentar verfassen' not in result and 'weiterlesen' not in result
@@ -449,7 +377,7 @@ def test_extract(xmloutput): # xmloutput=False
     assert 'Zuerst dachte ich, ich könnte das' in result and 'x Franzi' in result and 'Flauschjacke: Bershka' in result and 'Palm Springs Mini (links)' not in result and 'Diese Website verwendet Akismet' not in result and 'New York, New York' not in result
 
     result = load_mock_page('https://www.gofeminin.de/abnehmen/wie-kann-ich-schnell-abnehmen-s1431651.html', xmloutput)
-    assert 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result and '2. Satt essen bei den Mahlzeiten' in result and 'Bringt die Kilos zum Purzeln!' not in result # 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and 
+    assert 'Die Psyche spielt eine nicht unerhebliche Rolle' in result and 'Sportskanone oder Sportmuffel' not in result and 'PINNEN' not in result and '2. Satt essen bei den Mahlzeiten' in result and 'Bringt die Kilos zum Purzeln!' not in result # 'Crash-Diäten ziehen meist den Jojo-Effekt' in result and
 
     result = load_mock_page('https://www.brigitte.de/liebe/persoenlichkeit/ikigai-macht-dich-sofort-gluecklicher--10972896.html', xmloutput)
     assert 'Glücks-Trend Konkurrenz' in result and 'Praktiziere Dankbarkeit' in result and 'dein Ikigai schon gefunden?' in result and '14,90 Euro.' in result and 'Neu in Liebe' not in result and 'Erfahre mehr' not in result and 'Erfahrung mit privater Arbeitsvermittlung?' not in result
@@ -515,7 +443,7 @@ def test_extract(xmloutput): # xmloutput=False
     assert 'Le décret n°2019-1130 validant' in result and 'restructurant à cet effet ».' in result and ' utilise des cookies pour' not in result and 'En savoir plus' not in result # and 'CNRS, Inserm, Inria.' not in result
 
     result = load_mock_page('https://www.chip.de/test/Beef-Maker-von-Aldi-im-Test_154632771.html', xmloutput)
-    assert 'Starke Hitze nur in der Mitte' in result and 'ca. 35,7×29,4 cm' in result and 'Wir sind im Steak-Himmel!' in result and 'Samsung Galaxy S10 128GB' not in result and 'Für Links auf dieser Seite' not in result # and 'Inga Buller ist Head of Social' not in result 
+    assert 'Starke Hitze nur in der Mitte' in result and 'ca. 35,7×29,4 cm' in result and 'Wir sind im Steak-Himmel!' in result and 'Samsung Galaxy S10 128GB' not in result and 'Für Links auf dieser Seite' not in result # and 'Inga Buller ist Head of Social' not in result
 
     result = load_mock_page('http://www.sauvonsluniversite.fr/spip.php?article8532', xmloutput)
     assert 'L’AG Éducation Île-de-France inter-degrés' in result and 'Grève et mobilisation pour le climat' in result and 'suivi.reformes.blanquer@gmail.com' in result and 'Sauvons l’Université !' not in result and 'La semaine de SLU' not in result
@@ -660,7 +588,7 @@ def test_filters():
         assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', None, None) is False
     else:
         # no detection
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', None, None) is False 
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', None, None) is False
 
 
 def test_tei():
@@ -674,7 +602,8 @@ def test_tei():
     assert result is not None
     mytree = etree.fromstring(result)
     assert xml.validate_tei(mytree) is True
-    assert xml.validate_tei(teststring) is False
+    mytree = etree.fromstring(teststring)
+    assert xml.validate_tei(mytree) is False
     # test with another file
     with open(os.path.join(resources_dir, 'http_sample.html')) as f:
         teststring = f.read()
@@ -689,10 +618,6 @@ if __name__ == '__main__':
     test_trim()
     test_lrucache()
     test_input()
-    test_sysoutput()
-    test_parser()
-    test_climain()
-    test_input_type()
     test_formatting()
     test_filters()
     test_baseline()
@@ -700,5 +625,4 @@ if __name__ == '__main__':
     test_exotic_tags()
     test_extract(False)
     test_extract(True)
-    test_download()
     test_tei()
