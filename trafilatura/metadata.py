@@ -65,7 +65,7 @@ def extract_opengraph(tree):
         if elem.get('property') == 'og:site_name':
             site_name = elem.get('content')
         # blog title
-        if elem.get('property') == 'og:title':
+        elif elem.get('property') == 'og:title':
             title = elem.get('content')
         # orig URL
         elif elem.get('property') == 'og:url':
@@ -87,76 +87,75 @@ def extract_opengraph(tree):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    title, author, url, description, site_name, tags = (None,) * 6
+    # bootstrap from potential OpenGraph tags
+    title, author, url, description, site_name = extract_opengraph(tree)
+    # test if all return values have been assigned
+    if all((title, author, url, description, site_name)):  # if they are all defined
+        return (title, author, url, description, site_name, None, None, None)
     tags = list()
-    # test for potential OpenGraph tags
-    if tree.find('.//head/meta[@property]') is not None:
-        title, author, url, description, site_name = extract_opengraph(tree)
-        # test if all return values have been assigned
-        if all((title, author, url, description, site_name)):  # if they are all defined
-            return (title, author, url, description, site_name, None, None, None)
+    # skim through meta tags
     for elem in tree.xpath('//head/meta'):
         # safeguard
         if len(elem.attrib) < 1:
             LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
             continue
-        # no opengraph a second time
-        if elem.get('property') and elem.get('property').startswith('og:'):
+        # content
+        if 'content' not in elem.attrib:
+            continue
+        content_attr = elem.get('content')
+        if len(content_attr) < 1:
             continue
         # image info
         # ...
-        # name attribute
-        if 'name' in elem.attrib: # elem.get('name') is not None:
-            # safeguard
-            if elem.get('content') is None or len(elem.get('content')) < 1:
+        # property
+        if 'property' in elem.attrib:
+            # no opengraph a second time
+            if elem.get('property').startswith('og:'):
                 continue
+            if elem.get('property') == 'article:tag':
+                tags.append(content_attr)
+            elif elem.get('property') in ('author', 'article:author'):
+                if author is None:
+                    author = content_attr
+        # name attribute
+        elif 'name' in elem.attrib: # elem.get('name') is not None:
             # author
             if elem.get('name') in ('author', 'byl', 'dc.creator', 'sailthru.author'):  # twitter:creator
                 if author is None:
-                    author = elem.get('content')
+                    author = content_attr
             # title
             elif elem.get('name') in ('title', 'dc.title', 'sailthru.title', 'twitter:title'):
                 if title is None:
-                    title = elem.get('content')
+                    title = content_attr
             # description
-            elif elem.get('name') in('description', 'dc.description', 'dc:description', 'sailthru.description', 'twitter:description'):
+            elif elem.get('name') in ('description', 'dc.description', 'dc:description', 'sailthru.description', 'twitter:description'):
                 if description is None:
-                    description = elem.get('content')
+                    description = content_attr
             # site name
             elif elem.get('name') in ('publisher', 'DC.publisher', 'twitter:site', 'application-name') or 'twitter:app:name' in elem.get('name'):
                 if site_name is None:
-                    site_name = elem.get('content')
+                    site_name = content_attr
             # url
             elif elem.get('name') == 'twitter:url':
                 if url is None:
-                    url = elem.get('content')
+                    url = content_attr
             # keywords
             elif elem.get('name') == 'keywords': # 'page-topic'
-                tags.append(elem.get('content'))
+                tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
                 if author is None:
-                    author = elem.get('content')
-                # elif elem.get('name') is not None:
-                #    author = elem.get('name')
-            if elem.get('itemprop') == 'description':
+                    author = content_attr
+            elif elem.get('itemprop') == 'description':
                 if description is None:
-                    description = elem.get('content')
+                    description = content_attr
             # to verify:
-            #if elem.get('itemprop') == 'name':
+            #elif elem.get('itemprop') == 'name':
             #    if title is None:
             #        title = elem.get('content')
-        # categories and tags
-        elif 'property' in elem.attrib:
-            if elem.get('property') == 'article:tag':
-                if elem.get('content') is not None:
-                    tags.append(elem.get('content'))
-            elif elem.get('property') in ('author', 'article:author'):
-                if author is None:
-                    author = elem.get('content')
         # other types
         else:
-            if 'http-equiv' in elem.attrib or 'property' in elem.attrib:
+            if 'charset' in elem.attrib or 'http-equiv' in elem.attrib or 'property' in elem.attrib:
                 pass  # e.g. charset=UTF-8
             else:
                 LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
@@ -174,10 +173,8 @@ def extract_metainfo(tree, expressions, len_limit=200):
             LOGGER.debug('more than one result: %s %s', expression, len(target_elements))
         # examine all results
         for elem in target_elements:
-            if elem.text_content() is not None:
-                candidate = elem.text_content()
-                if len(candidate) < len_limit:
-                    result = candidate
+            if elem.text_content() is not None and len(elem.text_content()) < len_limit:
+                result = elem.text_content()
             # exit loop if something usable has been found
             if result is not None:
                 break
@@ -189,32 +186,30 @@ def extract_metainfo(tree, expressions, len_limit=200):
 
 def extract_title(tree):
     '''Extract the document title'''
-    title = None
     # only one h1-element: take it
-    results = tree.xpath('//h1')
-    if len(results) == 1:
-        title = results[0].text
-    else:
-        # extract using x-paths
-        title = extract_metainfo(tree, title_xpaths)
-        # extract using title tag
-        if title is None:
-            try:
-                title = tree.find('.//head/title').text
-                if '-' in title or '|' in title:
-                    mymatch = re.search(r'^(.+)?\s+[-|]\s+.*$', title)
-                    if mymatch:
-                        title = mymatch.group(1)
-            except AttributeError:
-                LOGGER.warning('no main title found')
-        # take first h1-title
-        if title is None and len(results) > 0:
-            title = results[0].text
-        # take first h2-title
-        if title is None:
-            results = tree.xpath('//h2')
-            if len(results) > 0:
-                title = results[0].text
+    h1_results = tree.xpath('//h1')
+    if len(h1_results) == 1:
+        return h1_results[0].text
+    # extract using x-paths
+    title = extract_metainfo(tree, title_xpaths)
+    if title is not None:
+        return title
+    # extract using title tag
+    title = None
+    try:
+        title = tree.find('.//head/title').text
+        if '-' in title or '|' in title:
+            mymatch = re.search(r'^(.+)?\s+[-|]\s+.*$', title)
+            if mymatch:
+                title = mymatch.group(1)
+    except AttributeError:
+        LOGGER.warning('no main title found')
+    # take first h1-title
+    if title is None and len(h1_results) > 0:
+        title = h1_results[0].text
+    # take first h2-title
+    if title is None and len(tree.xpath('//h2')) > 0:
+        title = tree.xpath('//h2')[0].text
     return title
 
 
@@ -230,9 +225,10 @@ def extract_author(tree):
     return author
 
 
-def extract_url(tree):
+def extract_url(tree, default_url=None):
     '''Extract the URL from the canonical link'''
-    url = None
+    # default url as fallback
+    url = default_url
     # try canonical link first
     element = tree.find('.//head//link[@rel="canonical"]')
     if element is not None:
@@ -253,10 +249,10 @@ def extract_url(tree):
             else:
                 continue
             if attrtype.startswith('og:') or attrtype.startswith('twitter:'):
-                match = re.match(r'https?://[^/]+', element.attrib['content'])
-                if match:
+                domain_match = re.match(r'https?://[^/]+', element.attrib['content'])
+                if domain_match:
                     # prepend URL
-                    url = match.group(0) + url
+                    url = domain_match.group(0) + url
                     break
     return url
 
@@ -332,22 +328,17 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
         mymeta = mymeta._replace(author=extract_author(tree))
     # url
     if mymeta.url is None:
-        mymeta = mymeta._replace(url=extract_url(tree))
-    # default url
-    if mymeta.url is None and default_url is not None:
-        mymeta = mymeta._replace(url=default_url)
+        mymeta = mymeta._replace(url=extract_url(tree, default_url))
     # sitename
     if mymeta.sitename is None:
         mymeta = mymeta._replace(sitename=extract_sitename(tree))
-    if mymeta.sitename:
+    if mymeta.sitename is not None:
         if mymeta.sitename.startswith('@'):
             # scrap Twitter ID
-            newsitename = re.sub(r'^@', '', mymeta.sitename)
-            mymeta = mymeta._replace(sitename=newsitename)
+            mymeta = mymeta._replace(sitename=re.sub(r'^@', '', mymeta.sitename))
         # capitalize
         if not '.' in mymeta.sitename and not mymeta.sitename[0].isupper():
-            newsitename = mymeta.sitename.title()
-            mymeta = mymeta._replace(sitename=newsitename)
+            mymeta = mymeta._replace(sitename=mymeta.sitename.title())
     else:
         # use URL
         if mymeta.url:
