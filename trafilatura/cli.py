@@ -16,6 +16,7 @@ from os import makedirs, path, walk
 from time import sleep
 
 from .core import extract
+from .feeds import fetch_feed
 from .utils import fetch_url
 from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
 
@@ -103,8 +104,13 @@ def parse_args(args):
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
                         action="store_true")
+    parser.add_argument("--feed",
+                        help="pass a feed URL as input",
+                        type=str)
+    parser.add_argument("--list",
+                        help="return a list of URLs without downloading them",
+                        action="store_true")
     return parser.parse_args()
-
 
 
 def check_outputdir_status(args):
@@ -191,6 +197,19 @@ def main():
                     write_result(result, args)
                 except UnicodeDecodeError:
                     LOGGER.warning('Discarding (file type issue): %s', inputfile)
+    elif args.feed:
+        links = fetch_feed(args.feed)
+        if args.list:
+            if links is not None and len(links) > 0:
+                print('\n'.join(links))
+        else:
+            for link in links:
+                htmlstring = fetch_url(link)
+                result = examine(htmlstring, url=url, no_fallback=args.fast,
+                                 include_comments=args.nocomments, include_tables=args.notables,
+                                 csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
+                                 validation=args.validate, formatting=args.formatting)
+                write_result(result, args)
     else:
         # process input URL
         if args.URL:
