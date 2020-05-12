@@ -6,7 +6,6 @@ Implementing a basic command-line interface.
 ## under GNU GPL v3 license
 
 import argparse
-import codecs
 import logging
 import random
 import string
@@ -21,6 +20,9 @@ from .utils import fetch_url
 from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, SLEEP_TIME
 
 
+LOGGER = logging.getLogger(__name__)
+random.seed(345)  # make generated file names reproducible
+
 # fix output encoding on some systems
 try:
     # > Python 3.7
@@ -29,18 +31,18 @@ try:
     if sys.stderr.encoding != 'UTF-8':
         sys.stderr.reconfigure(encoding='utf-8')
 except AttributeError:
+    import codecs
     if sys.stdout.encoding != 'UTF-8':
         sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     if sys.stderr.encoding != 'UTF-8':
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-
-LOGGER = logging.getLogger(__name__)
 
 
 def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
             include_tables=True, csv_output=False, xml_output=False,
             tei_output=False, validation=False, formatting=False):
     """Generic safeguards and triggers"""
+    result = None
     # safety check
     if htmlstring is None:
         sys.stderr.write('# ERROR: empty document\n')
@@ -56,11 +58,10 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
                              csv_output=csv_output, xml_output=xml_output,
                              tei_output=tei_output, tei_validation=validation,
                              include_formatting=formatting)
-            return result
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('# ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
-    return None
+    return result
 
 
 def parse_args(args):
@@ -205,17 +206,17 @@ def main():
         # walk the directory tree
         for root, _, inputfiles in walk(args.inputdir):
             for fname in inputfiles:
-                inputfile = path.join(root, fname)
                 try:
-                    with open(inputfile, mode='r', encoding='utf-8') as inputfh:
+                    with open(path.join(root, fname), mode='r', encoding='utf-8') as inputfh:
                         htmlstring = inputfh.read()
+                except UnicodeDecodeError:
+                    LOGGER.warning('Discarding (file type issue): %s', path.join(root, fname))
+                else:
                     result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
                                      include_comments=args.nocomments, include_tables=args.notables,
                                      csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
                                      validation=args.validate, formatting=args.formatting)
                     write_result(result, args)
-                except UnicodeDecodeError:
-                    LOGGER.warning('Discarding (file type issue): %s', inputfile)
     # read from input directly
     else:
         # process input URL
