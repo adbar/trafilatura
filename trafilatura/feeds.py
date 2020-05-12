@@ -34,6 +34,8 @@ def extract_links(feed_string):
     elif '<link>' in feed_string:
         for item in re.findall(r'<link>(.+?)</link>', feed_string):
             feed_links.append(item)
+    # sort and uniq
+    feed_links = sorted(list(set(feed_links)))
     # control output for validity
     for item in feed_links:
         if validate_url(item) is False:
@@ -51,13 +53,14 @@ def determine_feed(htmlstring):
     feed_urls = list()
     # try to find RSS URL
     for feed_url in re.findall(r'type="application/rss\+xml".+?href="(.+?)"', htmlstring):
-        #if not 'comments' in feed_url:
         feed_urls.append(feed_url)
-    if len(feed_urls) > 0:
-        return feed_urls
     # try to find Atom URL
-    for feed_url in re.findall(r'type="application/atom\+xml".+?href="(.+?)"', htmlstring):
-        feed_urls.append(feed_url)
+    if len(feed_urls) == 0:
+        for feed_url in re.findall(r'type="application/atom\+xml".+?href="(.+?)"', htmlstring):
+            feed_urls.append(feed_url)
+    for item in feed_urls:
+        if 'comments' in item:
+            feed_urls.remove(item)
     return feed_urls
 
 

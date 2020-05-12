@@ -20,11 +20,20 @@ def test_parser():
     testargs = ['', '-fv', '--xmltei', '--notables', '-u', 'https://www.example.org']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-        assert args.fast is True
-        assert args.verbose is True
-        assert args.notables is False
-        assert args.xmltei is True
-        assert args.URL == 'https://www.example.org'
+    assert args.fast is True
+    assert args.verbose is True
+    assert args.notables is False
+    assert args.xmltei is True
+    assert args.URL == 'https://www.example.org'
+    args = cli.map_args(args)
+    assert args.output_format == 'xmltei'
+    testargs = ['', '-out', 'csv', '-u', 'https://www.example.org']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    assert args.fast is False
+    assert args.verbose is False
+    args = cli.map_args(args)
+    assert args.output_format == 'csv'
 
 
 def test_climain():
@@ -44,13 +53,16 @@ def test_climain():
 def test_input_type():
     '''test input type errors'''
     testfile = 'docs/trafilatura-demo.gif'
+    testargs = ['', '-v']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
     with open(testfile, 'rb') as f:
         teststring = f.read(1024)
-    assert cli.examine(teststring) is None
+    assert cli.examine(teststring, args) is None
     testfile = 'docs/index.rst'
     with open(testfile, 'r') as f:
         teststring = f.read()
-    assert cli.examine(teststring) is None
+    assert cli.examine(teststring, args) is None
 
 
 def test_sysoutput():
@@ -70,21 +82,24 @@ def test_sysoutput():
 
 def test_download():
     '''test page download and command-line interface'''
-    assert cli.examine(' ') is None
-    assert cli.examine('0'*int(10e7), True) is None
+    testargs = ['', '-v']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    assert cli.examine(' ', args) is None
+    assert cli.examine('0'*int(10e7), args) is None
     assert utils.fetch_url('https://httpbin.org/status/404') is None
     url = 'https://httpbin.org/status/200'
     teststring = utils.fetch_url(url)
     assert teststring is None  # too small
-    assert cli.examine(teststring, url) is None
+    assert cli.examine(teststring, args, url) is None
     url = 'https://httpbin.org/links/2/2'
     teststring = utils.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, url) is None
+    assert cli.examine(teststring, args, url) is None
     url = 'https://httpbin.org/html'
     teststring = utils.fetch_url(url)
     assert teststring is not None
-    assert cli.examine(teststring, url) is not None
+    assert cli.examine(teststring, args, url) is not None
 
 
 def test_cli_pipeline():

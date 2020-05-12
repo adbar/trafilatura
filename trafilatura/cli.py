@@ -38,9 +38,7 @@ except AttributeError:
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
 
 
-def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
-            include_tables=True, csv_output=False, xml_output=False,
-            tei_output=False, validation=False, formatting=False):
+def examine(htmlstring, args, url=None):
     """Generic safeguards and triggers"""
     result = None
     # safety check
@@ -53,11 +51,10 @@ def examine(htmlstring, url=None, no_fallback=False, include_comments=True,
     # proceed
     else:
         try:
-            result = extract(htmlstring, url, '0000', no_fallback=no_fallback,
-                             include_comments=include_comments, include_tables=include_tables,
-                             csv_output=csv_output, xml_output=xml_output,
-                             tei_output=tei_output, tei_validation=validation,
-                             include_formatting=formatting)
+            result = extract(htmlstring, url, '0000', no_fallback=args.fast,
+                             include_comments=args.nocomments, include_tables=args.notables,
+                             include_formatting=args.formatting,
+                             output_format=args.output_format, tei_validation=args.validate)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('# ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
@@ -111,7 +108,22 @@ def parse_args(args):
     parser.add_argument("--list",
                         help="return a list of URLs without downloading them",
                         action="store_true")
+    parser.add_argument('-out', '--output-format',
+                        help="determine output format",
+                        choices=['txt', 'csv', 'xml', 'xmltei'],
+                        default='txt')
     return parser.parse_args()
+
+
+def map_args(args):
+    '''Map existing options to format choice.'''
+    if args.csv:
+        args.output_format = 'csv'
+    elif args.xml:
+        args.output_format = 'xml'
+    elif args.xmltei:
+        args.output_format = 'xmltei'
+    return args
 
 
 def check_outputdir_status(args):
@@ -165,10 +177,7 @@ def processing_pipeline(args, input_urls, sleeptime):
             write_result(url, args)  # print('\n'.join(input_urls))
         else:
             htmlstring = fetch_url(url)
-            result = examine(htmlstring, url=url, no_fallback=args.fast,
-                             include_comments=args.nocomments, include_tables=args.notables,
-                             csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
-                             validation=args.validate, formatting=args.formatting)
+            result = examine(htmlstring, args, url=url)
             write_result(result, args)
             # sleep between requests
             sleep(sleeptime)
@@ -178,6 +187,7 @@ def main():
     """ Run as a command-line utility. """
     # arguments
     args = parse_args(sys.argv[1:])
+    args = map_args(args)
     if args.verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     # processing according to mutually exclusive options
@@ -212,10 +222,7 @@ def main():
                 except UnicodeDecodeError:
                     LOGGER.warning('Discarding (file type issue): %s', path.join(root, fname))
                 else:
-                    result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
-                                     include_comments=args.nocomments, include_tables=args.notables,
-                                     csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
-                                     validation=args.validate, formatting=args.formatting)
+                    result = examine(htmlstring, args, url=args.URL)
                     write_result(result, args)
     # read from input directly
     else:
@@ -232,10 +239,7 @@ def main():
             except UnicodeDecodeError:
                 sys.exit('# ERROR: system, file type or buffer encoding')
         # process
-        result = examine(htmlstring, url=args.URL, no_fallback=args.fast,
-                         include_comments=args.nocomments, include_tables=args.notables,
-                         csv_output=args.csv, xml_output=args.xml, tei_output=args.xmltei,
-                         validation=args.validate, formatting=args.formatting)
+        result = examine(htmlstring, args, url=args.URL)
         write_result(result, args)
 
 

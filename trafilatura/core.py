@@ -514,10 +514,10 @@ def baseline(filecontent):
     return postbody, len_text, temp_text
 
 
-def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_output, tei_output, tei_validation, record_id):
+def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation, record_id):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
-    if xml_output is True or tei_output is True:
+    if 'xml' in output_format:
         # last cleaning
         for element in postbody.iter():
             if len(element) == 0 and (element.text is None or len(element.text) == 0) and (element.tail is None or len(element.tail) == 0):
@@ -525,10 +525,10 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
                 if parent is not None:
                     parent.remove(element)
         # build output trees
-        if xml_output is True:
+        if output_format == 'xml':
             output = build_xml_output(postbody, commentsbody)
             output = add_xml_meta(output, docmeta)
-        elif tei_output is True:
+        elif output_format == 'xmltei':
             output = build_tei_output(postbody, commentsbody, docmeta)
         # can be improved
         control_string = etree.tostring(output, encoding='unicode')
@@ -537,14 +537,14 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
         control_parser = etree.XMLParser(remove_blank_text=True)
         output_tree = etree.fromstring(control_string, control_parser)
         # validate
-        if tei_output is True and tei_validation is True:
+        if output_format == 'xmltei' and tei_validation is True:
             result = validate_tei(output_tree)
             LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
         # output as string
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
     # CSV + TXT output
     else:
-        if csv_output is True:
+        if output_format == 'csv':
             posttext = xmltotxt(postbody)
             if commentsbody is not None:
                 commentstext = xmltotxt(commentsbody)
@@ -557,12 +557,26 @@ def determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_outp
     return returnstring
 
 
+def map_format(output_format, csv_output, xml_output, tei_output):
+    '''Map existing options to format choice.'''
+    if csv_output is True:
+        output_format = 'csv'
+    elif xml_output is True:
+        output_format = 'xml'
+    elif tei_output is True:
+        output_format = 'xmltei'
+    return output_format
+
+
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
-            include_comments=True, csv_output=False, xml_output=False,
-            tei_output=False, tei_validation=False, target_language=None,
+            include_comments=True, output_format='txt',
+            csv_output=False, xml_output=False, tei_output=False,
+            tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False,
             date_extraction_params=None):
     '''Main process for text extraction'''
+    # temporary metadata mapping
+    output_format = map_format(output_format, csv_output, xml_output, tei_output)
     # load data
     tree = load_html(filecontent)
     if tree is None:
@@ -574,7 +588,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         backup_tree = None
 
     # Metadata here
-    if csv_output is True or xml_output is True or tei_output is True:
+    if output_format != 'txt':
         docmeta = extract_metadata(tree, url, date_extraction_params)
     else:
         docmeta = None
@@ -589,7 +603,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     # convert tags, the rest does not work without conversion
     cleaned_tree = convert_tags(cleaned_tree)
     # remove hi-element to avoid tail bug
-    if (xml_output is False and tei_output is False) or include_formatting is False:
+    if 'xml' not in output_format or include_formatting is False:
         etree.strip_tags(cleaned_tree, 'hi')
 
     # comments first, then remove
@@ -634,7 +648,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     if commentsbody is not None:
         put_in_cache(commentsbody)
 
-    returnstring = determine_returnstring(docmeta, postbody, commentsbody, csv_output, xml_output, tei_output, tei_validation, record_id)
+    returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation, record_id)
     return returnstring
 
 
