@@ -11,6 +11,8 @@ import random
 import string
 import sys
 
+from functools import partial
+from multiprocessing import cpu_count, Pool
 from os import makedirs, path, walk
 from time import sleep
 
@@ -168,7 +170,27 @@ def write_result(result, args):
                 outputfile.write(result)
 
 
-def processing_pipeline(args, input_urls, sleeptime):
+def generate_filelist(inputdir):
+    '''Walk the directory tree and output all file names'''
+    for root, _, inputfiles in walk(inputdir):
+        for fname in inputfiles:
+            # filelist.append(path.join(root, fname))
+            yield path.join(root, fname)
+
+
+def file_processing_pipeline(filename, args):
+    '''Aggregated functions to process a file list'''
+    try:
+        with open(filename, mode='r', encoding='utf-8') as inputfh:
+            htmlstring = inputfh.read()
+    except UnicodeDecodeError:
+        LOGGER.warning('Discarding (file type issue): %s', filename)
+    else:
+        result = examine(htmlstring, args, url=args.URL)
+        write_result(result, args)
+
+
+def url_processing_pipeline(args, input_urls, sleeptime):
     '''Aggregated functions to show a list and download and process an input list'''
     if input_urls is None or len(input_urls) == 0:
         return
@@ -204,26 +226,18 @@ def main():
                     input_urls.append(line.strip())
         except UnicodeDecodeError:
             sys.exit('# ERROR: system, file type or buffer encoding')
-        processing_pipeline(args, input_urls, SLEEP_TIME)
+        url_processing_pipeline(args, input_urls, SLEEP_TIME)
     # fetch urls from a feed
     elif args.feed:
         links = find_feed_urls(args.feed)
-        processing_pipeline(args, links, SLEEP_TIME)
+        url_processing_pipeline(args, links, SLEEP_TIME)
     # read files from an input directory
     elif args.inputdir:
         #if not args.outputdir:
         #    sys.exit('# ERROR: please specify an output directory along with the input directory')
-        # walk the directory tree
-        for root, _, inputfiles in walk(args.inputdir):
-            for fname in inputfiles:
-                try:
-                    with open(path.join(root, fname), mode='r', encoding='utf-8') as inputfh:
-                        htmlstring = inputfh.read()
-                except UnicodeDecodeError:
-                    LOGGER.warning('Discarding (file type issue): %s', path.join(root, fname))
-                else:
-                    result = examine(htmlstring, args, url=args.URL)
-                    write_result(result, args)
+        # multiprocessing
+        with Pool(processes=cpu_count()) as pool:
+            pool.map(partial(file_processing_pipeline, args=args), generate_filelist(args.inputdir))
     # read from input directly
     else:
         # process input URL

@@ -107,8 +107,8 @@ def test_cli_pipeline():
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli.processing_pipeline(args, [], 0) is None
-    assert cli.processing_pipeline(args, ['https://www.example.org/'], 0) is None
+    assert cli.url_processing_pipeline(args, [], 0) is None
+    assert cli.url_processing_pipeline(args, ['https://www.example.org/'], 0) is None
 
 
 if __name__ == '__main__':
