@@ -164,7 +164,7 @@ def handle_paragraphs(element, potential_tags):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
-    # etree.strip_tags(element, 'p')
+    #etree.strip_tags(element, 'p')  # change in precision
     # no children
     if len(element) == 0:
         processed_element = process_node(element)  # handle_textnode(element, comments_fix=False)
@@ -335,7 +335,7 @@ def extract_content(tree, include_tables=False):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # extract content
-        for element in subtree.xpath('.//*'):  # iter(potential_tags):
+        for element in subtree.xpath('.//*'):
             processed_elem = handle_textelem(element, potential_tags)
             if processed_elem is not None:
                 result_body.append(processed_elem)

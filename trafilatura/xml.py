@@ -231,7 +231,7 @@ def write_fullheader(header, docmeta):
     if docmeta.url is not None:
         publication_url.set('target', docmeta.url)
     else:
-        publication_url.set('target','')
+        publication_url.set('target', '')
     publication_date = etree.SubElement(publicationstmt, 'date')
     publication_date.text = docmeta.date
     profiledesc = etree.SubElement(header, 'profileDesc')

@@ -25,7 +25,6 @@ import requests
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
-
 from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE
 
 
@@ -211,31 +210,33 @@ def remove_control_characters(string):
     return string.translate(NOPRINT_TRANS_TABLE)
 
 
+def line_processing(line):
+    '''Discard incompatible unicode and invalid XML characters on line level'''
+    # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
+    line = line.replace('&#13;', '\r')
+    line = line.replace('&#10;', '\n')
+    # spaces
+    line = re.sub(r'\u00A0|\u2007|\u202F', ' ', line)  # non-breaking spaces
+    # text = UNICODE_WHITESPACE.sub('', text)
+    # https://stackoverflow.com/questions/16467479/normalizing-unicode
+    # remove non-printable chars
+    line = remove_control_characters(line)
+    line = trim(line)
+    if re.match(r'[\s\t]*$', line):
+        line = None
+    return line
+
+
 def sanitize(text):
-    '''Convert text and discard incompatible unicode and invalid XML characters'''
+    '''Convert text and discard incompatible and invalid characters'''
     if text is None:
         return None
-    # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
-    text = text.replace('&#13;', '\r')
-    text = text.replace('&#10;', '\n')
-    # spaces
-    text = re.sub(r'\u00A0|\u2007|\u202F', ' ', text)  # non-breaking spaces
-    # text = UNICODE_WHITESPACE.sub('', text)
-    # remove non-printable chars
-    text = remove_control_characters(text)
-    # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python
-    # line endings
-    # text = text.replace('\r\n', '\n')
-    # unwanted characters
-    # text = text.replace('\N{SOFT HYPHEN}', '')
-    # https://stackoverflow.com/questions/16467479/normalizing-unicode
-    # filter out empty lines
     returnlines = list()
     for line in text.splitlines():
-        line = trim(line)
-        if not re.match(r'[\s\t]*$', line):
-            returnlines.append(line)
-    return '\n'.join(returnlines)
+        returnlines.append(line_processing(line))
+    #with Pool(processes=cpu_count()*2) as pool:
+    #    returnlines = pool.map(line_processing, text.splitlines())
+    return '\n'.join(list(filter(None.__ne__, returnlines)))
 
 
 def trim(string):
