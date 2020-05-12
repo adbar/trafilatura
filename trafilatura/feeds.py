@@ -8,6 +8,9 @@ Examining feeds and extracting links for further processing.
 import logging
 import re
 
+from time import sleep
+
+from .settings import SLEEP_TIME
 from .utils import fetch_url
 
 LOGGER = logging.getLogger(__name__)
@@ -20,32 +23,59 @@ def validate_url(url):
     return False
 
 
-def extract_links(feed):
+def extract_links(feed_string):
     '''Extract links from Atom and RSS feeds'''
-    links = list()
+    feed_links = list()
     # could be Atom
-    if '<link ' in feed:
-        for item in re.findall(r'<link .*?href="(.+?)"', feed):
-            links.append(item)
+    if '<link ' in feed_string:
+        for item in re.findall(r'<link .*?href="(.+?)"', feed_string):
+            feed_links.append(item)
     # could be RSS
-    elif '<link>' in feed:
-        for item in re.findall(r'<link>(.+?)</link>', feed):
-            links.append(item)
-    else:
-        return links
+    elif '<link>' in feed_string:
+        for item in re.findall(r'<link>(.+?)</link>', feed_string):
+            feed_links.append(item)
     # control output for validity
-    for item in links:
+    for item in feed_links:
         if validate_url(item) is False:
-            links.remove(item)
-    return links
+            feed_links.remove(item)
+    # log result
+    if len(feed_links) > 0:
+        LOGGER.debug('Links found: %s', len(feed_links))
+    else:
+        LOGGER.debug('Does not seem to be a valid feed')
+    return feed_links
 
 
-def fetch_feed(feed_url):
-    '''Download and superficially parse a feed URL'''
-    feed_download = fetch_url(feed_url)
-    if feed_download is not None:
-        feed_links = extract_links(feed_download)
-        if len(feed_links) > 0:
-            return feed_links
-    LOGGER.debug('Does not seem to be a valid feed')
-    return None
+def determine_feed(htmlstring):
+    '''Try to extract the feed URL from the home page'''
+    feed_urls = list()
+    # try to find RSS URL
+    for feed_url in re.findall(r'type="application/rss\+xml".+?href="(.+?)"', htmlstring):
+        #if not 'comments' in feed_url:
+        feed_urls.append(feed_url)
+    if len(feed_urls) > 0:
+        return feed_urls
+    # try to find Atom URL
+    for feed_url in re.findall(r'type="application/atom\+xml".+?href="(.+?)"', htmlstring):
+        feed_urls.append(feed_url)
+    return feed_urls
+
+
+def find_feed_urls(url):
+    '''Try to find feed URLs'''
+    downloaded = fetch_url(url)
+    if downloaded is None:
+        LOGGER.debug('Could not download web page: %s', url)
+        return None
+    # assume it's a feed
+    if downloaded.startswith('<?xml'):
+        feed_links = extract_links(downloaded)
+    # assume it's a web page
+    else:
+        feed_urls = determine_feed(downloaded)
+        feed_links = list()
+        for feed in feed_urls:
+            sleep(SLEEP_TIME)
+            feed_string = fetch_url(feed)
+            feed_links.extend(extract_links(feed_string))
+    return feed_links

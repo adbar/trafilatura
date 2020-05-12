@@ -16,7 +16,7 @@ from os import makedirs, path, walk
 from time import sleep
 
 from .core import extract
-from .feeds import fetch_feed
+from .feeds import find_feed_urls
 from .utils import fetch_url
 from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, SLEEP_TIME
 
@@ -196,7 +196,7 @@ def main():
         processing_pipeline(args, input_urls, SLEEP_TIME)
     # fetch urls from a feed
     elif args.feed:
-        links = fetch_feed(args.feed)
+        links = find_feed_urls(args.feed)
         processing_pipeline(args, links, SLEEP_TIME)
     # read files from an input directory
     elif args.inputdir:

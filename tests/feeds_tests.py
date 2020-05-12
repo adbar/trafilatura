@@ -39,6 +39,7 @@ def test_feeds_helpers():
     assert feeds.validate_url('http://example.org/article1/') is True
     assert feeds.validate_url('') is False
     assert feeds.validate_url('http://example.org/') is False
+    assert len(feeds.determine_feed('<html><meta><link rel="alternate" type="application/rss+xml" title="Feed" href="https://example.org/blog/feed/"/></meta><body/></html>')) == 1
 
 
 def test_cli_behavior():
