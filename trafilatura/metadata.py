@@ -186,30 +186,34 @@ def extract_metainfo(tree, expressions, len_limit=200):
 
 def extract_title(tree):
     '''Extract the document title'''
+    title = None
     # only one h1-element: take it
     h1_results = tree.xpath('//h1')
     if len(h1_results) == 1:
-        return h1_results[0].text
+        return h1_results[0].text_content()
     # extract using x-paths
     title = extract_metainfo(tree, title_xpaths)
     if title is not None:
         return title
     # extract using title tag
-    title = None
     try:
-        title = tree.find('.//head/title').text
+        title = tree.xpath('//head/title')[0].text_content()
+        # refine
         if '-' in title or '|' in title:
             mymatch = re.search(r'^(.+)?\s+[-|]\s+.*$', title)
             if mymatch:
                 title = mymatch.group(1)
-    except AttributeError:
+        return title
+    except IndexError:
         LOGGER.warning('no main title found')
     # take first h1-title
-    if title is None and len(h1_results) > 0:
-        title = h1_results[0].text
+    if len(h1_results) > 0:
+        return h1_results[0].text_content()
     # take first h2-title
-    if title is None and len(tree.xpath('//h2')) > 0:
-        title = tree.xpath('//h2')[0].text
+    try:
+        title = tree.xpath('//h2')[0].text_content()
+    except IndexError:
+        LOGGER.warning('no h2 title found')
     return title
 
 
