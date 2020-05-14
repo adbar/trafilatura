@@ -111,7 +111,8 @@ def test_cli_pipeline():
     assert cli.url_processing_pipeline(args, [], 0) is None
     assert cli.url_processing_pipeline(args, ['https://www.example.org/'], 0) is None
     # test inputlist + blacklist
-    testargs = ['', '-i' 'tests/resources/list-process.txt', '-b', 'tests/resources/list-discard.txt']
+    resources_dir = os.path.join(TEST_DIR, 'resources')
+    testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '-b', os.path.join(resources_dir, 'list-discard.txt')]
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     my_urls = cli.load_input_urls(args.inputfile)
