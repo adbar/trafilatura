@@ -104,11 +104,20 @@ def test_download():
 
 def test_cli_pipeline():
     '''test command-line processing pipeline'''
+    # test URL listing
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli.url_processing_pipeline(args, [], 0) is None
     assert cli.url_processing_pipeline(args, ['https://www.example.org/'], 0) is None
+    # test inputlist + blacklist
+    testargs = ['', '-i' 'tests/resources/list-process.txt', '-b', 'tests/resources/list-discard.txt']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    my_urls = cli.load_input_urls(args.inputfile)
+    assert my_urls is not None and len(my_urls) == 1
+    # URL in blacklist
+    assert cli.url_processing_pipeline(args, my_urls, 2) is None
 
 
 if __name__ == '__main__':
@@ -116,5 +125,5 @@ if __name__ == '__main__':
     test_climain()
     test_input_type()
     test_sysoutput()
-    test_download()
     test_cli_pipeline()
+    test_download()

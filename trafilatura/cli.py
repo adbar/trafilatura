@@ -114,6 +114,10 @@ def parse_args(args):
                         help="determine output format",
                         choices=['txt', 'csv', 'xml', 'xmltei'],
                         default='txt')
+    parser.add_argument('-b', '--blacklist',
+                        help="""name of file containing already processed or
+                                unwanted URLs to discard during batch processing""",
+                        type=str)
     return parser.parse_args()
 
 
@@ -126,6 +130,31 @@ def map_args(args):
     elif args.xmltei:
         args.output_format = 'xmltei'
     return args
+
+
+def load_input_urls(filename):
+    '''Read list of URLs to process'''
+    input_urls = list()
+    try:
+        # optional: errors='strict', buffering=1
+        with open(filename, mode='r', encoding='utf-8') as inputfile:
+            for line in inputfile:
+                if not line.startswith('http'):
+                    LOGGER.warning('Not an URL, discarding line: %s', line)
+                    continue
+                input_urls.append(line.strip())
+    except UnicodeDecodeError:
+        sys.exit('# ERROR: system, file type or buffer encoding')
+    return input_urls
+
+
+def load_blacklist(filename):
+    '''Read list of unwanted URLs'''
+    blacklist = set()
+    with open(filename, mode='r', encoding='utf-8') as inputfh:
+        for line in inputfh:
+            blacklist.add(line.strip())
+    return blacklist
 
 
 def check_outputdir_status(args):
@@ -192,8 +221,13 @@ def file_processing_pipeline(filename, args):
 
 def url_processing_pipeline(args, input_urls, sleeptime):
     '''Aggregated functions to show a list and download and process an input list'''
-    if input_urls is None or len(input_urls) == 0:
+    # control blacklist
+    if args.blacklist:
+        input_urls = set(input_urls).difference(args.blacklist)
+    # safety check
+    if len(input_urls) == 0:
         return
+    # process
     for url in input_urls:
         if args.list:
             write_result(url, args)  # print('\n'.join(input_urls))
@@ -212,20 +246,12 @@ def main():
     args = map_args(args)
     if args.verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    if args.blacklist:
+        args.blacklist = load_blacklist(args.blacklist)
     # processing according to mutually exclusive options
     # read url list from input file
     if args.inputfile:
-        input_urls = list()
-        try:
-            # optional: errors='strict', buffering=1
-            with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
-                for line in inputfile:
-                    if not line.startswith('http'):
-                        LOGGER.warning('Not an URL, discarding line: %s', line)
-                        continue
-                    input_urls.append(line.strip())
-        except UnicodeDecodeError:
-            sys.exit('# ERROR: system, file type or buffer encoding')
+        input_urls = load_input_urls(args.inputfile)
         url_processing_pipeline(args, input_urls, SLEEP_TIME)
     # fetch urls from a feed
     elif args.feed:
