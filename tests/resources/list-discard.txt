@@ -1,1 +1,2 @@
+https://httpbin.org/status/404
 https://httpbin.org/status/200

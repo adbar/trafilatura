@@ -139,9 +139,9 @@ def main():
     else:
         # process input URL
         if args.URL:
-            htmlstring = fetch_url(args.URL)
-            if htmlstring is None:
-                sys.exit('# ERROR: no valid result for url: ' + args.URL + '\n')
+            url_processing_pipeline(args, [args.URL], 0)  # process single url
+            #if htmlstring is None:
+            #    sys.exit('# ERROR: no valid result for url: ' + args.URL + '\n')
         # process input on STDIN
         else:
             # file type and unicode check
@@ -149,9 +149,9 @@ def main():
                 htmlstring = sys.stdin.read()
             except UnicodeDecodeError:
                 sys.exit('# ERROR: system, file type or buffer encoding')
-        # process
-        result = examine(htmlstring, args, url=args.URL)
-        write_result(result, args)
+            # process
+            result = examine(htmlstring, args, url=args.URL)
+            write_result(result, args)
 
 
 if __name__ == '__main__':

@@ -8,9 +8,11 @@ Functions dedicated to command-line processing.
 
 import logging
 import random
+import re
 import string
 import sys
 
+from datetime import datetime
 from os import makedirs, path, walk
 from time import sleep
 
@@ -133,28 +135,61 @@ def file_processing_pipeline(filename, args):
         write_result(result, args)
 
 
-def url_processing_pipeline(args, input_urls, sleeptime):
-    '''Aggregated functions to show a list and download and process an input list'''
+def url_processing_checks(args, input_urls):
     # control blacklist
     if args.blacklist:
         input_urls = set(input_urls).difference(args.blacklist)
-    # safety check
-    if len(input_urls) == 0:
-        return
-    # process
-    for url in input_urls:
-        if args.list:
+    # list
+    if args.list:
+        for url in input_urls:
             write_result(url, args)  # print('\n'.join(input_urls))
-        else:
+        return []
+    return input_urls
+
+
+def url_processing_pipeline(args, input_urls, sleeptime):
+    '''Aggregated functions to show a list and download and process an input list'''
+    input_urls = url_processing_checks(args, input_urls)
+    # build domain-aware processing list
+    domain_dict = dict()
+    while len(input_urls) > 0:
+        url = input_urls.pop()
+        try:
+            domain_name = re.search(r'^https?://([^/]+)', url).group(1)
+        except AttributeError:
+            domain_name = 'unknown'
+        if domain_name not in domain_dict:
+            domain_dict[domain_name] = set()
+        domain_dict[domain_name].add(url)
+    # iterate
+    backoff_dict = dict()
+    i = 0
+    while len(domain_dict) > 0:
+        domain = random.choice(list(domain_dict.keys()))
+        if domain not in backoff_dict or \
+        (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
+            url = domain_dict[domain].pop()
             htmlstring = fetch_url(url)
+            # register in backoff dictionary to ensure time between requests
+            backoff_dict[domain] = datetime.now()
+            # backup option
             if args.backup_dir:
                 filename = archive_html(htmlstring, args)
             else:
                 filename = None
+            # process
             result = examine(htmlstring, args, url=url)
             write_result(result, args, filename)
-            # sleep between requests
-            sleep(sleeptime)
+            # clean registries
+            if len(domain_dict[domain]) == 0:
+                del domain_dict[domain]
+                del backoff_dict[domain]
+        # safeguard
+        else:
+            i += 1
+            if i > len(domain_dict)*3:
+                sleep(sleeptime)
+                i = 0
 
 
 def examine(htmlstring, args, url=None):

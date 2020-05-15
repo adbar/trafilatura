@@ -6,6 +6,7 @@ import logging
 import os
 import sys
 
+from datetime import datetime
 from unittest.mock import patch
 
 from trafilatura import cli, cli_utils, utils
@@ -112,18 +113,28 @@ def test_cli_pipeline():
     assert cli_utils.url_processing_pipeline(args, ['https://www.example.org/'], 0) is None
     # test inputlist + blacklist
     resources_dir = os.path.join(TEST_DIR, 'resources')
-    testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '-b', os.path.join(resources_dir, 'list-discard.txt')]
+    testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     my_urls = cli_utils.load_input_urls(args.inputfile)
-    assert my_urls is not None and len(my_urls) == 1
-    # URL in blacklist
+    assert my_urls is not None and len(my_urls) == 2
+    # test backoff between domain requests
+    reftime = datetime.now()
     assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
+    delta = (datetime.now() - reftime).total_seconds()
+    assert delta > 2
+    # URL in blacklist
+    testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '-b', os.path.join(resources_dir, 'list-discard.txt')]
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    print(cli_utils.url_processing_checks(args, my_urls))
+    assert len(cli_utils.url_processing_checks(args, my_urls)) == 0
     # test backup
     testargs = ['', '--backup-dir', '/tmp/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli_utils.archive_html('00Test', args) is not None
+    # assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
 
 
 if __name__ == '__main__':
