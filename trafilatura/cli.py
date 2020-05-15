@@ -7,23 +7,21 @@ Implementing a basic command-line interface.
 
 import argparse
 import logging
-import random
-import string
 import sys
 
 from functools import partial
 from multiprocessing import cpu_count, Pool
-from os import makedirs, path, walk
-from time import sleep
 
-from .core import extract
+from .cli_utils import (load_blacklist, load_input_urls, generate_filelist,
+                        file_processing_pipeline, url_processing_pipeline,
+                        examine, write_result)
 from .feeds import find_feed_urls
+from .settings import SLEEP_TIME
 from .utils import fetch_url
-from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, SLEEP_TIME
 
 
 LOGGER = logging.getLogger(__name__)
-random.seed(345)  # make generated file names reproducible
+
 
 # fix output encoding on some systems
 try:
@@ -38,29 +36,6 @@ except AttributeError:
         sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
     if sys.stderr.encoding != 'UTF-8':
         sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-
-
-def examine(htmlstring, args, url=None):
-    """Generic safeguards and triggers"""
-    result = None
-    # safety check
-    if htmlstring is None:
-        sys.stderr.write('# ERROR: empty document\n')
-    elif len(htmlstring) > MAX_FILE_SIZE:
-        sys.stderr.write('# ERROR: file too large\n')
-    elif len(htmlstring) < MIN_FILE_SIZE:
-        sys.stderr.write('# ERROR: file too small\n')
-    # proceed
-    else:
-        try:
-            result = extract(htmlstring, url, '0000', no_fallback=args.fast,
-                             include_comments=args.nocomments, include_tables=args.notables,
-                             include_formatting=args.formatting,
-                             output_format=args.output_format, tei_validation=args.validate)
-        # ugly but efficient
-        except Exception as err:
-            sys.stderr.write('# ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
-    return result
 
 
 def parse_args(args):
@@ -118,6 +93,9 @@ def parse_args(args):
                         help="""name of file containing already processed or
                                 unwanted URLs to discard during batch processing""",
                         type=str)
+    parser.add_argument('--backup-dir',
+                        help="Preserve a copy of downloaded files in a backup directory",
+                        type=str)
     return parser.parse_args()
 
 
@@ -130,113 +108,6 @@ def map_args(args):
     elif args.xmltei:
         args.output_format = 'xmltei'
     return args
-
-
-def load_input_urls(filename):
-    '''Read list of URLs to process'''
-    input_urls = list()
-    try:
-        # optional: errors='strict', buffering=1
-        with open(filename, mode='r', encoding='utf-8') as inputfile:
-            for line in inputfile:
-                if not line.startswith('http'):
-                    LOGGER.warning('Not an URL, discarding line: %s', line)
-                    continue
-                input_urls.append(line.strip())
-    except UnicodeDecodeError:
-        sys.exit('# ERROR: system, file type or buffer encoding')
-    return input_urls
-
-
-def load_blacklist(filename):
-    '''Read list of unwanted URLs'''
-    blacklist = set()
-    with open(filename, mode='r', encoding='utf-8') as inputfh:
-        for line in inputfh:
-            blacklist.add(line.strip())
-    return blacklist
-
-
-def check_outputdir_status(args):
-    '''Check if the output directory is within reach and writable'''
-    # check the directory status
-    if not path.exists(args.outputdir) or not path.isdir(args.outputdir):
-        try:
-            makedirs(args.outputdir)
-        except OSError:
-            sys.stderr.write('# ERROR: Destination directory cannot be created: ' + args.outputdir + '\n')
-            # raise OSError()
-            return False
-    return True
-
-
-def determine_filename(args):
-    '''Pick a file name based on output type'''
-    randomslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
-    extension = '.txt'
-    if args.xml or args.xmltei:
-        extension = '.xml'
-    elif args.csv:
-        extension = '.csv'
-    return path.join(args.outputdir, randomslug + extension)
-
-
-def write_result(result, args):
-    '''Deal with result (write to STDOUT or to file)'''
-    if result is None:
-        return
-    if args.outputdir is None:
-        sys.stdout.write(result + '\n')
-    else:
-       # check the directory status
-        if check_outputdir_status(args) is True:
-            # pick a new file name
-            output_path = determine_filename(args)
-            while path.exists(output_path):
-                output_path = determine_filename(args)
-            # write
-            with open(output_path, mode='w', encoding='utf-8') as outputfile:
-                outputfile.write(result)
-
-
-def generate_filelist(inputdir):
-    '''Walk the directory tree and output all file names'''
-    for root, _, inputfiles in walk(inputdir):
-        for fname in inputfiles:
-            # filelist.append(path.join(root, fname))
-            yield path.join(root, fname)
-
-
-def file_processing_pipeline(filename, args):
-    '''Aggregated functions to process a file list'''
-    try:
-        with open(filename, mode='r', encoding='utf-8') as inputfh:
-            htmlstring = inputfh.read()
-    except UnicodeDecodeError:
-        LOGGER.warning('Discarding (file type issue): %s', filename)
-    else:
-        result = examine(htmlstring, args, url=args.URL)
-        write_result(result, args)
-
-
-def url_processing_pipeline(args, input_urls, sleeptime):
-    '''Aggregated functions to show a list and download and process an input list'''
-    # control blacklist
-    if args.blacklist:
-        input_urls = set(input_urls).difference(args.blacklist)
-    # safety check
-    if len(input_urls) == 0:
-        return
-    # process
-    for url in input_urls:
-        if args.list:
-            write_result(url, args)  # print('\n'.join(input_urls))
-        else:
-            htmlstring = fetch_url(url)
-            result = examine(htmlstring, args, url=url)
-            write_result(result, args)
-            # sleep between requests
-            sleep(sleeptime)
 
 
 def main():

@@ -8,7 +8,7 @@ import sys
 
 from unittest.mock import patch
 
-from trafilatura import cli, utils
+from trafilatura import cli, cli_utils, utils
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -70,14 +70,14 @@ def test_sysoutput():
     testargs = ['', '--csv', '-o', '/root/forbidden/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    filename = cli.determine_filename(args)
+    filename = cli_utils.determine_filename(args)
     assert len(filename) >= 10 and filename.endswith('.csv')
-    assert cli.check_outputdir_status(args) is False
+    assert cli_utils.check_outputdir_status(args.outputdir) is False
     testargs = ['', '--xml', '-o', '/tmp/you-touch-my-tralala']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli.check_outputdir_status(args) is True
-    assert cli.determine_filename(args).endswith('.xml')
+    assert cli_utils.check_outputdir_status(args.outputdir) is True
+    assert cli_utils.determine_filename(args).endswith('.xml')
 
 
 def test_download():
@@ -108,17 +108,22 @@ def test_cli_pipeline():
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli.url_processing_pipeline(args, [], 0) is None
-    assert cli.url_processing_pipeline(args, ['https://www.example.org/'], 0) is None
+    assert cli_utils.url_processing_pipeline(args, [], 0) is None
+    assert cli_utils.url_processing_pipeline(args, ['https://www.example.org/'], 0) is None
     # test inputlist + blacklist
     resources_dir = os.path.join(TEST_DIR, 'resources')
     testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '-b', os.path.join(resources_dir, 'list-discard.txt')]
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    my_urls = cli.load_input_urls(args.inputfile)
+    my_urls = cli_utils.load_input_urls(args.inputfile)
     assert my_urls is not None and len(my_urls) == 1
     # URL in blacklist
-    assert cli.url_processing_pipeline(args, my_urls, 2) is None
+    assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
+    # test backup
+    testargs = ['', '--backup-dir', '/tmp/']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    assert cli_utils.archive_html('00Test', args) is not None
 
 
 if __name__ == '__main__':
