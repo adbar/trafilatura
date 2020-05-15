@@ -41,61 +41,67 @@ except AttributeError:
 def parse_args(args):
     """Define parser for command-line arguments"""
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--fast",
-                        help="fast (without fallback detection)",
-                        action="store_true")
-    parser.add_argument("--formatting",
-                        help="include text formatting (bold, italic, etc.)",
-                        action="store_true")
-    parser.add_argument("-i", "--inputfile",
-                        help="name of input file for batch processing",
-                        type=str)
-    parser.add_argument("--inputdir",
-                        help="read files from a specified directory (relative path)",
-                        type=str)
-    parser.add_argument("-o", "--outputdir",
-                        help="write results in a specified directory (relative path)",
-                        type=str)
-    parser.add_argument("--nocomments",
-                        help="don't output any comments",
-                        action="store_false")  # false = no comments
-    parser.add_argument("--notables",
-                        help="don't output any table elements",
-                        action="store_false")  # false = no tables
-    parser.add_argument("--csv",
-                        help="CSV output",
-                        action="store_true")
-    parser.add_argument("--xml",
-                        help="XML output",
-                        action="store_true")
-    parser.add_argument("--xmltei",
-                        help="XML TEI output",
-                        action="store_true")
-    parser.add_argument("--validate",
-                        help="validate TEI output",
-                        action="store_true")
-    parser.add_argument("-u", "--URL",
-                        help="custom URL download")
+    group1 = parser.add_argument_group('I/O', 'input and output options')
+    group2 = parser.add_argument_group('Format', 'options related to formats')
+    group3 = parser.add_argument_group('Extraction', 'customize text and metadata extraction')
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
                         action="store_true")
-    parser.add_argument("--feed",
+
+    group1.add_argument("-i", "--inputfile",
+                        help="name of input file for batch processing",
+                        type=str)
+    group1.add_argument("--inputdir",
+                        help="read files from a specified directory (relative path)",
+                        type=str)
+    group1.add_argument("-o", "--outputdir",
+                        help="write results in a specified directory (relative path)",
+                        type=str)
+    group1.add_argument("-u", "--URL",
+                        help="custom URL download")
+    group1.add_argument("--feed",
                         help="pass a feed URL as input",
                         type=str)
-    parser.add_argument("--list",
+    group1.add_argument("--list",
                         help="return a list of URLs without downloading them",
                         action="store_true")
-    parser.add_argument('-out', '--output-format',
-                        help="determine output format",
-                        choices=['txt', 'csv', 'xml', 'xmltei'],
-                        default='txt')
-    parser.add_argument('-b', '--blacklist',
+    group1.add_argument('-b', '--blacklist',
                         help="""name of file containing already processed or
                                 unwanted URLs to discard during batch processing""",
                         type=str)
-    parser.add_argument('--backup-dir',
+    group1.add_argument('--backup-dir',
                         help="Preserve a copy of downloaded files in a backup directory",
                         type=str)
+
+    group2.add_argument('-out', '--output-format',
+                        help="determine output format",
+                        choices=['txt', 'csv', 'xml', 'xmltei'],
+                        default='txt')
+    group2.add_argument("--csv",
+                        help="CSV output",
+                        action="store_true")
+    group2.add_argument("--xml",
+                        help="XML output",
+                        action="store_true")
+    group2.add_argument("--xmltei",
+                        help="XML TEI output",
+                        action="store_true")
+    group2.add_argument("--validate",
+                        help="validate TEI output",
+                        action="store_true")
+
+    group3.add_argument("-f", "--fast",
+                        help="fast (without fallback detection)",
+                        action="store_true")
+    group3.add_argument("--formatting",
+                        help="include text formatting (bold, italic, etc.)",
+                        action="store_true")
+    group3.add_argument("--nocomments",
+                        help="don't output any comments",
+                        action="store_false")  # false = no comments
+    group3.add_argument("--notables",
+                        help="don't output any table elements",
+                        action="store_false")  # false = no tables
     return parser.parse_args()
 
 
@@ -133,7 +139,7 @@ def main():
         #if not args.outputdir:
         #    sys.exit('# ERROR: please specify an output directory along with the input directory')
         # multiprocessing
-        with Pool(processes=cpu_count()) as pool:
+        with Pool(processes=min(cpu_count(), 16)) as pool:  # 16 processes at most
             pool.map(partial(file_processing_pipeline, args=args), generate_filelist(args.inputdir))
     # read from input directly
     else:

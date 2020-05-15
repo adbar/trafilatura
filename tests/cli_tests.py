@@ -133,8 +133,8 @@ def test_cli_pipeline():
     testargs = ['', '--backup-dir', '/tmp/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.archive_html('00Test', args) is not None
-    # assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
+    cli_utils.archive_html('00Test', args)
+    cli_utils.url_processing_pipeline(args, my_urls, 2)
 
 
 if __name__ == '__main__':

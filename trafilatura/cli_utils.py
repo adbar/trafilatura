@@ -23,6 +23,7 @@ from .utils import fetch_url
 
 LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
+fnlen = 8
 
 
 def load_input_urls(filename):
@@ -32,10 +33,12 @@ def load_input_urls(filename):
         # optional: errors='strict', buffering=1
         with open(filename, mode='r', encoding='utf-8') as inputfile:
             for line in inputfile:
-                if not line.startswith('http'):
+                url_match = re.match(r'https?://[^ ]+', line)  # if not line.startswith('http'):
+                try:
+                    input_urls.append(url_match.group(0))
+                except AttributeError:
                     LOGGER.warning('Not an URL, discarding line: %s', line)
                     continue
-                input_urls.append(line.strip())
     except UnicodeDecodeError:
         sys.exit('# ERROR: system, file type or buffer encoding')
     return input_urls
@@ -74,11 +77,11 @@ def determine_filename(args, fileslug=None):
     # determine file slug
     if fileslug is None:
         output_path = path.join(args.outputdir, \
-            ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6)) \
+            ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen)) \
             + extension)
         while path.exists(output_path):
             output_path = path.join(args.outputdir, \
-                ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6)) \
+                ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen)) \
                 + extension)
     else:
         output_path = path.join(args.outputdir, fileslug + extension)
@@ -88,10 +91,10 @@ def determine_filename(args, fileslug=None):
 def archive_html(htmlstring, args):
     '''Write a copy of raw HTML in backup directory'''
     # determine file name
-    fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+    fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen))
     output_path = path.join(args.backup_dir, fileslug + '.html')
     while path.exists(output_path):
-        fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
+        fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen))
         output_path = path.join(args.backup_dir, fileslug + '.html')
     # check the directory status
     if check_outputdir_status(args.backup_dir) is True:
