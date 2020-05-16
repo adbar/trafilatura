@@ -13,7 +13,7 @@ from lxml import etree
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED
-from .utils import trim
+from .utils import sanitize, trim
 from .xpaths import COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
 
@@ -25,28 +25,19 @@ def manual_cleaning(tree, include_tables):
     if include_tables is False:
         MANUALLY_CLEANED.append('table')
     for expression in MANUALLY_CLEANED:
-        for element in tree.iter(expression):
-            element.getparent().remove(element)
-    #for expression in ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'font', 'ins', 'meta', 'small', 'sub', 'sup', 'wbr']:
-    #    for element in tree.getiterator(expression):
-    #        element.drop_tag()
+        #for element in tree.iter(expression):
+        for element in tree.getiterator(expression):
+            element.drop_tree()
     return tree
 
 
 def prune_html(tree):
     '''delete selected empty elements'''
-    for element in tree.xpath(".//*[not(node())]"):
+    for element in tree.xpath("//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
             element.getparent().remove(element)
+            #element.drop_tree()
     return tree
-
-
-#def recursively_empty(elem):
-#    '''return recursively empty elements'''
-#    # https://stackoverflow.com/questions/12694091/python-lxml-how-to-remove-empty-repeated-tags
-#    if elem.text:
-#        return False
-#    return all((recursively_empty(c) for c in elem.iterchildren()))
 
 
 def discard_unwanted(tree):
@@ -65,12 +56,26 @@ def discard_unwanted_comments(tree):
     return tree
 
 
+def link_density_test(element):
+    links_xpath = element.xpath('//link')
+    if len(links_xpath) > 0:
+        elemlen = len(sanitize(element.text_content()))
+        if elemlen < 100:
+            linklen = 0
+            for subelem in links_xpath:
+                linklen += len(sanitize(subelem.text_content()))
+            if linklen > 0.95*elemlen:
+                #print(trim(element.text_content()))
+                #print(trim(subelem.text_content()))
+                return True
+    return False
+
+
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
-    # strip tags
-    etree.strip_tags(tree, 'a', 'abbr', 'acronym', 'address', 'big', 'cite',
-                     'font', 'ins', 'meta', 'small', 'wbr')
-    # 'dd', 'sub', 'sup',
+    # strip tags 'a', 'span', 'dd', 'sub', 'sup', 'center', 
+    etree.strip_tags(tree, 'abbr', 'acronym', 'address', 'big', 'cite',
+                     'font', 'ins', 'meta', 'ruby', 'small', 'wbr')
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         # etree.strip_tags(elem, 'span')
@@ -88,6 +93,8 @@ def convert_tags(tree):
         for subelem in elem.iter('dd', 'dt', 'li'):
             subelem.tag = 'item'
             subelem.attrib.clear()
+        for subelem in elem.iter('a'):
+            subelem.tag = 'link'
     # blockquote, pre, q → quote
     for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
@@ -125,6 +132,9 @@ def convert_tags(tree):
         elem.attrib.clear()
         elem.tag = 'del'
         elem.set('rend', 'overstrike')
+    #for elem in tree.iter():
+    #    print(elem.tag)
+    etree.strip_tags(tree, 'a')
     return tree
 
 

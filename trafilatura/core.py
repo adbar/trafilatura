@@ -20,6 +20,7 @@ from .external import justext_rescue, try_readability
 from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
+                             link_density_test,
                              manual_cleaning, process_node, prune_html)
 from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
@@ -270,6 +271,7 @@ def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG):
     LOGGER.debug('Taking all p-elements')
     # prune
     search_tree = discard_unwanted(tree)
+    etree.strip_tags(search_tree, 'a', 'span')
     for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'): # 'head', 'list'
         # processed_element = handle_textnode(element, comments_fix=False)
         # if processed_element is not None:
@@ -323,9 +325,11 @@ def extract_content(tree, include_tables=False):
         subtree = subtree[0]
         # prune
         subtree = discard_unwanted(subtree)
-        etree.strip_tags(subtree, 'span')
-        # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
-        # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
+        # remove elements by link density
+        for elem in subtree.iter('list'):
+            if link_density_test(elem) is True:
+                elem.getparent().remove(elem)
+        etree.strip_tags(subtree, 'a', 'link', 'span')
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?
         if include_tables is True:
@@ -334,11 +338,15 @@ def extract_content(tree, include_tables=False):
         if len(subtree.xpath('//p//text()')) == 0:
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
+        # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
+        # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # extract content
         for element in subtree.xpath('.//*'):
             processed_elem = handle_textelem(element, potential_tags)
             if processed_elem is not None:
                 result_body.append(processed_elem)
+        #processed_elems = [handle_textelem(element, potential_tags) for element in subtree.xpath('.//*')]
+        #result_body.extend(list(filter(None.__ne__, processed_elems)))
         # exit the loop if the result has children
         if len(result_body) > 0:
             sure_thing = True
@@ -389,6 +397,7 @@ def extract_comments(tree):
         subtree = subtree[0]
         # prune
         subtree = discard_unwanted_comments(subtree)
+        etree.strip_tags(subtree, 'a', 'link', 'span')
         # extract content
         for elem in subtree.xpath('.//*'):
             processed_elem = process_comments_node(elem, potential_tags)
