@@ -32,6 +32,18 @@ DETECTION_LANGUAGES = ['af', 'am', 'an', 'ar', 'as', 'az', 'be', 'bg', 'bn', 'br
 
 #CORPUS_VERSION = 2017.1
 
+CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+                   'i', 'li', 'main', 'p', 'section', 'span', 'strong', 'td'}
+                   # 'meta',
+
+MANUALLY_CLEANED = ['area', 'aside', 'audio', 'del', 'blink', 'button', 'canvas', 'embed', 'figure',
+                    'footer', 'form', 'head', 'iframe', 'link', 'input', 'label',
+                    'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'option',
+                    'picture', 'rp', 'rt', 'script', 'style', 'svg', 'textarea', 'time', 'video']
+                    # 'frame' 'frameset' 'source'
+
+MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'img', 'ins', 'meta', 'ruby', 'small', 'wbr']
+
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
 HTML_CLEANER = Cleaner()
 HTML_CLEANER.annoying_tags = False # True
@@ -48,24 +60,13 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
-# HTML_CLEANER.remove_tags = ['a', 'abbr', 'acronym', 'address', 'big', 'cite', 'dd', 'font', 'ins', 'meta', 'span', 'small', 'sub', 'sup', 'wbr'] #  'center', 'table', 'tbody', 'td', 'th', 'tr',
-HTML_CLEANER.remove_tags = ['img']
-HTML_CLEANER.kill_tags = ['aside', 'del']
-# 'area', 'table' # 'header'
+HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
+# 'a', 'span', 'dd', 'sub', 'sup', 'center',
+HTML_CLEANER.kill_tags = MANUALLY_CLEANED
 
-CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-                   'i', 'li', 'main', 'p', 'section', 'span', 'strong', 'td'}
-                   # 'meta',
-
-MANUALLY_CLEANED = ['audio', 'blink', 'button', 'canvas', 'embed', 'figure',
-                    'footer', 'form', 'head', 'iframe', 'input', 'link',
-                    'map', 'marquee', 'math', 'nav', 'noscript', 'object',
-                    'picture', 'script', 'style', 'svg', 'time', 'video']
-                    # 'frame' 'frameset' 'source', 'img',
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'q', 'quote'])
 # 'span', 'item'
-# 'blockquote', 'code', 'p', 'pre', 'q', 'quote'
 
 # JUSTEXT_DEFAULT = 'German'
 # JT_STOPLIST = None  # could be a list
