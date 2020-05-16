@@ -12,7 +12,7 @@ import re
 from lxml import etree
 
 from .filters import duplicate_test, textfilter
-from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED
+from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import sanitize, trim
 from .xpaths import COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
@@ -45,6 +45,7 @@ def discard_unwanted(tree):
     for expr in DISCARD_XPATH:
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
+            #subtree.drop_tree()
     return tree
 
 
@@ -53,10 +54,12 @@ def discard_unwanted_comments(tree):
     for expr in COMMENTS_DISCARD_XPATH:
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
+            #subtree.drop_tree()
     return tree
 
 
 def link_density_test(element):
+    '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath = element.xpath('//link')
     if len(links_xpath) > 0:
         elemlen = len(sanitize(element.text_content()))
@@ -73,9 +76,19 @@ def link_density_test(element):
 
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
-    # strip tags 'a', 'span', 'dd', 'sub', 'sup', 'center', 
-    etree.strip_tags(tree, 'abbr', 'acronym', 'address', 'big', 'cite',
-                     'font', 'ins', 'meta', 'ruby', 'small', 'wbr')
+    # strip tags
+    etree.strip_tags(tree, MANUALLY_STRIPPED)
+    # ul/ol → list / li → item
+    for elem in tree.iter('ul', 'ol', 'dl'):
+        elem.tag = 'list'
+        elem.attrib.clear()
+        for subelem in elem.iter('dd', 'dt', 'li'):
+            subelem.tag = 'item'
+            subelem.attrib.clear()
+        for subelem in elem.iter('a'):
+            subelem.tag = 'link'
+    # delete links for faster processing
+    etree.strip_tags(tree, 'a')
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         # etree.strip_tags(elem, 'span')
@@ -86,15 +99,6 @@ def convert_tags(tree):
     for elem in tree.iter('br', 'hr'):
         elem.tag = 'lb'
         elem.attrib.clear()
-    # ul/ol → list / li → item
-    for elem in tree.iter('ul', 'ol', 'dl'):
-        elem.tag = 'list'
-        elem.attrib.clear()
-        for subelem in elem.iter('dd', 'dt', 'li'):
-            subelem.tag = 'item'
-            subelem.attrib.clear()
-        for subelem in elem.iter('a'):
-            subelem.tag = 'link'
     # blockquote, pre, q → quote
     for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
@@ -134,7 +138,6 @@ def convert_tags(tree):
         elem.set('rend', 'overstrike')
     #for elem in tree.iter():
     #    print(elem.tag)
-    etree.strip_tags(tree, 'a')
     return tree
 
 
