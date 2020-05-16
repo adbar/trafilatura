@@ -81,10 +81,8 @@ def convert_tags(tree):
     # ul/ol → list / li → item
     for elem in tree.iter('ul', 'ol', 'dl'):
         elem.tag = 'list'
-        elem.attrib.clear()
         for subelem in elem.iter('dd', 'dt', 'li'):
             subelem.tag = 'item'
-            subelem.attrib.clear()
         for subelem in elem.iter('a'):
             subelem.tag = 'link'
     # delete links for faster processing

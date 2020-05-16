@@ -323,6 +323,10 @@ def extract_content(tree, include_tables=False):
         for elem in subtree.iter('list'):
             if link_density_test(elem) is True:
                 elem.getparent().remove(elem)
+                continue
+            elem.attrib.clear()
+            #for subelem in elem.iter('item'):
+            #    subelem.attrib.clear()
         etree.strip_tags(subtree, 'a', 'link', 'span')
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?

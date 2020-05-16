@@ -52,15 +52,15 @@ BODY_XPATH = [
 
 
 COMMENTS_XPATH = [
-    """//*[(self::div or self::ol or self::section or self::ul)][contains(@id, 'commentlist')
+    """//*[(self::div or self::list or self::section)][contains(@id, 'commentlist')
     or contains(@class, 'commentlist')  or contains(@class, 'comment-page') or
     contains(@class, 'comment-list') or contains(@class, 'comments-list') or
     contains(@class, 'comments-content')]""",
-    """//*[(self::div or self::section or self::ol or self::ul)][starts-with(@id, 'comments')
+    """//*[(self::div or self::section or self::list)][starts-with(@id, 'comments')
     or starts-with(@class, 'comments') or starts-with(@class, 'Comments') or
     starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or
     contains(@class, 'article-comments')]""",
-    """//*[(self::div or self::section or self::ul)][starts-with(@id, 'comol') or
+    """//*[(self::div or self::section or self::list)][starts-with(@id, 'comol') or
     starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]""",
     """//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]"""
 ]
@@ -72,7 +72,7 @@ DISCARD_XPATH = [
     contains(@id, "bottom") or contains(@class, "bottom")]''',
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
     # or self::article
-    '''.//*[(self::a or self::div or self::li or self::ol or self::p or self::section or self::span or self::ul)][
+    '''.//*[(self::link or self::div or self::item or self::list or self::p or self::section or self::span)][
     contains(@id, "related") or contains(@class, "related") or contains(@class, "Related") or
     contains(@id, "viral") or contains(@class, "viral") or
     starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or
