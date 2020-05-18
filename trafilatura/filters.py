@@ -26,9 +26,8 @@ LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 if LANGID_FLAG is True:
     langid.set_languages(DETECTION_LANGUAGES)
 
-RE_FILTER = re.compile(r'\W*(Drucken|E-Mail|Facebook|Google|Instagram|Linkedin|PDF|Pinterest|Twitter|Whatsapp|Xing)$', flags=re.IGNORECASE)
-# RE_FILTER_2 = re.compile(r'\W*(Tags: [A-ZÄÖÜßa-zäöü ,]+|.hnliche Beitr|Gef.llt mir|[Ss]hare (on|via)|Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)')
-# COMMENTS_BLACKLIST = ('( Abmelden / Ändern )')
+RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|Linkedin|Mail|PDF|Pinterest|Pocket|Print|Reddit|Twitter|Whatsapp|Xing)$', flags=re.IGNORECASE)
+# COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
 def put_in_cache(body):
@@ -94,6 +93,6 @@ def textfilter(element):
     for line in testtext.splitlines():
         #if len(line) <= 5:
         #    continue
-        if RE_FILTER.match(line): # or RE_FILTER_2.search(line):
+        if RE_FILTER.match(line):
             return True
     return False
