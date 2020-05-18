@@ -32,17 +32,21 @@ DETECTION_LANGUAGES = ['af', 'am', 'an', 'ar', 'as', 'az', 'be', 'bg', 'bn', 'br
 
 #CORPUS_VERSION = 2017.1
 
-CUT_EMPTY_ELEMS = {'article', 'b', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-                   'i', 'li', 'main', 'p', 'section', 'span', 'strong', 'td'}
-                   # 'meta',
+CUT_EMPTY_ELEMS = {'article', 'b', 'blockquote', 'dd', 'div', 'dt', 'em',
+                   'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'main',
+                   'p', 'pre', 'q', 'section', 'span', 'strong'}
+                   # 'meta', 'td', 'a'
 
-MANUALLY_CLEANED = ['area', 'aside', 'audio', 'del', 'blink', 'button', 'canvas', 'embed', 'figure',
-                    'footer', 'form', 'head', 'iframe', 'link', 'input', 'label',
-                    'map', 'marquee', 'math', 'nav', 'noscript', 'object', 'option',
-                    'picture', 'rp', 'rt', 'script', 'style', 'svg', 'textarea', 'time', 'video']
-                    # 'frame' 'frameset' 'source'
+MANUALLY_CLEANED = ['audio', 'aside', 'canvas', 'figure', 'footer', 'form', 'head', 'map',
+                    'object', 'picture', 'script', 'svg', 'video',
+                    # secondary
+                    'applet', 'area', 'blink', 'button', 'datalist', 'details', 'dialog', 'embed',
+                    'fieldset', 'iframe', 'link', 'input', 'label', 'legend',
+                    'marquee', 'math', 'menu', 'nav', 'noscript', 'option',
+                    'rp', 'rt', 'rtc', 'source', 'style', 'track', 'textarea', 'time']
+                    # 'frame', 'frameset'
 
-MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'big', 'cite', 'font', 'img', 'ins', 'meta', 'ruby', 'small', 'wbr']
+MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small']
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
 HTML_CLEANER = Cleaner()

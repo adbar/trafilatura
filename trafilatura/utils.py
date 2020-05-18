@@ -2,7 +2,6 @@
 """
 Module bundling functions related to HTML and text processing.
 """
-
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
@@ -35,7 +34,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
 RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
-# UNICODE_WHITESPACE = re.compile(r'[\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000]')
+UNICODE_WHITESPACE = re.compile(r'\u00A0|\u1680|\u2000|\u2001|\u2002|\u2003|\u2004|\u2005|\u2006|\u2007|\u2008|\u2009|\u200a|\u2028|\u2029|\u202F|\u205F|\u3000')
 
 NOPRINT_TRANS_TABLE = {
     i: None for i in range(0, sys.maxunicode + 1) if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
@@ -216,37 +215,37 @@ def line_processing(line):
     line = line.replace('&#13;', '\r')
     line = line.replace('&#10;', '\n')
     # spaces
-    line = re.sub(r'\u00A0|\u2007|\u202F', ' ', line)  # non-breaking spaces
-    # text = UNICODE_WHITESPACE.sub('', text)
+    # line = re.sub(r'\u00A0|\u2007|\u202F', ' ', line)  # non-breaking spaces
+    line = UNICODE_WHITESPACE.sub(' ', line)
     # https://stackoverflow.com/questions/16467479/normalizing-unicode
     # remove non-printable chars
     line = remove_control_characters(line)
     line = trim(line)
-    if re.match(r'[\s\t]*$', line):
+    if line.isspace():
         line = None
     return line
 
 
 def sanitize(text):
     '''Convert text and discard incompatible and invalid characters'''
-    if text is None:
+    try:
+        returnlines = list()
+        for line in text.splitlines():
+            returnlines.append(line_processing(line))
+        return '\n'.join(list(filter(None.__ne__, returnlines)))
+    except AttributeError:
         return None
-    returnlines = list()
-    for line in text.splitlines():
-        returnlines.append(line_processing(line))
-    #with Pool(processes=cpu_count()*2) as pool:
-    #    returnlines = pool.map(line_processing, text.splitlines())
-    return '\n'.join(list(filter(None.__ne__, returnlines)))
 
 
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
-    if string is not None:
+    try:
         # remove newlines that are not related to punctuation or markup
-        string = re.sub(r'(?<![p{P}>])\n', ' ', string)
+        string = re.sub(r'(?<![p{P}>])\n', ' ', string).strip(' \t\n\r')
         # proper trimming
-        # string = ' '.join(re.split(r'\s+', string.strip(' \t\n\r'), flags=re.UNICODE|re.MULTILINE))
-        string = string.strip(' \t\n\r')
         string = re.sub(r'\s+', ' ', string, flags=re.UNICODE|re.MULTILINE)
-        # string = string.strip()
-    return string
+        #if string.isspace():
+        #    string = ''
+        return string
+    except TypeError:
+        return None

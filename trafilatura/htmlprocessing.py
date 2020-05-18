@@ -97,6 +97,7 @@ def convert_tags(tree):
     for elem in tree.iter('br', 'hr'):
         elem.tag = 'lb'
         elem.attrib.clear()
+    # wbr
     # blockquote, pre, q → quote
     for elem in tree.iter('blockquote', 'pre', 'q'):
         elem.tag = 'quote'
