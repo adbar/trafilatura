@@ -221,7 +221,7 @@ def line_processing(line):
     # remove non-printable chars
     line = remove_control_characters(line)
     line = trim(line)
-    if line.isspace():
+    if re.match(r'[\s\t]*$', line):
         line = None
     return line
 
@@ -241,11 +241,11 @@ def trim(string):
     '''Remove unnecessary spaces within a text string'''
     try:
         # remove newlines that are not related to punctuation or markup
-        string = re.sub(r'(?<![p{P}>])\n', ' ', string).strip(' \t\n\r')
+        string = re.sub(r'(?<![p{P}>])\n', ' ', string)
         # proper trimming
         string = re.sub(r'\s+', ' ', string, flags=re.UNICODE|re.MULTILINE)
         #if string.isspace():
         #    string = ''
-        return string
+        return string.strip(' \t\n\r')
     except TypeError:
         return None
