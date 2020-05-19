@@ -70,6 +70,7 @@ def handle_titles(element):
 def handle_formatting(element):
     '''Process formatting elements (b, i, etc. converted to hi) found
        outside of paragraphs'''
+    processed_element = None
     if element.text is not None or element.tail is not None:
         processed_element = etree.Element('p')
         processed_child = etree.SubElement(processed_element, element.tag)
