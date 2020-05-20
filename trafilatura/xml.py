@@ -22,7 +22,7 @@ LOGGER = logging.getLogger(__name__)
 TEI_SCHEMA = pkg_resources.resource_filename('trafilatura', 'data/tei-schema.pickle')
 TEI_VALID_TAGS = {'cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
                   'lb', 'list', 'p', 'quote', 'row', 'table'}
-TEI_VALID_ATTRS = {'rendition', 'role', 'type'}
+TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
 # XML invalid characters

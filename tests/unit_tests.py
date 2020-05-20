@@ -494,7 +494,7 @@ def test_exotic_tags(xmloutput=False):
     with open(filepath) as f:
         content = etree.fromstring(f.read())
     res = xml.check_tei(content, 'http://dummy')
-    assert etree.tostring(res).startswith(b'<html>\n<text>\n<body>\n<div>\n\n<hi>Hello</hi>\n<p>Teletype text</p>')
+    assert etree.tostring(res).startswith(b'<html>\n<text>\n<body>\n<div>\n\n<hi rend="uppercase">Hello</hi>\n<p>Teletype text</p>')
 
 
 def test_lrucache():

@@ -452,11 +452,13 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.debug('justext length %s', len_text2)
         if len_text2 > 0: #MIN_EXTRACTED_SIZE:
             body, len_text, text = body2, len_text2, text2
-        #else:
-        #    # post-processing: remove unwanted sections
-        #    for elem in body.xpath('//aside|//button|//figure|//footer|//img|//input|//noscript|//svg'):
-        #        elem.getparent().remove(elem)
-        #    #etree.strip_tags(body, 'figure', 'img')
+        else:
+            # post-processing: remove unwanted sections
+            for elem in body.xpath('//aside|//button|//figure|//footer|//img|//input|//link|//nav|//noscript|//svg|//time'):
+                elem.getparent().remove(elem) # elem.drop_tree()
+            # clean and converttree
+            etree.strip_tags(body, 'article', 'span') # 'header', 'section', ...
+            body = convert_tags(body)
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)  # record_id,
