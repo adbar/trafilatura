@@ -33,7 +33,7 @@ def load_input_urls(filename):
         # optional: errors='strict', buffering=1
         with open(filename, mode='r', encoding='utf-8') as inputfile:
             for line in inputfile:
-                url_match = re.match(r'https?://[^ ]+', line)  # if not line.startswith('http'):
+                url_match = re.match(r'https?://[^ ]+', line.strip())  # if not line.startswith('http'):
                 try:
                     input_urls.append(url_match.group(0))
                 except AttributeError:
