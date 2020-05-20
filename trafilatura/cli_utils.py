@@ -175,14 +175,18 @@ def url_processing_pipeline(args, input_urls, sleeptime):
             htmlstring = fetch_url(url)
             # register in backoff dictionary to ensure time between requests
             backoff_dict[domain] = datetime.now()
-            # backup option
-            if args.backup_dir:
-                filename = archive_html(htmlstring, args)
+            if htmlstring is not None:
+                # backup option
+                if args.backup_dir:
+                    filename = archive_html(htmlstring, args)
+                else:
+                    filename = None
+                # process
+                result = examine(htmlstring, args, url=url)
+                write_result(result, args, filename)
             else:
-                filename = None
-            # process
-            result = examine(htmlstring, args, url=url)
-            write_result(result, args, filename)
+                # log the error
+                print('No result for URL: ' + url, file=sys.stderr)
             # clean registries
             if len(domain_dict[domain]) == 0:
                 del domain_dict[domain]
