@@ -19,33 +19,41 @@ logging.getLogger('htmldate').setLevel(logging.WARNING)
 
 HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
 
+TITLE_REGEX = re.compile(r'(.+)?\s+[-|]\s+.*$')
+JSON_AUTHOR_1 = re.compile(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
+JSON_AUTHOR_2 = re.compile(r'"author"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
+JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
+JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
+JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
+
 
 def extract_json(tree, mymeta):
     '''Crudely extract metadata from JSON-LD data'''
     for elem in tree.xpath('//script[@type="application/ld+json"]|//script[@type="application/settings+json"]'):
-        if elem.text is None:
+        if not elem.text:
             continue
         if '"author":' in elem.text:
-            mymatch = re.search(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
-            if mymatch and ' ' in mymatch.group(1):
-                mymeta = mymeta._replace(author=trim(mymatch.group(1)))
+            mymatch = JSON_AUTHOR_1.search(elem.text)
+            if mymatch:
+                if ' ' in mymatch.group(1):
+                    mymeta = mymeta._replace(author=trim(mymatch.group(1)))
             else:
-                mymatch = re.search(r'"author"[^}]+?"names?".+?"([^"]+)', elem.text, re.DOTALL)
+                mymatch = JSON_AUTHOR_2.search(elem.text)
                 if mymatch and ' ' in mymatch.group(1):
                     mymeta = mymeta._replace(author=trim(mymatch.group(1)))
         # try to extract publisher
         if '"publisher"' in elem.text:
-            mymatch = re.search(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', elem.text, re.DOTALL)
+            mymatch = JSON_PUBLISHER.search(elem.text)
             if mymatch and not ',' in mymatch.group(1):
                 mymeta = mymeta._replace(sitename=trim(mymatch.group(1)))
         # category
         if '"articleSection"' in elem.text:
-            mymatch = re.search(r'"articleSection": ?"([^"\\]+)', elem.text, re.DOTALL)
+            mymatch = JSON_CATEGORY.search(elem.text)
             if mymatch:
                 mymeta = mymeta._replace(categories=[trim(mymatch.group(1))])
         # try to extract title
         if '"headline"' in elem.text and mymeta.title is None:
-            mymatch = re.search(r'"headline": ?"([^"\\]+)', elem.text, re.DOTALL)
+            mymatch = JSON_HEADLINE.search(elem.text)
             if mymatch:
                 mymeta = mymeta._replace(title=trim(mymatch.group(1)))
     return mymeta
@@ -54,12 +62,10 @@ def extract_json(tree, mymeta):
 def extract_opengraph(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
     title, author, url, description, site_name = (None,) * 5
-    for elem in tree.xpath('//head/meta[@property]'):
-        # detect OpenGraph schema
-        if not elem.get('property').startswith('og:'):
-            continue
+    # detect OpenGraph schema
+    for elem in tree.xpath('//head/meta[starts-with(@property, "og:")]'):
         # safeguard
-        if elem.get('content') is None or len(elem.get('content')) < 1:
+        if not elem.get('content'):
             continue
         # site name
         if elem.get('property') == 'og:site_name':
@@ -92,19 +98,13 @@ def examine_meta(tree):
     # test if all return values have been assigned
     if all((title, author, url, description, site_name)):  # if they are all defined
         return (title, author, url, description, site_name, None, None, None)
-    tags = list()
+    tags = []
     # skim through meta tags
-    for elem in tree.xpath('//head/meta'):
-        # safeguard
-        if len(elem.attrib) < 1:
-            LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
-            continue
+    for elem in tree.xpath('//head/meta[@content]'):
         # content
-        if 'content' not in elem.attrib:
+        if not elem.get('content'):
             continue
         content_attr = elem.get('content')
-        if len(content_attr) < 1:
-            continue
         # image info
         # ...
         # property
@@ -155,33 +155,25 @@ def examine_meta(tree):
             #        title = elem.get('content')
         # other types
         else:
-            if 'charset' in elem.attrib or 'http-equiv' in elem.attrib or 'property' in elem.attrib:
-                pass  # e.g. charset=UTF-8
-            else:
+            if not 'charset' in elem.attrib and not 'http-equiv' in elem.attrib and not 'property' in elem.attrib:
                 LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
     return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None, tags)
 
 
 def extract_metainfo(tree, expressions, len_limit=200):
     '''Extract meta information'''
-    result = None
     # try all XPath expressions
     for expression in expressions:
-        target_elements = tree.xpath(expression)
-        # report potential errors
-        if len(target_elements) > 1:
-            LOGGER.debug('more than one result: %s %s', expression, len(target_elements))
         # examine all results
-        for elem in target_elements:
-            if elem.text_content() is not None and len(elem.text_content()) < len_limit:
-                result = elem.text_content()
-            # exit loop if something usable has been found
-            if result is not None:
-                break
-        # exit loop if something usable has been found
-        if result is not None:
-            break
-    return trim(result)
+        i = 0
+        for elem in tree.xpath(expression):
+            content = elem.text_content()
+            if content and len(content) < len_limit:
+                return trim(content)
+            i += 1
+        if i > 1:
+            LOGGER.debug('more than one invalid result: %s %s', expression, i)
+    return None
 
 
 def extract_title(tree):
@@ -199,15 +191,14 @@ def extract_title(tree):
     try:
         title = tree.xpath('//head/title')[0].text_content()
         # refine
-        if '-' in title or '|' in title:
-            mymatch = re.search(r'^(.+)?\s+[-|]\s+.*$', title)
-            if mymatch:
-                title = mymatch.group(1)
+        mymatch = TITLE_REGEX.match(title)
+        if mymatch:
+            title = mymatch.group(1)
         return title
     except IndexError:
         LOGGER.warning('no main title found')
     # take first h1-title
-    if len(h1_results) > 0:
+    if h1_results:
         return h1_results[0].text_content()
     # take first h2-title
     try:
@@ -231,6 +222,7 @@ def extract_author(tree):
 
 def extract_url(tree, default_url=None):
     '''Extract the URL from the canonical link'''
+    # https://www.tutorialrepublic.com/html-reference/html-base-tag.php
     # default url as fallback
     url = default_url
     # try canonical link first
@@ -264,8 +256,7 @@ def extract_url(tree, default_url=None):
 def extract_sitename(tree):
     '''Extract the name of a site from the main title'''
     try:
-        title_elem = tree.find('.//head/title')
-        mymatch = re.search(r'^.*?[-|]\s+(.*)$', title_elem.text)
+        mymatch = re.search(r'^.*?[-|]\s+(.*)$', tree.find('.//head/title').text)
         if mymatch:
             return mymatch.group(1)
     except AttributeError:
@@ -275,30 +266,25 @@ def extract_sitename(tree):
 
 def extract_catstags(metatype, tree):
     '''Find category and tag information'''
-    results = list()
+    results = []
     regexpr = '/' + metatype + '/'
     if metatype == 'category':
         xpath_expression = categories_xpaths
     else:
         xpath_expression = tags_xpaths
-    #if tree.find(expr) is not None:
-    #     # expr = expr + '/a'
+    # search using custom expressions
     for catexpr in xpath_expression:
-        target_elements = tree.xpath(catexpr)
-        if len(target_elements) > 0:  # if something has been found
-            for elem in target_elements:
-                if 'href' in elem.attrib:
-                    match = re.search(regexpr, elem.attrib['href'])
-                    if match:
-                        result = trim(elem.text_content())
-                        if result is not None:
-                            results.append(result)
+        for elem in tree.xpath(catexpr):
+            if 'href' in elem.attrib and re.search(regexpr, elem.attrib['href']):
+                results.append(elem.text_content())
+        if results:
+            break
     # category fallback
-    if metatype == 'category' and len(results) == 0:
+    if metatype == 'category' and not results:
         element = tree.find('.//head//meta[@property="article:section"]')
         if element is not None:
-            results.append(trim(element.attrib['content']))
-    return results
+            results.append(element.attrib['content'])
+    return [trim(x) for x in results if x is not None]
 
 
 def extract_metadata(filecontent, default_url=None, date_config=None):
@@ -350,10 +336,10 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
             if mymatch:
                 mymeta = mymeta._replace(sitename=mymatch.group(1))
     # categories
-    if mymeta.categories is None or len(mymeta.categories) == 0:
+    if not mymeta.categories:
         mymeta = mymeta._replace(categories=extract_catstags('category', tree))
     # tags
-    if mymeta.tags is None or len(mymeta.tags) == 0:
+    if not mymeta.tags:
         mymeta = mymeta._replace(tags=extract_catstags('tags', tree))
     # return
     return mymeta
