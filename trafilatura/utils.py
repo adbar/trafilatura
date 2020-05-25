@@ -36,6 +36,9 @@ RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(r'\u00A0|\u1680|\u2000|\u2001|\u2002|\u2003|\u2004|\u2005|\u2006|\u2007|\u2008|\u2009|\u200a|\u2028|\u2029|\u202F|\u205F|\u3000')
 
+TAG_REMOVAL = re.compile(r'(?<![p{P}>])\n')
+SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
+
 NOPRINT_TRANS_TABLE = {
     i: None for i in range(0, sys.maxunicode + 1) if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
 }
@@ -229,10 +232,12 @@ def line_processing(line):
 def sanitize(text):
     '''Convert text and discard incompatible and invalid characters'''
     try:
-        returnlines = list()
-        for line in text.splitlines():
-            returnlines.append(line_processing(line))
-        return '\n'.join(list(filter(None.__ne__, returnlines)))
+        #returnlines = []
+        #for line in text.splitlines():
+        #    returnlines.append(line_processing(line))
+        # return '\n'.join(list(filter(None.__ne__, returnlines)))
+        return '\n'.join([line for line in (line_processing(l) for l in text.splitlines()) if line is not None])
+        # return '\n'.join([l for l in map(line_processing, text.splitlines()) if l is not None])
     except AttributeError:
         return None
 
@@ -240,12 +245,7 @@ def sanitize(text):
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
     try:
-        # remove newlines that are not related to punctuation or markup
-        string = re.sub(r'(?<![p{P}>])\n', ' ', string)
-        # proper trimming
-        string = re.sub(r'\s+', ' ', string, flags=re.UNICODE|re.MULTILINE)
-        #if string.isspace():
-        #    string = ''
-        return string.strip(' \t\n\r')
+        # remove newlines that are not related to punctuation or markup + proper trimming
+        return SPACE_TRIMMING.sub(r' ', TAG_REMOVAL.sub(r' ', string)).strip(' \t\n\r\v')
     except TypeError:
         return None

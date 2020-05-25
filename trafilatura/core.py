@@ -47,10 +47,10 @@ def sanitize_tree(tree):
         #    if elem.text is None or elem.text.isspace():
         #        elem.getparent().remove(elem)
         #        continue
-        if elem.text is not None:
-            elem.text = sanitize(elem.text)
-        if elem.tail is not None:
-            elem.tail = sanitize(elem.tail)
+        #if elem.text:
+        elem.text = sanitize(elem.text)
+        #if elem.tail:
+        elem.tail = sanitize(elem.tail)
     # cleaned_tree = prune_html(cleaned_tree)
     return cleaned_tree
 
@@ -116,7 +116,7 @@ def handle_lists(element):
     if len(processed_element) > 0:  # if it has children
         # test if it has text
         teststring = ''.join(processed_element.itertext())
-        if len(teststring) > 0 and re.search(r'\S', teststring):
+        if teststring and re.search(r'\S', teststring):
             return processed_element
     return None
 
@@ -184,8 +184,7 @@ def handle_paragraphs(element, potential_tags):
             # needing attention!
             if child.tag == 'p':
                 LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
-                processed_element.text = ' ' + child.text
-                processed_element.text = trim(processed_element.text)
+                processed_element.text = trim(' ' + child.text)
                 continue
             newsub = etree.Element(child.tag)
             # handle formatting
@@ -247,7 +246,7 @@ def handle_table(table_elem):
         elif subelement.tag in ('td', 'th'):
             # process
             processed_cell = process_node(subelement)
-            if processed_cell is None or processed_cell.text is None or len(processed_cell.text) < 1:
+            if processed_cell is None or processed_cell.text is None or not processed_cell.text:
                 continue
             # define tag
             newsub = etree.SubElement(newrow, 'cell')
@@ -315,7 +314,7 @@ def extract_content(tree, include_tables=False):
     for expr in BODY_XPATH:
         # select tree if the expression has been found
         subtree = tree.xpath(expr)
-        if len(subtree) == 0:
+        if not subtree:
             continue
         subtree = subtree[0]
         # prune
@@ -334,7 +333,7 @@ def extract_content(tree, include_tables=False):
         if include_tables is True:
             potential_tags.add('table')
         # no paragraphs containing text
-        if len(subtree.xpath('//p//text()')) == 0:
+        if not subtree.xpath('//p//text()'):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
@@ -387,7 +386,7 @@ def extract_comments(tree):
     for expr in COMMENTS_XPATH:
         # select tree if the expression has been found
         subtree = tree.xpath(expr)
-        if len(subtree) == 0:
+        if not subtree:
             continue
         subtree = subtree[0]
         # prune
@@ -408,8 +407,7 @@ def extract_comments(tree):
             break
     # lengths
     temp_comments = trim(' '.join(comments_body.itertext()))
-    len_comments = len(temp_comments)
-    return comments_body, temp_comments, len_comments, tree
+    return comments_body, temp_comments, len(temp_comments), tree
 
 
 def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language):
@@ -432,7 +430,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_algo > 2*len_text: # or 0.95*len_text < len_algo < 0.99*len_text:
         algo_flag = True
-    elif len(body.xpath('//p//text()')) == 0 and len_algo > 0:
+    elif not body.xpath('//p//text()') and len_algo > 0:
         algo_flag = True  # borderline case
     else:
         # print(sure_thing, len_text, len_algo)
@@ -483,18 +481,16 @@ def baseline(filecontent):
         if elem.text and '"articleBody":' in elem.text:
             mymatch = re.search(r'"articleBody":"(.+?)","', elem.text)
             if mymatch:
-                temp_text = mymatch.group(1)
-                temp_text = temp_text.replace('\\"', '"')
-                # temp_text = trim(temp_text)
-                len_text = len(temp_text)
+                temp_text = mymatch.group(1).replace('\\"', '"')
                 postbody = etree.Element('body')
                 elem = etree.Element('p')
                 elem.text = temp_text
                 postbody.append(elem)
-                return postbody, len_text, temp_text
+                # temp_text = trim(temp_text)
+                return postbody, len(temp_text), temp_text
     # scrape from article tag
     elems = tree.xpath('//article') # |//main
-    if len(elems) > 0:
+    if elems:  # len(elems) > 0:
         article_elem = elems[0]
         temp_text = sanitize(article_elem.text_content())
         len_text = len(temp_text)
@@ -505,7 +501,7 @@ def baseline(filecontent):
             return postbody, len_text, temp_text
     # scrape from text paragraphs
     results = set()
-    resultlist = list()
+    resultlist = []
     # search_tree = discard_unwanted(tree)
     # search_tree = prune_html(tree)
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
@@ -518,8 +514,7 @@ def baseline(filecontent):
         elem.text = textpart
         postbody.append(elem)
     temp_text = sanitize('\n'.join(postbody.itertext()))
-    len_text = len(temp_text)
-    return postbody, len_text, temp_text
+    return postbody, len(temp_text), temp_text
 
 
 def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation, record_id):
@@ -528,9 +523,9 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
     if 'xml' in output_format:
         # last cleaning
         for element in postbody.iter():
-            if len(element) == 0 and (element.text is None or len(element.text) == 0) and (element.tail is None or len(element.tail) == 0):
+            if len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
-                if parent is not None:
+                if parent:
                     parent.remove(element)
         # build output trees
         if output_format == 'xml':

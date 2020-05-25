@@ -181,10 +181,8 @@ def process_node(element):
     if len(element) == 0 and not element.text and not element.tail:
         return None
     # trim
-    if element.text:
-        element.text = trim(element.text)
-    if element.tail:
-        element.tail = trim(element.tail)
+    element.text = trim(element.text)
+    element.tail = trim(element.tail)
     # content checks
     if element.tag != 'lb' and not element.text and element.tail:
         element.text = element.tail

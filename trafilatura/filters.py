@@ -88,7 +88,7 @@ def textfilter(element):
         testtext = element.tail
     else:
         testtext = element.text
-    if testtext.isspace():
+    if re.match(r'\s*$', testtext):  # testtext.isspace():
         return True
     for line in testtext.splitlines():
         #if len(line) <= 5:
