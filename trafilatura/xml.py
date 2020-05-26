@@ -25,9 +25,6 @@ TEI_VALID_TAGS = {'cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'ite
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
-# XML invalid characters
-# https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
-
 
 def build_xml_output(postbody, commentsbody):
     '''Build XML output tree based on extracted information'''
@@ -37,6 +34,8 @@ def build_xml_output(postbody, commentsbody):
     if commentsbody is not None:
         commentsbody.tag = 'comments'
         output.append(commentsbody)
+# XML invalid characters
+# https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
     return output
 
 
@@ -56,12 +55,10 @@ def add_xml_meta(output, docmeta):
             output.set('source', docmeta.url)
         if docmeta.description is not None:
             output.set('excerpt', docmeta.description)
-        if docmeta.categories is not None and len(docmeta.categories) > 0:
-            cats = ';'.join(docmeta.categories)
-            output.set('categories', cats)
-        if docmeta.tags is not None and len(docmeta.tags) > 0:
-            tags = ';'.join(docmeta.tags)
-            output.set('tags', tags)
+        if docmeta.categories is not None:
+            output.set('categories', ';'.join(docmeta.categories))
+        if docmeta.tags is not None:
+            output.set('tags', ';'.join(docmeta.tags))
     return output
 
 
@@ -149,23 +146,22 @@ def xmltotxt(xmloutput):
                 returnlist.append('\n')
             continue
         if element.text is not None and element.tail is not None:
-            textelement = element.text + ' ' + element.tail
+            textelement = ' '.join([element.text, element.tail])
         elif element.text is not None and element.tail is None:
             textelement = element.text
         else:
             textelement = element.tail
         if element.tag in ('code', 'fw', 'head', 'lb', 'p', 'quote', 'row', 'table'):
-            returnlist.append('\n' + textelement + '\n')
+            returnlist.extend(['\n', textelement, '\n'])
         elif element.tag == 'item':
-            returnlist.append('\n- ' + textelement + '\n')
+            returnlist.extend(['\n- ', textelement, '\n'])
         elif element.tag == 'cell':
-            returnlist.append('|' + textelement + '|')
+            returnlist.extend(['|', textelement, '|'])
         elif element.tag == 'comments':
             returnlist.append('\n\n')
         else:
-            returnlist.append(textelement + ' ')
-    returnstring = sanitize(''.join(returnlist))
-    return returnstring
+            returnlist.extend([textelement, ' '])
+    return sanitize(''.join(returnlist))
 
 
 def write_teitree(postbody, commentsbody, docmeta):

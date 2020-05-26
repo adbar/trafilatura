@@ -9,7 +9,7 @@ Module bundling all functions needed to extract the text in a webpage.
 
 # standard
 import logging
-import re
+import re # import regex as re
 
 from copy import deepcopy
 
@@ -339,8 +339,9 @@ def extract_content(tree, include_tables=False):
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # extract content
-        processed_elems = [handle_textelem(elem, potential_tags) for elem in subtree.xpath('.//*')]
-        result_body.extend(list(filter(None.__ne__, processed_elems)))
+        processed_elems = [handle_textelem(e, potential_tags) for e in subtree.xpath('.//*')]
+        # list(filter(None.__ne__, processed_elems))
+        result_body.extend([e for e in processed_elems if e is not None])
         # exit the loop if the result has children
         if len(result_body) > 0:
             sure_thing = True
