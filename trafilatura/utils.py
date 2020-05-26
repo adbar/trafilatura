@@ -12,6 +12,8 @@ import socket
 import sys
 import urllib3
 
+from functools import lru_cache
+
 try:
     # this module is faster
     import cchardet
@@ -36,14 +38,13 @@ RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(r'\u00A0|\u1680|\u2000|\u2001|\u2002|\u2003|\u2004|\u2005|\u2006|\u2007|\u2008|\u2009|\u200a|\u2028|\u2029|\u202F|\u205F|\u3000')
 
-TAG_REMOVAL = re.compile(r'(?<![p{P}>])\n')
+NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
 SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
 
 NOPRINT_TRANS_TABLE = {
     i: None for i in range(0, sys.maxunicode + 1) if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
 }
-# .isspace()
-# unicodedata.category(char)[0] != "C" or char in ('\t', '\n')
+# .isspace() # unicodedata.category(char)[0] != "C" or char in ('\t', '\n')
 
 
 def isutf8(data):
@@ -206,29 +207,29 @@ def txttocsv(text, comments, docmeta):
     return tsv_output
 
 
+@lru_cache(maxsize=128)
 def remove_control_characters(string):
     '''Prevent non-printable and XML invalid character errors'''
     # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python/93029#93029
     return string.translate(NOPRINT_TRANS_TABLE)
 
 
+@lru_cache(maxsize=128)
 def line_processing(line):
     '''Discard incompatible unicode and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
-    line = line.replace('&#13;', '\r')
-    line = line.replace('&#10;', '\n')
+    line = line.replace('&#13;', '\r').replace('&#10;', '\n')
     # spaces
-    # line = re.sub(r'\u00A0|\u2007|\u202F', ' ', line)  # non-breaking spaces
-    line = UNICODE_WHITESPACE.sub(' ', line)
     # https://stackoverflow.com/questions/16467479/normalizing-unicode
     # remove non-printable chars
-    line = remove_control_characters(line)
+    line = remove_control_characters(UNICODE_WHITESPACE.sub(' ', line))
     line = trim(line)
     if re.match(r'[\s\t]*$', line):
         line = None
     return line
 
 
+@lru_cache(maxsize=32)
 def sanitize(text):
     '''Convert text and discard incompatible and invalid characters'''
     try:
@@ -236,16 +237,17 @@ def sanitize(text):
         #for line in text.splitlines():
         #    returnlines.append(line_processing(line))
         # return '\n'.join(list(filter(None.__ne__, returnlines)))
-        return '\n'.join([line for line in (line_processing(l) for l in text.splitlines()) if line is not None])
+        return '\n'.join([l for l in (line_processing(l) for l in text.splitlines()) if l is not None])
         # return '\n'.join([l for l in map(line_processing, text.splitlines()) if l is not None])
     except AttributeError:
         return None
 
 
+@lru_cache(maxsize=128)
 def trim(string):
     '''Remove unnecessary spaces within a text string'''
     try:
         # remove newlines that are not related to punctuation or markup + proper trimming
-        return SPACE_TRIMMING.sub(r' ', TAG_REMOVAL.sub(r' ', string)).strip(' \t\n\r\v')
+        return SPACE_TRIMMING.sub(r' ', NO_TAG_SPACE.sub(r' ', string)).strip(' \t\n\r\v')
     except TypeError:
         return None
