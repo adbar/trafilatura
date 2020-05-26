@@ -122,8 +122,7 @@ DISCARD_XPATH = [
 COMMENTS_DISCARD_XPATH = [
     './/*[(self::div or self::section)][starts-with(@id, "respond")]',
     './/cite|.//quote',
-    './/*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments")]',
-    '''.//*[starts-with(@id, "reply-") or starts-with(@class, "reply-") or
+    '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
 ]
