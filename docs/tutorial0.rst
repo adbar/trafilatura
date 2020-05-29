@@ -65,6 +65,9 @@ Alternatively, you can download a series of web documents with generic command-l
 Work with the data
 ------------------
 
+See `A Gentle Introduction to XML <https://tei-c.org/release/doc/tei-p5-doc/en/html/SG.html>`_ or the module `xmltodict <https://github.com/martinblech/xmltodict>`_ which provides a way to directly read the files and work with the data as if it were in JSON format.
+
+
 The textometry platform `TXM <https://txm.gitpages.huma-num.fr/textometrie/en/>`_ can read both XML and TEI-XML files and perform annotation and exploration of corpus data.
 
 Different solutions in Python:

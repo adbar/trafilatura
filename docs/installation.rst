@@ -44,8 +44,15 @@ This project is under active development, please make sure you keep it up-to-dat
     $ pip install -U git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
 
 
+Command-line tool
+~~~~~~~~~~~~~~~~~
+
+For local or user installations where trafilatura cannot be used from the command-line, please refer to `the official Python documentation <https://docs.python.org/3/library/site.html#cmdoption-site-user-base>`_ and this page on `finding executables from the command-line <https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line>`_.
+
+
+
 Additional functionality
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 A few additional libraries can be installed for extended functionality and faster processing: language detection (``langid``) and faster processing of downloads (``cchardet``, may not work on all systems).
 

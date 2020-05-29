@@ -35,21 +35,29 @@ Welcome to Trafilatura's documentation!
 Description
 -----------
 
-*Trafilatura* seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output is converted to TXT, CSV, XML & TEI-XML.
+*Trafilatura* seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output can be converted to different formats.
 
 Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it deals with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
 
-It has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of web documents.
+The extractor has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of web documents.
 
 
 Features
 ~~~~~~~~
 
--  Seamless download and extraction: URLs, HTML files or parsed HTML trees as input. Output in plain text (minimal formatting), CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_) or XML format (for metadata and structure)
--  Focus on main text and/or comments, with structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
--  Extraction of metadata
--  Robust extraction and generic `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ algorithms used as fallback, reasonably efficient processing thanks to `lxml <http://lxml.de/>`_
--  Optional language detection on the extracted content
+- Seamless online (including page retrieval) or parallelized offline processing:
+   - URLs, HTML files or parsed HTML trees as input
+- Several output formats supported:
+   - Plain text (minimal formatting)
+   - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
+   - XML (for metadata and structure)
+   - `TEI-XML <https://tei-c.org/>`_
+- Robust extraction algorithm, using and `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback, reasonably efficient with `lxml <http://lxml.de/>`_:
+    - Focus on main text and/or comments
+    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
+    - Extraction of metadata (title, author, date, site name, categories and tags)
+- Generation of link lists from ATOM/RSS feeds, efficient processing of collected and blacklisted URLs
+- Optional language detection on the extracted content
 
 
 Evaluation and alternatives
@@ -57,13 +65,13 @@ Evaluation and alternatives
 
 The extraction focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and (optionally) comments. This task is also known as web scraping, boilerplate removal, DOM-based content extraction, main content identification, or web page cleaning.
 
-For first experimental results see the `evaluation page <evaluation.html>`_.
+For reproducible results see the `evaluation page <evaluation.html>`_ and the `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_.
 
 
 Installation
 ------------
 
-Chiefly with the Python package manager ``pip``: ``pip install --upgrade trafilatura``.
+Chiefly with Python package managers: ``pip install --upgrade trafilatura``.
 
 For more details please read the `installation documentation <installation.html>`_.
 
@@ -89,7 +97,7 @@ On the command-line:
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
 
-For more information please refer to `quickstart <quickstart.html>`_, `usage documentation <usage.html>`_ and `tutorial <tutorial1.html>`_.
+For more information please refer to `quickstart <quickstart.html>`_, `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
 
 
 License
@@ -115,12 +123,11 @@ Going further
 Roadmap
 ~~~~~~~
 
--  [X] Metadata integration
--  [-] Preservation of in-line text formatting (bold, italic, etc.)
 -  [-] Language detection on the extracted content
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
--  [-] XML output compatible with the recommendations of the `Text Encoding Initiative <https://tei-c.org/>`_
+-  [-] URL lists and document management
 -  [ ] Configuration and extraction parameters
+-  [ ] Integration of natural language processing tools
 
 
 Contributing
@@ -128,13 +135,7 @@ Contributing
 
 `Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome!
 
-Feel free to file bug reports on the `issues page <https://github.com/adbar/trafilatura/issues>`_.
-
-Thanks to these contributors who submitted features and bugfixes:
-
--  `DerKozmonaut <https://github.com/DerKozmonaut>`_
--  `LukasBBAW <https://github.com/LukasBBAW>`_
--  `vbarbaresi <https://github.com/vbarbaresi>`_
+Feel free to file issues on the `dedicated page <https://github.com/adbar/trafilatura/issues>`_. Thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
 
 
 Author
@@ -155,16 +156,14 @@ Further documentation
 =====================
 
 .. toctree::
-   :maxdepth: 2
-   
-   corefunctions
-   evaluation
+   :maxdepth: 1
+
    installation
    quickstart
    usage
-   tutorial0
-   tutorial1
-   tutorial2
+   tutorials
+   evaluation
+   corefunctions
 
 
 Indices and tables
