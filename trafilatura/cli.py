@@ -17,7 +17,6 @@ from .cli_utils import (load_blacklist, load_input_urls, generate_filelist,
                         examine, write_result)
 from .feeds import find_feed_urls
 from .settings import SLEEP_TIME
-from .utils import fetch_url
 
 
 LOGGER = logging.getLogger(__name__)
@@ -40,10 +39,10 @@ except AttributeError:
 
 def parse_args(args):
     """Define parser for command-line arguments"""
-    parser = argparse.ArgumentParser()
-    group1 = parser.add_argument_group('I/O', 'input and output options')
-    group2 = parser.add_argument_group('Format', 'options related to formats')
-    group3 = parser.add_argument_group('Extraction', 'customize text and metadata extraction')
+    parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
+    group1 = parser.add_argument_group('I/O', 'Input and output options affecting processing')
+    group2 = parser.add_argument_group('Format', 'Selection of the output format')
+    group3 = parser.add_argument_group('Extraction', 'Customization of text and metadata extraction')
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
                         action="store_true")

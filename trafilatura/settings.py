@@ -8,11 +8,11 @@ Listing a series of settings that are applied module-wide.
 
 from lxml.html.clean import Cleaner
 
-
 MAX_FILE_SIZE = 20000000
 MIN_FILE_SIZE = 10
 SLEEP_TIME = 2
 
+# USER_AGENT = 'trafilatura/0.5.0 (+https://github.com/adbar/trafilatura)'
 
 ## extract
 MIN_EXTRACTED_SIZE = 200

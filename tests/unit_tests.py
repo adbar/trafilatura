@@ -467,7 +467,7 @@ def test_extract(xmloutput): # xmloutput=False
     assert '4 Min Read' not in result and 'The Thomson Reuters Trust Principles' not in result and 'Factbox: Key winners' not in result and 'Despite an unknown cast,' in result and 'Additional reporting by' in result
 
     result = load_mock_page('https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2', xmloutput)
-    print(result)
+    # print(result)
     assert 'Microsoft Corp said on Thursday' in result and 'Postmedia is committed' in result and 'I consent to receiving' not in result and 'It was not immediately clear if' in result and 'turns CO2 into soap' not in result
     if xmloutput is False:
         assert 'Reuters files' not in result

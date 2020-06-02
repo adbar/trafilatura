@@ -10,7 +10,6 @@ import logging
 import re
 import socket
 import sys
-import urllib3
 
 from functools import lru_cache
 
@@ -23,13 +22,21 @@ except ImportError:
 # https://ftfy.readthedocs.io/en/latest/
 
 import requests
+import urllib3
+
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
-from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE
+from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE # USER_AGENT
 
 
 LOGGER = logging.getLogger(__name__)
+
+# customize headers
+HEADERS = {
+    'Connection': 'close',  # another way to cover tracks
+    #'User-Agent': USER_AGENT,  # your string here
+}
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
@@ -99,16 +106,11 @@ def fetch_url(url):
     Raises:
         Nothing.
     """
-    # customize headers
-    headers = {
-        'Connection': 'close',  # another way to cover tracks
-        # 'User-Agent': '',  # your string here
-    }
     # send
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
-        response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=headers)
+        response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=HEADERS)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
     except requests.exceptions.TooManyRedirects:

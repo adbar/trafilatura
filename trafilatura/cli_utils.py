@@ -23,7 +23,7 @@ from .utils import fetch_url
 
 LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
-fnlen = 8
+FILENAME_LEN = 8
 
 
 def load_input_urls(filename):
@@ -77,11 +77,11 @@ def determine_filename(args, fileslug=None):
     # determine file slug
     if fileslug is None:
         output_path = path.join(args.outputdir, \
-            ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen)) \
+            ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
             + extension)
         while path.exists(output_path):
             output_path = path.join(args.outputdir, \
-                ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen)) \
+                ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
                 + extension)
     else:
         output_path = path.join(args.outputdir, fileslug + extension)
@@ -91,10 +91,10 @@ def determine_filename(args, fileslug=None):
 def archive_html(htmlstring, args):
     '''Write a copy of raw HTML in backup directory'''
     # determine file name
-    fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen))
+    fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN))
     output_path = path.join(args.backup_dir, fileslug + '.html')
     while path.exists(output_path):
-        fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(fnlen))
+        fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN))
         output_path = path.join(args.backup_dir, fileslug + '.html')
     # check the directory status
     if check_outputdir_status(args.backup_dir) is True:
