@@ -32,4 +32,4 @@ On the command-line
                    [--validate] [-u URL] [-v]
 
 
-For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorial1.html>`_.
+For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.

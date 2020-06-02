@@ -1,6 +1,13 @@
 ## History / Changelog
 
 
+### 0.5.0
+- faster and more robust text and metadata extraction
+- more efficient batch processing (parallel processing, URL queues)
+- extraction and processing of ATOM/RSS feeds
+- complete command-line tool with corresponding options
+
+
 ### 0.4.1
 - better metadata extraction and integration (XML & XML-TEI)
 - more efficient processing

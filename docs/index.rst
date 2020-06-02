@@ -35,7 +35,7 @@ Welcome to Trafilatura's documentation!
 Description
 -----------
 
-*Trafilatura* seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output can be converted to different formats.
+*Trafilatura* is Python package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output can be converted to different formats.
 
 Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it deals with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
 
@@ -56,7 +56,10 @@ Features
     - Focus on main text and/or comments
     - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
     - Extraction of metadata (title, author, date, site name, categories and tags)
-- Generation of link lists from ATOM/RSS feeds, efficient processing of collected and blacklisted URLs
+- URL lists:
+    - Generation of link lists from ATOM/RSS feeds
+    - Efficient processing of URL queue
+    - Blacklists or already processed URLs
 - Optional language detection on the extracted content
 
 

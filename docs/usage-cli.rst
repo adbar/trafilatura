@@ -53,21 +53,46 @@ The ``-i/--inputfile`` option allows for bulk download and processing of a list 
 
 For all usage instructions see ``trafilatura -h``:
 
-``usage: trafilatura [-h] [-f] [--formatting] [-i INPUTFILE] [-i OUTPUTDIR] [--nocomments] [--notables] [--xml] [--xmltei] [-u URL] [-v]``
+``usage: trafilatura [-h] [-v] [-i INPUTFILE] [--inputdir INPUTDIR] [-o OUTPUTDIR] [-u URL] [--feed FEED] [--list] [-b BLACKLIST] [--backup-dir BACKUP_DIR] [-out {txt,csv,xml,xmltei}] [--csv] [--xml] [--xmltei] [--validate] [-f] [--formatting] [--nocomments] [--notables]``
+
+Command-line interface for Trafilatura
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -f, --fast         fast (without fallback detection)
-  --formatting          include text formatting (bold, italic, etc.)
+  -h, --help            show this help message and exit
+  -v, --verbose         increase output verbosity
+
+I/O:
+  Input and output options affecting processing
+
   -i INPUTFILE, --inputfile INPUTFILE
-                     name of input file for batch processing
+                        name of input file for batch processing
+  --inputdir INPUTDIR   read files from a specified directory (relative path)
   -o OUTPUTDIR, --outputdir OUTPUTDIR
-                     write results in a specified directory (relative path)
-  --nocomments       don't output any comments
-  --notables         don't output any table elements
-  --csv              CSV output
-  --xml              XML output
-  --xmltei           XML TEI output
-  --validate         validate TEI output
-  -u URL, --URL URL  custom URL download
-  -v, --verbose      increase output verbosity
+                        write results in a specified directory (relative path)
+  -u URL, --URL URL     custom URL download
+  --feed FEED           pass a feed URL as input
+  --list                return a list of URLs without downloading them
+  -b BLACKLIST, --blacklist BLACKLIST
+                        name of file containing already processed or unwanted
+                        URLs to discard during batch processing
+  --backup-dir BACKUP_DIR
+                        Preserve a copy of downloaded files in a backup
+                        directory
+
+Format:
+  Selection of the output format
+
+  -out {txt,csv,xml,xmltei}, --output-format {txt,csv,xml,xmltei}
+                        determine output format
+  --csv                 CSV output
+  --xml                 XML output
+  --xmltei              XML TEI output
+  --validate            validate TEI output
+
+Extraction:
+  Customization of text and metadata extraction
+
+  -f, --fast            fast (without fallback detection)
+  --formatting          include text formatting (bold, italic, etc.)
+  --nocomments          don't output any comments
+  --notables            don't output any table elements
