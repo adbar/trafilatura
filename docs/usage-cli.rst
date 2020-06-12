@@ -2,19 +2,21 @@ Usage on the command-line
 =========================
 
 
+Introduction
+------------
+
 Trafilatura includes a `command-line interface <https://en.wikipedia.org/wiki/Command-line_interface>`_ and can be conveniently used without writing code.
 
-For general instructions see
+For the very first steps please refer to this nice `step-by-step introduction <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_ and for general instructions see:
 
-- `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems),
-- `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_,
+- `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems)
+- `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_
 - or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_
 
-as well as these compendia:
+As well as these compendia:
 
-- `commands toolbox <http://cb.vu/unixtoolbox.xhtml>`_
+- `Commands toolbox <http://cb.vu/unixtoolbox.xhtml>`_
 - `Basic Bash Command Line Tips You Should Know <https://www.freecodecamp.org/news/basic-linux-commands-bash-tips-you-should-know/>`_
-
 
 
 Quickstart
@@ -64,15 +66,15 @@ optional arguments:
 I/O:
   Input and output options affecting processing
 
-  -i INPUTFILE, --inputfile INPUTFILE
+  -i, --inputfile INPUTFILE
                         name of input file for batch processing
   --inputdir INPUTDIR   read files from a specified directory (relative path)
-  -o OUTPUTDIR, --outputdir OUTPUTDIR
+  -o, --outputdir OUTPUTDIR
                         write results in a specified directory (relative path)
-  -u URL, --URL URL     custom URL download
+  -u, --URL URL     custom URL download
   --feed FEED           pass a feed URL as input
   --list                return a list of URLs without downloading them
-  -b BLACKLIST, --blacklist BLACKLIST
+  -b, --blacklist BLACKLIST
                         name of file containing already processed or unwanted
                         URLs to discard during batch processing
   --backup-dir BACKUP_DIR
@@ -82,8 +84,9 @@ I/O:
 Format:
   Selection of the output format
 
-  -out {txt,csv,xml,xmltei}, --output-format {txt,csv,xml,xmltei}
+  -out, --output-format {txt,csv,xml,xmltei}
                         determine output format
+
   --csv                 CSV output
   --xml                 XML output
   --xmltei              XML TEI output
