@@ -7,7 +7,7 @@ Ziel
 
 Die Korpusdaten des `Digitalen Wörterbuchs der deutschen Sprache <https://www.dwds.de/>`_ sind mithilfe eines externen Tools reproduzierbar. Anhand dieser Anleitung können Sie Daten unabhängig vom DWDS-Projekt selbst zusammenstellen, speichern und verwalten. Die dafür benötigten Tools sind frei verfügbar und erfordern keine fortgeschrittenen IT-Kenntnisse.
 
-Das grundsätzliche Problem besteht darin, dass die Originalsammlung selbst nicht uneingeschränkt kopiert und weitergegeben werden darf. Die Nutzung des `DWDS-Portals als Suchmaschine <https://www.dwds.de/d/korpussuche>`_ ist aber möglich, ebenso wie das Tätigen eigenhändiger Downloads, um die Sammlung zu replizieren. Auf diesem Wege muss keinen Zugang zu den Rohdaten gewährt und keine unmittelbare Kopie erzeugt werden.
+Das grundsätzliche Problem besteht darin, dass die Originalsammlung selbst nicht uneingeschränkt kopiert und weitergegeben werden darf. Die Nutzung des `DWDS-Portals als Suchmaschine <https://www.dwds.de/d/korpussuche>`_ ist aber möglich, ebenso wie das Tätigen eigenhändiger Downloads, um die Sammlung zu replizieren. Auf diesem Wege muss kein Zugang zu den Rohdaten gewährt und keine unmittelbare Kopie erzeugt werden.
 
 
 Bedingungen
@@ -47,7 +47,7 @@ CSV- oder TSV-Dateien können von der frei verfügbaren Software `LibreOffice Ca
 
     Kontextmenü „Treffer exportieren“ und Wahl des Ausgabeformats
 
-Alternativ können Sie mit `dieser besonderen Abfragenart <https://www.dwds.de/r?q=count%28Patienten+%7C%7C+Patientinnen%29+%23by%5Burl%5D&corpus=corona&date-start=2019&date-end=2020&format=full&sort=date_desc&limit=10>`_ URLs in gebündelter Form im TSV-Format exportieren:
+Alternativ können Sie mit `dieser besonderen Art der Abfrage <https://www.dwds.de/r?q=count%28Patienten+%7C%7C+Patientinnen%29+%23by%5Burl%5D&corpus=corona&date-start=2019&date-end=2020&format=full&sort=date_desc&limit=10>`_ URLs in gebündelter Form im TSV-Format exportieren:
 
 .. figure:: dwds-count-exportieren.jpg
     :alt: Trefferliste nach Quelle sortiert
@@ -68,7 +68,7 @@ Im Grunde geben Sie Links (URLs) in der Form einer Liste ein und erhalten als Au
 - `Tutorial zum Korpusaufbau <tutorial0.html>`_
 - `Nutzung von Trafilatura auf der Kommandozeile <usage-cli.html>`_
 
-Mehrfach anwesende URLs in der Eingabeliste werden automatisch dedupliziert und die Reihenfolge der Downloads wird optimiert, Sie müssen diese Schritte also nicht selber durchführen.
+Mehrfach vorhandene URLs in der Eingabeliste werden automatisch dedupliziert und die Reihenfolge der Downloads wird optimiert, Sie müssen diese Schritte also nicht selber durchführen.
 
 Falls sich die betroffenen Webseiten in der Zeit zwischen der DWDS-Archivierung und Ihrem Download nicht geändert haben, erhalten Sie genau die gleichen Daten.
 
@@ -76,7 +76,7 @@ Falls sich die betroffenen Webseiten in der Zeit zwischen der DWDS-Archivierung 
 Wie kann man gleichzeitig die Seiten herunterladen, speichern und konvertieren?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Hier ist eine Empfehlung für die Kommandozeile, die eine Datei namens ``linkliste.txt`` liest (eine URL pro Zeile). Die Ausgabe erfolgt in zweierlei Hinsicht, die extrahierten Texte (TXT-Format) im Verzeichnis ``ausgabe`` und eine Kopie der heruntergeladenen Webseiten unter ``html-quellen`` (zur Archivierung und ggf. erneuten Verarbeitung):
+Hier ist eine Empfehlung für die Kommandozeile, die eine Datei namens ``linkliste.txt`` liest (eine URL pro Zeile). Die Ausgabe erfolgt auf zweierlei Weise: die extrahierten Texte (TXT-Format) im Verzeichnis ``ausgabe`` und eine Kopie der heruntergeladenen Webseiten unter ``html-quellen`` (zur Archivierung und ggf. erneuten Verarbeitung):
 
 ``trafilatura --inputfile linkliste.txt --outputdir ausgabe/ --backup-dir html-quellen/``
 
