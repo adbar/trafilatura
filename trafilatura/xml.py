@@ -181,7 +181,7 @@ def write_teitree(postbody, commentsbody, docmeta):
     # comments
     if commentsbody is not None and len(commentsbody) > 0:
         commentsbody.tag = 'div'
-        commentsbody.set('type', 'entry') # rendition='#cmt'
+        commentsbody.set('type', 'comments') # rendition='#cmt'
         textbody.append(commentsbody)
     return tei
 
