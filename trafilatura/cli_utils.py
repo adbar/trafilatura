@@ -49,7 +49,13 @@ def load_blacklist(filename):
     blacklist = set()
     with open(filename, mode='r', encoding='utf-8') as inputfh:
         for line in inputfh:
-            blacklist.add(line.strip())
+            url = line.strip()
+            blacklist.add(url)
+            # add http/https URLs for safety
+            if url.startswith('https'):
+                blacklist.add(re.sub(r'^https', 'http', url))
+            elif url.startswith('http'):
+                blacklist.add(re.sub(r'^http:', 'https:', url))
     return blacklist
 
 
