@@ -8,7 +8,10 @@ Get your system up and running
 -  Installation: see `dedicated page <installation.html>`_
 -  Making sure you have the latest version: ``pip install -U trafilatura``
 
-The following consists of command-line instructions. For general information see `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems), `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_, or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_.
+The following instructions use the `command-line interface <https://en.wikipedia.org/wiki/Command-line_interface>`_ (CLI):
+
+- For the very first steps please refer to this nice `step-by-step introduction to the CLI <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_
+- For general information see `this section <usage-cli.html#introduction>`_ of the documentation
 
 
 Find and filter sources
@@ -26,6 +29,7 @@ For further filters see this `grep tutorial <http://www.panix.com/~elflord/unix/
 Other relevant utilities are `sort <https://en.wikipedia.org/wiki/Sort_(Unix)>`_ and `shuf <https://en.wikipedia.org/wiki/Shuf>`_:
 
 .. code-block:: bash
+
     # sort the links and make sure they are unique
     sort -u myfile.txt > myfile-sorted.txt
     # alternatives to shuffle the URLs
@@ -33,6 +37,8 @@ Other relevant utilities are `sort <https://en.wikipedia.org/wiki/Sort_(Unix)>`_
     shuf myfile.txt > myfile-random.txt
 
 To draw a random sample of a list of URLs `head <https://en.wikipedia.org/wiki/Head_(Unix)>`_ or `tail <https://en.wikipedia.org/wiki/Tail_(Unix)>`_ come in handy after a random sorting: ``shuf myfile.txt | head -100 > myfile-random-sample.txt``
+
+*Trafilatura* automatically sorts the input list to optimize the download order and make sure the input URLs are unique, it is not mandatory to perform these steps by yourself.
 
 
 Process a list of links
