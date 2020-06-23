@@ -577,7 +577,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             csv_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False,
-            date_extraction_params=None):
+            date_extraction_params=None, url_blacklist=set()):
     '''Main process for text extraction'''
     # temporary metadata mapping
     output_format = map_format(output_format, csv_output, xml_output, tei_output)
@@ -594,6 +594,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     # Metadata here
     if output_format != 'txt':
         docmeta = extract_metadata(tree, url, date_extraction_params)
+        # cut short if extracted URL in blacklist
+        if docmeta.url in url_blacklist:
+            return None
     else:
         docmeta = None
 

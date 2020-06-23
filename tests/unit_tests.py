@@ -589,7 +589,8 @@ def test_filters():
     else:
         # no detection
         assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', None, None) is False
-
+    # test URL blacklist
+    assert trafilatura.extract('<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>', output_format='xml', url_blacklist={'https://example.org'}) is None
 
 def test_tei():
     '''test TEI-related functions'''
