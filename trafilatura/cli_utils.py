@@ -12,6 +12,7 @@ import re
 import string
 import sys
 
+from collections import OrderedDict
 from datetime import datetime
 from os import makedirs, path, walk
 from time import sleep
@@ -144,21 +145,24 @@ def file_processing_pipeline(filename, args):
         write_result(result, args)
 
 
-def url_processing_checks(args, input_urls):
+def url_processing_checks(blacklist, input_urls):
+    '''Filter and deduplicate input urls'''
     # control blacklist
-    if args.blacklist:
-        input_urls = set(input_urls).difference(args.blacklist)
-    # list
-    if args.list:
-        for url in input_urls:
-            write_result(url, args)  # print('\n'.join(input_urls))
-        return []
+    if blacklist:
+        input_urls = [u for u in input_urls if u not in blacklist]
+    # deduplicate
+    input_urls = list(OrderedDict.fromkeys(input_urls))
     return input_urls
 
 
 def url_processing_pipeline(args, input_urls, sleeptime):
     '''Aggregated functions to show a list and download and process an input list'''
-    input_urls = url_processing_checks(args, input_urls)
+    input_urls = url_processing_checks(args.blacklist, input_urls)
+    # print list without further processing
+    if args.list:
+        for url in input_urls:
+            write_result(url, args)  # print('\n'.join(input_urls))
+        return None
     # build domain-aware processing list
     domain_dict = dict()
     while len(input_urls) > 0:
@@ -168,8 +172,8 @@ def url_processing_pipeline(args, input_urls, sleeptime):
         except AttributeError:
             domain_name = 'unknown'
         if domain_name not in domain_dict:
-            domain_dict[domain_name] = set()
-        domain_dict[domain_name].add(url)
+            domain_dict[domain_name] = list()
+        domain_dict[domain_name].append(url)
     # iterate
     backoff_dict = dict()
     i = 0

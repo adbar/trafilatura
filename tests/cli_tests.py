@@ -123,12 +123,6 @@ def test_cli_pipeline():
     assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
     delta = (datetime.now() - reftime).total_seconds()
     assert delta > 2
-    # URL in blacklist
-    testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '-b', os.path.join(resources_dir, 'list-discard.txt')]
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    print(cli_utils.url_processing_checks(args, my_urls))
-    assert len(cli_utils.url_processing_checks(args, my_urls)) == 0
     # test backup
     testargs = ['', '--backup-dir', '/tmp/']
     with patch.object(sys, 'argv', testargs):
@@ -137,10 +131,25 @@ def test_cli_pipeline():
     cli_utils.url_processing_pipeline(args, my_urls, 2)
 
 
+def test_input_filtering():
+    '''test internal functions to filter urls'''
+    # deduplication and filtering
+    myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
+    myblacklist = {'https://example.org/1', 'https://example.org/3', 'https://example.org/5'}
+    assert cli_utils.url_processing_checks(myblacklist, myinput) == ['https://example.org/2', 'https://example.org/4', 'https://example.org/6']
+    # URL in blacklist
+    resources_dir = os.path.join(TEST_DIR, 'resources')
+    my_urls = cli_utils.load_input_urls(os.path.join(resources_dir, 'list-process.txt'))
+    my_blacklist = cli_utils.load_blacklist(os.path.join(resources_dir, 'list-discard.txt'))
+    print(cli_utils.url_processing_checks(my_blacklist, my_urls))
+    assert len(cli_utils.url_processing_checks(my_blacklist, my_urls)) == 0
+
+
 if __name__ == '__main__':
     test_parser()
     test_climain()
     test_input_type()
     test_sysoutput()
     test_cli_pipeline()
+    test_input_filtering()
     test_download()
