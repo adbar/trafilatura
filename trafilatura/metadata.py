@@ -6,7 +6,7 @@ Module bundling all functions needed to scrape metadata from webpages.
 import logging
 import re
 
-from collections import namedtuple
+from collections import namedtuple # https://docs.python.org/3/tutorial/classes.html
 from htmldate import find_date
 from lxml import html
 
@@ -308,7 +308,11 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
     if date_config is None:
         date_config = HTMLDATE_CONFIG
     date_config['url'] = mymeta.url
-    mymeta = mymeta._replace(date=find_date(tree, **date_config))
+    # temporary fix for htmldate bug
+    try:
+        mymeta = mymeta._replace(date=find_date(tree, **date_config))
+    except UnicodeError:
+        pass
     # try with x-paths
     # title
     if mymeta.title is None:
@@ -327,8 +331,12 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
             # scrap Twitter ID
             mymeta = mymeta._replace(sitename=re.sub(r'^@', '', mymeta.sitename))
         # capitalize
-        if not '.' in mymeta.sitename and not mymeta.sitename[0].isupper():
-            mymeta = mymeta._replace(sitename=mymeta.sitename.title())
+        try:
+            if not '.' in mymeta.sitename and not mymeta.sitename[0].isupper():
+                mymeta = mymeta._replace(sitename=mymeta.sitename.title())
+        # fix for empty name
+        except IndexError:
+            pass
     else:
         # use URL
         if mymeta.url:
