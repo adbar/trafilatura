@@ -104,6 +104,9 @@ def parse_args(args):
     group3.add_argument("--with-date",
                         help="only output those documents with dates (CSV and XML)",
                         action="store_true")
+    group3.add_argument("--target-language",
+                        help="select a target language (ISO 639-1 codes)",
+                        type=str)
     return parser.parse_args()
 
 

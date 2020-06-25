@@ -226,7 +226,8 @@ def examine(htmlstring, args, url=None):
                              include_comments=args.nocomments, include_tables=args.notables,
                              include_formatting=args.formatting,
                              with_date=args.with_date,
-                             output_format=args.output_format, tei_validation=args.validate)
+                             output_format=args.output_format, tei_validation=args.validate,
+                             target_language=args.target_language)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('# ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
