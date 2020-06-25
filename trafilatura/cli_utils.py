@@ -225,6 +225,7 @@ def examine(htmlstring, args, url=None):
             result = extract(htmlstring, url, '0000', no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,
                              include_formatting=args.formatting,
+                             with_date=args.with_date,
                              output_format=args.output_format, tei_validation=args.validate)
         # ugly but efficient
         except Exception as err:

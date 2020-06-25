@@ -101,6 +101,9 @@ def parse_args(args):
     group3.add_argument("--notables",
                         help="don't output any table elements",
                         action="store_false")  # false = no tables
+    group3.add_argument("--with-date",
+                        help="only output those documents with dates (CSV and XML)",
+                        action="store_true")
     return parser.parse_args()
 
 

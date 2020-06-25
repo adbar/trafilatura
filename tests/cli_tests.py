@@ -129,6 +129,14 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     cli_utils.archive_html('00Test', args)
     cli_utils.url_processing_pipeline(args, my_urls, 2)
+    # test date-based exclusion
+    testargs = ['', '-out', 'xml', '--with-date']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
+        teststring = f.read()
+    print(args)
+    assert cli.examine(teststring, args) is None
 
 
 def test_input_filtering():
