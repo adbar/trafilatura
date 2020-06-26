@@ -9,6 +9,7 @@ Functions dedicated to command-line processing.
 import logging
 import random
 import re
+import signal
 import string
 import sys
 
@@ -18,13 +19,19 @@ from os import makedirs, path, walk
 from time import sleep
 
 from .core import extract
-from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE
+from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, PROCESSING_TIMEOUT
 from .utils import fetch_url
 
 
 LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
 FILENAME_LEN = 8
+
+
+# try signal https://stackoverflow.com/questions/492519/timeout-on-a-function-call
+def handler(signum, frame):
+    '''Raise a timeout exception to handle rare malicious files'''
+    raise Exception('unusual file processing time, aborting')
 
 
 def load_input_urls(filename):
@@ -221,6 +228,9 @@ def examine(htmlstring, args, url=None):
         sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
+        # signal in place
+        signal.signal(signal.SIGALRM, handler)
+        signal.alarm(PROCESSING_TIMEOUT)
         try:
             result = extract(htmlstring, url, '0000', no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,
