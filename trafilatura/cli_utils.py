@@ -14,6 +14,7 @@ import string
 import sys
 
 from collections import OrderedDict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from os import makedirs, path, walk
 from time import sleep
@@ -173,6 +174,102 @@ def url_processing_checks(blacklist, input_urls):
     return input_urls
 
 
+def extract_domain(url):
+    # can be improved
+    try:
+        domain = re.search(r'^https?://([^/]+)', url).group(1)
+    except AttributeError:
+        domain = 'unknown'
+    return domain
+
+
+def process_result(htmlstring, args, url, counter):
+    if htmlstring is not None:
+        # backup option
+        if args.backup_dir:
+            filename = archive_html(htmlstring, args, counter)
+        else:
+            filename = None
+        # process
+        result = examine(htmlstring, args, url=url)
+        write_result(result, args, filename, counter)
+        # increment written file counter
+        if counter is not None:
+            counter += 1
+    else:
+        # log the error
+        print('No result for URL: ' + url, file=sys.stderr)
+    return counter
+
+
+def single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter):
+    '''Implement a single threaded processing algorithm'''
+    i = 0
+    while len(domain_dict) > 0:
+        domain = random.choice(list(domain_dict.keys()))
+        if domain not in backoff_dict or \
+        (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
+            url = domain_dict[domain].pop()
+            htmlstring = fetch_url(url)
+            # register in backoff dictionary to ensure time between requests
+            backoff_dict[domain] = datetime.now()
+            # process result
+            counter = process_result(htmlstring, args, url, counter)
+            # clean registries
+            if not domain_dict[domain]:
+                del domain_dict[domain]
+                del backoff_dict[domain]
+        # safeguard
+        else:
+            i += 1
+            if i > len(domain_dict)*3:
+                LOGGER.debug('spacing request for domain name %s', domain)
+                sleep(sleeptime)
+                i = 0
+
+
+def multi_threaded_processing(domain_dict, args, sleeptime, counter):
+    '''Implement a single threaded processing algorithm'''
+    i = 0
+    backoff_dict = dict()
+    while len(domain_dict) > 0:
+        # the remaining list is too small, process it differently
+        if len({x for v in domain_dict.values() for x in v}) < 5:
+            single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
+            return
+        # populate buffer
+        bufferlist, bufferdomains = list(), set()
+        while len(bufferlist) < 5:
+            domain = random.choice(list(domain_dict.keys()))
+            if domain not in backoff_dict or \
+            (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
+                    bufferlist.append(domain_dict[domain].pop())
+                    bufferdomains.add(domain)
+                    backoff_dict[domain] = datetime.now()
+            # safeguard
+            else:
+                i += 1
+                if i > len(domain_dict)*3:
+                    LOGGER.debug('spacing request for domain name %s', domain)
+                    sleep(sleeptime)
+                    i = 0
+        # start several threads
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            future_to_url = {executor.submit(fetch_url, url): url for url in bufferlist}
+            for future in as_completed(future_to_url):
+                url = future_to_url[future]
+                # register in backoff dictionary to ensure time between requests
+                domain = extract_domain(url)
+                backoff_dict[domain] = datetime.now()
+                # handle result
+                counter = process_result(future.result(), args, url, counter)
+        # clean registries
+        for domain in bufferdomains:
+            if not domain_dict[domain]:
+                del domain_dict[domain]
+                del backoff_dict[domain]
+
+
 def url_processing_pipeline(args, input_urls, sleeptime):
     '''Aggregated functions to show a list and download and process an input list'''
     input_urls = url_processing_checks(args.blacklist, input_urls)
@@ -185,52 +282,20 @@ def url_processing_pipeline(args, input_urls, sleeptime):
     domain_dict = dict()
     while len(input_urls) > 0:
         url = input_urls.pop()
-        try:
-            domain_name = re.search(r'^https?://([^/]+)', url).group(1)
-        except AttributeError:
-            domain_name = 'unknown'
+        domain_name = extract_domain(url)
         if domain_name not in domain_dict:
             domain_dict[domain_name] = list()
         domain_dict[domain_name].append(url)
-    # iterate
-    backoff_dict = dict()
-    i = 0
     # initialize file counter if necessary
     if len(input_urls) > MAX_FILES_PER_DIRECTORY:
         counter = 0
     else:
         counter = None
-    while len(domain_dict) > 0:
-        domain = random.choice(list(domain_dict.keys()))
-        if domain not in backoff_dict or \
-        (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
-            url = domain_dict[domain].pop()
-            htmlstring = fetch_url(url)
-            # register in backoff dictionary to ensure time between requests
-            backoff_dict[domain] = datetime.now()
-            if htmlstring is not None:
-                # backup option
-                if args.backup_dir:
-                    filename = archive_html(htmlstring, args, counter)
-                else:
-                    filename = None
-                # process
-                result = examine(htmlstring, args, url=url)
-                counter += 1
-                write_result(result, args, filename, counter)
-            else:
-                # log the error
-                print('No result for URL: ' + url, file=sys.stderr)
-            # clean registries
-            if len(domain_dict[domain]) == 0:
-                del domain_dict[domain]
-                del backoff_dict[domain]
-        # safeguard
-        else:
-            i += 1
-            if i > len(domain_dict)*3:
-                sleep(sleeptime)
-                i = 0
+    if len(domain_dict) <= 5:
+        backoff_dict = dict()
+        single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
+    else:
+        multi_threaded_processing(domain_dict, args, sleeptime, counter)
 
 
 def examine(htmlstring, args, url=None):

@@ -88,11 +88,11 @@ def test_download():
         args = cli.parse_args(testargs)
     assert cli.examine(' ', args) is None
     assert cli.examine('0'*int(10e7), args) is None
-    assert utils.fetch_url('https://httpbin.org/status/404') is None
-    url = 'https://httpbin.org/status/200'
-    teststring = utils.fetch_url(url)
-    assert teststring is None  # too small
-    assert cli.examine(teststring, args, url) is None
+    #assert utils.fetch_url('https://httpbin.org/status/404') is None
+    #url = 'https://httpbin.org/status/200'
+    #teststring = utils.fetch_url(url)
+    #assert teststring is None  # too small
+    #assert cli.examine(teststring, args, url) is None
     url = 'https://httpbin.org/links/2/2'
     teststring = utils.fetch_url(url)
     assert teststring is not None
@@ -101,6 +101,10 @@ def test_download():
     teststring = utils.fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
+    # multiprocessing
+    domain_dict = dict()
+    domain_dict['httpbin.org'] = ['https://httpbin.org/status/301', 'https://httpbin.org/status/304', 'https://httpbin.org/status/200', 'https://httpbin.org/status/300', 'https://httpbin.org/status/400', 'https://httpbin.org/status/500']
+    assert cli_utils.multi_threaded_processing(domain_dict, args, 0.25, None) is None
 
 
 def test_cli_pipeline():

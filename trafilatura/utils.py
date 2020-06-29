@@ -34,10 +34,11 @@ LOGGER = logging.getLogger(__name__)
 
 # customize headers
 HEADERS = {
-    'Connection': 'close',  # another way to cover tracks
+    # 'Connection': 'close',  # another way to cover tracks
     #'User-Agent': USER_AGENT,  # your string here
 }
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+SESSION = requests.Session()
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
@@ -110,7 +111,7 @@ def fetch_url(url):
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
-        response = requests.get(url, timeout=30, verify=False, allow_redirects=True, headers=HEADERS)
+        response = SESSION.get(url, timeout=30, verify=False, allow_redirects=True, headers=HEADERS)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
     except requests.exceptions.TooManyRedirects:
