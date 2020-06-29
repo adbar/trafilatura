@@ -19,7 +19,7 @@ from os import makedirs, path, walk
 from time import sleep
 
 from .core import extract
-from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, PROCESSING_TIMEOUT
+from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY, PROCESSING_TIMEOUT
 from .utils import fetch_url
 
 
@@ -102,16 +102,25 @@ def determine_filename(args, destination_directory, fileslug=None):
     return output_path
 
 
-def archive_html(htmlstring, args):
+def determine_counter_dir(dirname, counter):
+    '''Return a destination directory based on a file counter'''
+    if counter is not None:
+        counter_dir = int(counter/1000) + 1
+    else:
+        counter_dir = ''
+    return path.join(dirname, counter_dir)
+
+
+def archive_html(htmlstring, args, counter=None):
     '''Write a copy of raw HTML in backup directory'''
-    # determine file name
+    destination_directory = determine_counter_dir(args.backup_dir, counter)
     fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN))
-    output_path = path.join(args.backup_dir, fileslug + '.html')
+    output_path = path.join(destination_directory, fileslug + '.html')
     while path.exists(output_path):
         fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN))
-        output_path = path.join(args.backup_dir, fileslug + '.html')
+        output_path = path.join(destination_directory, fileslug + '.html')
     # check the directory status
-    if check_outputdir_status(args.backup_dir) is True:
+    if check_outputdir_status(destination_directory) is True:
         # write
         with open(output_path, mode='w', encoding='utf-8') as outputfile:
             outputfile.write(htmlstring)
@@ -125,10 +134,7 @@ def write_result(result, args, filename=None, counter=None):
     if args.outputdir is None:
         sys.stdout.write(result + '\n')
     else:
-        if counter is not None:
-            destination_directory = path.join(args.outputdir, counter)
-        else:
-            destination_directory = args.outputdir
+        destination_directory = determine_counter_dir(args.outputdir, counter)
         # check the directory status
         if check_outputdir_status(destination_directory) is True:
             # write
@@ -145,7 +151,7 @@ def generate_filelist(inputdir):
             yield path.join(root, fname)
 
 
-def file_processing_pipeline(filename, args):
+def file_processing_pipeline(filename, args, counter=None):
     '''Aggregated functions to process a file list'''
     try:
         with open(filename, mode='r', encoding='utf-8') as inputfh:
@@ -154,7 +160,7 @@ def file_processing_pipeline(filename, args):
         LOGGER.warning('Discarding (file type issue): %s', filename)
     else:
         result = examine(htmlstring, args, url=args.URL)
-        write_result(result, args)
+        write_result(result, args, counter=counter)
 
 
 def url_processing_checks(blacklist, input_urls):
@@ -189,7 +195,8 @@ def url_processing_pipeline(args, input_urls, sleeptime):
     # iterate
     backoff_dict = dict()
     i = 0
-    if len(input_urls) > 1000:
+    # initialize file counter if necessary
+    if len(input_urls) > MAX_FILES_PER_DIRECTORY:
         counter = 0
     else:
         counter = None
@@ -204,7 +211,7 @@ def url_processing_pipeline(args, input_urls, sleeptime):
             if htmlstring is not None:
                 # backup option
                 if args.backup_dir:
-                    filename = archive_html(htmlstring, args)
+                    filename = archive_html(htmlstring, args, counter)
                 else:
                     filename = None
                 # process

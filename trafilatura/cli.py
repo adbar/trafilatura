@@ -16,7 +16,7 @@ from .cli_utils import (load_blacklist, load_input_urls, generate_filelist,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .feeds import find_feed_urls
-from .settings import SLEEP_TIME
+from .settings import MAX_FILES_PER_DIRECTORY, SLEEP_TIME
 
 
 LOGGER = logging.getLogger(__name__)
@@ -151,9 +151,24 @@ def main():
     elif args.inputdir:
         #if not args.outputdir:
         #    sys.exit('# ERROR: please specify an output directory along with the input directory')
-        # multiprocessing
+        # iterate through file list
+        filebatch = []
+        filecounter = 0
+        for filename in generate_filelist(args.inputdir):
+            filebatch.append(filename)
+            filecounter += 1
+            if len(filebatch) > MAX_FILES_PER_DIRECTORY:
+                filecounter = None
+                # multiprocessing for the batch
+                with Pool(processes=min(cpu_count(), 16)) as pool:  # 16 processes at most
+                    pool.map(partial(file_processing_pipeline, args=args, counter=filecounter), filebatch)
+                filebatch = []
+        # re-initialize counter
+        if filecounter == 0:
+            filecounter = None
+        # multiprocessing for the rest
         with Pool(processes=min(cpu_count(), 16)) as pool:  # 16 processes at most
-            pool.map(partial(file_processing_pipeline, args=args), generate_filelist(args.inputdir))
+            pool.map(partial(file_processing_pipeline, args=args, counter=filecounter), filebatch)
     # read from input directly
     else:
         # process input URL
