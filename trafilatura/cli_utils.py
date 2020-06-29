@@ -252,4 +252,7 @@ def examine(htmlstring, args, url=None):
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('# ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
+        # deactivate
+        if args.timeout is True:
+            signal.alarm(0)
     return result
