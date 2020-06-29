@@ -71,6 +71,9 @@ def parse_args(args):
     group1.add_argument('--backup-dir',
                         help="Preserve a copy of downloaded files in a backup directory",
                         type=str)
+    group1.add_argument('--timeout',
+                        help="Use timeout for file conversion to prevent bugs",
+                        action="store_true")
 
     group2.add_argument('-out', '--output-format',
                         help="determine output format",

@@ -80,7 +80,7 @@ def check_outputdir_status(directory):
     return True
 
 
-def determine_filename(args, fileslug=None):
+def determine_filename(args, destination_directory, fileslug=None):
     '''Pick a file name based on output type'''
     # determine extension
     extension = '.txt'
@@ -90,15 +90,15 @@ def determine_filename(args, fileslug=None):
         extension = '.csv'
     # determine file slug
     if fileslug is None:
-        output_path = path.join(args.outputdir, \
+        output_path = path.join(destination_directory, \
             ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
             + extension)
         while path.exists(output_path):
-            output_path = path.join(args.outputdir, \
+            output_path = path.join(destination_directory, \
                 ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
                 + extension)
     else:
-        output_path = path.join(args.outputdir, fileslug + extension)
+        output_path = path.join(destination_directory, fileslug + extension)
     return output_path
 
 
@@ -118,17 +118,22 @@ def archive_html(htmlstring, args):
     return fileslug
 
 
-def write_result(result, args, filename=None):
+def write_result(result, args, filename=None, counter=None):
     '''Deal with result (write to STDOUT or to file)'''
     if result is None:
         return
     if args.outputdir is None:
         sys.stdout.write(result + '\n')
     else:
-       # check the directory status
-        if check_outputdir_status(args.outputdir) is True:
+        if counter is not None:
+            destination_directory = path.join(args.outputdir, counter)
+        else:
+            destination_directory = args.outputdir
+        # check the directory status
+        if check_outputdir_status(destination_directory) is True:
             # write
-            with open(determine_filename(args, filename), mode='w', encoding='utf-8') as outputfile:
+            destination_path = determine_filename(args, destination_directory, filename)
+            with open(destination_path, mode='w', encoding='utf-8') as outputfile:
                 outputfile.write(result)
 
 
@@ -184,6 +189,10 @@ def url_processing_pipeline(args, input_urls, sleeptime):
     # iterate
     backoff_dict = dict()
     i = 0
+    if len(input_urls) > 1000:
+        counter = 0
+    else:
+        counter = None
     while len(domain_dict) > 0:
         domain = random.choice(list(domain_dict.keys()))
         if domain not in backoff_dict or \
@@ -200,7 +209,8 @@ def url_processing_pipeline(args, input_urls, sleeptime):
                     filename = None
                 # process
                 result = examine(htmlstring, args, url=url)
-                write_result(result, args, filename)
+                counter += 1
+                write_result(result, args, filename, counter)
             else:
                 # log the error
                 print('No result for URL: ' + url, file=sys.stderr)
@@ -228,9 +238,10 @@ def examine(htmlstring, args, url=None):
         sys.stderr.write('# ERROR: file too small\n')
     # proceed
     else:
-        # signal in place
-        signal.signal(signal.SIGALRM, handler)
-        signal.alarm(PROCESSING_TIMEOUT)
+        # put timeout signal in place
+        if args.timeout is True:
+            signal.signal(signal.SIGALRM, handler)
+            signal.alarm(PROCESSING_TIMEOUT)
         try:
             result = extract(htmlstring, url, '0000', no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,

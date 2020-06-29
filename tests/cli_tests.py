@@ -71,14 +71,14 @@ def test_sysoutput():
     testargs = ['', '--csv', '-o', '/root/forbidden/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    filename = cli_utils.determine_filename(args)
+    filename = cli_utils.determine_filename(args, args.outputdir)
     assert len(filename) >= 10 and filename.endswith('.csv')
     assert cli_utils.check_outputdir_status(args.outputdir) is False
     testargs = ['', '--xml', '-o', '/tmp/you-touch-my-tralala']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli_utils.check_outputdir_status(args.outputdir) is True
-    assert cli_utils.determine_filename(args).endswith('.xml')
+    assert cli_utils.determine_filename(args, args.outputdir).endswith('.xml')
 
 
 def test_download():
@@ -135,8 +135,14 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
-    print(args)
     assert cli.examine(teststring, args) is None
+    # test timeout
+    testargs = ['', '-out', 'xml', '--timeout']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
+        teststring = f.read()
+    assert cli.examine(teststring, args) is not None
 
 
 def test_input_filtering():
