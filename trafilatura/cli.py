@@ -72,6 +72,9 @@ def parse_args(args):
     group1.add_argument('--timeout',
                         help="Use timeout for file conversion to prevent bugs",
                         action="store_true")
+    group1.add_argument('--parallel',
+                        help="Specify a number of cores/threads for parallel downloads and/or processing",
+                        type=int)
 
     group2.add_argument('-out', '--output-format',
                         help="determine output format",

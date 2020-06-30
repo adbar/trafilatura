@@ -178,6 +178,7 @@ def url_processing_checks(blacklist, input_urls):
 
 
 def extract_domain(url):
+    '''Crude extraction of domain or host names from URLs'''
     # can be improved
     try:
         domain = re.search(r'^https?://([^/]+)', url).group(1)
@@ -187,6 +188,7 @@ def extract_domain(url):
 
 
 def process_result(htmlstring, args, url, counter):
+    '''Extract text and metadata from a download webpage and eventually write out the result'''
     if htmlstring is not None:
         # backup option
         if args.backup_dir:
@@ -235,14 +237,18 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
     '''Implement a single threaded processing algorithm'''
     i = 0
     backoff_dict = dict()
+    if args.parallel is not None:
+        download_threads = args.parallel
+    else:
+        download_threads = DOWNLOAD_THREADS
     while len(domain_dict) > 0:
         # the remaining list is too small, process it differently
-        if len({x for v in domain_dict.values() for x in v}) < DOWNLOAD_THREADS:
+        if len({x for v in domain_dict.values() for x in v}) < download_threads:
             single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
             return
         # populate buffer
         bufferlist, bufferdomains = list(), set()
-        while len(bufferlist) < DOWNLOAD_THREADS:
+        while len(bufferlist) < download_threads:
             domain = random.choice(list(domain_dict.keys()))
             if domain not in backoff_dict or \
             (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
@@ -257,7 +263,7 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
                     sleep(sleeptime)
                     i = 0
         # start several threads
-        with ThreadPoolExecutor(max_workers=DOWNLOAD_THREADS) as executor:
+        with ThreadPoolExecutor(max_workers=download_threads) as executor:
             future_to_url = {executor.submit(fetch_url, url): url for url in bufferlist}
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
@@ -302,25 +308,32 @@ def url_processing_pipeline(args, input_urls, sleeptime):
 
 
 def file_processing_pipeline(args):
+    '''Define batches for parallel file processing and perform the extraction'''
     #if not args.outputdir:
     #    sys.exit('# ERROR: please specify an output directory along with the input directory')
     # iterate through file list
+    # init
     filebatch = []
     filecounter = 0
+    if args.parallel is not None:
+        processing_cores = args.parallel
+    else:
+        processing_cores = FILE_PROCESSING_CORES
+    # loop
     for filename in generate_filelist(args.inputdir):
         filebatch.append(filename)
         filecounter += 1
         if len(filebatch) > MAX_FILES_PER_DIRECTORY:
             filecounter = None
             # multiprocessing for the batch
-            with Pool(processes=FILE_PROCESSING_CORES) as pool:
+            with Pool(processes=processing_cores) as pool:
                 pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)
             filebatch = []
     # re-initialize counter
     if filecounter == 0:
         filecounter = None
     # multiprocessing for the rest
-    with Pool(processes=FILE_PROCESSING_CORES) as pool:
+    with Pool(processes=processing_cores) as pool:
         pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)
 
 
