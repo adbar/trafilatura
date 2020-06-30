@@ -16,17 +16,20 @@ import sys
 from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
+from functools import partial
+from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
 from .core import extract
-from .settings import MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY, PROCESSING_TIMEOUT
+from .settings import (DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
+                       MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY,
+                       PROCESSING_TIMEOUT)
 from .utils import fetch_url
 
 
 LOGGER = logging.getLogger(__name__)
 random.seed(345)  # make generated file names reproducible
-FILENAME_LEN = 8
 
 
 # try signal https://stackoverflow.com/questions/492519/timeout-on-a-function-call
@@ -152,7 +155,7 @@ def generate_filelist(inputdir):
             yield path.join(root, fname)
 
 
-def file_processing_pipeline(filename, args, counter=None):
+def file_processing(filename, args, counter=None):
     '''Aggregated functions to process a file list'''
     try:
         with open(filename, mode='r', encoding='utf-8') as inputfh:
@@ -234,18 +237,18 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
     backoff_dict = dict()
     while len(domain_dict) > 0:
         # the remaining list is too small, process it differently
-        if len({x for v in domain_dict.values() for x in v}) < 5:
+        if len({x for v in domain_dict.values() for x in v}) < DOWNLOAD_THREADS:
             single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
             return
         # populate buffer
         bufferlist, bufferdomains = list(), set()
-        while len(bufferlist) < 5:
+        while len(bufferlist) < DOWNLOAD_THREADS:
             domain = random.choice(list(domain_dict.keys()))
             if domain not in backoff_dict or \
             (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
-                    bufferlist.append(domain_dict[domain].pop())
-                    bufferdomains.add(domain)
-                    backoff_dict[domain] = datetime.now()
+                bufferlist.append(domain_dict[domain].pop())
+                bufferdomains.add(domain)
+                backoff_dict[domain] = datetime.now()
             # safeguard
             else:
                 i += 1
@@ -254,7 +257,7 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
                     sleep(sleeptime)
                     i = 0
         # start several threads
-        with ThreadPoolExecutor(max_workers=4) as executor:
+        with ThreadPoolExecutor(max_workers=DOWNLOAD_THREADS) as executor:
             future_to_url = {executor.submit(fetch_url, url): url for url in bufferlist}
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
@@ -296,6 +299,29 @@ def url_processing_pipeline(args, input_urls, sleeptime):
         single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
     else:
         multi_threaded_processing(domain_dict, args, sleeptime, counter)
+
+
+def file_processing_pipeline(args):
+    #if not args.outputdir:
+    #    sys.exit('# ERROR: please specify an output directory along with the input directory')
+    # iterate through file list
+    filebatch = []
+    filecounter = 0
+    for filename in generate_filelist(args.inputdir):
+        filebatch.append(filename)
+        filecounter += 1
+        if len(filebatch) > MAX_FILES_PER_DIRECTORY:
+            filecounter = None
+            # multiprocessing for the batch
+            with Pool(processes=FILE_PROCESSING_CORES) as pool:
+                pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)
+            filebatch = []
+    # re-initialize counter
+    if filecounter == 0:
+        filecounter = None
+    # multiprocessing for the rest
+    with Pool(processes=FILE_PROCESSING_CORES) as pool:
+        pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)
 
 
 def examine(htmlstring, args, url=None):

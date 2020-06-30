@@ -6,11 +6,15 @@ Listing a series of settings that are applied module-wide.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+from multiprocessing import cpu_count
+
 from lxml.html.clean import Cleaner
 
 MAX_FILE_SIZE = 20000000
 MIN_FILE_SIZE = 10
 SLEEP_TIME = 2
+
+DOWNLOAD_THREADS = 5
 
 # USER_AGENT = 'trafilatura/0.5.0 (+https://github.com/adbar/trafilatura)'
 
@@ -23,8 +27,13 @@ MIN_OUTPUT_COMM_SIZE = 10
 PROCESSING_TIMEOUT = 30
 MAX_FILES_PER_DIRECTORY = 1000
 
+FILE_PROCESSING_CORES = min(cpu_count(), 16)  # 16 processes at most
+
 LRU_SIZE = 65536
 MAX_REPETITIONS = 2
+
+FILENAME_LEN = 8
+
 
 # filters
 DETECTION_LANGUAGES = ['af', 'am', 'an', 'ar', 'as', 'az', 'be', 'bg', 'bn', 'br', 'bs', 'ca', 'cs', 'cy', 'da', 'de', 'dz', 'el', 'en', 'eo', 'es', 'et', 'eu', 'fa', 'fi', 'fo', 'fr', 'ga', 'gl', 'gu', 'he', 'hi', 'hr', 'ht', 'hu', 'hy', 'id', 'is', 'it', 'ja', 'jv', 'ka', 'kk', 'km', 'kn', 'ko', 'ku', 'ky', 'la', 'lb', 'lo', 'lt', 'lv', 'mg', 'mk', 'ml', 'mn', 'mr', 'ms', 'mt', 'nb', 'ne', 'nl', 'nn', 'no', 'oc', 'or', 'pa', 'pl', 'ps', 'pt', 'qu', 'ro', 'ru', 'rw', 'se', 'si', 'sk', 'sl', 'sq', 'sr', 'sv', 'sw', 'ta', 'te', 'th', 'tl', 'tr', 'ug', 'uk', 'ur', 'vi', 'vo', 'wa', 'xh', 'zh', 'zu']
