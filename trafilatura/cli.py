@@ -44,6 +44,9 @@ def parse_args(args):
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
                         action="store_true")
+    parser.add_argument("-vv", "--very-verbose",
+                        help="maximum output verbosity",
+                        action="store_true")
 
     group1.add_argument("-i", "--inputfile",
                         help="name of input file for batch processing",
@@ -131,6 +134,8 @@ def main():
     args = parse_args(sys.argv[1:])
     args = map_args(args)
     if args.verbose:
+        logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
+    if args.very_verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     if args.blacklist:
         args.blacklist = load_blacklist(args.blacklist)
