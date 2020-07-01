@@ -51,6 +51,9 @@ def sanitize_tree(tree):
         elem.text = sanitize(elem.text)
         #if elem.tail:
         elem.tail = sanitize(elem.tail)
+        # remove attributes
+        if elem.tag != 'del' or elem.tag != 'hi':
+            elem.attrib.clear()
         # finish table conversion
         if elem.tag == 'tr':
             elem.tag = 'row'
@@ -58,9 +61,6 @@ def sanitize_tree(tree):
             elem.tag = 'cell'
             if elem.tag == 'th':
                 newsub.set('role', 'head')
-        else:
-            if elem.tag != 'del' or elem.tag != 'hi':
-                elem.attrib.clear()
     # cleaned_tree = prune_html(cleaned_tree)
     return cleaned_tree
 

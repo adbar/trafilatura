@@ -78,9 +78,12 @@ def check_outputdir_status(directory):
         try:
             makedirs(directory)
         except OSError:
-            sys.stderr.write('# ERROR: Destination directory cannot be created: ' + directory + '\n')
-            # raise OSError()
-            return False
+            # maybe the direction has already been created
+            sleep(0.25)
+            if not path.exists(directory) or not path.isdir(directory):
+                sys.stderr.write('# ERROR: Destination directory cannot be created: ' + directory + '\n')
+                # raise OSError()
+                return False
     return True
 
 
