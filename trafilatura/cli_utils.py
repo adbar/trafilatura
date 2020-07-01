@@ -157,14 +157,10 @@ def generate_filelist(inputdir):
 
 def file_processing(filename, args, counter=None):
     '''Aggregated functions to process a file in a list'''
-    try:
-        with open(filename, mode='r', encoding='utf-8') as inputfh:
-            htmlstring = inputfh.read()
-    except UnicodeDecodeError:
-        LOGGER.warning('Discarding (file type issue): %s', filename)
-    else:
-        result = examine(htmlstring, args, url=args.URL)
-        write_result(result, args, counter=counter)
+    with open(filename, 'rb') as inputf:
+        htmlstring = inputf.read()
+    result = examine(htmlstring, args, url=args.URL)
+    write_result(result, args, counter=counter)
 
 
 def url_processing_checks(blacklist, input_urls):
