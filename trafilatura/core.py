@@ -37,7 +37,7 @@ def sanitize_tree(tree):
     '''Sanitize the output from the generic algorithm'''
     # cleaned_tree = manual_cleaning(tree, True)
     # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-    etree.strip_tags(tree, 'div')
+    etree.strip_tags(tree, 'article', 'div', 'span') # 'header', 'section', ...
     tree = prune_html(tree)
     #for elem in tree.iter():
     #    elem.attrib.clear()
@@ -51,6 +51,16 @@ def sanitize_tree(tree):
         elem.text = sanitize(elem.text)
         #if elem.tail:
         elem.tail = sanitize(elem.tail)
+        # finish table conversion
+        if elem.tag == 'tr':
+            elem.tag = 'row'
+        elif elem.tag == 'td' or elem.tag == 'th':
+            elem.tag = 'cell'
+            if elem.tag == 'th':
+                newsub.set('role', 'head')
+        else:
+            if elem.tag != 'del' or elem.tag != 'hi':
+                elem.attrib.clear()
     # cleaned_tree = prune_html(cleaned_tree)
     return cleaned_tree
 
@@ -455,9 +465,6 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             # post-processing: remove unwanted sections
             for elem in body.xpath('//aside|//button|//figure|//footer|//img|//input|//link|//nav|//noscript|//svg|//time'):
                 elem.getparent().remove(elem) # elem.drop_tree()
-            # clean and converttree
-            etree.strip_tags(body, 'article', 'span') # 'header', 'section', ...
-            body = convert_tags(body)
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)  # record_id,
