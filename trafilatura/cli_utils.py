@@ -109,7 +109,7 @@ def determine_filename(args, destination_directory, fileslug=None):
 def determine_counter_dir(dirname, counter):
     '''Return a destination directory based on a file counter'''
     if counter is not None:
-        counter_dir = int(counter/1000) + 1
+        counter_dir = str(int(counter/MAX_FILES_PER_DIRECTORY) + 1)
     else:
         counter_dir = ''
     return path.join(dirname, counter_dir)
@@ -156,7 +156,7 @@ def generate_filelist(inputdir):
 
 
 def file_processing(filename, args, counter=None):
-    '''Aggregated functions to process a file list'''
+    '''Aggregated functions to process a file in a list'''
     try:
         with open(filename, mode='r', encoding='utf-8') as inputfh:
             htmlstring = inputfh.read()
@@ -314,7 +314,7 @@ def file_processing_pipeline(args):
     # iterate through file list
     # init
     filebatch = []
-    filecounter = 0
+    filecounter = None
     if args.parallel is not None:
         processing_cores = args.parallel
     else:
@@ -322,16 +322,17 @@ def file_processing_pipeline(args):
     # loop
     for filename in generate_filelist(args.inputdir):
         filebatch.append(filename)
-        filecounter += 1
         if len(filebatch) > MAX_FILES_PER_DIRECTORY:
-            filecounter = None
+            if filecounter is None:
+                filecounter = 0
             # multiprocessing for the batch
             with Pool(processes=processing_cores) as pool:
                 pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)
+            filecounter += len(filebatch)
             filebatch = []
-    # re-initialize counter
-    if filecounter == 0:
-        filecounter = None
+    # update counter
+    if filecounter is not None:
+        filecounter += len(filebatch)
     # multiprocessing for the rest
     with Pool(processes=processing_cores) as pool:
         pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)

@@ -526,7 +526,7 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
         for element in postbody.iter():
             if len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
-                if parent:
+                if parent is not None:
                     parent.remove(element)
         # build output trees
         if output_format == 'xml':
