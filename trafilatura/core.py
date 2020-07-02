@@ -35,13 +35,12 @@ LOGGER = logging.getLogger(__name__)
 
 def sanitize_tree(tree):
     '''Sanitize the output from the generic algorithm'''
+    etree.strip_elements(tree, 'audio', 'fieldset', 'iframe', 'image', 'label', 'object', 'option', 'select', 'source')
+    etree.strip_tags(tree, 'article', 'center', 'div', 'main', 'span') # 'header', 'section', ...
+    tree = prune_html(tree)
+    cleaned_tree = convert_tags(tree)
     # cleaned_tree = manual_cleaning(tree, True)
     # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-    etree.strip_tags(tree, 'article', 'div', 'span') # 'header', 'section', ...
-    tree = prune_html(tree)
-    #for elem in tree.iter():
-    #    elem.attrib.clear()
-    cleaned_tree = convert_tags(tree)
     for elem in cleaned_tree.iter():
         #if elem.tag in ('code', 'del', 'head', 'hi', 'item', 'p', 'quote'):
         #    if elem.text is None or elem.text.isspace():
