@@ -85,6 +85,8 @@ def convert_tags(tree):
             subelem.tag = 'item'
         for subelem in elem.iter('a'):
             subelem.tag = 'link'
+            #if subelem.text is not None:
+            #    subelem.text = ' ' + subelem.text + ' '
     # delete links for faster processing
     etree.strip_tags(tree, 'a')
     # head tags + delete attributes

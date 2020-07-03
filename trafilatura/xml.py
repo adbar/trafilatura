@@ -137,7 +137,35 @@ def validate_tei(tei):  # , filename=""
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     returnlist = []
-    etree.strip_tags(xmloutput, 'hi')
+    # etree.strip_tags(xmloutput, 'hi', 'link')
+    # remove and insert into the previous tag
+    for element in xmloutput.xpath('//hi|//link'):
+        parent = element.getparent()
+        if parent is None:
+            continue
+        full_text = ''
+        if element.text is not None and element.tail is not None:
+            full_text = element.text + ' ' + element.tail
+        elif element.text is not None and element.tail is None:
+            full_text = element.text
+        elif element.text is None and element.tail is not None:
+            full_text = element.tail
+        previous = element.getprevious()
+        if previous is not None:
+            # There is a previous node, append text to its tail
+            if previous.tail is not None:
+                previous.tail += ' ' + full_text
+            else:
+                previous.tail = full_text
+        else:
+            # It's the first node in <parent/>, append to parent's text
+            if parent.text is not None:
+                parent.text += ' ' + full_text
+            else:
+                parent.text = full_text
+        parent.remove(element)
+        continue
+    # iterate and convert to list of strings
     for element in xmloutput.iter():
         # process text
         if element.text is None and element.tail is None:
