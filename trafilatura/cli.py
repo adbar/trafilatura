@@ -108,8 +108,8 @@ def parse_args(args):
     group3.add_argument("--notables",
                         help="don't output any table elements",
                         action="store_false")  # false = no tables
-    group3.add_argument("--with-date",
-                        help="only output those documents with dates (CSV and XML)",
+    group3.add_argument("--with-metadata",
+                        help="only output those documents with necessary metadata: title, URL and date (CSV and XML formats)",
                         action="store_true")
     group3.add_argument("--target-language",
                         help="select a target language (ISO 639-1 codes)",

@@ -357,7 +357,7 @@ def examine(htmlstring, args, url=None):
             result = extract(htmlstring, url, '0000', no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,
                              include_formatting=args.formatting,
-                             with_date=args.with_date,
+                             with_metadata=args.with_metadata,
                              output_format=args.output_format, tei_validation=args.validate,
                              target_language=args.target_language)
         # ugly but efficient

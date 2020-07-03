@@ -583,7 +583,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             csv_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False,
-            date_extraction_params=None, with_date=False, url_blacklist=set()):
+            date_extraction_params=None, with_metadata=False, url_blacklist=set()):
     '''Main process for text extraction'''
     # temporary metadata mapping
     output_format = map_format(output_format, csv_output, xml_output, tei_output)
@@ -604,7 +604,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         if docmeta.url in url_blacklist:
             return None
         # cut short if no date
-        if with_date is True and docmeta.date is None:
+        if with_metadata is True and any([docmeta.date is None, docmeta.title is None, docmeta.url is None]):
             return None
     else:
         docmeta = None
