@@ -84,10 +84,11 @@ I/O:
 Format:
   Selection of the output format
 
-  -out, --output-format {txt,csv,xml,xmltei}
+  -out, --output-format {txt,csv,json,xml,xmltei}
                         determine output format
 
   --csv                 CSV output
+  --json                JSON output
   --xml                 XML output
   --xmltei              XML TEI output
   --validate            validate TEI output

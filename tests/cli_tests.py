@@ -147,6 +147,13 @@ def test_cli_pipeline():
     with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
+    # test JSON output
+    testargs = ['', '-out', 'json']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
+        teststring = f.read()
+    assert cli.examine(teststring, args) is not None
 
 
 def test_input_filtering():

@@ -81,10 +81,13 @@ def parse_args(args):
 
     group2.add_argument('-out', '--output-format',
                         help="determine output format",
-                        choices=['txt', 'csv', 'xml', 'xmltei'],
+                        choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
                         default='txt')
     group2.add_argument("--csv",
                         help="CSV output",
+                        action="store_true")
+    group2.add_argument("--json",
+                        help="JSON output",
                         action="store_true")
     group2.add_argument("--xml",
                         help="XML output",
@@ -121,6 +124,8 @@ def map_args(args):
     '''Map existing options to format choice.'''
     if args.csv:
         args.output_format = 'csv'
+    elif args.json:
+        args.output_format = 'json'
     elif args.xml:
         args.output_format = 'xml'
     elif args.xmltei:

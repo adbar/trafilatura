@@ -6,6 +6,7 @@ All functions related to XML generation, processing and validation.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+import json
 import logging
 import pickle
 
@@ -20,10 +21,26 @@ from .utils import sanitize
 LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = pkg_resources.resource_filename('trafilatura', 'data/tei-schema.pickle')
-TEI_VALID_TAGS = {'cell', 'code', 'body', 'del', 'div', 'fw', 'head', 'hi', 'item', \
+TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'head', 'hi', 'item', \
                   'lb', 'list', 'p', 'quote', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
+
+
+def build_json_output(docmeta, postbody, commentsbody):
+    '''Build JSON output based on extracted information'''
+    outputdict = dict()
+    outputdict['sitename'] = docmeta.sitename
+    outputdict['title'] = docmeta.title
+    outputdict['author'] = docmeta.author
+    outputdict['date'] = docmeta.date
+    outputdict['source'] = docmeta.url
+    outputdict['excerpt'] = docmeta.description
+    outputdict['categories'] = ';'.join(docmeta.categories)
+    outputdict['tags'] = ';'.join(docmeta.tags)
+    outputdict['text'] = xmltotxt(postbody)
+    outputdict['comments'] = xmltotxt(commentsbody)
+    return json.dumps(outputdict)
 
 
 def build_xml_output(postbody, commentsbody):

@@ -26,7 +26,9 @@ from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
-from .xml import add_xml_meta, build_tei_output, build_xml_output, validate_tei, xmltotxt, TEI_VALID_TAGS
+from .xml import (add_xml_meta, build_json_output, build_xml_output,
+                  build_tei_output, validate_tei, xmltotxt,
+                  TEI_VALID_TAGS)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
@@ -576,7 +578,7 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
             LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
         # output as string
         returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
-    # CSV + TXT output
+    # CSV. JSON and TXT output
     else:
         if output_format == 'csv':
             posttext = xmltotxt(postbody)
@@ -585,16 +587,19 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
             else:
                 commentstext = ''
             returnstring = txttocsv(posttext, commentstext, docmeta)
+        elif output_format == 'json':
+            returnstring = build_json_output(docmeta, postbody, commentsbody)
         else:
-            output = build_xml_output(postbody, commentsbody)
-            returnstring = xmltotxt(output)
+            returnstring = xmltotxt(build_xml_output(postbody, commentsbody))
     return returnstring
 
 
-def map_format(output_format, csv_output, xml_output, tei_output):
+def map_format(output_format, csv_output, json_output, xml_output, tei_output):
     '''Map existing options to format choice.'''
     if csv_output is True:
         output_format = 'csv'
+    elif json_output is True:
+        output_format = 'json'
     elif xml_output is True:
         output_format = 'xml'
     elif tei_output is True:
@@ -604,13 +609,13 @@ def map_format(output_format, csv_output, xml_output, tei_output):
 
 def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             include_comments=True, output_format='txt',
-            csv_output=False, xml_output=False, tei_output=False,
+            csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False,
             date_extraction_params=None, with_metadata=False, url_blacklist=set()):
     '''Main process for text extraction'''
     # temporary metadata mapping
-    output_format = map_format(output_format, csv_output, xml_output, tei_output)
+    output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
     # load data
     tree = load_html(filecontent)
     if tree is None:
