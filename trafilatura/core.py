@@ -26,20 +26,17 @@ from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
-from .xml import add_xml_meta, build_tei_output, build_xml_output, validate_tei, xmltotxt
+from .xml import add_xml_meta, build_tei_output, build_xml_output, validate_tei, xmltotxt, TEI_VALID_TAGS
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
 
-
-def sanitize_tree(tree):
-    '''Sanitize the output from the generic algorithm'''
-    etree.strip_elements(tree, 'audio', 'fieldset', 'iframe', 'image', 'label', 'object', 'option', 'select', 'source')
-    etree.strip_tags(tree, 'article', 'center', 'div', 'main', 'span') # 'header', 'section', ...
+def convert_tree(tree):
+    '''Convert the output from the generic algorithm'''
     tree = prune_html(tree)
     cleaned_tree = convert_tags(tree)
-    # cleaned_tree = manual_cleaning(tree, True)
+    # cleaned_tree = manual_cleaning(cleaned_tree, True)
     # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
     for elem in cleaned_tree.iter():
         #if elem.tag in ('code', 'del', 'head', 'hi', 'item', 'p', 'quote'):
@@ -60,8 +57,19 @@ def sanitize_tree(tree):
             elem.tag = 'cell'
             if elem.tag == 'th':
                 newsub.set('role', 'head')
-    # cleaned_tree = prune_html(cleaned_tree)
     return cleaned_tree
+
+
+def sanitize_tree(tree):
+    '''Sanitize the output from the generic algorithm (post-processing)'''
+    #for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
+    #    elem.getparent().remove(elem)
+    etree.strip_elements(tree, 'aside', 'audio', 'button', 'fieldset', 'figure', 'footer', 'iframe', 'image', 'img', 'input', 'label', 'nav', 'noindex', 'noscript', 'object', 'option', 'select', 'source', 'svg', 'time')
+    for tagname in set([element.tag for element in list(tree.iter())]):
+        if tagname not in TEI_VALID_TAGS:
+            etree.strip_tags(tree, tagname)
+    text = trim(' '.join(tree.itertext()))
+    return tree, text, len(text)
 
 
 def handle_titles(element):
@@ -465,27 +473,26 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     # apply decision
     if algo_flag is True:
-        body = sanitize_tree(temppost_algo)
+        body = convert_tree(temppost_algo)
         text = algo_text
         len_text = len_algo
         LOGGER.info('using generic algorithm: %s', url)
     else:
         LOGGER.info('using custom extraction: %s', url)
     # override faulty extraction
-    if body.xpath('//aside|//button|//figure|//footer|//img|//input|//noscript|//svg'):
+    if body.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//image|//img|//input|//label|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
         body2, len_text2, text2 = justext_rescue(tree, url, target_language, body, 0, '')
         LOGGER.debug('justext length %s', len_text2)
         if len_text2 > 0: #MIN_EXTRACTED_SIZE:
             body, len_text, text = body2, len_text2, text2
         else:
             # post-processing: remove unwanted sections
-            for elem in body.xpath('//aside|//button|//figure|//footer|//img|//input|//link|//nav|//noscript|//svg|//time'):
-                elem.getparent().remove(elem) # elem.drop_tree()
+            body, text, len_text = sanitize_tree(body)
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
-        LOGGER.error('not enough text %s', url)  # record_id,
-        body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
-        LOGGER.debug('justext length %s', len_text)
+            LOGGER.error('not enough text %s', url)  # record_id,
+            body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
+            LOGGER.debug('justext length %s', len_text)
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, len_text2, temp_text2 = baseline(backup_tree)
