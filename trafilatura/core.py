@@ -495,7 +495,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             LOGGER.debug('justext length %s', len_text)
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
-    #     body2, len_text2, temp_text2 = baseline(backup_tree)
+    #     body2, temp_text2, len_text2 = baseline(backup_tree)
     #     if len_text2 > MIN_EXTRACTED_SIZE:
     #         body, text, len_text = body2, len_text2, temp_text2
     return body, text, len_text
@@ -518,7 +518,7 @@ def baseline(filecontent):
                 elem.text = temp_text
                 postbody.append(elem)
                 # temp_text = trim(temp_text)
-                return postbody, len(temp_text), temp_text
+                return postbody, temp_text, len(temp_text)
     # scrape from article tag
     elems = tree.xpath('//article') # |//main
     if elems:  # len(elems) > 0:
@@ -529,7 +529,7 @@ def baseline(filecontent):
             elem = etree.Element('p')
             elem.text = temp_text
             postbody.append(elem)
-            return postbody, len_text, temp_text
+            return postbody, temp_text, len_text
     # scrape from text paragraphs
     results = set()
     resultlist = []
@@ -545,7 +545,7 @@ def baseline(filecontent):
         elem.text = textpart
         postbody.append(elem)
     temp_text = sanitize('\n'.join(postbody.itertext()))
-    return postbody, len(temp_text), temp_text
+    return postbody, temp_text, len(temp_text)
 
 
 def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation, record_id):
@@ -662,7 +662,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     else:
         # rescue: try to use original/dirty tree
         if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
-            postbody, len_text, temp_text = baseline(filecontent)
+            postbody, temp_text, len_text = baseline(filecontent)
             #tree = load_html(filecontent)
             #tree = convert_tags(tree)
             #postbody, temp_text, len_text, sure_thing = extract_content(tree)

@@ -154,7 +154,7 @@ def run_baseline_2(htmlstring):
 def run_baseline(htmlstring):
     '''run bare text extraction within lxml'''
     if baseline is not None:
-        _, _, result = baseline(htmlstring)
+        _, result, _ = baseline(htmlstring)
         return result
     result = run_baseline_2(htmlstring)
     return result
