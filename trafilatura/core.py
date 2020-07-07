@@ -331,11 +331,20 @@ def extract_content(tree, include_tables=False):
         # remove elements by link density
         for elem in subtree.iter('list'):
             if link_density_test(elem) is True:
+                #previous = elem.getprevious()
+                # delete whole list
                 elem.getparent().remove(elem)
-                continue
-            elem.attrib.clear()
+                # clean-up previous title
+                #if previous is not None and previous.tag == 'head':
+                #    print(previous.tag, previous.text, previous.tail)
+                #    previous.getparent().remove(previous)
+            else:
+                elem.attrib.clear()
             #for subelem in elem.iter('item'):
             #    subelem.attrib.clear()
+        # skip if empty tree
+        if len(subtree) == 0:
+            continue
         etree.strip_tags(subtree, 'a', 'link', 'span')
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?
@@ -351,6 +360,14 @@ def extract_content(tree, include_tables=False):
         processed_elems = [handle_textelem(e, potential_tags) for e in subtree.xpath('.//*')]
         # list(filter(None.__ne__, processed_elems))
         result_body.extend([e for e in processed_elems if e is not None])
+        # remove trailing titles
+        try:
+            lastelem = result_body[-1]
+            if lastelem.tag == 'head' and lastelem.tail is None:
+                # print(lastelem.tag, lastelem.text, lastelem.tail)
+                lastelem.getparent().remove(lastelem)
+        except IndexError:
+            continue
         # exit the loop if the result has children
         if len(result_body) > 0:
             sure_thing = True
