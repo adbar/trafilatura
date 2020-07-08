@@ -95,6 +95,8 @@ def determine_filename(args, destination_directory, fileslug=None):
         extension = '.xml'
     elif args.csv or args.output_format == 'csv':
         extension = '.csv'
+    elif args.json or args.output_format == 'json':
+        extension = '.json'
     # determine file slug
     if fileslug is None:
         output_path = path.join(destination_directory, \
