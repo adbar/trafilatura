@@ -600,7 +600,7 @@ EVAL_PAGES = {
     'tags': [],
     'with': ['beim SP-Städtegipfel', 'Dies führt dazu, dass die Sozialpolitik', 'wie in der Nationalhymne,'],
     'without': ['Kommunikationsdienst', 'Letzte Änderung', 'Informiert bleiben'],
-    'comments': [],  # 0 or 3 segments
+    'comments': [],
     'license': '',
     'region': 'CH',
 },
@@ -654,9 +654,9 @@ EVAL_PAGES = {
     'description': 'Seit Anfang 2019 stehen wir mit vier großzügig angelegten Waschstraßen für die LKW Reinigung mit motiviertem Personal in Rhede direkt an der A31 zur Verfügung, um Sie von unserem guten Waschergebnis zu überzeugen. Für Spezialfahrzeuge (incl. Viehtransportern) steht sogar an 24/7 eine SB Waschstraße zur Verfügung. Truckwash A31 Ottostraße 1426899 Rhede /Ems Tel.: +49 4964 95816-120Fax: +49 4964 95816-29',
     'categories': [],
     'tags': [],
-    'with': ['Seit Anfang 2019 stehen wir', 'Ottostraße 14', ' Für Spezialfahrzeuge (incl. Viehtransportern)'],  # 3 segments
-    'without': ['Deine E-Mail-Adresse wird', 'Sei der Erste dem dies gefällt.', 'Top Kunden Bewertungen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Seit Anfang 2019 stehen wir', 'Ottostraße 14', ' Für Spezialfahrzeuge (incl. Viehtransportern)'],
+    'without': ['Deine E-Mail-Adresse wird', 'Sei der Erste dem dies gefällt.', 'Top Kunden Bewertungen'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -668,9 +668,9 @@ EVAL_PAGES = {
     'description': 'Emden Sehenswürdigkeiten - lohnende Ziele und Locations, Kurzportraits, Fotos und Informationen, Lage Google Maps, Wikipedia Verweise, Weblinks,',
     'categories': ['Emden'],
     'tags': ['Best of Travel', 'Fahrradtour', 'Historischer Stadtkern', 'Länder & Sitten', 'Michael Müller Verlag'],
-    'with': ['Emden ist vor allem in Deutschland', 'Die Kunsthalle in Emden wurde 1986', 'Erwachsene: 3 € (Preis 2019) '],  # 3 segments
-    'without': ['Quellen und Inspiration: u.a. wikipedia.org', 'Infos zum Reiseziel'],  # 3 segments
-    'comments': ['© 2004 - 2020 Volker Pohl'],  # 0 or 3 segments
+    'with': ['Emden ist vor allem in Deutschland', 'Die Kunsthalle in Emden wurde 1986', 'Erwachsene: 3 € (Preis 2019) '],
+    'without': ['Quellen und Inspiration: u.a. wikipedia.org', 'Infos zum Reiseziel'],
+    'comments': ['© 2004 - 2020 Volker Pohl'],
     'license': 'CC BY-SA 3.0',
     'region': '',
 },
@@ -682,9 +682,9 @@ EVAL_PAGES = {
     'description': 'The Garden · Derek Jarman (1990) A nearly wordless visual narrative intercuts two main stories and a couple of minor ones. A woman, perhaps the Madonna, brings forth her baby to a cro…',
     'categories': ['Allgemein'],
     'tags': ['The Garden', 'Derek Jarman'],
-    'with': ['The Garden · Derek Jarman (1990)', 'A nearly wordless visual narrative', 'Loose in this contemporary world'],  # 3 segments
-    'without': ['Büro der Social Secretary', 'Kommentar verfassen', '@EwigeSommerzeit Danke für den Link'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['The Garden · Derek Jarman (1990)', 'A nearly wordless visual narrative', 'Loose in this contemporary world'],
+    'without': ['Büro der Social Secretary', 'Kommentar verfassen', '@EwigeSommerzeit Danke für den Link'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -696,9 +696,9 @@ EVAL_PAGES = {
     'description': 'Ich würde ja in smarte und wirtschaftliche Elektro-Zapfsäulen investieren. Wundere mich, dass es sie noch nicht konkurenzfähig mit Drumrum und Service gibt. Ich bedanke mich für die Tipp-Provjon vo…',
     'categories': [],
     'tags': ['Elektro', 'Micro-Series Entrepreneurs', 'Zapfsäulen'],
-    'with': ['Ich würde ja', 'Drumrum und Service', 'Ich bedanke mich'],  # 3 segments
-    'without': ['Life is not digital', 'Bewerten:', 'Micro-Series: Born Entrepreneurs'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Ich würde ja', 'Drumrum und Service', 'Ich bedanke mich'],
+    'without': ['Life is not digital', 'Bewerten:', 'Micro-Series: Born Entrepreneurs'],
+    'comments': [],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': '',
 },
@@ -710,9 +710,9 @@ EVAL_PAGES = {
     'description': '1. Ich glaube, heute möchte ich mal nicht um halb neun auf der Couch einnicken :D . 2. Pommes esse ich am liebsten mit den Fingern. 3. Das Dschungelcamp bei RTL habe ich in diesem Jahr nicht geguck…',
     'categories': ['Schönes…', 'Das Leben', 'Blogprojekte'],
     'tags': [],
-    'with': ['1. Ich glaube, heute möchte', 'Glücksmomente finden sich', 'leckeren Flammkuchen, morgen'],  # 3 segments
-    'without': ['Was ich liebe... ♥', 'Wortspuren hinterlassen', '♥ Glücksmomente'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['1. Ich glaube, heute möchte', 'Glücksmomente finden sich', 'leckeren Flammkuchen, morgen'],
+    'without': ['Was ich liebe... ♥', 'Wortspuren hinterlassen', '♥ Glücksmomente'],
+    'comments': [],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': '',
 },
@@ -724,9 +724,9 @@ EVAL_PAGES = {
     'description': 'Presseförderung: Studie zweifelt an Stütze vom Staat via Horizont Gewalt im Netz &#8211; Schuldzuweisung statt Opferschutz via netzpolitik.org Künstliche Intelligenz &#8211; EU erwägt Verbot von Ge…',
     'categories': ['Allgemeines'],
     'tags': [],
-    'with': ['Presseförderung: Studie zweifelt an Stütze vom Staat', 'via netzpolitik.org', 'via t3n News'],  # 3 segments
-    'without': ['Hier könnte Ihre Meinung stehen', 'Ein Fehler ist aufgetaucht', 'Es heißt SOCIAL Media'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Presseförderung: Studie zweifelt an Stütze vom Staat', 'via netzpolitik.org', 'via t3n News'],
+    'without': ['Hier könnte Ihre Meinung stehen', 'Ein Fehler ist aufgetaucht', 'Es heißt SOCIAL Media'],
+    'comments': [],
     'license': 'CC BY-NC-SA 2.0 DE',
     'region': 'DE',
 },
@@ -738,9 +738,9 @@ EVAL_PAGES = {
     'description': "For the first time in many years I am using a Linux machine for my work. In general I am extremely pleased with the system I've set up. But of course, there are things that don't &quot;just work&quot;. Like... ",
     'categories': [],
     'tags': [],
-    'with': ['or the first time in many years', 'As usual, StackOverflow', 'set-option -s set'],  # 3 segments
-    'without': ['Next post', 'All content is licensed', 'Powered by Nikola'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['or the first time in many years', 'As usual, StackOverflow', 'set-option -s set'],
+    'without': ['Next post', 'All content is licensed', 'Powered by Nikola'],
+    'comments': [],
     'license': 'CC BY 4.0',
     'region': '',
 },
@@ -752,9 +752,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Stammtisch in Hessen'],
     'tags': [],
-    'with': ['Der nächste Stammtisch', 'Mittwoch des Monats', 'Die Protokolle der Stammtische'],  # 3 segments
-    'without': ['Diese Seite wurde zuletzt', 'Werkzeuge', 'Benutzerkonto erstellen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Der nächste Stammtisch', 'Mittwoch des Monats', 'Die Protokolle der Stammtische'],
+    'without': ['Diese Seite wurde zuletzt', 'Werkzeuge', 'Benutzerkonto erstellen'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -766,9 +766,9 @@ EVAL_PAGES = {
     'description': 'Die Stadt steht schwarz und schweiget&#8230; Angefangen hatte es mit',
     'categories': ['Canon Powershot S110', 'Fotografie'],
     'tags': ['Abendhimmel', 'Gegenlicht', 'Silhouette'],
-    'with': ['Die Stadt steht schwarz', 'Für den von der Kamera', 'besser geworden…'],  # 3 segments
-    'without': ['Auf gnaddrig ad libitum gibt', 'Ob dieser Hinweis nötig', 'Haftungsbeschränkung für externe Links'],  # 3 segments
-    'comments': ['Beide Bilder sind toll!', 'ohne Kondensstreifen fehlt was', 'Der helle „Stern“ müsste die Venus sein'],  # 0 or 3 segments
+    'with': ['Die Stadt steht schwarz', 'Für den von der Kamera', 'besser geworden…'],
+    'without': ['Auf gnaddrig ad libitum gibt', 'Ob dieser Hinweis nötig', 'Haftungsbeschränkung für externe Links'],
+    'comments': ['Beide Bilder sind toll!', 'ohne Kondensstreifen fehlt was', 'Der helle „Stern“ müsste die Venus sein'],
     'license': '',
     'region': '',
 },
@@ -780,9 +780,9 @@ EVAL_PAGES = {
     'description': '&Uuml;bersicht: Baumgutachten, Baumkataster, Baumbeschreibungen',
     'categories': [],
     'tags': [],
-    'with': ['Die Erstellung von Baumgutachten', 'Es gibt eine Vielzahl von Gründen', 'Baumkataster eine sinnvolle Investition.'],  # 3 segments
-    'without': ['Um unsere Webseite für Sie', 'Leistungen und Informationen im', 'Planungsbüro G. & L. Hoppe'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die Erstellung von Baumgutachten', 'Es gibt eine Vielzahl von Gründen', 'Baumkataster eine sinnvolle Investition.'],
+    'without': ['Um unsere Webseite für Sie', 'Leistungen und Informationen im', 'Planungsbüro G. & L. Hoppe'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -794,9 +794,9 @@ EVAL_PAGES = {
     'description': 'Wieso eigentlich einen guten Rutsch wünschen? Ist das nicht gehässig? Spekuliert das nicht möglicherweise darauf, das sich der gemeine Grufti bei den',
     'categories': [],
     'tags': ['2019', 'Jahreswechsel', 'Sylvester'],
-    'with': ['Wieso eigentlich einen guten', 'Das Lithium-Ionen Akku', 'Sie das neue Jahrzehnt'],  # 3 segments
-    'without': ['Wizard of Goth', 'Nossi: Belgien: Porta Nigra', 'Soziale Netzwerke'],  # 3 segments
-    'comments': ['Lieber Robert, danke', 'Wie so oft, triffst', 'Siegeszug der Computer'],  # 0 or 3 segments
+    'with': ['Wieso eigentlich einen guten', 'Das Lithium-Ionen Akku', 'Sie das neue Jahrzehnt'],
+    'without': ['Wizard of Goth', 'Nossi: Belgien: Porta Nigra', 'Soziale Netzwerke'],
+    'comments': ['Lieber Robert, danke', 'Wie so oft, triffst', 'Siegeszug der Computer'],
     'license': 'CC BY-SA 3.0',
     'region': 'DE',
 },
@@ -808,9 +808,9 @@ EVAL_PAGES = {
     'description': 'You might know rubocop as the linter that helps enforce your code styles, but did you know you can use it to make your code faster? In this post, we’ll look ...',
     'categories': [],
     'tags': [],
-    'with': ['You might know rubocop', 'You can use this code:', 'While it might not'],  # 3 segments
-    'without': ['Join the hundreds of developers', 'I maintain an internal-facing', 'Today I have an unusual proposition'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['You might know rubocop', 'You can use this code:', 'While it might not'],
+    'without': ['Join the hundreds of developers', 'I maintain an internal-facing', 'Today I have an unusual proposition'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -822,9 +822,9 @@ EVAL_PAGES = {
     'description': "Ever since Google Web Search API deprecation in 2011, I've been searching for an alternative. I need a way to get links from Google search into my Python script. So I made my own, and here is a quick guide on scraping Google searches with requests and Beautiful Soup.",
     'categories': [],
     'tags': ['Google Search', 'Web Scraping', 'Python', 'Search Engine', 'Datascraping', 'Data Scraping', 'Data Science', 'Data'],
-    'with': ['There are also some caveats', 'Ever since Google Web', 'Making the request is'],  # 3 segments
-    'without': ['Hackernoon Newsletter curates', 'Comments', 'Creating Search Engine API'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['There are also some caveats', 'Ever since Google Web', 'Making the request is'],
+    'without': ['Hackernoon Newsletter curates', 'Comments', 'Creating Search Engine API'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -836,9 +836,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['trnd-Projekte'],
     'tags': ['Antivirus', 'Projekt', 'Test', 'trnd'],
-    'with': ['Einen Paralel-Scan', '1 Projektfahrplan-Broschüre', 'Aber es gibt noch den Sinn'],  # 3 segments
-    'without': ['ein Buch-Gewinn', 'Dann würde ich mich darüber '],  # 3 segments
-    'comments': ['Dankeschön für die Blümchen', 'Liebe Ines, Danke', 'so langes Blogschweigen?'],  # 0 or 3 segments
+    'with': ['Einen Paralel-Scan', '1 Projektfahrplan-Broschüre', 'Aber es gibt noch den Sinn'],
+    'without': ['ein Buch-Gewinn', 'Dann würde ich mich darüber '],
+    'comments': ['Dankeschön für die Blümchen', 'Liebe Ines, Danke', 'so langes Blogschweigen?'],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': 'DE',
 },
@@ -850,9 +850,9 @@ EVAL_PAGES = {
     'description': 'Die Masse eines Körpers berechnest du, indem du das Volumen (V) mit der Dichte (ρ) multiplizierst. Siehe Kapitel Masse! Bevor du die Beispiele löst, schau dir die Videos mit den Erklärungen an.   A…',
     'categories': [],
     'tags': [],
-    'with': ['Die Masse eines Körpers', 'Lösung: m = 210 g', 'Vollständig durchgerechnete Lösung'],  # 3 segments
-    'without': ['Bloggen auf WordPress.com', 'Dieser Lernpfad ist', 'Didaktischer Kommentar'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die Masse eines Körpers', 'Lösung: m = 210 g', 'Vollständig durchgerechnete Lösung'],
+    'without': ['Bloggen auf WordPress.com', 'Dieser Lernpfad ist', 'Didaktischer Kommentar'],
+    'comments': [],
     'license': 'CC BY-NC-ND 4.0',
     'region': '',
 },
@@ -864,9 +864,9 @@ EVAL_PAGES = {
     'description': 'Dieses Thema eignet sich gut für hoch individualisiertes Lernen und die Unterrichtsmethode „bloggen“.  Um den Anspruch nicht zu hoch zu schrauben, gibt es  dazwischen vier Anregungen: Hinweise zu e…',
     'categories': [],
     'tags': [],
-    'with': ['Dieses Thema eignet', 'Dabei gelten ein paar wichtige', '=> Wie hast Du gelernt?'],  # 3 segments
-    'without': ['Unterrichtsideen und die Bilder', 'für erfolgreiches Lernen', '142 Antworten zu'],  # 3 segments
-    'comments': ['Die meisten Flüchtlinge kamen', 'Sind Todesstrafen moralisch vertretbar', 'Wünschen zu gestalten'],  # 0 or 3 segments
+    'with': ['Dieses Thema eignet', 'Dabei gelten ein paar wichtige', '=> Wie hast Du gelernt?'],
+    'without': ['Unterrichtsideen und die Bilder', 'für erfolgreiches Lernen', '142 Antworten zu'],
+    'comments': ['Die meisten Flüchtlinge kamen', 'Sind Todesstrafen moralisch vertretbar', 'Wünschen zu gestalten'],
     'license': 'CC BY 4.0',
     'region': '',
 },
@@ -878,9 +878,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Künstlerischer Lebenslauf', 'Finalist bei der ORF-Show', '100 Folgen von'],  # 3 segments
-    'without': ['Sei der Erste dem dies gefällt.', 'Gefällt mir', 'Gipfelpunkt der Geschmacklosigkeit'],  # 3 segments
-    'comments': ['Hey ihr beiden!'],  # 0 or 3 segments
+    'with': ['Künstlerischer Lebenslauf', 'Finalist bei der ORF-Show', '100 Folgen von'],
+    'without': ['Sei der Erste dem dies gefällt.', 'Gefällt mir', 'Gipfelpunkt der Geschmacklosigkeit'],
+    'comments': ['Hey ihr beiden!'],
     'license': '',
     'region': '',
 },
@@ -892,9 +892,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Podcast'],
     'tags': ['berlin', 'gkc19'],
-    'with': ['Auch auf dem KnowledgeCamp 2019', 'vom Camp erzählen', 'die über ihre Eindrücke'],  # 3 segments
-    'without': ['Scholarch der Cogneon', 'Sei der Erste dem dies gefällt', 'Dieser Eintrag wurde veröffentlicht'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Auch auf dem KnowledgeCamp 2019', 'vom Camp erzählen', 'die über ihre Eindrücke'],
+    'without': ['Scholarch der Cogneon', 'Sei der Erste dem dies gefällt', 'Dieser Eintrag wurde veröffentlicht'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -906,9 +906,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Internet', 'Projekte'],
     'tags': ['HTTPS', 'ssl', 'Uberspace'],
-    'with': ['Nachdem bei Uberspace jetzt', 'Die Anpassung der entsprechenden', 'bei Projekten mit WordPress'],  # 3 segments
-    'without': ['Hier schreibt Christian', 'Das könnte Sie auch interessieren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Nachdem bei Uberspace jetzt', 'Die Anpassung der entsprechenden', 'bei Projekten mit WordPress'],
+    'without': ['Hier schreibt Christian', 'Das könnte Sie auch interessieren'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -920,9 +920,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Entdecke die großen Abenteuer', 'Bee Simulator Mehrspieler', 'Koop und Splitscreen-Modus'],  # 3 segments
-    'without': ['Dieses Kommentarformular steht', 'Splitscreen Coop', 'Wenn ja, auf welcher Plattform?'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Entdecke die großen Abenteuer', 'Bee Simulator Mehrspieler', 'Koop und Splitscreen-Modus'],
+    'without': ['Dieses Kommentarformular steht', 'Splitscreen Coop', 'Wenn ja, auf welcher Plattform?'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -934,9 +934,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['politics'],
     'tags': ['elenão', 'fascismonobrasil', 'wahlen2018'],
-    'with': ['Am 25. Oktober gab es', 'Der Oberste Wahlgerichtshof', 'Até agora tiveram'],  # 3 segments
-    'without': ['alle inhalte @silviajura', 'CAPTCHA Code', 'Primavera feminista em Viena'],  # 3 segments
-    'comments': ['Dankeschön für die Blümchen', 'Liebe Ines, Danke', 'so langes Blogschweigen?'],  # 0 or 3 segments
+    'with': ['Am 25. Oktober gab es', 'Der Oberste Wahlgerichtshof', 'Até agora tiveram'],
+    'without': ['alle inhalte @silviajura', 'CAPTCHA Code', 'Primavera feminista em Viena'],
+    'comments': ['Dankeschön für die Blümchen', 'Liebe Ines, Danke', 'so langes Blogschweigen?'],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': 'DE',
 },
@@ -948,9 +948,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Wir pflegen hier ein sehr freundschaftliches', 'Grafik, besonders der eigenen', 'gez. Admin lupa'],  # 3 segments
-    'without': ['Einen Missbrauch melden', 'Widerruf des Lebensversicherungsvertrags vor oder nach', 'Sie sind nicht verbunden'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wir pflegen hier ein sehr freundschaftliches', 'Grafik, besonders der eigenen', 'gez. Admin lupa'],
+    'without': ['Einen Missbrauch melden', 'Widerruf des Lebensversicherungsvertrags vor oder nach', 'Sie sind nicht verbunden'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -962,9 +962,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Es ist nicht zu wenig Zeit', 'Dieses tiefsitzende Kulturmuster', 'Im Rahmen des Tutzinger'],  # 3 segments
-    'without': ['Gib Deine E-Mail-Adresse', 'Diese Seite steht grundsätzlich', 'Alexander bei MOOCs – Ein Selbstversuch'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Es ist nicht zu wenig Zeit', 'Dieses tiefsitzende Kulturmuster', 'Im Rahmen des Tutzinger'],
+    'without': ['Gib Deine E-Mail-Adresse', 'Diese Seite steht grundsätzlich', 'Alexander bei MOOCs – Ein Selbstversuch'],
+    'comments': [],
     'license': 'CC-BY-SA',
     'region': '',
 },
@@ -976,9 +976,9 @@ EVAL_PAGES = {
     'description': 'Villa Galaxy  - Ein Luxus-Ferienhaus mit 4.5 Schlafzimmern und 3.5 Badezimmern in Florida. Gönnen Sie sich für Ihren Urlaub ein Ferienhaus mit privatem Pool unter der Sonne Floridas.',
     'categories': [],
     'tags': [],
-    'with': ['In Cape Coral gibt', 'Pool verwendet Salzelektrolyse', 'Jede weitere Person: US $ 100,00'],  # 3 segments
-    'without': ['oder berechnen Sie die Kosten', '+49 8670 986823', 'LVCC ist Ihr Partner für die'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['In Cape Coral gibt', 'Pool verwendet Salzelektrolyse', 'Jede weitere Person: US $ 100,00'],
+    'without': ['oder berechnen Sie die Kosten', '+49 8670 986823', 'LVCC ist Ihr Partner für die'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -990,9 +990,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['1968 bis heute Knabenmusik', 'Der Chor wird durch den 1978', '973 übernahm der damals'],  # 3 segments
-    'without': ['Seit 50 Jahren sind wir', 'Leitung: Thomas Stang', 'Impressum & Datenschutz'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['1968 bis heute Knabenmusik', 'Der Chor wird durch den 1978', '973 übernahm der damals'],
+    'without': ['Seit 50 Jahren sind wir', 'Leitung: Thomas Stang', 'Impressum & Datenschutz'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1004,9 +1004,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['Astronomie', 'Astrophysik', 'Sterne', 'Sonnensystem', 'GSI', 'Beschleuniger', 'Physik'],
-    'with': ['Kathrin Göbel (Twitter) ist', 'Veröffentlicht am 16.08.2019', 'Und bitte entschuldigt den Helium-Fehler '],  # 3 segments
-    'without': ['Mit diesem Button kannst Du', 'Der Resonator-Podcast von Holger', 'Etwa alle zwei Wochen erscheint '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Kathrin Göbel (Twitter) ist', 'Veröffentlicht am 16.08.2019', 'Und bitte entschuldigt den Helium-Fehler '],
+    'without': ['Mit diesem Button kannst Du', 'Der Resonator-Podcast von Holger', 'Etwa alle zwei Wochen erscheint '],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1018,9 +1018,9 @@ EVAL_PAGES = {
     'description': 'Zur Bunten Republik Neustadt 2017 wird es keine Kinder und Kulturinsel auf der Talstraße geben. Das für die Anmeldung zuständige Orgateam sah sich wegen den seit 2016 geltenden Konditionen und dem …',
     'categories': ['Aktuelles'],
     'tags': ['2017', 'brn', 'Inseln', 'koordinieren', 'Organisation', 'Spiel-Talstraße', 'Spielstraße', 'Talstrasse'],
-    'with': ['Zur Bunten Republik Neustadt 2017', 'Zur Bunten Republik Neustadt 2017', 'Zur Bunten Republik Neustadt 2017'],  # 3 segments
-    'without': ['Abgelegt unter Aktuelles', 'Der Inhalt dieser Seite steht', 'Bloggen auf WordPress.com'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Zur Bunten Republik Neustadt 2017', 'Zur Bunten Republik Neustadt 2017', 'Zur Bunten Republik Neustadt 2017'],
+    'without': ['Abgelegt unter Aktuelles', 'Der Inhalt dieser Seite steht', 'Bloggen auf WordPress.com'],
+    'comments': [],
     'license': 'CC BY-SA 3.0 DE',
     'region': '',
 },
@@ -1032,9 +1032,9 @@ EVAL_PAGES = {
     'description': 'In nicht mehr ganz 2 Wochen ist es soweit: das Barcamp Graz 2015 steht vor der Tür &#8211; 17-19 April an der FH Joanneum! Es werden wieder interessierte und interessante Menschen zusammenkommen, d…',
     'categories': ['bunt gemischt', 'freie kultur', 'politik', 'veranstaltung'],
     'tags': [],
-    'with': ['Leute, die in Zukunft das Barcamp', 'Ein Zeichen dieser Veränderung', 'In nicht mehr ganz 2 Wochen'],  # 3 segments
-    'without': ['Ich bin ein linker Webterrorist', 'Flattr this:', 'Dieses Blog steht unter'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Leute, die in Zukunft das Barcamp', 'Ein Zeichen dieser Veränderung', 'In nicht mehr ganz 2 Wochen'],
+    'without': ['Ich bin ein linker Webterrorist', 'Flattr this:', 'Dieses Blog steht unter'],
+    'comments': [],
     'license': 'CC BY 3.0 AT',
     'region': 'AT',
 },
@@ -1046,9 +1046,9 @@ EVAL_PAGES = {
     'description': 'Die FuelCell-Familie von New Balance nimmt mit dem FuelCell Echo ein neues schnelles und stylisches Mitglied in seine Produktfamilie auf. Bei der FuelCell-Technologie von New Balance handelt es sich&#8230;',
     'categories': ['Lifestyle', 'Sport'],
     'tags': ['FuelCell', 'Laufen', 'Laufschuh', 'New Balance', 'Running'],
-    'with': ['Die FuelCell-Familie', 'Das Retro-Design ist auf', 'Mehr Infos auch auf der'],  # 3 segments
-    'without': ['Medizinstudent, Papa, (ehemaliger)', 'Über den Autor', 'Schreib einen Kommentar'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die FuelCell-Familie', 'Das Retro-Design ist auf', 'Mehr Infos auch auf der'],
+    'without': ['Medizinstudent, Papa, (ehemaliger)', 'Über den Autor', 'Schreib einen Kommentar'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1060,9 +1060,9 @@ EVAL_PAGES = {
     'description': 'Es wird Zeit, dass ich hier auch etwas dazu schreibe: Wir machen ein Spiel! Es heißt &#8222;Aren&#8217;t we all &#8230;?&#8220;, und es ist ein Visual Novel. Das heißt, man klickt sich durch Dialog…',
     'categories': ['Allgemein'],
     'tags': [],
-    'with': ['Es wird Zeit, dass ich', 'Und damit möchte ich auch', 'Mitstreiter Bug gebastelt'],  # 3 segments
-    'without': ['Um neue Beiträge per E-Mail', 'Einem Blogger gefällt dies', 'Twitter hat nicht geantwortet'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Es wird Zeit, dass ich', 'Und damit möchte ich auch', 'Mitstreiter Bug gebastelt'],
+    'without': ['Um neue Beiträge per E-Mail', 'Einem Blogger gefällt dies', 'Twitter hat nicht geantwortet'],
+    'comments': [],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': '',
 },
@@ -1074,9 +1074,9 @@ EVAL_PAGES = {
     'description': 'Fertiger XUM1541-Adapter zum Anschluß eines Commodore Disketten-Laufwerks über USB Es gibt verschiedene Möglichkeiten, Dateien zwischen einem über 30',
     'categories': ['Hardware'],
     'tags': ['linux', 'c64', 'retro', '1541', 'diskette'],
-    'with': ['Es gibt verschiedene Möglichkeiten', 'Die Hardware für den XUM1541', 'Das Innenleben des Gehäuses'],  # 3 segments
-    'without': ['If not explicitly specified otherwise', 'cat /dev/brain/ideas >> blog'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Es gibt verschiedene Möglichkeiten', 'Die Hardware für den XUM1541', 'Das Innenleben des Gehäuses'],
+    'without': ['If not explicitly specified otherwise', 'cat /dev/brain/ideas >> blog'],
+    'comments': [],
     'license': 'CC BY 2.0',
     'region': 'DE',
 },
@@ -1090,7 +1090,7 @@ EVAL_PAGES = {
     'tags': [],
     'with': ['für eine erfolgreiche Zukunft!', 'In einer lockeren Atmosphäre', 'Anreise'],
     'without': ['Abonniere unseren Newsletter', 'Partner für Studium', 'Für Hochschulen'],
-    'comments': [],  # 0 or 3 segments
+    'comments': [],
     'license': '',
     'region': 'CH',
 },
@@ -1102,9 +1102,9 @@ EVAL_PAGES = {
     'description': 'HR Innovation in einer Enterprise 2.0 – Herausforderungen und Chancen der Personalabteilungen HR wird zukünftig nur auf Augenhöhe wahrgenommen, wenn es Innovationen fördert und selbst innovativ wird. Clayton M. Christensen (US-amerikanischer Wirtschaftswissenschaftler; Forschungsschwerpunkt: Innovation in Unternehmen; Veröffentlichung: The Innovator’s Dilemma (1997)) zeigt in seinen Untersuchungen, warum großartige Unternehmen im Wettbewerb um Innovationen versagen, obwohl sie &hellip;',
     'categories': [],
     'tags': [],
-    'with': ['Clayton M. Christensen', 'You can’t solve a problem', 'Nur zu selten tritt'],  # 3 segments
-    'without': ['Copyright © 2020', 'Geben Sie Ihre E-Mail', 'Initiative zur Entwicklung'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Clayton M. Christensen', 'You can’t solve a problem', 'Nur zu selten tritt'],
+    'without': ['Copyright © 2020', 'Geben Sie Ihre E-Mail', 'Initiative zur Entwicklung'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1116,9 +1116,9 @@ EVAL_PAGES = {
     'description': 'Warum findet man im Sommer so viele tote Hummeln? Lösung: Die Insekten&hellip; Continue reading &ldquo;Tote Hummeln unter Linden&rdquo;&hellip;',
     'categories': ['Biologie & Wissenschaft'],
     'tags': [],
-    'with': ['Normalerweise leben Hummeln', 'Das Sterben tritt zur Blütezeit', 'Baal T, Denke B, Mühlen'],  # 3 segments
-    'without': ['War der Artikel nützlich?', 'Holen Sie sich meinen', 'Möchten Sie den Artikel teilen?'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Normalerweise leben Hummeln', 'Das Sterben tritt zur Blütezeit', 'Baal T, Denke B, Mühlen'],
+    'without': ['War der Artikel nützlich?', 'Holen Sie sich meinen', 'Möchten Sie den Artikel teilen?'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1130,9 +1130,9 @@ EVAL_PAGES = {
     'description': 'Startseite',
     'categories': [],
     'tags': [],
-    'with': ['Alle Fotos sind in Auflösungen', 'in der Web-Galerie von', 'Jede andere Art der Bildnutzung'],  # 3 segments
-    'without': ['Erstellt mit Piwigo', 'Kontakt zu pix-bavaria'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Alle Fotos sind in Auflösungen', 'in der Web-Galerie von', 'Jede andere Art der Bildnutzung'],
+    'without': ['Erstellt mit Piwigo', 'Kontakt zu pix-bavaria'],
+    'comments': [],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': 'DE',
 },
@@ -1144,9 +1144,9 @@ EVAL_PAGES = {
     'description': 'Reise ABC Singapur mit Tipps zur Reisevorbereitung und günstigen Reiseangeboten',
     'categories': [],
     'tags': [],
-    'with': ['Reiseinformationen durch das', 'Einfuhrverbot: Waffen. Munition', 'SARS kann bei Wiederauftreten'],  # 3 segments
-    'without': ['Über 45.000 Ferienhäuser', 'Die folgenden Hotel Links'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Reiseinformationen durch das', 'Einfuhrverbot: Waffen. Munition', 'SARS kann bei Wiederauftreten'],
+    'without': ['Über 45.000 Ferienhäuser', 'Die folgenden Hotel Links'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1158,9 +1158,9 @@ EVAL_PAGES = {
     'description': 'Spanien hat als Reiseland eine Menge zu bieten. Ob nun die Inselgruppen der Balearen oder auch Kanaren, so gut wie',
     'categories': ['Allgemein'],
     'tags': [],
-    'with': ['Spanien hat als Reiseland', 'Wer Malaga nicht nur', 'Einfluss auf die Freundlichkeit'],  # 3 segments
-    'without': ['Keine Kommentare for', 'Wussten Sie schon...?', 'Warning: Creating default object'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Spanien hat als Reiseland', 'Wer Malaga nicht nur', 'Einfluss auf die Freundlichkeit'],
+    'without': ['Keine Kommentare for', 'Wussten Sie schon...?', 'Warning: Creating default object'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1172,9 +1172,9 @@ EVAL_PAGES = {
     'description': 'Rechtsanwalt Jens-Christof Niemeyer ist im Internetrecht/IT-Recht, Zivil- und Familienrecht sowie Verkehrsrecht bundesweit tätig.',
     'categories': [],
     'tags': [],
-    'with': ['Ich bin Jens-Christof', 'Ich freue mich', 'und mittelständischen Unternehmen'],  # 3 segments
-    'without': ['Fachanwalt für IT-Recht', '9, 32130 Enger', 'Service'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Ich bin Jens-Christof', 'Ich freue mich', 'und mittelständischen Unternehmen'],
+    'without': ['Fachanwalt für IT-Recht', '9, 32130 Enger', 'Service'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1186,9 +1186,9 @@ EVAL_PAGES = {
     'description': 'Alle Weine aus D.O.Ca. Rioja, Spanien,',
     'categories': [],
     'tags': [],
-    'with': ['Die Bestimmungen der D.O.Ca.', 'Für die Qualitätsstufen der Weine', 'Mindestlagerzeit Rotwein'],  # 3 segments
-    'without': ['Es werden die Weine 1 bis 10 von insgesamt 19 angezeigt!', 'Ihr Warenkorb ist leer', 'Patanegra-Schinken aus '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die Bestimmungen der D.O.Ca.', 'Für die Qualitätsstufen der Weine', 'Mindestlagerzeit Rotwein'],
+    'without': ['Es werden die Weine 1 bis 10 von insgesamt 19 angezeigt!', 'Ihr Warenkorb ist leer', 'Patanegra-Schinken aus '],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1200,9 +1200,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Liebe_r Besucher_in', 'Doch seitdem ist viel Zeit', 'Thanks for All the Fish'],  # 3 segments
-    'without': ['Datenschutzerklärung'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Liebe_r Besucher_in', 'Doch seitdem ist viel Zeit', 'Thanks for All the Fish'],
+    'without': ['Datenschutzerklärung'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1214,9 +1214,9 @@ EVAL_PAGES = {
     'description': 'Apple hat seine Pläne aufgegeben, Backup-Daten in der iCloud so zu verschlüsseln, dass selbst Apple sie nicht mehr lesen könnte.',
     'categories': ['News'],
     'tags': [],
-    'with': ['Medienberichten zufolge hat', 'Anders sieht es bei den Daten aus', 'Was dabei erstaunlich wenig Beachtung'],  # 3 segments
-    'without': ['Wie Apple welche Daten', '30.01.2020 Wieso Updates?', 'Weitere Artikel'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Medienberichten zufolge hat', 'Anders sieht es bei den Daten aus', 'Was dabei erstaunlich wenig Beachtung'],
+    'without': ['Wie Apple welche Daten', '30.01.2020 Wieso Updates?', 'Weitere Artikel'],
+    'comments': [],
     'license': 'CC BY-ND 3.0 DE',
     'region': 'DE',
 },
@@ -1228,9 +1228,9 @@ EVAL_PAGES = {
     'description': 'Mäscot Schaf, Standardausführung, weiß: Das Exemplar an Schaf, das sich in Massen auf der großen, grünen Wiese herumtreibt. Ganz nach dem Schafklischee, sind sie alle ein bisschen beschränkt, ängstlich und naiv.',
     'categories': [],
     'tags': [],
-    'with': ['Schaf, Standardausführung, weiß', 'Bei diesem arroganten Schafweibchen', 'Eine Intellektuelle, die'],  # 3 segments
-    'without': ['Der Webcomic mit den niedlichen Schafen', '© 2009-2012 Jonathan Krase', '…und anderem Web 2.0 Gedöns.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Schaf, Standardausführung, weiß', 'Bei diesem arroganten Schafweibchen', 'Eine Intellektuelle, die'],
+    'without': ['Der Webcomic mit den niedlichen Schafen', '© 2009-2012 Jonathan Krase', '…und anderem Web 2.0 Gedöns.'],
+    'comments': [],
     'license': 'CC BY-NC-ND 3.0',
     'region': 'DE',
 },
@@ -1242,9 +1242,9 @@ EVAL_PAGES = {
     'description': 'Probieren Sie Lavazza Qualità Oro, die Lavazza-Mischung für alle, die jeden Tag einen guten Kaffee genießen möchten. Finden Sie es auf der Lavazza-Website.',
     'categories': [],
     'tags': [],
-    'with': ['Qualità Oro war die erste Lavazza-Mischung', 'Jede Mischung wird meisterhaft zusammengestellt', 'Fruchtige und florale Noten'],  # 3 segments
-    'without': ['Die Lieferung ist für Sie kostenlos', 'Bitte teilen Sie uns Ihre Erfahrungen', 'Heute empfehlen wir'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Qualità Oro war die erste Lavazza-Mischung', 'Jede Mischung wird meisterhaft zusammengestellt', 'Fruchtige und florale Noten'],
+    'without': ['Die Lieferung ist für Sie kostenlos', 'Bitte teilen Sie uns Ihre Erfahrungen', 'Heute empfehlen wir'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1256,9 +1256,9 @@ EVAL_PAGES = {
     'description': '&#8222;Ich weiß ich bin betrunken und sollte das vielleicht nicht sagen&#8230;&#8220; &#8211; &#8222;Dann sag es nicht&#8220; &#8211; &#8222;Ok.&#8220;',
     'categories': ['Spezifisch'],
     'tags': [],
-    'with': ['„Ich weiß ich bin', '– „Ok.“', 'sollte das vielleich'],  # 3 segments
-    'without': ['Kommentar verfassen', 'Die Inhalte dieser Website sind', 'Kategorien'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['„Ich weiß ich bin', '– „Ok.“', 'sollte das vielleich'],
+    'without': ['Kommentar verfassen', 'Die Inhalte dieser Website sind', 'Kategorien'],
+    'comments': [],
     'license': 'CC BY-NC-ND 2.0 DE',
     'region': '',
 },
@@ -1270,9 +1270,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['ziemlich privat'],
     'tags': [],
-    'with': ['Es ist schon einige Zeit', '=)', 'So sah es aus'],  # 3 segments
-    'without': ['seelenradio is powered by', 'Say your words', 'No Response so far'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Es ist schon einige Zeit', '=)', 'So sah es aus'],
+    'without': ['seelenradio is powered by', 'Say your words', 'No Response so far'],
+    'comments': [],
     'license': 'CC BY-NC-SA 2.5 CN',
     'region': 'DE',
 },
@@ -1284,9 +1284,9 @@ EVAL_PAGES = {
     'description': 'Das Westviertel ist ein Stadtteil von Essen. Es liegt in unmittelbarer N&auml;he zum Stadtkern und bildet zusammen mit dem S&uuml;dviertel, dem Nordviertel, dem Ostviertel, dem S&uuml;dostviertel und dem Stadtk...',
     'categories': [],
     'tags': [],
-    'with': ['Essen-Westviertel Ehemaliges Press- und', 'geringe Wohnbebauung auf', 'Colosseum Theater Essen'],  # 3 segments
-    'without': ['- Anzeige-', 'Nützliche Apps und Services'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Essen-Westviertel Ehemaliges Press- und', 'geringe Wohnbebauung auf', 'Colosseum Theater Essen'],
+    'without': ['- Anzeige-', 'Nützliche Apps und Services'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1298,9 +1298,9 @@ EVAL_PAGES = {
     'description': 'In diesem Sommer war Michael Preetz ganz vorne mit dabei. Kaum hatte die Liga auch offiziell ihren Meister gekürt, präsentierte der Manager des Berliner',
     'categories': ['Hertha BSC'],
     'tags': ['Michael Preetz'],
-    'with': ['In diesem Sommer war Michael Preetz', 'Zeit als Spieler noch', 'die Entscheidung für Dardai'],  # 3 segments
-    'without': ['Drei Berliner kommentieren ihre Erlebniss', '“Hertha? Ist das dein Ernst?”', 'Beliebte Beiträge zum Thema:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['In diesem Sommer war Michael Preetz', 'Zeit als Spieler noch', 'die Entscheidung für Dardai'],
+    'without': ['Drei Berliner kommentieren ihre Erlebniss', '“Hertha? Ist das dein Ernst?”', 'Beliebte Beiträge zum Thema:'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1312,9 +1312,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Allgemein'],
     'tags': [],
-    'with': ['Liebe Menschen Europas', 'Dieses Werk bzw. Inhalt', 'Αγαπητέ λαέ της Ευρώπης'],  # 3 segments
-    'without': ['von anderen', 'Du hörst es oft.', 'Eine Filmempfehlung für die'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Liebe Menschen Europas', 'Dieses Werk bzw. Inhalt', 'Αγαπητέ λαέ της Ευρώπης'],
+    'without': ['von anderen', 'Du hörst es oft.', 'Eine Filmempfehlung für die'],
+    'comments': [],
     'license': 'CC BY-NC-ND 3.0',
     'region': 'DE',
 },
@@ -1326,9 +1326,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Artwork', 'Handy & Smartphone', 'Photo'],
     'tags': ['insekten', 'makrophotos'],
-    'with': ['Alle seine Photos entstanden', 'Eine Ameise in einer Bar!', 'Echt schön bzw. bitte'],  # 3 segments
-    'without': ['Relevantes aus dem gizmeo.eu-Archiv:', 'keine Ahnung mehr wie es...', '© 2010-2020 gizmeo.eu'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Alle seine Photos entstanden', 'Eine Ameise in einer Bar!', 'Echt schön bzw. bitte'],
+    'without': ['Relevantes aus dem gizmeo.eu-Archiv:', 'keine Ahnung mehr wie es...', '© 2010-2020 gizmeo.eu'],
+    'comments': [],
     'license': 'CC BY-SA 3.0 DE',
     'region': '',
 },
@@ -1340,9 +1340,9 @@ EVAL_PAGES = {
     'description': 'An dieser und anderer Stelle habe ich vor kurzem das Projekt #DigitalHerrnhut aufgerissen – das ist auf den ersten Blick ein Thema für Religionslinguistik und Sprachgeschichte und ohne besonderen G…',
     'categories': ['Forschung', 'Projekte', 'Sprachpunkt'],
     'tags': ['Digital', 'Herrnhut', 'Sprache und Religion', 'Sprachgeschichte'],
-    'with': ['Wenn man sich heutzutage', 'An dieser und anderer Stelle', 'Genau dieses Bild ruft die AfD'],  # 3 segments
-    'without': ['Es gibt noch keine Kommentare.', 'Das setzt das Verständnis voraus', 'Alle Artikel und Inhalte'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wenn man sich heutzutage', 'An dieser und anderer Stelle', 'Genau dieses Bild ruft die AfD'],
+    'without': ['Es gibt noch keine Kommentare.', 'Das setzt das Verständnis voraus', 'Alle Artikel und Inhalte'],
+    'comments': [],
     'license': 'CC BY-SA 4.0',
     'region': '',
 },
@@ -1354,9 +1354,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['I am glad that the media', 'Lots of media see Yellow Vests', 'Moralising about burned'],  # 3 segments
-    'without': ['John Bitove, Chair Priszm Brandz', 'January 2020', 'Oct 9, 2019'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['I am glad that the media', 'Lots of media see Yellow Vests', 'Moralising about burned'],
+    'without': ['John Bitove, Chair Priszm Brandz', 'January 2020', 'Oct 9, 2019'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1368,9 +1368,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Jugendverbände', 'Ehrenamt'],
     'tags': [],
-    'with': ['Steinmeier lädt jedes Jahr', 'Zum Empfang kamen', 'Er bat darum'],  # 3 segments
-    'without': ['10178 Berlin', 'Themen: Ehrenamt Jugendverbände', 'Datenschutz'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Steinmeier lädt jedes Jahr', 'Zum Empfang kamen', 'Er bat darum'],
+    'without': ['10178 Berlin', 'Themen: Ehrenamt Jugendverbände', 'Datenschutz'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1382,9 +1382,9 @@ EVAL_PAGES = {
     'description': 'Das DFG-Projekt „Edition der Akten der Provisorischen Zentralgewalt“ veranstaltet am 26. und 27. Februar 2015 im Bischöflichen Seminar Eichstätt die Tagung „Institutionen revolutionärer Macht in den europäischen Revolutionen der ersten Hälfte des 19. Jahrhunderts“. Auf der Tagung werden die exekutiven Institutionen der Revolutionen in der Hochzeit der europäischen Umwälzungen behandelt. Neben dem Prototyp, dem Wohlfahrtsausschuss &hellip; Tagung: Institutionen revolutionärer Macht in den europäischen Revolutionen der ersten Hälfte des 19. Jahrhunderts (26. und 27. 2. 2015, Eichstätt) weiterlesen &rarr;',
     'categories': ['Artikel', 'Unsere Forschung', 'Veranstaltungen'],
     'tags': ['Institutionen revolutionärer Macht', 'Provisorische Zentralgewalt', 'Regierungen', 'Tagung'],
-    'with': ['Das DFG-Projekt „Edition der Akten', 'Kulturgeschichte des Politischen', 'eine zeitliche Konzentration'],  # 3 segments
-    'without': ['Vorheriger Beitrag', 'Deine E-Mail-Adresse wird nicht veröffentlicht.', 'Diese Website verwendet Akismet'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Das DFG-Projekt „Edition der Akten', 'Kulturgeschichte des Politischen', 'eine zeitliche Konzentration'],
+    'without': ['Vorheriger Beitrag', 'Deine E-Mail-Adresse wird nicht veröffentlicht.', 'Diese Website verwendet Akismet'],
+    'comments': [],
     'license': 'CC BY 3.0',
     'region': '',
 },
@@ -1396,9 +1396,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Eintracht Presse'],
     'tags': [],
-    'with': ['Axel Hellmann übernimmt die', 'Der Vorsitzende des Aufsichtsrat Wolfgang', 'Saisonende bei Heribert Bruchhagen.'],  # 3 segments
-    'without': ['Hier geht es zur neuen Vorstandsstruktur', 'Nur für Bembel-Mitglieder', 'Besucher sind online'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Axel Hellmann übernimmt die', 'Der Vorsitzende des Aufsichtsrat Wolfgang', 'Saisonende bei Heribert Bruchhagen.'],
+    'without': ['Hier geht es zur neuen Vorstandsstruktur', 'Nur für Bembel-Mitglieder', 'Besucher sind online'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1410,9 +1410,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['Markt', 'Selbstbestimmung'],
-    'with': ['Vegetarier zu sein. Bedarf, Trend', 'In Österreich sind momentan', 'vor 5 Jahren fast keine'],  # 3 segments
-    'without': ['Wachstum im Wandel', 'Mit unserem Newsletter', 'communities 2010 - 2020'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Vegetarier zu sein. Bedarf, Trend', 'In Österreich sind momentan', 'vor 5 Jahren fast keine'],
+    'without': ['Wachstum im Wandel', 'Mit unserem Newsletter', 'communities 2010 - 2020'],
+    'comments': [],
     'license': 'CC BY-SA 4.0',
     'region': '',
 },
@@ -1424,9 +1424,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['debianforum', 'Linux', 'Tutorials', 'Ubuntu', 'ubuntuusers.de'],
     'tags': [],
-    'with': ['Ich benutze jetzt seit längerem', 'filename=$1', 'DOWNLOAD_DIRECTORY'],  # 3 segments
-    'without': ['Erstellt am Dienstag 6. Mai 2014', 'Das Blog der gnadenlosen Fehlfunktionen!', 'Design von Andreas Viklund'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Ich benutze jetzt seit längerem', 'filename=$1', 'DOWNLOAD_DIRECTORY'],
+    'without': ['Erstellt am Dienstag 6. Mai 2014', 'Das Blog der gnadenlosen Fehlfunktionen!', 'Design von Andreas Viklund'],
+    'comments': [],
     'license': 'CC BY-SA 3.0 DE',
     'region': 'DE',
 },
@@ -1438,9 +1438,9 @@ EVAL_PAGES = {
     'description': 'Profitiere von jahrelanger Erfahrung, fundierter Fachkenntnis und großer Expertise im Bereich Design der Agentur VON DER SEE. Wir helfen wirklich weiter.',
     'categories': [],
     'tags': [],
-    'with': ['Ein professionelles und seriös', 'Design geht aber auch weit', 'zahlreiche Bereiche zuverlässig ab'],  # 3 segments
-    'without': ['Wenn Sie uns per Kontaktformular Anfragen', 'Der Upstalsboom-Weg', 'Interessantes aus unserem'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Ein professionelles und seriös', 'Design geht aber auch weit', 'zahlreiche Bereiche zuverlässig ab'],
+    'without': ['Wenn Sie uns per Kontaktformular Anfragen', 'Der Upstalsboom-Weg', 'Interessantes aus unserem'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1452,9 +1452,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Aus dem Alltag', 'Bilderberg', 'Schöne Töne'],
     'tags': ['Christopher Dallman', 'Joshua Pohja', 'Kevin R. Thomspon', 'Musik', 'schwul'],
-    'with': ['Okay, hat wieder nichts mit', 'Ergänzung 2: Glaubt man', 'Ergänzung 1: Den Text des Songs'],  # 3 segments
-    'without': ['Leider sind keine Kommentare möglich.', 'Rasterfahndung', 'Dies ist das Archiv von krimiblog.de'],  # 3 segments
-    'comments': ['Hamburg feiert CSD. Vielleicht'],  # 0 or 3 segments
+    'with': ['Okay, hat wieder nichts mit', 'Ergänzung 2: Glaubt man', 'Ergänzung 1: Den Text des Songs'],
+    'without': ['Leider sind keine Kommentare möglich.', 'Rasterfahndung', 'Dies ist das Archiv von krimiblog.de'],
+    'comments': ['Hamburg feiert CSD. Vielleicht'],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': 'DE',
 },
@@ -1466,9 +1466,9 @@ EVAL_PAGES = {
     'description': 'Werbung nervt. Tracking nervt. Nerven nervt. Und gerade mobil habe ich eigentlich keine Zeit, meine geringe Download-Rate mit dem Herunterladen von hässlichen…',
     'categories': [' Programmierung'],
     'tags': ['Für Tumblr', 'Geckobar', 'Review', 'Technologie', 'Webdevelop', 'Adblocker'],
-    'with': ['Werbung nervt. Tracking nervt. Nerven nervt.', 'Von seinem Vorgänger unterscheidet', 'nicht von mir benutzter Dienst'],  # 3 segments
-    'without': ['Zurück zur Übersichtsseite', 'Merkwürdige Erlebnisse, spontane Einfälle', 'Artikel mit dem Tag "Für Tumblr"'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Werbung nervt. Tracking nervt. Nerven nervt.', 'Von seinem Vorgänger unterscheidet', 'nicht von mir benutzter Dienst'],
+    'without': ['Zurück zur Übersichtsseite', 'Merkwürdige Erlebnisse, spontane Einfälle', 'Artikel mit dem Tag "Für Tumblr"'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1480,9 +1480,9 @@ EVAL_PAGES = {
     'description': 'Am 14. Juni 2005 hielt Steve Jobs eine vielbeachtete Rede vor den Absolventen der Stanford University. Den Zuhörern erzählte er drei Geschichten, die für sein Leben wichtig waren. “The first story …',
     'categories': ['Innovation'],
     'tags': ['David Brier', 'Innovation', 'Rafa Galeano', 'Steve Jobs'],
-    'with': ['Am 14. Juni 2005 hielt Steve Jobs', 'David Brier, international anerkannter', 'Ein hilfreicher kleiner Film'],  # 3 segments
-    'without': ['Bitte geben Sie Ihre E-Mail-Adresse ein', 'Dieser Eintrag wurde veröffentlicht in', 'Kommentar verfassen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Am 14. Juni 2005 hielt Steve Jobs', 'David Brier, international anerkannter', 'Ein hilfreicher kleiner Film'],
+    'without': ['Bitte geben Sie Ihre E-Mail-Adresse ein', 'Dieser Eintrag wurde veröffentlicht in', 'Kommentar verfassen'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1494,9 +1494,9 @@ EVAL_PAGES = {
     'description': 'Es bleibt weiterhin spannend, was die Zulässigkeit einer Nutzung von Office 365 durch Schulen angeht. Nachdem der Hessische Beauftragte für Datenschutz und Informationsfreiheit am 09.07.2019 zunäch…',
     'categories': [],
     'tags': ['Datenschutz', 'Office 365', 'Schule'],
-    'with': ['Es bleibt weiterhin spannend', 'Auch Schulen, die nicht unter 1', 'Wie letzteres umzusetzen ist, dafür'],  # 3 segments
-    'without': ['Erstelle eine kostenlose Website oder Blog', 'Um neue Beiträge per E-Mail zu', 'Kommentar verfassen'],  # 3 segments
-    'comments': ['Vielen Dank für alle die guten Beiträge', 'bestehenden Probleme zu bereinigen', 'dies auch thematisiert werden sollte.'],  # 0 or 3 segments
+    'with': ['Es bleibt weiterhin spannend', 'Auch Schulen, die nicht unter 1', 'Wie letzteres umzusetzen ist, dafür'],
+    'without': ['Erstelle eine kostenlose Website oder Blog', 'Um neue Beiträge per E-Mail zu', 'Kommentar verfassen'],
+    'comments': ['Vielen Dank für alle die guten Beiträge', 'bestehenden Probleme zu bereinigen', 'dies auch thematisiert werden sollte.'],
     'license': 'CC BY 3.0 DE',
     'region': '',
 },
@@ -1508,9 +1508,9 @@ EVAL_PAGES = {
     'description': 'Qualität war bei Führungskräften mal groß in Mode. Wie es dazu kam, was der Hype bewirkte und welche Nebenwirkungen er hatte, erläutert der Management-Kenner Alfred Kieser. Interview: Jens Bergmann…',
     'categories': ['Uncategorized'],
     'tags': [],
-    'with': ['Herr Kieser, ältere Menschen erinnern sich', 'Was war der zweite Grund?', 'Man muss das nüchtern sehen'],  # 3 segments
-    'without': ['Enter your email address to follow', 'Bloggen auf WordPress.com.', '…through the looking glass…'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Herr Kieser, ältere Menschen erinnern sich', 'Was war der zweite Grund?', 'Man muss das nüchtern sehen'],
+    'without': ['Enter your email address to follow', 'Bloggen auf WordPress.com.', '…through the looking glass…'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1522,9 +1522,9 @@ EVAL_PAGES = {
     'description': 'Die chinesische Geldpflanze ist eine schöne, einzigartige und einfach zu züchtende Zimmerpflanze.  Langsam zu vermehren und erst seit kurzem weltweit bekannt, ist es das größte Hindernis für den Anbau dieser Pflanze, einen zu finden.  Erfahren Sie mehr über die Pflanze und ihre Pflege hier.',
     'categories': ['Zimmerpflanzen'],
     'tags': [],
-    'with': ['Was ist eine chinesische Geldanlage?', 'Pilea Pflanzenpflege ist relativ minimal', 'Langsam zu vermehren und erst'],  # 3 segments
-    'without': ['Spinat kann mit einer Reihe von Krankheiten, vor allem', 'Ich bin ein billiger Gärtner.', 'Haben Sie schon einmal darüber nachgedacht'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Was ist eine chinesische Geldanlage?', 'Pilea Pflanzenpflege ist relativ minimal', 'Langsam zu vermehren und erst'],
+    'without': ['Spinat kann mit einer Reihe von Krankheiten, vor allem', 'Ich bin ein billiger Gärtner.', 'Haben Sie schon einmal darüber nachgedacht'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1536,9 +1536,9 @@ EVAL_PAGES = {
     'description': 'Filmbüro Göttingen',
     'categories': [],
     'tags': [],
-    'with': ['Göttingen war in den 1950er Jahren', 'Bedeutend für den Standort waren neben Ateliergesellschaf', 'die Schließung des Instituts für den Wissenschaftlichen Film'],  # 3 segments
-    'without': ['An der Aue 1', ' Warenkorb', '2018 Regiolanda '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Göttingen war in den 1950er Jahren', 'Bedeutend für den Standort waren neben Ateliergesellschaf', 'die Schließung des Instituts für den Wissenschaftlichen Film'],
+    'without': ['An der Aue 1', ' Warenkorb', '2018 Regiolanda '],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1550,9 +1550,9 @@ EVAL_PAGES = {
     'description': 'Diese Seite war gestern nicht erreichbar, und wir waren auf der Alle-fürs-Klima-Demo in Marburg präsent. Es war eine großartige Veranstaltung mit ca. 8000&hellip;',
     'categories': [],
     'tags': ['#nichtMeinErbe', '#AlleFuersKlima'],
-    'with': ['Die Ignoranz, mit der die Dringlichkeit tiefgreifender Änderungen', 'Diese Seite war gestern nicht erreichbar', 'Die Ignoranz, mit der die Dringlichkeit'],  # 3 segments
-    'without': ['Klarmachen zum Ändern!', 'Von allein wird es nicht besser!', 'Copyright © 2020 Piratenpartei'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die Ignoranz, mit der die Dringlichkeit tiefgreifender Änderungen', 'Diese Seite war gestern nicht erreichbar', 'Die Ignoranz, mit der die Dringlichkeit'],
+    'without': ['Klarmachen zum Ändern!', 'Von allein wird es nicht besser!', 'Copyright © 2020 Piratenpartei'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1564,9 +1564,9 @@ EVAL_PAGES = {
     'description': 'Aktuell liegt beim Innenministerium ein Volksbegehren für ein Bedingungsloses Grundeinkommen in der Höhe von 1200 € für alle österreichischen',
     'categories': ['Blogposts', 'News', 'Slider', 'Uncategorized'],
     'tags': ['Bedingungsloses Grundeinkommen', 'BGE', 'Österreich', 'Piraten', 'Piratenpartei', 'ppat', 'Volksbegehren'],
-    'with': ['Aktuell liegt beim Innenministerium ein Volksbegehren', 'Jetzt wäre der richtige Zeitpunkt', 'Durch die aktuelle wirtschaftliche Hochlage '],  # 3 segments
-    'without': ['Please reload CAPTCHA.', 'Theme based on the great work', 'Getaggt mit'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Aktuell liegt beim Innenministerium ein Volksbegehren', 'Jetzt wäre der richtige Zeitpunkt', 'Durch die aktuelle wirtschaftliche Hochlage '],
+    'without': ['Please reload CAPTCHA.', 'Theme based on the great work', 'Getaggt mit'],
+    'comments': [],
     'license': '',
     'region': 'AT',
 },
@@ -1578,9 +1578,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['Datenschutz und Sicherheit', 'Web/Internet', 'Apple', 'Facebook', 'Geheimdienste', 'Google', 'Microsoft', 'Samsung', 'Twitter', 'Überwachung'],
-    'with': ['Die massenmediale Berichterstattung', 'Seit vor allem das FBI Druck auf die Anbieter macht', '„Bellende Hunde beissen nicht“ '],  # 3 segments
-    'without': ['Stichwort-Wolke', 'einige Rechte vorbehalten', 'Neueste Beiträge'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die massenmediale Berichterstattung', 'Seit vor allem das FBI Druck auf die Anbieter macht', '„Bellende Hunde beissen nicht“ '],
+    'without': ['Stichwort-Wolke', 'einige Rechte vorbehalten', 'Neueste Beiträge'],
+    'comments': [],
     'license': 'CC BY-SA 2.5 CH',
     'region': 'CH',
 },
@@ -1592,9 +1592,9 @@ EVAL_PAGES = {
     'description': 'Der Mensch braucht soziale Verbindungen. Die heutige Gesellschaft ist jedoch geprägt von Isolierung und Vereinsamung von Teilen der Gesellschaft.',
     'categories': [],
     'tags': ['Inklusion', 'Kapitalismus'],
-    'with': ['Soziales Netzwerk, Sozialraumorientierung, Inklusion', 'Hohe Bedeutung von sozialen', 'Menschen mit Behinderung, ist im Bereich'],  # 3 segments
-    'without': ['Abonniere unseren Newsletter', 'Alle Kooperationspartner von Unsere Zeitung auf einem Blick', 'Verein „Unsere Zeitung – Die Demokratische.“'],  # 3 segments
-    'comments': ['Wenns nur der Kapitalismus alleine wäre …'],  # 0 or 3 segments
+    'with': ['Soziales Netzwerk, Sozialraumorientierung, Inklusion', 'Hohe Bedeutung von sozialen', 'Menschen mit Behinderung, ist im Bereich'],
+    'without': ['Abonniere unseren Newsletter', 'Alle Kooperationspartner von Unsere Zeitung auf einem Blick', 'Verein „Unsere Zeitung – Die Demokratische.“'],
+    'comments': ['Wenns nur der Kapitalismus alleine wäre …'],
     'license': '',
     'region': 'AT',
 },
@@ -1606,9 +1606,9 @@ EVAL_PAGES = {
     'description': 'Ingo hat ja gesagt, er habe diesen Text nicht geschrieben. Dennoch steht das jetzt da. Als wäre das geplant gewesen. Aber wozu? Nur damit jetzt Petra einen Text verfasst über dem Ingos Name steht u…',
     'categories': [],
     'tags': [],
-    'with': ['Ingo hat ja gesagt', 'Oder damit Petra', 'Äußert Vermutungen'],  # 3 segments
-    'without': ['Deine E-Mail-Adresse', 'Der geheimnisvolle Button', 'This entry was posted '],  # 3 segments
-    'comments': ['Schöne Folge. Hab mich gefreut.', 'da haste wohl rescht wa?', 'Trotzdem mal wieder eine sehr kurzweilige'],  # 0 or 3 segments
+    'with': ['Ingo hat ja gesagt', 'Oder damit Petra', 'Äußert Vermutungen'],
+    'without': ['Deine E-Mail-Adresse', 'Der geheimnisvolle Button', 'This entry was posted '],
+    'comments': ['Schöne Folge. Hab mich gefreut.', 'da haste wohl rescht wa?', 'Trotzdem mal wieder eine sehr kurzweilige'],
     'license': '',
     'region': '',
 },
@@ -1620,9 +1620,9 @@ EVAL_PAGES = {
     'description': 'Spoiler-Alarm: Meine neue Lieblings-Radtour in Berlin. Viele Jahre war ja die Müggelsee-Runde tatsächlich meine Lieblings-Radtour, das hat sich nun aber geändert.',
     'categories': ['Radtouren Berlin'],
     'tags': ['berlin', 'fahrradtour', 'friedrichsfelde', 'karlshorst', 'lichtenberg', 'radtour', 'schöneweide'],
-    'with': ['Meine neue Lieblings-Radtour', 'ca. 80 m links', 'um das Gelände herum'],  # 3 segments
-    'without': ['Klicken Sie auf den unteren', 'Keine Lust alleine zu', 'Kein Fahrrad zur Hand?'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Meine neue Lieblings-Radtour', 'ca. 80 m links', 'um das Gelände herum'],
+    'without': ['Klicken Sie auf den unteren', 'Keine Lust alleine zu', 'Kein Fahrrad zur Hand?'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1634,9 +1634,9 @@ EVAL_PAGES = {
     'description': 'Auch Polizisten im Dienst können den Rasertatbestand (Art. 90 Abs. 3 und 4 SVG) erfüllen, wenn sie mitten in der Nacht mit über 120 km/h durch ein Wohngebiet (signalisierte Höchstgeschwindigkeit: 50 km/h) jagen. Das Bundesgericht kassiert ein Urteil des Kantonsgerichts GE (BGer 6B_1224/2019 vom 24.01.2020, Fünferbesetzung), das den fehlbaren Polizeibeamten nur wegen Art. 90 Abs. &hellip;',
     'categories': ['Bundesgericht', 'BGer', 'SVG', 'Vorsatz'],
     'tags': ['StGB 12', 'SVG 100', 'SVG 90'],
-    'with': ['Auch Polizisten im Dienst', 'Das Bundesgericht kassiert', 'signalisierte Höchstgeschwindigkeit'],  # 3 segments
-    'without': ['Ege/Heimgartner/Niggli (Hrsg.)', 'Drucken etc.', '10. Dreiländerforum in Bregenz'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Auch Polizisten im Dienst', 'Das Bundesgericht kassiert', 'signalisierte Höchstgeschwindigkeit'],
+    'without': ['Ege/Heimgartner/Niggli (Hrsg.)', 'Drucken etc.', '10. Dreiländerforum in Bregenz'],
+    'comments': [],
     'license': 'CC BY 4.0',
     'region': 'CH',
 },
@@ -1648,9 +1648,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Einen Vertriebsmitarbeiter ohne', 'Wir wollen auch Provisionen', 'Keine Excel-Sheets - sondern'],  # 3 segments
-    'without': ['RENT A SALESMAN®', 'Blog - Tag Cloud'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Einen Vertriebsmitarbeiter ohne', 'Wir wollen auch Provisionen', 'Keine Excel-Sheets - sondern'],
+    'without': ['RENT A SALESMAN®', 'Blog - Tag Cloud'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1662,9 +1662,9 @@ EVAL_PAGES = {
     'description': 'Heinz Duchhardt hat in seiner neuesten Studie ein heikles Thema aufgegriffen. Es geht um zweite Bände in der Geschichtswissenschaft, die nie erschienen sind.',
     'categories': [],
     'tags': ['Abgebrochene Forschung', 'Georg von Below', 'Gerhard Ritter', 'Geschichtswissenschaft', 'Heinz Duchhardt', 'Martin Göhring', 'Rudolf Smend'],
-    'with': ['[1] Wer im Wissenschaftsbetrieb würde', 'Band zwei alsbald folgen zu lassen', '[8] Historiker oder Geschichte als Fach'],  # 3 segments
-    'without': ['Wenn Sie diesen Blogeintrag kommentieren', 'Diese Website verwendet Akismet', 'Neueste Kommentare'],  # 3 segments
-    'comments': ['Danke für die schöne Zusammenfassung!'],  # 0 or 3 segments
+    'with': ['[1] Wer im Wissenschaftsbetrieb würde', 'Band zwei alsbald folgen zu lassen', '[8] Historiker oder Geschichte als Fach'],
+    'without': ['Wenn Sie diesen Blogeintrag kommentieren', 'Diese Website verwendet Akismet', 'Neueste Kommentare'],
+    'comments': ['Danke für die schöne Zusammenfassung!'],
     'license': '',
     'region': '',
 },
@@ -1676,9 +1676,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['FOSS', 'Überwachung', 'Wem gehört das Netz', 'Wie das Internet Politik verändert'],
     'tags': ['Eigentum', 'Facebook', 'Open Source'],
-    'with': ['Radikal-reformistischer Vorschlag', 'I am a capitalist. Come on', 'Was die Problemwahrnehmung angeht'],  # 3 segments
-    'without': ['Vorstudie zur Menüerweiterung durch FOSS-Produkte bei der RLS', 'Smarte Worte', 'Netz für Alle bei Facebook'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Radikal-reformistischer Vorschlag', 'I am a capitalist. Come on', 'Was die Problemwahrnehmung angeht'],
+    'without': ['Vorstudie zur Menüerweiterung durch FOSS-Produkte bei der RLS', 'Smarte Worte', 'Netz für Alle bei Facebook'],
+    'comments': [],
     'license': 'CC BY-NC-SA 3.0 DE',
     'region': 'DE',
 },
@@ -1690,9 +1690,9 @@ EVAL_PAGES = {
     'description': 'Creative Commons Team Switzerland',
     'categories': [],
     'tags': [],
-    'with': ['Sie können selber bestimmen', 'Die Bedeutungen der Lizenzen', 'Der durchgestrichene Dollar bedeutet'],  # 3 segments
-    'without': ['Sofern nicht anders ausgewiesen', 'Designed by Elegant Themes'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Sie können selber bestimmen', 'Die Bedeutungen der Lizenzen', 'Der durchgestrichene Dollar bedeutet'],
+    'without': ['Sofern nicht anders ausgewiesen', 'Designed by Elegant Themes'],
+    'comments': [],
     'license': 'CC BY 4.0',
     'region': 'CH',
 },
@@ -1704,9 +1704,9 @@ EVAL_PAGES = {
     'description': 'ARSnova is a novel approach to Audience Response Systems (ARS), hence its Latin name. ARSnova is Open Source and offered as Software-as-a-Service free of charge.',
     'categories': ['Blog'],
     'tags': ['Blog'],
-    'with': ['live moderierbar', 'einen Workshop an', 'im Hörsaal Fragen'],  # 3 segments
-    'without': ['ARSnova-Workshop an der Uni Wien', 'wird nicht veröffentlicht', 'Technische Hochschule Mittelhessen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['live moderierbar', 'einen Workshop an', 'im Hörsaal Fragen'],
+    'without': ['ARSnova-Workshop an der Uni Wien', 'wird nicht veröffentlicht', 'Technische Hochschule Mittelhessen'],
+    'comments': [],
     'license': 'CC BY-SA 4.0',
     'region': 'DE',
 },
@@ -1718,9 +1718,9 @@ EVAL_PAGES = {
     'description': 'Es ist sechs Uhr früh und noch stockdunkel. Vom nahen Kloster dringen die monotonen Gebetsgesänge der buddhistischen Priester in meine Ohren. Für mich ist es die reinste Kakophonie. Und bestimmt ko…',
     'categories': ['Gesellschaft', 'Länder', 'Menschen', 'Sri Lanka'],
     'tags': ['Alltag', 'Religionen', 'Sri Lanka', 'Tiere'],
-    'with': ['Es ist sechs Uhr früh und noch stockdunkel', 'führen diese improvisierten Tüten aus Schülernotizen.', 'Kumara kennt mich recht gut'],  # 3 segments
-    'without': ['Deine E-Mail-Adresse wird nicht veröffentlicht', 'Blog via E-Mail abonnieren', 'Peter Addor ist Mathematiker, Systemdenke'],  # 3 segments
-    'comments': ['wunderbarer Text, Danke!', 'Danke Peter für den interessanten Bericht!', 'lieber Martin'],  # 0 or 3 segments
+    'with': ['Es ist sechs Uhr früh und noch stockdunkel', 'führen diese improvisierten Tüten aus Schülernotizen.', 'Kumara kennt mich recht gut'],
+    'without': ['Deine E-Mail-Adresse wird nicht veröffentlicht', 'Blog via E-Mail abonnieren', 'Peter Addor ist Mathematiker, Systemdenke'],
+    'comments': ['wunderbarer Text, Danke!', 'Danke Peter für den interessanten Bericht!', 'lieber Martin'],
     'license': 'CC BY-NC 4.0',
     'region': 'CH',
 },
@@ -1732,9 +1732,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Deshalb lädt der EJW-Weltdienst zusammen', 'Das Evangelische Jugendwerk in Württemberg', 'koordiniert, fördert und gestaltet'],  # 3 segments
-    'without': ['Haeberlinstraße 1-3', 'Kontaktieren Sie uns gerne auch direkt', 'kalte Welt herein leuchten'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Deshalb lädt der EJW-Weltdienst zusammen', 'Das Evangelische Jugendwerk in Württemberg', 'koordiniert, fördert und gestaltet'],
+    'without': ['Haeberlinstraße 1-3', 'Kontaktieren Sie uns gerne auch direkt', 'kalte Welt herein leuchten'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1746,9 +1746,9 @@ EVAL_PAGES = {
     'description': 'Korsetts sind für Pin Up Girls so etwas wie Wasser für Delphine: Ohne geht es nur ganz kurz. Egal ob man es nun als klassisches Vintage Dessous trägt oder ein auffälliges Burlesque Outfit daraus zaubert: Die Teile sind einfach nur sexy und sehr talentiert. Eine schmale Taille &hellip; Weiterlesen &rarr;',
     'categories': [],
     'tags': [],
-    'with': ['Korsetts sind für Pin Up Girls so etwas wie Wasser', 'och was macht den Unterschied beim Korsettkauf', 'Wem Shapewear ab sofort nicht edel'],  # 3 segments
-    'without': ['Wer einen Rockabilly Shop oder einen', 'Auf Pinup-Fashion findet man tolle Mode', 'Viel Spaß beim Stöbern'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Korsetts sind für Pin Up Girls so etwas wie Wasser', 'och was macht den Unterschied beim Korsettkauf', 'Wem Shapewear ab sofort nicht edel'],
+    'without': ['Wer einen Rockabilly Shop oder einen', 'Auf Pinup-Fashion findet man tolle Mode', 'Viel Spaß beim Stöbern'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1760,9 +1760,9 @@ EVAL_PAGES = {
     'description': 'Überangebot überfordert uns immer mehr Bist du auch schon mal die Regale im Supermarkt abgelaufen und hast dich gewundert über die acht Meter H-Milch-Regale und die gefühlten 300 Packungen Müsli. O…',
     'categories': ['Allgemein', 'Essen und Trinken', 'Gesellschaft', 'Kommentare', 'Lifestyle'],
     'tags':['Überangebot', 'Überforderung', 'überfordert', 'Burnout', 'Entschleunigung', 'Entschleunigung im Alltag', 'gesellschaft', 'ich kann mich nicht entscheiden', 'Kommunikationsmittel', 'psychologie', 'richtige Entscheidungen treffen', 'richtige Wahl treffen', 'soziale medien', 'Supermarkt'],
-    'with': ['Bist du auch schon mal die Regale im Supermarkt', 'Wir sind die Opfer einer Gesellschaft', 'Die Beschleunigung im Privaten liegt'],  # 3 segments
-    'without': ['Gib deine E-Mail-Adresse ein', 'Kommentare zu', 'Ähnliche Beiträge'],  # 3 segments
-    'comments': ['So wahr!', 'Toller Text – spannendes Thema'],  # 0 or 3 segments
+    'with': ['Bist du auch schon mal die Regale im Supermarkt', 'Wir sind die Opfer einer Gesellschaft', 'Die Beschleunigung im Privaten liegt'],
+    'without': ['Gib deine E-Mail-Adresse ein', 'Kommentare zu', 'Ähnliche Beiträge'],
+    'comments': ['So wahr!', 'Toller Text – spannendes Thema'],
     'license': '',
     'region': '',
 },
@@ -1774,9 +1774,9 @@ EVAL_PAGES = {
     'description': 't Wenn man so hört und liest, was nach den Bundestagswahlen so geschrieben wurde und wird. Und wenn auch nach den Sondierungen und ggf. vor einer Neuauflage der großen Koalition, finde ich diese Di…',
     'categories': [],
     'tags': ['btw17', 'Bundestagswahl'],
-    'with': ['Wenn man so hört und liest', 'Deutschland ist ein Land', 'SPD und FDP haben dieses mal vieles'],  # 3 segments
-    'without': ['Erstelle eine kostenlose Website oder Blog', 'Teilen Sie dies mit:', 'Fall #Amani, was passiert denn da? #aboutyouawards'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wenn man so hört und liest', 'Deutschland ist ein Land', 'SPD und FDP haben dieses mal vieles'],
+    'without': ['Erstelle eine kostenlose Website oder Blog', 'Teilen Sie dies mit:', 'Fall #Amani, was passiert denn da? #aboutyouawards'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1788,9 +1788,9 @@ EVAL_PAGES = {
     'description': 'Hi! Mein Name ist Johannes aka ohneQ. Mir macht es sehr viel Spaß, Podcasts zu produzieren. Meine Freunde und ich stecken viel Liebe und Geld in die Herstellung dieser Podcasts. Wir freuen uns, die In',
     'categories': [],
     'tags': [],
-    'with': ['Mein Name ist Johannes aka ohneQ', 'teile unsere Beiträge auf Facebook oder Twitter', 'wenn Dir unsere Podcasts gefallen'],  # 3 segments
-    'without': ['(c) Johannes Wolf', 'Neueste Beiträge', 'Akte Aurora'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Mein Name ist Johannes aka ohneQ', 'teile unsere Beiträge auf Facebook oder Twitter', 'wenn Dir unsere Podcasts gefallen'],
+    'without': ['(c) Johannes Wolf', 'Neueste Beiträge', 'Akte Aurora'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -1802,9 +1802,9 @@ EVAL_PAGES = {
     'description': 'The strategic Think &amp; Do Tank Foreign, security and development policy &amp; analyses. Crisis management and civil society engagement. All in one network. Where do we originate from? Shabka was founded in 2013 as a publication network focused on the Arab world by young journalists and academics. One of its early major projects, a book &hellip;  About Us Read More &raquo;',
     'categories': [],
     'tags': [],
-    'with': ['The Future Strategists Hub 2018 was Shabka’s', 'on several levels as well as supra-instutional', 'One of the book project’s key'],  # 3 segments
-    'without': ['© Shabka 2019', 'Contact'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['The Future Strategists Hub 2018 was Shabka’s', 'on several levels as well as supra-instutional', 'One of the book project’s key'],
+    'without': ['© Shabka 2019', 'Contact'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1816,9 +1816,9 @@ EVAL_PAGES = {
     'description': 'The #1 choice of Mac® users to Run Windows on Mac without Rebooting! Easy to Get Started. Instant Download. Try Free Today!',
     'categories': [],
     'tags': [],
-    'with': ['Quickly move files, apps and more', '#1 choice of Mac Users', 'Visual Studio plug-In'],  # 3 segments
-    'without': ['© 1999-2020 Parallels', 'Parallels Mac Management for SCCM'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Quickly move files, apps and more', '#1 choice of Mac Users', 'Visual Studio plug-In'],
+    'without': ['© 1999-2020 Parallels', 'Parallels Mac Management for SCCM'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1830,9 +1830,9 @@ EVAL_PAGES = {
     'description': 'Datenrecherche und aktuelle Sicherheitsdatenblätter. Optimiertes Gefahrstoffmanagement. Verbesserte Marktfähigkeit Ihrer Produkte.',
     'categories': [],
     'tags': [],
-    'with': ['Qualisys ist spezialisiert auf die Optimierung des Gefahrstoffmanagements', 'SUMDAT Desktop im Format eines Sicherheitsdatenblattes', 'Das Qualisys Gefahrstoff-Backoffice erfüllt alle Anforderungen'],  # 3 segments
-    'without': ['D-40764 Langenfeld', 'Kontakt'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Qualisys ist spezialisiert auf die Optimierung des Gefahrstoffmanagements', 'SUMDAT Desktop im Format eines Sicherheitsdatenblattes', 'Das Qualisys Gefahrstoff-Backoffice erfüllt alle Anforderungen'],
+    'without': ['D-40764 Langenfeld', 'Kontakt'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1844,9 +1844,9 @@ EVAL_PAGES = {
     'description': '武汉的声音：有英勇的你，才有英雄的城！\n---越是到疫情防控最为吃劲的时候，越是需要汇聚信心与力量。武汉“封城”27天后，湖北以外地区新冠肺炎每日确诊病例迎来15连降，湖北神农架林区确诊病例全部治愈。疫情虽在持续，但希望就在继续努力之中。正是有了英勇的你们，才有这座英雄的城！',
     'categories': [],
     'tags': [],
-    'with': ['2月17日', '能过关。', '萧海川'],  # 3 segments
-    'without': ['纠错', '关注新华网', '半月谈'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['2月17日', '能过关。', '萧海川'],
+    'without': ['纠错', '关注新华网', '半月谈'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1858,9 +1858,9 @@ EVAL_PAGES = {
     'description': '益阳近3年连续举办智慧乡村互联网大会，赋能农业无土栽培、立体种植、智能调控、四季生产……在益阳一个智慧农业园区里，作为益阳智慧医疗的组成部分。',
     'categories': [],
     'tags': [],
-    'with': ['高度认可……', '发现社会', '姚劲波说。'],  # 3 segments
-    'without': ['热门推荐', '理论应该', '杂志图书订阅'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['高度认可……', '发现社会', '姚劲波说。'],
+    'without': ['热门推荐', '理论应该', '杂志图书订阅'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1872,9 +1872,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['1975年1月28日出生', '独立制作', '2000年在新加坡'],  # 3 segments
-    'without': ['原木渣男', '网友印象', '百科词'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['1975年1月28日出生', '独立制作', '2000年在新加坡'],
+    'without': ['原木渣男', '网友印象', '百科词'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1886,9 +1886,9 @@ EVAL_PAGES = {
     'description': 'Piogge, temporali e nevicate previste per oggi nelle regioni centrali e meridionali. Interessate Marche, Abruzzo, Molise, Umbria e Lazio. Neve sull’Appennino sopra i 1400 metri. Il bel tempo tornerà in poche ore',
     'categories': ['Cronaca'],
     'tags': ['meteo', 'neve', 'caldo'],
-    'with': ['tornerà in poche ore', 'sopra i 1400 metri.', 'specialmente in Galles.'],  # 3 segments
-    'without': ['La grande sete', 'Argomenti', 'Ultima modifica'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['tornerà in poche ore', 'sopra i 1400 metri.', 'specialmente in Galles.'],
+    'without': ['La grande sete', 'Argomenti', 'Ultima modifica'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1900,9 +1900,9 @@ EVAL_PAGES = {
     'description': 'Los científicos cuestionan el reciente récord de temperatura y advierten de que lo más importante es la tendencia gradual al calentamiento que afecta al continente desde hace 60 años',
     'categories': ['Ciencia'],
     'tags': ['Hielo', 'Aemet', 'Antártida', 'Altas temperaturas', 'Calor', 'Temperaturas', 'Calentamiento global', 'Cambio climático', 'Meteorología', 'Problemas ambientales'],
-    'with': ['Que en la Antártida se registren', 'Este mediodía la Base', 'y pasará a ser verde'],  # 3 segments
-    'without': ['Puede escribirnos', 'Un grupo de pingüinos', 'El portal de empleo InfoJobs'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Que en la Antártida se registren', 'Este mediodía la Base', 'y pasará a ser verde'],
+    'without': ['Puede escribirnos', 'Un grupo de pingüinos', 'El portal de empleo InfoJobs'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1916,7 +1916,7 @@ EVAL_PAGES = {
     'tags': ['Campaign 2020'],
     'with': ['a lot of explaining.', 'His opponents don’t lack for material to use.', 'floating above the fray'],
     'without': ['The latest news, analysis and insights', 'writes about a broad range', 'California loosens its individual mandate'],
-    'comments': [],  # 0 or 3 segments
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1930,7 +1930,7 @@ EVAL_PAGES = {
     'tags': ['Politiikka', 'EU'],
     'with': ['ehdistötilaisuudessa Berliinissä.', 'Merkel korosti.', 'Charles Michels'],
     'without': ['Kuva: ALEXANDER BECHER', 'Brexit kasvattaa maksuja', 'uudesta maahanmuuttolaista', 'hiilineutraaliuteen ilman vippaskonsteja'],
-    'comments': [],  # 0 or 3 segments
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1942,9 +1942,9 @@ EVAL_PAGES = {
     'description': 'Vuodenaikojen vaihtuminen vaikuttaa mielialaan ja käyttäytymiseen lähes kaikilla suomalaisilla.',
     'categories': ['Kotimaa'],
     'tags': [],
-    'with': ['Vuodenaikojen vaihtuminen', 'Ilmastonmuutos vaikuttaa terveyteen', 'tuntuakin raskaalta.'],  # 3 segments
-    'without': ['Korkeasaaren karhut', 'Saat Ylen parhaat', 'Wuhanilainen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Vuodenaikojen vaihtuminen', 'Ilmastonmuutos vaikuttaa terveyteen', 'tuntuakin raskaalta.'],
+    'without': ['Korkeasaaren karhut', 'Saat Ylen parhaat', 'Wuhanilainen'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1957,8 +1957,8 @@ EVAL_PAGES = {
     'categories': ['travel'],
     'tags': ['Hokkaido prefecture', 'food', 'fish cakes', 'Monbestu', 'travel'],
     'with': ['We picked out a couple of', 'While they were cooking', 'and everything was tasty.', '+81 158-23-2012'],
-    'without': ['Abashiri Prison Museum', '885 words', 'View larger map'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'without': ['Abashiri Prison Museum', '885 words', 'View larger map'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1970,9 +1970,9 @@ EVAL_PAGES = {
     'description': 'Follow these steps shared on Twitter to safely apprehend a train groper in Japan.',
     'categories': [],
     'tags': ['Study Japanese', 'Tweet of the Week'],
-    'with': ['fear of causing a fuss in public', '確保する。', 'help apprehend the culprit.', '@keizi666'],  # 3 segments
-    'without': ['Vegan food is notoriously hard', ' 5 min read', 'Student Placement Service'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['fear of causing a fuss in public', '確保する。', 'help apprehend the culprit.', '@keizi666'],
+    'without': ['Vegan food is notoriously hard', ' 5 min read', 'Student Placement Service'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -1984,9 +1984,9 @@ EVAL_PAGES = {
     'description': 'Pour aller bien «en haut», commençons par aller bien «en bas». Mode d&#039;emploi pour prendre soin de son ventre et faire du bien à son «second cerveau».',
     'categories': [],
     'tags': ['Santé', 'alimentation', 'Ventre plat', 'conseils'],
-    'with': ['Car oui, avec ses 200 millions de neurones', 'Travailler son stress', 'riches en prébiotiques et en probiotiques.'],  # 3 segments
-    'without': ['À lire aussi', 'dîne tard chez soi', 'Remportez le soin Time-Filler', 'veuillez vous connecter'],  # 3 segments
-    'comments': ['quel enfumage !'],  # 0 or 3 segments
+    'with': ['Car oui, avec ses 200 millions de neurones', 'Travailler son stress', 'riches en prébiotiques et en probiotiques.'],
+    'without': ['À lire aussi', 'dîne tard chez soi', 'Remportez le soin Time-Filler', 'veuillez vous connecter'],
+    'comments': ['quel enfumage !'],
     'license': '',
     'region': '',
 },
@@ -1998,9 +1998,9 @@ EVAL_PAGES = {
     'description': 'A l’université Paris-8 de Saint-Denis, des centaines d’étudiants, enseignants et personnels sont en grève depuis plusieurs semaines pour protester contre les projets de réformes du gouvernement. Ils espèrent faire franchir un nouveau cap à leur mobilisation à compter du 5 mars.',
     'categories': ['Société'],
     'tags': ['grève', 'lutte', 'mouvement social', 'paris 8', 'Saint-Denis', 'université'],
-    'with': ['Une grève reconductible à partir du 5 mars', 'Marie-Pierre ne fait plus de cours', 'Solidaires Étudiant-e-s Saint-Denis'],  # 3 segments
-    'without': ['Candidatures ouvertes pour le Prix', 'Intervenant à l’atelier', 'Le piquet de grève dans le hall'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Une grève reconductible à partir du 5 mars', 'Marie-Pierre ne fait plus de cours', 'Solidaires Étudiant-e-s Saint-Denis'],
+    'without': ['Candidatures ouvertes pour le Prix', 'Intervenant à l’atelier', 'Le piquet de grève dans le hall'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2014,7 +2014,7 @@ EVAL_PAGES = {
     'tags': [],
     'with': ['منذ بدء', 'كل المجالات' , 'وماذا عن حقيقة'],
     'without': ['كورونا يقتل' ,'غائم جزئيا' ,'إضافة تعليق جديد'],
-    'comments': [],  # 0 or 3 segments
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2026,9 +2026,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Société'],
     'tags': ['femme', 'homme', 'parité'],
-    'with': ['Malgré les acquis législatifs', 'Des actions à entreprendre', 'assurer l’égalité des chances'],  # 3 segments
-    'without': ['Après une mise en quarantaine', 'des moments dans le parcours historique', 'partiellement nuageux'],  # 3 segments
-    'comments': ['La parité je veux bien'],  # 0 or 3 segments
+    'with': ['Malgré les acquis législatifs', 'Des actions à entreprendre', 'assurer l’égalité des chances'],
+    'without': ['Après une mise en quarantaine', 'des moments dans le parcours historique', 'partiellement nuageux'],
+    'comments': ['La parité je veux bien'],
     'license': '',
     'region': '',
 },
@@ -2040,9 +2040,9 @@ EVAL_PAGES = {
     'description': 'L’administration Plante justifie sa décision par le taux élevé de délinquance chez les utilisateurs.',
     'categories': [],
     'tags': ['Valérie Plante', 'trottinette', 'trottinette électrique'],
-    'with': ['En raison du taux élevé de délinquance', 'D’autres détails suivront.'],  # 3 segments
-    'without': ['La GRC doit partir', 'des 4 articles gratuits', 'Du lundi au samedi'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['En raison du taux élevé de délinquance', 'D’autres détails suivront.'],
+    'without': ['La GRC doit partir', 'des 4 articles gratuits', 'Du lundi au samedi'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2054,9 +2054,9 @@ EVAL_PAGES = {
     'description': '>Siemens-Chef Joe Kaeser hat die Klimaaktivistin Luisa Neubauer über den Tisch gezogen. In der Logik des Konzerns lohnt sich das.',
     'categories': ['Öko'],
     'tags': ['Siemens', 'Luisa Neubauer', 'Joe Kaeser', 'Australien'],
-    'with': ['Ein paar Konsument*innen mögen', 'Einige von ihnen, etwa Axa', 'ei potenziellen Kund*innen aus der fossilen Industrie'],  # 3 segments
-    'without': ['Hinter jedem Klick auf taz.de', 'Schreibt seit 2008 für die taz', 'Bitte registrieren Sie sich und halten Sie sich'],  # 3 segments
-    'comments': ['Inhaltlich ist der Artikel super', ' Neubauers Job ist nicht Kaeser quasi', 'folgenden Artikel interessant, ob man jetzt die Ernsthaftigkeit'],  # 0 or 3 segments
+    'with': ['Ein paar Konsument*innen mögen', 'Einige von ihnen, etwa Axa', 'ei potenziellen Kund*innen aus der fossilen Industrie'],
+    'without': ['Hinter jedem Klick auf taz.de', 'Schreibt seit 2008 für die taz', 'Bitte registrieren Sie sich und halten Sie sich'],
+    'comments': ['Inhaltlich ist der Artikel super', ' Neubauers Job ist nicht Kaeser quasi', 'folgenden Artikel interessant, ob man jetzt die Ernsthaftigkeit'],
     'license': '',
     'region': 'DE',
 },
@@ -2068,9 +2068,9 @@ EVAL_PAGES = {
     'description': 'If you’ve been following endorsements of the 2020 Democratic primary field, the biggest thing that stands out is the lack of them, as my colleague Geoffrey Skel&#8230;',
     'categories': ['2020 Election'],
     'tags': ['2020 Election', '2020 Democratic Primary', 'Bernie Sanders', 'Joe Biden', 'Elizabeth Warren', 'Iowa Caucus', 'Pete Buttigieg', 'Iowa', 'New Hampshire', 'New Hampshire Primary', 'Amy Klobuchar', 'The Endorsement Primary'],
-    'with': ['If you’ve been following endorsements', 'fter all, Biden and Sanders lead in national polls', 'Perhaps these endorsements are capturing'],  # 3 segments
-    'without': ['Perry Bacon Jr. is a senior writer for FiveThirtyEight.', 'Filed under', 'About Nielsen Measurement'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['If you’ve been following endorsements', 'fter all, Biden and Sanders lead in national polls', 'Perhaps these endorsements are capturing'],
+    'without': ['Perry Bacon Jr. is a senior writer for FiveThirtyEight.', 'Filed under', 'About Nielsen Measurement'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2082,9 +2082,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['business'],
     'tags': ['artificial intelligence', 'machine learning', 'OpenAI', 'Energy', 'Climate Change'],
-    'with': ['Last month, researchers at OpenAI in San Francisco revealed', 'As more companies across more industries begin', 'including the energy needed to build it'],  # 3 segments
-    'without': ['One algorithm that lets a robot manipulate a Rubik', 'The latest on artificial intelligence, from machine learning to computer vision and more', 'writer for WIRED, covering artificial intelligence'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Last month, researchers at OpenAI in San Francisco revealed', 'As more companies across more industries begin', 'including the energy needed to build it'],
+    'without': ['One algorithm that lets a robot manipulate a Rubik', 'The latest on artificial intelligence, from machine learning to computer vision and more', 'writer for WIRED, covering artificial intelligence'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2096,9 +2096,9 @@ EVAL_PAGES = {
     'description': 'ORSO MARSICANO: 2019 UN ANNO DA RECORD (Notizia del 14 Gennaio 2020)',
     'categories': [],
     'tags': [],
-    'with': ['Il risultato è molto positivo', 'naturali di regolazione numerica', 'In questo contesto è chiaro'],  # 3 segments
-    'without': ['Grafico conta femmine con', 'Tel. 0863/91131 - Fax 0863/912132', 'Autore di Parks.it'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Il risultato è molto positivo', 'naturali di regolazione numerica', 'In questo contesto è chiaro'],
+    'without': ['Grafico conta femmine con', 'Tel. 0863/91131 - Fax 0863/912132', 'Autore di Parks.it'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2110,9 +2110,9 @@ EVAL_PAGES = {
     'description': 'Governor says naming of &#039;exceptional&#039; Raquel Montoya-Lewis is historic, but he called on her &#039;because she&#039;s the best for the job&#039;',
     'categories': [],
     'tags': ['Jewish Times', 'Jewish Supreme Court Justices', 'Supreme Court', 'judges', 'female judges', 'US courts', 'Jewish women', 'Native Americans'],
-    'with': ['Governor Jay Inslee appointed Montoya-Lewis', 'I was raised to remember that I come', 'At the ceremony, there was an invocation from'],  # 3 segments
-    'without': ['Get The Times of Israel', 'For as little as $6 a month', 'Already a member? Sign in to stop seeing this'],  # 3 segments
-    'comments': ['Congratulations to the Lady', "I'd like to add my Mazel Tov", 'of irrelevant information, personal bias and'],  # 0 or 3 segments
+    'with': ['Governor Jay Inslee appointed Montoya-Lewis', 'I was raised to remember that I come', 'At the ceremony, there was an invocation from'],
+    'without': ['Get The Times of Israel', 'For as little as $6 a month', 'Already a member? Sign in to stop seeing this'],
+    'comments': ['Congratulations to the Lady', "I'd like to add my Mazel Tov", 'of irrelevant information, personal bias and'],
     'license': '',
     'region': '',
 },
@@ -2124,9 +2124,9 @@ EVAL_PAGES = {
     'description': 'While both Tsai and Lam faced a challenging year, the Taiwanese leader shrewdly capitalised on the crisis in Hong Kong to claim herself a massive election win.',
     'categories': [],
     'tags': ['Carrie Lam', 'Legislative Council of Hong Kong', 'Taiwan', 'Taiwan elections 2020', 'Tsai Ing-wen', 'Hong Kong protests', 'Hong Kong extradition bill', '5050'],
-    'with': ['almost insulting to Hongkongers', 'a sign she was working hard for the', 'using political shrewdness'],  # 3 segments
-    'without': ['Alice Wu fell down the rabbit hole', 'Lam staying on as chief executive', 'Tsai says Beijing must face', 'By registering, you agree to'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['almost insulting to Hongkongers', 'a sign she was working hard for the', 'using political shrewdness'],
+    'without': ['Alice Wu fell down the rabbit hole', 'Lam staying on as chief executive', 'Tsai says Beijing must face', 'By registering, you agree to'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2138,9 +2138,9 @@ EVAL_PAGES = {
     'description': 'by Kenneth Surin   Deleuze and Guattari oppose micropolitics to the politics of molarisation. Where the molar (or arborescent , to use their equivalent term) designates structures and principles that are based on rigid stratifications or&amp;#8230',
     'categories': [],
     'tags': [],
-    'with': ['The orchestration of desire', 'Deleuze and Guattari oppose', 'into itself the ﬂows'],  # 3 segments
-    'without': ['noun The use of formal', 'is professor emeritus of', 'Merleau-Ponty, Maurice'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['The orchestration of desire', 'Deleuze and Guattari oppose', 'into itself the ﬂows'],
+    'without': ['noun The use of formal', 'is professor emeritus of', 'Merleau-Ponty, Maurice'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2152,9 +2152,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['Recherche Scientifique', 'Compétition', 'Darwinism', 'Inégalités', 'Politiques Publiques'],
-    'with': ['Cela fait de très nombreuses', 'que nous connaissons', 'Que les moyens financiers'],  # 3 segments
-    'without': ['Welcome to a place where', 'More From Medium', 'Become a member'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Cela fait de très nombreuses', 'que nous connaissons', 'Que les moyens financiers'],
+    'without': ['Welcome to a place where', 'More From Medium', 'Become a member'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2166,9 +2166,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['OffTopic', 'Reiseberichte', 'Urlaub'],
-    'with': ['meine zweite große Leidenschaft', 'findet ihr darin sogar', 'bei Fragen helfe ich gerne'],  # 3 segments
-    'without': ['Gepostet vor', 'Kommentar schreiben als', 'Julias Lesewelt '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['meine zweite große Leidenschaft', 'findet ihr darin sogar', 'bei Fragen helfe ich gerne'],
+    'without': ['Gepostet vor', 'Kommentar schreiben als', 'Julias Lesewelt '],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2180,9 +2180,9 @@ EVAL_PAGES = {
     'description': 'Weihnachten und Silvester habe ich diesmal wieder in Harland bei St. Pölten verbracht. Zehn lange Tage, denn wir sind am Samstag den 22. Dezember sehr früh dorthin gefahren, nachdem ich den Freitag…',
     'categories': ['Alltagsgeplauder', 'Büchergeschichten', 'Gesellschaftspolitik' , 'Schreibbericht'],
     'tags': ['Neujahrswünsche'],
-    'with': ['Weihnachten und Silvester habe', 'wahrscheinlich am Mittwoch, wenn', 'in der ersten Jännerwoche'],  # 3 segments
-    'without': ['Einem Blogger gefällt dies.', 'Teilen Sie dies mit:', 'This site uses Akismet to reduce spam'],  # 3 segments
-    'comments': ['Deinen letzten Absatz kann ich nur', 'Ebenfalls alles Gute'],  # 0 or 3 segments
+    'with': ['Weihnachten und Silvester habe', 'wahrscheinlich am Mittwoch, wenn', 'in der ersten Jännerwoche'],
+    'without': ['Einem Blogger gefällt dies.', 'Teilen Sie dies mit:', 'This site uses Akismet to reduce spam'],
+    'comments': ['Deinen letzten Absatz kann ich nur', 'Ebenfalls alles Gute'],
     'license': '',
     'region': '',
 },
@@ -2194,9 +2194,9 @@ EVAL_PAGES = {
     'description': 'Ein Interview mit Anne Lück',
     'categories': [],
     'tags': ['Anne', 'Der Weg des Unsterblichen', 'Endless Life', 'Interview', 'Lück', 'News'],
-    'with': ['Vor einiger Zeit durfte ich "Endless Life"', 'Am 4. Oktober kommt dein', 'Freiraum für seine eigenen Gedanken'],  # 3 segments
-    'without': ['Angelfall – Tage der Dunkelheit', 'Kommentare:', 'Ihr seid die Besten!'],  # 3 segments
-    'comments': ['ein wirklich tolles Interview', 'Ja, die bekannten Verlage'],  # 0 or 3 segments
+    'with': ['Vor einiger Zeit durfte ich "Endless Life"', 'Am 4. Oktober kommt dein', 'Freiraum für seine eigenen Gedanken'],
+    'without': ['Angelfall – Tage der Dunkelheit', 'Kommentare:', 'Ihr seid die Besten!'],
+    'comments': ['ein wirklich tolles Interview', 'Ja, die bekannten Verlage'],
     'license': '',
     'region': '',
 },
@@ -2208,9 +2208,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['genres', 'through the booking glass'],
-    'with': ['Jeder darf mit machen', 'als wirklich ausgiebig Fantasy', 'einem schon gewisse Bilder'],  # 3 segments
-    'without': ['Du möchtest gerne bei Through', 'dir abgeschickten Kommentar akzeptierst', 'Teilnehmende Blogs:'],  # 3 segments
-    'comments': ['Interessanter Post!', 'Übrigens höre ich gerade deine Playlists', 'Bin schon gespannt wie'],  # 0 or 3 segments
+    'with': ['Jeder darf mit machen', 'als wirklich ausgiebig Fantasy', 'einem schon gewisse Bilder'],
+    'without': ['Du möchtest gerne bei Through', 'dir abgeschickten Kommentar akzeptierst', 'Teilnehmende Blogs:'],
+    'comments': ['Interessanter Post!', 'Übrigens höre ich gerade deine Playlists', 'Bin schon gespannt wie'],
     'license': 'DE',
     'region': '',
 },
@@ -2222,9 +2222,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['2017', '4Weingummis', 'Buchrezensionen', 'Erotik', 'fesselnd', 'Heyne', 'Missbrauch', 'Reihe'],
-    'with': ['Wir fühlten uns vereint', 'Aber wieso aus Liebe Krieg', 'Ich habe das Buch regelrecht verschlugen'],  # 3 segments
-    'without': ['Ich freue mich über eure Kommentare', 'Danke für eure Kommentare^^', 'Info zur Bewertung'],  # 3 segments
-    'comments': ['schön, dass dir das'],  # 0 or 3 segments
+    'with': ['Wir fühlten uns vereint', 'Aber wieso aus Liebe Krieg', 'Ich habe das Buch regelrecht verschlugen'],
+    'without': ['Ich freue mich über eure Kommentare', 'Danke für eure Kommentare^^', 'Info zur Bewertung'],
+    'comments': ['schön, dass dir das'],
     'license': '',
     'region': '',
 },
@@ -2236,9 +2236,9 @@ EVAL_PAGES = {
     'description': 'Als ich neulich eine Anfrage erhielt ein Plantur Farbshampoo samt Spülung zu testen, war ich ein wenig skeptisch. Meine Kopfhaut ist super empfindlich und deshalb bin ich sehr heikel was Shampoos angeht. Deshalb färbe ich meine Haare auch nicht so oft, wie ich es eigentlich müsste.',
     'categories': ['Allgemein', 'Beauty'],
     'tags': ['Braun', 'Color-Shampoo', 'Haare färben', 'Haarfarbe', 'Pflegespülung'],
-    'with': ['Als ich neulich eine Anfrage erhielt', 'Shampoo und Spülung werden in einer dunkelbrauen', 'und meine Haare sahen gesund'],  # 3 segments
-    'without': ['Teilen mit:', 'Follow Blog via Email', 'Vollständiges Profil anzeigen'],  # 3 segments
-    'comments': ['Du hast sehr schönes Haar', 'Schön, dass Du Pflegeprodukte', 'die Farbe von Shampoo und'],  # 0 or 3 segments
+    'with': ['Als ich neulich eine Anfrage erhielt', 'Shampoo und Spülung werden in einer dunkelbrauen', 'und meine Haare sahen gesund'],
+    'without': ['Teilen mit:', 'Follow Blog via Email', 'Vollständiges Profil anzeigen'],
+    'comments': ['Du hast sehr schönes Haar', 'Schön, dass Du Pflegeprodukte', 'die Farbe von Shampoo und'],
     'license': '',
     'region': '',
 },
@@ -2250,9 +2250,9 @@ EVAL_PAGES = {
     'description': 'Magic Cleaning | sheego ♥ Magazin',
     'categories': [],
     'tags': [],
-    'with': ['Sie ist die Königin des Aufräumens', 'sie kommen ganz zum Schluss', 'Was gibt mir ein gutes Gefühl'],  # 3 segments
-    'without': ['15 %* Newsletter Gutschein', 'Ich bin damit einverstanden', 'Coole Tipps|Magic Cleaning'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Sie ist die Königin des Aufräumens', 'sie kommen ganz zum Schluss', 'Was gibt mir ein gutes Gefühl'],
+    'without': ['15 %* Newsletter Gutschein', 'Ich bin damit einverstanden', 'Coole Tipps|Magic Cleaning'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2264,9 +2264,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Von der Jeans über Blusen bis hin', 'Orange oder einem kräftigen Gelb', 'wie zum Beispiel eine'],  # 3 segments
-    'without': ['Newsletteranmeldung', 'Unsere Vorteile für Sie'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Von der Jeans über Blusen bis hin', 'Orange oder einem kräftigen Gelb', 'wie zum Beispiel eine'],
+    'without': ['Newsletteranmeldung', 'Unsere Vorteile für Sie'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2278,9 +2278,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Ladies, stellt euch folgendes', 'egal, ob mit zartem Zebra-Print', 'Dann behaltet das Gefühl, das'],  # 3 segments
-    'without': ['Basic Top Anni', 'Kostenlose Bestellhotline', 'Unsere Vorteile für Sie'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Ladies, stellt euch folgendes', 'egal, ob mit zartem Zebra-Print', 'Dann behaltet das Gefühl, das'],
+    'without': ['Basic Top Anni', 'Kostenlose Bestellhotline', 'Unsere Vorteile für Sie'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2292,9 +2292,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['Bauteile', 'Löten', 'Reparieren'],
-    'with': ['Haushaltsgeräte, die verrücktspielen', 'das Verzinnen der Pins', 'Entlötstation und einigen Handgriffen'],  # 3 segments
-    'without': ['Diese Website verwendet Akismet', 'Das könnte Dich auch interessieren …', 'Werbepause'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Haushaltsgeräte, die verrücktspielen', 'das Verzinnen der Pins', 'Entlötstation und einigen Handgriffen'],
+    'without': ['Diese Website verwendet Akismet', 'Das könnte Dich auch interessieren …', 'Werbepause'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2306,9 +2306,9 @@ EVAL_PAGES = {
     'description': 'Ihre Website mit chadim.net - Webdesign. Optimale Lösungen und perfekte Umsetzung für Ihren Webauftritt oder Ihr Redesign. Kompetent und preisgünstig.',
     'categories': [],
     'tags': [],
-    'with': ['Beim Schreiben Ihrer Texte', 'Fremd- und Modewörtern', 'an Ihren Lesern vorbeischreiben'],  # 3 segments
-    'without': ['Angemeldet bleiben', '... weiter zu "die Wortwahl"', 'Aktuelle Seite:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Beim Schreiben Ihrer Texte', 'Fremd- und Modewörtern', 'an Ihren Lesern vorbeischreiben'],
+    'without': ['Angemeldet bleiben', '... weiter zu "die Wortwahl"', 'Aktuelle Seite:'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2320,9 +2320,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Allgemein'],
     'tags': ['geld', 'minimalismus', 'sparen'],
-    'with': ['Das Jahr 2019 stand', 'Ich werde also weiterhin meinen Konsum einschränken', 'Ich bin gerade am Überlegen'],  # 3 segments
-    'without': ['Inzwischen ganze 60', 'Hier bin ich auch noch unterwegs', 'Vorschau auf den nächsten Artikel'],  # 3 segments
-    'comments': ['ganz interessant Deine Erfahrungen', 'die Preise für einen Aperol Sprizz', 'Lieben Dank für die Auflistung'],  # 0 or 3 segments
+    'with': ['Das Jahr 2019 stand', 'Ich werde also weiterhin meinen Konsum einschränken', 'Ich bin gerade am Überlegen'],
+    'without': ['Inzwischen ganze 60', 'Hier bin ich auch noch unterwegs', 'Vorschau auf den nächsten Artikel'],
+    'comments': ['ganz interessant Deine Erfahrungen', 'die Preise für einen Aperol Sprizz', 'Lieben Dank für die Auflistung'],
     'license': '',
     'region': 'DE',
 },
@@ -2334,9 +2334,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Bananen verderben - wie es bestimmt jeder schon erlebt hat', 'Die "Große Obstbanane" und ihre Sorten', 'Wie die Banane nach Europa kam'],  # 3 segments
-    'without': ['2006 - 2012 huettenhilfe.de', 'Nüsse und Kerne', 'und vieles mehr rund um die Küche'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Bananen verderben - wie es bestimmt jeder schon erlebt hat', 'Die "Große Obstbanane" und ihre Sorten', 'Wie die Banane nach Europa kam'],
+    'without': ['2006 - 2012 huettenhilfe.de', 'Nüsse und Kerne', 'und vieles mehr rund um die Küche'],
+    'comments': [],
     'license': 'CC BY-NC-SA 2.0 DE',
     'region': 'DE',
 },
@@ -2348,9 +2348,9 @@ EVAL_PAGES = {
     'description': 'Mailaktion an den Bundestag. Frage an die Abgeordneten zur erneuten Halbierung des Sparerfreibetrages und die Antworten dazu',
     'categories': [],
     'tags': [],
-    'with': ['ich protestiere gegen die erneute', 'Geantwortet haben nur "Die Linken"', 'in denen Sie die Bürger zur privaten'],  # 3 segments
-    'without': ['Rentenpolitik | Blog | Mailaktion Bundestag | Alles klar?', 'Startseite', 'Partnerseiten'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['ich protestiere gegen die erneute', 'Geantwortet haben nur "Die Linken"', 'in denen Sie die Bürger zur privaten'],
+    'without': ['Rentenpolitik | Blog | Mailaktion Bundestag | Alles klar?', 'Startseite', 'Partnerseiten'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2362,9 +2362,9 @@ EVAL_PAGES = {
     'description': 'HINWEIS: Neues Design im Feb. 2020. Mehr erfahren.  Aroma Rote Beeren, Zitrusnoten, süßlich, kräftig-würzig Stärke Säure Herkunft  Kooperative Sidama Coffee Farmers Cooperative Union SCFCU, Sidamo (Äthiopien) Prozess Handgepflückt, gewaschen, sonnengetrocknet Varietät einheimische Varietäten Bio-zertifiziert | Kontroll',
     'categories': [],
     'tags': [],
-    'with': ['Rote Beeren, Zitrusnoten, süßlich', 'Handgepflückt, gewaschen, sonnengetrocknet', 'Alle Kaffees von Happy Coffee sind bio-zertifiziert'],  # 3 segments
-    'without': ['Jetzt mit 10% Dauerrabatt', 'Unsere Kaffees', 'Frisch gerösteter Kaffee nach Hause geliefert'],  # 3 segments
-    'comments': ['Ich kann die Meinung von Dieter nicht nachvollziehen', 'Der Geschmack war kaum von Tchibo', 'Der Kaffe duftet herrlich'],  # 0 or 3 segments
+    'with': ['Rote Beeren, Zitrusnoten, süßlich', 'Handgepflückt, gewaschen, sonnengetrocknet', 'Alle Kaffees von Happy Coffee sind bio-zertifiziert'],
+    'without': ['Jetzt mit 10% Dauerrabatt', 'Unsere Kaffees', 'Frisch gerösteter Kaffee nach Hause geliefert'],
+    'comments': ['Ich kann die Meinung von Dieter nicht nachvollziehen', 'Der Geschmack war kaum von Tchibo', 'Der Kaffe duftet herrlich'],
     'license': '',
     'region': '',
 },
@@ -2376,9 +2376,9 @@ EVAL_PAGES = {
     'description': 'In Baden-Württemberg und NRW gibt es erstmals Covid-19-Fälle. Wie Behörden die Ausbreitung verhindern wollen und wie man sich schützen kann, ein FAQ.',
     'categories': [],
     'tags': [],
-    'with': ['In Baden-Württemberg und NRW', 'Ein Problem: So viele Berichte und Nachrichten', 'Viele Menschen haben nur eine leichte'],  # 3 segments
-    'without': ['Wenn Sie inhaltliche Anmerkungen zu', 'Bleiben Sie auf dem Laufenden', 'Lesedauer ca. 6'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['In Baden-Württemberg und NRW', 'Ein Problem: So viele Berichte und Nachrichten', 'Viele Menschen haben nur eine leichte'],
+    'without': ['Wenn Sie inhaltliche Anmerkungen zu', 'Bleiben Sie auf dem Laufenden', 'Lesedauer ca. 6'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2390,9 +2390,9 @@ EVAL_PAGES = {
     'description': 'Zeit und Ort: 15.00 - 16.45 bei revamp-it, Röschibachstr. 24-26, 8037 Zürich Teilnehmende Vorstandsmitglieder: Daniel Sieber, Hans Leuenberger, Johannes Mahler',
     'categories': [],
     'tags': [],
-    'with': ['Abnahme Protokoll der letzten Vorstandssitzung', 'Johannes schickt seinen Entwurf für einen', 'Daniel sucht nach Möglichkeiten'],  # 3 segments
-    'without': ['Möchtest du TALENT einfach nur', 'Oder du überweisst deine Spende', 'Es gibt derzeit keine bevorstehenden Veranstaltungen.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Abnahme Protokoll der letzten Vorstandssitzung', 'Johannes schickt seinen Entwurf für einen', 'Daniel sucht nach Möglichkeiten'],
+    'without': ['Möchtest du TALENT einfach nur', 'Oder du überweisst deine Spende', 'Es gibt derzeit keine bevorstehenden Veranstaltungen.'],
+    'comments': [],
     'license': '',
     'region': 'CH',
 },
@@ -2404,9 +2404,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Nicht die Arbeit ist für die', 'Wir bestehen deshalb darauf', 'Einmal begleiteten wir eine'],  # 3 segments
-    'without': ['Als NATs bezeichnen sich die', 'Texte auf dieser Webseite stehen unter einer', 'ProNATs - Verein zur Unterstützung arbeitender'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Nicht die Arbeit ist für die', 'Wir bestehen deshalb darauf', 'Einmal begleiteten wir eine'],
+    'without': ['Als NATs bezeichnen sich die', 'Texte auf dieser Webseite stehen unter einer', 'ProNATs - Verein zur Unterstützung arbeitender'],
+    'comments': [],
     'license': 'CC BY-ND 3.0',
     'region': 'DE',
 },
@@ -2419,8 +2419,8 @@ EVAL_PAGES = {
     'categories': ['politisches'],
     'tags': ['Demokratie', 'EU', 'Wahlen'],
     'with': ['Knapp zwei Tage vor der Europawahl', 'Die Ergebnisse der Bülow-Wahl', 'bei uns viele Stimmen hinzugewinnen'],  # 3' segments
-    'without': ['Schreibe einen Kommentar', 'Aachen 1933 – 1945', 'Meinen Namen, E-Mail'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'without': ['Schreibe einen Kommentar', 'Aachen 1933 – 1945', 'Meinen Namen, E-Mail'],
+    'comments': [],
     'license': 'CC BY-NC 3.0 DE',
     'region': 'DE',
 },
@@ -2432,9 +2432,9 @@ EVAL_PAGES = {
     'description': 'Island lockt auch im Winter: Abfahrten über unberührte Hänge. Und noch keine Spur vom Massenskitourismus. Siglufjörður im Norden Islands ist das Zentrum des isländischen Ski-Tourismus. Die Troll-Ha…',
     'categories': [],
     'tags': [],
-    'with': ['Island lockt auch im Winter', 'Das größte in Akureyri hat fünf Lifte', 'und auf den Spuren des Trolls'],  # 3 segments
-    'without': ['Die besten Reisegeschichten'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Island lockt auch im Winter', 'Das größte in Akureyri hat fünf Lifte', 'und auf den Spuren des Trolls'],
+    'without': ['Die besten Reisegeschichten'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2446,9 +2446,9 @@ EVAL_PAGES = {
     'description': 'Geburtstagsecke.de gibt die eine Menge Ideen für den Kindergeburtstag. Egal ob Kleinkinder oder Teenager, bei uns findest du viele Anregungen.',
     'categories': [],
     'tags': [],
-    'with': ['Die richtigen Ideen für den', 'Daher ist es sinnvoll das Kind in die Planung', 'Ihr solltet aber auf jeden Fall'],  # 3 segments
-    'without': ['© 2019 geburtstagsecke.de', 'Geburtstage für Erwachsene planen und feiern', 'Beliebte Tags'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die richtigen Ideen für den', 'Daher ist es sinnvoll das Kind in die Planung', 'Ihr solltet aber auf jeden Fall'],
+    'without': ['© 2019 geburtstagsecke.de', 'Geburtstage für Erwachsene planen und feiern', 'Beliebte Tags'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2460,9 +2460,9 @@ EVAL_PAGES = {
     'description': 'P&uuml;nktlich mit dem Beginn der Weihnachtsmarkt-Saison in Deutschland wurde der Weihnachtsmarkt-Finder, eine kostenlose Webapplikation, mit der Sie ganz einfach...',
     'categories': [],
     'tags': ['Weihnachtsmarkt'],
-    'with': ['Pünktlich mit dem Beginn der', 'Ein neues Layout stellt sicher', 'ein kostenlose Webapplikation'],  # 3 segments
-    'without': ['Ihr weihnachtlicher Kurzurlaub', 'Advents-Shopping.de nimmt Sie mit in die', 'o finden Sie die besten Weihnachtsmärkte'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Pünktlich mit dem Beginn der', 'Ein neues Layout stellt sicher', 'ein kostenlose Webapplikation'],
+    'without': ['Ihr weihnachtlicher Kurzurlaub', 'Advents-Shopping.de nimmt Sie mit in die', 'o finden Sie die besten Weihnachtsmärkte'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2474,9 +2474,9 @@ EVAL_PAGES = {
     'description': 'Aktualisiert am 19.02.2020 Um Sichtbarkeit und Leserschaft auf einem Wissenschaftsblog zu generieren, empfiehlt sich der Einsatz eines Twitteraccount, über den Artikel geteilt und ein Austausch mit der Community angestoßen werden kann. In diesem Blogbeitrag zeigen wir, wie man den eigenen  Twitterfeed direkt und datenschutzkonform in ein Blog einbetten kann. So sehen Leserinnen und Leser auf &hellip; Einen Twitterfeed in das Blog einbinden – so geht’s! weiterlesen &rarr;',
     'categories': [],
     'tags': ['Datenschutz', 'Twitter'],
-    'with': ['Um Sichtbarkeit und Leserschaft', 'In diesem Blogbeitrag zeigen wir', 'Und so sieht das bei uns im Redaktionsblog aus'],  # 3 segments
-    'without': ['Ein Blog präsentiert von Hypotheses', 'Dieses Blog gibt Hilfestellung', 'Bloghaus in anderen Sprachen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Um Sichtbarkeit und Leserschaft', 'In diesem Blogbeitrag zeigen wir', 'Und so sieht das bei uns im Redaktionsblog aus'],
+    'without': ['Ein Blog präsentiert von Hypotheses', 'Dieses Blog gibt Hilfestellung', 'Bloghaus in anderen Sprachen'],
+    'comments': [],
     'license': 'CC BY 3.0',
     'region': '',
 },
@@ -2488,9 +2488,9 @@ EVAL_PAGES = {
     'description': 'So schön winterlich ist es wie schon lange nicht mehr. Da bringt es richtig Laune, mal wieder was ganz besonders',
     'categories': [],
     'tags': ['Apfel', 'Leber', 'Rinderfonds', 'Rinderleber', 'Rotwein', 'Zwiebel'],
-    'with': ['So schön winterlich ist es wie', 'Und wie (fast) immer bei uns', 'Dazu gab es bei uns selbst gemachten'],  # 3 segments
-    'without': ['© Liebe geht durch den Magen', 'Holen Sie sich Ihre „Kostprobe“', 'Be Sociable, Share!'],  # 3 segments
-    'comments': ['Eine interessante Art Leber zuzubereiten', 'Das sieht lecker aus', 'Gelingt am besten in einer mit'],  # 0 or 3 segments
+    'with': ['So schön winterlich ist es wie', 'Und wie (fast) immer bei uns', 'Dazu gab es bei uns selbst gemachten'],
+    'without': ['© Liebe geht durch den Magen', 'Holen Sie sich Ihre „Kostprobe“', 'Be Sociable, Share!'],
+    'comments': ['Eine interessante Art Leber zuzubereiten', 'Das sieht lecker aus', 'Gelingt am besten in einer mit'],
     'license': '',
     'region': 'DE',
 },
@@ -2502,9 +2502,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Beim Englischtraining am Telefon', 'Das Englischtraining am Telefon', 'Und mit jedem Satz wächst'],  # 3 segments
-    'without': ['51467 Bergisch Gladbach', '...und fast unbemerkt', '+49 (0)2202 -2809436'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Beim Englischtraining am Telefon', 'Das Englischtraining am Telefon', 'Und mit jedem Satz wächst'],
+    'without': ['51467 Bergisch Gladbach', '...und fast unbemerkt', '+49 (0)2202 -2809436'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2516,9 +2516,9 @@ EVAL_PAGES = {
     'description': 'In seinem Essay „Lob der Melancholie“ erkundet László Földényi ein paradoxes Gefühl zwischen Traurigkeit und Transzendenz.',
     'categories': ['Aktuell', 'Rezension', 'Sachbuch'],
     'tags': ['Melancholie'],
-    'with': ['In seinem Essay „Lob der Melancholie“', 'Schon in seiner ersten Studie Melancholie', 'in immer wiederkehrender Bezugspunkt'],  # 3 segments
-    'without': ['Gefällt Ihnen, was Sie sehen?', 'Benachrichtige mich über nachfolgende', 'Freier Autor in Berlin'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['In seinem Essay „Lob der Melancholie“', 'Schon in seiner ersten Studie Melancholie', 'in immer wiederkehrender Bezugspunkt'],
+    'without': ['Gefällt Ihnen, was Sie sehen?', 'Benachrichtige mich über nachfolgende', 'Freier Autor in Berlin'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2530,9 +2530,9 @@ EVAL_PAGES = {
     'description': 'Wie war das nochmal mit den Variablen? Hier ein Auszug aus unseren Lehrmaterialien!           Variablen sind kein Problem für dich? Dann schau doch mal, ob du unser Puzzle lösen kannst!',
     'categories': [],
     'tags': [],
-    'with': ['Wie war das nochmal mit den Variablen', 'Variablen sind kein Problem für dich?', 'Auszug aus unseren Lehrmaterialien'],  # 3 segments
-    'without': ['Copyright © 2020 IT4Kids', 'Impressum'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wie war das nochmal mit den Variablen', 'Variablen sind kein Problem für dich?', 'Auszug aus unseren Lehrmaterialien'],
+    'without': ['Copyright © 2020 IT4Kids', 'Impressum'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2544,9 +2544,9 @@ EVAL_PAGES = {
     'description': 'Die Kinder lieben Minions. An einem regnerischen Wochenende malen Kind 1 und ich mit Schablonen Minions auf Holz. Für das Kinderzimmer.',
     'categories': ['DIY (Do it Yourself)'],
     'tags': ['Bild', 'Farbe', 'Holz', 'Kind 1', 'Minions', 'Schablonen', 'Stencil'],
-    'with': ['Wochenende. Regen. Mist.', 'Im Baumarkt des Misstrauens', 'Papa, geh mal auf Google'],  # 3 segments
-    'without': ['Das Internet behauptet', '2 Kommentare', 'Zu faul zu tippen?'],  # 3 segments
-    'comments': ['Großartig! Das gefällt mir richtig gut!', 'Schön Yvonne, dass es dir gefällt'],  # 0 or 3 segments
+    'with': ['Wochenende. Regen. Mist.', 'Im Baumarkt des Misstrauens', 'Papa, geh mal auf Google'],
+    'without': ['Das Internet behauptet', '2 Kommentare', 'Zu faul zu tippen?'],
+    'comments': ['Großartig! Das gefällt mir richtig gut!', 'Schön Yvonne, dass es dir gefällt'],
     'license': '',
     'region': '',
 },
@@ -2558,9 +2558,9 @@ EVAL_PAGES = {
     'description': '...und die Zeit mit der Genossenschaft besserwisser geht nun zu Ende. Sie war für uns spannend, energiegeladen und voller wunderbarer Begegnungen. Nun ist es',
     'categories': ['Allgemein', 'news'],
     'tags': [],
-    'with': ['Sie war für uns spannend', 'Für einige der Mitglieder', 'Begeisterung ist ansteckend'],  # 3 segments
-    'without': ['Vorheriger Artikel', 'Marktplatz für ein gutes Leben', 'Leitfaden für den bio-regionalen Einkauf'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Sie war für uns spannend', 'Für einige der Mitglieder', 'Begeisterung ist ansteckend'],
+    'without': ['Vorheriger Artikel', 'Marktplatz für ein gutes Leben', 'Leitfaden für den bio-regionalen Einkauf'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2572,9 +2572,9 @@ EVAL_PAGES = {
     'description': 'Friederike Gonzalez zeigt, wie wirksam ein gut positioniertes Profil im Social Network LinkedIn zur Darstellung und Wahrnehmung der fachlichen Expertise ist',
     'categories': ['Social Media'],
     'tags': ['B2B', 'Best Practice', 'Interview', 'LinkedIn', 'Selbständige', 'Solopreneure'],
-    'with': ['Einblicke und Impulse aus der Praxis', 'Was ist zu beachten um sich im Business', 'Ohne diesen Blog, welcher'],  # 3 segments
-    'without': ['Like it? Share it!', 'Hinterlassen Sie einen Kommentar', 'Let’s Talk @ Social Web'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Einblicke und Impulse aus der Praxis', 'Was ist zu beachten um sich im Business', 'Ohne diesen Blog, welcher'],
+    'without': ['Like it? Share it!', 'Hinterlassen Sie einen Kommentar', 'Let’s Talk @ Social Web'],
+    'comments': [],
     'license': 'CC BY-NC-ND 3.0 DE',
     'region': 'DE',
 },
@@ -2586,9 +2586,9 @@ EVAL_PAGES = {
     'description': 'Musik und Sport gehören für dich einfach zusammen? Wir erklären dir, wie und warum deine Lieblingssongs deine Leistungsfähigkeit steigern können.',
     'categories': [],
     'tags': ['Audio-Ratgeber', 'Entertainment', 'Sport', 'sportkopfhörer'],
-    'with': ['Wenn das Lieblingslied im Radio', 'Hier stellen wir dir einige spannende Fakten dazu vor', 'Playlists, die dich zum Schwitzen bringen'],  # 3 segments
-    'without': ['Alles über Lautsprecher, Heimkino', 'In diesem Blog schreiben Teufel-Kollegen', 'Newsletter abonnieren und 10€'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wenn das Lieblingslied im Radio', 'Hier stellen wir dir einige spannende Fakten dazu vor', 'Playlists, die dich zum Schwitzen bringen'],
+    'without': ['Alles über Lautsprecher, Heimkino', 'In diesem Blog schreiben Teufel-Kollegen', 'Newsletter abonnieren und 10€'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2600,9 +2600,9 @@ EVAL_PAGES = {
     'description': 'Auch im Jahr 2020 wird es wieder Termine für Whisky-, Rum- und Ginverkostungen geben. Die ersten Termine stehen bereits fest, weitere werden in den nächsten Tagen und Wochen dazu kommen.   Februar 2020   Termin: 21.02.2020, 19 Uhr       	Ort: Ort: Rosi`s Bar ...',
     'categories': ['Allgemein', 'Region Halle - Leipzig', 'Tastings & Events', 'Veranstaltungskalender'],
     'tags': [],
-    'with': ['Auch im Jahr 2020 wird', 'Termin: 29.02.2020, 19 Uhr', 'Whikies aus verschiedenen Regionen Schottlands '],  # 3 segments
-    'without': ['Info & Anmeldungen', 'Copyright © 2020 by: whiskyverkostung.com', 'Der Beitrag wurde am Mittwoch'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Auch im Jahr 2020 wird', 'Termin: 29.02.2020, 19 Uhr', 'Whikies aus verschiedenen Regionen Schottlands '],
+    'without': ['Info & Anmeldungen', 'Copyright © 2020 by: whiskyverkostung.com', 'Der Beitrag wurde am Mittwoch'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2614,9 +2614,9 @@ EVAL_PAGES = {
     'description': 'Dank Kabelanschluss kann ich, auch in Sachsen ,Bayern 2  hören. Da läuft gerade ein spannendes nah dran zum Thema: Freude, Falle, Frust: Der Mutterliebe zarte Sorgen Raben- versus Gluckenmütter &amp;#8…',
     'categories': ['Archiv', 'Feminismus', 'Mama'],
     'tags': [],
-    'with': ['Dank Kabelanschluss kann ich', 'der auch nur 20 Minuten dauert.', 'Liebe zum Kind?'],  # 3 segments
-    'without': ['Teilen Sie dies mit:', 'Ähnliche Beiträge', 'Abgelegt unter:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Dank Kabelanschluss kann ich', 'der auch nur 20 Minuten dauert.', 'Liebe zum Kind?'],
+    'without': ['Teilen Sie dies mit:', 'Ähnliche Beiträge', 'Abgelegt unter:'],
+    'comments': [],
     'license': 'CC BY-NC-SA 3.0',
     'region': '',
 },
@@ -2628,9 +2628,9 @@ EVAL_PAGES = {
     'description': 'Die Digitalisierung der Arbeitswelt werde Millionen Arbeitsplätze kosten, auch in Deutschland. Eine Herausforderung, der sich die Gesellschaft noch nicht einmal ansatzweise gestellt habe, sagte der Publizist und Philosoph Richard David Precht im DLF. Auch in Zukunft würden Menschen noch arbeiten, aber vielleicht nicht mehr für Geld.',
     'categories': [],
     'tags': [],
-    'with': ['Die Digitalisierung der Arbeitswelt werde Millionen Arbeitsplätze kosten, auch in Deutschland.', 'Das Problem ist dabei nicht das selbstfahrende', 'Also ich glaube, wenn man sich'],  # 3 segments
-    'without': ['Entdecken Sie den Deutschlandfunk', 'Deutschlandradio © 2009-2020', 'Mehr zum Thema'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die Digitalisierung der Arbeitswelt werde Millionen Arbeitsplätze kosten, auch in Deutschland.', 'Das Problem ist dabei nicht das selbstfahrende', 'Also ich glaube, wenn man sich'],
+    'without': ['Entdecken Sie den Deutschlandfunk', 'Deutschlandradio © 2009-2020', 'Mehr zum Thema'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2642,9 +2642,9 @@ EVAL_PAGES = {
     'description': 'Ich könnte glatt ein schlechtes Gewissen bekommen, wenn ich sehe, wie lange es her ist, dass ich das letzte Mal hier über meine Hunde geschrieben habe. Es gab Zeiten, da habe ich mehrmals die Woche…',
     'categories': ['Tagebuch'],
     'tags': ['amiga', 'dogs', 'floppy', 'Hunde', 'Hundeleben', 'Mesty'],
-    'with': ['Ich könnte glatt ein schlechtes Gewissen', 'So muss Mesty jetzt Pillen nehmen', 'Vielleicht muss man die Dosis des'],  # 3 segments
-    'without': ['Share this:', 'Kommentar verfassen', 'Ein Blog über die Abenteue'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Ich könnte glatt ein schlechtes Gewissen', 'So muss Mesty jetzt Pillen nehmen', 'Vielleicht muss man die Dosis des'],
+    'without': ['Share this:', 'Kommentar verfassen', 'Ein Blog über die Abenteue'],
+    'comments': [],
     'license': 'CC BY 3.0',
     'region': '',
 },
@@ -2656,9 +2656,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': ['Aktuell'],
     'tags': ['digitalabo', 'flatrate', 'Journalismus', 'paywal', 'Verlage'],
-    'with': ['Hinweis: Der nachfolgende Artikel mitsamt der telefonisch', 'Der Ruf nach einer Flatrate', 'sowohl in der Browser-Version als auch in der App', 'Zugang zu einer Zielgruppe ermöglicht'],  # 3 segments
-    'without': ['Schreibe einen Kommentar', 'Deine E-Mail-Adresse wird nicht', 'um Spam zu reduzieren', 'Alle Rechte beim Autoren'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Hinweis: Der nachfolgende Artikel mitsamt der telefonisch', 'Der Ruf nach einer Flatrate', 'sowohl in der Browser-Version als auch in der App', 'Zugang zu einer Zielgruppe ermöglicht'],
+    'without': ['Schreibe einen Kommentar', 'Deine E-Mail-Adresse wird nicht', 'um Spam zu reduzieren', 'Alle Rechte beim Autoren'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2670,9 +2670,9 @@ EVAL_PAGES = {
     'description': 'So manch einer der eingefleischten Waverider kennt sie schon, die kompromisslos auf Waveriding ...',
     'categories': [],
     'tags': [],
-    'with': ['So manch einer der eingefleischten', 'We are 100% committed to', 'Our search for perfection never ends'],  # 3 segments
-    'without': ['Bei uns wirst du frei nach dem Motto', 'Folge uns auch in den sozialen', 'Kontakt'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['So manch einer der eingefleischten', 'We are 100% committed to', 'Our search for perfection never ends'],
+    'without': ['Bei uns wirst du frei nach dem Motto', 'Folge uns auch in den sozialen', 'Kontakt'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2686,9 +2686,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Die Bootsführerausbildung in der Feuerwehr', 'Wichtig ist die Fähigkeit, eine', 'Auch das slippen der Boote an'],  # 3 segments
-    'without': ['Rettungsschwimmen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die Bootsführerausbildung in der Feuerwehr', 'Wichtig ist die Fähigkeit, eine', 'Auch das slippen der Boote an'],
+    'without': ['Rettungsschwimmen'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2700,9 +2700,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Die bumm film GmbH bietet', 'und wurde im Laufe der Zeit', 'Web und Live-Entertainment'],  # 3 segments
-    'without': ['Kontakt', 'Leistungen', 'Lightbox2 © Lokesh Dhakar'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die bumm film GmbH bietet', 'und wurde im Laufe der Zeit', 'Web und Live-Entertainment'],
+    'without': ['Kontakt', 'Leistungen', 'Lightbox2 © Lokesh Dhakar'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2714,9 +2714,9 @@ EVAL_PAGES = {
     'description': 'Ein Beitrag auf DenkmalPraxisModerne, Schlagwort(e): Berlin.',
     'categories': [],
     'tags': [],
-    'with': ['Freie Universität Berlin, Land Berlin', 'Erster Bauabschnitt: 21 ein- bis dreigeschossige', 'Erstellung eines Parkpflegewerks von Uwe'],  # 3 segments
-    'without': ['Wüstenrot Stiftung', 'Kanzlerbungalow Bonn', 'Alle Sanierungsbeispiele'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Freie Universität Berlin, Land Berlin', 'Erster Bauabschnitt: 21 ein- bis dreigeschossige', 'Erstellung eines Parkpflegewerks von Uwe'],
+    'without': ['Wüstenrot Stiftung', 'Kanzlerbungalow Bonn', 'Alle Sanierungsbeispiele'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2728,9 +2728,9 @@ EVAL_PAGES = {
     'description': 'Der Genossenschaftsverband Bayern (GVB) vertritt die Interessen der genossenschaftlichen Unternehmen im Freistaat.',
     'categories': [],
     'tags': [],
-    'with': ['Der Genossenschaftsverband Bayern (GVB) vertritt', 'Wir sind der gesetzliche Prüfungsverband', 'unserer Mitglieder und verschaffen ihnen so Gehör'],  # 3 segments
-    'without': ['Meldungen', 'Meist gelesene Beiträge', 'Historischer Verein'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Der Genossenschaftsverband Bayern (GVB) vertritt', 'Wir sind der gesetzliche Prüfungsverband', 'unserer Mitglieder und verschaffen ihnen so Gehör'],
+    'without': ['Meldungen', 'Meist gelesene Beiträge', 'Historischer Verein'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2742,9 +2742,9 @@ EVAL_PAGES = {
     'description': 'Merkel: Warum alles gut ist wie&#039;s ist | Falscher Aktionismus ist schlimmer als Keiner',
     'categories': ['Politik', 'Eindrücke', 'Inland'],
     'tags': ['Merkel', 'Vorwurfspolitik', 'Kanzlerin', 'Sündenbock'],
-    'with': ['Viele ahnen es eigentlich schon, aber keiner', 'So wie wir heute mit zwischenmenschlichen', 'Und jetzt lassen Sie doch mal'],  # 3 segments
-    'without': ['Den Artikel mit anderen teilen/diskutieren:', 'hier bin ich eigentlich nur zufällig', 'Theater- und Filmschauspielerin aus 2 Welten'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Viele ahnen es eigentlich schon, aber keiner', 'So wie wir heute mit zwischenmenschlichen', 'Und jetzt lassen Sie doch mal'],
+    'without': ['Den Artikel mit anderen teilen/diskutieren:', 'hier bin ich eigentlich nur zufällig', 'Theater- und Filmschauspielerin aus 2 Welten'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2756,9 +2756,9 @@ EVAL_PAGES = {
     'description': 'Ausgew&auml;hlte Arbeiten von Jens Weber und Andreas Wolter aus den Bereichen MediaArchitecture, Interaction Design, Physical Computing und interaktive Architektur.',
     'categories': [],
     'tags': [],
-    'with': ['1997 Medientechnik-Studium', 'Umsetzung von über 70 kommerziellen Multimediaprojekten', 'Nominierung Deutscher Multimedia Award'],  # 3 segments
-    'without': ['Alle Inhalte unterliegen', 'Projekte'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['1997 Medientechnik-Studium', 'Umsetzung von über 70 kommerziellen Multimediaprojekten', 'Nominierung Deutscher Multimedia Award'],
+    'without': ['Alle Inhalte unterliegen', 'Projekte'],
+    'comments': [],
     'license': 'CC BY-NC-SA 2.0 DE',
     'region': 'DE',
 },
@@ -2770,9 +2770,9 @@ EVAL_PAGES = {
     'description': 'Unbefriedigt-sein kann sich ziemlich doof anfühlen. Wir erläutern, wie man oder frau am besten damit umgeht und was die Laune wieder hebt.',
     'categories': ['Gefühle'],
     'tags': ['kein sex', 'strategien', 'umgang', 'unbefriedigt'],
-    'with': ['Wir alle haben Bedürfnisse. Mal mehr', 'Die Situationen, in denen man unbefriedigt', 'Ich denke, dass bei mir auch durch den neu'],  # 3 segments
-    'without': ['Rückblick auf das Blog-Jahr 2019', 'Durch die weitere Nutzung der Seite', 'Orgasmuskontrolle und Sexentzug'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wir alle haben Bedürfnisse. Mal mehr', 'Die Situationen, in denen man unbefriedigt', 'Ich denke, dass bei mir auch durch den neu'],
+    'without': ['Rückblick auf das Blog-Jahr 2019', 'Durch die weitere Nutzung der Seite', 'Orgasmuskontrolle und Sexentzug'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2784,9 +2784,9 @@ EVAL_PAGES = {
     'description': 'Und noch mal was mit Wasser: »Haltet unsere Gewässer sauber!« Der Plakatwettbewerb für Kinder findet in 2020 bereits zum 6. Mal statt. Kinder zwischen 6 und 12 Jahren sind aufgerufen, sich am Wettbewerb zu mit ihren bunten und kreativen Ideen zu beteiligen. Gestalte ein Plakat unter dem Motto: »Haltet unsere&hellip;',
     'categories': ['Infos'],
     'tags': ['Berlin', 'Gewässer', 'Plakatwettbewerb', 'sauber'],
-    'with': ['Der Plakatwettbewerb für Kinder', 'Gestalte ein Plakat unter dem', 'an die Berliner*innen'],  # 3 segments
-    'without': ['Finde im SeglerBlog!', 'Verwandte Beiträge', 'Schreibe einen Kommentar'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Der Plakatwettbewerb für Kinder', 'Gestalte ein Plakat unter dem', 'an die Berliner*innen'],
+    'without': ['Finde im SeglerBlog!', 'Verwandte Beiträge', 'Schreibe einen Kommentar'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2798,9 +2798,9 @@ EVAL_PAGES = {
     'description': 'Beim ContentAward.at, der vom ZIT — Technologieagentur der Stadt Wien zur Förderung der Wiener Content- und Medienszene durchgeführt wird, ...',
     'categories': ['News', 'open3'],
     'tags': [],
-    'with': ['Beim ContentAward.at, der', 'Die „Toilet Map Vienna„, die erste App', 'Das Online-Voting läuft von 14. September'],  # 3 segments
-    'without': ['Kommentar hinzufügen', 'Kategorie: News, open3', 'Derzeit noch keine Kommentare'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Beim ContentAward.at, der', 'Die „Toilet Map Vienna„, die erste App', 'Das Online-Voting läuft von 14. September'],
+    'without': ['Kommentar hinzufügen', 'Kategorie: News, open3', 'Derzeit noch keine Kommentare'],
+    'comments': [],
     'license': 'CC BY-SA 3.0 AT',
     'region': 'AT',
 },
@@ -2812,9 +2812,9 @@ EVAL_PAGES = {
     'description': 'MP3-DOWNLOAD (01:00 h)',
     'categories': ['Gesellschaft & Kultur'],
     'tags': ['Frankenstein', 'Geister', 'Spuk'],
-    'with': ['Unser heutiger Gast berichtet von', 'Wie wirkt sich die Gentrifizierung', 'Als Monster der Woche besprechen'],  # 3 segments
-    'without': ['Gib deine E-Mail-Adresse ein', 'Ähnliche Beiträge', 'Kommentar verfassen'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Unser heutiger Gast berichtet von', 'Wie wirkt sich die Gentrifizierung', 'Als Monster der Woche besprechen'],
+    'without': ['Gib deine E-Mail-Adresse ein', 'Ähnliche Beiträge', 'Kommentar verfassen'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2826,9 +2826,9 @@ EVAL_PAGES = {
     'description': 'MIGRATION &#8211; Probleme zwischen Einheimischen und Flüchtlingen sind auch in Afrika ein Thema &#8211; wie Kenia mit der Herausforderung umgeht Von Roland Brockmann und Sebastian Drescher',
     'categories': ['Afrika', 'Entwicklungshilfe', 'Kenia', 'Länder', 'Media', 'Migration', 'Flucht & Vertreibung', 'Themen', 'Videos'],
     'tags': ['Flüchtlinge, Migration'],
-    'with': ['Nur eine kurze Sandpiste', 'Und nicht nur sie. Einige Hundert Kilometer', 'Immerhin 1,6 Millionen Euro Hilfsgelder'],  # 3 segments
-    'without': ['Schreibe einen Kommentar', 'Lars Bauer (links im Bild) und Jens', 'Unterstützen Sie uns'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Nur eine kurze Sandpiste', 'Und nicht nur sie. Einige Hundert Kilometer', 'Immerhin 1,6 Millionen Euro Hilfsgelder'],
+    'without': ['Schreibe einen Kommentar', 'Lars Bauer (links im Bild) und Jens', 'Unterstützen Sie uns'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2840,9 +2840,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Thema dieser Folge ist', 'fünften Episode der', 'Wir werden spoilern'],  # 3 segments
-    'without': ['Leet-Kultur – Kultur aus der Nerdperspektive', 'Hohe Qualität Livestream in hoher Qualität (128 kbit/s)', 'Lizenz des Podcasts'],  # 3 segments
-    'comments': ['Vielen, vielen Dank für die tolle', 'Logbuch: Nachtrag, die'],  # 0 or 3 segments
+    'with': ['Thema dieser Folge ist', 'fünften Episode der', 'Wir werden spoilern'],
+    'without': ['Leet-Kultur – Kultur aus der Nerdperspektive', 'Hohe Qualität Livestream in hoher Qualität (128 kbit/s)', 'Lizenz des Podcasts'],
+    'comments': ['Vielen, vielen Dank für die tolle', 'Logbuch: Nachtrag, die'],
     'license': 'CC BY-SA 3.0 DE',
     'region': 'DE',
 },
@@ -2854,9 +2854,9 @@ EVAL_PAGES = {
     'description': 'Der kleine Junge bremst abrupt vor mir ab: &#8222;Ich soll dir von Gerhard sagen, er hätte dein Mädel auf dem Hof.&#8220; Ich schaue ihm verwundert hinterher wie er den Flur der Kita entlang rennt,…',
     'categories': ['Everything but the kitchen sink', 'Ivy vs. the world principle', 'What a wonderful world'],
     'tags': ['Bandit GSF 600', 'Gone Wild Mistress', 'Survive unscathed', 'Woman loves man'],
-    'with': ['Der kleine Junge bremst abrupt vor mir', 'Kein Kerl ist das wert, Kleines', 'dem kleinen Polo so viel Gas wie er gerade'],  # 3 segments
-    'without': ['5 Bloggern gefällt das.', 'Gedanken zu “Need for Speed”', 'Veröffentlicht in:'],  # 3 segments
-    'comments': ['Das ist ein wirklich gut geschriebener Text.', 'wusste gar nicht dass du sowas auch', 'eine richtige karre zickt nicht '],  # 0 or 3 segments
+    'with': ['Der kleine Junge bremst abrupt vor mir', 'Kein Kerl ist das wert, Kleines', 'dem kleinen Polo so viel Gas wie er gerade'],
+    'without': ['5 Bloggern gefällt das.', 'Gedanken zu “Need for Speed”', 'Veröffentlicht in:'],
+    'comments': ['Das ist ein wirklich gut geschriebener Text.', 'wusste gar nicht dass du sowas auch', 'eine richtige karre zickt nicht '],
     'license': 'CC BY-NC-SA',
     'region': '',
 },
@@ -2868,9 +2868,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['cubanito', 'enchufla', 'lacucaracha', 'switch'],
-    'with': ['Platzwechsel, langsam erklärt', 'Start, wenn man rechts auf rechts ist', 'zieht die Folgende den Führenden an der Hüfte zurück'],  # 3 segments
-    'without': ['Unless otherwise stated, the content of this page', 'Other interesting sites', 'Ansagen nach Grundschritt'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Platzwechsel, langsam erklärt', 'Start, wenn man rechts auf rechts ist', 'zieht die Folgende den Führenden an der Hüfte zurück'],
+    'without': ['Unless otherwise stated, the content of this page', 'Other interesting sites', 'Ansagen nach Grundschritt'],
+    'comments': [],
     'license': 'CC BY-SA 3.0',
     'region': '',
 },
@@ -2882,9 +2882,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Das „schwarze Schaf“ unserer Familie', 'Durch das Aufblättern eines Familiengeheimnisses', 'Wobei Musik fundamental beteiligt wird'],  # 3 segments
-    'without': ['Unterstütze das Projekt:', 'Ein detektivisches Dokumentarprojekt', 'Gefördert durch:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Das „schwarze Schaf“ unserer Familie', 'Durch das Aufblättern eines Familiengeheimnisses', 'Wobei Musik fundamental beteiligt wird'],
+    'without': ['Unterstütze das Projekt:', 'Ein detektivisches Dokumentarprojekt', 'Gefördert durch:'],
+    'comments': [],
     'license': 'CC BY-NC-SA 3.0',
     'region': 'DE',
 },
@@ -2896,9 +2896,9 @@ EVAL_PAGES = {
     'description': 'Ischgl hat sich im Sommer vor allem als Freeride Revier einen Namen gemacht. Das Ski Resort im Paznaun punktet mit einer guten Seilbahn Infrastruktur und alpinen Trails. Nach dem Motto Mountainbike als Funsport ist hier der Freerider König – in Ischgl findet er das perfekte Verhältnis aus viel bergab zu wenig bergauf!',
     'categories': [],
     'tags': [],
-    'with': ['Ischgl hat sich im Sommer vor allem als Freeride Revier', 'Wer MTB am liebsten bergab betreibt ist in Ischgl in seinem Element', 'heißer Tipp für die warmen Monate'],  # 3 segments
-    'without': ['Bike Hotels', 'Webdesign und alle Inhalte'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Ischgl hat sich im Sommer vor allem als Freeride Revier', 'Wer MTB am liebsten bergab betreibt ist in Ischgl in seinem Element', 'heißer Tipp für die warmen Monate'],
+    'without': ['Bike Hotels', 'Webdesign und alle Inhalte'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -2912,7 +2912,7 @@ EVAL_PAGES = {
     'tags': [],
     'with': ['1. Freude und Leichtigkeit.', 'Ich habe ein kurzes Video gemacht', 'Natürlich erfordert das Veränderung und Wachstum', 'offen und neugierig sind'],
     'without': ['Weiter', 'Hier kostenlos anmelden'],
-    'comments': [],  # 0 or 3 segments
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2924,9 +2924,9 @@ EVAL_PAGES = {
     'description': 'Gemeint ist natürlich das, was im Allgemeinen unter dem Euphemismus Beschneidung bekannt ist. Es handelt sich schon alleine deshalb um einen Euphemismus, da bei der Zirkumzision nicht einfach nur e…',
     'categories': ['Männer', 'Recht'],
     'tags': ['Beschneidung', 'Genitalverstümmelung'],
-    'with': ['Einen ausführlichen Einstieg', 'Befürworter der Beschneidung bagatellisieren', 'Dem lässt sich kaum etwas hinzufügen'],  # 3 segments
-    'without': ['Die Kommentarfunktion ist geschlossen', 'Share this:', 'Ähnliche Beiträge'],  # 3 segments
-    'comments': ['Das stimmt überhaupt nicht', 'Am häufigsten werden in Deutschland Beschneidungen von muslimischen Eltern', 'Je nach islamischer Rechtsschule wird die Beschneidung allerdings nicht einheitlich'],  # 0 or 3 segments
+    'with': ['Einen ausführlichen Einstieg', 'Befürworter der Beschneidung bagatellisieren', 'Dem lässt sich kaum etwas hinzufügen'],
+    'without': ['Die Kommentarfunktion ist geschlossen', 'Share this:', 'Ähnliche Beiträge'],
+    'comments': ['Das stimmt überhaupt nicht', 'Am häufigsten werden in Deutschland Beschneidungen von muslimischen Eltern', 'Je nach islamischer Rechtsschule wird die Beschneidung allerdings nicht einheitlich'],
     'license': '',
     'region': '',
 },
@@ -2938,9 +2938,9 @@ EVAL_PAGES = {
     'description': 'TV/Serie/DVD Amanda Knox Ich habe den Fall Amanda Knox und die Prozesse gegen sie, Raffaele Sollecito und Rudy Guede seinerzeit natürlich wahrgenommen, aber nicht besonders aufmerksam verfolgt. Die…',
     'categories': [],
     'tags': [],
-    'with': ['Rudy Guede seinerzeit natürlich wahrgenommen', 'Muss man gesehen haben. Augenöffnend.', 'Eine neue Platte von Wilco also'],  # 3 segments
-    'without': ['Diesen Artikel teilen:', 'Ähnliche Beiträge', 'Schreibe einen Kommentar: '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Rudy Guede seinerzeit natürlich wahrgenommen', 'Muss man gesehen haben. Augenöffnend.', 'Eine neue Platte von Wilco also'],
+    'without': ['Diesen Artikel teilen:', 'Ähnliche Beiträge', 'Schreibe einen Kommentar: '],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2952,9 +2952,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['Gespräch', 'Ham.Lit', 'HAM.LIT 2020', 'Interview', 'Literatur', 'Nora Bossong', 'Politik', 'Schutzzone', 'Audio'],
-    'with': ['Nora Bossong erzählt von der Arbeit', 'ihre eigene Rolle als UN-Beauftragte', 'Positionierung und Hoffnung in der Desillusion.'],  # 3 segments
-    'without': ['LANGE NACHT JUNGER LITERATUR UND MUSIK', 'Sharen mit:', 'Ähnliche Beiträge'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Nora Bossong erzählt von der Arbeit', 'ihre eigene Rolle als UN-Beauftragte', 'Positionierung und Hoffnung in der Desillusion.'],
+    'without': ['LANGE NACHT JUNGER LITERATUR UND MUSIK', 'Sharen mit:', 'Ähnliche Beiträge'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2966,9 +2966,9 @@ EVAL_PAGES = {
     'description': 'A total of 6,000 surgical masks have been lost at a hospital in Kobe, it was learned Tuesday. The Hyogo Prefectural Police is investigating the incident as',
     'categories': [],
     'tags': [],
-    'with': ['The incident has occurred at a time when Japan is seeing a shortage of face masks', 'Four of the 12 boxes of masks were gone', 'KOBE – A total of 6,000 surgical masks'],  # 3 segments
-    'without': ['Do masks offer protection from new coronavirus? It depends', 'Mail the editor', 'RELATED STORIES'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['The incident has occurred at a time when Japan is seeing a shortage of face masks', 'Four of the 12 boxes of masks were gone', 'KOBE – A total of 6,000 surgical masks'],
+    'without': ['Do masks offer protection from new coronavirus? It depends', 'Mail the editor', 'RELATED STORIES'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -2980,9 +2980,9 @@ EVAL_PAGES = {
     'description': 'I&#8217;m not much of a metal guy these days, but I dabbled in high school. I heard about this list on the radio this morning and had to look it up. It&#8217;s bound for controversy. Freddy Mercury at #6? Scott [&hellip;]',
     'categories': [],
     'tags': [],
-    'with': ['100. Ray Gillen', 'Keith Caputo, Life of Agony', 'I’m not much of a metal guy these days, but I dabbled'],  # 3 segments
-    'without': ['Leave a Comment', 'Recent Comments', 'Blogroll'],  # 3 segments
-    'comments': ['Really, no Shagrath?', 'Ok,so you put Dani Filth,the ”Ripper” and other few screamers', 'Where’s Max Cavalera??'],  # 0 or 3 segments
+    'with': ['100. Ray Gillen', 'Keith Caputo, Life of Agony', 'I’m not much of a metal guy these days, but I dabbled'],
+    'without': ['Leave a Comment', 'Recent Comments', 'Blogroll'],
+    'comments': ['Really, no Shagrath?', 'Ok,so you put Dani Filth,the ”Ripper” and other few screamers', 'Where’s Max Cavalera??'],
     'license': '',
     'region': '',
 },
@@ -2994,9 +2994,9 @@ EVAL_PAGES = {
     'description': 'Tim Anderson thinks the best way to appreciate Heart&#8217;s 1987 operatic chartbuster is while sitting in a darkened living room turning on and off the lamp.',
     'categories': [],
     'tags': ['ann wilson', 'drama', 'eighties', 'heart', 'loneliness', 'Music', 'nancy wilson', 'power ballads', 'Rock'],
-    'with': ['Fans of Heart, the rawk band', 'I stayed, because Ann was really about to deliver', 'And of course they did get through it.'],  # 3 segments
-    'without': ['Leave a Reply', 'responses to “The Loneliest Woman in', 'TIM ANDERSON has done many amazing things in his short life.'],  # 3 segments
-    'comments': ['“How can you not hear Ann Wilson when she’s singing at you?!”', 'The Wilson sisters are goddesses.', 'Fischer and the original bass player it was'],  # 0 or 3 segments
+    'with': ['Fans of Heart, the rawk band', 'I stayed, because Ann was really about to deliver', 'And of course they did get through it.'],
+    'without': ['Leave a Reply', 'responses to “The Loneliest Woman in', 'TIM ANDERSON has done many amazing things in his short life.'],
+    'comments': ['“How can you not hear Ann Wilson when she’s singing at you?!”', 'The Wilson sisters are goddesses.', 'Fischer and the original bass player it was'],
     'license': '',
     'region': '',
 },
@@ -3008,9 +3008,9 @@ EVAL_PAGES = {
     'description': 'One group of now mostly senior citizen organizers, known as The Reckoning Crew, is backing Joe Biden.',
     'categories': [],
     'tags': [],
-    'with': ['The stakes are high for all of the candidates ahead of Tuesday', 'At a family fun run in the state', 'Asked why she called the group the Reckoning Crew,'],  # 3 segments
-    'without': ['© 2020 CBS Interactive Inc. All Rights Reserved.', 'Email', 'Black voters in S.C. on the 2020 Democrats'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['The stakes are high for all of the candidates ahead of Tuesday', 'At a family fun run in the state', 'Asked why she called the group the Reckoning Crew,'],
+    'without': ['© 2020 CBS Interactive Inc. All Rights Reserved.', 'Email', 'Black voters in S.C. on the 2020 Democrats'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3022,9 +3022,9 @@ EVAL_PAGES = {
     'description': 'Myers, a Bill Clinton staffer, said “I’m going to take some time to figure out what’s next. I don’t have any set ideas.',
     'categories': [],
     'tags': ['bill clinton', 'warner bros.'],
-    'with': ['Dee Dee Myers — a White House press secretary for Bill Clinton', '“I’m going to take some time to figure out what’s next', 'Her last day is April 1'],  # 3 segments
-    'without': ['Getty Images', 'Filed under', 'Most Popular This Week'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Dee Dee Myers — a White House press secretary for Bill Clinton', '“I’m going to take some time to figure out what’s next', 'Her last day is April 1'],
+    'without': ['Getty Images', 'Filed under', 'Most Popular This Week'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3036,9 +3036,9 @@ EVAL_PAGES = {
     'description': 'It&#039;s no coincidence that the 30 year anniversary of the day NASA’s Voyager 1 space probe took a picture of Earth was the same day Luboku released his new',
     'categories': [],
     'tags': [],
-    'with': ['It’s no coincidence that the 30 year anniversary of the da', 'Still need convincing on why it’s our top record this week?', 'From its hypnotic synths to its brooding melodies, Luboku takes'],  # 3 segments
-    'without': ['Grimes releases her new album Miss Anthropocene', 'Grimes has released her fifth album', 'Discover our latest editorial picks'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['It’s no coincidence that the 30 year anniversary of the da', 'Still need convincing on why it’s our top record this week?', 'From its hypnotic synths to its brooding melodies, Luboku takes'],
+    'without': ['Grimes releases her new album Miss Anthropocene', 'Grimes has released her fifth album', 'Discover our latest editorial picks'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3050,9 +3050,9 @@ EVAL_PAGES = {
     'description': 'Wenn das Netzwerk unter Windows 10 sehr langsam ist, könnte das mit der Autotuning Funktion zusammen hängen. So kann man dies prüfen!',
     'categories': ['Netzwerk', 'Windows'],
     'tags': ['Cmd', 'Installation', 'Netzwerk', 'Windows'],
-    'with': ['Mit Windows Vista wurde damals die sogenannte Autotuning Funktion', 'netsh interface tcp set global autotuninglevel=normal', 'Jedoch gibt es anscheinend Probleme mit älteren Routern'],  # 3 segments
-    'without': ['Hole dir jetzt das kostenlose Ebook.', '2 Kommentare', 'Zappen ... Rätsel : entdeckt'],  # 3 segments
-    'comments': ['Wenn ich den o.g. syntax eingebe', 'Vorab habe ich eine cmd als Administrator geöffnet'],  # 0 or 3 segments
+    'with': ['Mit Windows Vista wurde damals die sogenannte Autotuning Funktion', 'netsh interface tcp set global autotuninglevel=normal', 'Jedoch gibt es anscheinend Probleme mit älteren Routern'],
+    'without': ['Hole dir jetzt das kostenlose Ebook.', '2 Kommentare', 'Zappen ... Rätsel : entdeckt'],
+    'comments': ['Wenn ich den o.g. syntax eingebe', 'Vorab habe ich eine cmd als Administrator geöffnet'],
     'license': '',
     'region': '',
 },
@@ -3064,9 +3064,9 @@ EVAL_PAGES = {
     'description': 'Lovato Elctric erweitert sein umfangreiches Produktprogramm im Bereich E-Managemnt jetzt mit Geräte die für den deutschen Markt besonders interessant sind.',
     'categories': [],
     'tags': [],
-    'with': ['Lovato Elctric erweitert sein umfangreiches Produktprogramm im Bereich E-Managemnt jetzt mit Geräte die für den deutschen Markt besonders interessant sind.', '0,5s Genauigkeitsklasse', 'Nennversorgungsspannung: 380...415VAC (L-L)'],  # 3 segments
-    'without': ['Angebote Lovato Electric', 'Die internationale Industrie-Plattform', 'Karriere'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Lovato Elctric erweitert sein umfangreiches Produktprogramm im Bereich E-Managemnt jetzt mit Geräte die für den deutschen Markt besonders interessant sind.', '0,5s Genauigkeitsklasse', 'Nennversorgungsspannung: 380...415VAC (L-L)'],
+    'without': ['Angebote Lovato Electric', 'Die internationale Industrie-Plattform', 'Karriere'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3078,9 +3078,9 @@ EVAL_PAGES = {
     'description': 'Pour le néolibéralisme, la retraite ne peut être qu’un archaïsme, une sorte de déviance inadaptée, qui nous fait prendre du retard dans la compétition mondiale, et dont l’État lui-même doit programmer la disparition progressive. L’affrontement qui se met en place ces jours-ci dépasse donc les questions techniques de « réforme systémique » ou d’« ajustement paramétrique » dont nous parle le jargon des experts. Il oppose, bien plus profondément, deux visions incompatibles de l’avenir du vivant et de nos rythmes de vie.',
     'categories': [],
     'tags': [],
-    'with': ['Pour le néolibéralisme, la retraite', 'les grandes grèves de 1995 furent', 'Pour réaliser ce programme, il impose'],  # 3 segments
-    'without': ['Pour lire la suite', 'Pour accéder en illimité', 'Pour rester informé inscrivez-vous à la newsletter'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Pour le néolibéralisme, la retraite', 'les grandes grèves de 1995 furent', 'Pour réaliser ce programme, il impose'],
+    'without': ['Pour lire la suite', 'Pour accéder en illimité', 'Pour rester informé inscrivez-vous à la newsletter'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3092,9 +3092,9 @@ EVAL_PAGES = {
     'description': 'On vous aurait bien fait un top 10 des macronistes confront&#233;s &#224; la justice, mais ils sont d&#233;j&#224; 20. Article mis &#224; jour le 7 janvier 2020. S&#039;il (...)',
     'categories': ['Accueil'],
     'tags': ['La République en marche', 'Justice', 'Emmanuel Macron'],
-    'with': ['seule promesse du candidat Macron, la', 'Le 6 août 2019, le député', 'Anticor a porté plainte pour'],  # 3 segments
-    'without': ['Qui êtes-vous ?', 'Pour créer des paragraphes, laissez simplement des lignes vides.', 'Vos réactions'],  # 3 segments
-    'comments': ['Articles très bien faits et qui nous montre', '.iL faut etre sensible pour etre intéligent', 'Rien de neuf donc....'],  # 0 or 3 segments
+    'with': ['seule promesse du candidat Macron, la', 'Le 6 août 2019, le député', 'Anticor a porté plainte pour'],
+    'without': ['Qui êtes-vous ?', 'Pour créer des paragraphes, laissez simplement des lignes vides.', 'Vos réactions'],
+    'comments': ['Articles très bien faits et qui nous montre', '.iL faut etre sensible pour etre intéligent', 'Rien de neuf donc....'],
     'license': '',
     'region': '',
 },
@@ -3106,9 +3106,9 @@ EVAL_PAGES = {
     'description': 'The long-dominant ideology brought us forever wars, the Great Recession, and extreme inequality. Good riddance.',
     'categories': [],
     'tags': [],
-    'with': ['With the 2008 financial crash and the Great Recession', 'Start with the economy. Over the course', 'The central question of our time'],  # 3 segments
-    'without': ['Ganesh Sitaraman is a professor at Vanderbilt Law School', 'Read More', 'Most Popular'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['With the 2008 financial crash and the Great Recession', 'Start with the economy. Over the course', 'The central question of our time'],
+    'without': ['Ganesh Sitaraman is a professor at Vanderbilt Law School', 'Read More', 'Most Popular'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3120,9 +3120,9 @@ EVAL_PAGES = {
     'description': "L'Office fédéral de l'agriculture a décidé de retirer l'autorisation de mise en circulation des produits contenant ce fongicide avec effet immédiat.",
     'categories': [],
     'tags': [],
-    'with': ['Le chlorothalonil sera interdit', 'Le chlorothalonil est une substance active utilisée', 'Les Suisses pourraient également se prononcer sur'],  # 3 segments
-    'without': ['Avez-vous apprécié cet article?', 'Plus de sujets', 'Le canton de Berne veut interdire le chlorothalonil '],  # 3 segments
-    'comments': ['Un effet immédiat pour un effet long terme du poison'],  # 0 or 3 segments
+    'with': ['Le chlorothalonil sera interdit', 'Le chlorothalonil est une substance active utilisée', 'Les Suisses pourraient également se prononcer sur'],
+    'without': ['Avez-vous apprécié cet article?', 'Plus de sujets', 'Le canton de Berne veut interdire le chlorothalonil '],
+    'comments': ['Un effet immédiat pour un effet long terme du poison'],
     'license': '',
     'region': '',
 },
@@ -3134,9 +3134,9 @@ EVAL_PAGES = {
     'description': "Chargé de porter la réforme des retraites, Jean-Paul Delevoye a su gagner la confiance d'Emmanuel Macron. Ancien chiraquien nommé ministre, il n'ét...",
     'categories': [],
     'tags': ['Gala politique', 'président de la republique', 'Homme politique'],
-    'with': ['Chargé de porter la réforme des retraites', 'Chirac le surnommaitle Grand Con, parce', 'un dirigeant de LREM dans un portrait'],  # 3 segments
-    'without': ['Crédits photos : Bestimage', 'Articles les plus lus', "L'actu"],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Chargé de porter la réforme des retraites', 'Chirac le surnommaitle Grand Con, parce', 'un dirigeant de LREM dans un portrait'],
+    'without': ['Crédits photos : Bestimage', 'Articles les plus lus', "L'actu"],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3148,9 +3148,9 @@ EVAL_PAGES = {
     'description': 'BestCrypt  9.04 Englisch: BestCrypt erstellt virtuelle Laufwerke, deren Inhalt zusätzlich verschlüsselt wird.',
     'categories': [],
     'tags': [],
-    'with': ['kann verschlüsselte, virtuelle Laufwerke anlegen', 'Der integrierte Anti-Keylogger und', 'Homepage des Herstellers nachlesen'],  # 3 segments
-    'without': ['BestCrypt : Alternative Downloads', 'UNSERE SHOPPING-GUTSCHEINE', ' Für Links auf dieser Seite erhält CHIP'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['kann verschlüsselte, virtuelle Laufwerke anlegen', 'Der integrierte Anti-Keylogger und', 'Homepage des Herstellers nachlesen'],
+    'without': ['BestCrypt : Alternative Downloads', 'UNSERE SHOPPING-GUTSCHEINE', ' Für Links auf dieser Seite erhält CHIP'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3162,9 +3162,9 @@ EVAL_PAGES = {
     'description': 'Alexander McQueen bis Adidas: Für den Sommer 2019 setzen die einflußreichsten Labels auf Plateau-Sneaker. Mehr über den Trend auf ELLE.de!',
     'categories': ['Home', 'Fashion', 'Trends & Styling'],
     'tags': [],
-    'with': ['am meisten getragenen Lieblingsteilen in deiner Garderobe', 'Die Lösung für diese modische Herausforderung liegt in der', 'So geht die Tendenz nach Dad Sneaker und Ugly Sneaker'],  # 3 segments
-    'without': ['Net Sustain: Die neue Plattform von', 'Zum Shop', 'Affiliatelink'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['am meisten getragenen Lieblingsteilen in deiner Garderobe', 'Die Lösung für diese modische Herausforderung liegt in der', 'So geht die Tendenz nach Dad Sneaker und Ugly Sneaker'],
+    'without': ['Net Sustain: Die neue Plattform von', 'Zum Shop', 'Affiliatelink'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3176,9 +3176,9 @@ EVAL_PAGES = {
     'description': 'Sierra Leone hat schwere B&uuml;rgerkriegszeiten hinter sich. Endlose Strände, grüne Hügel und die Hoffnung sind schon da. Jetzt fehlen nur...',
     'categories': [],
     'tags': [],
-    'with': ['Sierra Leone hat schwere Zeiten hinter sich', 'Touré, einem mageren, hoch aufgeschossenen Mann, gehört das Land', 'Deshalb sichert er den Herstellern ein Auskommen wie kaum ein'],  # 3 segments
-    'without': ['Hinweis der Redaktion: Zum Teil wurden die Recherchereisen für diesen Artikel von', 'Dieser Beitrag kann nicht mehr kommentiert werden.', ' © Frankfurter Allgemeine Zeitung GmbH 2020 '],  # 3 segments
-    'comments': ['Für Anbenteuerurlauber sicher ein guter Tip'],  # 0 or 3 segments
+    'with': ['Sierra Leone hat schwere Zeiten hinter sich', 'Touré, einem mageren, hoch aufgeschossenen Mann, gehört das Land', 'Deshalb sichert er den Herstellern ein Auskommen wie kaum ein'],
+    'without': ['Hinweis der Redaktion: Zum Teil wurden die Recherchereisen für diesen Artikel von', 'Dieser Beitrag kann nicht mehr kommentiert werden.', ' © Frankfurter Allgemeine Zeitung GmbH 2020 '],
+    'comments': ['Für Anbenteuerurlauber sicher ein guter Tip'],
     'license': '',
     'region': 'DE',
 },
@@ -3190,9 +3190,9 @@ EVAL_PAGES = {
     'description': 'Erfahren Sie in diesem Blog-Artikel, welche Vorteile Remote Support mit Smart Glasses in Verbindung mit Augmented Reality für Unternehmen haben kann?',
     'categories': ['Blogartikel', 'Digitalisierung'],
     'tags': ['Augmented Reality', 'Kundenservice', 'Remote Support', 'Smart Glasses'],
-    'with': ['Wie Sie sehen bietet der Remote Support mit Smart Glasses', 'Die Arbeit der Mitarbeiter im Karosseriebau vor Ort wird durch Smart Glasses', 'In der Industrie wird der Remote Support mit Smart Glasses immer beliebter'],  # 3 segments
-    'without': ['Als Content Marketing Managerin betreue ich', 'Diese neuen Entwicklungen sollten Sie kennen', 'In unserem Seminar „Augmented Reality“ erarbeiten Sie anhand verschiedener Experience'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wie Sie sehen bietet der Remote Support mit Smart Glasses', 'Die Arbeit der Mitarbeiter im Karosseriebau vor Ort wird durch Smart Glasses', 'In der Industrie wird der Remote Support mit Smart Glasses immer beliebter'],
+    'without': ['Als Content Marketing Managerin betreue ich', 'Diese neuen Entwicklungen sollten Sie kennen', 'In unserem Seminar „Augmented Reality“ erarbeiten Sie anhand verschiedener Experience'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3204,9 +3204,9 @@ EVAL_PAGES = {
     'description': 'Die geplante Kooperation von creditshelf mit finleap stützt alle drei...',
     'categories': ['FINTECH'],
     'tags': [],
-    'with': ['Die geplante Kooperation von creditshelf mit finleap', 'Beide Parteien streben den Abschluss des Erwerbs der Valendo', 'creditshelf eröffnet die geplante Akquisition der Valendo GmbH'],  # 3 segments
-    'without': ['Jede Woche neu:', '(Noch keine Bewertungen)', 'Auch interessant'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die geplante Kooperation von creditshelf mit finleap', 'Beide Parteien streben den Abschluss des Erwerbs der Valendo', 'creditshelf eröffnet die geplante Akquisition der Valendo GmbH'],
+    'without': ['Jede Woche neu:', '(Noch keine Bewertungen)', 'Auch interessant'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3218,9 +3218,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Nun nicht im Staub, sondern mit ausgeprägten Sternstrahlen', 'Art der Aufnahme: Digitalfoto', 'Kasberg im Frankenland'],  # 3 segments
-    'without': ['Hinterlasse jetzt einen Kommentar', 'Sie wollen Deep-Sky-Objekte am Himmel', 'Abenteuer Astronomie war eine Zeitschrift'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Nun nicht im Staub, sondern mit ausgeprägten Sternstrahlen', 'Art der Aufnahme: Digitalfoto', 'Kasberg im Frankenland'],
+    'without': ['Hinterlasse jetzt einen Kommentar', 'Sie wollen Deep-Sky-Objekte am Himmel', 'Abenteuer Astronomie war eine Zeitschrift'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3232,9 +3232,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Wir NEOS stehen seit 2012 für ein Neues Österreich', 'Seit dem Bestehen von NEOS mussten wir ein paar Verluste', 'Demokratie braucht Parteien, die transparent'],  # 3 segments
-    'without': ['Erfahre mehr', 'Ich stimme der elektronischen Verarbeitung', 'Folge uns'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wir NEOS stehen seit 2012 für ein Neues Österreich', 'Seit dem Bestehen von NEOS mussten wir ein paar Verluste', 'Demokratie braucht Parteien, die transparent'],
+    'without': ['Erfahre mehr', 'Ich stimme der elektronischen Verarbeitung', 'Folge uns'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3247,8 +3247,8 @@ EVAL_PAGES = {
     'description': 'More diverse speakers at WordCamps means a more diverse community contributing to WordPress — and that results in better software for everyone.',
     'categories': [],
     'tags': [],
-    'with': ['Why WordCamps?', 'which makes WordPress better for more people.', 'Get in touch with Jill'],  # 3 segments
-    'without': ['Missing out on the latest', 'Opens in new window', 'Jill Binder, speaking at a WordCamp'],  # 3 segments
+    'with': ['Why WordCamps?', 'which makes WordPress better for more people.', 'Get in touch with Jill'],
+    'without': ['Missing out on the latest', 'Opens in new window', 'Jill Binder, speaking at a WordCamp'],
     'comments': ['Thank you.', 'Amazing!!!', 'Wow,'],
     'license': '',
     'region': '',
@@ -3262,9 +3262,9 @@ EVAL_PAGES = {
     'description': 'What is Creative Commons? Creative Commons helps you legally share your knowledge and creativity to build a more equitable, accessible, and innovative world. We unlock the full potential of the internet to drive a new era of development, growth and productivity. With a network of staff, board, and affiliates around the world, Creative Commons provides … Read More "What we do"',
     'categories': [],
     'tags': [],
-    'with': ['With a network of', 'Our work is to build', 'Our work spans a variety'],  # 3 segments
-    'without': ['Connect with Creative Commons', 'Honoring Our Friend', 'In this section'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['With a network of', 'Our work is to build', 'Our work spans a variety'],
+    'without': ['Connect with Creative Commons', 'Honoring Our Friend', 'In this section'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3277,9 +3277,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Wir waren massgeblich', 'link is external'],  # 3 segments
-    'without': ['Publikationen in Forschung', 'Vorheriges', 'Nach fast zwei Jahren Arbeit'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Wir waren massgeblich', 'link is external'],
+    'without': ['Publikationen in Forschung', 'Vorheriges', 'Nach fast zwei Jahren Arbeit'],
+    'comments': [],
     'license': 'CC-BY',
     'region': 'AT',
 },
@@ -3292,9 +3292,9 @@ EVAL_PAGES = {
     'description': 'Seit Dezember 2015 verschickt eine Cider Connection zahlreiche Abmahnungen wegen fehlerhafter Creative-Commons-Referenzierungen. Wir haben recherchiert und legen jetzt das Netzwerk der Abmahner offen.',
     'categories': [],
     'tags': [],
-    'with': ['Seit Dezember 2015', 'VSGE', 'Dazu muss das überholte Urheberrecht', 'Dieser Artikel baut auf einer gemeinsamen Recherche'],  # 3 segments
-    'without': ['23.06.2016', 'Zum Vergrößern auf das Bild', 'Markus Reuter beschäftigt sich', 'Ist Videoüberwachung beim Zahnarzt', 'Wir sind spendenfinanziert.'],  # 3 segments
-    'comments': ['News vom 31.10.2018', 'Hallo zusammen,', 'Selbstverständlich darf man den Namen'],  # 0 or 3 segments
+    'with': ['Seit Dezember 2015', 'VSGE', 'Dazu muss das überholte Urheberrecht', 'Dieser Artikel baut auf einer gemeinsamen Recherche'],
+    'without': ['23.06.2016', 'Zum Vergrößern auf das Bild', 'Markus Reuter beschäftigt sich', 'Ist Videoüberwachung beim Zahnarzt', 'Wir sind spendenfinanziert.'],
+    'comments': ['News vom 31.10.2018', 'Hallo zusammen,', 'Selbstverständlich darf man den Namen'],
     'license': 'CC-BY-NC-SA',
     'region': '',
 },
@@ -3307,9 +3307,9 @@ EVAL_PAGES = {
     'description': 'Ein Strand, ist ein Strand, ist ein Strand Ein Strand, ist ein Strand, ist ein Strand. Von wegen! In Italien ist alles wohl organisiert, Handtuch an Handtuch oder Liegestuhl an Liegestuhl. In der Karibik liegt man unter Palmen im Sand und in Marbella dominieren Beton und eine kerzengerade Promenade',
     'categories': ['Travel', 'Amerika'],
     'tags': ['Long Island', 'Montauk', 'New York', 'Hamptons'],
-    'with': ['Im kurzen BeFifty Video', 'Und hier einige Impressionen', 'bodenständig und stilsicher'],  # 3 segments
-    'without': ['Um Ihnen ein besseres Nutzererlebnis', 'auf Linie gebracht', 'Tumblr'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Im kurzen BeFifty Video', 'Und hier einige Impressionen', 'bodenständig und stilsicher'],
+    'without': ['Um Ihnen ein besseres Nutzererlebnis', 'auf Linie gebracht', 'Tumblr'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3322,9 +3322,9 @@ EVAL_PAGES = {
     'description': 'En réaction à la candidature du conseiller recherche d&#039;Emmanuel Macron, Thierry Coulhon, à la présidence du Haut Conseil de l&#039;évaluation de la recherche et de l&#039;enseignement supérieur (HCERES) annoncée récemment, plus de 2500 chercheur·eus·e·s annoncent faire acte de candidature collectivement à la tête de l&#039;autorité administrative indépendante chargée de l&#039;évaluation de l’enseignement supérie ...',
     'categories': ['Politique scientifique française'],
     'tags': ['évaluation', 'HCERES'],
-    'with': ['En réaction à la candidature', 'Une cible,', 'Sans recherche autonome,'],  # 3 segments
-    'without': ['Image illustrative', 'Votre adresse de messagerie', 'Le montage du CNRS'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['En réaction à la candidature', 'Une cible,', 'Sans recherche autonome,'],
+    'without': ['Image illustrative', 'Votre adresse de messagerie', 'Le montage du CNRS'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3338,8 +3338,8 @@ EVAL_PAGES = {
     'categories': ['Higher education'],
     'tags': ['Academics', "Lecturers' pay", 'Gig economy', 'Students', 'Trade unions', 'Office for Students', 'news'],
     'with': ['It calls on the', 'But a spokesperson for'],  # , 'Report claims higher education institutions'
-    'without': ['Available for everyone, funded by readers', 'Make a contribution', 'Striking members of the UCU'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'without': ['Available for everyone, funded by readers', 'Make a contribution', 'Striking members of the UCU'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3352,9 +3352,9 @@ EVAL_PAGES = {
     'description': 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.',
     'categories': ['Archaeology', 'Fossils'],
     'tags': [],
-    'with': ['Prior work has turned up', 'the North Sea for most of its existence'],  # 3 segments
-    'without': ['Explore further', 'Feedback to editors', 'the very first glue'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Prior work has turned up', 'the North Sea for most of its existence'],
+    'without': ['Explore further', 'Feedback to editors', 'the very first glue'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3367,9 +3367,9 @@ EVAL_PAGES = {
     'description': 'L&#039;&#233;valuation, et la place qu&#039;y occupe la bibliom&#233;trie, sont au c&#339;ur des d&#233;bats actuels. Les enjeux sont majeurs : seront dot&#233;es en cr&#233;dits les universit&#233;s consid&#233;rant la bibliom&#233;trie comme l&#039;indicateur supr&#234;me de l&#039;activit&#233; et de la qualit&#233; de la recherche. Or, comme le montre Florence Audier, les Fran&#231;ais ont d&#233;sign&#233; comme cible d&#039;excellence des revues auxquelles ils n&#039;acc&#232;dent pas, sauf r&#233;seaux particuliers. Voir en annexe : Place des fran&#231;ais et des europ&#233;ens parmi les &#171; publiants &#187; des revues d&#233;pouill&#233;es dans (...) ', # description.startswith("L'évaluation, et la place")
     'categories': ['Essai', 'Économie'],
     'tags': ['université', 'indicateurs', 'recherche', 'évaluation'],
-    'with': ['Depuis longtemps,', 'Retour sur les revues de rang', 'Quelques réflexions'],  # 3 segments
-    'without': ['enquêtes à propos des pratiques de publication', 'Si vous souhaitez critiquer ou développer cet article', 'Télécharger au format EPUB'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Depuis longtemps,', 'Retour sur les revues de rang', 'Quelques réflexions'],
+    'without': ['enquêtes à propos des pratiques de publication', 'Si vous souhaitez critiquer ou développer cet article', 'Télécharger au format EPUB'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3382,9 +3382,9 @@ EVAL_PAGES = {
     'description': 'Description of the experience of making Mercurial work with Python 3',
     'categories': ['Python', 'Programming'],
     'tags': [],
-    'with': ['This effort began in earnest', 'Within a few months,', 'Python had a wildly successful past'],  # 3 segments
-    'without': ["View the discussion thread.", 'January 13'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['This effort began in earnest', 'Within a few months,', 'Python had a wildly successful past'],
+    'without': ["View the discussion thread.", 'January 13'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3397,9 +3397,9 @@ EVAL_PAGES = {
     'description': 'ros and cons of available tools for python setup',
     'categories': ['practices'],
     'tags': ['python', 'docker', 'getting started'],
-    'with': ['self-contained = deployable', '<config files>'],  # 3 segments
-    'without': ['21 minutes', 'Tags:'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['self-contained = deployable', '<config files>'],
+    'without': ['21 minutes', 'Tags:'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3412,9 +3412,9 @@ EVAL_PAGES = {
     'description': 'Description of the Programming Language Rust',
     'categories': ['Rust', 'Programming'],
     'tags': ['Bulletin', 'Code for a Living', 'Stackoverflow'],
-    'with': ['Rust has been', 'Going beyond technical points'],  # 3 segments
-    'without': ['Jake is the co-founder', 'What inspires someone', 'Discover and share internal knowledge'],  # 3 segments
-    'comments': ['Thanks for all you do'],  # 0 or 3 segments
+    'with': ['Rust has been', 'Going beyond technical points'],
+    'without': ['Jake is the co-founder', 'What inspires someone', 'Discover and share internal knowledge'],
+    'comments': ['Thanks for all you do'],
     'license': '',
     'region': '',
 },
@@ -3427,9 +3427,9 @@ EVAL_PAGES = {
     'description': 'Advantages of Management of Intact Forestlands by Indigenous Peoples for the Climate',
     'categories': ['Indigenous People', 'Environment'],
     'tags': [],
-    'with': ['The U.N.-backed principle', 'Overall, these landscapes'],  # 3 segments
-    'without': ['Management of Intact Forestlands by Indigenous Peoples Key to Protecting Climate', 'China has announced a new plan', 'TPP highlights sustainable solutions'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['The U.N.-backed principle', 'Overall, these landscapes'],
+    'without': ['Management of Intact Forestlands by Indigenous Peoples Key to Protecting Climate', 'China has announced a new plan', 'TPP highlights sustainable solutions'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3442,9 +3442,9 @@ EVAL_PAGES = {
     'description': 'Report about the restored accessibility of Wikipedia in Turkey',
     'categories': ['Politics', 'Turkey', 'Wikipedia'],
     'tags': [],
-    'with': ['19th birthday', 'We will keep this statement updated'],  # 3 segments
-    'without': ['ECHR', 'As a nonprofit', 'Read further in the pursuit'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['19th birthday', 'We will keep this statement updated'],
+    'without': ['ECHR', 'As a nonprofit', 'Read further in the pursuit'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3457,9 +3457,9 @@ EVAL_PAGES = {
     'description': '“Parasite,” the Korean language social satire about the wealth gap in South Korea, was the first film in a foreign language to win the top prize of best cast ensemble in the 26 year-history of the SAG awards.',
     'categories': ['Parasite', 'SAG awards', 'Cinema'],
     'tags': [],
-    'with': ['Despite an unknown cast', 'DISAPPOINTING NIGHT', 'Additional reporting by'],  # 3 segments
-    'without': ['Related Coverage', 'Slideshow', 'narrow-browser-and-phone', 'All Rights Reserved.', 'Updated 8 hours ago'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Despite an unknown cast', 'DISAPPOINTING NIGHT', 'Additional reporting by'],
+    'without': ['Related Coverage', 'Slideshow', 'narrow-browser-and-phone', 'All Rights Reserved.', 'Updated 8 hours ago'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3472,9 +3472,9 @@ EVAL_PAGES = {
     'description': 'The rocky island of Redonda, once stripped of its flora and fauna by invasive species, makes an astonishingly quick comeback. What’s the secret to its recovery?',
     'categories': ['Goats', 'Environment', 'Redonda'],
     'tags': [],
-    'with': ['an imposing piece', 'Once the goats and rats', 'But they don’t know the work'],  # 3 segments
-    'without': ['Photograph by', 'Find More Information', 'What it’s like to live'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['an imposing piece', 'Once the goats and rats', 'But they don’t know the work'],
+    'without': ['Photograph by', 'Find More Information', 'What it’s like to live'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3487,9 +3487,9 @@ EVAL_PAGES = {
     'description': 'FAST has superior sensitivity to detect cosmic phenomena, including fast radio bursts and pulsars.',
     'categories': ['Astronomy', 'Telescope', 'China'],
     'tags': [],
-    'with': ['Since testing began', 'Eye in the sky', 'Li hopes that'],  # 3 segments
-    'without': ['You are using a browser version', 'PDF version', 'Latest on:', 'I agree my information will be'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Since testing began', 'Eye in the sky', 'Li hopes that'],
+    'without': ['You are using a browser version', 'PDF version', 'Latest on:', 'I agree my information will be'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3502,81 +3502,81 @@ EVAL_PAGES = {
     'description': 'Coal has been in a slow-motion death spiral over the past ten years',
     'categories': ['Coal', 'Emmisions', 'Climate'],
     'tags': [],
-    'with': ['This post originally', 'The same can’t be', 'Cleaning up the electrical grid'],  # 3 segments
-    'without': ['Credit:', 'Advertisement:', 'Reproduction of material from any'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['This post originally', 'The same can’t be', 'Cleaning up the electrical grid'],
+    'without': ['Credit:', 'Advertisement:', 'Reproduction of material from any'],
+    'comments': [],
     'license': '',
     'region': '',
 },
 'https://web.archive.org/web/20160526181643/http://ordnungsrausch.com/orga-life-das-leben-organisieren/': {
-    'file': 'archive.ordnungsrausch.com.orga-life.html',  # stays empty until download
+    'file': 'archive.ordnungsrausch.com.orga-life.html',
     'author': '',
     'title': '{orga your life} – das Leben organisieren ',
     'date': '',
-    'description': 'Neben meinen Beiträgen zur Zeitplanung seht ihr hier auch übersichtlich alles zum Thema Finanzen organisieren und Selbstmanagement.',  # in HTML source
+    'description': 'Neben meinen Beiträgen zur Zeitplanung seht ihr hier auch übersichtlich alles zum Thema Finanzen organisieren und Selbstmanagement.',
     'categories': ['{orga your life}'],
     'tags': [],
-    'with': ['Wenn der Tag mal wieder zu wenige Stunden hat'],  # 3 segments
-    'without': ['#19 Kuchen im Glas', '2016 Ordnungsrausch', 'Suche'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'with': ['Wenn der Tag mal wieder zu wenige Stunden hat'],
+    'without': ['#19 Kuchen im Glas', '2016 Ordnungsrausch', 'Suche'],
+    'comments': [],
+    'license': '',
+    'region': '',
 },
 'https://weselpower.wordpress.com/2009/12/23/monstergesprche-1/': {
-    'file': 'weselpower.wordpress.com.monstergesprche.html',  # stays empty until download
+    'file': 'weselpower.wordpress.com.monstergesprche.html',
     'author': 'Rolf Tschochohei',
     'title': 'Monstergespräche #1',
     'date': '2009-12-23',
-    'description': 'M:Wer rutscht als n&auml;chstes aus auf dem Glatteis? Ich: Ich wette,dass du als n&auml;chstes ausr&#8230;aah. ..paff. ..aua. M: Gewonnen!',  # in HTML source
+    'description': 'M:Wer rutscht als n&auml;chstes aus auf dem Glatteis? Ich: Ich wette,dass du als n&auml;chstes ausr&#8230;aah. ..paff. ..aua. M: Gewonnen!',
     'categories': ['meins'],
     'tags': ['Monster', 'winter'],
-    'with': ['M:Wer rutscht als nächstes aus auf dem Glatteis?'],  # 3 segments
-    'without': ['Teilen Sie dies mit:', 'Bloggern gefällt das.', 'Ähnliche Beiträge', ' Kommentare sind geschlossen. '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'with': ['M:Wer rutscht als nächstes aus auf dem Glatteis?'],
+    'without': ['Teilen Sie dies mit:', 'Bloggern gefällt das.', 'Ähnliche Beiträge', ' Kommentare sind geschlossen. '],
+    'comments': [],
+    'license': '',
+    'region': '',
 },
 'https://bigdata.ypart.eu/page/Digitale_Datenerhebung_und_verwertung_als_Herausforderung_f%C3%BCr_Medienbildung_und_Gesellschaft.html': {
-    'file': 'bigdata.ypart.eu.datenerhebung.html',  # stays empty until download
+    'file': 'bigdata.ypart.eu.datenerhebung.html',
     'author': '',
     'title': 'Digitale Datenerhebung und -verwertung als Herausforderung für Medienbildung und Gesellschaft',
     'date': '',
-    'description': 'Ein medienpädagogisches Diskussionspapier zu Big Data und Data Analytics',  # in HTML source
+    'description': 'Ein medienpädagogisches Diskussionspapier zu Big Data und Data Analytics',
     'categories': [],
     'tags': [],
-    'with': ['Das vorliegende Papier wurde für die Gesellschaft für Medienpädagogik', 'Für Nutzende digitaler Dienste ist es derzeit nahezu unmöglich zu erkennen', 'Das Digitale ist zur globalen Infrastruktur geworden.'],  # 3 segments
-    'without': ['Diese Plattform wird betrieben vom', 'In Kooperation mit', 'Follow us on Twitter'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'with': ['Das vorliegende Papier wurde für die Gesellschaft für Medienpädagogik', 'Für Nutzende digitaler Dienste ist es derzeit nahezu unmöglich zu erkennen', 'Das Digitale ist zur globalen Infrastruktur geworden.'],
+    'without': ['Diese Plattform wird betrieben vom', 'In Kooperation mit', 'Follow us on Twitter'],
+    'comments': [],
+    'license': '',
+    'region': '',
 },
 'https://web.archive.org/web/20131110121040/http://www.peptalks.de/haben-sich-mozarts-eltern-wegen-seiner-schulnoten-gesorgt/': {
-    'file': 'archive.peptalks.de.schulnoten.html',  # stays empty until download
+    'file': 'archive.peptalks.de.schulnoten.html',
     'author': 'Günter W. Kienitz',
     'title': 'Haben sich Mozarts Eltern je wegen seiner Schulnoten gesorgt?',
     'date': '2013-04-04',
-    'description': 'Was meinen Sie: haben sie? Haben sich die Eltern von Wolfgang Amadeus Mozart jemals Sorgen wegen der Schulnoten ihres &quot;Wolferls&quot; gemacht? Ich kann Ihnen versichern, das war nie der Fall. Wie ich mi...',  # in HTML source
+    'description': 'Was meinen Sie: haben sie? Haben sich die Eltern von Wolfgang Amadeus Mozart jemals Sorgen wegen der Schulnoten ihres &quot;Wolferls&quot; gemacht? Ich kann Ihnen versichern, das war nie der Fall. Wie ich mi...',
     'categories': ['Bildung', 'Homeschooling', 'Schule'],
     'tags': ['bildung', 'Eltern', 'Hausschule', 'Homeschooling', 'Lehranstalt', 'Lernen', 'Musik', 'Schule', 'Schülereltern', 'schulnoten', 'Schulpflicht', 'Wolfgang Amadeus Mozart', 'Wunderkind'],
-    'with': ['Was meinen Sie', 'Anfang 1762 nach München und anschließend', 'Er lebte still und unscheinbar'],  # 3 segments
-    'without': ['Dichter und Denker zu Schule und Bildung', 'Sie möchten gerne automatisch über jeden', 'Trage deine Daten unten ein'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'with': ['Was meinen Sie', 'Anfang 1762 nach München und anschließend', 'Er lebte still und unscheinbar'],
+    'without': ['Dichter und Denker zu Schule und Bildung', 'Sie möchten gerne automatisch über jeden', 'Trage deine Daten unten ein'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
 },
 'https://web.archive.org/web/20190717140047/http://www.modabot.de/paris-haute-couture-ss14-serkan-cura': {
-    'file': 'archive.modabot.de.serkan.html',  # stays empty until download
+    'file': 'archive.modabot.de.serkan.html',
     'author': 'Barbara Russ',
     'title': 'Paris Haute Couture SS14: Serkan Cura',
     'date': '2014-01-27',
-    'description': 'Haute Couture ist die Krone der Mode-Schöpfung - und Serkan Cura ist ein würdiger Nachfolger der alten Meister seiner Zunft.',  # in HTML source
+    'description': 'Haute Couture ist die Krone der Mode-Schöpfung - und Serkan Cura ist ein würdiger Nachfolger der alten Meister seiner Zunft.',
     'categories': ['Event', 'Fashion'],
     'tags': ['Haute Couture', 'Paris', 'Serkan Cura', 'SS14'],
-    'with': ['die diesmal leider keine Präsentation', 'Die dabei entstehenden Silhouetten'],  # 3 segments
-    'without': ['to see what your friends like', 'Bild via'],  # 3 segments
+    'with': ['die diesmal leider keine Präsentation', 'Die dabei entstehenden Silhouetten'],
+    'without': ['to see what your friends like', 'Bild via'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
 
 'https://www.welt.de/regionales/hamburg/article202159566/Verhaertete-Fronten-nach-Tumulten-bei-Luckes-Vorlesung.html': {
@@ -3587,9 +3587,9 @@ EVAL_PAGES = {
     'description': 'Hamburg (dpa/lno) &#8211; Trotz eines Gespräches zwischen AfD-Mitbegründer Bernd Lucke und der Studierendenvertretung AStA der Universität Hamburg bleiben die Fronten verhärtet. Der AStA (Allgemeiner Studierendenausschuss) verkläre die Vorfälle, sagte Lucke am Samstag der Deutschen Presse-Agentur in Hamburg. Der AStA entziehe sich seiner Verantwortung, indem er in grotesker Weise die Opfer zu Tätern mache, kritisierte Lucke weiter. Ein Gespräch nur mit ... Mehr lesen',
     'categories': ['Hamburg'],
     'tags': [],
-    'with': ['Der AStA (Allgemeiner Studierendenausschuss) verkläre die Vorfälle', 'betonte, nicht zu den Störungen im Hörsaal aufgerufen zu haben', 'hieß es anschließend.'],  # 3 segments
-    'without': ['Lesedauer: 3 Minuten', 'Vom Oma-Schoßhund zurück zum Trend-Hund', 'Newsticker'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Der AStA (Allgemeiner Studierendenausschuss) verkläre die Vorfälle', 'betonte, nicht zu den Störungen im Hörsaal aufgerufen zu haben', 'hieß es anschließend.'],
+    'without': ['Lesedauer: 3 Minuten', 'Vom Oma-Schoßhund zurück zum Trend-Hund', 'Newsticker'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3601,9 +3601,9 @@ EVAL_PAGES = {
     'description': 'Deniz Yücel saß im türkischen Gefängnis – im Auftrag der Öffentlichkeit, wie er bei seiner Buchvorstellung auf der Buchmesse in Frankfurt sagt. Der Flörsheimer berichtet über angstvolle Momente, Erdogans Copyright und die besondere Kraft der Minze. ',
     'categories': ['Kultur'],
     'tags': ['Bücher', 'Frankfurter Buchmesse 2019', 'Literatur', 'Medien'],
-    'with': ['Gefängnis – im Auftrag der Öffentlichkeit', 'diese triste Umgebung schlug Deniz Yücel aufs Gemüt', 'Verfasst mithilfe von Tomatensoße und einer Plastikgabel'],  # 3 segments
-    'without': ['Navigation der Marken des Hessischen Rundfunks', 'Weitere Informationen ', 'Frankfurter Buchmesse 2019'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Gefängnis – im Auftrag der Öffentlichkeit', 'diese triste Umgebung schlug Deniz Yücel aufs Gemüt', 'Verfasst mithilfe von Tomatensoße und einer Plastikgabel'],
+    'without': ['Navigation der Marken des Hessischen Rundfunks', 'Weitere Informationen ', 'Frankfurter Buchmesse 2019'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3615,9 +3615,9 @@ EVAL_PAGES = {
     'description': 'Fünf kleine Kinder, unter ihnen ein Baby, sterben zusammen mit zwei Erwachsenen bei einem Brand in Russland.',
     'categories': ['Feuerwehreinsätze'],
     'tags': [],
-    'with': ['als sich das Feuer im Treppenhaus ausbreitete', 'Dachgeschoss brannte vollkommen aus.', 'ob der Brand wegen eines defekten Elektrogerätes'],  # 3 segments
-    'without': ['Letzter Auftritt bei', 'FAMILIENDRAMA: MUTTER', 'Wir bei WhatsApp'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['als sich das Feuer im Treppenhaus ausbreitete', 'Dachgeschoss brannte vollkommen aus.', 'ob der Brand wegen eines defekten Elektrogerätes'],
+    'without': ['Letzter Auftritt bei', 'FAMILIENDRAMA: MUTTER', 'Wir bei WhatsApp'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3629,9 +3629,9 @@ EVAL_PAGES = {
     'description': '"Wusstet ihr, dass ihr mit der richtigen Ernährung das Wachstum eurer Haare beschleunigen könnt? Mit diesen Lebensmitteln bekommt ihr im Handumdrehen eine lange Löwenmähne...',
     'categories': [],
     'tags': ['Lange Haare', 'Haare', 'Lebensmittel'],
-    'with': ['Haare beschleunigen könnt?', 'sowie Kalzium, Eisen, Zink und Biotin enthalten', 'Für Rapunzelhaare sorgt übrigens auch'],  # 3 segments
-    'without': ['Weitere Themen', 'Richtig frühstücken', 'Hinweis ausblenden', 'Klambt Style-Verlag GmbH & Co. KG'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Haare beschleunigen könnt?', 'sowie Kalzium, Eisen, Zink und Biotin enthalten', 'Für Rapunzelhaare sorgt übrigens auch'],
+    'without': ['Weitere Themen', 'Richtig frühstücken', 'Hinweis ausblenden', 'Klambt Style-Verlag GmbH & Co. KG'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3643,9 +3643,9 @@ EVAL_PAGES = {
     'description': '&quot;Außen knusprig, innen cremig&quot; So beschreibt Leibniz ihr neues Produkt &quot;Keks´n Cream&quot;. Das beste kommt jetzt: Beim Rewe Produkttest der nächsten Woche',
     'categories': [],
     'tags': ['Gratisartikel & Kostenlos'],
-    'with': ['„Außen knusprig, innen cremig“', 'Das beste kommt jetzt:', 'Euer HansEhrlich'],  # 3 segments
-    'without': ['Kostenlos zum Newsletter anmelden', 'GRATIS-Jahresabo abstauben', 'Top-Vergleiche', 'Noch nicht angemeldet?'],  # 3 segments
-    'comments': ['Prospekt next week', 'unserem Markt waren aber keine mehr da', 'ich gerne mit, klingt leck'],  # 0 or 3 segments
+    'with': ['„Außen knusprig, innen cremig“', 'Das beste kommt jetzt:', 'Euer HansEhrlich'],
+    'without': ['Kostenlos zum Newsletter anmelden', 'GRATIS-Jahresabo abstauben', 'Top-Vergleiche', 'Noch nicht angemeldet?'],
+    'comments': ['Prospekt next week', 'unserem Markt waren aber keine mehr da', 'ich gerne mit, klingt leck'],
     'license': '',
     'region': 'DE',
 },
@@ -3657,9 +3657,9 @@ EVAL_PAGES = {
     'description': 'Der Premierminister muss eine Verlängerung der Brexit-Frist beantragen. Kann er sein Versprechen einhalten, das Land am 31. Oktober aus der EU zu ...',
     'categories': ['Politik'],
     'tags': ['Boris Johnson' 'EU', 'Premierminister' 'Niederlage', 'Abstimmung', 'EU-Gipfel', 'Brüssel'],
-    'with': ['Der Premierminister muss eine Verlängerung', 'empfindliche Niederlage zugefügt.', 'mit knapper Mehrheit in einem Referendum für den Austritt'],  # 3 segments
-    'without': ['Themen in diesem Artikel', 'Video', 'Drucken'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Der Premierminister muss eine Verlängerung', 'empfindliche Niederlage zugefügt.', 'mit knapper Mehrheit in einem Referendum für den Austritt'],
+    'without': ['Themen in diesem Artikel', 'Video', 'Drucken'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3671,9 +3671,9 @@ EVAL_PAGES = {
     'description': 'Am 8. Spieltag der Bundesliga treffen Borussia Dortmund und Borussia Mönchengladbach aufeinander. So sehen Sie das Spiel live im TV und im Stream.',
     'categories': [],
     'tags': [],
-    'with': ['So sehen Sie das Spiel live', 'dennoch ist die Gladbacher Verletztenliste weiterhin lang', '» Zum Angebot: Borussia Dortmund', 'Tipp: Die Sport-App'],  # 3 segments
-    'without': ['Kein Bild, kein Ton und trotzdem bestens informiert', ' Sehen Sie die Highlights der europäischen Top-Ligen', 'Gefällt Ihnen dieser Artikel?', 'Aktuelle Testberichte von Hard- und Software'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['So sehen Sie das Spiel live', 'dennoch ist die Gladbacher Verletztenliste weiterhin lang', '» Zum Angebot: Borussia Dortmund', 'Tipp: Die Sport-App'],
+    'without': ['Kein Bild, kein Ton und trotzdem bestens informiert', ' Sehen Sie die Highlights der europäischen Top-Ligen', 'Gefällt Ihnen dieser Artikel?', 'Aktuelle Testberichte von Hard- und Software'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3685,9 +3685,9 @@ EVAL_PAGES = {
     'description': 'Immer wieder werden am ISS Dome tote Tauben gefunden. Viele verenden qualvoll in den Netzen, die unter dem Dach der Halle angebracht wurden.',
     'categories': ['Düsseldorf'],
     'tags': [],
-    'with': ['Viele verenden qualvoll in den Netzen', 'Das soll das Problem lösen', 'em städtischen Veterinäramt umgesetzt.'],  # 3 segments
-    'without': ['zwischen türkischer und kurdischer Mannschaft', 'URL zum Kopieren', 'Inhalt teilen', 'Sei der/die Erste deiner Freunde'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Viele verenden qualvoll in den Netzen', 'Das soll das Problem lösen', 'em städtischen Veterinäramt umgesetzt.'],
+    'without': ['zwischen türkischer und kurdischer Mannschaft', 'URL zum Kopieren', 'Inhalt teilen', 'Sei der/die Erste deiner Freunde'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3699,9 +3699,9 @@ EVAL_PAGES = {
     'description': 'Stühle, Leuchten und ein Abendmahl aus Gips. Im Kücknitzer Kirchen-Forum wurden Dachboden-Schätze der Kirche St. Johannes versteigert. Für die Neugestaltung des Gotteshauses kam viel Geld zusammen.',
     'categories': [],
     'tags': [],
-    'with': ['wurden Dachboden-Schätze der Kirche St. Johannes versteigert', 'Kirchenvorsteher Niels Sönnichsen hat alle Schätze', 'Gemälde werden hoch gehandelt'],  # 3 segments
-    'without': ['Newsletter abonnieren', "Die Kultkneipe schließt: Jutta's Eck", 'Weitere LN+ Artikel'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['wurden Dachboden-Schätze der Kirche St. Johannes versteigert', 'Kirchenvorsteher Niels Sönnichsen hat alle Schätze', 'Gemälde werden hoch gehandelt'],
+    'without': ['Newsletter abonnieren', "Die Kultkneipe schließt: Jutta's Eck", 'Weitere LN+ Artikel'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3713,9 +3713,9 @@ EVAL_PAGES = {
     'description': 'With the integration of AI into the work of both medical professionals and hospital systems, expect to see dramatic changes in both patient health outcomes and in the operational efficiency of hospitals. ',
     'categories': ['Blog Home AI', 'Machine Learning'],
     'tags': ['AI', 'Artificial Intelligence', 'Industry News Roundup', 'machine learning', 'Video'],
-    'with': ['Follow us to stay up to date on industry trends.', 'How Major Hospitals are Already Using AI', 'With predictive analytics,'],  # 3 segments
-    'without': ['Trending Posts', 'Subscribe to email updates', 'Receive our monthly newsletter'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Follow us to stay up to date on industry trends.', 'How Major Hospitals are Already Using AI', 'With predictive analytics,'],
+    'without': ['Trending Posts', 'Subscribe to email updates', 'Receive our monthly newsletter'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3727,9 +3727,9 @@ EVAL_PAGES = {
     'description': 'Immer aktuelle Apple-News, Tipps, Tricks und Testberichte rund um Mac, iPhone, iPad und Co.',
     'categories': ['iPhone'],
     'tags': [],
-    'with': ['one 11 und xs und ipads sind keinen zugriff mehr auf den appstore', 'und bevor wieder die übliche häme'],  # 3 segments
-    'without': ['Kommentieren', 'Sie müssen sich einloggen, um sich an einer Diskussion beteiligen zu können.', 'wo immer es sinnvoll erscheint. Sie unterstützen'],  # 3 segments
-    'comments': ['ntr mobilen Daten auf den App Store zugreifen', 'erst kürzlich hier im Forum?', 'Ist aber nicht von Dauer.'],  # 0 or 3 segments
+    'with': ['one 11 und xs und ipads sind keinen zugriff mehr auf den appstore', 'und bevor wieder die übliche häme'],
+    'without': ['Kommentieren', 'Sie müssen sich einloggen, um sich an einer Diskussion beteiligen zu können.', 'wo immer es sinnvoll erscheint. Sie unterstützen'],
+    'comments': ['ntr mobilen Daten auf den App Store zugreifen', 'erst kürzlich hier im Forum?', 'Ist aber nicht von Dauer.'],
     'license': '',
     'region': 'DE',
 },
@@ -3741,9 +3741,9 @@ EVAL_PAGES = {
     'description': 'Das britische Unterhaus hat die Entscheidung über das neue EU-Austrittsabkommen verschoben und Premierminister Boris Johnson damit eine weitere Niederlage zugefügt. Wie vom Gesetz verlangt, ersucht die britische Regierung die EU nun um eine Verschiebung des für 31. Oktober geplanten EU-Austritts',
     'categories': [],
     'tags': [],
-    'with': ['eine Brexit-Verschiebung bei der EU beantragt', 'über den EU-Austritt Grossbritanniens gebracht. Eine Mehrheit ', 'Dies könnte aus ihrer Sicht als Ersatz für den Grundsatzentscheid vom Samstag herhalten'],  # 3 segments
-    'without': ['Niederlage für Boris Johnson – Britische Regierung will Brexit-Verschiebung beantragen', 'Wagen Sie den anderen Blick mit unlimitiertem Zugang zur digitalen NZZ', 'Haben Sie schon ein Benutzerkonto?'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['eine Brexit-Verschiebung bei der EU beantragt', 'über den EU-Austritt Grossbritanniens gebracht. Eine Mehrheit ', 'Dies könnte aus ihrer Sicht als Ersatz für den Grundsatzentscheid vom Samstag herhalten'],
+    'without': ['Niederlage für Boris Johnson – Britische Regierung will Brexit-Verschiebung beantragen', 'Wagen Sie den anderen Blick mit unlimitiertem Zugang zur digitalen NZZ', 'Haben Sie schon ein Benutzerkonto?'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3755,9 +3755,9 @@ EVAL_PAGES = {
     'description': 'Am 22. Oktober 2019 erscheint die Platinum Edition des Landwirtschaft-Simulator 2019 mit einer Menge neuen Content auf Windows PCs, Mac, Xbox One und..." ',
     'categories': [],
     'tags': ['Spiele-Trailer', 'Landwirtschafts-Simulator 19', 'Video', 'Trailer', 'PC', 'PlayStation 4', 'Xbox One', 'PlayStation', 'Xbox'],
-    'with': ['auf Windows PCs, Mac, Xbox One und PS4. Der Trailer gibt euch einen kurzen Überblick zu den zusätzlichen Inhalten.', 'als eigenständiges Spiel und wird zudem'],  # 3 segments
-    'without': ['Kommentare', 'alle anzeigen', 'Nur angemeldete Benutzer können kommentieren und bewerten.', 'Steam'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['auf Windows PCs, Mac, Xbox One und PS4. Der Trailer gibt euch einen kurzen Überblick zu den zusätzlichen Inhalten.', 'als eigenständiges Spiel und wird zudem'],
+    'without': ['Kommentare', 'alle anzeigen', 'Nur angemeldete Benutzer können kommentieren und bewerten.', 'Steam'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3769,9 +3769,9 @@ EVAL_PAGES = {
     'description': 'Eintracht Braunschweig ist in der Dritten Liga seit dem 1. September sieglos. Das Remis im Testspiel gegen den HSV macht den Niedersachsen Mut für das heutige Heimspiel gegen Spitzenreiter Unterhaching.',
     'categories': ['Fußball'],
     'tags': [],
-    'with': ['Das Gefühl, nach dem Schlusspfiff die Hände nach oben', 'Bis auf Nehrig und Fürstner', 'hmann sprach auf der Pressekonferenz am Freitag von einem "sehr guten Test" und freute sich darüber, dass bis auf die Langzeitverletzten Bernd Nehrig und Stepha'],  # 3 segments
-    'without': ['Mögliche Aufstellung', 'Sail United: Das Meer ist barrierefrei ', 'Ergebnisse, Tabellenstände und die Spieltage im Überblick.'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Das Gefühl, nach dem Schlusspfiff die Hände nach oben', 'Bis auf Nehrig und Fürstner', 'hmann sprach auf der Pressekonferenz am Freitag von einem "sehr guten Test" und freute sich darüber, dass bis auf die Langzeitverletzten Bernd Nehrig und Stepha'],
+    'without': ['Mögliche Aufstellung', 'Sail United: Das Meer ist barrierefrei ', 'Ergebnisse, Tabellenstände und die Spieltage im Überblick.'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3783,8 +3783,8 @@ EVAL_PAGES = {
     'description': 'Peace for our time“ war 1938 der Auftakt zur bisher größten Katastrophe, die die Menschheit sich selbst geschaffen hat. Hoffen wir inständig, dass das aktuelle US-Appeasement nicht eines Tages ähnlich beurteilt werden muss.',
     'categories': [],
     'tags': [],
-    'with': ['war 1938 der Auftakt zur bisher größten', 'Frieden in unserer Zeit?', 'Außer Kuscheleinheiten nichts gewesen.'],  # 3 segments
-    'without': ['Täglich schreiben unabhängige', 'Unterstützen Sie diese Form', 'Türkei: Der euroamerikanische Abschied aus der Weltpolitik'],  # 3 segments
+    'with': ['war 1938 der Auftakt zur bisher größten', 'Frieden in unserer Zeit?', 'Außer Kuscheleinheiten nichts gewesen.'],
+    'without': ['Täglich schreiben unabhängige', 'Unterstützen Sie diese Form', 'Türkei: Der euroamerikanische Abschied aus der Weltpolitik'],
     'comments': [],  # new comments online!!
     'license': '',
     'region': 'DE',
@@ -3797,9 +3797,9 @@ EVAL_PAGES = {
     'description': 'Läuft Piotr Trochowski künftig wieder für den HSV auf? Seit dieser Woche trainiert der 35-Jährige bei der dritten Mannschaft des Vereins mit, könnte schon bald in der Oberliga Hamburg zum Einsatz kommen. Dann würde der HSV auf gleich zwei Ex-Nationalspieler zurückgreifen können – denn Marcell Jansen (33) ist bereits fester Bestandteil des Teams. Nun hofft „Cello“, dass Trochowski es ihm nachmacht, sagte der MOPO: „Ich werde sehr stark auf ihn einreden, damit er auch wirklich bei uns ...',
     'categories': ['Sport'],
     'tags': [],
-    'with': ['künftig wieder für den HSV auf? ', 'Es bringt riesigen Spaß, die Liga hat sehr viel Tradition', 'Oberliga ist keine Pillepalle-Liga'],  # 3 segments
-    'without': ['haben einen guten Draht.', '4 Tsd. Abonnenten', 'Kommentieren Sie hier', 'URL zum Kopieren', 'Messenger'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['künftig wieder für den HSV auf? ', 'Es bringt riesigen Spaß, die Liga hat sehr viel Tradition', 'Oberliga ist keine Pillepalle-Liga'],
+    'without': ['haben einen guten Draht.', '4 Tsd. Abonnenten', 'Kommentieren Sie hier', 'URL zum Kopieren', 'Messenger'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3811,9 +3811,9 @@ EVAL_PAGES = {
     'description': 'Krebskongress in Linz über Schul- und Komplementärmedizin.',
     'categories': ['Gesundheit'],
     'tags': [],
-    'with': ['Darüber diskutieren Experten seit gestern', 'Wer sollte also die Komplementärmedizin anbieten?', 'www.selbertun.at'],  # 3 segments
-    'without': ['Leiterin Redaktion Leben', 'Die OÖNachrichten nehmen den Schutz Ihrer Privatsphäre sehr ernst.', '3:1 - Vorwärts Steyr half der SV Ried '],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Darüber diskutieren Experten seit gestern', 'Wer sollte also die Komplementärmedizin anbieten?', 'www.selbertun.at'],
+    'without': ['Leiterin Redaktion Leben', 'Die OÖNachrichten nehmen den Schutz Ihrer Privatsphäre sehr ernst.', '3:1 - Vorwärts Steyr half der SV Ried '],
+    'comments': [],
     'license': '',
     'region': 'AT',
 },
@@ -3825,9 +3825,9 @@ EVAL_PAGES = {
     'description': 'Nahrungsergänzungsmittel - Das dubiose Geschäft mit der Hoffnung | Video | Dubiose Händler versprechen Hilfe bei Schlafstörungen, Gelenkschmerzen, erhöhten Cholesterinwerten oder sogar Krebs. &quot;betrifft&quot; beleuchtet, wie es Gesetzeslücken ermöglichen, dass sogar gefährliche Nahrungsergänzungsmittel völlig unkontrolliert auf den Markt gelangen.',
     'categories': [],
     'tags': [],
-    'with': ['Dubiose Händler versprechen Hilfe bei Schlafstörungen'],  # 3 segments
-    'without': ['Navigation schliessen', 'Mehr aus der Sendung', 'Unfallbetrüger'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Dubiose Händler versprechen Hilfe bei Schlafstörungen'],
+    'without': ['Navigation schliessen', 'Mehr aus der Sendung', 'Unfallbetrüger'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3839,9 +3839,9 @@ EVAL_PAGES = {
     'description': 'Während Mesut Özil mit Deutschland abrechnet, geben die Auseinandersetzungen zwischen Kurden und Türken in deutschen Straßen einen Vorgeschmack auf die Zukunft. In Essen mußte ein Diskogast seine Kreuzkette verbergen. Der Türsteher wollte es so. <i>Boris T. Kaiser blickt zurück.',
     'categories': [],
     'tags': [],
-    'with': ['Im Interview mit dem Sportportal', 'Ist Özil ein verkappter Feingeist?', 'nicht für einen Rosenkranz hält.'],  # 3 segments
-    'without': ['Der nächste Beitrag', 'Die Kommentarfunktion wird 2 Tage nach Veröffentlichungsdatum des Beitrages geschlossen.', 'Meistkommentiert'],  # 3 segments
-    'comments': ['wichtig ist lebenswichtig, Christen sind böse und die Räume der Frankfurter Buchmesse sind frei'],  # 0 or 3 segments
+    'with': ['Im Interview mit dem Sportportal', 'Ist Özil ein verkappter Feingeist?', 'nicht für einen Rosenkranz hält.'],
+    'without': ['Der nächste Beitrag', 'Die Kommentarfunktion wird 2 Tage nach Veröffentlichungsdatum des Beitrages geschlossen.', 'Meistkommentiert'],
+    'comments': ['wichtig ist lebenswichtig, Christen sind böse und die Räume der Frankfurter Buchmesse sind frei'],
     'license': '',
     'region': 'DE',
 },
@@ -3853,9 +3853,9 @@ EVAL_PAGES = {
     'description': 'Schleweis,EZB,Sparkassen,Geldpolitik,Niedrigzinsen,DSGV,Fusion,Helaba,Konjunktur,Investition,LBBW,IW Köln,Deutsche Bank,S-Finanzgruppe,DekaBank,IMF,Helmut Schleweis,Michael Hüther',
     'categories': [],
     'tags': ['EZB', 'Bild', 'Landesbanken', 'Banken in Deutschland', 'Sparkassen', 'Helmut Schleweis', 'Konjunktur', 'Europäische Union', 'Deutscher Sparkassen- und Giroverband (DSGV)'],
-    'with': ['Der oberste Sparkassenvertreter hält wegen der Konjunkturabkühlung', 'Damit reiht sich Schleweis bei denjenigen ein', 'Nukleus einer Sparkassenzentralbank'],  # 3 segments
-    'without': ['Deutsche Banken haben den Niedrigzinsen', 'Benachrichtigung aktivieren', 'Flipboard'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Der oberste Sparkassenvertreter hält wegen der Konjunkturabkühlung', 'Damit reiht sich Schleweis bei denjenigen ein', 'Nukleus einer Sparkassenzentralbank'],
+    'without': ['Deutsche Banken haben den Niedrigzinsen', 'Benachrichtigung aktivieren', 'Flipboard'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3867,9 +3867,9 @@ EVAL_PAGES = {
     'description': 'Am Freitagabend krachte ein 19-jähriger Neulenker in Lenzburg in eine Leitplanke. Am Auto und an der Leitplanke entstand ein Sachschaden von 80&#039;000 Franken.',
     'categories': [],
     'tags': [],
-    'with': ['In der Nacht auf Samstag haben zwei junge Lenker', 'Ein Neulenker ist in der Nacht auf Samstag um 23:50', 'Schweizer schrottet Corvette'],  # 3 segments
-    'without': ['1 Kommentar', 'Mehr aus dem Channel', 'Fruchtiger Pinot Grigio zu Saiblingsfilet mit Buttermilch-Dashi'],  # 3 segments
-    'comments': ['Und ich (A) LOCHmuss'],  # 0 or 3 segments
+    'with': ['In der Nacht auf Samstag haben zwei junge Lenker', 'Ein Neulenker ist in der Nacht auf Samstag um 23:50', 'Schweizer schrottet Corvette'],
+    'without': ['1 Kommentar', 'Mehr aus dem Channel', 'Fruchtiger Pinot Grigio zu Saiblingsfilet mit Buttermilch-Dashi'],
+    'comments': ['Und ich (A) LOCHmuss'],
     'license': '',
     'region': 'CH',
 },
@@ -3881,9 +3881,9 @@ EVAL_PAGES = {
     'description': 'Im Aktionszeitraum gleichzeitig zwei Gläser Jacobs Gold instant 200g bei Edeka kaufen. Bei einsendung des Kassenbons und ausgefüllten',
     'categories': [],
     'tags': [],
-    'with': ['Bei einsendung des Kassenbons', '4. 6 € Gutschein für den Einkauf bei Edeka erhalten.', 'Einsendeschluss: 03.11.2019 (Poststempel)'],  # 3 segments
-    'without': ['Deal abgelaufen? Jetzt melden!', 'Kostenlos zum Newsletter anmelden und', 'Du musst angemeldet sein, um einen Kommentar abzugeben.'],  # 3 segments
-    'comments': ['Der 10 Euro Gutschein Deal vor 3 Wochen über Rewe war lukrativer', 'Hast recht, gerade erst gesehen.', 'Der Link geht zu EDEKA-Nordbayern'],  # 0 or 3 segments
+    'with': ['Bei einsendung des Kassenbons', '4. 6 € Gutschein für den Einkauf bei Edeka erhalten.', 'Einsendeschluss: 03.11.2019 (Poststempel)'],
+    'without': ['Deal abgelaufen? Jetzt melden!', 'Kostenlos zum Newsletter anmelden und', 'Du musst angemeldet sein, um einen Kommentar abzugeben.'],
+    'comments': ['Der 10 Euro Gutschein Deal vor 3 Wochen über Rewe war lukrativer', 'Hast recht, gerade erst gesehen.', 'Der Link geht zu EDEKA-Nordbayern'],
     'license': '',
     'region': 'DE',
 },
@@ -3895,9 +3895,9 @@ EVAL_PAGES = {
     'description': 'Die Tanzkompanie des Theaters St.Gallen öffnet mit &quot;Rain&quot;, Kinsun Chans erster choreografischer Arbeit als neuer Tanzchef, traumleicht und bildstark Assoziationsräume.',
     'categories': [],
     'tags': [],
-    'with': ['Nirgends und überall ist das Gedicht,', 'Rund 75 Minuten lang spürt man den', 'die Kunst, das Leben auf sich herabregnen zu lassen.'],  # 3 segments
-    'without': ['Ein Kippmoment in', 'Abonnemente', 'Online Inserat aufgeben'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Nirgends und überall ist das Gedicht,', 'Rund 75 Minuten lang spürt man den', 'die Kunst, das Leben auf sich herabregnen zu lassen.'],
+    'without': ['Ein Kippmoment in', 'Abonnemente', 'Online Inserat aufgeben'],
+    'comments': [],
     'license': '',
     'region': 'CH',
 },
@@ -3911,7 +3911,7 @@ EVAL_PAGES = {
     'tags': [],
     'with': ['wo man in Zürich', '1-2 Spritzer Peychaud', 'Aber eigentlich kommt es für den Privatgebrauch', 'mit Schweizer Einschlag', 'Storming the Sazerac'],
     'without': ['auf Twitter', 'Nachtmodus ein', 'Warum Trump jetzt Syrien um die Ohren fliegt', 'Shot Happens', 'Geht man auf die Anfänge'],
-    'comments': [],  # 0 or 3 segments
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3923,9 +3923,9 @@ EVAL_PAGES = {
     'description': 'Die Opernball-Grande-Dame und Burgschauspielerin Lotte Tobisch ist Samstagfrüh im Alter von 93 Jahren gestorben. Die Wienerin prägte unter anderem 16 turbulente Jahre lang den Opernball als Organisatorin.',
     'categories': [],
     'tags': [],
-    'with': ['Die Opernball-Grande-Dame und Burgschauspielerin Lotte Tobisch', 'Zahlreiche Auszeichnungen', 'Auch bei der jüngsten Wahl'],  # 3 segments
-    'without': ['ORF2 zeigt in memoriam', 'die Funktionalität dieser Website zu gewährleisten', 'Aktuell in wien', 'Viele Freunde, Verwandte und Fans haben sich', 'Georg Hochmuth'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Die Opernball-Grande-Dame und Burgschauspielerin Lotte Tobisch', 'Zahlreiche Auszeichnungen', 'Auch bei der jüngsten Wahl'],
+    'without': ['ORF2 zeigt in memoriam', 'die Funktionalität dieser Website zu gewährleisten', 'Aktuell in wien', 'Viele Freunde, Verwandte und Fans haben sich', 'Georg Hochmuth'],
+    'comments': [],
     'license': '',
     'region': 'AT',
 },
@@ -3937,9 +3937,9 @@ EVAL_PAGES = {
     'description': '',
     'categories': [],
     'tags': ['biggest', 'history', 'laundering', 'money', 'scheme', 'ukraine', 'uncovered'],
-    'with': ['Jewish oligarchs Igor Kolomoisky and', 'The Chairwoman of Ukraine’s Central Bank', 'Now as to those missing IMF billions, '],  # 3 segments
-    'without': ['Privacy & Cookies: This site uses', 'If you’re running an ad-blocker' , "Don't have time to read every single post"],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Jewish oligarchs Igor Kolomoisky and', 'The Chairwoman of Ukraine’s Central Bank', 'Now as to those missing IMF billions, '],
+    'without': ['Privacy & Cookies: This site uses', 'If you’re running an ad-blocker' , "Don't have time to read every single post"],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -3951,9 +3951,9 @@ EVAL_PAGES = {
     'description': 'Ich freue mich wie ein kleines Kind. Nachdem ich in meinem letzten VLog die Performance von Lightroom auf meinem neuen iMac Pro beklagt hatte, bekam ich von drei Lesern einen sehr hilfreichen Tipp.',
     'categories': ['Mac'],
     'tags': ['iMac', 'lightroom', 'performance'],
-    'with': ['Ich freue mich wie ein kleines Kind.', 'Jetzt rennt der iMac Pro wie Hulle', 'Auflösung der 5K-Displays'],  # 3 segments
-    'without': ['Ich mag jede Art von Fotografie', 'Leave a Comment! ', 'Ja, ich möchte den wöchentlichen Newsletter bekommen'],  # 3 segments
-    'comments': ['Ein kurzer Tipp noch von mir, man braucht kein Switchres X', 'Freuen weil man Lightroom performant', 'Gruss aus der Schweiz'],  # 0 or 3 segments
+    'with': ['Ich freue mich wie ein kleines Kind.', 'Jetzt rennt der iMac Pro wie Hulle', 'Auflösung der 5K-Displays'],
+    'without': ['Ich mag jede Art von Fotografie', 'Leave a Comment! ', 'Ja, ich möchte den wöchentlichen Newsletter bekommen'],
+    'comments': ['Ein kurzer Tipp noch von mir, man braucht kein Switchres X', 'Freuen weil man Lightroom performant', 'Gruss aus der Schweiz'],
     'license': '',
     'region': 'DE',
 },
@@ -3965,9 +3965,9 @@ EVAL_PAGES = {
     'description': 'Weltweit finanzieren Banken und Investoren Unternehmungen, die dem Klima schaden.',
     'categories': [],
     'tags': [],
-    'with': ['Weltweit finanzieren Banken und Investoren Unternehmungen', 'wollten damit vor zwei Wochen die Verbindung zwischen der Wall Street', 'JPMorgan Chase'],  # 3 segments
-    'without': ['Bundesstaat Pennsylvania', 'Wählen Sie Ihren Zugang und lesen Sie weiter:', 'Cookies & Tracking'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'with': ['Weltweit finanzieren Banken und Investoren Unternehmungen', 'wollten damit vor zwei Wochen die Verbindung zwischen der Wall Street', 'JPMorgan Chase'],
+    'without': ['Bundesstaat Pennsylvania', 'Wählen Sie Ihren Zugang und lesen Sie weiter:', 'Cookies & Tracking'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -3979,9 +3979,9 @@ EVAL_PAGES = {
     'description': 'Die Bahn ändert die Zutrittsbestimmungen zur DB Lounge: Fahrgäste mit einem Sparpreis der ersten Klasse müssen künftig draußen bleiben.',
     'categories': [],
     'tags': ['bahn', 'deutschland'],
-    'with': ['Die Deutsche Bahn streicht den Zutritt zu ihrer DB Lounge', 'Die Deutsche Bahn ändert zum Fahrplanwechsel', 'Neues gastronomisches Konzept'],  # 3 segments
-    'without': ['Das könnte Dich auch interessieren', 'Sder Gründer des Zugreiseblog', 'Erfahre zudem,', 'Mit meinem kostenlosen Newsletter verpasst'],  # 3 segments
-    'comments': ['Mir ist auch schon aufgefallen, dass es speziell in München', 'Glückwunsch an den Autor', 'Warum will man das abschaffen ?'],  # 0 or 3 segments
+    'with': ['Die Deutsche Bahn streicht den Zutritt zu ihrer DB Lounge', 'Die Deutsche Bahn ändert zum Fahrplanwechsel', 'Neues gastronomisches Konzept'],
+    'without': ['Das könnte Dich auch interessieren', 'Sder Gründer des Zugreiseblog', 'Erfahre zudem,', 'Mit meinem kostenlosen Newsletter verpasst'],
+    'comments': ['Mir ist auch schon aufgefallen, dass es speziell in München', 'Glückwunsch an den Autor', 'Warum will man das abschaffen ?'],
     'license': '',
     'region': 'DE',
 },
@@ -3994,8 +3994,8 @@ EVAL_PAGES = {
     'categories': [],
     'tags': [],
     'with': ['Das ist die zweithöchste von vier Stufen', 'Die zentralen Fragen der Folge im Überblick', 'Was sagt Professor Drosten dazu?', 'Aus China.', 'On-Off-Mechanismus', 'Gerne. Bis morgen.'],
-    'without': ['Regelmäßig beantwortet Virus-Forscher', 'Dieses Skript als PDF herunterladen', 'Themen: Kritik aus dem Internet', 'Was Sie zum Coronavirus wissen müssen', 'Drucken'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'without': ['Regelmäßig beantwortet Virus-Forscher', 'Dieses Skript als PDF herunterladen', 'Themen: Kritik aus dem Internet', 'Was Sie zum Coronavirus wissen müssen', 'Drucken'],
+    'comments': [],
     'license': '',
     'region': 'DE',
 },
@@ -4008,8 +4008,8 @@ EVAL_PAGES = {
     'categories': [],
     'tags': ['Coronavirus', 'Rechtswissenschaft'],
     'with': ['Die verfassungsrechtswissenschaftliche Begleitung', 'Selbstgewissheit abrüsten', 'eine besondere Vorbildfunktion.'],
-    'without': ['is a Professor of Public', 'I know that I may withdraw my consent', 'If you enjoyed reading this post', 'VerfBlog', 'Comments under pseudonym are allowed', 'European constitutional space and beyond.'],  # 3 segments
-    'comments': ['Ich fürchte, das überzeugt mich nicht.', 'Binnennormierung innerhalb', 'etwas sauer aufgestoßen sind.'],  # 0 or 3 segments
+    'without': ['is a Professor of Public', 'I know that I may withdraw my consent', 'If you enjoyed reading this post', 'VerfBlog', 'Comments under pseudonym are allowed', 'European constitutional space and beyond.'],
+    'comments': ['Ich fürchte, das überzeugt mich nicht.', 'Binnennormierung innerhalb', 'etwas sauer aufgestoßen sind.'],
     'license': 'CC BY-NC-ND',
     'region': 'DE',
 },
@@ -4022,8 +4022,8 @@ EVAL_PAGES = {
     'categories': [],
     'tags': ['vegetarisch', 'Kuchen & Gebäck', 'süß', 'fruchtig', 'Desserts & Backen', 'einfach', 'LECKER-Sonderheft 1/2019'],
     'with': ['Mini-Marshmallows getoppt wird', 'Vanillepuddingpulver', 'Frischhaltefolie', '300 Minuten Wartezeit', 'Zum Servieren Kuchen vorsichtig', '390 kcal'],
-    'without': ['Pin it', 'Versenden', 'Gebratener Blumenkohlsalat'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'without': ['Pin it', 'Versenden', 'Gebratener Blumenkohlsalat'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -4036,8 +4036,8 @@ EVAL_PAGES = {
     'categories': [],
     'tags': ['Backen', 'Vegetarisch', 'Kuchen', 'Frucht', 'Gluten', 'Lactose'],
     'with': ['der cremigste Kuchen', 'Für den Mürbeteig:', 'Margarine oder Butter', 'Mandarine(n), je ca.', 'Koch-/Backzeit ca.', 'Für eine 26er Springform.'],
-    'without': ['Für dieses Rezept gibt es noch', 'Lactose', 'Tipp falls bei euch'],  # 3 segments
-    'comments': ['Hallo zusammen, könnte ich', 'LG steinchen71', 'ja natürlich.'],  # 0 or 3 segments
+    'without': ['Für dieses Rezept gibt es noch', 'Lactose', 'Tipp falls bei euch'],
+    'comments': ['Hallo zusammen, könnte ich', 'LG steinchen71', 'ja natürlich.'],
     'license': '',
     'region': '',
 },
@@ -4050,8 +4050,8 @@ EVAL_PAGES = {
     'categories': [],
     'tags': [],
     'with': ['Saftig-weiche Muffins aus Hefeteig', 'für das Rezept Bienenstich-Muffins', 'Dr. Oetker Vanillin-Zucker', 'Belag:', 'Heißluft etwa 180 °C', 'ein großes Brett legen.'],
-    'without': ['Merken', 'Verwendete Dr. Oetker Produkte', '(24 Rezepte)'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'without': ['Merken', 'Verwendete Dr. Oetker Produkte', '(24 Rezepte)'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -4064,8 +4064,8 @@ EVAL_PAGES = {
     'categories': [],
     'tags': [],
     'with': ['für 12 Stück', 'z.B. Dr. Oetker Gelatine fix (15 g)', 'Für dieses Rezept benötigst', 'Teigschaber', 'und schneide sie in kleine Würfel.'],
-    'without': ['Bild anzeigen', 'Schreib du doch einen', 'Neugierig geworden?'],  # 3 segments
-    'comments': [],  # 0 or 3 segments
+    'without': ['Bild anzeigen', 'Schreib du doch einen', 'Neugierig geworden?'],
+    'comments': [],
     'license': '',
     'region': '',
 },
@@ -4078,8 +4078,8 @@ EVAL_PAGES = {
     'categories': [],
     'tags': [],
     'with': ['einen echten Klassiker aus der Backstube.', 'Sobald der Kuchen gebacken', 'Diesen Beitrag habe ich 2017', '6 mittelgroße Eier', 'Rührteig auf dem Blech verteilen', 'Du möchtest Zutaten ersetzen?'],
-    'without': ['Pinnen', 'Rezept drucken', 'Zudem erhältst du jede Woche', 'Hallo, ich bin Foodbloggerin'],  # 3 segments
-    'comments': ['Danke schonmals für die Antwort', 'Du solltest 1-2 Eigelb weg lassen', 'Puh,eine ganz normale Blechgröße'],  # 0 or 3 segments
+    'without': ['Pinnen', 'Rezept drucken', 'Zudem erhältst du jede Woche', 'Hallo, ich bin Foodbloggerin'],
+    'comments': ['Danke schonmals für die Antwort', 'Du solltest 1-2 Eigelb weg lassen', 'Puh,eine ganz normale Blechgröße'],
     'license': '',
     'region': '',
 },
@@ -4088,419 +4088,797 @@ EVAL_PAGES = {
     'author': 'Thomas Steinberg',
     'title': 'Hingucker beim Flugplatzfest in Dessau: Zweite F13 kurz vor der Zulassung',
     'date': '2019-10-19',
-    'description': '"Vor eineinhalb Jahren war das von Hugo Junkers entwickelte erste Ganzmetallflugzeug der Welt der Hingucker beim Flugplatzfest in Dessau.',  # in HTML source
+    'description': '"Vor eineinhalb Jahren war das von Hugo Junkers entwickelte erste Ganzmetallflugzeug der Welt der Hingucker beim Flugplatzfest in Dessau.',
     'categories': [],
     'tags': [],
-    'with': ['entstanden ist er am Flughafen Dübendorf nahe Zürich.', 'Zugleich habe man das Fahrwerk verbessert.', 'dann auch die vierte Maschine gebaut und zugelassen werden.'],  # 3 segments
-    'without': ['MZ Dessau-Roßlau bei Facebook', 'polinturner suchen Meister: Stelldichein der deutschen Hoffnungen in Dessau', 'zu die einwandfreie Funktion der Webse'],  # 3 segments
+    'with': ['entstanden ist er am Flughafen Dübendorf nahe Zürich.', 'Zugleich habe man das Fahrwerk verbessert.', 'dann auch die vierte Maschine gebaut und zugelassen werden.'],
+    'without': ['MZ Dessau-Roßlau bei Facebook', 'polinturner suchen Meister: Stelldichein der deutschen Hoffnungen in Dessau', 'zu die einwandfreie Funktion der Webse'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
    'https://www.rundschau-online.de/region/rhein-berg/bergischgladbach/pflaster-desaster-gladbacher-fussgaengerzone-in-schlechtem-zustand-33335514': {
     'file': '0b5db24739704283849ca3ed20ce09d4.html',
     'author': 'Claus Boelen-Theile',
     'title': 'Bergisch Gladbach: die Stadt verklagt die Baufirma wegen schlechter Pflastersteine',
     'date': '2019-10-19',
-    'description': 'Diese Flaniermeile ähnelt einer übergroßen Stolperfalle. Dabei ist das Pflaster der Gladbacher Fußgängerzone erst sechs Jahre alt.',  # in HTML source
+    'description': 'Diese Flaniermeile ähnelt einer übergroßen Stolperfalle. Dabei ist das Pflaster der Gladbacher Fußgängerzone erst sechs Jahre alt.',
     'categories': [],
     'tags': [],
-    'with': ['An manchen Stellen wirkt das Straßenpflaster deutlich in die Jahre gekommen.', '„Wir hätten es auch lieber anders, aber das Ver', 'Auf den Zeitrahmen des Verfahrens habe die Stadt allerdings keinen Einfluss.'],  # 3 segments
-    'without': ['Weitere interessante News', 'Aktuelle Artikel', 'damit die Stadt in einem Gerichtsverfahren Indizien vorlegen'],  # 3 segments
+    'with': ['An manchen Stellen wirkt das Straßenpflaster deutlich in die Jahre gekommen.', '„Wir hätten es auch lieber anders, aber das Ver', 'Auf den Zeitrahmen des Verfahrens habe die Stadt allerdings keinen Einfluss.'],
+    'without': ['Weitere interessante News', 'Aktuelle Artikel', 'damit die Stadt in einem Gerichtsverfahren Indizien vorlegen'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://www.finanztip.de/betriebliche-altersvorsorge/': {
-    'file': 'finanztip.de.altersvorsorge.html',  # stays empty until download
+    'file': 'finanztip.de.altersvorsorge.html',
     'author': 'Sara Zinnecker ',
     'title': 'Mit Hilfe des Chefs für die Rente sparen',
     'date': '2020-02-05',
-    'description': 'Betriebliche Altersvorsorge sichert eine Zusatzrente im Alter. Das Modell lohnt besonders, wenn der Chef mit einzahlt.',  # in HTML source
+    'description': 'Betriebliche Altersvorsorge sichert eine Zusatzrente im Alter. Das Modell lohnt besonders, wenn der Chef mit einzahlt.',
     'categories': [],
     'tags': [],
-    'with': ['20,2 Mio.', 'Altersvorsorge (bAV) versteht man den Aufbau einer Zusatzrente über den Arbeitgeber.', 'vor allem vor der Frage: Lohnt sich das für', 'erläutern wir diese genauer.', 'So viel spart ein Durchschnittsverdiener', 'Im Beispiel verliert der Durchschnittsverdiener durch die Entgeltumwandlung'],  # 3 segments
-    'without': ['Weitere Themen', 'Geld erhalten wir, wenn Sie di', 'Aktuelle Ausgabe des Newsletters', 'Unser Tipp: Bleiben Sie zum Thema', '05. Februar 2020 '],  # 3 segments
+    'with': ['20,2 Mio.', 'Altersvorsorge (bAV) versteht man den Aufbau einer Zusatzrente über den Arbeitgeber.', 'vor allem vor der Frage: Lohnt sich das für', 'erläutern wir diese genauer.', 'So viel spart ein Durchschnittsverdiener', 'Im Beispiel verliert der Durchschnittsverdiener durch die Entgeltumwandlung'],
+    'without': ['Weitere Themen', 'Geld erhalten wir, wenn Sie di', 'Aktuelle Ausgabe des Newsletters', 'Unser Tipp: Bleiben Sie zum Thema', '05. Februar 2020 '],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://www.smava.de/privatkredit/privatkredit-zinsen/': {
-    'file': 'smava.de.privatkredit.html',  # stays empty until download
+    'file': 'smava.de.privatkredit.html',
     'author': '',
     'title': 'Wie hoch sind die Zinsen für einen Privatkredit? ',
     'date': '',
-    'description': 'Die Höhe der Zinsen für Ihren Privatkredit bestimmt, wie viel Geld Sie insgesamt zurückzahlen müssen. Tipps zur Berechnung finden Sie hier!',  # in HTML source
+    'description': 'Die Höhe der Zinsen für Ihren Privatkredit bestimmt, wie viel Geld Sie insgesamt zurückzahlen müssen. Tipps zur Berechnung finden Sie hier!',
     'categories': [],
     'tags': [],
-    'with': ['und wie die Berechnung Ihrer Privatkredit-Zinsen erfolgt, erfahren Sie hier.', '286,35 €', 'ein unbefristetes Arbeitsverhältnis sowie Vermögenswerte bzw. Sicherheiten', 'Änderung der Zinshöhe bei Privatkrediten', 'Wie wird die Höhe der fälligen Zinsen für meinen Privatkredit bestimmt?', 'Gilt die vereinbarte Zinsbindung für die gesamte Kreditlaufzeit,'],  # 3 segments
-    'without': ['Erhalten Sie kostenlos aktuelle Kredit-News und Informationen zu Sonderzins-Aktionen', 'Kostenlose Beratung', 'zum Kreditvergleich'],  # 3 segments
+    'with': ['und wie die Berechnung Ihrer Privatkredit-Zinsen erfolgt, erfahren Sie hier.', '286,35 €', 'ein unbefristetes Arbeitsverhältnis sowie Vermögenswerte bzw. Sicherheiten', 'Änderung der Zinshöhe bei Privatkrediten', 'Wie wird die Höhe der fälligen Zinsen für meinen Privatkredit bestimmt?', 'Gilt die vereinbarte Zinsbindung für die gesamte Kreditlaufzeit,'],
+    'without': ['Erhalten Sie kostenlos aktuelle Kredit-News und Informationen zu Sonderzins-Aktionen', 'Kostenlose Beratung', 'zum Kreditvergleich'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://www.finanzcheck.de/autokredit/leasing-oder-finanzierung/': {
-    'file': 'finanzcheck.de.finanzierung.html',  # stays empty until download
+    'file': 'finanzcheck.de.finanzierung.html',
     'author': '',
     'title': 'Leasing oder Finanzierung – was lohnt sich mehr?',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Im Vergleich zum Leasing gehört bei der Finanzierung das Fahrzeug am Ende dem Halter', 'auch die Leasingraten senken, indem die Kunden eine Anzahlung leisten.', 'Leasingverträge erstrecken sich meist', 'Effektiver Jahreszins: 3,9 Prozent', 'höheres Verschleißrisiko aufgrund einer längeren Nutzungsdauer'],  # 3 segments
-    'without': ['Gemeinsam finden wir Ihren passenden Kredit!', '0,00% fester Sollzins', '3737 Bewertungen'],  # 3 segments
+    'with': ['Im Vergleich zum Leasing gehört bei der Finanzierung das Fahrzeug am Ende dem Halter', 'auch die Leasingraten senken, indem die Kunden eine Anzahlung leisten.', 'Leasingverträge erstrecken sich meist', 'Effektiver Jahreszins: 3,9 Prozent', 'höheres Verschleißrisiko aufgrund einer längeren Nutzungsdauer'],
+    'without': ['Gemeinsam finden wir Ihren passenden Kredit!', '0,00% fester Sollzins', '3737 Bewertungen'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://www.vergleich.de/auto-leasen-finanzieren-oder-kaufen.html': {
-    'file': 'vergleich.de.leasen.html',  # stays empty until download
+    'file': 'vergleich.de.leasen.html',
     'author': '',
     'title': 'Auto leasen, finanzieren oder kaufen – was ist günstiger?',
     'date': '',
-    'description': 'Das neue Auto leasen, finanzieren oder kaufen? Viele Wege führen zum eigenen Auto. Wir zeigen, ob sich Barkauf, Leasing oder eine Finanzierung für Sie lohnt',  # in HTML source
+    'description': 'Das neue Auto leasen, finanzieren oder kaufen? Viele Wege führen zum eigenen Auto. Wir zeigen, ob sich Barkauf, Leasing oder eine Finanzierung für Sie lohnt',
     'categories': [],
     'tags': [],
-    'with': ['welche Vor- und Nachteile es dabei gibt.', 'Vorteile bei der Finanzierung über einen Autokredit:', 'Kratzer und Beulen kommen Sie teuer zu stehen.'],  # 3 segments
-    'without': ['Zahnzusatzversicherung Vergleich', 'So hoch sind die Kreditzinsen 2020', 'Können wir helfen?'],  # 3 segments
+    'with': ['welche Vor- und Nachteile es dabei gibt.', 'Vorteile bei der Finanzierung über einen Autokredit:', 'Kratzer und Beulen kommen Sie teuer zu stehen.'],
+    'without': ['Zahnzusatzversicherung Vergleich', 'So hoch sind die Kreditzinsen 2020', 'Können wir helfen?'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://www.focus.de/auto/experten/auto-leasen-oder-kaufen-fuer-wen-lohnt-sich-was_id_9209161.html': {
-    'file': 'focus.de.leasen.html',  # stays empty until download
+    'file': 'focus.de.leasen.html',
     'author': 'Robin Tschöpe',
     'title': 'Auto leasen oder kaufen: Für wen lohnt sich was?',
     'date': '2018-07-06',
-    'description': 'Leasen, finanzieren oder kaufen? Wer ein neues Auto will, hat mehrere Möglichkeiten. Jede bringt ihr Vor- und Nachteile mit. FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.',  # in HTML source
+    'description': 'Leasen, finanzieren oder kaufen? Wer ein neues Auto will, hat mehrere Möglichkeiten. Jede bringt ihr Vor- und Nachteile mit. FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.',
     'categories': [],
     'tags': [],
-    'with': ['FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.', 'Mit einem Schlag ist d', 'Wer es gerne flexibel mag'],  # 3 segments
-    'without': ['Bitte loggen Sie sich vor dem Kommentieren ein', '„Experten“ abonnieren', 'Persönlicher Newsletter'],  # 3 segments
+    'with': ['FOCUS-Online-Experte Robin Tschöpe hat sie verglichen.', 'Mit einem Schlag ist d', 'Wer es gerne flexibel mag'],
+    'without': ['Bitte loggen Sie sich vor dem Kommentieren ein', '„Experten“ abonnieren', 'Persönlicher Newsletter'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://www.comparis.ch/leasing/info/autofinanzierung': {
-    'file': 'comparis.ch.autofinanzierung.html',  # stays empty until download
+    'file': 'comparis.ch.autofinanzierung.html',
     'author': '',
     'title': 'Finanzierung Ihres Autos',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Eine häufig gestellte Frage: Leasing oder Autokredit?', 'Total Differenz (Ersparnis beim Leasing)', 'Welche Art der Autofinanzierung ideal ist'],  # 3 segments
-    'without': ['Immer aktuell informiert über Sparmöglichkeiten sowie Experten-Tipps', '8003 Zürich', 'Mit der Anmeldung stimme ich der Bearbeitung'],  # 3 segments
+    'with': ['Eine häufig gestellte Frage: Leasing oder Autokredit?', 'Total Differenz (Ersparnis beim Leasing)', 'Welche Art der Autofinanzierung ideal ist'],
+    'without': ['Immer aktuell informiert über Sparmöglichkeiten sowie Experten-Tipps', '8003 Zürich', 'Mit der Anmeldung stimme ich der Bearbeitung'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'CH',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'CH',
 },
     'https://www.verivox.de/kredit/leasing-oder-finanzierung/': {
-    'file': 'verivox.de.finanzierung.html',  # stays empty until download
+    'file': 'verivox.de.finanzierung.html',
     'author': '',
     'title': 'Leasing oder Finanzierung? Jetzt Angebote berechnen!',
     'date': '',
-    'description': 'Leasing oder Finanzierung? Die Verivox-Tarifexperten zeigen, ob Sie Ihr Auto leasen oder kaufen sollten – mit Rechnern, Beispielen, Vor- und Nachteilen.',  # in HTML source
+    'description': 'Leasing oder Finanzierung? Die Verivox-Tarifexperten zeigen, ob Sie Ihr Auto leasen oder kaufen sollten – mit Rechnern, Beispielen, Vor- und Nachteilen.',
     'categories': [],
     'tags': [],
-    'with': ['In diesem Ratgeber finden Sie Rechenbeis', 'kann als Barzahler auftreten und einen Rabatt aushandeln.', 'Die Drei-Wege-, Ballon- bzw. Vario-Finanzierung'],  # 3 segments
-    'without': ['sachlich und geduldig', 'Der Verivox-Newsletter', 'in den Bereichen Energie, Telekommunikation, Versicherungen'],  # 3 segments
+    'with': ['In diesem Ratgeber finden Sie Rechenbeis', 'kann als Barzahler auftreten und einen Rabatt aushandeln.', 'Die Drei-Wege-, Ballon- bzw. Vario-Finanzierung'],
+    'without': ['sachlich und geduldig', 'Der Verivox-Newsletter', 'in den Bereichen Energie, Telekommunikation, Versicherungen'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://fincompare.de/firmenwagen-leasing-oder-finanzierung': {
-    'file': 'fincompare.de.firmenwagen.html',  # stays empty until download
+    'file': 'fincompare.de.firmenwagen.html',
     'author': 'Martin Junker',
     'title': 'Firmenwagen: Leasing oder Finanzierung?',
     'date': '2019-10-07',
-    'description': 'Leasen oder Finanzieren eines Firmenwagens - Erfahren Sie die Besonderheiten sowie die Vor- und Nachteile ✔ für Ihr Unternehmen!',  # in HTML source
+    'description': 'Leasen oder Finanzieren eines Firmenwagens - Erfahren Sie die Besonderheiten sowie die Vor- und Nachteile ✔ für Ihr Unternehmen!',
     'categories': [],
     'tags': [],
-    'with': ['In diesem Artikel stellen wir die wichtigsten Punkte und vor allem die steuerlichen Aspekte', 'ist die Höhe der Monatsraten dementsprechend niedriger als beim Kilometerleasing.', 'Kann nicht steuerlich geltend gemacht werden'],  # 3 segments
-    'without': ['Umsatzsteuererstattung bei Leasing und Mietkauf?', 'Nutzen Sie FinCompare als Wettbewerbsvorteil', 'vielfältige Suchoptionen, Transparenz, Übersichtlichkeit'],  # 3 segments
+    'with': ['In diesem Artikel stellen wir die wichtigsten Punkte und vor allem die steuerlichen Aspekte', 'ist die Höhe der Monatsraten dementsprechend niedriger als beim Kilometerleasing.', 'Kann nicht steuerlich geltend gemacht werden'],
+    'without': ['Umsatzsteuererstattung bei Leasing und Mietkauf?', 'Nutzen Sie FinCompare als Wettbewerbsvorteil', 'vielfältige Suchoptionen, Transparenz, Übersichtlichkeit'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://www.giromatch.com/online-kredit/1000-euro-kredit': {
-    'file': 'giromatch.com.kredit.html',  # stays empty until download
+    'file': 'giromatch.com.kredit.html',
     'author': '',
     'title': '1000 Euro Kredit',
     'date': '',
-    'description': '1000 Euro Kredit von GIROMATCH ✓ Günstig & unkompliziert ✓ Auszahlung direkt aufs Konto ✓ 100% Unverbindlich ➤ Jetzt 1000 Euro Kredit sichern ',  # in HTML source
+    'description': '1000 Euro Kredit von GIROMATCH ✓ Günstig & unkompliziert ✓ Auszahlung direkt aufs Konto ✓ 100% Unverbindlich ➤ Jetzt 1000 Euro Kredit sichern ',
     'categories': [],
     'tags': [],
-    'with': ['Fragen Sie noch heute den Kredit an und Sie haben bestenfalls morgen', 'Grundeinkommen bzw. keine Überschuldung', 'mit Expressüberweisung auch als Blitzkredit auszahlbar.'],  # 3 segments
-    'without': ['info@giromatch.com', 'Ausgewählte Kreditprodukte', 'Bewerten Sie dieses Produkt'],  # 3 segments
+    'with': ['Fragen Sie noch heute den Kredit an und Sie haben bestenfalls morgen', 'Grundeinkommen bzw. keine Überschuldung', 'mit Expressüberweisung auch als Blitzkredit auszahlbar.'],
+    'without': ['info@giromatch.com', 'Ausgewählte Kreditprodukte', 'Bewerten Sie dieses Produkt'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://www.financescout24.de/kredit/autokredit': {
-    'file': 'financescout24.de.autokredit.html',  # stays empty until download
+    'file': 'financescout24.de.autokredit.html',
     'author': '',
     'title': 'Jetzt günstigen Autokredit finden',
     'date': '',
-    'description': 'Jeder zweite Neuwagen wird mit Hilfe eines Kredits gekauft. Vergleichen Sie Jetzt bequem online, unverbindlich und schufa-neutral günstige Autokredite.',  # in HTML source
+    'description': 'Jeder zweite Neuwagen wird mit Hilfe eines Kredits gekauft. Vergleichen Sie Jetzt bequem online, unverbindlich und schufa-neutral günstige Autokredite.',
     'categories': [],
     'tags': [],
-    'with': ['Diese bringt weitere Kosten mit sich.', 'hat der Finanzierer größere Chancen auf eine Vergütung ohne Abschläge', 'Wieso sind Autobank-Kredite trotz niedriger Zinsen oft teurer?'],  # 3 segments
-    'without': ['Die Nr. 1 rund um Immobilien', '© Copyright 2000', 'Aktuelle News'],  # 3 segments
+    'with': ['Diese bringt weitere Kosten mit sich.', 'hat der Finanzierer größere Chancen auf eine Vergütung ohne Abschläge', 'Wieso sind Autobank-Kredite trotz niedriger Zinsen oft teurer?'],
+    'without': ['Die Nr. 1 rund um Immobilien', '© Copyright 2000', 'Aktuelle News'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://web.archive.org/web/20140226054445/http://www.time4talks.com/2013/08/07/weitere-digitalisierung-der-schweizer-kinos/': {
-    'file': 'archive.org.time4talks.com.kinos.html',  # stays empty until download
+    'file': 'archive.org.time4talks.com.kinos.html',
     'author': 'R. R.',
     'title': 'Weitere Digitalisierung der Schweizer Kinos',
     'date': '2013-08-07',
-    'description': 'Digitalisierung der Schweizer Kinos',  # in HTML source
+    'description': 'Digitalisierung der Schweizer Kinos',
     'categories': [],
     'tags': [],
-    'with': ['Die Umstellung auf Hightech-Beamer hat nämlich kein Kinosterben verursacht', 'Das BAK will mit diesen Beiträgen die Digitalisierung', 'Auf 270 Leinwänden sind auch 3-D-Filme zu sehen.'],  # 3 segments
-    'without': ['Bisher keine Kommentare', '(erforderlich)', 'Nutzen Sie unsere Tools'],  # 3 segments
+    'with': ['Die Umstellung auf Hightech-Beamer hat nämlich kein Kinosterben verursacht', 'Das BAK will mit diesen Beiträgen die Digitalisierung', 'Auf 270 Leinwänden sind auch 3-D-Filme zu sehen.'],
+    'without': ['Bisher keine Kommentare', '(erforderlich)', 'Nutzen Sie unsere Tools'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://web.archive.org/web/20181206101316/https://swap-stop.org/de/filmswap/zusammenarbeit-shuji-walter-april-2018-i/': {
-    'file': 'archive.org.swap-stop.org.shuji.html',  # stays empty until download
+    'file': 'archive.org.swap-stop.org.shuji.html',
     'author': ' Walter von Aachen',
     'title': 'Zusammenarbeit Shuji ./. Walter April 2018 I',
     'date': '2018-04-11',
-    'description': 'Standorte: Shuji: Japan. Walter: Deutschland. Filmmaterial: Fuji X-TRA 400. Kameras: Shuji: Widelux. Walter: PENTAX Z-1 p. Belichtungsfolge: Shuji. Walter.',  # in HTML source
+    'description': 'Standorte: Shuji: Japan. Walter: Deutschland. Filmmaterial: Fuji X-TRA 400. Kameras: Shuji: Widelux. Walter: PENTAX Z-1 p. Belichtungsfolge: Shuji. Walter.',
     'categories': ['Filmswap', 'Shuji-Walter'],
     'tags': [' Deutschland', 'Doppelbelichtung', 'Filmswap', 'Fujifilm X-TRA 400', 'Japan', 'PENTAX Z-1p', 'Shuji', 'Walter', 'zusammenarbeit'],
-    'with': ['Fuji X-TRA 400.', 'Walter: PENTAX Z-1', 'Belichtungsfolge'],  # 3 segments
-    'without': ['Wird geladen', 'Teilen mit:', '(c) 2016'],  # 3 segments
+    'with': ['Fuji X-TRA 400.', 'Walter: PENTAX Z-1', 'Belichtungsfolge'],
+    'without': ['Wird geladen', 'Teilen mit:', '(c) 2016'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://web.archive.org/web/20160401095740/http://www.welpenkaufen24.de/': {
-    'file': 'archive.org.welpenkaufen24.de.html',  # stays empty until download
+    'file': 'archive.org.welpenkaufen24.de.html',
     'author': '',
     'title': 'Welpen kaufen – Tipps zu jeder Hunderasse',
     'date': '',
-    'description': 'Blog zum Thema Welpen-Kaufen. Tipps zum Welpenkauf in jeder Hunderasse. Augen auf beim Welpen-Kauf!',  # in HTML source
+    'description': 'Blog zum Thema Welpen-Kaufen. Tipps zum Welpenkauf in jeder Hunderasse. Augen auf beim Welpen-Kauf!',
     'categories': [],
     'tags': [],
-    'with': ['dass Bekannte bei unseriösen Züchtern', 'Beschimpfungen akzeptiere ich aber nicht unter den Kommentaren.', 'möchte ich in diesem Blog den ein oder'],  # 3 segments
-    'without': ['Hunderassen', 'Welcher Hund passt zu mir?', 'Erforderliche Felder sind markiert'],  # 3 segments
+    'with': ['dass Bekannte bei unseriösen Züchtern', 'Beschimpfungen akzeptiere ich aber nicht unter den Kommentaren.', 'möchte ich in diesem Blog den ein oder'],
+    'without': ['Hunderassen', 'Welcher Hund passt zu mir?', 'Erforderliche Felder sind markiert'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://web.archive.org/web/20160330101229/http://muffinrezept.net/muffin-grundrezept': {
-    'file': 'archive.org.muffinrezept.net.grundrezept.html',  # stays empty until download
+    'file': 'archive.org.muffinrezept.net.grundrezept.html',
     'author': '',
     'title': 'Muffin Grundrezept',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': ['Grundrezept', 'Rezepte'],
     'tags': [],
-    'with': ['Ob Schokostückchen, Kokosraspeln, Kakaopulver, Erdbeeren, Kirschen oder anderes Obst', 'bei 180 Grad auf mittlerer Schiene', '15 – 30 Min'],  # 3 segments
-    'without': ['Fluffige Himbeermuffins', 'Kommentieren', 'Bildquellen'],  # 3 segments
-    'comments': ['Warum 2mal Zucker ?:-)', 'man auch Lebensmittelfarbe hinzufügen?', 'Könnt ihr mir sagen, ob die Silikonform daran schuld war?'],  # 0 or 3 segments
-    'license': 'CC-BY-SA',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'with': ['Ob Schokostückchen, Kokosraspeln, Kakaopulver, Erdbeeren, Kirschen oder anderes Obst', 'bei 180 Grad auf mittlerer Schiene', '15 – 30 Min'],
+    'without': ['Fluffige Himbeermuffins', 'Kommentieren', 'Bildquellen'],
+    'comments': ['Warum 2mal Zucker ?:-)', 'man auch Lebensmittelfarbe hinzufügen?', 'Könnt ihr mir sagen, ob die Silikonform daran schuld war?'],
+    'license': 'CC-BY-SA',
+    'region': '',
 },
     'https://web.archive.org/web/20160218174457/http://bewegliche-lettern.de/2010/05/literatur-und-animated-typography/': {
-    'file': 'archive.org.bewegliche-lettern.de.typography.html',  # stays empty until download
+    'file': 'archive.org.bewegliche-lettern.de.typography.html',
     'author': '',
     'title': 'Literatur und Animated Typography',
     'date': '2010-05-19',
-    'description': 'bewegliche lettern ist das private blog von Thomas Rohde über Literatur und die Buchindustrie im Medienwandel.',  # in HTML source
+    'description': 'bewegliche lettern ist das private blog von Thomas Rohde über Literatur und die Buchindustrie im Medienwandel.',
     'categories': ['Lesenswert', 'Literatur', 'Medienwandel'],
     'tags': ['Animated', 'Typography', 'iPad', 'Vook'],
-    'with': ['Ich schlage darin vor, in der Remix-Kunst der Animated Typography ein Beispiel dafür zu sehen', 'und der Literatur vielleicht besonders gerechte'],  # 3 segments
-    'without': ['Lesenswert: Interview über Google Editions in Deutschland', 'Comments are closed.', 'Alle redaktionellen Eigenbeiträge'],  # 3 segments
+    'with': ['Ich schlage darin vor, in der Remix-Kunst der Animated Typography ein Beispiel dafür zu sehen', 'und der Literatur vielleicht besonders gerechte'],
+    'without': ['Lesenswert: Interview über Google Editions in Deutschland', 'Comments are closed.', 'Alle redaktionellen Eigenbeiträge'],
     'comments': [],
-    'license': 'CC BY-NC-SA 3.0 DE',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': 'CC BY-NC-SA 3.0 DE',
+    'region': '',
 },
     'https://web.archive.org/web/20150721045344/http://rent-a-pastor.com/2015/05/18/neue-hochzeitslokation-in-roedermark-hessen-geheimtipp/': {
-    'file': 'archive.org.rent-a-pastor.com.hochzeitslokation.html',  # stays empty until download
+    'file': 'archive.org.rent-a-pastor.com.hochzeitslokation.html',
     'author': 'Samuel Diekmann',
     'title': ' Neue Hochzeitslokation in Rödermark/ Hessen – Geheimtipp',
     'date': '',
-    'description': 'Blog über freie und kirchliche Trauungen, Hochzeiten und Eheschließungen. Alles rund ums Heiraten, Hochzeitsfeiern, Rituale und Zeremonien.',  # in HTML source
+    'description': 'Blog über freie und kirchliche Trauungen, Hochzeiten und Eheschließungen. Alles rund ums Heiraten, Hochzeitsfeiern, Rituale und Zeremonien.',
     'categories': [],
     'tags': [],
-    'with': ['am Parkhotel vorbei gefahren und habe über das weiträumige Gelände gestaunt', 'auch einen unglaublichen 5000 m2 Park mit See und Springbrunnen', 'Redner in der Region findest Du'],  # 3 segments
-    'without': ['Kommentar verfassen', 'Melden Sie sich für unseren Newsletter an', 'Di-Fr 10-18:00 Uhr. '],  # 3 segments
+    'with': ['am Parkhotel vorbei gefahren und habe über das weiträumige Gelände gestaunt', 'auch einen unglaublichen 5000 m2 Park mit See und Springbrunnen', 'Redner in der Region findest Du'],
+    'without': ['Kommentar verfassen', 'Melden Sie sich für unseren Newsletter an', 'Di-Fr 10-18:00 Uhr. '],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://web.archive.org/web/20171008220355/http://juergenheitmann.com/essays/2017/01/aggression-fotografie/': {
-    'file': 'archive.org.juergenheitmann.com.aggression.html',  # stays empty until download
+    'file': 'archive.org.juergenheitmann.com.aggression.html',
     'author': 'Jürgen Heitmann',
     'title': 'Aggression Fotografie',
     'date': '2017-01-26',
-    'description': 'Fotografie ein Akt der Aggression? Fotos schießen, Schnappschuss, Fotoshooting ... Das geschossene Foto als Trophäe. Das klingt schon recht aggressiv, nach jage…',  # in HTML source
+    'description': 'Fotografie ein Akt der Aggression? Fotos schießen, Schnappschuss, Fotoshooting ... Das geschossene Foto als Trophäe. Das klingt schon recht aggressiv, nach jage…',
     'categories': [],
     'tags': ['aggression', 'kontemplativ'],
-    'with': ['"To photograph people is to violate them"', 'in vergangenen Kulturen und unserer aktuellen Gesellschaft (70er Jahre)', 'welche alternativen Ausdrücke die empfangenden Haltung'],  # 3 segments
-    'without': ['View all essays by tag', '#kontemplativ', 'Mindfulness und kontemplative Fotografie'],  # 3 segments
+    'with': ['"To photograph people is to violate them"', 'in vergangenen Kulturen und unserer aktuellen Gesellschaft (70er Jahre)', 'welche alternativen Ausdrücke die empfangenden Haltung'],
+    'without': ['View all essays by tag', '#kontemplativ', 'Mindfulness und kontemplative Fotografie'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://web.archive.org/web/20080731095558/http://www.dimido.de/2008/07/29/was-ist-virales-marketing/': {
-    'file': 'archive.org.dimido.de.marketing.html',  # stays empty until download
+    'file': 'archive.org.dimido.de.marketing.html',
     'author': 'Martin Weber',
     'title': 'Was ist Virales Marketing?',
     'date': '',
-    'description': 'Was ist Virales Marketing?',  # in HTML source
+    'description': 'Was ist Virales Marketing?',
     'categories': [],
     'tags': [],
-    'with': ['Marketing halten, habe aber keine Lust dazu, dies zu machen', 'was unter Virales Marketing zu verstehen ist und wie wir unbewusst dadurch beeinflusst werden', 'von Virales Marketing, habe ich festgestellt.'],  # 3 segments
-    'without': ['besserwisser: Stecker ziehen für ne neue IP bringt nix.', 'übernimmt Cherry Corporation', ' E-Mail (wird benötigt und nicht veröffentlicht)'],  # 3 segments
+    'with': ['Marketing halten, habe aber keine Lust dazu, dies zu machen', 'was unter Virales Marketing zu verstehen ist und wie wir unbewusst dadurch beeinflusst werden', 'von Virales Marketing, habe ich festgestellt.'],
+    'without': ['besserwisser: Stecker ziehen für ne neue IP bringt nix.', 'übernimmt Cherry Corporation', ' E-Mail (wird benötigt und nicht veröffentlicht)'],
     'comments': [],
-    'license': 'CC BY-NC-SA 2.0 DE',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': 'CC BY-NC-SA 2.0 DE',
+    'region': 'DE',
 },
     'https://web.archive.org/web/20140109030403/http://nesselsetzer.wordpress.com/2013/12/09/rebloggt-von-gnaddrig-ad-libitum-antipoden-die-wahrheit/': {
-    'file': 'archive.org.nesselsetzer.wordpress.com.antipoden.html',  # stays empty until download
+    'file': 'archive.org.nesselsetzer.wordpress.com.antipoden.html',
     'author': 'Nesselsetzer',
     'title': 'Rebloggt von gnaddrig ad libitum: Antipoden: Die Wahrheit',
     'date': '2013-12-09',
-    'description': 'Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie zu einer offensichtlich aus dem Nichts aufgetauchten Schuhsohle soll heute als lehrreiches Stück und Vorbild für die Entwi...',  # in HTML source
+    'description': 'Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie zu einer offensichtlich aus dem Nichts aufgetauchten Schuhsohle soll heute als lehrreiches Stück und Vorbild für die Entwi...',
     'categories': ['Just For Fun', 'Rebloggt'],
     'tags': ['Antipoden', 'Hirngespinst', 'Kasparei', 'Theorie', 'Weltwissen'],
-    'with': ['Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie', 'ob auf der anderen Seite der Erde überhaupt Menschen leben können.', 'musste so sein, weil wir hier ja nachweislich mit den Füßen nach unten und dem Kopf nach oben herumlaufen'],  # 3 segments
-    'without': ['Die dümmste aller Verschwörungstheorien: Chemtrails', 'Gefällt mir', 'Ähnliche Beiträge'],  # 3 segments
-    'comments': ['Schöne Einleitung', ' Ich verbringe meine Tage normalerweise nicht damit, auf die', 'Same here'],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'with': ['Gnaddrigs erstaunliche Betrachtungsweise und die Entwicklung einer Theorie', 'ob auf der anderen Seite der Erde überhaupt Menschen leben können.', 'musste so sein, weil wir hier ja nachweislich mit den Füßen nach unten und dem Kopf nach oben herumlaufen'],
+    'without': ['Die dümmste aller Verschwörungstheorien: Chemtrails', 'Gefällt mir', 'Ähnliche Beiträge'],
+    'comments': ['Schöne Einleitung', ' Ich verbringe meine Tage normalerweise nicht damit, auf die', 'Same here'],
+    'license': '',
+    'region': '',
 },
     'https://web.archive.org/web/20150206075900/http://www.steinzeitwissen.de/artefakttypen/werkzeuge-des-neandertalers-und-des-modernen-menschen': {
-    'file': 'archive.org.steinzeitwissen.de.werkzeuge.html',  # stays empty until download
+    'file': 'archive.org.steinzeitwissen.de.werkzeuge.html',
     'author': '',
     'title': 'Werkzeuge des Neandertalers und des Modernen Menschen',
     'date': '',
-    'description': 'Werkzeuge des Neandertalers und des Modernen Menschen',  # in HTML source
+    'description': 'Werkzeuge des Neandertalers und des Modernen Menschen',
     'categories': [],
     'tags': [],
-    'with': ['erk­zeug­ty­pen und ihre Lauf­zei­ten be­han­delt.', 'uge und sah sich of­fen­bar nicht ver­an­lasst, die Kern­werk­zeuge zu übernehmen.', 'm Alt­pa­läo­li­thi­kum bis in die Neu­zeit, Tü­bin­gen 2012, Kerns Ver­lag, S. 426'],  # 3 segments
-    'without': ['Proudly powered by WordPress.', 'Überblick + Schülerhilfe', 'Artikel Mittelpaläolithikum'],  # 3 segments
+    'with': ['erk­zeug­ty­pen und ihre Lauf­zei­ten be­han­delt.', 'uge und sah sich of­fen­bar nicht ver­an­lasst, die Kern­werk­zeuge zu übernehmen.', 'm Alt­pa­läo­li­thi­kum bis in die Neu­zeit, Tü­bin­gen 2012, Kerns Ver­lag, S. 426'],
+    'without': ['Proudly powered by WordPress.', 'Überblick + Schülerhilfe', 'Artikel Mittelpaläolithikum'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://web.archive.org/web/20160820205919/http://www.medialepfade.de/2016/01/medienpaedagogin-in-muenchen-gesucht/': {
-    'file': 'archive.org.medialepfade.de.medienpaedagogin.html',  # stays empty until download
+    'file': 'archive.org.medialepfade.de.medienpaedagogin.html',
     'author': 'Danilo Dietsch',
     'title': 'MedienpädagogIn in München gesucht',
     'date': '2016-01-15',
-    'description': 'Wir suchen eine MedienpädagogIn in München in Teilzeitanstellung (60%) “medialepfade.de – Agentur für Medienbildung” ist eine Agentur im Bereich der Medienbildung und Medienpädagogik. Zu unseren Aktivitäten gehören die Konzeption und Durchführung von Aktionen, Projekten und Fortbildungen in den Bereichen Mobiles Lernen, Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpunkt liegt auf der …',  # in HTML source
+    'description': 'Wir suchen eine MedienpädagogIn in München in Teilzeitanstellung (60%) “medialepfade.de – Agentur für Medienbildung” ist eine Agentur im Bereich der Medienbildung und Medienpädagogik. Zu unseren Aktivitäten gehören die Konzeption und Durchführung von Aktionen, Projekten und Fortbildungen in den Bereichen Mobiles Lernen, Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpunkt liegt auf der …',
     'categories': [],
     'tags': [],
-    'with': ['Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpun', 'Professionalität und Souveränität im Umgang mit Partnern und Förderern', 'ngabe des möglichen Eintrittstermins bis zum 01. Februar 2016 an'],  # 3 segments
-    'without': ['lauffähiges Wifi, angetrieben durch ein Fahrrad, um zum Umweltschutz zu animieren @jhacktost https://t.co/8elCKJjm3o', 'Blog-Themen:', 'Möchten Sie unseren Newsletter erhalten?'],  # 3 segments
+    'with': ['Web-Video, Online-Journalismus, sowie ePartizipation, Games und Open Education. Unser inhaltlicher Schwerpun', 'Professionalität und Souveränität im Umgang mit Partnern und Förderern', 'ngabe des möglichen Eintrittstermins bis zum 01. Februar 2016 an'],
+    'without': ['lauffähiges Wifi, angetrieben durch ein Fahrrad, um zum Umweltschutz zu animieren @jhacktost https://t.co/8elCKJjm3o', 'Blog-Themen:', 'Möchten Sie unseren Newsletter erhalten?'],
     'comments': [],
-    'license': 'CC BY-SA 3.0 DE',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': 'CC BY-SA 3.0 DE',
+    'region': 'DE',
 },
     'http://www.modabot.de/paris-haute-couture-ss14-serkan-cura': {
-    'file': 'modabot.de.serkan.html',  # stays empty until download
+    'file': 'modabot.de.serkan.html',
     'author': 'Barbara Russ',
     'title': 'Paris Haute Couture SS14: Serkan Cura',
     'date': '2014-01-27',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': ['Event', 'Fashion'],
     'tags': ['Haute Couture', 'Paris', 'Serkan Cura', 'SS14'],
-    'with': ['Herpen, die diesmal leider keine Präsentation zur Pariser Couture Woche gab', 'Eben so wie Haute Couture eigentlich sein soll: Die Krone der Mode-Schöpfu'],  # 3 segments
-    'without': ['t ist nicht verantwortlich für de', 'Weiterlesen', 'na Wintour Ausstel'],  # 3 segments
+    'with': ['Herpen, die diesmal leider keine Präsentation zur Pariser Couture Woche gab', 'Eben so wie Haute Couture eigentlich sein soll: Die Krone der Mode-Schöpfu'],
+    'without': ['t ist nicht verantwortlich für de', 'Weiterlesen', 'na Wintour Ausstel'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://www.piratenpartei-hessen.de/blog/2020/03/31/solidaritaet-nachbarschaftshilfe/': {
-    'file': 'piratenpartei-hessen.de.nachbarschaftshilfe.html',  # stays empty until download
+    'file': 'piratenpartei-hessen.de.nachbarschaftshilfe.html',
     'author': 'Martina Scharmann',
     'title': 'Solidarität = Nachbarschaftshilfe',
     'date': '2020-03-31',
-    'description': 'Piraten rufen zur Einhaltung der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf! Die Corona-Pandemie breitet sich aus. Ungeachtet der zahlreichen inzwischen eingeleiteten Maßnahmen steigt die&hellip;',  # in HTML source
+    'description': 'Piraten rufen zur Einhaltung der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf! Die Corona-Pandemie breitet sich aus. Ungeachtet der zahlreichen inzwischen eingeleiteten Maßnahmen steigt die&hellip;',
     'categories': [],
     'tags': ['Corona', 'Covid-19', 'Covid19', 'Hilfe', 'Piraten', 'Piratenpartei', 'RKI', 'Robert-Koch-Institut'],
-    'with': ['anbieten und ihren Beitrag leisten,', 'Wohle der Allgemeinheit riskieren. Auch die zahlreichen privaten Initiativen', 'ng der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf'],  # 3 segments
-    'without': ['0 Piratenpartei Hes', 'Bundesschiedsgericht', 'vKV Kassel Stadt-Land-Web'],  # 3 segments
+    'with': ['anbieten und ihren Beitrag leisten,', 'Wohle der Allgemeinheit riskieren. Auch die zahlreichen privaten Initiativen', 'ng der Corona-Schutzmaßnahmen und gegenseitiger Solidarität auf'],
+    'without': ['0 Piratenpartei Hes', 'Bundesschiedsgericht', 'vKV Kassel Stadt-Land-Web'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'https://gormulus.wordpress.com/2012/12/11/das-wird-man-ja-wohl-noch-sagen-durfen/': {
-    'file': 'gormulus.wordpress.com.durfen.html',  # stays empty until download
+    'file': 'gormulus.wordpress.com.durfen.html',
     'author': '',
     'title': '„Das wird man ja wohl noch sagen dürfen!“',
     'date': '2012-12-11',
-    'description': 'Dieser Artikel folgt auf einen betont sachlich gehaltenen Beitrag über die Diskussionsunkultur beim Thema israelisch-palästinensischer Konflikt. Der @tarzun würde sagen, dass wir mal wieder reden m…',  # in HTML source
+    'description': 'Dieser Artikel folgt auf einen betont sachlich gehaltenen Beitrag über die Diskussionsunkultur beim Thema israelisch-palästinensischer Konflikt. Der @tarzun würde sagen, dass wir mal wieder reden m…',
     'categories': ['Inland', 'Politik', 'Rant'],
     'tags': ['Antisemitismus'],
-    'with': ['leicht beratungsresistent erscheint.', 'Ein regelrechter Hammer ist dann die Gleichsetzung von Gaza mit einem KZ.', 'sobald ihre abstruse Gedankenwelt etwas näher beleuchtet wird'],  # 3 segments
-    'without': ['Mielke 2.0', 'icken des JMStV gewidmet.', 'Updates!'],  # 3 segments
-    'comments': ['ie gemeint sind. Vielmehr soll jede kritische Stimme der Politik im Nahen und Mittleren Osten zum Schweig', 'mir einen offen Brief mit Unterschriftenliste gewuenscht.', 'offenem Antisemitismus zu garnieren und das ganze Paket unter dem Deckmäntelchen der Mei'],  # 0 or 3 segments
-    'license': '',  # if CC-...
-    'region': 'CC BY-NC-SA 3.0 DE',  # if obvious: DE, CH, AT
+    'with': ['leicht beratungsresistent erscheint.', 'Ein regelrechter Hammer ist dann die Gleichsetzung von Gaza mit einem KZ.', 'sobald ihre abstruse Gedankenwelt etwas näher beleuchtet wird'],
+    'without': ['Mielke 2.0', 'icken des JMStV gewidmet.', 'Updates!'],
+    'comments': ['ie gemeint sind. Vielmehr soll jede kritische Stimme der Politik im Nahen und Mittleren Osten zum Schweig', 'mir einen offen Brief mit Unterschriftenliste gewuenscht.', 'offenem Antisemitismus zu garnieren und das ganze Paket unter dem Deckmäntelchen der Mei'],
+    'license': '',
+    'region': 'CC BY-NC-SA 3.0 DE',
 },
     'http://diy-expeditions.com/expeditionen-planen/expeditionen-in-uebersee/': {
-    'file': 'diy-expeditions.com.uebersee.html',  # stays empty until download
+    'file': 'diy-expeditions.com.uebersee.html',
     'author': '',
     'title': 'Expeditionen in Übersee',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Wir gehen gerne mit Ihnen Ihr Expeditionskonzept durch.', 'Falls Sie sich für ein vorgeschlagenes Reise-Paket der auf unserer News-Seite vertretenen Tour-Veranstalter entscheiden', 'Sie bezahlen Ihren Guide, Transport, Unterkunft etc. vor Ort und direkt bei Ihrem von uns vermittelten Kontakt.'],  # 3 segments
-    'without': ['Fahrzeug samt Fahrer', 'Neuigkeiten aus unseren Destinationen', 'y-expeditions.com. All rights reserved'],  # 3 segments
+    'with': ['Wir gehen gerne mit Ihnen Ihr Expeditionskonzept durch.', 'Falls Sie sich für ein vorgeschlagenes Reise-Paket der auf unserer News-Seite vertretenen Tour-Veranstalter entscheiden', 'Sie bezahlen Ihren Guide, Transport, Unterkunft etc. vor Ort und direkt bei Ihrem von uns vermittelten Kontakt.'],
+    'without': ['Fahrzeug samt Fahrer', 'Neuigkeiten aus unseren Destinationen', 'y-expeditions.com. All rights reserved'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
 },
     'https://kleinegruenemonster.wordpress.com/2016/01/01/ein-entspannter-start-ins-neue-jahr-2016-be-happy/': {
-    'file': 'kleinegruenemonster.wordpress.com.start.html',  # stays empty until download
+    'file': 'kleinegruenemonster.wordpress.com.start.html',
     'author': 'KleineGrüneMonster',
     'title': 'Ein entspannter Start ins neue Jahr 2016 – be happy! Alles andere kann warten…',
     'date': '2016-01-01',
-    'description': 'Das Wichtigste zuerst: Euch allen ein wunderschönes, neues Jahr 2016, voller Glück, Freude und Schabernack :) Ein neues Jahr beginnt. Auch wenn jedem Morgen ein Neuanfang innewohnt, so hat für mich…',  # in HTML source
+    'description': 'Das Wichtigste zuerst: Euch allen ein wunderschönes, neues Jahr 2016, voller Glück, Freude und Schabernack :) Ein neues Jahr beginnt. Auch wenn jedem Morgen ein Neuanfang innewohnt, so hat für mich…',
     'categories': ['Empfehlung', 'Plattformen', 'Schöne Dinge'],
     'tags': ['Entspannung', 'Glück', 'Neues Jahr', 'Rituale, Wellness'],
-    'with': ['geht es um Themen wie Entspannung, Meditation und Wellness, aber auch Essen, Leben und Fitness.', 'Man zieht Bilanz. Was hat das vergangene Jahr gebracht?', 'Wer, verdammt noch mal, hat die 40 Stunden Arbeitswoche erfunden?'],  # 3 segments
-    'without': ['r unter Namensnennung bzw. Linksetzung. Danke.', 'Benachrichtigungen über neue Beiträge zu', ' Verwendung, Vervielfältigung und Weitergabe der Inhalte'],  # 3 segments
-    'comments': ['Man denkt immer, es ist nicht viel passiert, aber wenn man es genau nimmt, dann tut sich doch immer einiges'],  # 0 or 3 segments
-    'license': 'CC BY-NC 3.0 DE',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'with': ['geht es um Themen wie Entspannung, Meditation und Wellness, aber auch Essen, Leben und Fitness.', 'Man zieht Bilanz. Was hat das vergangene Jahr gebracht?', 'Wer, verdammt noch mal, hat die 40 Stunden Arbeitswoche erfunden?'],
+    'without': ['r unter Namensnennung bzw. Linksetzung. Danke.', 'Benachrichtigungen über neue Beiträge zu', ' Verwendung, Vervielfältigung und Weitergabe der Inhalte'],
+    'comments': ['Man denkt immer, es ist nicht viel passiert, aber wenn man es genau nimmt, dann tut sich doch immer einiges'],
+    'license': 'CC BY-NC 3.0 DE',
+    'region': '',
 },
     'https://www.markeich.de/kontakt/impressum-werbeagentur-soltau/': {
-    'file': 'markeich.de.impressum.html',  # stays empty until download
+    'file': 'markeich.de.impressum.html',
     'author': '',
     'title': 'Impressum',
     'date': '',
-    'description': 'Impressum der Werbeagentur MARKE ICH in Soltau im Heidekreis. ',  # in HTML source
+    'description': 'Impressum der Werbeagentur MARKE ICH in Soltau im Heidekreis. ',
     'categories': [],
     'tags': [],
-    'with': ['ngaben gemäß § 5 TMG', 'bieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtsw', 'rtlich für den Inhalt nach § 55 Abs. 2 RStV'],  # 3 segments
-    'without': ['Auszeichnungen', '© 2020 Agentur MARKE ICH', 'Es gilt die Datenschutzerklärung.'],  # 3 segments
+    'with': ['ngaben gemäß § 5 TMG', 'bieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtsw', 'rtlich für den Inhalt nach § 55 Abs. 2 RStV'],
+    'without': ['Auszeichnungen', '© 2020 Agentur MARKE ICH', 'Es gilt die Datenschutzerklärung.'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': 'DE',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': 'DE',
 },
     'http://www.schlosswirtjuval.it/hof-geschichte/': {
-    'file': 'schlosswirtjuval.it.geschichte.html',  # stays empty until download
+    'file': 'schlosswirtjuval.it.geschichte.html',
     'author': '',
     'title': 'Zur Geschichte des „Oberortlhofs“',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [],
     'tags': [],
-    'with': ['Leider war dies nicht von langer Dauer, denn bereits 1581', 'Den Möglichkeiten des Kommunikationszeitalters setzt er sein Unterwegssein', 'alle 6 bis 14-jährigen Kinder der Juvaler Höfe zum Unterricht'],  # 3 segments
-    'without': ['Messner Mountain Museum Juval', '+39 389 1976362 info@schlosswirtjuval.it', 'Weingut & Hofbrennerei Unterortl'],  # 3 segments
+    'with': ['Leider war dies nicht von langer Dauer, denn bereits 1581', 'Den Möglichkeiten des Kommunikationszeitalters setzt er sein Unterwegssein', 'alle 6 bis 14-jährigen Kinder der Juvaler Höfe zum Unterricht'],
+    'without': ['Messner Mountain Museum Juval', '+39 389 1976362 info@schlosswirtjuval.it', 'Weingut & Hofbrennerei Unterortl'],
     'comments': [],
-    'license': '',  # if CC-...
-    'region': '',  # if obvious: DE, CH, AT
+    'license': '',
+    'region': '',
+},
+'https://www.digitale-exzellenz.de/ki-china-teil-2-wie-das-fernost-facebook-das-gesundheitswesen-revolutioniert/': {
+    'file': 'digitale-exzellenz.de.gesundheitswesen.html',
+    'author': 'Yirou Chen',
+    'title': 'KI @ China (Teil 2): Wie das Fernost-Facebook das Gesundheitswesen revolutioniert',
+    'date': '2018-10-24',
+    'description': 'Tencent will das Gesundheitssystem Chinas mithilfe von KI revolutionieren und investiert massiv in die medizinische Versorgung.',
+    'categories': ['Healthcare'],
+    'tags': ['China', 'Gesundheitswesen', 'INSURANCE_HEALTH_SOCIAL', 'KI', 'Tencent'],
+    'with': ['Nach einem Einblick in zwei künstlich intelligente Sicherheitsprojekt', 'Chinas medizinische Versorgung ist, salopp gesagt, verbesserungswürdig: wenig ', 'Weitere genutzte Quellen in englischer und chinesischer Sprache:'],
+    'without': ['Empfohlene Beiträge', 'Schreibe einen Kommentar ', 'Process Mining und Verhaltensvielfalt miteinander'],
+    'comments': [],
+    'license': 'DE',
+    'region': '',
+},
+'https://www.mdr.de/thueringen/corona-lockerung-autohaeuser-werkstatten-100.html': {
+    'file': 'mdr.de.autohaeuser.html',
+    'author': 'MDR THÜRINGEN/ls',
+    'title': 'Autohäuser rechnen mit langsamem Anlaufen des Geschäfts',
+    'date': '2020-04-20',
+    'description': 'Autohändler in Thüringen dürfen ihre Verkaufsräume wieder öffnen. Mit einem großen Ansturm rechnen sie angesichts der andauernden Corona-Krise jedoch nicht.',
+    'categories': ['Thüringen'],
+    'tags': [],
+    'with': ['Geschäftes. Helmut Peter von der gleichnamigen Autohaus-Gruppe sagte MDR THÜRINGEN am Mo', 'ann. Nach Informationen von MDR THÜRINGEN hatte ein VW-Händler in Erfurt bis Montagmorgen nicht gewusst, dass er wieder Kunden im Autohaus beraten darf. Ein BMW-Händler in Weimar erklärte, auch in d', 'am Montag, die Händler seien froh, dass sie wieder die Verkaufsräume öffnen dürften. Allerdings se'],
+    'without': ['Weitere Informationen zum Coronavirus in Thüringen:', 'Mehr aus Thüringen', 'Der Mitteldeutsche Rundfunk ist Mitglied der ARD.'],
+    'comments': ['Daran, dass die Autohändler so ziemlich als erst'],
+    'license': '',
+    'region': 'DE',
+},
+'https://pythonspeed.com/articles/pipenv-docker/': {
+    'file': 'pythonspeed.com.docker.html',
+    'author': 'Itamar Turner-Trauring',
+    'title': 'Faster Docker builds with pipenv, poetry, or pip-tools',
+    'date': '2020-06-04',
+    'description': 'Installing dependencies separately from your code allows you to take advantage of Docker&rsquo;s layer caching. Here&rsquo;s how to do it with pipenv, poetry, or pip-tools.',
+    'categories': [],
+    'tags': [],
+    'with': ['CMD flask run exampleapp:app', 'The takeaway', 'Install dependencies separately and earlier in your Dockerfile to ensure faster builds.'],
+    'without': ['Learn how to build fast, production-ready Docker images—read the rest of ', 'You need to stay competitive in the job market—but there', 'Next: Elegantly activating a virtualenv in a Dockerfile'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.bbc.com/news/world-us-canada-52241221': {
+    'file': 'bbc.com.52241221.html',
+    'author': '',
+    'title': 'Coronavirus: New York ramps up mass burials amid outbreak',
+    'date': '2020-04-10',
+    'description': 'Drone footage shows coffins stacked in a pit in the city, as the state logs more cases than any country.',
+    'categories': ['Coronavirus pandemic'],
+    'tags': ['New York', 'Coronavirus pandemic', 'United States'],
+    'with': ['ried in a mass grave in New York City, as the death toll from the coronavirus continues to rise.', 'The daily rise in coronavirus deaths announced', 'unemployment claims had topped'],
+    'without': ['Can we answer your question on the coronavirus?', 'Four out of five jobs affected by virus globally', 'Top Stories'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.handelsblatt.com/politik/international/grenzschliessungen-report-von-der-deutsch-franzoesischen-grenze-der-partner-wird-zum-fremden/25776812.html': {
+    'file': 'handelsblatt.com.grenzschliessungen.html',
+    'author': 'Thomas Hanke',
+    'title': 'Deutschland, Frankreich und die Rückkehr der Ressentiments',
+    'date': '2020-04-27',
+    'description': 'Frankreich,Deutschland,Luxemburg,Coronakrise,Grenzschließungen,Ressentiments,Außenpolitik mit Land,ZF,Innenministerium,Ford,Deutschlandradio,En Marche!,CDU,TAZ,Christophe Arend,Helmut Kohl,Emmanuel Macron,Jean-Yves Le Drian,Andreas Jung,Armin Laschet',
+    'categories': [],
+    'tags': [],
+    'with': ['Wenn Helmut Kohl emotional wu', 'en darf und vor allen Dingen nicht zwischen Deutschland und Frankreich.“', 'an der Grenze zu Frankreich '],
+    'without': ['Jetzt weiterlesen', 'Serviceangebote', 'aktivieren'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.pcgamer.com/through-the-darkest-of-times-review/': {
+    'file': 'pcgamer.com.darkest.html',
+    'author': 'Luke Kemp',
+    'title': 'Through the Darkest of Times review',
+    'date': '2020-02-11',
+    'description': '',
+    'categories': [],
+    'tags': [],
+    'with': ['your grip on the concept further, by saying little more than "go s', 'Developer Paintbucket Games', 'A superbly crafted game that serves as storyteller, teacher, and concerned friend.'],
+    'without': ['PC Gamer Newsletter', 'C Gamer is supported by its audience. When you buy throu', 'Also on PC Gamer'],
+    'comments': ['Down-votes are allowed again? Oh jolly.', 'n stopped. China buying PPE from countries all over the planet and selling it back at a huge ma', 'hard enough which is very disappointing. This could have been a great opportunity to show '],
+    'license': '',
+    'region': '',
+},
+'https://www.thelocal.se/20200428/meet-the-swede-who-tattooed-a-state-epidemiologists-face-on-his-arm': {
+    'file': 'thelocal.se.tattooed.html',
+    'author': 'AFP/The Local',
+    'title': 'Meet the Swede who tattooed a state epidemiologist\'s face on his arm',
+    'date': '2020-04-28',
+    'description': 'Whether you&#039;re for or against Sweden&#039;s softer approach to coronavirus lockdowns, there is no denying state epidemiologist Anders Tegnell has become a household name in the country during the crisis.',
+    'categories': [],
+    'tags': ['coronavirus', 'tattoo'],
+    'with': ['te epidemiologist Anders Tegnell has become a household name in the country during the crisis.', 'd to get the tattoo after Tastas advertised the design for a temporary rub-on tattoo on Instagram.', 'rking accusations of callousness as well as admiration for keeping a cool head under pressure.'],
+    'without': ['Share this article', 'Member comments', 'Related articles'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://uepo.de/2020/04/26/digitales-woerterbuch-der-deutschen-sprache-redaktion-erstellt-glossar-zur-corona-pandemie/': {
+    'file': 'uepo.de.glossar.html',
+    'author': 'BBAW',
+    'title': 'Digitales Wörterbuch der deutschen Sprache: Redaktion erstellt Glossar zur Corona-Pandemie',
+    'date': '2020-04-26',
+    'description': 'Digitales+W%C3%B6rterbuch+der+deutschen+Sprache%3A+Redaktion+erstellt+Glossar+zur+Corona-Pandemie',
+    'categories': ['Deutsche Sprache'],
+    'tags': [],
+    'with': ['Weiterführender Link', 'randenburgischen Akademie der Wissenschaften (BBAW) die in Presse und Medien bereits sichtb', 'c) [Militär] Strategie für den geordneten Abzug eines Truppenkontingents aus dem Auslandseinsatz'],
+    'without': ['Twitter-Kurznachrichten', 'Mehr zum Thema auf UEPO.de', 'Das Übersetzerportal UEPO.de ist seit 2001 die Tagesschau der Übersetzungsbranche im '],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
+},
+'https://www.bdzv.de/nachrichten-und-service/presse/pressemitteilungen/artikel/detail/olafur-eliasson-gestaltet-titelseite-fuer-die-deutschen-zeitungen/': {
+    'file': 'bdzv.de.eliasson.html',
+    'author': '',
+    'title': 'Olafur Eliasson gestaltet Titelseite für die deutschen Zeitungen',
+    'date': '2020-04-24',
+    'description': 'Bundesweite Kunstaktion zum Internationalen Tag der Pressefreiheit am 3. Mai',
+    'categories': ['Pressemitteilungen'],
+    'tags': ['Pressefreiheit'],
+    'with': ['esichts der Corona-Krise und ihrer Folgen für die Gesellschaft ist das Thema ', 'effpunkt von Journalist, Text und Leser fokussiert. Das Werk entstan', 'rall auf der Welt das Recht haben muss, frei und ohne Angst berichten zu können.'],
+    'without': ['zurück', 'nach oben', 'English'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
+},
+'https://www.bundeswehrkarriere.de/VIP/Laura': {
+    'file': 'bundeswehrkarriere.de.Laura.html',
+    'author': '',
+    'title': 'Ein Land setzt sich gemeinsam ein',
+    'date': '',
+    'description': 'Mach, was wirklich zählt. Gehen Sie an Ihre Grenzen & werden Sie stärker. Jobs mit Zukunft. Richtig gefördert werden. Umfassende Ausbildung. Medizinische Versorgung. Die Zukunft entwickeln. Attraktiver Arbeitgeber. Verantwortung übernehmen. Tägliche Herausforderung. Jetzt informieren!',
+    'categories': [],
+    'tags': [],
+    'with': ['mit allen Behörden sowie Helferinnen und Helfern gegen Corona.', 'wir dich über deine Karrieremöglichkeiten in einem von unseren rund 100 Beratungsbüros bundesweit.', 'etet dir der Freiwillige Wehrdienst die Möglichkeit, den Arbeitgeber Bundeswehr „probeweise“ kennenzulerne'],
+    'without': ['erfolge die Bundeswehr im Einsatz gegen Corona unter:', 'https://www.einsatzgegencorona.de/', 'Beratungsgespräch vereinbaren'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
+},
+'https://bumsbutzener-gumpfen.blogspot.com/2020/04/tach-auch.html': {
+    'file': 'bumsbutzener-gumpfen.blogspot.com.tach-auch.html',
+    'author': 'der Michel',
+    'title': 'Tach auch!',
+    'date': '2020-04-28',
+    'description': '',
+    'categories': [],
+    'tags': [],
+    'with': ['Ich hätte zwar das ein oder andere Mal noch Lust gehabt, den ein oder ande', 'weck verfolgt, Kranke zu heilen und Brunnen zu bauen.', 'Oder, um es mit Reinhard Mey zu sagen:'],
+    'without': ['Dieses Blog durchsuchen', 'Eingestellt von der Michel', 'Nachdem ProSieben mit seinem Auktionshaus'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.tagesschau.de/investigativ/ndr/rheinmetall-datenleck-101.html': {
+    'file': 'tagesschau.de.rheinmetall.html',
+    'author': ['Volkmar Kabisch', 'Jan Lukas Strozyk', 'Benedikt Strunz', 'NDR'],
+    'title': 'Daten von Rheinmetall gehackt',
+    'date': '2020-04-28',
+    'description': 'Der Rüstungskonzern Rheinmetall ist nach <em>NDR</em>-Recherchen von einem Datenleck betroffen: Mehr als 1000 interne Unterlagen kursieren im Netz, auch zu Panzerfahrzeugen. Neben dem Image-Schaden droht dem Konzern ein Bußgeld.',
+    'categories': [],
+    'tags': [],
+    'with': ['h NDR-Recherchen von einem Datenleck betroffen: Mehr als 1000 interne Unterlagen kursiere', 'Der Datensatz liegt dem NDR vor.', 'Rheinmetall stellt in den damals betroffenen Fabriken Bauteile für die Autoindustrie her.'],
+    'without': ['Darstellung', 'Rundfunkanstalten', 'Tagesschau Investigativ'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
+},
+'https://www.neues-deutschland.de/artikel/1136087.mietenstreik-in-den-usa-einfach-kein-geld-mehr-um-die-miete-zu-zahlen.html': {
+    'file': 'neues-deutschland.de.mietenstreik.html',
+    'author': 'Moritz Wichmann',
+    'title': '»Einfach kein Geld mehr, um die Miete zu zahlen«',
+    'date': '2020-04-29',
+    'description': 'Ab dem 1. Mai könnte es in den USA Mietstreiks geben - wenige explizit erklärte, womögliche viele unausgesprochene. Aktivisten fordern einen Mietenstopp in der Coronakrise. Sie warnen vor der Verzweiflung vieler neuer Corona-Arbeitsloser.',
+    'categories': ['Politik'],
+    'tags': ['Arbeitslosigkeit', 'Coronakrise', 'Mieten', 'Mietenpolitik', 'Mietenwahnsinn', 'USA'],
+    'with': ['In den Vereinigten Staaten trommeln Aktivisten für einen Mietenstopp in der Coronakrise und warnen Vermieter', 'gigen Mietergewerkschaft Autonomous Tenant Union (ATU) aus Chicago sagt auch', 'wie Oakland oder Seattle und auch in Philadelphia haben Aktivisten'],
+    'without': ['Hat Ihnen dieser Artikel gefallen? Dann teilen Sie ihn doch mit anderen', 'ptstadtregion, die sich aus der Verbreitung des Coronavirus ergeben.', 'Früher war mehr Lametta.'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
+},
+'https://blog.amp.dev/2020/04/07/people-behind-the-code-the-axios-ascent/': {
+    'file': 'blog.amp.dev.axios.html',
+    'author': 'Alex Durán',
+    'title': 'People behind the code: The Axios ascent',
+    'date': '2020-04-07',
+    'description': 'Digital media company Axios has stepped onto the scene with a quick, smart, audience-first experience. Sound familiar? Fast, audience-first and efficient – talk about mission alignment. Maris…',
+    'categories': [],
+    'tags': [],
+    'with': ['shift to AMP-first. We invited the duo for a chat to discover how a beta test in 2019 escalated', 'Were there any challenges you had to overcome?', 'color in your pencil case, you start drawing a lot quicker instead of worrying about shades'],
+    'without': ['Your email address will not be published.', 'iscussions, and advanced tutorials straight to your inbox with the AMP newsletter.', 'All rights reserved. The OpenJS Foundation'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.fr.de/politik/kim-jong-un-nordkorea-bilder-diktator-donald-trump-zr-13680734.html': {
+    'file': 'fr.de.nordkorea.html',
+    'author': 'FR mit dpa',
+    'title': 'Kim Jong Un: Der Diktator ist zurück - Donald Trump ist „glücklich“',
+    'date': '2020-05-04',
+    'description': 'Kim Jong Un taucht nach Wochen wieder auf. Die Bilder, die das beweisen sollen, erfreuen Donald Trump. Er sendet Gr&#252;&#223;e nach Nordkorea.',
+    'categories': ['Politik'],
+    'tags': ['Nordkorea', 'Donald Trump', 'Kim Jong Un'],
+    'with': ['Er sendet Grüße nach Nordkorea.', 'wenn auch nur in der demilitarisierten Zone im Grenzgebiet und nur für ein paar Schritte.', 'runggelenk operierte worden und deshalb wochenlang verschwunden gewesen sei'], 
+    'without': ['Das könnte Sie auch interessieren', 'Abo-Service', 'Mehr zum Thema'],
+    'comments': ['keit gesehen wurde? Man sollte sich an dem Personenkult, der in Nordkorea um diesen Mann betrieben wird, nicht auch noch beteiligen.', 'tiker die Zähne ausbeißen. Vergessen Sie es. Im Fernen Osten haben d', 'dhismus ist mehr Körperfülle - weshalb auch immer - mit mehr Autorität behaftet.'],
+    'license': '',
+    'region': 'DE',
+},
+'https://www.tagesspiegel.de/wirtschaft/abstandsregeln-und-fieberkontrollen-wie-firmen-ihre-beschaeftigten-vor-dem-coronavirus-schuetzen/25784520.html': {
+    'file': 'tagesspiegel.de.abstandsregeln.html',
+    'author': 'Marie Rövekamp',
+    'title': 'Wie Firmen ihre Beschäftigten vor dem Coronavirus schützen',
+    'date': '2020-04-29',
+    'description': 'Damit Mitarbeiter gesund bleiben, müssen sich Unternehmen einiges einfallen lassen. Die Ideen reichen vom Spuckschutz bis zur Kontrolle der Körpertemperatur.',
+    'categories': ['Wirtschaft'],
+    'tags': ['Coronavirus'],
+    'with': ['Die Ideen reichen vom Spuckschutz bis zur Kontrolle d', 'Heil mahnte: Besorgt ausreichend Seife und Desinfektionsmittel!', 'Das Liefergeschäft mit Hotels, das die Hälfte des Umsatzes ausmachte, ist weggebrochen'],
+    'without': ['Diskutieren Sie mit!', 'Meistdiskutiert', 'Login'],
+    'comments': ['erfahren zu sein. Ich habe es bei Bayer Berlin in Anwendung erlebt - vollkommen unkompliziert. '],
+    'license': '',
+    'region': 'DE',
+},
+'https://www.die-tagespost.de/leben/glauben-wissen/Warum-wir-jetzt-Demut-brauchen;art4886,207643': {
+    'file': 'die-tagespost.de.Demut.html',
+    'author': 'Christoph von Ritter',
+    'title': 'Warum wir jetzt Demut brauchen',
+    'date': '2020-04-24',
+    'description': 'Viele der zur Abwehr des Virus SARS-CoV-2 ergriffenen könnten am Ende mehr Schäden anrichten, als das Virus selbst, fürchtet der Autor, der selbst Arzt ist. Ein Debattenbeitrag.',
+    'categories': ['Glaube & Wissen'],
+    'tags': [],
+    'with': ['sondern auch politische Maßnahmen, wie die zur Bekämpfung einer Pandemie', 'In der Tat: Der moderne, säkulare Mensch scheint weder Feigheit noch Schwäche zu kennen.', 'nwirkungen unserer Maßnahmen angesichts der SARS-CoV-2 Pandemie in den Blick zu nehmen'],
+    'without': ['Weitere Artikel', 'Ihre Meinung zu diesem Thema', 'Triage: Ein medizinethisches Dilemma'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
+},
+'https://www.furche.at/gesellschaft/achtsam-durch-die-krise-2497954': {
+    'file': 'furche.at.achtsam.html',
+    'author': 'Ursula Baatz ',
+    'title': 'Achtsam durch die Krise ',
+    'date': '2020-03-18',
+    'description': 'Die „Ökonomie der Aufmerksamkeit“ ist ein Motor der Industriegesellschaft. Aber in Krisensituationen erweist sich Aufmerksamkeit als zusätzlicher Stressfaktor. Das Konzept der Achtsamkeit kann hier helfen.',
+    'categories': ['Gesellschaft'],
+    'tags': [],
+    'with': ['gen genährt wird. Und lebensbedrohlich ist es – jedenfalls statistisch gesehen, und da die Statistik nichts darüb', 'n, verwechseln Achtsamkeit mit Aufmerksamkeit.', 'Achtsamkeit zu üben, kann man im'],
+    'without': ['Im FURCHE-Navigator weiterlesen', 'FURCHE-Newsletter', 'itreisen und neue Perspektiven'],
+    'comments': [],
+    'license': '',
+    'region': 'AT',
+},
+'https://www.cicero.de/innenpolitik/corona-pandemie-es-kommt-auch-darauf-an-wie-die-menschen-sterben': {
+    'file': 'cicero.de.pandemie.html',
+    'author': 'MORITZ GATHMANN',
+    'title': '„Es kommt auch darauf an, wie die Menschen sterben“',
+    'date': '2020-04-21',
+    'description': 'Müssen Infizierte unbedingt ins Krankenhaus? Der Palliativmediziner Gian Domenico Borasio erklärt, warum viele Covid-Patienten im Pflegeheim bessere Überlebenschancen haben - und warum die Anzahl der Todesfälle bei der Frage, wie wir die Krise bewältigen, nicht das einzige Kriterium sein kann.',
+    'categories': ['Innenpolitik'],
+    'tags': ['Corona-Pandemie'],
+    'with': ['Intensivbehandlung geht oder palliativ behandelt wird, ist ja die Patientenverfügung.', 'Wurde eine unnötige Einweisung ins Krankenhaus verhindert?', 'bei der Frage, wie wir die Krise bewältigen, nicht das einzige Kriterium sein kann'],
+    'without': ['Cicero Newsletter', 'Moritz Gathmann leitet', 'Sie sind leider nicht angemeldet'],
+    'comments': ['-Krise hat man u.a. nämlich einen dafür wichtigen Aktivposten sozusagen ausgeschaltet i', 'rachtend. Unsere Kultur hat vergessen, dass der Tod zum Lebe', 'iger Artikel. Solche Gedanken und Konsequenzen, d'],
+    'license': '',
+    'region': 'DE',
+},
+'https://legrandcontinent.eu/fr/2020/03/02/francois-heran/': {
+    'file': 'legrandcontinent.eu.heran.html',
+    'author': 'Uriel Gadessaud',
+    'title': '« Il y a, d’abord, le poids de la géographie ». Sur les migrations avec François Héran ',
+    'date': '2020-03-02',
+    'description': 'Alors qu’Erdogan ouvre les frontières turques et que la Méditerranée est encore une fois la scène d&#039;images insupportables, nous publions une conversation avec François Héran, l&#039;un des principaux spécialistes des migrations en Europe, titulaire de la Chaire migrations et sociétés du Collège de France.',
+    'categories': ['Entretiens'],
+    'tags': ['Méditerranée'],
+    'with': ['certes beaucoup de migrants, mais c’est un flux massif continu.', 'il faut avoir déjà les ressources, savoir déjà', 'la justice spatiale est un des objectifs de l’Union, alors Dublin n’est pas acceptable'],
+    'without': ['Pour approfondir', 'concepts liés à l', 'Coronavirus, un témoignage du front'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.bundespraesident.de/SharedDocs/Reden/DE/Johannes-Rau/Reden/2003/03/20030331_Rede2.html': {
+    'file': 'bundespraesident.de.20030331.html',
+    'author': 'Johannes Rau',
+    'title': 'Rede von Bundespräsident Johannes Rau beim Föderalismuskonvent der deutschen Landesparlamente',
+    'date': '2003-03-31',
+    'description': '',
+    'categories': [],
+    'tags': [],
+    'with': ['m Juni 1948 unternahm ein Berater des amerikanischen Militärgouverneurs Clay eine Rundreise durc', ' vielleicht am schönsten mit einem Kirchenlied des Grafen Zinzendorf sagen:', '994 errechnet, dass nur sechzehn von 120 Gesetzgebungsvorhaben gestaltende '],
+    'without': ['Diese Seite', '© 2020 Bundespräsidialamt', 'Lebenslauf'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
+},
+'https://wiki.python.org/moin/BeginnersGuide/Download': {
+    'file': 'wiki.python.org.Download.html',
+    'author': 'MatsWichmann',
+    'title': 'Downloading Python',
+    'date': '2019-11-10',
+    'description': '',
+    'categories': ['Beginners Guide'],
+    'tags': [],
+    'with': ['hey are available via the yellow download buttons on that page. ', 'Before you start, you will need Python on your computer.', 'general download page'],
+    'without': ['Unable to edit the page? See the FrontPage for instructions.', 'Attachments', 'Login'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.pcmag.com/news/next-gen-hamr-platters-promise-80tb-hard-drives': {
+    'file': 'pcmag.com.platters.html',
+    'author': 'Matthew Humphries',
+    'title': 'Next-Gen HAMR Platters Promise 80TB Hard Drives',
+    'date': '2020-02-07',
+    'description': 'We&#039;re about to get 20 terabyte hard drives, but the path looks clear to scale up to 80TB.',
+    'categories': ['Storage'],
+    'tags': [],
+    'with': ['but the path looks clear to scale up to 80TB.', 'hat means an 80TB hard drive is theoretically possible.', 'per square inch. Based on to'],
+    'without': ['nd a Masters in Computer Games Development from Abertay University.', 'Read the latest from Matthew Humphries', 'Honest, Objective Reviews'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.rutgers.edu/news/new-robot-does-superior-job-sampling-blood': {
+    'file': 'rutgers.edu.robot.html',
+    'author': 'Todd Bates',
+    'title': 'New Robot Does Superior Job Sampling Blood',
+    'date': '2020-02-05',
+    'description': 'n the future, robots could take blood samples, benefiting patients and healthcare workers alike.',
+    'categories': ['Research & Innovation'],
+    'tags': [],
+    'with': ['First clinical trial of an automated blood drawing and testing device', 'nefiting patients and healthcare workers alike.', 'from this study will be used to enhance artificial intelligence in the robot to improve its performance.'],
+    'without': ['You May Also Like', 'University Operating Status', 'ng. The university has move'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.acpjournals.org/doi/10.7326/M19-3075': {
+    'file': 'acpjournals.org.3075.html',
+    'author': ['Michael L. Anderson, PhD', 'Carlos Dobkin, PhD', 'Devon Gorry, PhD'],
+    'title': 'The Effect of Influenza Vaccination for the Elderly on Hospitalization and Mortality',
+    'date': '2020-04-07',
+    'description': '',
+    'categories': [],
+    'tags': ['Pulmonary diseases', 'Epidemiology', 'Seasons', 'Pneumonia', 'Vaccines', 'Research design', 'Surveys', 'Morbidity', 'Information storage and retrieval', 'Birth', 'Medical services', 'Elderly', 'Observational studies', 'Statistical data', 'Hospitalizations', 'Sexual identity', 'General practitioners', 'Immune response', 'Death rates', 'Age groups'],
+    'with': ['cination reduces hospitalizations and mortality among elderly persons. Acc', 'ged 55 to 75 years residing in the study area during 2000 to 2014.', 'Primary Funding Source:'],
+    'without': ['ACP Journals home', 'Institutions / Libraries / Agencies', '2020 American College of'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://blog.mondediplo.net/turpitude-et-architecture': {
+    'file': 'blog.mondediplo.net.turpitude.html',
+    'author': 'Didier Roy',
+    'title': 'Turpitude et architecture',
+    'date': '2018-06-21',
+    'description': ' L&#039;un des &#233;crivains sud-cor&#233;ens les plus c&#233;l&#232;bres, Hwang Sok-yong, est un homme heureux. Inscrit, avec beaucoup d&#039;autres intellectuels, sur une liste (...) ',
+    'categories': ['Planète Asie'],
+    'tags': ['Asie Censure',  'Littérature', 'Corée du Sud', 'Corée du Nord'],
+    'with': ['sation des rapports intercoréens, il voit à 75 ans le rapprochement se réaliser', 'malgré tout l’amitié et l’entraide occupent une grande place', 'hitecte de ressentir des moments de nostalgie en repensa'],
+    'without': ['arrête, on réfléchit', 'des clefs du monde contemporain. Depuis le début du XXIe siècle, le', 'engagent que leurs auteurs.'],
+    'comments': [],
+    'license': '',
+    'region': '',
+},
+'https://www.zdnet.de/88298335/facebook-wehrt-sich-gegen-maas-gesetz': {
+    'file': 'zdnet.de.facebook.html',
+    'author': 'Stefan Beiersmann ',
+    'title': 'Facebook wehrt sich gegen Maas-Gesetz',
+    'date': '2017-05-29',
+    'description': 'Es bezeichnet den Entwurf des Netzwerkdurchsetzungsgesetzes als ungeeignet. Stattdessen sieht Facebook den Kampf gegen Hass-Postings und Fake News als öffentliche Aufgabe an. Es wehrt sich auch gegen einen deutschen Alleingang und fordert eine europäische Lösung.',
+    'categories': ['Regulierung'],
+    'tags': ['Facebook', 'Politik', 'Soziale Netze', 'Zensur'],
+    'with': ['esjustizminister Heiko Maas geäußert, per Gesetz „Compliance-Regeln für Soziale Netzwerke“ e', 'acebook zusätzliche Kosten von 530 Millionen Euro pro Jahr zukommen, für „realistisch“.', 'nste anbieten. Während beispielsweise die Leugnung des Holocaust hierzulande unter Str'],
+    'without': ['Whitepaper', 'Bericht: Apple kündigt zur WWDC 13,3-Zoll-MacBook und 24-Zoll-iMac mit ARM-Prozessoren an', 'erden Sie die Corona Warn-App der Bundesregierung verwenden?'],
+    'comments': [],
+    'license': '',
+    'region': 'DE',
 },
 }

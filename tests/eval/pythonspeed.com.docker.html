@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+    <title>Faster Docker builds with pipenv, poetry, or pip-tools</title>
+    <link href="//gmpg.org/xfn/11" rel="profile">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <!-- Enable responsiveness on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- JS -->
+    <script type="text/javascript" src="/public/js/zepto.min.js"></script>
+    <script type="text/javascript" src="/public/js/js.cookie.min.js"></script>
+    <script type="text/javascript" src="/public/js/local.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="/public/css/main.css">
+    <!-- Icons -->
+  <link rel="icon" type="text/png" href="/assets/icon.png">
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+  <script type="text/javascript">
+   (function() {
+       var addfontsfinal = function() {
+           document.documentElement.className += " fonts-loaded-2";
+       };
+		   // Optimization for Repeat Views
+		   if( sessionStorage.foftFontsLoaded ) {
+           addfontsfinal();
+			     return;
+		   }
+       document.fonts.load("1em RosarioInitial").then(function () {
+				   document.documentElement.className += " fonts-loaded-1";
+
+				   Promise.all([
+					     document.fonts.load("400 1em Rosario"),
+					     document.fonts.load("700 1em Rosario"),
+					     document.fonts.load("italic 1em Rosario"),
+				   ]).then(function () {
+               addfontsfinal();
+
+					     // Optimization for Repeat Views
+					     sessionStorage.foftFontsLoaded = true;
+				   });
+			 });
+	 })();
+  </script>
+  <!-- Begin Jekyll SEO tag v2.5.0 -->
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Faster Docker builds with pipenv, poetry, or pip-tools" />
+<meta name="author" content="Itamar Turner-Trauring" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Installing dependencies separately from your code allows you to take advantage of Docker&rsquo;s layer caching. Here&rsquo;s how to do it with pipenv, poetry, or pip-tools." />
+<meta property="og:description" content="Installing dependencies separately from your code allows you to take advantage of Docker&rsquo;s layer caching. Here&rsquo;s how to do it with pipenv, poetry, or pip-tools." />
+<link rel="canonical" href="https://pythonspeed.com/articles/pipenv-docker/" />
+<meta property="og:url" content="https://pythonspeed.com/articles/pipenv-docker/" />
+<meta property="og:site_name" content="Python⇒Speed" />
+<meta property="og:image" content="https://pythonspeed.com/assets/titles/pipenv-docker.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@itamarst" />
+<meta name="twitter:creator" content="@itamarst" />
+<script type="application/ld+json">
+{"description":"Installing dependencies separately from your code allows you to take advantage of Docker&rsquo;s layer caching. Here&rsquo;s how to do it with pipenv, poetry, or pip-tools.","author":{"@type":"Person","name":"Itamar Turner-Trauring"},"@type":"BlogPosting","url":"https://pythonspeed.com/articles/pipenv-docker/","image":"https://pythonspeed.com/assets/titles/pipenv-docker.png","headline":"Faster Docker builds with pipenv, poetry, or pip-tools","dateModified":"2020-06-04T16:41:46+00:00","datePublished":"2019-06-17T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://pythonspeed.com/articles/pipenv-docker/"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+
+  <body>
+          <header class="topbar">
+    <nav role="navigation" class="container">
+        <div style="display: flex; width: 100%; flex-direction: row; justify-content: space-evenly;">
+            <div style="flex: 33%;">
+                <strong><a href="/">Python⇒Speed</a></strong><br>
+                └─ <a href="/about/">About</a><br>
+                └─ <a href="mailto:itamar@pythonspeed.com">Contact</a>
+            </div>
+            <div style="flex: 33%;"><strong>Articles</strong><br>
+                └─ <a href="/docker/">Docker packaging</a><br>
+                └─ <a href="/datascience/">Data Science</a>
+            </div>
+            <div style="flex: 33%;"><strong>Paid services</strong><br>
+                └─ <a href="/products/">Products</a><br>
+                └─ <a href="/training/">Training</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+          <main class="main">
+              <div class="content container">
+                  <div class="post" role="main" itemscope itemtype="http://schema.org/BlogPosting">
+  <h1 class="post-title" role="heading" itemprop="headline">Faster Docker builds with pipenv, poetry, or pip-tools</h1>
+  <p class="post-date-and-author">by <span rel="author"><a href="mailto:itamar@pythonspeed.com">Itamar Turner-Trauring</a></span><br>Last updated 04 Jun 2020, originally created 17 Jun 2019</p>
+  <div itemprop="articleBody">
+      <p>Docker builds can be slow, and waiting for a build to finish is probably not how you want to spend your time.
+So you want faster builds—and caching is a great way to get there.</p>
+
+<p>If the files you&rsquo;re relying on haven&rsquo;t changed, the Docker build can reuse previously cached layers for this particular build.
+And so if you separate out installation of dependencies from installation of your code in your Dockerfile you&rsquo;ll usually get faster builds: if just your code changes, you won&rsquo;t have to wait for all dependencies to be installed when you rebuild the Docker image.</p>
+
+<p>In this article I&rsquo;ll cover:</p>
+
+<ol>
+<li>An example of how to get slow builds.</li>
+<li>Faster builds by installing requirements first, from a <code>requirements.txt</code> file.</li>
+<li>Managing your <code>requirements.txt</code> with <code>pip-tools</code>.</li>
+<li>Using <code>pipenv</code> in your Docker build.</li>
+<li>Using <code>poetry</code> in your Docker build.</li>
+</ol>
+
+<blockquote>
+<p><strong>Note:</strong> Outside the topic under discussion, the Dockerfiles in this article are not examples of best practices, since the added complexity would obscure the main point of the article. So if you&rsquo;re going to be running your Python application in production with Docker, here are two ways to apply best practices:</p>
+
+<ul>
+<li>If you want to DIY: <a href="/products/productionchecklist/">A detailed checklist, with examples and references</a></li>
+<li>If you want a working setup ASAP: <a href="/products/pythoncontainer/">A template, with best practices implemented for you</a></li>
+</ul>
+</blockquote>
+
+<!-- TEASER_END -->
+
+<h2>How to get slow builds</h2>
+
+<p>A common way of listing your dependencies is to put them in <code>setup.py</code>&lsquo;s <code>install_requires</code>:</p>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'exampleapp'</span><span class="p">,</span>
+      <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">"exampleapp"</span><span class="p">],</span>
+      <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span><span class="s">"flask"</span><span class="p">,</span> <span class="s">"dateutil"</span><span class="p">])</span>
+</code></pre></div>
+<p>Your <code>Dockerfile</code> might then look like this:</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> python:3.7</span>
+<span class="k">COPY</span><span class="s"> . /tmp/myapp</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> /tmp/myapp
+<span class="k">CMD</span><span class="s"> flask run exampleapp:app</span>
+</code></pre></div>
+<p>The problem with this setup is that every time you change the code, that invalidates the <code>COPY . /tmp/myapp</code> layer in the Docker cache, as well as all subsequent lines in the <code>Dockerfile</code>.
+And so every time you rebuild the image, you will need to reinstall the dependencies <em>and</em> your code.</p>
+
+<h2>Faster builds with requirements.txt</h2>
+
+<p>If you separate out your dependencies into a separate file, traditionally named <code>requirements.txt</code>, you can copy in only that file, and install it earlier.
+That way dependency installation can be cached, and packages will need to be reinstalled only if <code>requirements.txt</code> changes.</p>
+
+<p><code>requirements.txt</code> would look like this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">dateutil
+flask
+</code></pre></div>
+<p>And the <code>Dockerfile</code> like this:</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> python:3.7</span>
+<span class="k">COPY</span><span class="s"> requirements.txt /tmp</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt
+<span class="k">COPY</span><span class="s"> . /tmp/myapp</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> /tmp/myapp
+<span class="k">CMD</span><span class="s"> flask run exampleapp:app</span>
+</code></pre></div>
+<p>Notice that initially we only copy <code>requirements.txt</code>, so that changes to the code won&rsquo;t invalidate the caching at this point.
+This will give you faster builds if you have made sure to pull previous builds.</p>
+
+<h2>A new problem: reproducible builds</h2>
+
+<p>The scheme above has a problem: it always installs the latest version of the dependencies.
+So if you build the image on a computer that doesn&rsquo;t have the cache populated, you might get a different set of installed dependencies than what would get built if you did have the Docker cache populated.</p>
+
+<p>In short, your builds aren&rsquo;t reproducible.</p>
+
+<p>And that can lead to a variety of problems, e.g. random breakage when packages get upgraded without your knowledge, or hard-to-reproduce differences in behavior (&ldquo;but it worked on my computer!&rdquo;).</p>
+
+<p>To solve this you want to keep <a href="https://blog.ometer.com/2017/01/10/dear-package-managers-dependency-resolution-results-should-be-in-version-control/">two versions of your dependencies</a>:</p>
+
+<ol>
+<li>The logical dependencies of your application, i.e. the packages you directly import. In our example, <code>flask</code> and <code>dateutil</code>.</li>
+<li>The pinned transitive dependencies. That is, all of <code>flask</code>&rsquo;s dependencies (and their dependencies, and so on), pinned to a particular version.</li>
+</ol>
+
+<p>The logical dependencies can be used to regenerate the pinned dependencies on the demand. The pinned dependencies are what you use to get reproducible builds.</p>
+
+<p><a name="pip-tools"></a></p>
+
+<h2>Reproducible builds using pip-tools</h2>
+
+<p><a href="https://github.com/jazzband/pip-tools">pip-tools</a> is one easy way to do this.
+You can store the logical dependencies in <code>requirements.in</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">dateutil
+flask
+</code></pre></div>
+<p>Then run (with matching Python version and ideally operating system):</p>
+<div class="highlight"><pre><code class="language-shell-session" data-lang="shell-session"><span class="gp">$</span> pip-compile requirements.in <span class="o">&gt;</span> requirements.txt
+</code></pre></div>
+<p>And the resulting <code>requirements.txt</code> looks like this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">argparse==1.4.0           # via dateutils
+click==7.0                # via flask
+dateutils==0.6.6
+flask==1.0.3
+itsdangerous==1.1.0       # via flask
+jinja2==2.10.1            # via flask
+markupsafe==1.1.1         # via jinja2
+python-dateutil==2.8.0    # via dateutils
+pytz==2019.1              # via dateutils
+six==1.12.0               # via python-dateutil
+werkzeug==0.15.4          # via flask
+</code></pre></div>
+<p>You check in <code>requirements.in</code> and <code>requirements.txt</code> into version control.
+The <code>Dockerfile</code> requires no changes from the version we showed above.</p>
+
+<h2>Fast reproducible Docker builds with poetry</h2>
+
+<p><a href="https://python-poetry.org/">poetry</a> is another tool that lets you manage logical and pinned dependencies.
+You can export the dependencies to a <code>requirements.txt</code> file, and then your <code>Dockerfile</code> doesn&rsquo;t need to use <code>poetry</code> at all:</p>
+<div class="highlight"><pre><code class="language-shell-session" data-lang="shell-session"><span class="gp">$</span> poetry <span class="nb">export</span> <span class="nt">-f</span> requirements.txt <span class="nt">-o</span> requirements.txt
+</code></pre></div>
+<p>Alternatively, you can write a <code>Dockerfile</code> that first installs only dependencies, and later installs the actual application code:</p>
+<div class="highlight"><pre><code class="language-Dockerfile" data-lang="Dockerfile">FROM python:3.8-slim
+RUN pip install poetry
+WORKDIR /tmp/myapp
+COPY pyproject.toml poetry.lock .
+RUN cd /tmp &amp;&amp; poetry install --no-root
+# Copy in everything else:
+COPY . .
+RUN poetry install
+
+CMD flask run exampleapp:app
+</code></pre></div>
+<h2>Fast reproducible Docker builds with pipenv</h2>
+
+<p><a href="https://docs.pipenv.org/en/latest/">pipenv</a> is another tool that allows you to maintain logical dependencies (in a <code>Pipfile</code>) and pinned dependencies (in a <code>Pipfile.lock</code>).
+It also does a whole lot more, e.g. virtualenv management.</p>
+
+<p>Much of what it does isn&rsquo;t relevant to building Docker images, though, so the easy way to use it in your Docker build is to export a <code>requirements.txt</code> file.
+You can do this outside your Docker build, and just commit the resulting file to version control and use the <code>Dockerfile</code> above:</p>
+<div class="highlight"><pre><code class="language-shell-session" data-lang="shell-session"><span class="gp">$</span> pipenv lock <span class="nt">--requirements</span> <span class="o">&gt;</span> requirements.txt
+</code></pre></div>
+<p>The plus is that your <code>Dockerfile</code> doesn&rsquo;t need to know anything about <code>pipenv</code>. This does require you to remember to regenerate <code>requirements.txt</code> every time you update <code>Pipfile.lock</code>.</p>
+
+<p>Alternatively, you can do the export in the build itself:</p>
+<div class="highlight"><pre><code class="language-dockerfile" data-lang="dockerfile"><span class="k">FROM</span><span class="s"> python:3.7</span>
+<span class="k">RUN </span>pip <span class="nb">install </span>pipenv
+<span class="k">COPY</span><span class="s"> Pipfile* /tmp</span>
+<span class="k">RUN </span><span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> pipenv lock <span class="nt">--requirements</span> <span class="o">&gt;</span> requirements.txt
+<span class="k">RUN </span>pip <span class="nb">install</span> <span class="nt">-r</span> /tmp/requirements.txt
+<span class="k">COPY</span><span class="s"> . /tmp/myapp</span>
+<span class="k">RUN </span>pip <span class="nb">install</span> /tmp/myapp
+<span class="k">CMD</span><span class="s"> flask run exampleapp:app</span>
+</code></pre></div>
+<p>Note that a better setup, omitted for clarity, would have you install <code>pipenv</code> in such a way that its dependencies don&rsquo;t impact your code, e.g. by using a virtualenv for your code. If you want a best-practices Dockerfile and build system, check out my <a href="/products/pythoncontainer/">Production-Ready Python Containers</a> product.</p>
+
+<h2>The takeaway</h2>
+
+<p>To get fast, reproducible builds for your application:</p>
+
+<ol>
+<li>Separate dependencies from your <code>setup.py</code>.</li>
+<li>Separate logical and pinned dependencies (using <code>pip-tools</code>, <code>pipenv</code>, or <code>poetry</code>—<code>pip-tools</code> is <a href="https://hynek.me/articles/python-app-deps-2018/">Hynek Schlawack&rsquo;s recommendation</a> as of 2018, but the new Poetry release might make it a more compelling alternative).</li>
+<li>Install dependencies separately and earlier in your <code>Dockerfile</code> to ensure faster builds.</li>
+</ol>
+
+  </div>
+  <hr>
+  
+  <h4>Learn how to build fast, production-ready Docker images—read the rest of the <a href="/docker/">Docker packaging guide for Python</a>.</h4>
+  <hr>
+  
+  
+  <span style="font-size: 200%;">
+<ul class="share-buttons" aria-hidden="true">
+  <li><a href="https://twitter.com/intent/tweet?source=https%3A%2F%2Fpythonspeed.com&text=:%20https%3A%2F%2Fpythonspeed.com" target="_blank" title="Tweet" onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + ':%20' + encodeURIComponent(document.URL)); return false;"><span class="icon-twitter-square"></span></a></li>
+  <li><a href="https://www.reddit.com/submit?url=https%3A%2F%2Fpythonspeed.com&title=" target="_blank" title="Submit to Reddit" onclick="window.open('http://www.reddit.com/submit?url=' + encodeURIComponent(document.URL) + '&title=' +  encodeURIComponent(document.title)); return false;"><span class="icon-reddit-square"></span></a></li>
+  <li><a href="#" class="hn-linkbutton" target="_blank" title="Discuss on Hacker News"><span class="icon-hacker-news fa-2x"></span></a></li>
+  <li><a href="https://www.facebook.com/sharer.php?u=https%3A%2F%2Fpythonspeed.com" target="_blank" title="Share on Facebook" onclick="window.open('https://www.facebook.com/sharer.php?u=' + encodeURIComponent(document.URL); return false;"><span class="icon-facebook-square"></span></a></li>
+</ul></span>
+
+  <hr>
+<div class="cta">
+<div id="subscriber_cta" style="display: none;">
+    
+    <h3 style="font-weight: normal;">Docker packaging is complicated, and you can’t afford to screw up production</h3>
+<p>From fast builds that save you time, to security best practices that keep you safe, how can you quickly gain the expertise you need to package your Python application for production?</p>
+<p>Take the fast path to learning best practices, by using the <b><a href="/products/productionchecklist/">Python on Docker Production Checklist</a></b>.</p>
+
+    
+</div>
+<div id="normal_cta" style="display: none;">
+    
+    <h3>Learn practical Docker and Python software engineering skills, every week</h3>
+<p>You need to stay competitive in the job market—but there's too much to learn, and you don’t know where to start.</p>
+<p>Join over 1800 Python developers and data scientists learning practical tools and techniques, from Docker packaging to Python best practices, with a free new article in your inbox every week.</p>
+<script async data-uid="26e64401b5" src="https://hyphenated-enterprises-llc-2.ck.page/26e64401b5/index.js"></script>
+
+    
+</div>
+<script>
+ function showSubscriberCTA() {
+     var cta = "docker";
+     if (Cookies.get('subscriber') !== undefined) {
+         return true;
+     }
+     if ((cta === "docker") || (cta === "dockerbook")) {
+         if (document.referrer.search("google.") !== -1) {
+             return true;
+         }
+         if (document.referrer.search("bing.") !== -1) {
+             return true;
+         }
+     }
+     return false;
+ }
+
+ if (showSubscriberCTA()) {
+     $("#subscriber_cta").show();
+ } else {
+     $("#normal_cta").show();
+ }
+</script>
+</div>
+<hr>
+
+
+  <p class="PageNavigation" role="navigation">
+      
+      
+      
+      <b>Next:</b> <a href="/articles/activate-virtualenv-dockerfile/">Elegantly activating a virtualenv in a Dockerfile</a><br>
+      <b>Previous:</b> <a href="/articles/high-cost-slow-docker-builds/">The high cost of slow Docker builds</a><br>
+      
+</p>
+</div>
+
+
+              </div>
+          </main>
+          <footer class="bottombar">
+    <nav class="container">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/products/">Products</a></li>
+            <li><a href="/training/">Training services</a></li>
+            <li><a href="/about/">About me</a></li>
+            <li><a href="/atom.xml">Feed <span class="icon-rss-square"></i></a></li>
+            <li><a href="/privacypolicy/">Privacy policy</a></li>
+            <li><a href="/terms/">Terms &amp; Conditions</a></li>
+    </ul>
+        </nav>
+    <div class="container" role="contentinfo">&copy; 2020 Hyphenated Enterprises LLC. All rights reserved.</div>
+</footer>
+
+          <script>
+           (function() {
+               var addicons = function() {
+                   var elements = document.querySelectorAll("[class^='icon-']");
+                   Array.prototype.forEach.call(elements, function(el, i){
+                       if (el.classList) {
+                           el.classList.add("icons-loaded");
+                       } else {
+                           el.className += " icons-loaded";
+                       }
+                   });
+               };
+               if (sessionStorage.iconFontReallyLoaded) {
+                   addicons();
+               }
+               document.fonts.load("1em icomoon").then(function () {
+                   addicons();
+                   sessionStorage.iconFontReallyLoaded = true;
+               });
+           })();
+          </script>
+          <script async type="text/javascript">
+           var _paq = _paq || [];
+           /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+           _paq.push(["setDoNotTrack", true]);
+           _paq.push(['trackPageView']);
+           _paq.push(['enableLinkTracking']);
+           (function() {
+               var u="https://hyphenated.matomo.cloud/";
+               _paq.push(['setTrackerUrl', u+'piwik.php']);
+               _paq.push(['setSiteId', '1']);
+               var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+               g.type='text/javascript'; g.async=true; g.defer=true; g.src='https://cdn.matomo.cloud/hyphenated.matomo.cloud/piwik.js'; s.parentNode.insertBefore(g,s);
+           })();
+          </script>
+  </body>
+</html>
