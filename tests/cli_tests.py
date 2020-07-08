@@ -33,8 +33,21 @@ def test_parser():
         args = cli.parse_args(testargs)
     assert args.fast is False
     assert args.verbose is False
+    assert args.output_format == 'csv'
+    # test args mapping
+    testargs = ['', '--xml']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    args = cli.map_args(args)
+    assert args.output_format == 'xml'
+    args.xml = False
+    args.csv = True
     args = cli.map_args(args)
     assert args.output_format == 'csv'
+    args.csv = False
+    args.json = True
+    args = cli.map_args(args)
+    assert args.output_format == 'json'
 
 
 def test_climain():
@@ -64,6 +77,8 @@ def test_input_type():
     with open(testfile, 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
+    # test file list
+    assert cli_utils.generate_filelist(os.path.join(TEST_DIR, 'resources')) is not None
 
 
 def test_sysoutput():
@@ -79,6 +94,18 @@ def test_sysoutput():
         args = cli.parse_args(testargs)
     assert cli_utils.check_outputdir_status(args.outputdir) is True
     assert cli_utils.determine_filename(args, args.outputdir).endswith('.xml')
+    # test fileslug for name
+    assert 'AAZZ' in cli_utils.determine_filename(args, args.outputdir, fileslug='AAZZ')
+    # test directory counter
+    assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir/1'
+    # test file writing
+    testargs = ['', '--csv', '-o', '/dev/null/']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    result = 'DADIDA'
+    cli_utils.write_result(result, args)
+    # process with no counter
+    assert cli_utils.process_result('DADIDA', args, None, None) is None
 
 
 def test_download():
@@ -122,6 +149,12 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     my_urls = cli_utils.load_input_urls(args.inputfile)
     assert my_urls is not None and len(my_urls) == 2
+    resources_dir = os.path.join(TEST_DIR, 'resources')
+    #testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '--blacklist', os.path.join(resources_dir, 'list-discard.txt')]
+    #with patch.object(sys, 'argv', testargs):
+    #    args = cli.parse_args(testargs)
+    #print(args.blacklist)
+    #assert args.blacklist is not None
     # test backoff between domain requests
     reftime = datetime.now()
     assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
@@ -154,6 +187,11 @@ def test_cli_pipeline():
     with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
+    # file processing pipeline
+    testargs = ['', '--parallel', '1', '--inputdir', '/dev/null']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.file_processing_pipeline(args)
 
 
 def test_input_filtering():
