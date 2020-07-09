@@ -53,20 +53,18 @@ def test_parser():
 def test_climain():
     '''test arguments and main CLI entrypoint'''
     assert os.system('trafilatura --help') == 0  # exit status
-    # assert os.system('trafilatura -f -u https://httpbin.org/html') == 0
-    # assert os.system('curl -s https://httpbin.org/html | trafilatura') == 0
     # input directory walking and processing
-    assert os.system('trafilatura --inputdir "trafilatura/data/"') == 0
     assert os.system('trafilatura --inputdir "tests/resources/"') == 0
-    #testargs = ['--inputdir tests/resources/']
-    #with patch.object(sys, 'argv', testargs):
-    #    result = cli.main()
-    #print(result)
+    # piped input
+    assert os.system('echo "<html><body></body></html>" | trafilatura') == 0
 
 
 def test_input_type():
     '''test input type errors'''
     testfile = 'docs/trafilatura-demo.gif'
+    testargs = ['', '-u', 'http']
+    with patch.object(sys, 'argv', testargs):
+        assert cli.main() is None
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)

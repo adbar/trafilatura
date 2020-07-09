@@ -29,7 +29,7 @@ except ImportError:
     LANGID_FLAG = False
 
 import trafilatura.filters
-from trafilatura.core import baseline, extract, process_record, trim
+from trafilatura.core import baseline, extract, process_record, sanitize_tree, trim
 from trafilatura.filters import duplicate_test, put_in_cache, textfilter
 from trafilatura.lru import LRUCache
 from trafilatura import utils, xml
@@ -192,6 +192,8 @@ def test_txttocsv():
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\tTest title\tNone\tTest text\tTest comment\n'
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True) is not None
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True, include_comments=False).endswith('\t\n')
+    # test json
+    assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', json_output=True).endswith('}')
 
 
 @pytest.mark.parametrize("xmloutput", [False, True])
@@ -563,6 +565,10 @@ def test_formatting():
     assert '<p>' in my_result and '<hi>Wild text</hi>' in my_result  # no rend so far
     my_result = extract(my_document)
     assert my_result == 'Wild text'
+    # test 
+    doc = html.fromstring('<html><body><p><a href="">Link text</a></p></body></html>')
+    my_result = extract(doc)
+    assert my_result == 'Link text'
 
 
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
@@ -592,6 +598,19 @@ def test_filters():
     # test URL blacklist
     assert trafilatura.extract('<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>', output_format='xml', url_blacklist={'https://example.org'}) is None
 
+
+def test_external():
+    '''Test external components'''
+    # remove unwanted elements
+    mydoc = html.fromstring('<html><body><footer>Test text</footer></body></html>')
+    _, _, mylen = sanitize_tree(mydoc)
+    assert mylen == 0
+    # strip fancy tags
+    mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy></p></body></html>')
+    mytree, _, _ = sanitize_tree(mydoc)
+    assert len(mytree) == 1
+
+
 def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
@@ -615,6 +634,7 @@ def test_tei():
     assert xml.validate_tei(mytree) is True
 
 
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
@@ -626,4 +646,5 @@ if __name__ == '__main__':
     test_exotic_tags()
     test_extract(False)
     test_extract(True)
+    test_external()
     test_tei()

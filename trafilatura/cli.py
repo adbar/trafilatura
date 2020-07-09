@@ -149,17 +149,12 @@ def main():
         args.blacklist = load_blacklist(args.blacklist)
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.inputfile and not args.feed:
+    if args.inputfile:  # and not args.feed:
         input_urls = load_input_urls(args.inputfile)
         url_processing_pipeline(args, input_urls, SLEEP_TIME)
     # fetch urls from a feed
     elif args.feed:
-        if args.inputfile:
-            links = list()
-            for feed_url in load_input_urls(args.inputfile):
-                links.extend(find_feed_urls(feed_url))
-        else:
-            links = find_feed_urls(args.feed)
+        links = find_feed_urls(args.feed)
         url_processing_pipeline(args, links, SLEEP_TIME)
     # read files from an input directory
     elif args.inputdir:
