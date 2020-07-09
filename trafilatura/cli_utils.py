@@ -76,39 +76,15 @@ def check_outputdir_status(directory):
     # check the directory status
     if not path.exists(directory) or not path.isdir(directory):
         try:
-            makedirs(directory)
+            makedirs(directory, exist_ok=True)
         except OSError:
-            # maybe the direction has already been created
-            sleep(0.25)
-            if not path.exists(directory) or not path.isdir(directory):
-                sys.stderr.write('# ERROR: Destination directory cannot be created: ' + directory + '\n')
-                # raise OSError()
-                return False
+            # maybe the directory has already been created
+            #sleep(0.25)
+            #if not path.exists(directory) or not path.isdir(directory):
+            sys.stderr.write('# ERROR: Destination directory cannot be created: ' + directory + '\n')
+            # raise OSError()
+            return False
     return True
-
-
-def determine_filename(args, destination_directory, fileslug=None):
-    '''Pick a file name based on output type'''
-    # determine extension
-    extension = '.txt'
-    if args.xml or args.xmltei or args.output_format == 'xml':
-        extension = '.xml'
-    elif args.csv or args.output_format == 'csv':
-        extension = '.csv'
-    elif args.json or args.output_format == 'json':
-        extension = '.json'
-    # determine file slug
-    if fileslug is None:
-        output_path = path.join(destination_directory, \
-            ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
-            + extension)
-        while path.exists(output_path):
-            output_path = path.join(destination_directory, \
-                ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
-                + extension)
-    else:
-        output_path = path.join(destination_directory, fileslug + extension)
-    return output_path
 
 
 def determine_counter_dir(dirname, counter):
@@ -118,6 +94,40 @@ def determine_counter_dir(dirname, counter):
     else:
         counter_dir = ''
     return path.join(dirname, counter_dir)
+
+
+def determine_output_path(args, orig_filename, counter=None, new_filename=None):
+    '''Pick a directory based on selected options and a file name based on output type'''
+    # determine extension
+    extension = '.txt'
+    if args.xml or args.xmltei or args.output_format == 'xml':
+        extension = '.xml'
+    elif args.csv or args.output_format == 'csv':
+        extension = '.csv'
+    elif args.json or args.output_format == 'json':
+        extension = '.json'
+    # determine directory
+    if args.keep_dirs is True:
+        # strip directory
+        orig_directory = re.sub(r'[^/]+$', '', orig_filename)
+        destination_directory = path.join(args.outputdir, orig_directory)
+        # strip extension
+        filename = re.sub(r'\.[a-z]{3,4}$', '', orig_filename)
+        output_path = path.join(args.outputdir, filename + extension)
+    else:
+        destination_directory = determine_counter_dir(args.outputdir, counter)
+        # determine file slug
+        if new_filename is None:
+            output_path = path.join(destination_directory, \
+                ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
+                + extension)
+            while path.exists(output_path):
+                output_path = path.join(destination_directory, \
+                    ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
+                    + extension)
+        else:
+            output_path = path.join(destination_directory, new_filename + extension)
+    return output_path, destination_directory
 
 
 def archive_html(htmlstring, args, counter=None):
@@ -136,18 +146,16 @@ def archive_html(htmlstring, args, counter=None):
     return fileslug
 
 
-def write_result(result, args, filename=None, counter=None):
+def write_result(result, args, orig_filename=None, counter=None, new_filename=None):
     '''Deal with result (write to STDOUT or to file)'''
     if result is None:
         return
     if args.outputdir is None:
         sys.stdout.write(result + '\n')
     else:
-        destination_directory = determine_counter_dir(args.outputdir, counter)
+        destination_path, destination_directory = determine_output_path(args, orig_filename, counter, new_filename)
         # check the directory status
         if check_outputdir_status(destination_directory) is True:
-            # write
-            destination_path = determine_filename(args, destination_directory, filename)
             with open(destination_path, mode='w', encoding='utf-8') as outputfile:
                 outputfile.write(result)
 
@@ -156,7 +164,6 @@ def generate_filelist(inputdir):
     '''Walk the directory tree and output all file names'''
     for root, _, inputfiles in walk(inputdir):
         for fname in inputfiles:
-            # filelist.append(path.join(root, fname))
             yield path.join(root, fname)
 
 
@@ -165,7 +172,7 @@ def file_processing(filename, args, counter=None):
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
     result = examine(htmlstring, args, url=args.URL)
-    write_result(result, args, counter=counter)
+    write_result(result, args, filename, counter, new_filename=None)
 
 
 def url_processing_checks(blacklist, input_urls):
@@ -193,12 +200,12 @@ def process_result(htmlstring, args, url, counter):
     if htmlstring is not None:
         # backup option
         if args.backup_dir:
-            filename = archive_html(htmlstring, args, counter)
+            fileslug = archive_html(htmlstring, args, counter)
         else:
-            filename = None
+            fileslug = None
         # process
         result = examine(htmlstring, args, url=url)
-        write_result(result, args, filename, counter)
+        write_result(result, args, orig_filename=None, counter=None, new_filename=fileslug)
         # increment written file counter
         if counter is not None:
             counter += 1

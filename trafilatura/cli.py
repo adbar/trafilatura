@@ -78,6 +78,9 @@ def parse_args(args):
     group1.add_argument('--parallel',
                         help="Specify a number of cores/threads for parallel downloads and/or processing",
                         type=int)
+    group1.add_argument('--keep-dirs',
+                        help="Keep input directory structure and file names",
+                        action="store_true")
 
     group2.add_argument('-out', '--output-format',
                         help="determine output format",

@@ -86,16 +86,18 @@ def test_sysoutput():
     testargs = ['', '--csv', '-o', '/root/forbidden/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    filename = cli_utils.determine_filename(args, args.outputdir)
-    assert len(filename) >= 10 and filename.endswith('.csv')
+    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir)
+    print(filepath)
+    assert len(filepath) >= 10 and filepath.endswith('.csv')
+    assert destdir == '/root/forbidden/'
     assert cli_utils.check_outputdir_status(args.outputdir) is False
     testargs = ['', '--xml', '-o', '/tmp/you-touch-my-tralala']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli_utils.check_outputdir_status(args.outputdir) is True
-    assert cli_utils.determine_filename(args, args.outputdir).endswith('.xml')
     # test fileslug for name
-    assert 'AAZZ' in cli_utils.determine_filename(args, args.outputdir, fileslug='AAZZ')
+    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, new_filename='AAZZ')
+    assert filepath.endswith('AAZZ.xml')
     # test directory counter
     assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir/1'
     # test file writing
@@ -106,7 +108,14 @@ def test_sysoutput():
     cli_utils.write_result(result, args)
     # process with no counter
     assert cli_utils.process_result('DADIDA', args, None, None) is None
-
+    # test keeping dir structure
+    testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt')
+    print(filepath, destdir)
+    assert filepath == 'test/testfile.txt'
+    
 
 def test_download():
     '''test page download and command-line interface'''
