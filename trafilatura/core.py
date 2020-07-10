@@ -310,9 +310,10 @@ def handle_textelem(element, potential_tags):
         new_element = handle_paragraphs(element, potential_tags)
     elif element.tag == 'lb':
         if element.tail is not None and not element.tail.isspace():
-            new_element = etree.Element('p')
-            new_element.text = process_node(element).tail
-            # new_element.text = handle_textnode(element, comments_fix=False).tail
+            element = process_node(element)
+            if element is not None:
+                new_element = etree.Element('p')
+                new_element.text = element.tail
     elif element.tag == 'hi':
         new_element = handle_formatting(element)
     elif element.tag == 'table' and 'table' in potential_tags:

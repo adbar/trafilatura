@@ -565,10 +565,17 @@ def test_formatting():
     assert '<p>' in my_result and '<hi>Wild text</hi>' in my_result  # no rend so far
     my_result = extract(my_document)
     assert my_result == 'Wild text'
-    # test 
+    # links
     doc = html.fromstring('<html><body><p><a href="">Link text</a></p></body></html>')
     my_result = extract(doc)
     assert my_result == 'Link text'
+    # line-breaks 
+    doc = html.fromstring('<html><body><p><br/></p></body></html>')
+    my_result = extract(doc)
+    assert my_result == ''
+    doc = html.fromstring('<html><body><p><br/>Here is the text.</p></body></html>')
+    my_result = extract(doc)
+    assert my_result == 'Here is the text.'
 
 
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
