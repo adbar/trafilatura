@@ -29,8 +29,8 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.5.0',
-    description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, XML & TEI-XML',
+    version='0.5.1',
+    description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
     long_description=readme(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
