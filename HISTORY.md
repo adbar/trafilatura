@@ -1,6 +1,12 @@
 ## History / Changelog
 
 
+### 0.5.1
+- extended and more convenient command-line options
+- output in JSON format
+- bug fixes
+
+
 ### 0.5.0
 - faster and more robust text and metadata extraction
 - more efficient batch processing (parallel processing, URL queues)
