@@ -4881,4 +4881,32 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
+'https://www.infocomcgt.fr/caisse-de-solidarite-financiere/': {
+    'file': 'infocomcgt.fr.caisse.html',
+    'author': '',
+    'title': 'Caisse de solidarité financière',
+    'date': '',
+    'description': 'Faire un don : En ligneEnvoyer un chèque ou faire un virement    Site internet de la #CaisseDeGreve : caisse-solidarite.fr&hellip;',
+    'categories': [],
+    'tags': [],
+    'with': ['ou tout autre régression sociale', '1 545 500 EUROS', 'Reportage JT 13 heures de France 2'],  # 3 segments
+    'without': ['On n’est pas de la chair à patron', 'Votre adresse e-mail ne sera pas publiée', 'Contactez vos représentants'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://businessjargons.com/leadership-styles.html': {
+    'file': 'businessjargons.com.leadership.html',
+    'author': '',
+    'title': 'Leadership Styles ',
+    'date': '2016-02-08',
+    'description': 'The Leadership Styles are the behavioral patterns that a leader adopt to influence the behavior of his followers, i.e. the way he give directions to his subordinates and motivates them to accomplish the given objectives.',
+    'categories': ['Business'],
+    'tags': [],
+    'with': ['Participative Leadership', 'Path-Goal Model:', 'Thus, a manager behavior'],  # 3 segments
+    'without': ['Communication Process', 'Entrepreneurship', 'I\'m not a robot'],  # 3 segments
+    'comments': ['very informative I have learnt a lot', 'Can you provide the full details', 'Luv it!'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
 }

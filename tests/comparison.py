@@ -169,7 +169,7 @@ def run_trafilatura(htmlstring):
 def run_justext(htmlstring):
     '''try with the generic algorithm justext'''
     valid = list()
-    paragraphs = justext.justext(htmlstring, justext.get_stoplist("German")) , 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
+    paragraphs = justext.justext(htmlstring, justext.get_stoplist("German"), 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
     for paragraph in paragraphs:
         if not paragraph.is_boilerplate:
             valid.append(paragraph.text)
@@ -200,14 +200,21 @@ def run_readability(htmlstring):
 
 def run_inscriptis(htmlstring):
     '''try with the inscriptis module'''
-    text = get_text(htmlstring)
+    try:
+        text = get_text(htmlstring)
+    except TypeError:
+        text = ''
     return text # sanitize(text)
 
 
 def run_html2text(htmlstring):
     '''try with the html2text module'''
-    text = html2text.html2text(htmlstring)
-    return text # sanitize(text)
+    try:
+        text = html2text.html2text(htmlstring)
+        # sanitize(text)
+    except TypeError:
+        text = ''
+    return text
 
 
 def run_newspaper(htmlstring):
@@ -318,7 +325,7 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
 everything.update(template_dict)
 baseline_result.update(template_dict)
@@ -342,9 +349,10 @@ for item in EVAL_PAGES:
     if len(EVAL_PAGES[item]['file']) == 0:
         continue
     # print(EVAL_PAGES[item]['file'])
-    htmlstring = load_document_binary(EVAL_PAGES[item]['file'])
+    htmlstring = load_document_string(EVAL_PAGES[item]['file'])
     if htmlstring is None:
         continue
+    # print(type(htmlstring))
     # null hypotheses
     tp, fn, fp, tn = evaluate_result('', EVAL_PAGES[item])
     nothing['true positives'] += tp
@@ -485,7 +493,10 @@ print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_s
 
 print('baseline')
 print(baseline_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(baseline_result)))
+try:
+    print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(baseline_result)))
+except ZeroDivisionError:
+    pass
 
 print('html2text')
 print(html2text_result)
