@@ -17,6 +17,7 @@ except ImportError:
     import chardet
 
 import html2text
+import html_text
 import justext
 from boilerpy3 import extractors
 from dragnet import extract_content #, extract_content_and_comments
@@ -28,9 +29,7 @@ from newspaper import fulltext
 from newsplease import NewsPlease
 from readability import Document
 from trafilatura import extract
-## add to tests?
-# https://github.com/nikitautiu/learnhtml
-# https://github.com/TeamHG-Memex/html-text
+
 ## TODO: time, best of 3
 
 from evaldata import EVAL_PAGES
@@ -217,6 +216,12 @@ def run_html2text(htmlstring):
     return text
 
 
+def run_html_text(htmlstring):
+    '''try with the html2text module'''
+    text = html_text.extract_text(htmlstring, guess_layout=False)
+    return text
+
+
 def run_newspaper(htmlstring):
     '''try with the newspaper module'''
     try:
@@ -325,7 +330,7 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
 everything.update(template_dict)
 baseline_result.update(template_dict)
@@ -337,6 +342,7 @@ readability_result.update(template_dict)
 inscriptis_result.update(template_dict)
 newspaper_result.update(template_dict)
 html2text_result.update(template_dict)
+html_text_result.update(template_dict)
 dragnet_result.update(template_dict)
 boilerpipe_result.update(template_dict)
 newsplease_result.update(template_dict)
@@ -373,6 +379,15 @@ for item in EVAL_PAGES:
     html2text_result['false positives'] += fp
     html2text_result['true negatives'] += tn
     html2text_result['false negatives'] += fn
+    # html_text
+    start = time.time()
+    result = run_html_text(htmlstring)
+    html_text_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    html_text_result['true positives'] += tp
+    html_text_result['false positives'] += fp
+    html_text_result['true negatives'] += tn
+    html_text_result['false negatives'] += fn
     # inscriptis
     start = time.time()
     result = run_inscriptis(htmlstring)
@@ -502,6 +517,11 @@ print('html2text')
 print(html2text_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html2text_result)))
 print("time diff.: %.2f" % (html2text_result['time'] / baseline_result['time']))
+
+print('html_text')
+print(html_text_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(html_text_result)))
+print("time diff.: %.2f" % (html_text_result['time'] / baseline_result['time']))
 
 print('inscriptis')
 print(inscriptis_result)
