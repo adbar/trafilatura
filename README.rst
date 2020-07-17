@@ -67,22 +67,22 @@ Evaluation and alternatives
 
 For more detailed results see the `evaluation page <https://github.com/adbar/trafilatura/blob/master/docs/evaluation.rst>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
-=============================== =========  ========== ========= ========= =====
-300 documents, 869 text and 878 boilerplate segments (2020-03-19)
--------------------------------------------------------------------------------
-Python Package                  Precision  Recall     Accuracy  F-Score   Time
-=============================== =========  ========== ========= ========= =====
-*baseline (text markup)*        0.726      0.776      0.742     0.750     1.14 
-justext 2.2.0 (German stoplist) 0.849      0.529      0.719     0.652     6.37
-newspaper3k 0.2.8               0.923      0.591      0.772     0.721     14.80
-goose3 3.1.6                    **0.957**  0.640      0.807     0.767     21.54
-boilerpy3 1.0.2 (article mode)  0.841      0.734      0.799     0.784     5.65
-dragnet 2.0.4                   0.909      0.722      0.825     0.804     3.64
-readability-lxml 0.7.1          0.928      0.743      0.844     0.826     6.59
-news-please 1.4.25              0.926      0.747      0.844     0.827     70.81
-trafilatura 0.4                 0.914      0.869      0.894     0.891     4.87
-trafilatura 0.4 (+ fallback)    0.925      0.904      **0.916** **0.914** 9.94
-=============================== =========  ========== ========= ========= =====
+=============================== =========  ========== ========= ========= ======
+400 documents, 1186 text and 1198 boilerplate segments (2020-07-16)
+--------------------------------------------------------------------------------
+Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
+=============================== =========  ========== ========= ========= ======
+newspaper3k 0.2.8               0.916      0.577      0.763     0.708     11.8x
+justext 2.2.0 (tweaked)         0.867      0.651      0.777     0.744     4.9x
+goose3 3.1.6                    **0.953**  0.635      0.803     0.762     17.3x
+*baseline (text markup)*        0.738      0.804      0.760     0.770     **1x**
+boilerpy3 1.0.2 (article mode)  0.847      0.711      0.792     0.773     4.4x
+dragnet 2.0.4                   0.906      0.704      0.816     0.792     2.8x
+readability-lxml 0.8.1          0.913      0.739      0.835     0.817     5.4x
+news-please 1.4.25              0.918      0.739      0.837     0.819     56.4x
+trafilatura 0.5.1               0.927      0.854      0.894     0.889     3.1x
+trafilatura 0.5.1 (+ fallbacks) 0.933      **0.885**  **0.911** **0.908** 6.8x
+=============================== =========  ========== ========= ========= ======
 
 
 Installation

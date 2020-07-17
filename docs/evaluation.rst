@@ -15,6 +15,7 @@ Although a few corresponding Python packages are not actively maintained the fol
 These packages keep the structure intact but don't focus on main text extraction:
 
 - `html2text <https://github.com/Alir3z4/html2text>`_ converts HTML pages to Markup language
+- `html_text <https://github.com/TeamHG-Memex/html-text>`_ converts HTML code to plain text
 - `inscriptis <https://github.com/weblyzard/inscriptis>`_ converts HTML to text with a particular emphasis on nested tables
 
 These packages focus on main text extraction:
@@ -50,8 +51,33 @@ Description
 The evaluation script is available on the project repository: `tests/comparison.py <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 
-Results (2020-03-19)
+Results (2020-07-16)
 --------------------
+
+=============================== =========  ========== ========= ========= ======
+400 documents, 1186 text and 1198 boilerplate segments
+--------------------------------------------------------------------------------
+Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
+=============================== =========  ========== ========= ========= ======
+*raw HTML*                      0.524      0.879      0.543     0.657     0
+html2text 2020.1.16             0.485      0.718      0.480     0.579     8.4x
+html_text 0.5.1                 0.521      0.962      0.542     0.676     1.8x
+inscriptis 1.0 (html to txt)    0.527      **0.965**  0.551     0.681     1.9x
+newspaper3k 0.2.8               0.916      0.577      0.763     0.708     11.8x
+justext 2.2.0 (tweaked)         0.867      0.651      0.777     0.744     4.9x
+goose3 3.1.6                    **0.953**  0.635      0.803     0.762     17.3x
+*baseline (text markup)*        0.738      0.804      0.760     0.770     **1x**
+boilerpy3 1.0.2 (article mode)  0.847      0.711      0.792     0.773     4.4x
+dragnet 2.0.4                   0.906      0.704      0.816     0.792     2.8x
+readability-lxml 0.8.1          0.913      0.739      0.835     0.817     5.4x
+news-please 1.4.25              0.918      0.739      0.837     0.819     56.4x
+trafilatura 0.5.1               0.927      0.854      0.894     0.889     3.1x
+trafilatura 0.5.1 (+ fallbacks) 0.933      0.885      **0.911** **0.908** 6.8x
+=============================== =========  ========== ========= ========= ======
+
+
+Older results (2020-03-19)
+--------------------------
 
 =============================== =========  ========== ========= ========= =====
 300 documents, 869 text and 878 boilerplate segments
