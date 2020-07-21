@@ -633,7 +633,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         # cut short if extracted URL in blacklist
         if docmeta.url in url_blacklist:
             return None
-        # cut short if no date
+        # cut short if core elements are missing
         if with_metadata is True and any([docmeta.date is None, docmeta.title is None, docmeta.url is None]):
             return None
     else:

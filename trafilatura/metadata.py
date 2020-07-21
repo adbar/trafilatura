@@ -25,6 +25,8 @@ JSON_AUTHOR_2 = re.compile(r'"author"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
+URL_CHECK = re.compile(r'https?://')
+URL_COMP_CHECK = re.compile(r'https?://|/')
 
 
 def extract_json(tree, mymeta):
@@ -75,7 +77,8 @@ def extract_opengraph(tree):
             title = elem.get('content')
         # orig URL
         elif elem.get('property') == 'og:url':
-            url = elem.get('content')
+            if URL_CHECK.match(elem.get('content')):
+                url = elem.get('content')
         # description
         elif elem.get('property') == 'og:description':
             description = elem.get('content')
@@ -137,7 +140,7 @@ def examine_meta(tree):
                     site_name = content_attr
             # url
             elif elem.get('name') == 'twitter:url':
-                if url is None:
+                if url is None and URL_CHECK.match(content_attr):
                     url = content_attr
             # keywords
             elif elem.get('name') == 'keywords': # 'page-topic'
@@ -227,14 +230,15 @@ def extract_url(tree, default_url=None):
     url = default_url
     # try canonical link first
     element = tree.find('.//head//link[@rel="canonical"]')
-    if element is not None:
+    if element is not None and URL_COMP_CHECK.match(element.attrib['href']):
         url = element.attrib['href']
     # try default language link
     else:
         for element in tree.xpath('//head//link[@rel="alternate"]'):
             if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib['hreflang'] == 'x-default':
-                LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
-                url = element.attrib['href']
+                if URL_COMP_CHECK.match(element.attrib['href']):
+                    LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
+                    url = element.attrib['href']
     # add domain name if it's missing
     if url is not None and url.startswith('/'):
         for element in tree.xpath('//head//meta[@content]'):
@@ -250,6 +254,9 @@ def extract_url(tree, default_url=None):
                     # prepend URL
                     url = domain_match.group(0) + url
                     break
+    # sanity check: don't return invalid URLs
+    if url is not None and not URL_CHECK.match(url):
+        url = None
     return url
 
 

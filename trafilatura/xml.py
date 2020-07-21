@@ -268,11 +268,9 @@ def write_fullheader(header, docmeta):
     publicationstmt = etree.SubElement(biblfull, 'publicationStmt')
     publication_publisher = etree.SubElement(publicationstmt, 'publisher')
     publication_publisher.text = docmeta.sitename
-    publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL')
     if docmeta.url is not None:
+        publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL')
         publication_url.set('target', docmeta.url)
-    else:
-        publication_url.set('target', '')
     publication_date = etree.SubElement(publicationstmt, 'date')
     publication_date.text = docmeta.date
     profiledesc = etree.SubElement(header, 'profileDesc')
