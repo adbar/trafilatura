@@ -180,7 +180,7 @@ def merge_with_parent(element):
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     returnlist = []
-    # etree.strip_tags(xmloutput, 'hi', 'link')
+    # etree.strip_tags(xmloutput, 'div', 'main', 'span')
     # remove and insert into the previous tag
     for element in xmloutput.xpath('//hi|//link'):
         merge_with_parent(element)
@@ -194,7 +194,7 @@ def xmltotxt(xmloutput):
                 returnlist.append('\n')
             continue
         textelement = replace_element_text(element)
-        if element.tag in ('code', 'fw', 'head', 'lb', 'p', 'quote', 'row', 'table'):
+        if element.tag in ('code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'):
             returnlist.extend(['\n', textelement, '\n'])
         elif element.tag == 'item':
             returnlist.extend(['\n- ', textelement, '\n'])

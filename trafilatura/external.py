@@ -32,8 +32,10 @@ except ImportError:
     justext = JT_STOPLIST = None
 
 # own
+from .htmlprocessing import convert_tags, prune_html
 from .settings import JUSTEXT_LANGUAGES
-from .utils import trim, HTML_PARSER
+from .utils import sanitize, trim, HTML_PARSER
+from .xml import TEI_VALID_TAGS
 
 
 LOGGER = logging.getLogger(__name__)
@@ -101,12 +103,52 @@ def try_justext(tree, url, target_language):
 
 def justext_rescue(tree, url, target_language, postbody, len_text, text):
     '''Try to use justext algorithm as a second fallback'''
+    result_bool = False
     temppost_algo = try_justext(tree, url, target_language)
     if temppost_algo is not None:
         temp_text = trim(' '.join(temppost_algo.itertext()))
         len_algo = len(temp_text)
         if len_algo > len_text:
-            postbody = temppost_algo
-            text = temp_text
-            len_text = len_algo
-    return postbody, len_text, text
+            postbody, text, len_text = temppost_algo, temp_text, len_algo
+            result_bool = True
+    return postbody, text, len_text, result_bool
+
+
+def convert_tree(tree):
+    '''Convert the output from the generic algorithm'''
+    tree = prune_html(tree)
+    cleaned_tree = convert_tags(tree)
+    # cleaned_tree = manual_cleaning(cleaned_tree, True)
+    # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
+    for elem in cleaned_tree.iter():
+        #if elem.tag in ('code', 'del', 'head', 'hi', 'item', 'p', 'quote'):
+        #    if elem.text is None or elem.text.isspace():
+        #        elem.getparent().remove(elem)
+        #        continue
+        #if elem.text:
+        elem.text = sanitize(elem.text)
+        #if elem.tail:
+        elem.tail = sanitize(elem.tail)
+        # remove attributes
+        if elem.tag != 'del' or elem.tag != 'hi':
+            elem.attrib.clear()
+        # finish table conversion
+        if elem.tag == 'tr':
+            elem.tag = 'row'
+        elif elem.tag == 'td' or elem.tag == 'th':
+            elem.tag = 'cell'
+            if elem.tag == 'th':
+                elem.set('role', 'head')
+    return cleaned_tree
+
+
+def sanitize_tree(tree):
+    '''Sanitize the output from the generic algorithm (post-processing)'''
+    #for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
+    #    elem.getparent().remove(elem)
+    etree.strip_elements(tree, 'aside', 'audio', 'button', 'fieldset', 'figure', 'footer', 'iframe', 'image', 'img', 'input', 'label', 'nav', 'noindex', 'noscript', 'object', 'option', 'select', 'source', 'svg', 'time')
+    for tagname in [element.tag for element in set(tree.iter())]:
+        if tagname not in TEI_VALID_TAGS:
+            etree.strip_tags(tree, tagname)
+    text = trim(' '.join(tree.itertext()))
+    return tree, text, len(text)

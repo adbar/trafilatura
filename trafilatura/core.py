@@ -16,7 +16,7 @@ from copy import deepcopy
 from lxml import etree, html
 
 # own
-from .external import justext_rescue, try_readability
+from .external import convert_tree, justext_rescue, sanitize_tree, try_readability
 from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
@@ -27,51 +27,11 @@ from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
 from .xml import (add_xml_meta, build_json_output, build_xml_output,
-                  build_tei_output, control_xml_output, xmltotxt,
-                  TEI_VALID_TAGS)
+                  build_tei_output, control_xml_output, xmltotxt)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
-
-def convert_tree(tree):
-    '''Convert the output from the generic algorithm'''
-    tree = prune_html(tree)
-    cleaned_tree = convert_tags(tree)
-    # cleaned_tree = manual_cleaning(cleaned_tree, True)
-    # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
-    for elem in cleaned_tree.iter():
-        #if elem.tag in ('code', 'del', 'head', 'hi', 'item', 'p', 'quote'):
-        #    if elem.text is None or elem.text.isspace():
-        #        elem.getparent().remove(elem)
-        #        continue
-        #if elem.text:
-        elem.text = sanitize(elem.text)
-        #if elem.tail:
-        elem.tail = sanitize(elem.tail)
-        # remove attributes
-        if elem.tag != 'del' or elem.tag != 'hi':
-            elem.attrib.clear()
-        # finish table conversion
-        if elem.tag == 'tr':
-            elem.tag = 'row'
-        elif elem.tag == 'td' or elem.tag == 'th':
-            elem.tag = 'cell'
-            if elem.tag == 'th':
-                elem.set('role', 'head')
-    return cleaned_tree
-
-
-def sanitize_tree(tree):
-    '''Sanitize the output from the generic algorithm (post-processing)'''
-    #for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
-    #    elem.getparent().remove(elem)
-    etree.strip_elements(tree, 'aside', 'audio', 'button', 'fieldset', 'figure', 'footer', 'iframe', 'image', 'img', 'input', 'label', 'nav', 'noindex', 'noscript', 'object', 'option', 'select', 'source', 'svg', 'time')
-    for tagname in [element.tag for element in set(tree.iter())]:
-        if tagname not in TEI_VALID_TAGS:
-            etree.strip_tags(tree, tagname)
-    text = trim(' '.join(tree.itertext()))
-    return tree, text, len(text)
 
 
 def handle_titles(element):
@@ -110,8 +70,7 @@ def handle_lists(element):
             if processed_child is not None:
                 # processed_element.append(deepcopy(processed_child))
                 # childelem = etree.SubElement(processed_element, processed_child.tag)
-                newchildelem.text = processed_child.text
-                newchildelem.tail = processed_child.tail
+                newchildelem.text, newchildelem.tail = processed_child.text, processed_child.tail
                 processed_element.append(newchildelem)
         else:
             # print(child.tag, child.text, child.tail)
@@ -122,8 +81,7 @@ def handle_lists(element):
                 # add child element to processed_element
                 if processed_subchild is not None:
                     subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
-                    subchildelem.text = processed_subchild.text
-                    subchildelem.tail = processed_subchild.tail
+                    subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
                     # newsub.append(deepcopy(processed_subchild))
                     # processed_element.append(processed_subchild)
                 subelem.tag = 'done'
@@ -148,8 +106,7 @@ def handle_quotes(element):
         if processed_child is not None:
             # processed_element.append(deepcopy(processed_child))
             newsub = etree.SubElement(processed_element, child.tag)
-            newsub.text = processed_child.text
-            newsub.tail = processed_child.tail
+            newsub.text, newsub.tail = processed_child.text, processed_child.tail
         child.tag = 'done'
     if len(processed_element) > 0:
         # avoid double/nested tags
@@ -231,8 +188,7 @@ def handle_paragraphs(element, potential_tags):
                 else:
                     newsub.tail = processed_child.text
             else:
-                newsub.text = processed_child.text
-                newsub.tail = processed_child.tail
+                newsub.text, newsub.tail = processed_child.text, processed_child.tail
             processed_element.append(newsub)
             child.tag = 'done'
     # finish
@@ -250,6 +206,8 @@ def handle_table(table_elem):
     newtable = etree.Element('table')
     newrow = etree.Element('row')
     i = 0
+    # strip these structural elements
+    etree.strip_tags(table_elem, 'thead', 'tbody', 'tfoot')
     # explore sub-elements
     for subelement in table_elem.iter():
         i += 1
@@ -368,9 +326,10 @@ def extract_content(tree, include_tables=False):
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # extract content
-        processed_elems = [handle_textelem(e, potential_tags) for e in subtree.xpath('.//*')]
         # list(filter(None.__ne__, processed_elems))
-        result_body.extend([e for e in processed_elems if e is not None])
+        result_body.extend([e for e in
+                            [handle_textelem(e, potential_tags) for e in subtree.xpath('.//*')]
+                            if e is not None])
         # remove trailing titles
         try:
             lastelem = result_body[-1]
@@ -476,31 +435,33 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     # apply decision
     if algo_flag is True:
-        body = convert_tree(temppost_algo)
-        text = algo_text
-        len_text = len_algo
+        body, text, len_text = temppost_algo, algo_text, len_algo
         LOGGER.info('using generic algorithm: %s', url)
     else:
         LOGGER.info('using custom extraction: %s', url)
     # override faulty extraction
     if body.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//image|//img|//input|//label|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
-        body2, len_text2, text2 = justext_rescue(tree, url, target_language, body, 0, '')
-        LOGGER.debug('justext length %s', len_text2)
-        if len_text2 > 0: #MIN_EXTRACTED_SIZE:
-            body, len_text, text = body2, len_text2, text2
+        body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
+        if jt_result is True:
+            LOGGER.debug('justext length %s', len_text)  #MIN_EXTRACTED_SIZE:
         else:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body)
+            body, text, len_text = sanitize_tree(convert_tree(body))
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)  # record_id,
-        body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
+        body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
+        if jt_result is False:
+            # post-processing: remove unwanted sections
+            body, text, len_text = sanitize_tree(convert_tree(body))
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, temp_text2, len_text2 = baseline(backup_tree)
     #     if len_text2 > MIN_EXTRACTED_SIZE:
     #         body, text, len_text = body2, len_text2, temp_text2
+    ##if 'tbody' in [element.tag for element in set(body.iter())]:
+    ##    print('TBODY!!!')
     return body, text, len_text
 
 
