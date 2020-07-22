@@ -130,7 +130,7 @@ def convert_tree(tree):
         #if elem.tail:
         elem.tail = sanitize(elem.tail)
         # remove attributes
-        if elem.tag != 'del' or elem.tag != 'hi':
+        if elem.tag not in ('del', 'hi'):
             elem.attrib.clear()
         # finish table conversion
         if elem.tag == 'tr':
