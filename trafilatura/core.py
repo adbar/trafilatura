@@ -27,7 +27,7 @@ from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
 from .xml import (add_xml_meta, build_json_output, build_xml_output,
-                  build_tei_output, validate_tei, xmltotxt,
+                  build_tei_output, control_xml_output, xmltotxt,
                   TEI_VALID_TAGS)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
@@ -568,17 +568,7 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
         elif output_format == 'xmltei':
             output = build_tei_output(postbody, commentsbody, docmeta)
         # can be improved
-        control_string = etree.tostring(output, encoding='unicode')
-        control_string = sanitize(control_string)
-        # necessary for cleaning
-        control_parser = etree.XMLParser(remove_blank_text=True)
-        output_tree = etree.fromstring(control_string, control_parser)
-        # validate
-        if output_format == 'xmltei' and tei_validation is True:
-            result = validate_tei(output_tree)
-            LOGGER.info('TEI validation result: %s %s %s', result, record_id, docmeta.url)
-        # output as string
-        returnstring = etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
+        returnstring = control_xml_output(output, output_format, tei_validation, record_id, docmeta.url)
     # CSV. JSON and TXT output
     else:
         if output_format == 'csv':
@@ -590,7 +580,7 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
             returnstring = txttocsv(posttext, commentstext, docmeta)
         elif output_format == 'json':
             returnstring = build_json_output(docmeta, postbody, commentsbody)
-        else:
+        else:  # txt
             returnstring = xmltotxt(build_xml_output(postbody, commentsbody))
     return returnstring
 

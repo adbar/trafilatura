@@ -26,6 +26,8 @@ TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'head', 'hi', 'ite
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
+CONTROL_PARSER = etree.XMLParser(remove_blank_text=True)
+
 
 def build_json_output(docmeta, postbody, commentsbody):
     '''Build JSON output based on extracted information'''
@@ -54,6 +56,18 @@ def build_xml_output(postbody, commentsbody):
 # XML invalid characters
 # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
     return output
+
+
+def control_xml_output(output_tree, output_format, tei_validation, record_id, url):
+    '''Make sure the XML output is conform and valid if required'''
+    control_string = sanitize(etree.tostring(output_tree, encoding='unicode'))
+    # necessary for cleaning
+    output_tree = etree.fromstring(control_string, CONTROL_PARSER)
+    # validate
+    if output_format == 'xmltei' and tei_validation is True:
+        result = validate_tei(output_tree)
+        LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)
+    return etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
 
 def add_xml_meta(output, docmeta):
@@ -102,29 +116,7 @@ def check_tei(tei, url):
             # disable warnings for chosen categories
             # if element.tag not in ('div', 'span'):
             LOGGER.warning('not a TEI element, removing: %s %s', element.tag, url)
-            # append text AND tail to parent
-            full_text = ''
-            if element.text is not None and element.tail is not None:
-                full_text = element.text + ' ' + element.tail
-            elif element.text is not None and element.tail is None:
-                full_text = element.text
-            elif element.text is None and element.tail is not None:
-                full_text = element.tail
-            parent = element.getparent()
-            previous = element.getprevious()
-            if previous is not None:
-                # There is a previous node, append text to its tail
-                if previous.tail is not None:
-                    previous.tail += ' ' + full_text
-                else:
-                    previous.tail = full_text
-            else:
-                # It's the first node in <parent/>, append to parent's text
-                if parent.text is not None:
-                    parent.text += ' ' + full_text
-                else:
-                    parent.text = full_text
-            parent.remove(element)
+            merge_with_parent(element)
             continue
         # check attributes
         for attribute in element.attrib:
@@ -151,36 +143,47 @@ def validate_tei(tei):  # , filename=""
     return result
 
 
+def replace_element_text(element):
+    '''Determine element text based on text and tail'''
+    full_text = ''
+    if element.text is not None and element.tail is not None:
+        full_text = ' '.join([element.text, element.tail])
+    elif element.text is not None and element.tail is None:
+        full_text = element.text
+    elif element.text is None and element.tail is not None:
+        full_text = element.tail
+    return full_text
+
+
+def merge_with_parent(element):
+    '''Merge element with its parent'''
+    parent = element.getparent()
+    if parent is None:
+        return
+    full_text = replace_element_text(element)
+    previous = element.getprevious()
+    if previous is not None:
+        # There is a previous node, append text to its tail
+        if previous.tail is not None:
+            previous.tail = ' '.join([previous.tail, full_text])
+        else:
+            previous.tail = full_text
+    else:
+        # It's the first node in <parent/>, append to parent's text
+        if parent.text is not None:
+            parent.text = ' '.join([parent.text, full_text])
+        else:
+            parent.text = full_text
+    parent.remove(element)
+
+
 def xmltotxt(xmloutput):
     '''Convert to plain text format'''
     returnlist = []
     # etree.strip_tags(xmloutput, 'hi', 'link')
     # remove and insert into the previous tag
     for element in xmloutput.xpath('//hi|//link'):
-        parent = element.getparent()
-        if parent is None:
-            continue
-        full_text = ''
-        if element.text is not None and element.tail is not None:
-            full_text = element.text + ' ' + element.tail
-        elif element.text is not None and element.tail is None:
-            full_text = element.text
-        elif element.text is None and element.tail is not None:
-            full_text = element.tail
-        previous = element.getprevious()
-        if previous is not None:
-            # There is a previous node, append text to its tail
-            if previous.tail is not None:
-                previous.tail += ' ' + full_text
-            else:
-                previous.tail = full_text
-        else:
-            # It's the first node in <parent/>, append to parent's text
-            if parent.text is not None:
-                parent.text += ' ' + full_text
-            else:
-                parent.text = full_text
-        parent.remove(element)
+        merge_with_parent(element)
         continue
     # iterate and convert to list of strings
     for element in xmloutput.iter():
@@ -190,12 +193,7 @@ def xmltotxt(xmloutput):
             if element.tag in ('row', 'table'):
                 returnlist.append('\n')
             continue
-        if element.text is not None and element.tail is not None:
-            textelement = ' '.join([element.text, element.tail])
-        elif element.text is not None and element.tail is None:
-            textelement = element.text
-        else:
-            textelement = element.tail
+        textelement = replace_element_text(element)
         if element.tag in ('code', 'fw', 'head', 'lb', 'p', 'quote', 'row', 'table'):
             returnlist.extend(['\n', textelement, '\n'])
         elif element.tag == 'item':
