@@ -311,15 +311,6 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
             mymeta = mymeta._replace(author=None)
     # fix: try json-ld metadata and override
     mymeta = extract_json(tree, mymeta)
-    # extract date with external module htmldate
-    if date_config is None:
-        date_config = HTMLDATE_CONFIG
-    date_config['url'] = mymeta.url
-    # temporary fix for htmldate bug
-    try:
-        mymeta = mymeta._replace(date=find_date(tree, **date_config))
-    except UnicodeError:
-        pass
     # try with x-paths
     # title
     if mymeta.title is None:
@@ -330,6 +321,15 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
     # url
     if mymeta.url is None:
         mymeta = mymeta._replace(url=extract_url(tree, default_url))
+    # extract date with external module htmldate
+    if date_config is None:
+        date_config = HTMLDATE_CONFIG
+    date_config['url'] = mymeta.url
+    try:
+        mymeta = mymeta._replace(date=find_date(tree, **date_config))
+    # temporary fix for htmldate bug
+    except UnicodeError:
+        pass
     # sitename
     if mymeta.sitename is None:
         mymeta = mymeta._replace(sitename=extract_sitename(tree))

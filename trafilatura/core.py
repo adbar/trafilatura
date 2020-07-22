@@ -58,7 +58,7 @@ def convert_tree(tree):
         elif elem.tag == 'td' or elem.tag == 'th':
             elem.tag = 'cell'
             if elem.tag == 'th':
-                newsub.set('role', 'head')
+                elem.set('role', 'head')
     return cleaned_tree
 
 
@@ -67,7 +67,7 @@ def sanitize_tree(tree):
     #for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
     #    elem.getparent().remove(elem)
     etree.strip_elements(tree, 'aside', 'audio', 'button', 'fieldset', 'figure', 'footer', 'iframe', 'image', 'img', 'input', 'label', 'nav', 'noindex', 'noscript', 'object', 'option', 'select', 'source', 'svg', 'time')
-    for tagname in set([element.tag for element in list(tree.iter())]):
+    for tagname in [element.tag for element in set(tree.iter())]:
         if tagname not in TEI_VALID_TAGS:
             etree.strip_tags(tree, tagname)
     text = trim(' '.join(tree.itertext()))
@@ -460,7 +460,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     # compare
     LOGGER.debug('extracted length: %s (algorithm) %s (extraction)', len_algo, len_text)
     # conditions to use alternative algorithms
-    if len_algo == 0 or len_algo == len_text:
+    if len_algo in (0, len_text):
         algo_flag = False
     elif len_text == 0 and len_algo > 0:
         algo_flag = True
@@ -493,9 +493,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             body, text, len_text = sanitize_tree(body)
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
-            LOGGER.error('not enough text %s', url)  # record_id,
-            body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
-            LOGGER.debug('justext length %s', len_text)
+        LOGGER.error('not enough text %s', url)  # record_id,
+        body, len_text, text = justext_rescue(tree, url, target_language, body, len_text, text)
+        LOGGER.debug('justext length %s', len_text)
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, temp_text2, len_text2 = baseline(backup_tree)
