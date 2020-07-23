@@ -35,7 +35,7 @@ except ImportError:
 from .htmlprocessing import convert_tags, prune_html
 from .settings import JUSTEXT_LANGUAGES
 from .utils import sanitize, trim, HTML_PARSER
-from .xml import TEI_VALID_TAGS
+from .xml import TEI_VALID_TAGS # merge_with_parent
 
 
 LOGGER = logging.getLogger(__name__)
@@ -114,20 +114,18 @@ def justext_rescue(tree, url, target_language, postbody, len_text, text):
     return postbody, text, len_text, result_bool
 
 
-def convert_tree(tree):
-    '''Convert the output from the generic algorithm'''
+def sanitize_tree(tree):
+    '''Convert and sanitize the output from the generic algorithm (post-processing)'''
+    # delete unnecessary elements
+    #for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
+    #    elem.getparent().remove(elem)
+    etree.strip_elements(tree, 'aside', 'audio', 'button', 'fieldset', 'figure', 'footer', 'iframe', 'image', 'img', 'input', 'label', 'link', 'nav', 'noindex', 'noscript', 'object', 'option', 'select', 'source', 'svg', 'time')
     tree = prune_html(tree)
+    # convert
     cleaned_tree = convert_tags(tree)
-    # cleaned_tree = manual_cleaning(cleaned_tree, True)
-    # cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
+    etree.strip_tags(cleaned_tree, 'thead', 'tbody', 'tfoot')
     for elem in cleaned_tree.iter():
-        #if elem.tag in ('code', 'del', 'head', 'hi', 'item', 'p', 'quote'):
-        #    if elem.text is None or elem.text.isspace():
-        #        elem.getparent().remove(elem)
-        #        continue
-        #if elem.text:
         elem.text = sanitize(elem.text)
-        #if elem.tail:
         elem.tail = sanitize(elem.tail)
         # remove attributes
         if elem.tag not in ('del', 'hi'):
@@ -139,16 +137,15 @@ def convert_tree(tree):
             elem.tag = 'cell'
             if elem.tag == 'th':
                 elem.set('role', 'head')
-    return cleaned_tree
-
-
-def sanitize_tree(tree):
-    '''Sanitize the output from the generic algorithm (post-processing)'''
-    #for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
-    #    elem.getparent().remove(elem)
-    etree.strip_elements(tree, 'aside', 'audio', 'button', 'fieldset', 'figure', 'footer', 'iframe', 'image', 'img', 'input', 'label', 'nav', 'noindex', 'noscript', 'object', 'option', 'select', 'source', 'svg', 'time')
-    for tagname in [element.tag for element in set(tree.iter())]:
+    # sanitize
+    for tagname in [element.tag for element in set(cleaned_tree.iter())]:
         if tagname not in TEI_VALID_TAGS:
-            etree.strip_tags(tree, tagname)
-    text = trim(' '.join(tree.itertext()))
-    return tree, text, len(text)
+            etree.strip_tags(cleaned_tree, tagname)
+            #if tagname in ('article', 'content', 'link', 'main', 'section', 'span'):
+            #    for element in cleaned_tree.iter(tagname):
+            #        merge_with_parent(element)
+            #else:
+            #    print(tagname)
+            #    etree.strip_elements(cleaned_tree, tagname)
+    text = trim(' '.join(cleaned_tree.itertext()))
+    return cleaned_tree, text, len(text)

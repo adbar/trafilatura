@@ -16,7 +16,7 @@ from copy import deepcopy
 from lxml import etree, html
 
 # own
-from .external import convert_tree, justext_rescue, sanitize_tree, try_readability
+from .external import justext_rescue, sanitize_tree, try_readability
 from .filters import duplicate_test, language_filter, put_in_cache
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
@@ -446,7 +446,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             LOGGER.debug('justext length %s', len_text)  #MIN_EXTRACTED_SIZE:
         else:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(convert_tree(body))
+            body, text, len_text = sanitize_tree(body)
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)  # record_id,
@@ -454,14 +454,15 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.debug('justext length %s', len_text)
         if jt_result is False:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(convert_tree(body))
+            body, text, len_text = sanitize_tree(body)
+    else:
+        if algo_flag is True:
+            body, text, len_text = sanitize_tree(body)
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, temp_text2, len_text2 = baseline(backup_tree)
     #     if len_text2 > MIN_EXTRACTED_SIZE:
     #         body, text, len_text = body2, len_text2, temp_text2
-    ##if 'tbody' in [element.tag for element in set(body.iter())]:
-    ##    print('TBODY!!!')
     return body, text, len_text
 
 

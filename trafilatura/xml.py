@@ -203,6 +203,7 @@ def xmltotxt(xmloutput):
         elif element.tag == 'comments':
             returnlist.append('\n\n')
         else:
+            # print(element.tag)
             returnlist.extend([textelement, ' '])
     return sanitize(''.join(returnlist))
 
