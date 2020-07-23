@@ -24,7 +24,8 @@ from .htmlprocessing import (convert_tags, discard_unwanted,
                              manual_cleaning, process_node, prune_html)
 from .metadata import extract_metadata
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
-                       MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
+                       MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, MAX_OUTPUT_TREE_LENGTH,
+                       TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
 from .xml import (add_xml_meta, build_json_output, build_xml_output,
                   build_tei_output, control_xml_output, xmltotxt)
@@ -626,6 +627,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             #postbody, temp_text, len_text, sure_thing = extract_content(tree)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
+    # tree size sanity check
+    if len(postbody) > MAX_OUTPUT_TREE_LENGTH:
+        LOGGER.error('output tree too long: %s', len(postbody))
+        return None
     # size checks
     if len_comments < MIN_EXTRACTED_COMM_SIZE:
         LOGGER.info('not enough comments %s %s', record_id, url)
