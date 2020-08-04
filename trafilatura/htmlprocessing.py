@@ -142,7 +142,7 @@ def convert_tags(tree):
     return tree
 
 
-def handle_textnode(element, comments_fix=True):
+def handle_textnode(element, comments_fix=True, deduplicate=True):
     '''Convert, format, and probe potential text elements'''
     if element.text is None and element.tail is None:
         return None
@@ -176,7 +176,7 @@ def handle_textnode(element, comments_fix=True):
     return element
 
 
-def process_node(element):
+def process_node(element, deduplicate=True):
     '''Convert, format, and probe potential text elements (light format)'''
     if element.tag == 'done':
         return None

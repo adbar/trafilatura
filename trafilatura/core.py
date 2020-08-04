@@ -61,7 +61,7 @@ def handle_formatting(element):
     return processed_element
 
 
-def handle_lists(element):
+def handle_lists(element, dedupbool):
     '''Process lists elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter('item'):
@@ -77,14 +77,11 @@ def handle_lists(element):
             # print(child.tag, child.text, child.tail)
             # proceed with iteration, fix for nested elements
             for subelem in child.iter():
-                # newsub = etree.Element('item')
-                processed_subchild = handle_textnode(subelem, comments_fix=False)  # process_node(subelem)
+                processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool)
                 # add child element to processed_element
                 if processed_subchild is not None:
                     subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
                     subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
-                    # newsub.append(deepcopy(processed_subchild))
-                    # processed_element.append(processed_subchild)
                 subelem.tag = 'done'
             etree.strip_tags(newchildelem, 'item')
         if newchildelem.text or len(newchildelem) > 0:
@@ -119,14 +116,14 @@ def handle_quotes(element):
     return None
 
 
-def handle_other_elements(element, potential_tags):
+def handle_other_elements(element, potential_tags, dedupbool):
     '''Handle diverse or unknown elements in the scope of relevant tags'''
     # delete unwanted
     if element.tag not in potential_tags:
         # LOGGER.debug('discarding: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
-        processed_element = handle_textnode(element, comments_fix=False)  # process_node(element)
+        processed_element = handle_textnode(element, comments_fix=False, deduplicate=dedupbool)
         if processed_element is not None:
             processed_element.attrib.clear()
             # small div-correction # could be moved elsewhere
@@ -139,7 +136,7 @@ def handle_other_elements(element, potential_tags):
     return None
 
 
-def handle_paragraphs(element, potential_tags):
+def handle_paragraphs(element, potential_tags, dedupbool):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
@@ -156,7 +153,7 @@ def handle_paragraphs(element, potential_tags):
         if child.tag not in potential_tags:
             LOGGER.debug('unexpected elem in paragraph: %s %s %s', child.tag, child.text, child.tail)
             continue
-        processed_child = handle_textnode(child, comments_fix=False)
+        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool)
         if processed_child is not None:
             # needing attention!
             if child.tag == 'p':
@@ -243,30 +240,30 @@ def handle_table(table_elem):
     return None
 
 
-def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG):
+def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG, deduplicate=True):
     '''Look for all p-elements, including outside of the determined frame
        and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Taking all p-elements')
     # prune
     search_tree = discard_unwanted(tree)
     etree.strip_tags(search_tree, 'a', 'link', 'span')
-    processed_elems = [handle_paragraphs(element, potential_tags) for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote')] # 'head', 'list'
+    processed_elems = [handle_paragraphs(element, potential_tags, deduplicate) for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote')] # 'head', 'list'
     result_body.extend(list(filter(None.__ne__, processed_elems)))
     return result_body
 
 
-def handle_textelem(element, potential_tags):
+def handle_textelem(element, potential_tags, dedupbool):
     '''Process text element and determine how to deal with its content'''
     new_element = None
     # bypass: nested elements
     if element.tag == 'list':
-        new_element = handle_lists(element)
+        new_element = handle_lists(element, dedupbool)
     elif element.tag == 'quote':   # + 'code'?
         new_element = handle_quotes(element)
     elif element.tag == 'head':
         new_element = handle_titles(element)
     elif element.tag == 'p':
-        new_element = handle_paragraphs(element, potential_tags)
+        new_element = handle_paragraphs(element, potential_tags, dedupbool)
     elif element.tag == 'lb':
         if text_chars_test(element.tail) is True:
             element = process_node(element)
@@ -279,11 +276,11 @@ def handle_textelem(element, potential_tags):
         new_element = handle_table(element)
     else:
         # other elements (div, ??, ??)
-        new_element = handle_other_elements(element, potential_tags)
+        new_element = handle_other_elements(element, potential_tags, dedupbool)
     return new_element
 
 
-def extract_content(tree, include_tables=False):
+def extract_content(tree, include_tables=False, deduplicate=True):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -329,7 +326,7 @@ def extract_content(tree, include_tables=False):
         # extract content
         # list(filter(None.__ne__, processed_elems))
         result_body.extend([e for e in
-                            [handle_textelem(e, potential_tags) for e in subtree.xpath('.//*')]
+                            [handle_textelem(e, potential_tags, deduplicate) for e in subtree.xpath('.//*')]
                             if e is not None])
         # remove trailing titles
         try:
@@ -348,7 +345,7 @@ def extract_content(tree, include_tables=False):
     temp_text = trim(' '.join(result_body.itertext()))
     len_text = len(temp_text)
     if len(result_body) == 0 or len_text < MIN_EXTRACTED_SIZE:
-        result_body = recover_wild_paragraphs(tree, result_body)
+        result_body = recover_wild_paragraphs(tree, result_body, deduplicate=deduplicate)
         #search_tree = discard_unwanted(tree)
         #search_tree = prune_html(search_tree)
         #result_body, _, _ = baseline(search_tree)
@@ -361,11 +358,11 @@ def extract_content(tree, include_tables=False):
     return result_body, temp_text, len_text, sure_thing
 
 
-def process_comments_node(elem, potential_tags):
+def process_comments_node(elem, potential_tags, dedupbool):
     '''Process comment node and determine how to deal with its content'''
     if elem.tag in potential_tags:
         # print(elem.tag, elem.text_content())
-        processed_element = handle_textnode(elem, comments_fix=True)
+        processed_element = handle_textnode(elem, comments_fix=True, deduplicate=dedupbool)
         # test length and remove
         if processed_element is not None: # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
@@ -375,7 +372,7 @@ def process_comments_node(elem, potential_tags):
     return None
 
 
-def extract_comments(tree):
+def extract_comments(tree, dedupbool):
     '''Try and extract comments out of potential sections in the HTML'''
     comments_body = etree.Element('body')
     # define iteration strategy
@@ -395,7 +392,7 @@ def extract_comments(tree):
         #    processed_elem = process_comments_node(elem, potential_tags)
         #    if processed_elem is not None:
         #        comments_body.append(processed_elem)
-        processed_elems = [process_comments_node(elem, potential_tags) for elem in subtree.xpath('.//*')]
+        processed_elems = [process_comments_node(elem, potential_tags, dedupbool) for elem in subtree.xpath('.//*')]
         comments_body.extend(list(filter(None.__ne__, processed_elems)))
         # control
         if len(comments_body) > 0:  # if it has children
@@ -565,7 +562,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
             include_comments=True, output_format='txt',
             csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
-            include_tables=True, include_formatting=False,
+            include_tables=True, include_formatting=False, deduplicate=True,
             date_extraction_params=None, with_metadata=False, url_blacklist=set()):
     '''Main process for text extraction'''
     # temporary metadata mapping
@@ -607,12 +604,12 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
 
     # comments first, then remove
     if include_comments is True:
-        commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree)
+        commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate)
     else:
         commentsbody, temp_comments, len_comments = None, '', 0
 
     # extract content
-    postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables)
+    postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, deduplicate)
 
     # compare if necessary
     if no_fallback is False:
@@ -639,7 +636,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         return None
 
     # check duplicates at body level
-    if duplicate_test(postbody) is True:
+    if deduplicate is True and duplicate_test(postbody) is True:
         return None
 
     # sanity check on language
