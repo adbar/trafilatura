@@ -17,7 +17,7 @@ from lxml import etree, html
 
 # own
 from .external import justext_rescue, sanitize_tree, try_readability
-from .filters import duplicate_test, language_filter, put_in_cache
+from .filters import duplicate_test, language_filter, put_in_cache, text_chars_test
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
                              link_density_test,
@@ -54,9 +54,9 @@ def handle_formatting(element):
     if element.text is not None or element.tail is not None:
         processed_element = etree.Element('p')
         processed_child = etree.SubElement(processed_element, element.tag)
-        if element.text is not None and not element.text.isspace():
+        if text_chars_test(element.text) is True:
             processed_child.text = trim(element.text)
-        if element.tail is not None and not element.text.isspace():
+        if text_chars_test(element.tail) is True:
             processed_child.tail = trim(element.tail)
     return processed_element
 
@@ -94,7 +94,7 @@ def handle_lists(element):
     if len(processed_element) > 0:  # if it has children
         # test if it has text
         teststring = ''.join(processed_element.itertext())
-        if teststring and re.search(r'\S', teststring):
+        if text_chars_test(teststring) is True:
             return processed_element
     return None
 
@@ -169,7 +169,7 @@ def handle_paragraphs(element, potential_tags):
                 # check depth and clean
                 if len(child) > 0:
                     for item in child:  # children are lists
-                        if item.text is not None and not item.text.isspace():
+                        if text_chars_test(item.text) is True:
                             item.text = ' ' + item.text
                         etree.strip_tags(child, item.tag)
                 newsub.set('rend', child.get('rend'))
@@ -180,11 +180,11 @@ def handle_paragraphs(element, potential_tags):
                 except AttributeError:  # no text
                     pass
             # prepare text
-            if processed_child.text is None or processed_child.text.isspace():
+            if text_chars_test(processed_child.text) is False:
                 processed_child.text = ''
             # if there are already children
             if len(processed_element) > 0:
-                if processed_child.tail is not None and not processed_child.tail.isspace():
+                if text_chars_test(processed_child.tail) is True:
                     newsub.tail = processed_child.text + processed_child.tail
                 else:
                     newsub.tail = processed_child.text
@@ -268,7 +268,7 @@ def handle_textelem(element, potential_tags):
     elif element.tag == 'p':
         new_element = handle_paragraphs(element, potential_tags)
     elif element.tag == 'lb':
-        if element.tail is not None and not element.tail.isspace():
+        if text_chars_test(element.tail) is True:
             element = process_node(element)
             if element is not None:
                 new_element = etree.Element('p')

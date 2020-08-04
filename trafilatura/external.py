@@ -40,7 +40,6 @@ from .xml import TEI_VALID_TAGS # merge_with_parent
 
 LOGGER = logging.getLogger(__name__)
 
-
 class LXMLDocument(Document):
     '''Sub-class of readability.Document accepting parsed trees as input'''
     def __init__(self, input_, *args, **kwargs):
