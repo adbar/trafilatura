@@ -8,7 +8,7 @@ import re
 
 # language detection
 try:
-    import langid
+    import cld3
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False
@@ -22,9 +22,6 @@ from .utils import remove_control_characters, trim
 LOGGER = logging.getLogger(__name__)
 
 LRU_TEST = LRUCache(maxsize=LRU_SIZE)
-
-if LANGID_FLAG is True:
-    langid.set_languages(DETECTION_LANGUAGES)
 
 RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|Linkedin|Mail|PDF|Pinterest|Pocket|Print|Reddit|Twitter|Whatsapp|Xing)$', flags=re.IGNORECASE)
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
@@ -71,13 +68,12 @@ def language_filter(temp_text, temp_comments, target_language, record_id, url):
             # default
             else:
                 langtest = temp_text
-            langresult = langid.classify(langtest)
-            if langresult[0] != target_language:
-                LOGGER.warning('wrong language: %s %s %s', langresult, record_id, url)
-                LOGGER.debug('wrong language: %s %s', langresult, temp_text)
+            result = cld3.get_language(langtest)
+            if result.language != target_language:
+                LOGGER.warning('wrong language: %s %s %s', result, record_id, url)
                 return True
         else:
-            LOGGER.warning('langid not installed, no language detection run')
+            LOGGER.warning('Detector not installed, no language detection run')
     return False
 
 

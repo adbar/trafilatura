@@ -23,7 +23,7 @@ except ImportError:
     
 # language detection
 try:
-    import langid
+    import cld3
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False

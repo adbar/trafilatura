@@ -17,7 +17,7 @@ extras = {
     'all': [
         'cchardet == 2.1.4; python_version == "3.4"',
         'cchardet >= 2.1.5; python_version > "3.4"',
-        'langid >= 1.1.6',
+        'pycld3 >= 0.20',
     ],
 }
 
