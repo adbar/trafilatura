@@ -6,7 +6,6 @@ Module bundling all functions needed to scrape metadata from webpages.
 import logging
 import re
 
-from collections import namedtuple # https://docs.python.org/3/tutorial/classes.html
 from htmldate import find_date
 from lxml import html
 
@@ -29,7 +28,7 @@ URL_CHECK = re.compile(r'https?://')
 URL_COMP_CHECK = re.compile(r'https?://|/')
 
 
-def extract_json(tree, mymeta):
+def extract_json(tree, metadata):
     '''Crudely extract metadata from JSON-LD data'''
     for elem in tree.xpath('//script[@type="application/ld+json"]|//script[@type="application/settings+json"]'):
         if not elem.text:
@@ -38,27 +37,27 @@ def extract_json(tree, mymeta):
             mymatch = JSON_AUTHOR_1.search(elem.text)
             if mymatch:
                 if ' ' in mymatch.group(1):
-                    mymeta = mymeta._replace(author=trim(mymatch.group(1)))
+                    metadata['author'] = trim(mymatch.group(1))
             else:
                 mymatch = JSON_AUTHOR_2.search(elem.text)
                 if mymatch and ' ' in mymatch.group(1):
-                    mymeta = mymeta._replace(author=trim(mymatch.group(1)))
+                    metadata['author'] = trim(mymatch.group(1))
         # try to extract publisher
         if '"publisher"' in elem.text:
             mymatch = JSON_PUBLISHER.search(elem.text)
             if mymatch and not ',' in mymatch.group(1):
-                mymeta = mymeta._replace(sitename=trim(mymatch.group(1)))
+                metadata['sitename'] = trim(mymatch.group(1))
         # category
         if '"articleSection"' in elem.text:
             mymatch = JSON_CATEGORY.search(elem.text)
             if mymatch:
-                mymeta = mymeta._replace(categories=[trim(mymatch.group(1))])
+                metadata['categories'] = [trim(mymatch.group(1))]
         # try to extract title
-        if '"headline"' in elem.text and mymeta.title is None:
+        if '"headline"' in elem.text and metadata['title'] is None:
             mymatch = JSON_HEADLINE.search(elem.text)
             if mymatch:
-                mymeta = mymeta._replace(title=trim(mymatch.group(1)))
-    return mymeta
+                metadata['title'] = trim(mymatch.group(1))
+    return metadata
 
 
 def extract_opengraph(tree):
@@ -96,11 +95,14 @@ def extract_opengraph(tree):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
+    # initialize dict
+    metadata = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
     # bootstrap from potential OpenGraph tags
     title, author, url, description, site_name = extract_opengraph(tree)
     # test if all return values have been assigned
     if all((title, author, url, description, site_name)):  # if they are all defined
-        return (title, author, url, description, site_name, None, None, None)
+        metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'] = title, author, url, description, site_name
+        return metadata
     tags = []
     # skim through meta tags
     for elem in tree.xpath('//head/meta[@content]'):
@@ -160,7 +162,8 @@ def examine_meta(tree):
         else:
             if not 'charset' in elem.attrib and not 'http-equiv' in elem.attrib and not 'property' in elem.attrib:
                 LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
-    return (trim(title), trim(author), trim(url), trim(description), trim(site_name), None, None, tags)
+    metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'], metadata['tags'] = title, author, url, description, site_name, tags
+    return metadata
 
 
 def extract_metainfo(tree, expressions, len_limit=200):
@@ -296,65 +299,66 @@ def extract_catstags(metatype, tree):
 
 def extract_metadata(filecontent, default_url=None, date_config=None):
     '''Main process for metadata extraction'''
-    # create named tuple
-    Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
-    # Metadata.__new__.__defaults__ = (None,) * len(Metadata._fields)
     # load contents
     tree = load_html(filecontent)
     if tree is None:
         return None
-    # meta tags
-    mymeta = Metadata._make(examine_meta(tree))
+    # initialize dict and try to strip meta tags
+    metadata = examine_meta(tree)
     # correction: author not a name
-    if mymeta.author is not None:
-        if ' ' not in mymeta.author or mymeta.author.startswith('http'):
-            mymeta = mymeta._replace(author=None)
+    if metadata['author'] is not None:
+        if ' ' not in metadata['author'] or metadata['author'].startswith('http'):
+            metadata['author'] = None
     # fix: try json-ld metadata and override
-    mymeta = extract_json(tree, mymeta)
+    metadata = extract_json(tree, metadata)
     # try with x-paths
     # title
-    if mymeta.title is None:
-        mymeta = mymeta._replace(title=extract_title(tree))
+    if metadata['title'] is None:
+        metadata['title'] = extract_title(tree)
     # author
-    if mymeta.author is None:
-        mymeta = mymeta._replace(author=extract_author(tree))
+    if metadata['author'] is None:
+        metadata['author'] = extract_author(tree)
     # url
-    if mymeta.url is None:
-        mymeta = mymeta._replace(url=extract_url(tree, default_url))
+    if metadata['url'] is None:
+        metadata['url'] = extract_url(tree, default_url)
     # extract date with external module htmldate
     if date_config is None:
         date_config = HTMLDATE_CONFIG
-    date_config['url'] = mymeta.url
+    date_config['url'] = metadata['url']
     try:
-        mymeta = mymeta._replace(date=find_date(tree, **date_config))
+        metadata['date'] = find_date(tree, **date_config)
     # temporary fix for htmldate bug
     except UnicodeError:
         pass
     # sitename
-    if mymeta.sitename is None:
-        mymeta = mymeta._replace(sitename=extract_sitename(tree))
-    if mymeta.sitename is not None:
-        if mymeta.sitename.startswith('@'):
+    if metadata['sitename'] is None:
+        metadata['sitename'] = extract_sitename(tree)
+    if metadata['sitename'] is not None:
+        if metadata['sitename'].startswith('@'):
             # scrap Twitter ID
-            mymeta = mymeta._replace(sitename=re.sub(r'^@', '', mymeta.sitename))
+            metadata['sitename'] = re.sub(r'^@', '', metadata['sitename'])
         # capitalize
         try:
-            if not '.' in mymeta.sitename and not mymeta.sitename[0].isupper():
-                mymeta = mymeta._replace(sitename=mymeta.sitename.title())
+            if not '.' in metadata['sitename'] and not metadata['sitename'][0].isupper():
+                metadata['sitename'] = metadata['sitename'].title()
         # fix for empty name
         except IndexError:
             pass
     else:
         # use URL
-        if mymeta.url:
-            mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', mymeta.url)
+        if metadata['url']:
+            mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata['url'])
             if mymatch:
-                mymeta = mymeta._replace(sitename=mymatch.group(1))
+                metadata['sitename'] = mymatch.group(1)
     # categories
-    if not mymeta.categories:
-        mymeta = mymeta._replace(categories=extract_catstags('category', tree))
+    if not metadata['categories']:
+        metadata['categories'] = extract_catstags('category', tree)
     # tags
-    if not mymeta.tags:
-        mymeta = mymeta._replace(tags=extract_catstags('tags', tree))
+    if not metadata['tags']:
+        metadata['tags'] = extract_catstags('tags', tree)
+    # for safety: length check
+    for key, value in metadata.items():
+        if value is not None and len(value) > 10000:
+            metadata[key] = value[:9999] + '…'
     # return
-    return mymeta
+    return metadata

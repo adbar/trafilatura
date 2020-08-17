@@ -184,11 +184,10 @@ def test_input():
 
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_txttocsv():
-    Metadata = namedtuple('Metadata', ['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
-    mymeta = Metadata._make((None,) * len(Metadata._fields))
+    mymeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
     assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\t\t\n'
-    mymeta = mymeta._replace(title='Test title')
-    mymeta = mymeta._replace(url='https://example.org')
+    mymeta['title'] = 'Test title'
+    mymeta['url'] = 'https://example.org'
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\tTest title\tNone\tTest text\tTest comment\n'
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True) is not None
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True, include_comments=False).endswith('\t\n')

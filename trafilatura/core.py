@@ -528,7 +528,7 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
         elif output_format == 'xmltei':
             output = build_tei_output(postbody, commentsbody, docmeta)
         # can be improved
-        returnstring = control_xml_output(output, output_format, tei_validation, record_id, docmeta.url)
+        returnstring = control_xml_output(output, output_format, tei_validation, record_id, docmeta['url'])
     # CSV. JSON and TXT output
     else:
         if output_format == 'csv':
@@ -581,10 +581,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     if output_format != 'txt':
         docmeta = extract_metadata(tree, url, date_extraction_params)
         # cut short if extracted URL in blacklist
-        if docmeta.url in url_blacklist:
+        if docmeta['url'] in url_blacklist:
             return None
         # cut short if core elements are missing
-        if with_metadata is True and any([docmeta.date is None, docmeta.title is None, docmeta.url is None]):
+        if with_metadata is True and any([docmeta['date'] is None, docmeta['title'] is None, docmeta['url'] is None]):
             return None
     else:
         docmeta = None
