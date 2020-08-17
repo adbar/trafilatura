@@ -90,8 +90,7 @@ def handle_lists(element, dedupbool):
     # avoid double tags??
     if len(processed_element) > 0:  # if it has children
         # test if it has text
-        teststring = ''.join(processed_element.itertext())
-        if text_chars_test(teststring) is True:
+        if text_chars_test(''.join(processed_element.itertext())) is True:
             return processed_element
     return None
 

@@ -40,7 +40,7 @@ def handler(signum, frame):
 
 def load_input_urls(filename):
     '''Read list of URLs to process'''
-    input_urls = list()
+    input_urls = []
     try:
         # optional: errors='strict', buffering=1
         with open(filename, mode='r', encoding='utf-8') as inputfile:
@@ -301,7 +301,7 @@ def url_processing_pipeline(args, input_urls, sleeptime):
         url = input_urls.pop()
         domain_name = extract_domain(url)
         if domain_name not in domain_dict:
-            domain_dict[domain_name] = list()
+            domain_dict[domain_name] = []
         domain_dict[domain_name].append(url)
     # initialize file counter if necessary
     if len(input_urls) > MAX_FILES_PER_DIRECTORY:

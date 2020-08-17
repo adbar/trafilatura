@@ -25,7 +25,7 @@ def validate_url(url):
 
 def extract_links(feed_string):
     '''Extract links from Atom and RSS feeds'''
-    feed_links = list()
+    feed_links = []
     # could be Atom
     if '<link ' in feed_string:
         for item in re.findall(r'<link .*?href="(.+?)"', feed_string):
@@ -50,7 +50,7 @@ def extract_links(feed_string):
 
 def determine_feed(htmlstring):
     '''Try to extract the feed URL from the home page'''
-    feed_urls = list()
+    feed_urls = []
     # try to find RSS URL
     for feed_url in re.findall(r'type="application/rss\+xml".+?href="(.+?)"', htmlstring):
         feed_urls.append(feed_url)
@@ -75,9 +75,8 @@ def find_feed_urls(url):
         feed_links = extract_links(downloaded)
     # assume it's a web page
     else:
-        feed_urls = determine_feed(downloaded)
-        feed_links = list()
-        for feed in feed_urls:
+        feed_links = []
+        for feed in determine_feed(downloaded):
             sleep(SLEEP_TIME)
             feed_string = fetch_url(feed)
             feed_links.extend(extract_links(feed_string))
