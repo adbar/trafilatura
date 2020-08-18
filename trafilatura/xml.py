@@ -264,8 +264,7 @@ def write_fullheader(header, docmeta):
     publication_publisher = etree.SubElement(publicationstmt, 'publisher')
     publication_publisher.text = docmeta['sitename']
     if docmeta['url'] is not None:
-        publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL')
-        publication_url.set('target', docmeta['url'])
+        publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL', target=docmeta['url'])
     publication_date = etree.SubElement(publicationstmt, 'date')
     publication_date.text = docmeta['date']
     profiledesc = etree.SubElement(header, 'profileDesc')
@@ -281,4 +280,10 @@ def write_fullheader(header, docmeta):
         if len(docmeta['tags']) > 0:
             tags_list = etree.SubElement(keywords, 'term', type='tags')
             tags_list.text = ','.join(docmeta['tags'])
+    encodingdesc = etree.SubElement(header, 'encodingDesc')
+    appinfo = etree.SubElement(encodingdesc, 'appInfo')
+    application = etree.SubElement(appinfo, 'application', version=pkg_resources.get_distribution('trafilatura').version, ident='Trafilatura')
+    label = etree.SubElement(application, 'label')
+    label.text = 'Trafilatura'
+    pointer = etree.SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')
     return header
