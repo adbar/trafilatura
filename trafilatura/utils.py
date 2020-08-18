@@ -207,6 +207,9 @@ def txttocsv(text, comments, docmeta):
         text=text,
         comments=comments
         )
+    # add id up front if provided
+    if docmeta['id'] is not None:
+        tsv_output = docmeta['id'] + '\t' + tsv_output
     return tsv_output
 
 

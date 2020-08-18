@@ -86,6 +86,8 @@ def add_xml_meta(output, docmeta):
             output.set('categories', ';'.join(docmeta['categories']))
         if docmeta['tags'] is not None:
             output.set('tags', ';'.join(docmeta['tags']))
+        if docmeta['id'] is not None:
+            output.set('id', docmeta['id'])
     return output
 
 
@@ -237,6 +239,9 @@ def write_fullheader(header, docmeta):
         bib_author.text = docmeta['author']
     publicationstmt_a = etree.SubElement(filedesc, 'publicationStmt')
     publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
+    if docmeta['id'] is not None:
+        idno = etree.SubElement(publicationstmt_a, 'idno', type='id')
+        idno.text = docmeta['id']
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_bibl = etree.SubElement(sourcedesc, 'bibl')
     if docmeta['sitename'] and docmeta['date']:

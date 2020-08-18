@@ -185,7 +185,7 @@ def test_input():
 
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_txttocsv():
-    mymeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
+    mymeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags', 'id'])
     assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\t\t\n'
     mymeta['title'] = 'Test title'
     mymeta['url'] = 'https://example.org'
