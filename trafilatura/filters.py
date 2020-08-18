@@ -57,7 +57,7 @@ def duplicate_test(element):
     return False
 
 
-def language_filter(temp_text, temp_comments, target_language, record_id, url):
+def language_filter(temp_text, temp_comments, target_language, docmeta):
     '''Run external component (if installed) for language identification'''
     # sanity check on language
     if target_language is not None:
@@ -70,7 +70,7 @@ def language_filter(temp_text, temp_comments, target_language, record_id, url):
                 langtest = temp_text
             result = cld3.get_language(langtest)
             if result.language != target_language:
-                LOGGER.warning('wrong language: %s %s %s', result, record_id, url)
+                LOGGER.warning('wrong language: %s %s %s', result, docmeta['id'], docmeta['url'])
                 return True
         else:
             LOGGER.warning('Detector not installed, no language detection run')

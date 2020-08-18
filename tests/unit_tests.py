@@ -38,6 +38,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+SAMPLE_META = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags', 'id'])
 
 
 MOCK_PAGES = {
@@ -594,13 +595,13 @@ def test_filters():
     '''Test content filtering'''
     if LANGID_FLAG is True:
         # main text
-        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', None, None) is False
-        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', None, None) is True
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'de', SAMPLE_META) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', SAMPLE_META) is True
         # comments
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', None, None) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', SAMPLE_META) is False
     else:
         # no detection
-        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', None, None) is False
+        assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', SAMPLE_META) is False
     # test URL blacklist
     assert trafilatura.extract('<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>', output_format='xml', url_blacklist={'https://example.org'}) is None
 

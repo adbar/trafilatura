@@ -54,7 +54,7 @@ def build_xml_output(postbody, commentsbody):
     return output
 
 
-def control_xml_output(output_tree, output_format, tei_validation, record_id, url):
+def control_xml_output(output_tree, output_format, tei_validation, docmeta):
     '''Make sure the XML output is conform and valid if required'''
     control_string = sanitize(etree.tostring(output_tree, encoding='unicode'))
     # necessary for cleaning
@@ -62,7 +62,7 @@ def control_xml_output(output_tree, output_format, tei_validation, record_id, ur
     # validate
     if output_format == 'xmltei' and tei_validation is True:
         result = validate_tei(output_tree)
-        LOGGER.info('TEI validation result: %s %s %s', result, record_id, url)
+        LOGGER.info('TEI validation result: %s %s %s', result, docmeta['id'], docmeta['url'])
     return etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
 

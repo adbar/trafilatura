@@ -446,7 +446,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             body, text, len_text = sanitize_tree(body)
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
-        LOGGER.error('not enough text %s', url)  # record_id,
+        LOGGER.error('not enough text %s', url)
         body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
         if jt_result is False:
@@ -510,7 +510,7 @@ def baseline(filecontent):
     return postbody, temp_text, len(temp_text)
 
 
-def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation, record_id):
+def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if 'xml' in output_format:
@@ -527,7 +527,7 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
         elif output_format == 'xmltei':
             output = build_tei_output(postbody, commentsbody, docmeta)
         # can be improved
-        returnstring = control_xml_output(output, output_format, tei_validation, record_id, docmeta['url'])
+        returnstring = control_xml_output(output, output_format, tei_validation, docmeta)
     # CSV. JSON and TXT output
     else:
         if output_format == 'csv':
@@ -557,7 +557,7 @@ def map_format(output_format, csv_output, json_output, xml_output, tei_output):
     return output_format
 
 
-def extract(filecontent, url=None, record_id='0001', no_fallback=False,
+def extract(filecontent, url=None, record_id=None, no_fallback=False,
             include_comments=True, output_format='txt',
             csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
@@ -576,7 +576,10 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     else:
         backup_tree = None
 
-    # Metadata here
+    # metadata
+
+
+    # extract if necessary
     if output_format != 'txt':
         docmeta = extract_metadata(tree, url, date_extraction_params)
         # cut short if extracted URL in blacklist
@@ -586,7 +589,9 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         if with_metadata is True and any([docmeta['date'] is None, docmeta['title'] is None, docmeta['url'] is None]):
             return None
     else:
-        docmeta = None
+        docmeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
+    # add record ID to metadata
+    docmeta['id'] = record_id
 
     # clean
     cleaned_tree = manual_cleaning(tree, include_tables)
@@ -639,7 +644,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
         return None
 
     # sanity check on language
-    if language_filter(temp_text, temp_comments, target_language, record_id, url) is True:
+    if language_filter(temp_text, temp_comments, target_language, docmeta) is True:
         return None
 
     # cache elements
@@ -647,7 +652,7 @@ def extract(filecontent, url=None, record_id='0001', no_fallback=False,
     if commentsbody is not None:
         put_in_cache(commentsbody)
 
-    returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation, record_id)
+    returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
     return returnstring
 
 
