@@ -61,16 +61,21 @@ def discard_unwanted_comments(tree):
 def link_density_test(element):
     '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath = element.xpath('//link')
+    flag = False
     if len(links_xpath) > 0:
-        elemlen = len(sanitize(element.text_content()))
+        elemlen = len(trim(element.text_content()))
         if elemlen < 100:
+            flag = True
+        #if element.getnext() is None and len(links_xpath) < 5:
+        #    flag = True
+        if flag is True:
             linklen = 0
             for subelem in links_xpath:
-                linklen += len(sanitize(subelem.text_content()))
-            if linklen > 0.95*elemlen:
-                #print(trim(element.text_content()))
-                #print(trim(subelem.text_content()))
+                linklen += len(trim(subelem.text_content()))
+            if linklen > 0.9*elemlen:
                 return True
+            #elif 250 < elemlen < 300 and linklen > 0.85*elemlen:
+            #    return True
     return False
 
 
