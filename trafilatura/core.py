@@ -329,10 +329,9 @@ def extract_content(tree, include_tables=False, deduplicate=True):
                             if e is not None])
         # remove trailing titles
         try:
-            lastelem = result_body[-1]
-            if lastelem.tag == 'head' and lastelem.tail is None:
+            while result_body[-1].tag == 'head' and result_body[-1].tail is None:
                 # print(lastelem.tag, lastelem.text, lastelem.tail)
-                lastelem.getparent().remove(lastelem)
+                result_body[-1].getparent().remove(result_body[-1])
         except IndexError:
             continue
         # exit the loop if the result has children
@@ -576,10 +575,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     else:
         backup_tree = None
 
-    # metadata
-
-
-    # extract if necessary
+    # extract metadata if necessary
     if output_format != 'txt':
         docmeta = extract_metadata(tree, url, date_extraction_params)
         # cut short if extracted URL in blacklist
