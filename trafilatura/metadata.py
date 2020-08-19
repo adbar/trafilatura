@@ -19,8 +19,8 @@ logging.getLogger('htmldate').setLevel(logging.WARNING)
 HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
 
 TITLE_REGEX = re.compile(r'(.+)?\s+[-|]\s+.*$')
-JSON_AUTHOR_1 = re.compile(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
-JSON_AUTHOR_2 = re.compile(r'"author"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
+JSON_AUTHOR_1 = re.compile(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
+JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
@@ -35,12 +35,11 @@ def extract_json(tree, metadata):
             continue
         if '"author":' in elem.text:
             mymatch = JSON_AUTHOR_1.search(elem.text)
-            if mymatch:
-                if ' ' in mymatch.group(1):
-                    metadata['author'] = trim(mymatch.group(1))
+            if mymatch and mymatch.group(1) and ' ' in mymatch.group(1):
+                metadata['author'] = trim(mymatch.group(1))
             else:
                 mymatch = JSON_AUTHOR_2.search(elem.text)
-                if mymatch and ' ' in mymatch.group(1):
+                if mymatch and mymatch.group(1) and ' ' in mymatch.group(1):
                     metadata['author'] = trim(mymatch.group(1))
         # try to extract publisher
         if '"publisher"' in elem.text:
