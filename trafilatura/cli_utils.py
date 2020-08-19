@@ -363,7 +363,7 @@ def examine(htmlstring, args, url=None):
             signal.signal(signal.SIGALRM, handler)
             signal.alarm(PROCESSING_TIMEOUT)
         try:
-            result = extract(htmlstring, url, '0000', no_fallback=args.fast,
+            result = extract(htmlstring, url=url, no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,
                              include_formatting=args.formatting,
                              with_metadata=args.with_metadata,
