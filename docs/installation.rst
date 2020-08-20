@@ -32,6 +32,8 @@ Installing Python packages
 Basics
 ~~~~~~
 
+Please refer to `this section <usage-cli.html#introduction>`_ for an introduction on command-line usage.
+
 .. code-block:: bash
 
     $ pip install trafilatura # pip3 install on systems where both Python 2 and 3 are installed
@@ -54,7 +56,7 @@ For local or user installations where trafilatura cannot be used from the comman
 Additional functionality
 ------------------------
 
-A few additional libraries can be installed for extended functionality and faster processing: language detection (``langid``) and faster processing of downloads (``cchardet``, may not work on all systems).
+A few additional libraries can be installed for extended functionality and faster processing: language detection and faster processing of downloads (``cchardet``, may not work on all systems).
 
 .. code-block:: bash
 

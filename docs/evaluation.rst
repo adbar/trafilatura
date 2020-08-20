@@ -76,6 +76,13 @@ trafilatura 0.5.1 (+ fallbacks) 0.933      0.885      **0.911** **0.908** 6.8x
 =============================== =========  ========== ========= ========= ======
 
 
+External evaluations
+--------------------
+
+- Trafilatura is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
+- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, in French).
+
+
 Older results (2020-03-19)
 --------------------------
 
