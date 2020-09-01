@@ -68,6 +68,7 @@ setup(
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[
+        'courlan >= 0.2.0',
         'htmldate >= 0.6.3',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',

@@ -6,6 +6,8 @@ Module bundling all functions needed to scrape metadata from webpages.
 import logging
 import re
 
+from courlan.clean import normalize_url
+from courlan.filters import validate_url
 from htmldate import find_date
 from lxml import html
 
@@ -24,7 +26,6 @@ JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
-URL_CHECK = re.compile(r'https?://')
 URL_COMP_CHECK = re.compile(r'https?://|/')
 
 
@@ -75,7 +76,7 @@ def extract_opengraph(tree):
             title = elem.get('content')
         # orig URL
         elif elem.get('property') == 'og:url':
-            if URL_CHECK.match(elem.get('content')):
+            if validate_url(elem.get('content'))[0] is True:
                 url = elem.get('content')
         # description
         elif elem.get('property') == 'og:description':
@@ -140,7 +141,7 @@ def examine_meta(tree):
                     site_name = content_attr
             # url
             elif elem.get('name') == 'twitter:url':
-                if url is None and URL_CHECK.match(content_attr):
+                if url is None and validate_url(content_attr)[0] is True:
                     url = content_attr
             # keywords
             elif elem.get('name') == 'keywords': # 'page-topic'
@@ -256,8 +257,12 @@ def extract_url(tree, default_url=None):
                     url = domain_match.group(0) + url
                     break
     # sanity check: don't return invalid URLs
-    if url is not None and not URL_CHECK.match(url):
-        url = None
+    if url is not None:
+        validation_result, parsed_url = validate_url(url)
+        if validation_result is False:
+            url = None
+        else:
+            url = normalize_url(parsed_url)
     return url
 
 
