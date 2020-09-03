@@ -19,7 +19,7 @@ In Python:
     result = trafilatura.extract(downloaded, tei_output=True, tei_validation=True)
 
 
-From the command-line:
+From the command line:
 
 .. code-block:: bash
 

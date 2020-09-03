@@ -6,8 +6,8 @@ Get your system up and running
 ------------------------------
 
 -  Installation: see `dedicated page <installation.html>`_
--  Making sure you have the latest version: ``pip install -U trafilatura``
--  Additional software for this tutorial: ``pip install -U SoMaJo``
+-  Ensure you have installed the latest version: ``pip install -U trafilatura``
+-  Additional software for this tutorial should be installed with: ``pip install -U SoMaJo``
 
 The following consists of command-line instructions. For general information see `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems), `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_, or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_.
 
@@ -22,22 +22,22 @@ Two major options are necessary here:
 -  ``-i`` or ``--inputfile`` to select an input list to read links from
 -  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
 
-The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
+The input list will be read sequentially, and only lines beginning with a valid URL will be read; any other information contained in the file will be discarded.
 
-The output directory can be created on demand, it has to be writable.
+The output directory can be created on demand, but it has to be writable.
 
 .. code-block:: bash
 
     $ trafilatura -i list.txt -o txtfiles	# output as raw text
     $ trafilatura --xml -i list.txt -o xmlfiles	# output in XML format
 
-The second instruction creates a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_ which can be edited with a basic notepad or a full-fledged text-editing software such as `Atom <https://atom.io/>`_.
+The second instruction creates a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_ which can be edited with a basic text editor or a full-fledged text-editing package or IDE such as `Atom <https://atom.io/>`_.
 
 
 Build frequency lists
 ----------------------
 
-The `SoMaJo <https://github.com/tsproisl/SoMaJo>`_ tokenizer splits text into words and sentences. It works with Python and gets good results on German and English.
+The `SoMaJo <https://github.com/tsproisl/SoMaJo>`_ tokenizer splits text into words and sentences. It works with Python and gets good results when applied to texts in German and English.
 
 Assuming the output directory you are working with is called ``txtfiles``:
 
@@ -65,4 +65,3 @@ Assuming the output directory you are working with is called ``xmlfiles``:
     # remove tags
     $ somajo-tokenizer --xml xmlfiles/filename.xml | sed -e "s|</*.*>||g" -e "/^$/d"
     # continue with the steps above...
-
