@@ -14,7 +14,7 @@ With Python
     >>> trafilatura.extract(downloaded, xml_output=True, include_comments=False)
     # outputs main content without comments as XML ...
 
-For arguments of the ``extract`` function see `core functions <corefunctions.html>`_.
+For arguments accepted by the ``extract`` function, see `core functions <corefunctions.html>`_.
 
 
 On the command-line
@@ -32,4 +32,4 @@ On the command-line
                    [--validate] [-u URL] [-v]
 
 
-For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
+For more information, please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.

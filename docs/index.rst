@@ -35,26 +35,25 @@ Welcome to Trafilatura's documentation!
 Description
 -----------
 
-*Trafilatura* is Python package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output can be converted to different formats.
+*Trafilatura* is a Python package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output can then be converted to different formats.
 
-Distinguishing between whole page and essential parts can help to alleviate many quality problems related to web texts as it deals with the noise consisting of recurring elements (headers and footers, ads, links/blogroll).
+Distinguishing between a whole page and its essential parts can help to alleviate many quality problems related to web texts by dealing with noise caused by recurring elements, such as headers and footers, ads, links/blogroll, and so on.
 
-The extractor has to be precise enough not to miss texts or discard valid documents, robust but also reasonably fast. It is designed to run in production on millions of web documents.
+The extractor has to be precise enough not to miss texts or discard valid documents; it should robust but also reasonably fast. Trafilatura is designed to run in production on millions of web documents.
 
 
 Features
 ~~~~~~~~
 
-- Seamless online (including page retrieval) or parallelized offline processing:
-   - URLs, HTML files or parsed HTML trees as input
+- Seamless online (including page retrieval) or parallelized offline processing with URLs, HTML files or parsed HTML trees as input
 - Several output formats supported:
    - Plain text (minimal formatting)
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
    - XML (for metadata and structure)
    - `TEI-XML <https://tei-c.org/>`_
-- Robust extraction algorithm, using and `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback, reasonably efficient with `lxml <http://lxml.de/>`_:
-    - Focus on main text and/or comments
+- Robust extraction algorithm, using `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback, reasonably efficient with `lxml <http://lxml.de/>`_:
+    - Focuses on main text and/or comments
     - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
     - Extraction of metadata (title, author, date, site name, categories and tags)
 - URL lists:
@@ -67,7 +66,7 @@ Features
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The extraction focuses on the main content, which is usually the part displayed centrally, without the left or right bars, the header or the footer, but including potential titles and (optionally) comments. This task is also known as web scraping, boilerplate removal, DOM-based content extraction, main content identification, or web page cleaning.
+The extraction focuses on the main content: usually the part displayed centrally, without left or right bars, header or footer, but including potential titles and (optionally) comments. These tasks are also known as web scraping, boilerplate removal, DOM-based content extraction, main content identification, or web page cleaning.
 
 For reproducible results see the `evaluation page <evaluation.html>`_ and the `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_.
 
@@ -75,13 +74,13 @@ External evaluations:
 ^^^^^^^^^^^^^^^^^^^^^
 
 - Trafilatura is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
-- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, in French).
+- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French).
 
 
 Installation
 ------------
 
-Chiefly with Python package managers: ``pip install --upgrade trafilatura``.
+Primarily, with Python package manager: ``pip install --upgrade trafilatura``.
 
 For more details please read the `installation documentation <installation.html>`_.
 
@@ -150,7 +149,7 @@ Feel free to file issues on the `dedicated page <https://github.com/adbar/trafil
 Author
 ------
 
-This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). A significant challenge resides in the ability to extract and pre-process web texts to meet scientific expectations: Web corpus construction involves numerous design decisions, and this software packages can help facilitate collection and enhance corpus quality.
+This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts presents a substantial challenge for those who must meet scientific expectations. Web corpus construction involves numerous design decisions, and this software package can help facilitate collection and enhance corpus quality and thus aid in these decisions.
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
