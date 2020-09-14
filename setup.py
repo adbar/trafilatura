@@ -16,7 +16,7 @@ here = path.abspath(path.dirname(__file__))
 extras = {
     'all': [
         'cchardet == 2.1.4; python_version == "3.4"',
-        'cchardet >= 2.1.5; python_version > "3.4"',
+        'cchardet >= 2.1.6; python_version > "3.4"',
         'pycld3 >= 0.20',
     ],
 }
@@ -68,14 +68,14 @@ setup(
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[
-        'courlan >= 0.2.0',
-        'htmldate >= 0.6.3',
+        'courlan >= 0.2.1',
+        'htmldate >= 0.7.1',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
-        'lxml >= 4.5.1; python_version > "3.4"',
+        'lxml >= 4.5.2; python_version > "3.4"',
         'requests == 2.21.0; python_version == "3.4"',
-        'requests >= 2.23.0; python_version > "3.4"',
-        'readability-lxml >= 0.7.1',
+        'requests >= 2.21.0; python_version > "3.4"',
+        'readability-lxml >= 0.8.1',
     ],
     extras_require=extras,
     entry_points = {
