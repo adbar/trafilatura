@@ -565,90 +565,98 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     '''Main process for text extraction'''
     # temporary metadata mapping
     output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
-    # load data
-    tree = load_html(filecontent)
-    if tree is None:
-        return None
-    # backup (or not) for further processing
-    if no_fallback is False:
-        backup_tree = deepcopy(tree)
-    else:
-        backup_tree = None
 
-    # extract metadata if necessary
-    if output_format != 'txt':
-        docmeta = extract_metadata(tree, url, date_extraction_params)
-        # cut short if extracted URL in blacklist
-        if docmeta['url'] in url_blacklist:
-            return None
-        # cut short if core elements are missing
-        if with_metadata is True and any([docmeta['date'] is None, docmeta['title'] is None, docmeta['url'] is None]):
-            return None
-    else:
-        docmeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
-    # add record ID to metadata
-    docmeta['id'] = record_id
+    try:
+        # load data
+        tree = load_html(filecontent)
+        if tree is None:
+            raise ValueError
+        # backup (or not) for further processing
+        if no_fallback is False:
+            backup_tree = deepcopy(tree)
+        else:
+            backup_tree = None
 
-    # clean
-    cleaned_tree = manual_cleaning(tree, include_tables)
-    # save space and processing time
-    cleaned_tree = prune_html(cleaned_tree)
-    # use LXML cleaner
-    cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
+        # extract metadata if necessary
+        if output_format != 'txt':
+            docmeta = extract_metadata(tree, url, date_extraction_params)
+            # cut short if extracted URL in blacklist
+            if docmeta['url'] in url_blacklist:
+                raise ValueError
+            # cut short if core elements are missing
+            if with_metadata is True and any([docmeta['date'] is None, docmeta['title'] is None, docmeta['url'] is None]):
+                raise ValueError
+        else:
+            docmeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
+        # add record ID to metadata
+        docmeta['id'] = record_id
 
-    # convert tags, the rest does not work without conversion
-    cleaned_tree = convert_tags(cleaned_tree)
-    # remove hi-element to avoid tail bug
-    if 'xml' not in output_format or include_formatting is False:
-        etree.strip_tags(cleaned_tree, 'hi')
+        # clean
+        cleaned_tree = manual_cleaning(tree, include_tables)
+        # save space and processing time
+        cleaned_tree = prune_html(cleaned_tree)
+        # use LXML cleaner
+        cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
 
-    # comments first, then remove
-    if include_comments is True:
-        commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate)
-    else:
-        commentsbody, temp_comments, len_comments = None, '', 0
+        # convert tags, the rest does not work without conversion
+        cleaned_tree = convert_tags(cleaned_tree)
+        # remove hi-element to avoid tail bug
+        if 'xml' not in output_format or include_formatting is False:
+            etree.strip_tags(cleaned_tree, 'hi')
 
-    # extract content
-    postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, deduplicate)
+        # comments first, then remove
+        if include_comments is True:
+            commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate)
+        else:
+            commentsbody, temp_comments, len_comments = None, '', 0
 
-    # compare if necessary
-    if no_fallback is False:
-        #if sure_thing is False:
-        postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language)
-    else:
-        # rescue: try to use original/dirty tree
-        if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
-            postbody, temp_text, len_text = baseline(filecontent)
-            #tree = load_html(filecontent)
-            #tree = convert_tags(tree)
-            #postbody, temp_text, len_text, sure_thing = extract_content(tree)
-            LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
+        # extract content
+        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, deduplicate)
 
-    # tree size sanity check
-    if len(postbody) > MAX_OUTPUT_TREE_LENGTH:
-        LOGGER.error('output tree too long: %s', len(postbody))
-        return None
-    # size checks
-    if len_comments < MIN_EXTRACTED_COMM_SIZE:
-        LOGGER.info('not enough comments %s %s', record_id, url)
-    if len_text < MIN_OUTPUT_SIZE and len_comments < MIN_OUTPUT_COMM_SIZE:
-        LOGGER.info('text and comments not long enough: %s %s', len_text, len_comments)
-        return None
+        # compare if necessary
+        if no_fallback is False:
+            #if sure_thing is False:
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language)
+        else:
+            # rescue: try to use original/dirty tree
+            if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
+                postbody, temp_text, len_text = baseline(filecontent)
+                #tree = load_html(filecontent)
+                #tree = convert_tags(tree)
+                #postbody, temp_text, len_text, sure_thing = extract_content(tree)
+                LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
-    # check duplicates at body level
-    if deduplicate is True and duplicate_test(postbody) is True:
-        return None
+        # tree size sanity check
+        if len(postbody) > MAX_OUTPUT_TREE_LENGTH:
+            LOGGER.warning('output tree too long: %s', len(postbody))
+            etree.strip_tags(postbody, 'hi')
+            if len(postbody) > MAX_OUTPUT_TREE_LENGTH:
+                LOGGER.error('output tree too long: %s, discarding file', len(postbody))
+                raise ValueError
+        # size checks
+        if len_comments < MIN_EXTRACTED_COMM_SIZE:
+            LOGGER.info('not enough comments %s %s', record_id, url)
+        if len_text < MIN_OUTPUT_SIZE and len_comments < MIN_OUTPUT_COMM_SIZE:
+            LOGGER.info('text and comments not long enough: %s %s', len_text, len_comments)
+            raise ValueError
 
-    # sanity check on language
-    if language_filter(temp_text, temp_comments, target_language, docmeta) is True:
-        return None
+        # check duplicates at body level
+        if deduplicate is True and duplicate_test(postbody) is True:
+            raise ValueError
 
-    # cache elements
-    put_in_cache(postbody)
-    if commentsbody is not None:
-        put_in_cache(commentsbody)
+        # sanity check on language
+        if language_filter(temp_text, temp_comments, target_language, docmeta) is True:
+            raise ValueError
 
-    returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
+        # cache elements
+        put_in_cache(postbody)
+        if commentsbody is not None:
+            put_in_cache(commentsbody)
+
+        returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
+    except ValueError:
+        LOGGER.info('discarding data for url: %s, id: %s', url, record_id) # docmeta['url']
+        returnstring = None
     return returnstring
 
 

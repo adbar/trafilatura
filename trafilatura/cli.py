@@ -82,6 +82,7 @@ def parse_args(args):
                         help="Keep input directory structure and file names",
                         action="store_true")
 
+    # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group2.add_argument('-out', '--output-format',
                         help="determine output format",
                         choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
@@ -165,14 +166,14 @@ def main():
         if args.URL:
             url_processing_pipeline(args, [args.URL], 0)  # process single url
             #if htmlstring is None:
-            #    sys.exit('# ERROR: no valid result for url: ' + args.URL + '\n')
+            #    sys.exit('ERROR: no valid result for url: ' + args.URL + '\n')
         # process input on STDIN
         else:
             # file type and unicode check
             try:
                 htmlstring = sys.stdin.read()
             except UnicodeDecodeError:
-                sys.exit('# ERROR: system, file type or buffer encoding')
+                sys.exit('ERROR: system, file type or buffer encoding')
             # process
             result = examine(htmlstring, args, url=args.URL)
             write_result(result, args)

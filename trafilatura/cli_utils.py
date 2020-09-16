@@ -52,7 +52,7 @@ def load_input_urls(filename):
                     LOGGER.warning('Not an URL, discarding line: %s', line)
                     continue
     except UnicodeDecodeError:
-        sys.exit('# ERROR: system, file type or buffer encoding')
+        sys.exit('ERROR: system, file type or buffer encoding')
     return input_urls
 
 
@@ -81,7 +81,7 @@ def check_outputdir_status(directory):
             # maybe the directory has already been created
             #sleep(0.25)
             #if not path.exists(directory) or not path.isdir(directory):
-            sys.stderr.write('# ERROR: Destination directory cannot be created: ' + directory + '\n')
+            sys.stderr.write('ERROR: Destination directory cannot be created: ' + directory + '\n')
             # raise OSError()
             return False
     return True
@@ -318,7 +318,7 @@ def url_processing_pipeline(args, input_urls, sleeptime):
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     #if not args.outputdir:
-    #    sys.exit('# ERROR: please specify an output directory along with the input directory')
+    #    sys.exit('ERROR: please specify an output directory along with the input directory')
     # iterate through file list
     # init
     filebatch = []
@@ -351,11 +351,11 @@ def examine(htmlstring, args, url=None):
     result = None
     # safety check
     if htmlstring is None:
-        sys.stderr.write('# ERROR: empty document\n')
+        sys.stderr.write('ERROR: empty document\n')
     elif len(htmlstring) > MAX_FILE_SIZE:
-        sys.stderr.write('# ERROR: file too large\n')
+        sys.stderr.write('ERROR: file too large\n')
     elif len(htmlstring) < MIN_FILE_SIZE:
-        sys.stderr.write('# ERROR: file too small\n')
+        sys.stderr.write('ERROR: file too small\n')
     # proceed
     else:
         # put timeout signal in place
@@ -371,7 +371,7 @@ def examine(htmlstring, args, url=None):
                              target_language=args.target_language)
         # ugly but efficient
         except Exception as err:
-            sys.stderr.write('# ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
+            sys.stderr.write('ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
         # deactivate
         if args.timeout is True:
             signal.alarm(0)
