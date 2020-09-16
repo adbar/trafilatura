@@ -15,6 +15,7 @@ import sys
 
 from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from courlan.core import extract_domain
 from datetime import datetime
 from functools import partial
 from multiprocessing import Pool
@@ -185,13 +186,9 @@ def url_processing_checks(blacklist, input_urls):
     return input_urls
 
 
-def extract_domain(url):
-    '''Crude extraction of domain or host names from URLs'''
-    # can be improved
-    try:
-        domain = re.search(r'^https?://([^/]+)', url).group(1)
-    except AttributeError:
-        domain = 'unknown'
+def determine_domain(url):
+    '''Extraction of domain/host name from URL via courlan module'''
+    domain = extract_domain(url)
     return domain
 
 
@@ -276,7 +273,7 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
                 # register in backoff dictionary to ensure time between requests
-                domain = extract_domain(url)
+                domain = determine_domain(url)
                 backoff_dict[domain] = datetime.now()
                 # handle result
                 counter = process_result(future.result(), args, url, counter)
@@ -299,7 +296,7 @@ def url_processing_pipeline(args, input_urls, sleeptime):
     domain_dict = dict()
     while len(input_urls) > 0:
         url = input_urls.pop()
-        domain_name = extract_domain(url)
+        domain_name = determine_domain(url)
         if domain_name not in domain_dict:
             domain_dict[domain_name] = []
         domain_dict[domain_name].append(url)
