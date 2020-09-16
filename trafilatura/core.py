@@ -545,14 +545,15 @@ def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_v
 
 def map_format(output_format, csv_output, json_output, xml_output, tei_output):
     '''Map existing options to format choice.'''
-    if csv_output is True:
-        output_format = 'csv'
-    elif json_output is True:
-        output_format = 'json'
-    elif xml_output is True:
-        output_format = 'xml'
-    elif tei_output is True:
-        output_format = 'xmltei'
+    if output_format == 'txt' and any([csv_output, json_output, xml_output, tei_output]):
+        if csv_output is True:
+            output_format = 'csv'
+        elif json_output is True:
+            output_format = 'json'
+        elif xml_output is True:
+            output_format = 'xml'
+        elif tei_output is True:
+            output_format = 'xmltei'
     return output_format
 
 
@@ -563,7 +564,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             include_tables=True, include_formatting=False, deduplicate=True,
             date_extraction_params=None, with_metadata=False, url_blacklist=set()):
     '''Main process for text extraction'''
-    # temporary metadata mapping
+    # metadata mapping for compatibility
     output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
 
     try:
@@ -584,7 +585,9 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             if docmeta['url'] in url_blacklist:
                 raise ValueError
             # cut short if core elements are missing
-            if with_metadata is True and any([docmeta['date'] is None, docmeta['title'] is None, docmeta['url'] is None]):
+            if with_metadata is True and any(x is None for x in
+                [docmeta['date'], docmeta['title'], docmeta['url']]
+                ):
                 raise ValueError
         else:
             docmeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
