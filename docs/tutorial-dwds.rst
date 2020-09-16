@@ -76,7 +76,13 @@ Falls sich die betroffenen Webseiten in der Zeit zwischen der DWDS-Archivierung 
 Wie kann man gleichzeitig die Seiten herunterladen, speichern und konvertieren?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Hier ist eine Empfehlung für die Kommandozeile, die eine Datei namens ``linkliste.txt`` liest (eine URL pro Zeile). Die Ausgabe erfolgt auf zweierlei Weise: die extrahierten Texte (TXT-Format) im Verzeichnis ``ausgabe`` und eine Kopie der heruntergeladenen Webseiten unter ``html-quellen`` (zur Archivierung und ggf. erneuten Verarbeitung):
+Hier ist eine Empfehlung für die Kommandozeile, die eine Datei namens ``linkliste.txt`` liest (eine URL pro Zeile).
+
+Diese Linkliste kann zunächst gefiltert werden, um deutschsprachige, inhaltsreiche Webseiten zu bevorzugen. Der dafür nötige Softwareteil, `courlan <https://github.com/adbar/courlan>`_ wird mit ``trafilatura`` installiert:
+
+``courlan --language --strict --inputfile linkliste-roh.txt --outputfile linkliste-gefiltert.txt``
+
+Die Ausgabe von ``trafilatura`` erfolgt auf zweierlei Weise: die extrahierten Texte (TXT-Format) im Verzeichnis ``ausgabe`` und eine Kopie der heruntergeladenen Webseiten unter ``html-quellen`` (zur Archivierung und ggf. erneuten Verarbeitung):
 
 ``trafilatura --inputfile linkliste.txt --outputdir ausgabe/ --backup-dir html-quellen/``
 

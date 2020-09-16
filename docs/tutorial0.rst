@@ -17,7 +17,23 @@ The following instructions use the `command-line interface <https://en.wikipedia
 Find and filter sources
 -----------------------
 
+
+Finding subpages within a website
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Sources used by Trafilatura may consist of previously known web pages, as well as listed web pages. It can also be useful to operate on website level by downloading portions of a website programmatically. To this end, a sitemap is a file that lists the visible URLs for a given site. For more information, refer to this blog post explaining how to use sitemaps: `to retrieve URLs within a website <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
+
+
+Filtering with coURLan
+~~~~~~~~~~~~~~~~~~~~~~
+
+It is better to examine a list of URLs for content adequacy, most notably to make download and extraction more efficient by removing unwanted and redundant content. The `courlan <https://github.com/adbar/courlan>`_ software package is installed along with ``trafilatura``. It separates the wheat from the chaff by focusing on non-spam text-rich HTML pages, and can be used on the command-line:
+
+``courlan --inputfile linkliste-roh.txt --outputfile linkliste-gefiltert.txt``
+
+
+Custom filtering
+~~~~~~~~~~~~~~~~
 
 URL lists can be filtered manually or with `grep <https://en.wikipedia.org/wiki/Grep>`_, a command-line utility to search text data which operates on line-level and returns either matching or non-matching lines.
 

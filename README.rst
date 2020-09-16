@@ -21,6 +21,10 @@ trafilatura: manage URLs and scrape main text and metadata
     :target: https://codecov.io/gh/adbar/trafilatura
     :alt: Code Coverage
 
+.. image:: https://static.pepy.tech/badge/trafilatura/month
+    :target: https://pepy.tech/project/trafilatura
+    :alt: Downloads
+
 |
 
 .. image:: docs/trafilatura-demo.gif
@@ -166,12 +170,12 @@ Feel free to file issues on the `dedicated page <https://github.com/adbar/trafil
 Author
 ------
 
-This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research.  Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
+This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research. Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
 
--  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://konvens.org/proceedings/2019/papers/kaleidoskop/camera_ready_barbaresi.pdf>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
+-  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
 You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or `GitHub <https://github.com/adbar>`_.

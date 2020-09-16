@@ -23,9 +23,6 @@ Quickstart
     >>> trafilatura.extract(downloaded, xml_output=True, include_comments=False)
     # outputs main content without comments as XML ...
 
-For arguments of the ``extract`` function see `core functions <corefunctions.html>`_.
-
-
 
 Usage
 -----
@@ -79,7 +76,9 @@ All currently available options, along with their default values:
 
 .. code-block:: python
 
-    >>> trafilatura.extract(downloaded, url=None, record_id='0001', no_fallback=False, include_comments=True, csv_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True, include_formatting=False, date_extraction_params=None)
+    >>> trafilatura.extract(downloaded, url=None, record_id=None, no_fallback=False, include_comments=True, output_format='txt', csv_output=False, json_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True, include_formatting=False, deduplicate=True, date_extraction_params=None, with_metadata=False, url_blacklist={})
+
+For a complete list see the `core functions <corefunctions.html>`_ page.
 
 For further configuration see the variables in ``settings.py`` and re-compile the package locally.
 
