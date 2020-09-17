@@ -29,7 +29,6 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
 
 def put_in_cache(body):
     '''Implement LRU cache'''
-    global LRU_TEST
     for element in body:
         teststring = trim(' '.join(element.itertext()))
         cacheval = LRU_TEST.get(teststring)
@@ -43,16 +42,14 @@ def put_in_cache(body):
 
 
 def duplicate_test(element):
-    '''Check for duplicate text'''
-    try:
-        teststring = trim(' '.join(element.itertext()))
-    except AttributeError:  # justext Paragraph
-        teststring = element.text
+    '''Check for duplicate text with LRU cache'''
+    teststring = trim(' '.join(element.itertext()))
+    # teststring = element.text
     if len(teststring) > MIN_DUPLCHECK_SIZE:
         # retrieve value from cache
         cacheval = LRU_TEST.get(teststring)
         if cacheval > MAX_REPETITIONS:  # non-existent key will return -1
-            # LRU_TEST[teststring] += 1
+            LRU_TEST.put(teststring, cacheval + 1)
             return True
     return False
 

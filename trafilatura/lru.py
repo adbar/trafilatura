@@ -1,8 +1,8 @@
 """
 Pure-Python Least Recently Used (LRU) cache using a circular doubly linked list
 Adapted from CPython functools.py lru_cache decorator implementation
-https://github.com/python/cpython/blob/3.8/Lib/functools.py
-Courtesy of https://github.com/vbarbaresi
+https://github.com/python/cpython/blob/3.9/Lib/functools.py#L524
+First adapted by https://github.com/vbarbaresi
 """
 
 ## This file is available from https://github.com/adbar/trafilatura
@@ -16,11 +16,10 @@ PREV, NEXT, KEY, RESULT = 0, 1, 2, 3  # names for the link fields
 
 class LRUCache:
     '''Implements a class for the Least Recently Used (LRU) cache'''
-    # Constants shared by all lru cache instances:
-    sentinel = object()  # unique object used to signal cache misses
-    lock = RLock()  # because linkedlist updates aren't threadsafe
 
     def __init__(self, maxsize=128):
+        # Constants shared by all lru cache instances:
+        self.lock = RLock()  # because linkedlist updates aren't threadsafe
         # cache instance variables
         self.maxsize = maxsize
         self.cache = {}
@@ -43,10 +42,11 @@ class LRUCache:
     def get(self, key):
         '''Tests if the key that is asked for is in the cache
            and retrieve its value from the linked list'''
-        link = self.cache.get(key)
-        if link is not None:
-            result = self._move_link(link)
-            return result
+        with self.lock:
+            link = self.cache.get(key)
+            if link is not None:
+                result = self._move_link(link)
+                return result
         return -1
 
     def put(self, key, value):
@@ -90,6 +90,7 @@ class LRUCache:
 
     def clear(self):
         '''Delete all cache content'''
-        self.cache.clear()
-        self.root[:] = [self.root, self.root, None, None]
-        self.full = False
+        with self.lock:
+            self.cache.clear()
+            self.root[:] = [self.root, self.root, None, None]
+            self.full = False

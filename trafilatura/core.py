@@ -653,8 +653,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
 
         # cache elements
         put_in_cache(postbody)
-        if commentsbody is not None:
-            put_in_cache(commentsbody)
+        #if commentsbody is not None:
+        #    put_in_cache(commentsbody)
 
         returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
     except ValueError:
