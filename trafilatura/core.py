@@ -644,17 +644,17 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             raise ValueError
 
         # check duplicates at body level
-        if deduplicate is True and duplicate_test(postbody) is True:
-            raise ValueError
+        if deduplicate is True:
+            if duplicate_test(postbody) is True:
+                raise ValueError
+            # cache elements
+            put_in_cache(postbody)
+            #if commentsbody is not None:
+            #    put_in_cache(commentsbody)
 
         # sanity check on language
         if language_filter(temp_text, temp_comments, target_language, docmeta) is True:
             raise ValueError
-
-        # cache elements
-        put_in_cache(postbody)
-        #if commentsbody is not None:
-        #    put_in_cache(commentsbody)
 
         returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
     except ValueError:

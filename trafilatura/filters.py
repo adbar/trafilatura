@@ -14,8 +14,7 @@ except ImportError:
     LANGID_FLAG = False
 
 from .lru import LRUCache
-from .settings import (DETECTION_LANGUAGES, LRU_SIZE,
-                       MAX_REPETITIONS, MIN_DUPLCHECK_SIZE)
+from .settings import LRU_SIZE, MAX_REPETITIONS, MIN_DUPLCHECK_SIZE
 from .utils import remove_control_characters, trim
 
 
@@ -95,5 +94,4 @@ def text_chars_test(string):
     '''Determine if a string is only composed of spaces and/or control characters'''
     if string is None or string.isspace():  # or remove_control_characters(string).isspace():
         return False
-    else:
-        return True
+    return True
