@@ -15,12 +15,13 @@ import sys
 
 from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from courlan.core import extract_domain
 from datetime import datetime
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
+
+from courlan.core import extract_domain
 
 from .core import extract
 from .settings import (DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
@@ -66,8 +67,8 @@ def load_blacklist(filename):
             blacklist.add(url)
             # add http/https URLs for safety
             if url.startswith('https'):
-                blacklist.add(re.sub(r'^https', 'http', url))
-            elif url.startswith('http'):
+                blacklist.add(re.sub(r'^https:', 'http:', url))
+            else:
                 blacklist.add(re.sub(r'^http:', 'https:', url))
     return blacklist
 
@@ -97,6 +98,17 @@ def determine_counter_dir(dirname, counter):
     return path.join(dirname, counter_dir)
 
 
+def get_writable_path(destdir, extension):
+    '''Find a writable path and return it along with its random file name'''
+    charclass = string.ascii_letters + string.digits
+    filename = ''.join(random.choice(charclass) for _ in range(FILENAME_LEN))
+    output_path = path.join(destdir, filename + extension)
+    while path.exists(output_path):
+        filename = ''.join(random.choice(charclass) for _ in range(FILENAME_LEN))
+        output_path = path.join(destdir, filename + extension)
+    return output_path, filename
+
+
 def determine_output_path(args, orig_filename, counter=None, new_filename=None):
     '''Pick a directory based on selected options and a file name based on output type'''
     # determine extension
@@ -113,19 +125,13 @@ def determine_output_path(args, orig_filename, counter=None, new_filename=None):
         orig_directory = re.sub(r'[^/]+$', '', orig_filename)
         destination_directory = path.join(args.outputdir, orig_directory)
         # strip extension
-        filename = re.sub(r'\.[a-z]{3,4}$', '', orig_filename)
+        filename = re.sub(r'\.[a-z]{2,5}$', '', orig_filename)
         output_path = path.join(args.outputdir, filename + extension)
     else:
         destination_directory = determine_counter_dir(args.outputdir, counter)
         # determine file slug
         if new_filename is None:
-            output_path = path.join(destination_directory, \
-                ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
-                + extension)
-            while path.exists(output_path):
-                output_path = path.join(destination_directory, \
-                    ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN)) \
-                    + extension)
+            output_path, _ = get_writable_path(destination_directory, extension)
         else:
             output_path = path.join(destination_directory, new_filename + extension)
     return output_path, destination_directory
@@ -134,17 +140,13 @@ def determine_output_path(args, orig_filename, counter=None, new_filename=None):
 def archive_html(htmlstring, args, counter=None):
     '''Write a copy of raw HTML in backup directory'''
     destination_directory = determine_counter_dir(args.backup_dir, counter)
-    fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN))
-    output_path = path.join(destination_directory, fileslug + '.html')
-    while path.exists(output_path):
-        fileslug = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(FILENAME_LEN))
-        output_path = path.join(destination_directory, fileslug + '.html')
+    output_path, filename = get_writable_path(destination_directory, '.html')
     # check the directory status
     if check_outputdir_status(destination_directory) is True:
         # write
         with open(output_path, mode='w', encoding='utf-8') as outputfile:
             outputfile.write(htmlstring)
-    return fileslug
+    return filename
 
 
 def write_result(result, args, orig_filename=None, counter=None, new_filename=None):
@@ -182,14 +184,7 @@ def url_processing_checks(blacklist, input_urls):
     if blacklist:
         input_urls = [u for u in input_urls if u not in blacklist]
     # deduplicate
-    input_urls = list(OrderedDict.fromkeys(input_urls))
-    return input_urls
-
-
-def determine_domain(url):
-    '''Extraction of domain/host name from URL via courlan module'''
-    domain = extract_domain(url)
-    return domain
+    return list(OrderedDict.fromkeys(input_urls))
 
 
 def process_result(htmlstring, args, url, counter):
@@ -273,7 +268,7 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
                 # register in backoff dictionary to ensure time between requests
-                domain = determine_domain(url)
+                domain = extract_domain(url)
                 backoff_dict[domain] = datetime.now()
                 # handle result
                 counter = process_result(future.result(), args, url, counter)
@@ -296,7 +291,7 @@ def url_processing_pipeline(args, input_urls, sleeptime):
     domain_dict = dict()
     while len(input_urls) > 0:
         url = input_urls.pop()
-        domain_name = determine_domain(url)
+        domain_name = extract_domain(url)
         if domain_name not in domain_dict:
             domain_dict[domain_name] = []
         domain_dict[domain_name].append(url)
