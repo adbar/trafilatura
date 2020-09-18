@@ -173,8 +173,7 @@ def handle_textnode(element, comments_fix=True, deduplicate=True):
     if element.text and re.search(r'\w', element.text):  # text_content()?
         if textfilter(element) is True:
             return None
-        # TODO: improve duplicate detection
-        if duplicate_test(element) is True:
+        if deduplicate is True and duplicate_test(element) is True:
             return None
     else:
         return None
@@ -188,12 +187,14 @@ def process_node(element, deduplicate=True):
     if len(element) == 0 and not element.text and not element.tail:
         return None
     # trim
-    element.text = trim(element.text)
-    element.tail = trim(element.tail)
-    # content checks
+    element.text, element.tail = trim(element.text), trim(element.tail)
+    # adapt content string
     if element.tag != 'lb' and not element.text and element.tail:
         element.text = element.tail
+    # content checks
     if element.text or element.tail:
-        if textfilter(element) is True or duplicate_test(element) is True:
+        if textfilter(element) is True:
+            return None
+        if deduplicate is True and duplicate_test(element) is True:
             return None
     return element

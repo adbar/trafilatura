@@ -365,7 +365,7 @@ def examine(htmlstring, args, url=None):
                              include_formatting=args.formatting,
                              with_metadata=args.with_metadata,
                              output_format=args.output_format, tei_validation=args.validate,
-                             target_language=args.target_language)
+                             target_language=args.target_language, deduplicate=args.deduplicate)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')

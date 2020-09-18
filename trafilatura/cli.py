@@ -121,6 +121,9 @@ def parse_args(args):
     group3.add_argument("--target-language",
                         help="select a target language (ISO 639-1 codes)",
                         type=str)
+    group3.add_argument("--deduplicate",
+                        help="Filter out duplicate documents and sections",
+                        type=str)
     return parser.parse_args()
 
 

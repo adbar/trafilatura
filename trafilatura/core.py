@@ -561,7 +561,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             include_comments=True, output_format='txt',
             csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
-            include_tables=True, include_formatting=False, deduplicate=True,
+            include_tables=True, include_formatting=False, deduplicate=False,
             date_extraction_params=None, with_metadata=False, url_blacklist=set()):
     '''Main process for text extraction'''
     # metadata mapping for compatibility
@@ -644,16 +644,12 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             raise ValueError
 
         # check duplicates at body level
-        if deduplicate is True:
-            if duplicate_test(postbody) is True:
-                raise ValueError
-            # cache elements
-            put_in_cache(postbody)
-            #if commentsbody is not None:
-            #    put_in_cache(commentsbody)
+        if deduplicate is True and duplicate_test(postbody) is True:
+            raise ValueError
 
         # sanity check on language
-        if language_filter(temp_text, temp_comments, target_language, docmeta) is True:
+        if target_language is not None and \
+            language_filter(temp_text, temp_comments, target_language, docmeta) is True:
             raise ValueError
 
         returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)

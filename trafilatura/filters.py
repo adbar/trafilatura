@@ -26,18 +26,16 @@ RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
 
-def put_in_cache(body):
+def put_in_cache(teststring):
     '''Implement LRU cache'''
-    for element in body:
-        teststring = trim(' '.join(element.itertext()))
-        cacheval = LRU_TEST.get(teststring)
-        # if the value is already defined
-        if cacheval != -1:
-            # print(cacheval, teststring[:10] + '...')
-            LRU_TEST.put(teststring, cacheval + 1)
-        else:
-            # print(0, teststring[:10] + '...')
-            LRU_TEST.put(teststring, 1)
+    cacheval = LRU_TEST.get(teststring)
+    # if the value is already defined
+    if cacheval != -1:
+        # print(cacheval, teststring[:10] + '...')
+        LRU_TEST.put(teststring, cacheval + 1)
+    else:
+        # print(0, teststring[:10] + '...')
+        LRU_TEST.put(teststring, 1)
 
 
 def duplicate_test(element):
@@ -50,6 +48,7 @@ def duplicate_test(element):
         if cacheval > MAX_REPETITIONS:  # non-existent key will return -1
             LRU_TEST.put(teststring, cacheval + 1)
             return True
+    put_in_cache(teststring)
     return False
 
 

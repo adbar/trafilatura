@@ -513,25 +513,22 @@ def test_lrucache():
     my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
     my_body.append(my_element)
     assert duplicate_test(my_element) is False
-    put_in_cache(my_body)
     assert duplicate_test(my_element) is False
-    put_in_cache(my_body)
-    assert duplicate_test(my_element) is False
-    put_in_cache(my_body)
+    assert duplicate_test(my_body) is False
     assert duplicate_test(my_element) is True
     other_body = etree.Element('body')
     other_element = html.fromstring('<p>CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD</p>')
     other_body.append(other_element)
-    put_in_cache(other_body)
-    put_in_cache(other_body)
-    put_in_cache(other_body)
+    assert duplicate_test(other_body) is False
+    assert duplicate_test(other_element) is False
+    assert duplicate_test(other_body) is False
     assert duplicate_test(other_element) is True
     yet_another_body = etree.Element('body')
     yet_another_element = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
     yet_another_body.append(yet_another_element)
-    put_in_cache(yet_another_body)
-    put_in_cache(yet_another_body)
-    put_in_cache(yet_another_body)
+    assert duplicate_test(yet_another_body) is False
+    assert duplicate_test(yet_another_body) is False
+    assert duplicate_test(yet_another_body) is False
     # 2 elements in cache, original element has been cleared?
     # print(LRU_TEST.maxsize, LRU_TEST.full)
     assert duplicate_test(other_element) is True
