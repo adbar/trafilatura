@@ -146,11 +146,12 @@ def test_dates():
 
 def test_meta():
     '''Test extraction out of meta-elements'''
-    metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/></head><body></body></html>')
+    metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/></head><body></body></html>')
     assert metadata['title'] == 'Open Graph Title'
     assert metadata['author'] == 'Jenny Smith'
     assert metadata['description'] == 'This is an Open Graph description'
     assert metadata['sitename'] == 'My first site'
+    assert metadata['url'] == 'https://example.org/test'
     metadata = extract_metadata('<html><head><meta name="dc.title" content="Open Graph Title"/><meta name="dc.creator" content="Jenny Smith"/><meta name="dc.description" content="This is an Open Graph description"/></head><body></body></html>')
     assert metadata['title'] == 'Open Graph Title'
     assert metadata['author'] == 'Jenny Smith'
