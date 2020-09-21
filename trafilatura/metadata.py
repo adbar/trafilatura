@@ -7,6 +7,7 @@ import logging
 import re
 
 from courlan.clean import normalize_url
+from courlan.core import extract_domain
 from courlan.filters import validate_url
 from htmldate import find_date
 from lxml import html
@@ -95,7 +96,7 @@ def extract_opengraph(tree):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    metadata = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
+    metadata = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags'])
     # bootstrap from potential OpenGraph tags
     title, author, url, description, site_name = extract_opengraph(tree)
     # test if all return values have been assigned
@@ -324,6 +325,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
     # url
     if metadata['url'] is None:
         metadata['url'] = extract_url(tree, default_url)
+    # hostname
+    if metadata['url'] is not None:
+        metadata['hostname'] = extract_domain(metadata['url'])
     # extract date with external module htmldate
     if date_config is None:
         date_config = HTMLDATE_CONFIG

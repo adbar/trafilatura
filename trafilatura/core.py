@@ -585,7 +585,7 @@ def bare_extraction(filecontent, url=None, record_id=None, no_fallback=False,
                 ):
                 raise ValueError
         else:
-            docmeta = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags'])
+            docmeta = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags'])
         # add record ID to metadata
         docmeta['id'] = record_id
 

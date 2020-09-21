@@ -33,6 +33,7 @@ def build_json_output(docmeta, postbody, commentsbody):
     '''Build JSON output based on extracted information'''
     outputdict = docmeta
     outputdict['source'] = outputdict.pop('url')
+    outputdict['source-hostname'] = outputdict.pop('hostname')
     outputdict['excerpt'] = outputdict.pop('description')
     outputdict['categories'] = ';'.join(outputdict['categories'])
     outputdict['tags'] = ';'.join(outputdict['tags'])
@@ -80,6 +81,8 @@ def add_xml_meta(output, docmeta):
             output.set('date', docmeta['date'])
         if docmeta['url'] is not None:
             output.set('source', docmeta['url'])
+        if docmeta['hostname'] is not None:
+            output.set('hostname', docmeta['hostname'])
         if docmeta['description'] is not None:
             output.set('excerpt', docmeta['description'])
         if docmeta['categories'] is not None:
@@ -267,7 +270,11 @@ def write_fullheader(header, docmeta):
         bib_author.text = docmeta['author']
     publicationstmt = etree.SubElement(biblfull, 'publicationStmt')
     publication_publisher = etree.SubElement(publicationstmt, 'publisher')
-    publication_publisher.text = docmeta['sitename']
+    if docmeta['hostname'] is not None:
+        publisherstring = docmeta['sitename'] + '(' + docmeta['hostname'] + ')'
+    else:
+        publisherstring = docmeta['sitename']
+    publication_publisher.text = publisherstring
     if docmeta['url'] is not None:
         publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL', target=docmeta['url'])
     publication_date = etree.SubElement(publicationstmt, 'date')
