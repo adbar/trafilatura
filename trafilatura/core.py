@@ -17,7 +17,7 @@ from lxml import etree, html
 
 # own
 from .external import justext_rescue, sanitize_tree, try_readability
-from .filters import duplicate_test, language_filter, put_in_cache, text_chars_test
+from .filters import duplicate_test, language_filter, text_chars_test
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
                              link_density_test,
@@ -557,16 +557,11 @@ def map_format(output_format, csv_output, json_output, xml_output, tei_output):
     return output_format
 
 
-def extract(filecontent, url=None, record_id=None, no_fallback=False,
-            include_comments=True, output_format='txt',
-            csv_output=False, json_output=False, xml_output=False, tei_output=False,
-            tei_validation=False, target_language=None,
+def bare_extraction(filecontent, url=None, record_id=None, no_fallback=False,
+            include_comments=True, output_format='txt', target_language=None,
             include_tables=True, include_formatting=False, deduplicate=False,
             date_extraction_params=None, with_metadata=False, url_blacklist=set()):
-    '''Main process for text extraction'''
-    # metadata mapping for compatibility
-    output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
-
+    '''Main process for text extraction returning Python variables'''
     try:
         # load data
         tree = load_html(filecontent)
@@ -652,11 +647,32 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             language_filter(temp_text, temp_comments, target_language, docmeta) is True:
             raise ValueError
 
-        returnstring = determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
     except ValueError:
         LOGGER.info('discarding data for url: %s, id: %s', url, record_id) # docmeta['url']
-        returnstring = None
-    return returnstring
+        return None, None, None
+    return docmeta, postbody, commentsbody
+
+
+def extract(filecontent, url=None, record_id=None, no_fallback=False,
+            include_comments=True, output_format='txt',
+            csv_output=False, json_output=False, xml_output=False, tei_output=False,
+            tei_validation=False, target_language=None,
+            include_tables=True, include_formatting=False, deduplicate=False,
+            date_extraction_params=None, with_metadata=False, url_blacklist=set()):
+    '''Wrapper for text extraction and conversion to chosen output format'''
+    # metadata mapping for compatibility
+    output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
+    # extraction
+    docmeta, postbody, commentsbody = bare_extraction(filecontent, url=url,
+    record_id=record_id, no_fallback=no_fallback, include_comments=include_comments,
+    output_format=output_format, target_language=target_language,
+    include_tables=include_tables, include_formatting=include_formatting,
+    deduplicate=deduplicate, date_extraction_params=date_extraction_params,
+    with_metadata=with_metadata, url_blacklist=url_blacklist)
+    if docmeta is None:
+        return None
+    # return
+    return determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
 
 
 # for legacy and backwards compatibility

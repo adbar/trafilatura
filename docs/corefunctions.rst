@@ -10,6 +10,8 @@ Extraction
 
 .. autofunction:: trafilatura.core.extract
 
+.. autofunction:: trafilatura.core.bare_extraction
+
 .. autofunction:: trafilatura.core.baseline
 
 .. autofunction:: trafilatura.metadata.extract_metadata
