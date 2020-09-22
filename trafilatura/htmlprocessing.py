@@ -13,7 +13,7 @@ from lxml import etree
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
-from .utils import sanitize, trim
+from .utils import trim
 from .xpaths import COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
 

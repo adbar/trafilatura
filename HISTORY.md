@@ -1,6 +1,14 @@
 ## History / Changelog
 
 
+### 0.5.2
+- optional language detector changed: `langid` → `pycld3`
+- helper function `bare_extraction()`
+- optional deduplication off by default
+- better URL handling (`courlan`), more complete metadata
+- code consolidation (cleaner and shorter)
+
+
 ### 0.5.1
 - extended and more convenient command-line options
 - output in JSON format

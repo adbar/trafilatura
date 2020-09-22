@@ -15,7 +15,7 @@ except ImportError:
 
 from .lru import LRUCache
 from .settings import LRU_SIZE, MAX_REPETITIONS, MIN_DUPLCHECK_SIZE
-from .utils import remove_control_characters, trim
+from .utils import trim  #, remove_control_characters
 
 
 LOGGER = logging.getLogger(__name__)

@@ -29,7 +29,7 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.5.1',
+    version='0.5.2',
     description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
     long_description=readme(),
     classifiers=[
@@ -68,7 +68,7 @@ setup(
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[
-        'courlan >= 0.2.1',
+        'courlan >= 0.2.2',
         'htmldate >= 0.7.1',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
