@@ -19,6 +19,8 @@ from .utils import load_html, trim
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
+METADATA_LIST = ['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id']
+
 HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
 
 TITLE_REGEX = re.compile(r'(.+)?\s+[-|]\s+.*$')
@@ -96,7 +98,7 @@ def extract_opengraph(tree):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    metadata = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id'])
+    metadata = dict.fromkeys(METADATA_LIST)
     # bootstrap from potential OpenGraph tags
     title, author, url, description, site_name = extract_opengraph(tree)
     # test if all return values have been assigned

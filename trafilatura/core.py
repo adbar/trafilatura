@@ -22,7 +22,7 @@ from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
                              link_density_test,
                              manual_cleaning, process_node, prune_html)
-from .metadata import extract_metadata
+from .metadata import extract_metadata, METADATA_LIST
 from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, MAX_OUTPUT_TREE_LENGTH,
                        TAG_CATALOG)
@@ -586,7 +586,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                 ):
                 raise ValueError
         else:
-            docmeta = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id'])
+            docmeta = dict.fromkeys(METADATA_LIST)
 
         # clean
         cleaned_tree = manual_cleaning(tree, include_tables)

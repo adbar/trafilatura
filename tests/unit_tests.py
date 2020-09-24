@@ -29,6 +29,7 @@ except ImportError:
 
 import trafilatura.filters
 from trafilatura.core import baseline, extract, process_record, sanitize_tree, trim
+from trafilatura.metadata import METADATA_LIST
 from trafilatura.filters import duplicate_test, textfilter
 from trafilatura.lru import LRUCache
 from trafilatura.settings import MAX_OUTPUT_TREE_LENGTH
@@ -38,7 +39,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-SAMPLE_META = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'id', 'fingerprint'])
+SAMPLE_META = dict.fromkeys(METADATA_LIST)
 
 
 MOCK_PAGES = {
@@ -101,7 +102,7 @@ def test_input():
 
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_txttocsv():
-    mymeta = SAMPLE_META
+    mymeta = dict.fromkeys(METADATA_LIST)
     assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\n'
     mymeta['title'] = 'Test title'
     mymeta['url'] = 'https://example.org'
