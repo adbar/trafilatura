@@ -91,6 +91,8 @@ def add_xml_meta(output, docmeta):
             output.set('tags', ';'.join(docmeta['tags']))
         if docmeta['id'] is not None:
             output.set('id', docmeta['id'])
+        if docmeta['fingerprint'] is not None:
+            output.set('fingerprint', docmeta['fingerprint'])
     return output
 
 
@@ -245,6 +247,9 @@ def write_fullheader(header, docmeta):
     if docmeta['id'] is not None:
         idno = etree.SubElement(publicationstmt_a, 'idno', type='id')
         idno.text = docmeta['id']
+    notesstmt = etree.SubElement(filedesc, 'notesStmt')
+    note = etree.SubElement(notesstmt, 'note', ana='fingerprint')
+    note.text = docmeta['fingerprint']
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_bibl = etree.SubElement(sourcedesc, 'bibl')
     if docmeta['sitename'] and docmeta['date']:

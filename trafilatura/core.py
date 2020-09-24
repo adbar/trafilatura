@@ -17,7 +17,7 @@ from lxml import etree, html
 
 # own
 from .external import justext_rescue, sanitize_tree, try_readability
-from .filters import duplicate_test, language_filter, text_chars_test
+from .filters import content_fingerprint, duplicate_test, language_filter, text_chars_test
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
                              link_density_test,
@@ -557,10 +557,10 @@ def map_format(output_format, csv_output, json_output, xml_output, tei_output):
     return output_format
 
 
-def bare_extraction(filecontent, url=None, record_id=None, no_fallback=False,
-            include_comments=True, output_format='txt', target_language=None,
-            include_tables=True, include_formatting=False, deduplicate=False,
-            date_extraction_params=None, with_metadata=False, url_blacklist=set()):
+def bare_extraction(filecontent, url=None, no_fallback=False,
+                    include_comments=True, output_format='txt', target_language=None,
+                    include_tables=True, include_formatting=False, deduplicate=False,
+                    date_extraction_params=None, with_metadata=False, url_blacklist=set()):
     '''Main process for text extraction returning Python variables'''
     try:
         # load data
@@ -580,14 +580,13 @@ def bare_extraction(filecontent, url=None, record_id=None, no_fallback=False,
             if docmeta['url'] in url_blacklist:
                 raise ValueError
             # cut short if core elements are missing
-            if with_metadata is True and any(x is None for x in
-                [docmeta['date'], docmeta['title'], docmeta['url']]
+            if with_metadata is True and any(
+                    x is None for x in
+                    [docmeta['date'], docmeta['title'], docmeta['url']]
                 ):
                 raise ValueError
         else:
-            docmeta = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags'])
-        # add record ID to metadata
-        docmeta['id'] = record_id
+            docmeta = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id'])
 
         # clean
         cleaned_tree = manual_cleaning(tree, include_tables)
@@ -633,7 +632,7 @@ def bare_extraction(filecontent, url=None, record_id=None, no_fallback=False,
                 raise ValueError
         # size checks
         if len_comments < MIN_EXTRACTED_COMM_SIZE:
-            LOGGER.info('not enough comments %s %s', record_id, url)
+            LOGGER.info('not enough comments %s', url)
         if len_text < MIN_OUTPUT_SIZE and len_comments < MIN_OUTPUT_COMM_SIZE:
             LOGGER.info('text and comments not long enough: %s %s', len_text, len_comments)
             raise ValueError
@@ -648,9 +647,9 @@ def bare_extraction(filecontent, url=None, record_id=None, no_fallback=False,
             raise ValueError
 
     except ValueError:
-        LOGGER.info('discarding data for url: %s, id: %s', url, record_id) # docmeta['url']
-        return None, None, None
-    return docmeta, postbody, commentsbody
+        LOGGER.info('discarding data for url: %s', url) # docmeta['url'] , record_id
+        return None, None, None, None
+    return docmeta, temp_text, postbody, commentsbody
 
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
@@ -663,14 +662,21 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     # metadata mapping for compatibility
     output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
     # extraction
-    docmeta, postbody, commentsbody = bare_extraction(filecontent, url=url,
-    record_id=record_id, no_fallback=no_fallback, include_comments=include_comments,
-    output_format=output_format, target_language=target_language,
-    include_tables=include_tables, include_formatting=include_formatting,
-    deduplicate=deduplicate, date_extraction_params=date_extraction_params,
-    with_metadata=with_metadata, url_blacklist=url_blacklist)
+    docmeta, temp_text, postbody, commentsbody = bare_extraction(
+        filecontent, url=url, no_fallback=no_fallback,
+        include_comments=include_comments, output_format=output_format,
+        target_language=target_language, include_tables=include_tables,
+        include_formatting=include_formatting, deduplicate=deduplicate,
+        date_extraction_params=date_extraction_params, with_metadata=with_metadata,
+        url_blacklist=url_blacklist
+        )
     if docmeta is None:
         return None
+    if output_format != 'txt':
+        # add record ID to metadata
+        docmeta['id'] = record_id
+        # calculate fingerprint
+        docmeta['fingerprint'] = content_fingerprint(temp_text)
     # return
     return determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
 

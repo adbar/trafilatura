@@ -96,7 +96,7 @@ def extract_opengraph(tree):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    metadata = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags'])
+    metadata = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id'])
     # bootstrap from potential OpenGraph tags
     title, author, url, description, site_name = extract_opengraph(tree)
     # test if all return values have been assigned

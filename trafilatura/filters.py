@@ -3,6 +3,8 @@ Functions related to content filtering, mostly duplicate detection and language
 detection.
 """
 
+import base64
+import hashlib
 import logging
 import re
 
@@ -94,3 +96,12 @@ def text_chars_test(string):
     if string is None or string.isspace():  # or remove_control_characters(string).isspace():
         return False
     return True
+
+
+def content_fingerprint(string):
+    '''Calculate a hash value for meaningful bits of the content'''
+    teststring = ' '.join(re.findall(r'\w{5,}', string.lower()))
+    m = hashlib.sha1()
+    m.update(teststring.encode())
+    fingerprint = m.digest()
+    return base64.b64encode(fingerprint).decode()

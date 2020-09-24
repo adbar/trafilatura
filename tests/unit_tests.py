@@ -38,7 +38,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-SAMPLE_META = dict.fromkeys(['title', 'author', 'url', 'description', 'sitename', 'date', 'categories', 'tags', 'id'])
+SAMPLE_META = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'id', 'fingerprint'])
 
 
 MOCK_PAGES = {
@@ -101,12 +101,12 @@ def test_input():
 
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_txttocsv():
-    mymeta = dict.fromkeys(['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'id'])
-    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\t\t\n'
+    mymeta = SAMPLE_META
+    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\n'
     mymeta['title'] = 'Test title'
     mymeta['url'] = 'https://example.org'
     mymeta['hostname'] = 'example.org'
-    assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\texample.org\tTest title\tNone\tTest text\tTest comment\n'
+    assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\n'
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True) is not None
     assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True, include_comments=False).endswith('\t\n')
     # test json

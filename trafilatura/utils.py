@@ -200,8 +200,9 @@ def txttocsv(text, comments, docmeta):
     text = trim(' '.join(text.splitlines()))
     if comments is not None:
         comments = trim(' '.join(comments.splitlines()))
-    tsv_output = '{url}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(
+    tsv_output = '{url}\t{fingerprint}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(
         url=docmeta['url'],
+        fingerprint=docmeta['fingerprint'],
         hostname=docmeta['hostname'],
         doctitle=docmeta['title'],
         docdate=docmeta['date'],
