@@ -234,7 +234,7 @@ def single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, count
 
 
 def multi_threaded_processing(domain_dict, args, sleeptime, counter):
-    '''Implement a single threaded processing algorithm'''
+    '''Implement a multi-threaded processing algorithm'''
     i = 0
     backoff_dict = dict()
     if args.parallel is not None:
