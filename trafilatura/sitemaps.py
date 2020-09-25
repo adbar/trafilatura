@@ -10,23 +10,28 @@ import re
 # import urllib.robotparser # Python >= 3.8
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
-from courlan.core import check_url
+from courlan.core import check_url, extract_domain
 
 from .utils import fetch_url
 
 
 
-
-#def sitemap_search(url, domain):
-#    sitemapurl = url.rstrip('/') + '/sitemap.xml'
-#    sitemapurls, linklist = process_sitemap(sitemapurl, domain)
-#    if sitemapurls == [] and len(linklist) > 0:
-#         return linklist
-#    if sitemapurls == [] and linklist == []:
-#        for sitemapurl in find_robots_sitemaps(url):
-#            sitemapurls, linklist = process_sitemap(url, domain)
-
-
+def sitemap_search(url):
+    domain = extract_domain(url)
+    sitemapurl = url.rstrip('/') + '/sitemap.xml'
+    sitemapurls, linklist = process_sitemap(sitemapurl, domain)
+    if sitemapurls == [] and len(linklist) > 0:
+        return linklist
+    if sitemapurls == [] and linklist == []:
+        for sitemapurl in find_robots_sitemaps(url):
+            tmp_sitemapurls, tmp_linklist = process_sitemap(url, domain)
+            sitemapurls.extend(tmp_sitemapurls)
+            linklist.extend(tmp_linklist)
+        while sitemapurls:
+            tmp_sitemapurls, tmp_linklist = process_sitemap(sitemapurls.pop(), domain)
+            sitemapurls.extend(tmp_sitemapurls)
+            linklist.extend(tmp_linklist)
+    return linklist
 
 
 def fix_relative_urls(domain, url):

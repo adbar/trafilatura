@@ -15,6 +15,7 @@ from .cli_utils import (examine,
                         write_result)
 from .feeds import find_feed_urls
 from .settings import SLEEP_TIME
+from .sitemaps import sitemap_search
 
 
 LOGGER = logging.getLogger(__name__)
@@ -61,6 +62,9 @@ def parse_args(args):
                         help="custom URL download")
     group1.add_argument("--feed",
                         help="pass a feed URL as input",
+                        type=str)
+    group1.add_argument("--sitemap",
+                        help="look for sitemaps URLs for the given website",
                         type=str)
     group1.add_argument("--list",
                         help="return a list of URLs without downloading them",
@@ -142,9 +146,13 @@ def map_args(args):
 
 def main():
     """ Run as a command-line utility. """
-    # arguments
     args = parse_args(sys.argv[1:])
     args = map_args(args)
+    process_args(args)
+
+
+def process_args(args):
+    """Perform the actual processing according to the arguments"""
     if args.verbose:
         logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
     if args.very_verbose:
@@ -159,6 +167,10 @@ def main():
     # fetch urls from a feed
     elif args.feed:
         links = find_feed_urls(args.feed)
+        url_processing_pipeline(args, links, SLEEP_TIME)
+    # fetch urls from a sitemap
+    elif args.sitemap:
+        links = sitemap_search(args.sitemap)
         url_processing_pipeline(args, links, SLEEP_TIME)
     # read files from an input directory
     elif args.inputdir:

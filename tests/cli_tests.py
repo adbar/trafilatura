@@ -2,10 +2,12 @@
 Unit tests for the command-line interface.
 """
 
+import io
 import logging
 import os
 import sys
 
+from contextlib import redirect_stdout
 from datetime import datetime
 from unittest.mock import patch
 
@@ -199,6 +201,14 @@ def test_cli_pipeline():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     cli_utils.file_processing_pipeline(args)
+    # sitemaps
+    testargs = ['', '--sitemap', 'https://httpbin.org/', '--list']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert len(f.getvalue()) == 0
 
 
 def test_input_filtering():
