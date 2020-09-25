@@ -11,6 +11,9 @@ from multiprocessing import cpu_count
 from lxml.html.clean import Cleaner
 
 
+
+USER_AGENT = 'trafilatura/0.5.2 (+https://github.com/adbar/trafilatura)'
+
 # sanity checks
 MAX_FILE_SIZE = 20000000
 MIN_FILE_SIZE = 10
@@ -79,8 +82,6 @@ HTML_CLEANER.kill_tags = MANUALLY_CLEANED
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'q', 'quote'])
 # 'span', 'item'
-
-# USER_AGENT = 'trafilatura/0.5.0 (+https://github.com/adbar/trafilatura)'
 
 # JUSTEXT_DEFAULT = 'German'
 # JT_STOPLIST = None  # could be a list

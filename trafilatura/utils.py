@@ -22,12 +22,12 @@ except ImportError:
 # https://ftfy.readthedocs.io/en/latest/
 
 import requests
-import urllib3
+#import urllib3
 
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
-from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE # USER_AGENT
+from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, USER_AGENT
 
 
 LOGGER = logging.getLogger(__name__)
@@ -35,10 +35,11 @@ LOGGER = logging.getLogger(__name__)
 # customize headers
 HEADERS = {
     # 'Connection': 'close',  # another way to cover tracks
-    #'User-Agent': USER_AGENT,  # your string here
+    'User-Agent': USER_AGENT,  # your string here
 }
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 SESSION = requests.Session()
+SESSION.headers.update(HEADERS)
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
