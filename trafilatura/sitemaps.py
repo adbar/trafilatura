@@ -50,7 +50,7 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname):
 
     if not pagecontent.startswith('<?xml'):
         logging.warning('not a sitemap: %s', domainname) # respheaders
-        return None
+        return [], []
 
     sitemapurls, linklist = list(), list()
 
@@ -83,7 +83,11 @@ def find_robots_sitemaps(url):
     robotsurl = url.rstrip('/') + '/robots.txt'
     robotstxt = fetch_url(robotsurl)
     if robotstxt is None:
-        return None
+        return []
+    return extract_robots_sitemaps(robotstxt)
+
+
+def extract_robots_sitemaps(robotstxt):
     sitemaps = list()
     # source: https://github.com/python/cpython/blob/3.8/Lib/urllib/robotparser.py
     for line in robotstxt.splitlines():

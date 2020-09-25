@@ -25,11 +25,21 @@ def test_extraction():
         teststring = f.read()
     sitemapurls, linklist = sitemaps.extract_sitemap_links(teststring, 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org')
     assert sitemapurls == [] and len(linklist) == 84
+    # nested sitemaps
+    filepath = os.path.join(RESOURCES_DIR, 'sitemap2.xml')
+    with open(filepath) as f:
+        teststring = f.read()
+    sitemapurls, linklist = sitemaps.extract_sitemap_links(teststring, 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org')
+    assert len(sitemapurls) == 2 and linklist == []
+    # invalid
+    assert sitemaps.extract_sitemap_links('<html>\n</html>', 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org') == ([], [])
 
 
 def test_robotstxt():
     '''Check if sitemaps can be found over robots.txt'''
     assert sitemaps.find_robots_sitemaps('https://httpbin.org/') == []
+    assert sitemaps.extract_robots_sitemaps('# test') == []
+    assert sitemaps.extract_robots_sitemaps('sitemap: https://example.org/sitemap.xml') == ['https://example.org/sitemap.xml']
 
 
 if __name__ == '__main__':
