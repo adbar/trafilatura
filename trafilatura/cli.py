@@ -62,10 +62,10 @@ def parse_args(args):
                         help="custom URL download")
     group1.add_argument("--feed",
                         help="pass a feed URL as input",
-                        type=str)
+                        nargs='?', const=True, default=False)
     group1.add_argument("--sitemap",
                         help="look for sitemaps URLs for the given website",
-                        type=str)
+                        nargs='?', const=True, default=False)
     group1.add_argument("--list",
                         help="return a list of URLs without downloading them",
                         action="store_true")
@@ -161,17 +161,27 @@ def process_args(args):
         args.blacklist = load_blacklist(args.blacklist)
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.inputfile:  # and not args.feed:
+    if args.inputfile and args.feed is False and args.sitemap is False:
         input_urls = load_input_urls(args.inputfile)
         url_processing_pipeline(args, input_urls, SLEEP_TIME)
     # fetch urls from a feed
     elif args.feed:
-        links = find_feed_urls(args.feed)
-        url_processing_pipeline(args, links, SLEEP_TIME)
+        if args.inputfile:
+            input_urls = load_input_urls(args.inputfile)
+        else:
+            input_urls = [args.feed]
+        for url in input_urls:
+            links = find_feed_urls(url)
+            url_processing_pipeline(args, links, SLEEP_TIME)
     # fetch urls from a sitemap
     elif args.sitemap:
-        links = sitemap_search(args.sitemap)
-        url_processing_pipeline(args, links, SLEEP_TIME)
+        if args.inputfile:
+            input_urls = load_input_urls(args.inputfile)
+        else:
+            input_urls = [args.sitemap]
+        for url in input_urls:
+            links = sitemap_search(url)
+            url_processing_pipeline(args, links, SLEEP_TIME)
     # read files from an input directory
     elif args.inputdir:
         file_processing_pipeline(args)
