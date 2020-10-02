@@ -127,7 +127,7 @@ def parse_args(args):
                         type=str)
     group3.add_argument("--deduplicate",
                         help="Filter out duplicate documents and sections",
-                        type=str)
+                        action="store_true")
     return parser.parse_args()
 
 
