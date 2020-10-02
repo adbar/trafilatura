@@ -54,9 +54,13 @@ def determine_feed(htmlstring):
     # try to find RSS URL
     for feed_url in re.findall(r'type="application/rss\+xml".+?href="(.+?)"', htmlstring):
         feed_urls.append(feed_url)
+    for feed_url in re.findall(r'href="(.+?)".+?type="application/rss\+xml"', htmlstring):
+        feed_urls.append(feed_url)
     # try to find Atom URL
     if len(feed_urls) == 0:
         for feed_url in re.findall(r'type="application/atom\+xml".+?href="(.+?)"', htmlstring):
+            feed_urls.append(feed_url)
+        for feed_url in re.findall(r'href="(.+?)".+?type="application/atom\+xml"', htmlstring):
             feed_urls.append(feed_url)
     for item in feed_urls:
         if 'comments' in item:

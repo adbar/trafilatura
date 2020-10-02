@@ -41,6 +41,7 @@ def test_feeds_helpers():
     assert feeds.validate_url('http://example.org/') is False
     assert len(feeds.determine_feed('<html><meta><link rel="alternate" type="application/rss+xml" title="Feed" href="https://example.org/blog/feed/"/></meta><body/></html>')) == 1
     assert len(feeds.determine_feed('<html><meta><link rel="alternate" type="application/atom+xml" title="Feed" href="https://example.org/blog/feed/"/></meta><body/></html>')) == 1
+    assert len(feeds.determine_feed('<html><meta><link rel="alternate" href="https://www.theguardian.com/international/rss" title="RSS" type="application/rss+xml"></meta><body/></html>')) == 1
     # no comments wanted
     assert len(feeds.determine_feed('<html><meta><link rel="alternate" type="application/rss+xml" title="Feed" href="https://example.org/blog/comments-feed/"/></meta><body/></html>')) == 0
 
