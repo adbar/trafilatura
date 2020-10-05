@@ -44,43 +44,57 @@ def fix_relative_urls(domain, url):
     return urlfix
 
 
-def process_sitemap(url, domain):
+def process_sitemap(url, domain, target_lang=None):
     pagecontent = fetch_url(url)
-    if pagecontent is None:
+    if pagecontent is None or not pagecontent.startswith('<?xml'):
+        logging.warning('not a sitemap: %s', domain) # respheaders
         return [], []
-    return extract_sitemap_links(pagecontent, url, domain)
+    if target_lang is not None:
+        return extract_sitemap_langlinks(pagecontent, url, domain, target_lang)
+    return extract_sitemap_links(pagecontent, url, domain, target_lang)
 
 
-def extract_sitemap_links(pagecontent, sitemapurl, domainname):
+def handle_link(link, domainname, sitemapurl, target_lang=None):
+    state = ''
+    # safety net: recursivity
+    if link == sitemapurl:
+        return link, state
+    # fix and check
+    link = fix_relative_urls(domainname, link)
+    if re.search(r'\.xml$|\.xml[.?#]', link):
+        state = 'sitemap'
+    else:
+        checked = check_url(link, language=target_lang)
+        if checked is not None:
+            link, state = checked[0], 'link'
+    return link, state
 
-    if not pagecontent.startswith('<?xml'):
-        logging.warning('not a sitemap: %s', domainname) # respheaders
+
+def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, target_lang=None):
+    if not 'hreflang=' in pagecontent:
         return [], []
+    sitemapurls, linklist = [], []
+    for attributes in re.findall(r'(?<=<xhtml:link).+?(?=/>)', pagecontent, re.DOTALL):
+        if re.search(r"hreflang=[\"'](de.*?|DE.*?|x-default)[\"']", attributes):
+            match = re.search(r"(?<=href=[\"']).+?(?=[\"'])", attributes)
+            if match:
+                link, state = handle_link(match.group(0), domainname, sitemapurl, target_lang)
+                if state == 'sitemap':
+                    sitemapurls.append(link)
+                elif state == 'link':
+                    linklist.append(link)
+    return sitemapurls, linklist
 
-    sitemapurls, linklist = list(), list()
 
+def extract_sitemap_links(pagecontent, sitemapurl, domainname, target_lang=None):
+    sitemapurls, linklist =  [], []
     # extract
     for link in re.findall(r'(?<=<loc>).+?(?=</loc>)', pagecontent):
-        # check number of nested sitemaps
-        #if len(sitemapurls) > settings.MAX_SITEMAPS_PER_NSITEMAP:
-        #    break
-        # safety net: recursivity
-        if link == sitemapurl:
-            continue
-        ### nested!
-        if '.xml' in link and re.search(r'\.xml$|\.xml[.?#]', link): # was \W
-            # relative link
-            link = fix_relative_urls(domainname, link)
-            # no check necessary
-            #checked = check_url(link, strict=True, with_redirects=False, with_language=True)
+        link, state = handle_link(link, domainname, sitemapurl, target_lang)
+        if state == 'sitemap':
             sitemapurls.append(link)
-        else:
-            # only add if no hreflang links found
-            #if hreflangflag is False:
-            link = fix_relative_urls(domainname, link)
-            checked = check_url(link) # strict=True, with_redirects=False, with_language=True
-            if checked is not None:
-                linklist.append(checked[0])
+        elif state == 'link':
+            linklist.append(link)
     return sitemapurls, linklist
 
 

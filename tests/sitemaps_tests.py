@@ -33,6 +33,13 @@ def test_extraction():
     assert len(sitemapurls) == 2 and linklist == []
     # invalid
     assert sitemaps.extract_sitemap_links('<html>\n</html>', 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org') == ([], [])
+    # hreflang
+    filepath = os.path.join(RESOURCES_DIR, 'sitemap-hreflang.xml')
+    with open(filepath) as f:
+        teststring = f.read()
+    _, linklist = sitemaps.extract_sitemap_langlinks(teststring, 'http://www.example.com/sitemap.xml', 'example.com', target_lang='de')
+    assert len(linklist) > 0
+    
 
 
 def test_robotstxt():
