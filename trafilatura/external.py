@@ -35,7 +35,7 @@ except ImportError:
 from .htmlprocessing import convert_tags, prune_html
 from .settings import JUSTEXT_LANGUAGES
 from .utils import sanitize, trim, HTML_PARSER
-from .xml import TEI_VALID_TAGS # merge_with_parent
+from .xml import TEI_VALID_TAGS
 
 
 LOGGER = logging.getLogger(__name__)
@@ -60,8 +60,7 @@ def try_readability(htmlinput, url):
             with open(os.devnull, 'w') as devnull:
                 with redirect_stderr(devnull):
                     resultstring = doc.summary(html_partial=True)
-        newtree = html.fromstring(resultstring, parser=HTML_PARSER)
-        return newtree
+        return html.fromstring(resultstring, parser=HTML_PARSER)
     except (etree.SerialisationError, Unparseable):
         return etree.Element('div')
 
