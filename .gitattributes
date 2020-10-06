@@ -1,3 +1,4 @@
 # override github/linguist settings
 tests/cache/*	linguist-vendored
 tests/eval/*	linguist-vendored
+tests/resources/*	linguist-vendored
