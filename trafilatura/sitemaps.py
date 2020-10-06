@@ -27,10 +27,10 @@ def sitemap_search(url):
             tmp_sitemapurls, tmp_linklist = process_sitemap(url, domain)
             sitemapurls.extend(tmp_sitemapurls)
             linklist.extend(tmp_linklist)
-        while sitemapurls:
-            tmp_sitemapurls, tmp_linklist = process_sitemap(sitemapurls.pop(), domain)
-            sitemapurls.extend(tmp_sitemapurls)
-            linklist.extend(tmp_linklist)
+    while sitemapurls:
+        tmp_sitemapurls, tmp_linklist = process_sitemap(sitemapurls.pop(), domain)
+        sitemapurls.extend(tmp_sitemapurls)
+        linklist.extend(tmp_linklist)
     return linklist
 
 
