@@ -17,6 +17,10 @@ from .utils import fetch_url
 
 LOGGER = logging.getLogger(__name__)
 
+LINK_REGEX = re.compile(r'(?<=<loc>).+?(?=</loc>)')
+XHTML_REGEX = re.compile(r'(?<=<xhtml:link).+?(?=/>)', re.DOTALL)
+HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
+
 
 def sitemap_search(url, target_lang=None):
     domain = extract_domain(url)
@@ -80,9 +84,10 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, target_lang=N
     if not 'hreflang=' in pagecontent:
         return [], []
     sitemapurls, linklist = [], []
-    for attributes in re.findall(r'(?<=<xhtml:link).+?(?=/>)', pagecontent, re.DOTALL):
-        if re.search(r"hreflang=[\"'](de.*?|DE.*?|x-default)[\"']", attributes):
-            match = re.search(r"(?<=href=[\"']).+?(?=[\"'])", attributes)
+    lang_regex = re.compile(r"hreflang=[\"']({}.*?|x-default)[\"']".format(target_lang), re.DOTALL)
+    for attributes in XHTML_REGEX.findall(pagecontent):
+        if lang_regex.search(attributes):
+            match = HREFLANG_REGEX.search(attributes)
             if match:
                 link, state = handle_link(match.group(0), domainname, sitemapurl, target_lang)
                 if state == 'sitemap':
@@ -96,7 +101,7 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, target_lang=N
 def extract_sitemap_links(pagecontent, sitemapurl, domainname, target_lang=None):
     sitemapurls, linklist = [], []
     # extract
-    for link in re.findall(r'(?<=<loc>).+?(?=</loc>)', pagecontent):
+    for link in LINK_REGEX.findall(pagecontent):
         link, state = handle_link(link, domainname, sitemapurl, target_lang)
         if state == 'sitemap':
             sitemapurls.append(link)
