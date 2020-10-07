@@ -180,7 +180,7 @@ def process_args(args):
         else:
             input_urls = [args.sitemap]
         for url in input_urls:
-            links = sitemap_search(url)
+            links = sitemap_search(url, target_lang=args.target_language)
             url_processing_pipeline(args, links, SLEEP_TIME)
     # read files from an input directory
     elif args.inputdir:
