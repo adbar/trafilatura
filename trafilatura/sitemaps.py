@@ -65,7 +65,7 @@ def process_sitemap(url, domain, target_lang=None):
 
 
 def handle_link(link, domainname, sitemapurl, target_lang=None):
-    state = ''
+    state = '0'
     # safety net: recursivity
     if link == sitemapurl:
         return link, state
