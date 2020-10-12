@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#16161d">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="x-ua-compatible" content="IE=Edge">
+
+    <!-- <link rel="icon" type="image/x-icon" href="images/favicon.ico"> -->
+    <link rel="icon" type="image/svg" href="images/projects/gola/Gola-logo.png">
+    <!-- <link rel="icon" type="image/png" href="images/ui/tree1.small.png"> -->
+
+    <link rel="stylesheet" href="lib/bulma/css/bulma.min.css">
+    <link rel="stylesheet" href="lib/bulma-carousel/dist/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="lib/@fortawesome/fontawesome-free/css/solid.min.css">
+    <link rel="stylesheet" href="lib/@fortawesome/fontawesome-free/css/fontawesome.min.css">
+
+    <link rel="stylesheet" href="stylesheets/lib/nv.d3.min.css">
+    <link rel="stylesheet" href="stylesheets/fpc.css?ts=2019-02-05T054157">
+    <link rel="stylesheet" href="stylesheets/global.css?ts=2020-01-28T150335">
+    <link rel="stylesheet" href="stylesheets/html-includes.css">
+    <link rel="stylesheet" href="stylesheets/app-bundle.css?ts=2020-07-01T163541">
+
+    <script src="lib/ramda/dist/ramda.min.js"></script>
+    <!-- <script src="lib/moment/min/moment.min.js"></script> -->
+    <script src="lib/bulma-carousel/dist/js/bulma-carousel.min.js"></script>
+    <script src="lib/js-cookie/src/js.cookie.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+  </head>
+  <body>
+    <div id="modalOverlay" class="display-none"></div>
+    <div id="appRoot"></div>
+    <div style="position: absolute; width: 64px; left: -100px;">
+      <textarea id="clipBoardBuff" rows="1" cols="1"></textarea>
+    </div>
+    <div id="adjuster" class="select" style="visibility: hidden;">
+      <select></select>
+    </div>
+
+    <script>
+      window.app = {
+        spk:        'pk_live_J6yvSmzdVLbDLlZ1VTG2Gm02',
+        ppCID:      'AbzL02aXI8EsYiE_zalB3mHOKMRlGCtHehV5l5-p08CCkHsyHI7ZTapgZK4iDBKethktO3y0oo3P5i5H',
+        srv: {
+          NODE_ENV:   'production'
+        }
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuUPujr5LjZJC-2giUnqIdyD7vDBVsIzI" defer></script>
+    <script src="https://js.stripe.com/v2/" defer></script>
+    <!-- paypalSDK MUST NOT BE THE LAST SCRIPT LOADED, otherwise reloadPayPalSDK won't work -->
+    <script id="paypalSDK" src="https://www.paypal.com/sdk/js?client-id=AbzL02aXI8EsYiE_zalB3mHOKMRlGCtHehV5l5-p08CCkHsyHI7ZTapgZK4iDBKethktO3y0oo3P5i5H&vault=true&disable-funding=credit,card,sepa&currency=USD"></script>
+    <script src="/code/lib/d3.min.js"></script>
+    <script src="/code/lib/nv.d3.min.js"></script>
+    <script src="code/app-bundle.js?ts=2020-07-01T163541" defer></script>
+  </body>
+</html>

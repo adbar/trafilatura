@@ -4895,18 +4895,382 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
-'https://businessjargons.com/leadership-styles.html': {
-    'file': 'businessjargons.com.leadership.html',
+'https://www.ok-magazin.de/people/real-life/horror-fund-instagram-star-24-einbetoniert-62276.html': {
+    'file': 'ok-magazin.de.einbetoniert.html',  # stays empty until download
+    'author': 'Ulrike',
+    'title': 'Horror-Fund! Instagram-Star (†24) einbetoniert',
+    'date': '2019-10-18',
+    'description': 'https://www.ok-magazin.de/sites/default/files/styles/facebook/public/media/gallery/2019/10/18/esmeralda-1.jpg?itok=ufNX8thk',  # in HTML source
+    'categories': ['Tod'],
+    'tags': [''],
+    'with': ['Die Ermittler gehen davon aus, dass der drogensüchtige Mann', 'das alles wäre nur ein Traum, es tut mir so leid.', 'Kaum zu fassen, dass diese Story wirklich passiert ist:'],  # 3 segments
+    'without': ['TikTok-Star begeht', 'Real Life', 'Themen'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.zdf.de/sport/us-sport-corona-100.html': {
+    'file': 'zdf.de.corona.html',  # stays empty until download
+    'author': 'Andreas Kürten',
+    'title': 'US-Sport in Zeiten von Corona',
+    'date': '2020-04-04',
+    'description': 'US-Sport in Zeiten von Corona - ZDFmediathek',  # in HTML source
+    'categories': ['Sport'],
+    'tags': [''],
+    'with': ['New York ist das Epizentrum der Corona-Pandemie', ' Auch der Sport ist zum Stillstand', 'Die Anteilnahme in den Top-Ligen ist groß. Wie es '],  # 3 segments
+    'without': ['Video verfügbar bis 28.02.2021', 'Auch interessant', 'ZDF Unternehmen'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.fluter.de/corona-big-data-suedkorea-vorbild-fuer-deutschland': {
+    'file': 'fluter.de.vorbild.html',  # stays empty until download
+    'author': 'Julia Lauter',
+    'title': '„Es bricht eine andere Zeit der Datennutzung an“',
+    'date': '2020-03-31',
+    'description': 'Mit Big Data Corona bekämpfen: zu schön, um wahr zu sein? Medienwissenschaftler Felix Stalder schätzt ein, ob Deutschland dem Beispiel Südkorea folgen soll',  # in HTML source
+    'categories': ['Corona'],
+    'tags': ['Corona', 'Datenschutz', 'Internet', 'Daten'],
+    'with': ['Felix Stalder: Zu wissen, mit wem Corona-Patienten', 'gleichzeitig Dutzende, vielleicht sogar Hunderte Nutzer eingewählt.', 'möglich zu machen. In jedem Fall bricht eine ander'],  # 3 segments
+    'without': ['Titelbild:', 'Auch interessant', 'Dieser Text wurde veröffentlicht'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': 'CC-BY-NC-ND-4.0-DE',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://geschichtedergegenwart.ch/mit-foucault-die-pandemie-verstehen/': {
+    'file': 'geschichtedergegenwart.ch.foucault.html',  # stays empty until download
+    'author': 'Philipp Sarasin',
+    'title': 'Mit Foucault die Pandemie verstehen?',
+    'date': '2020-03-25',
+    'description': 'Geschichte der Gegenwart',  # in HTML source
+    'categories': ['Geschichten der Gegenwart'],
+    'tags': ['Biopolitik', 'Corona', 'Foucault', 'Gesellschaft', 'Gouvernementalität', 'Infektion', 'Lepra', 'Pest'],
+    'with': ['„Über­le­bens“ aller demo­kra­ti­schen Hinder­nisse und können endlich', 'Daher sei das „Verhältnis zu sich selbst“, wie Foucault', 'einge­führt, um das Auftau­chen neuer poli­ti­scher Ziele und Stra­te­gien in'],  # 3 segments
+    'without': ['Die Versu­chungen des Abso­lu­tismus.', 'Sinn ohne Wort. Vom „Volks­thum“ und anderen „Thum­heiten“', 'lehrt Geschichte der Neu­zeit'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.giga.de/downloads/google-chrome/tipps/google-chrome-exportieren-alle-daten-sichern-und-nichts-mehr-verlieren/': {
+    'file': 'giga.de.chrome.html',  # stays empty until download
+    'author': 'Marco Kratzenberg',
+    'title': 'Google Chrome exportieren und alles sichern',
+    'date': '2017-12-01',
+    'description': 'Wenn ihr alle Daten und Einstellungen aus Google Chrome exportieren wollt, müsst ihr nicht auf Hilfsprogramme zurückgreifen. Der Browser bringt..',  # in HTML source
+    'categories': ['Software & Apps'],
+    'tags': [''],
+    'with': ['Es gibt zwei Methoden, mit denen ihr Google Chrome', 'Google Chrome speichert alle benutzerrelevanten Daten,', 'funktioniert - in eingeschränktem Maße - natürlich auch auf'],  # 3 segments
+    'without': ['Für Links auf dieser Seite erhält GIGA', 'oder blauer Unterstreichung gekennzeichnete. Mehr Infos.', 'Alle Rechte vorbehalten.'],  # 3 segments
+    'comments': ['Und wie macht man das auf Andriod', 'das Orwell recht behält und der Datenüberwachungskrake', 'Deine so krass wertvollen Passwörter für Online Foren und'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.antary.de/2017/06/29/wireshark-besuchte-urls-anzeigen-http-und-https/': {
+    'file': 'antary.de.wireshark.html',  # stays empty until download
+    'author': 'Tobi',
+    'title': 'Wireshark: Besuchte URLs anzeigen (HTTP und HTTPS)',
+    'date': '2017-06-29',
+    'description': '',  # in HTML source
+    'categories': ['Internet', 'Software & Apps', 'Tutorials'],
+    'tags': [''],
+    'with': ['Wireshark möglich ist, alle aufgerufenen', 'Paketmitschnitt und eine aktuelle Version von Wireshark voraus. Beim', 'angezeigt werden, was meiner Meinung nach komfortabler ist.'],  # 3 segments
+    'without': ['Mit der Nutzung dieses Formulars erklärst du dich mit der Speicherung', 'Über ein Geschenk von meine', 'mich über nachfolgende Kommentare per E-Mail.'],  # 3 segments
+    'comments': ['umindest einigermaßen dem Thema nähern :)', 'Aufruf dafür aussehen muss.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.dalloz-actualite.fr/node/libre-cours-raoult-nazis-et-moi': {
+    'file': 'dalloz-actualite.fr.raoult.html',  # stays empty until download
+    'author': 'Matthieu Hy',
+    'title': 'Libre cours : Raoult, les nazis et moi',
+    'date': '2020-05-07',
+    'description': 'Le contenu de ce champ sera maintenu privé et ne sera pas affiché publiquement.',  # in HTML source
+    'categories': ['Avocat'],
+    'tags': [''],
+    'with': ['C’est la guerre. Et pourtant', 'Vive le professeur Raoult !', 'Que les magistrats sachent qu’ils peuvent com'],  # 3 segments
+    'without': ['Votre commentaire ', 'otre adresse e-m', 'otre no'],  # 3 segments
+    'comments': ['En ce temps de confinement, Ceyss', 'Le confinement chauffe les esprits'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'FR',  # if obvious: DE, CH, AT
+},
+'https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-34.html': {
+    'file': 'pocketpc.ch.auslieferung.html',  # stays empty until download
     'author': '',
-    'title': 'Leadership Styles ',
-    'date': '2016-02-08',
-    'description': 'The Leadership Styles are the behavioral patterns that a leader adopt to influence the behavior of his followers, i.e. the way he give directions to his subordinates and motivates them to accomplish the given objectives.',
-    'categories': ['Business'],
-    'tags': [],
-    'with': ['Participative Leadership', 'Path-Goal Model:', 'Thus, a manager behavior'],  # 3 segments
-    'without': ['Communication Process', 'Entrepreneurship', 'I\'m not a robot'],  # 3 segments
-    'comments': ['very informative I have learnt a lot', 'Can you provide the full details', 'Luv it!'],  # 0 or 3 segments
+    'title': 'Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!',
+    'date': '2011-03-03',
+    'description': 'Soeben wurde auf dem Windows Phone Blog bekannt gegeben, dass Microsoft mit der auslieferung des Updates beginnt. Ihr solltet in den nächsten Stunden Automatisch per Pop-up darüber Informiert werden.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['as war noch nicht das Update, sondern nur', 's auf Gerät, Telefon oder Ha', 'hat keine 5 Minuten gedauert, warum denn bei einigen'],  # 3 segments
+    'without': ['Gewinnspiel: Das neue Quizdue', '[Apple Pay] und eure Erfahrun', 'Review: InLine BT-POCKET falt'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CH',  # if obvious: DE, CH, AT
+},
+'https://strangemachines.io/articles/performant-python': {
+    'file': 'strangemachines.io.performant.html',  # stays empty until download
+    'author': 'Jacopo Cascioli',
+    'title': 'Performant Python',
+    'date': '2019-12-03',
+    'description': 'A look at how to write performant Python code in simple ways and how much each improvement is effective.',  # in HTML source
+    'categories': ['articles'],
+    'tags': [''],
+    'with': ['There are many ways to improve Python', 'complicated, there are a number of ways ', 'Map and filter are sometimes faster'],  # 3 segments
+    'without': ['Challenges', 'hello@strangemachines.io', '06 December 2019'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
+},
+'https://wordsmith.org/words/maudlin.html': {
+    'file': 'wordsmith.org.maudlin.html',  # stays empty until download
+    'author': 'Anu Garg',
+    'title': 'maudlin ',
+    'date': '2009-04-07',
+    'description': '',  # in HTML source
+    'categories': ['words'],
+    'tags': [''],
+    'with': ['adjective: Overly sentimental', 'derived after a town on the Sea ', 'Jeannette Layne-Clark; Minister on Stage; Daily Nation '],  # 3 segments
+    'without': ['spread the magic of words to readers everywhere', '“A word in the head is worth two in the book.”', '“A trawl through the site’s archive yields all kinds of delights.”'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://businessjargons.com/leadership-styles.html': {
+    'file': 'businessjargons.com.leadership.html',  # stays empty until download
+    'author': '',
+    'title': 'Leadership Styles',
+    'date': '2016-02-08',
+    'description': 'Definition: The Leadership Styles are the behavioral patterns that a leader adopt to influence the behavior of his followers, i.e. the way he gives directions to his subordinates and motivates them to',  # in HTML source
+    'categories': ['Business'],
+    'tags': [''],
+    'with': ['the way he gives directions to his subordinates and ', 'The leadership styles can either be classified on', 'adopts to influence the behavior of his subordinates.'],  # 3 segments
+    'without': ['Effective Communication', 'International Marketing', 'Communication Process'],  # 3 segments
+    'comments': ['well detailed article. More knowledge', 'I haven’t come across a more succinct', 'very informative I have learnt a lot'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.mesopinions.com/petition/art-culture/mutilation-choeur-radio-france-unique-choeur/76519': {
+    'file': 'mesopinions.com.mutilation.html',  # stays empty until download
+    'author': 'Les Membres du Choeur de Radio France',
+    'title': 'Non à la mutilation du choeur de Radio France, Unique Choeur professionnel à vocation Symphonique en France',
+    'date': '',
+    'description': 'Arts et culture - Signez la pétition : Non à la mutilation du choeur de Radio France, Unique Choeur professionnel à vocation Symphonique en France',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['National de France et du Philharmonique de Radio France.', 'bien des promesses non tenues par des directions successives', 'vide de toute ambition artistique et culturelle.'],  # 3 segments
+    'without': ['Notre communauté', 'Espace presse', 'Réussir votre mobilisation'],  # 3 segments
+    'comments': ['un fleuron du patrimoine artistique et culturel français', "L'art c'est les hommes...humains !", 'Arrêtez la casse du service public !'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.linkedin.com/pulse/ich-war-am-wochenende-auf-einer-hochzeit-im-wendland-inga-hoeltmann': {
+    'file': 'linkedin.com.hoeltmann.html',  # stays empty until download
+    'author': 'Inga Hoeltmann',
+    'title': 'Ich war am Wochenende auf einer Hochzeit im Wendland.',
+    'date': '2019-08-19',
+    'description': 'Das Wendland ist eine schöne, aber sehr ländliche Region in einem (nord)östlichen Zipfel von Niedersachsen, der nach Sachsen-Anhalt reinragt, etwa eine Zugstunde von Hamburg. Ich bin von Berlin mit dem Zug durch Brandenburg nach Salzwedel in Sachsen-Anhalt gefahren und habe mich dort abholen lassen.',  # in HTML source
+    'categories': [''],
+    'tags': ['NeueArbeit', 'Digitalisierung '],
+    'with': ['Das Wendland ist eine schöne, aber sehr ländliche', 'hinnehmen als sei es nicht zu ändern. Beschämend.', 'Konzepte abseits der urbanen Räume in'],  # 3 segments
+    'without': ['Einstellungen für Nichtmitglieder', 'Nutzervereinbarung', 'Markenrichtlinine'],  # 3 segments
+    'comments': ['Meine Antworten sin, laut LinkedIn,', 'sondern häufig an den fehlenden Baggern.', 'Die gibt es bereits zuhauf ohne gute Connectivity.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.wolfgangmichal.de/2017/06/07/publizistische-sorgfaltspflicht-statt-netzwerkdurchsetzungsgesetz/': {
+    'file': 'wolfgangmichal.de.sorgfaltspflicht.html',  # stays empty until download
+    'author': 'Wolfgang Michal',
+    'title': 'Publizistische Sorgfaltspflicht statt Netzwerkdurchsetzungsgesetz',
+    'date': '2017-06-07',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Die Repräsentanten der Republik sind nervös. ', 'verkaufen, muss jedes Unternehmen in die Bredouille bringen.', 'EU-Urheberrechts-Richtlinie sogar bindend vorgeschrieben werden.'],  # 3 segments
+    'without': ['verteidigt sie ihre Linie gegen die Zumutungen der Moderne.', 'verhindert, sondern zu Geld gemacht werden.', 'den Rechtspopulisten mehr nützen als schaden.'],  # 3 segments
+    'comments': ['Sehr schön zusammengefasst bzw. heraus gearbeitet.', 'Soziodemographische Untersuchungen?'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.zooroyal.de/trixie-natura-kleintierstall-mit-freilaufgehege': {
+    'file': 'zooroyal.de.trixie.html',  # stays empty until download
+    'author': '',
+    'title': 'Trixie Natura Kleintierstall mit Freilaufgehege',
+    'date': '',
+    'description': 'Kaninchenstall mit integriertem Freigehege im Unterbau. Aus stabilem Kiefernholz gefertigt mit herausziehbarem, kunststoffbeschichtetem Boden.',  # in HTML source
+    'categories': ['kleintier'],
+    'tags': [''],
+    'with': ['stabilem Kiefernholz gefertigt mit herausziehbarem, kunststoffbeschichtetem Boden.', 'Der Natura Stall lässt sich von oben sowie von vorne öffnen ', 'verschließbare Bodenluke mit Kunststoffbeschichtung'],  # 3 segments
+    'without': ['Kleintierheim', 'dass ZooRoyal mir per E-Mail an mich gerichtete Werbung', 'Trixie Kleintierfutter'],  # 3 segments
+    'comments': ['Danke dem Team von zoo royale.', 'und preisleistungsverhaltniss ist auch o.k', 'Unsere Meerschweinchen fühlen sich sehr wohl darin'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.lopinion.fr/edition/economie/glyphosate-radiographie-d-intoxication-collective-186859': {
+    'file': 'lopinion.fr.glyphosate.html',  # stays empty until download
+    'author': 'Emmanuelle Ducros',
+    'title': 'Glyphosate: radiographie d’une intoxication collective',
+    'date': '2019-05-15',
+    'description': 'A chaque civilisation, ses d\u00e9mons. La n\u00f4tre a le sien&thinsp;: le glyphosate. Comment cet herbicide en est-il venu \u00e0 incarner le mal aux yeux de...',  # in HTML source
+    'categories': ['Economie'],
+    'tags': [''],
+    'with': ['La firme Bayer, propriétaire', 'Jackpot pour Monsanto qui vend à la fois les semences', 'puisque le champ des recherches est infini...'],  # 3 segments
+    'without': ['Mentions légales', 'Conditions générales de vente', 'Charte des commentaires'],  # 3 segments
+    'comments': ['Sauf sur une forme rarissime de lymphome.', 'de prouver la nocivité, autre que végétale', 'suffisant. Notre société est redevenue religieuse.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'FR',  # if obvious: DE, CH, AT
+},
+'https://www.tagesanzeiger.ch/wie-umweltzerstoerung-neue-epidemien-beguenstigt-633956751547': {
+    'file': 'tagesanzeiger.ch.umweltzerstoerung.html',  # stays empty until download
+    'author': 'Christoph von Eichhorn',
+    'title': 'Wie Umweltzerstörung neue Epidemien begünstigt',
+    'date': '2020-04-11',
+    'description': 'Sars-CoV-2 stammt von einem Tier. Allein in Fledermäusen und Flughunden existieren mehr als 3000 Coronaviren. Ist ihr Lebensraum zerstört, rücken sie näher an den Menschen - und eine Übertragung wird wahrscheinlicher.',  # in HTML source
+    'categories': ['Wissen'],
+    'tags': [''],
+    'with': ['Dichter Rauch hing im Herbst des Jahres 1997', 'es kann auch von Mensch zu Mensch weitergegeben werden.', 'Im Wesentlichen geht es da aber um Fragen der Wirtschaft und'],  # 3 segments
+    'without': ['Aktualisiert:', '03.04.2020', 'All Rights Reserved'],  # 3 segments
+    'comments': ['Jetzt werden wir den Preis bezahlen für stetigen Wachstum', 'Verhütungsmitteln (rein technische Massnahmen) mit ', 'Was nicht unbedingt schlecht ist - sonst würde die Menschheit wohl'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'CH',  # if obvious: DE, CH, AT
+},
+'https://www.freitag.de/autoren/benjamin-immanuel-hoff/heute-schon-an-morgen-denken': {
+    'file': 'freitag.de.morgen.html',  # stays empty until download
+    'author': 'Benjamin-Immanuel Hoff',
+    'title': 'Heute schon an morgen denken ',
+    'date': '2020-04-17',
+    'description': 'Die Thüringer Kultur kommt schrittweise aus der Corona-Zwangspause. Notwendig sind wirksame Hilfen, neues Denken und verlässliche Politik, die aufbaut statt zu kürzen.',  # in HTML source
+    'categories': [''],
+    'tags': ['solo-selbständige', 'künstlersozialkasse', 'theater', 'freie szene', 'krise', 'kulturwirtschaft', 'gewerkschaft', 'archive', 'medien','bibliotheken', 'museen', 'rundfunkbeitrag', 'kreativwirtschaft', 'städte und gemeinden', 'orchester', 'kunst', 'kultur'],
+    'with': ['Kommunen, die Länder und der Bund einschneidende', 'Durch die Beschränkungen des öffentlichen Lebens wurde erreicht', 'Kultur mit dem gemeinwirtschaftlichen Gedanken des Genossenschaftswesens verbinden'],  # 3 segments
+    'without': ['© der Freitag Mediengesellschaft mbH & Co. KG', 'Beitrag gibt die Meinung des Autors wieder, nicht notwendigerweise die der Redaktion des Freitag.', 'Beitrag handelt es sich um ein Blog aus der Freitag-Community'],  # 3 segments
+    'comments': ['Nun ... erst gestern wurde dem Zuschauer '],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.stylegart.de/naturkosmetik-doch-gesuender/': {
+    'file': 'stylegart.de.naturkosmetik.html',  # stays empty until download
+    'author': 'Ramona',
+    'title': 'Naturkosmetik – die gesündere Alternative?',
+    'date': '2019-04-10',
+    'description': 'Naturkosmetik- Auflistung Pro und Kontra- was verbirgt sich wirklich hinter den Produkten und welche Inhaltsstoffe sind hier nicht vorhanden!',  # in HTML source
+    'categories': ['Fashion Trends 2019'],
+    'tags': ['Kosmetika', 'Natur', 'Naturkosmetik', 'Produkktttest' 'Naturkosmetik'],
+    'with': ['Wer meine Instastorys fleißig verfolgt, der weiß, dass ich', 'Tuben und Tiegel mit natürlichen Verpackungen, meist mit Blütenprints umrankt versprechen ', 'Dr. Scheller und Lavera, die natürliche Kosmetika zu fairen Preisen anbieten!'],  # 3 segments
+    'without': ['Was dich erwartet', 'Datenschutzerklärung', 'Vorher-Nachher'],  # 3 segments
+    'comments': ['Ich verwende sehr viel Naturkosmetik, denn wir haben', 'Vielen Dank für deinen Kommentar… ja. das sagt meine Mutter auch immer zu mir', 'Hey, ich würde nie sagen, dass Natur- oder konventionelle Kosmetik'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'http://fouryears.eu/2019/10/21/interning-of-small-integers-in-python/': {
+    'file': 'fouryears.eu.interning.html',  # stays empty until download
+    'author': 'Konstantin',
+    'title': 'Interning of Small Integers in Python',
+    'date': '2019-10-21',
+    'description': 'Preparing the consequences',  # in HTML source
+    'categories': [''],
+    'tags': ['Computer science', 'Fun', 'Hacks', 'Programming', 'Python'],
+    'with': ['Note that depending on the version of Python the value of the integer', 'lovely example, illustrating the way Python', '(addr, ctypes.'],  # 3 segments
+    'without': ['Best western clearfield pa on Skype "removed" messages', '6 Regularization Techniques for Deep Learning', 'Konstantin on ROC Area-Under-the-Curve Explained'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'EU',  # if obvious: DE, CH, AT
+},
+'https://www.axios.com/newsletters/axios-future-7120a6cf-cf67-4e01-9f15-f73f114e8d27.html': {
+    'file': 'axios.com.future.html',  # stays empty until download
+    'author': 'Bryan Walsh',
+    'title': 'Axios Future',
+    'date': '2019-01-18',
+    'description': '',  # in HTML source
+    'categories': ['newsletters'],
+    'tags': [''],
+    'with': ['A new breed of intelligent video surveillance is being installed', 'good kid, m.A.A.d city," the 5th song starts 19 ', 'to school districts and universities, in addition to banks'],  # 3 segments
+    'without': ['Axios newsletters', 'Online tracking choices', 'Axios podcasts'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.nytimes.com/2020/08/16/business/california-blackouts.html': {
+    'file': 'nytimes.com.blackouts.html',  # stays empty until download
+    'author': 'Ivan Penn',
+    'title': 'Rolling Blackouts in California Have Power Experts Stumped',
+    'date': '2020-08-16',
+    'description': 'Managers of the electric system argue that a lack of power prompted the decision to enact blackouts, though demand this weekend fell short of the state’s peak years.',  # in HTML source
+    'categories': ['Business'],
+    'tags': [''],
+    'with': ['As temperatures began to rise in California on', '“If there’s really a problem and not just the ISO', 'In particular, California ISO said two natural gas power'],  # 3 segments
+    'without': ['Her Husband Abused Her. But Getting a Divorce Was', 'Chris Rock Tried to Warn Us', 'Opinion: Which Party Represents the Racial Future?'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://californiaglobe.com/section-2/amazon-liable-for-defective-third-party-products-rules-ca-appelate-court/': {
+    'file': 'californiaglobe.com.amazon.html',  # stays empty until download
+    'author': 'Evan Symon',
+    'title': 'Amazon Liable for Defective Third-Party Products Rules CA Appellate Court',
+    'date': '2020-08-14',
+    'description': 'On Thursday, California’s 4th District Court of Appeal in Santa Ana found that Amazon.com can now be held liable for injury for selling defective products',  # in HTML source
+    'categories': ['COM'],
+    'tags': ['Amazon', 'Amazon Bolger case', 'Amazon liability lawsuit', 'Amazon retailer', 'Amazon service provider', 'Amazon third party seller liability lawsuit', 'Amazon third-party sellers', 'Amazon.com', 'Angela Bolger', 'California Amazon liability appeal', 'California superior court amazon ruling, California’s 4th District Court of Appeal', 'Lenoge Technology', 'Superior Court'],
+    'with': ['The ruling has grouped Amazon with other retailers who', 'provided by Lenoge for its product listing.', 'case to a higher court in the near future.'],  # 3 segments
+    'without': ['Get a weekly summary of California Globe stories:', 'Follow Us', 'Leave a Reply'],  # 3 segments
+    'comments': ['Nail them to the wall. amazon is bad', 'together like Ebay, but also offer to', 'to groups that are determined to tear down society.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.sciencesetavenir.fr/sante/covid-19-et-infox-comment-une-rumeur-devient-realite_147359': {
+    'file': 'sciencesetavenir.fr.rumeur.html',  # stays empty until download
+    'author': 'Nicolas Gutierrez C.',
+    'title': 'Covid-19 et infox : comment une rumeur devient réalité',
+    'date': '2020-09-14',
+    'description': 'oici ce que l’on peut apprendre du voyage de l’une d’entre elles : la dangerosité de l’ibuprofène chez les patients de Covid-19.',  # in HTML source
+    'categories': ['Santé'],
+    'tags': ['COVID-19', 'Coronavirus', 'Ibuprofène', 'Fake news', 'Coronavirus en France', 'Espagne'],
+    'with': ['Aussi contagieuses que le virus ?', 'contagieux (et potentiellement dangereux) que le SARS-CoV-2.', 'popularité du sujet a explosé suite à ce'],  # 3 segments
+    'without': ['L’essentiel santé', 'A découvrir sur Challenges', 'En images'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'FR',  # if obvious: DE, CH, AT
+},
+'https://www.siegfried-marcus-berufsschule.at/kraftfahrzeugtechnik/lehrberufe-kft-2/': {
+    'file': 'siegfried-marcus-berufsschule.at.kft.html',  # stays empty until download
+    'author': '',
+    'title': 'Lehrberufe KFT',
+    'date': '',
+    'description': 'Hier finden Sie unsere Lehrberufe zum Lehrgang Kraftfahrzeugtechnik (KFT) - Siegfried Marcus Berufsschule',  # in HTML source
+    'categories': ['kraftfahrzeugtechnik'],
+    'tags': [''],
+    'with': ['Lehrstoffinhalte', '3. Klasse', 'Module'],  # 3 segments
+    'without': ['Direktor: OSR Dipl.-Päd. Markus Fuchs', 'Verein der Freunde für berufsbegleitende Aus- und ', 'Obmann: OSR Markus Fuchs'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'AT',  # if obvious: DE, CH, AT
+},
+'https://www.minusl.de/produkt_kategorien/joghurt/': {
+    'file': 'minusl.de.joghurt.html',  # stays empty until download
+    'author': '',
+    'title': 'Unsere MinusL Joghurts',
+    'date': '',
+    'description': 'Sie lieben Joghurt mit frischen Früchten, einen leckeren Fruchtjoghurt oder Joghurt nach griechischer Art? Dann entdecken Sie unsere Joghurtvielfalt!',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['wohl, denn MinusL bringt Genuss in mein Leben.', 'generell die Zutatenliste einer Verpackung beachten. Allergene Zutaten ', 'Sie lieben Joghurt mit frischen Früchten un'],  # 3 segments
+    'without': ['Senden', 'ZURÜCK', 'MinusL Athentikos'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://sass-ag.de': {
+    'file': 'sass-ag.de.index.html',  # stays empty until download
+    'author': '',
+    'title': 'Drucker und Druckausgabe-Lösungen vom Experten!',
+    'date': '',
+    'description': 'Drucker, Etiketten, TTF-Folien, Auto-ID, Zubehör &amp; mehr vom Experten ✓Top Service ✓große Auswahl ✓langjährige Erfahrung ▶ Jetzt anfragen!',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Wir beraten herstellerunabhängig und planen immer objektiv', 'Kaufen Sie bei uns preiswerte Etiketten in Ihrem', 'Wir bieten professionelle Drucksysteme für alle Anwendungsbereiche; ganz'],  # 3 segments
+    'without': ['Produkte & Leistungen', 'Zentrale Gilching', 'Störungen:'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
 },
 }

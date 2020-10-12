@@ -1,0 +1,6186 @@
+<!DOCTYPE html>
+<html xmlns="https://www.w3.org/1999/xhtml" dir="ltr" lang="de" id="vbulletin_html">
+<head>
+<base href="https://www.pocketpc.ch/" /><!--[if IE]></base><![endif]-->
+	<link rel="alternate" hreflang="de" href="https://www.pocketpc.ch/pocketpc.ch"/>
+<meta charset="ISO-8859-1" />
+<meta id="e_vb_meta_bburl" name="vb_meta_bburl" content="https://www.pocketpc.ch" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta property="rellect-viewport" content="width=device-width, initial-scale=1">
+
+
+<meta http-equiv="X-UA-Compatible" content="IE=9,chrome=1" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"XAMBUFRaGwICVVJRBwUP",licenseKey:"27107c09c5",applicationID:"12133048"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(t){try{c.console&&console.log(t)}catch(e){}}var i,o=t("ee"),a=t(23),c={};try{i=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(c.console=!0,i.indexOf("dev")!==-1&&(c.dev=!0),i.indexOf("nr_dev")!==-1&&(c.nrDev=!0))}catch(s){}c.nrDev&&o.on("internal-error",function(t){r(t.stack)}),c.dev&&o.on("fn-err",function(t,e,n){r(n.stack)}),c.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(c,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,c){try{p?p-=1:i(c||new UncaughtException(t,e,n),!0)}catch(f){try{o("ierr",[f,s.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function i(t,e){var n=e?null:s.now();o("err",[t,n])}var o=t("handle"),a=t(24),c=t("ee"),s=t("loader"),f=t("gos"),u=window.onerror,d=!1,l="nr@seenError",p=0;s.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(9),t(8),"addEventListener"in window&&t(5),s.xhrWrappable&&t(10),d=!0)}c.on("fn-start",function(t,e,n){d&&(p+=1)}),c.on("fn-err",function(t,e,n){d&&!n[l]&&(f(n,l,function(){return!0}),this.thrown=!0,i(n))}),c.on("fn-end",function(){d&&!this.thrown&&p>0&&(p-=1)}),c.on("internal-error",function(t){o("ierr",[t,s.now(),!0])})},{}],3:[function(t,e,n){t("loader").features.ins=!0},{}],4:[function(t,e,n){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var i=t("ee"),o=t("handle"),a=t(9),c=t(8),s="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",l="resource",p="-start",h="-end",m="fn"+p,w="fn"+h,v="bstTimer",g="pushState",y=t("loader");y.features.stn=!0,t(7),"addEventListener"in window&&t(5);var x=NREUM.o.EV;i.on(m,function(t,e){var n=t[0];n instanceof x&&(this.bstStart=y.now())}),i.on(w,function(t,e){var n=t[0];n instanceof x&&o("bst",[n,e,this.bstStart,y.now()])}),a.on(m,function(t,e,n){this.bstStart=y.now(),this.bstType=n}),a.on(w,function(t,e){o(v,[e,this.bstStart,y.now(),this.bstType])}),c.on(m,function(){this.bstStart=y.now()}),c.on(w,function(t,e){o(v,[e,this.bstStart,y.now(),"requestAnimationFrame"])}),i.on(g+p,function(t){this.time=y.now(),this.startPath=location.pathname+location.hash}),i.on(g+h,function(t){o("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+s]?window.performance[f](u,function(t){o(d,[window.performance.getEntriesByType(l)]),window.performance["c"+s]()},!1):window.performance[f]("webkit"+u,function(t){o(d,[window.performance.getEntriesByType(l)]),window.performance["webkitC"+s]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],5:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&i(e)}function i(t){c.inPlace(t,[u,d],"-",o)}function o(t,e){return t[1]}var a=t("ee").get("events"),c=t("wrap-function")(a,!0),s=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(i(window),i(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1],r=s(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?c(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],6:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=o(arguments),e={};i.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var c=r.apply(this,t);return i.emit(n+"start",[t,a],c),c.then(function(t){return i.emit(n+"end",[null,t],c),t},function(t){throw i.emit(n+"end",[t],c),t})})}var i=t("ee").get("fetch"),o=t(24),a=t(23);e.exports=i;var c=window,s="fetch-",f=s+"body-",u=["arrayBuffer","blob","json","text","formData"],d=c.Request,l=c.Response,p=c.fetch,h="prototype",m="nr@context";d&&l&&p&&(a(u,function(t,e){r(d[h],e,f),r(l[h],e,f)}),r(c,"fetch",s),i.on(s+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),i.emit(s+"done",[null,e],n)}else i.emit(s+"done",[t],n)}))},{}],7:[function(t,e,n){var r=t("ee").get("history"),i=t("wrap-function")(r);e.exports=r;var o=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;o&&o.pushState&&o.replaceState&&(a=o),i.inPlace(a,["pushState","replaceState"],"-")},{}],8:[function(t,e,n){var r=t("ee").get("raf"),i=t("wrap-function")(r),o="equestAnimationFrame";e.exports=r,i.inPlace(window,["r"+o,"mozR"+o,"webkitR"+o,"msR"+o],"raf-"),r.on("raf-start",function(t){t[0]=i(t[0],"fn-")})},{}],9:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function i(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var o=t("ee").get("timer"),a=t("wrap-function")(o),c="setTimeout",s="setInterval",f="clearTimeout",u="-start",d="-";e.exports=o,a.inPlace(window,[c,"setImmediate"],c+d),a.inPlace(window,[s],s+d),a.inPlace(window,[f,"clearImmediate"],f+d),o.on(s+u,r),o.on(c+u,i)},{}],10:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",c)}function i(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,g,"fn-",c)}function o(t){y.push(t),h&&(b?b.then(a):w?w(a):(E=-E,R.data=E))}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function c(t,e){return e}function s(t,e){for(var n in t)e[n]=t[n];return e}t(5);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),l=NREUM.o,p=l.XHR,h=l.MO,m=l.PR,w=l.SI,v="readystatechange",g=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=u;var x=window.XMLHttpRequest=function(t){var e=new p(t);try{u.emit("new-xhr",[e],e),e.addEventListener(v,i,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(s(p,x),x.prototype=p.prototype,d.inPlace(x.prototype,["open","send"],"-xhr-",c),u.on("send-xhr-start",function(t,e){r(t,e),o(e)}),u.on("open-xhr-start",r),h){var b=m&&m.resolve();if(!w&&!m){var E=1,R=document.createTextNode(E);new h(a).observe(R,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===v||a()})},{}],11:[function(t,e,n){function r(t){if(!c(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,f=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var h=p.generateSpanId(),m=p.generateTraceId(),w=Date.now(),v={spanId:h,traceId:m,timestamp:w};return(t.sameOrigin||s(t)&&l())&&(v.traceContextParentHeader=i(h,m),v.traceContextStateHeader=o(h,w,n,r,f)),(t.sameOrigin&&!u()||!t.sameOrigin&&s(t)&&d())&&(v.newrelicHeader=a(h,m,w,n,r,f)),v}function i(t,e){return"00-"+e+"-"+t+"-01"}function o(t,e,n,r,i){var o=0,a="",c=1,s="",f="";return i+"@nr="+o+"-"+c+"-"+n+"-"+r+"-"+t+"-"+a+"-"+s+"-"+f+"-"+e}function a(t,e,n,r,i,o){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var c={v:[0,1],d:{ty:"Browser",ac:r,ap:i,id:t,tr:e,ti:n}};return o&&r!==o&&(c.d.tk=o),btoa(JSON.stringify(c))}function c(t){return f()&&s(t)}function s(t){var e=!1,n={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(n=NREUM.init.distributed_tracing),t.sameOrigin)e=!0;else if(n.allowed_origins instanceof Array)for(var r=0;r<n.allowed_origins.length;r++){var i=h(n.allowed_origins[r]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return e}function f(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.enabled}function u(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.exclude_newrelic_header}function d(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&NREUM.init.distributed_tracing.cors_use_newrelic_header!==!1}function l(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.cors_use_tracecontext_headers}var p=t(20),h=t(13);e.exports={generateTracePayload:r,shouldGenerateTrace:c}},{}],12:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<l;r++)t.removeEventListener(d[r],this.listener,!1);e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):o(this,t),n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),c("xhr",[e,n,this.startTime]))}}function i(t,e){var n=s(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=s(e),t.sameOrigin=t.parsedOrigin.sameOrigin}function o(t,e){t.params.status=e.status;var n=w(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable){var c=t("handle"),s=t(13),f=t(11).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(17),m=t(16),w=t(14),v=window.XMLHttpRequest;a.features.xhr=!0,t(10),t(6),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,t.addEventListener("load",function(n){o(e,t)},!1),h&&(h>34||h<10)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);if(n){var r=!1;n.newrelicHeader&&(e.setRequestHeader("newrelic",n.newrelicHeader),r=!0),n.traceContextParentHeader&&(e.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&e.setRequestHeader("tracestate",n.traceContextStateHeader),r=!0),r&&(this.dt=n)}}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],i=this;if(n&&r){var o=m(r);o&&(n.txSize=o)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||i.loadCaptureCalled||(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var c=0;c<l;c++)e.addEventListener(d[c],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof v&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof v&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof v&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){function e(t,e){var n=!1;return e.newrelicHeader&&(t.set("newrelic",e.newrelicHeader),n=!0),e.traceContextParentHeader&&(t.set("traceparent",e.traceContextParentHeader),e.traceContextStateHeader&&t.set("tracestate",e.traceContextStateHeader),n=!0),n}var n,r=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url&&(n=t[0].url),n&&(this.parsedOrigin=s(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var i=f(this.parsedOrigin);if(i&&(i.newrelicHeader||i.traceContextParentHeader))if("string"==typeof t[0]){var o={};for(var a in r)o[a]=r[a];o.headers=new Headers(r.headers||{}),e(o.headers,i)&&(this.dt=i),t.length>1?t[1]=o:t.push(o)}else t[0]&&t[0].headers&&e(t[0].headers,i)&&(this.dt=i)})}},{}],13:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];var e=document.createElement("a"),n=window.location,i={};e.href=t,i.port=e.port;var o=e.href.split("://");!i.port&&o[1]&&(i.port=o[1].split("/")[0].split("@").pop().split(":")[1]),i.port&&"0"!==i.port||(i.port="https"===o[0]?"443":"80"),i.hostname=e.hostname||n.hostname,i.pathname=e.pathname,i.protocol=o[0],"/"!==i.pathname.charAt(0)&&(i.pathname="/"+i.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,c=e.hostname===document.domain&&e.port===n.port;return i.sameOrigin=a&&(!e.hostname||c),"/"===i.pathname&&(r[t]=i),i}},{}],14:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?i(t.response):"text"===n||""===n||void 0===n?i(t.responseText):void 0}var i=t(16);e.exports=r},{}],15:[function(t,e,n){function r(){}function i(t,e,n){return function(){return o(t,[f.now()].concat(c(arguments)),e?null:this,n),e?void 0:this}}var o=t("handle"),a=t(23),c=t(24),s=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",p=l+"ixn-";a(d,function(t,e){u[e]=i(l+e,!0,"api")}),u.addPageAction=i(l+"addPageAction",!0),u.setCurrentRouteName=i(l+"routeName",!0),e.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(p+"tracer",[f.now(),t,n],r),function(){if(s.emit((i?"":"no-")+"fn-start",[f.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw s.emit("fn-err",[arguments,this,t],n),t}finally{s.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){h[e]=i(p+e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),o("err",[t,f.now(),!1,e])}},{}],16:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],17:[function(t,e,n){var r=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(r=+i[1]),e.exports=r},{}],18:[function(t,e,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=t(25);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],19:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?d("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&d("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();n.length>0&&d("lcp",[n[n.length-1]])}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||d("cls",[t])})}function a(t){if(t instanceof h&&!w){var e=Math.round(t.timeStamp),n={type:t.type};e<=l.now()?n.fid=l.now()-e:e>l.offset&&e<=Date.now()?(e-=l.offset,n.fid=l.now()-e):e=l.now(),w=!0,d("timing",["fi",e,n])}}function c(t){d("pageHide",[l.now(),t])}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var s,f,u,d=t("handle"),l=t("loader"),p=t(22),h=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){s=new PerformanceObserver(r);try{s.observe({entryTypes:["paint"]})}catch(m){}f=new PerformanceObserver(i);try{f.observe({entryTypes:["largest-contentful-paint"]})}catch(m){}u=new PerformanceObserver(o);try{u.observe({type:"layout-shift",buffered:!0})}catch(m){}}if("addEventListener"in document){var w=!1,v=["click","keydown","mousedown","pointerdown","touchstart"];v.forEach(function(t){document.addEventListener(t,a,!1)})}p(c)}},{}],20:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var i,o="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",c=0;c<o.length;c++)i=o[c],"x"===i?a+=t().toString(16):"y"===i?(i=3&t()|8,a+=i.toString(16)):a+=i;return a}function i(){return a(16)}function o(){return a(32)}function a(t){function e(){return n?15&n[r++]:16*Math.random()|0}var n=null,r=0,i=window.crypto||window.msCrypto;i&&i.getRandomValues&&Uint8Array&&(n=i.getRandomValues(new Uint8Array(31)));for(var o=[],a=0;a<t;a++)o.push(e().toString(16));return o.join("")}e.exports={generateUuid:r,generateSpanId:i,generateTraceId:o}},{}],21:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,s=c.match(a);s&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=s[1])}e.exports={agent:i,version:o,match:r}},{}],22:[function(t,e,n){function r(t){function e(){t(a&&document[a]?document[a]:document[i]?"hidden":"visible")}"addEventListener"in document&&o&&document.addEventListener(o,e,!1)}e.exports=r;var i,o,a;"undefined"!=typeof document.hidden?(i="hidden",o="visibilitychange",a="visibilityState"):"undefined"!=typeof document.msHidden?(i="msHidden",o="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(i="webkitHidden",o="webkitvisibilitychange",a="webkitVisibilityState")},{}],23:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],24:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],25:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?s(t,c,o):o()}function n(n,r,i,o){if(!l.aborted||o){t&&t(n,r,i);for(var a=e(i),c=m(n),s=c.length,f=0;f<s;f++)c[f].apply(a,r);var d=u[y[n]];return d&&d.push([x,n,r,a]),a}}function p(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function w(t){return d[t]=d[t]||i(n)}function v(t,e){f(t,function(t,n){e=e||"feature",y[n]=e,e in u||(u[e]=[])})}var g={},y={},x={on:p,addEventListener:p,removeEventListener:h,emit:n,get:w,listeners:m,context:e,buffer:v,abort:a,aborted:!1};return x}function o(){return new r}function a(){(u.api||u.feature)&&(l.aborted=!0,u=l.backlog={})}var c="nr@context",s=t("gos"),f=t(23),u={},d={},l=e.exports=i();l.backlog=u},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!b++){var t=x.info=NREUM.info,e=l.getElementsByTagName("script")[0];if(setTimeout(f.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return f.abort();s(g,function(e,n){t[e]||(t[e]=n)});var n=a();c("mark",["onload",n+x.offset],null,"api"),c("timing",["load",n]);var r=l.createElement("script");r.src="https://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===l.readyState&&o()}function o(){c("mark",["domContent",a()+x.offset],null,"api")}var a=t(18),c=t("handle"),s=t(23),f=t("ee"),u=t(21),d=window,l=d.document,p="addEventListener",h="attachEvent",m=d.XMLHttpRequest,w=m&&m.prototype;NREUM.o={ST:setTimeout,SI:d.setImmediate,CT:clearTimeout,XHR:m,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var v=""+location,g={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1184.min.js"},y=m&&w&&w[p]&&!/CriOS/.test(navigator.userAgent),x=e.exports={offset:a.getLastTimestamp(),now:a,origin:v,features:{},xhrWrappable:y,userAgent:u};t(15),t(19),l[p]?(l[p]("DOMContentLoaded",o,!1),d[p]("load",r,!1)):(l[h]("onreadystatechange",i),d[h]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var b=0},{}],"wrap-function":[function(t,e,n){function r(t){return!(t&&t instanceof Function&&t.apply&&!t[a])}var i=t("ee"),o=t(24),a="nr@original",c=Object.prototype.hasOwnProperty,s=!1;e.exports=function(t,e){function n(t,e,n,i){function nrWrapper(){var r,a,c,s;try{a=this,r=o(arguments),c="function"==typeof n?n(r,a):n||{}}catch(f){l([f,"",[r,a,i],c])}u(e+"start",[r,a,i],c);try{return s=t.apply(a,r)}catch(d){throw u(e+"err",[r,a,d],c),d}finally{u(e+"end",[r,a,s],c)}}return r(t)?t:(e||(e=""),nrWrapper[a]=t,d(t,nrWrapper),nrWrapper)}function f(t,e,i,o){i||(i="");var a,c,s,f="-"===i.charAt(0);for(s=0;s<e.length;s++)c=e[s],a=t[c],r(a)||(t[c]=n(a,f?c+i:i,o,c))}function u(n,r,i){if(!s||e){var o=s;s=!0;try{t.emit(n,r,i,e)}catch(a){l([a,n,r,i])}s=o}}function d(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){l([r])}for(var i in t)c.call(t,i)&&(e[i]=t[i]);return e}function l(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=i),n.inPlace=f,n.flag=a,n}},{}]},{},["loader",2,12,4,3]);</script>
+
+	<link rel="Shortcut Icon" href="https://www.pocketpc.ch/favicon.ico" type="image/x-icon" />
+
+
+
+
+
+
+
+	<link rel="alternate" type="application/rss+xml" title="PocketPC.ch - Dein mobiles Leben RSS-Feed" href="https://www.pocketpc.ch/external.php?type=RSS2" />
+	
+		<link rel="alternate" type="application/rss+xml" title="PocketPC.ch - Dein mobiles Leben - Windows Phone 7 Allgemein - RSS-Feed" href="https://www.pocketpc.ch/external.php?type=RSS2&amp;forumids=286" />
+	
+
+
+
+	<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/main-rollup.css?d=1582665147" />
+        
+
+
+
+
+
+
+<!-- //YJ GA opt-out enable -->
+<script type="text/javascript">
+var gaProperty = 'UA-3325245-1';
+var disableStr = 'ga-disable-' + gaProperty;
+if (document.cookie.indexOf(disableStr + '=true') > -1) {
+window[disableStr] = true;
+}
+function gaOptout() {
+document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+window[disableStr] = true;
+}
+</script>
+
+
+
+	
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/yuiloader-dom-event/yuiloader-dom-event.js"></script>
+	
+
+<script type="text/javascript">
+<!--
+	if (typeof YAHOO === 'undefined') // Load ALL YUI Local
+	{
+		document.write('<script type="text/javascript" src="clientscript/yui/yuiloader-dom-event/yuiloader-dom-event.js?v=425"><\/script>');
+		document.write('<script type="text/javascript" src="clientscript/yui/connection/connection-min.js?v=425"><\/script>');
+		var yuipath = 'clientscript/yui';
+		var yuicombopath = '';
+		var remoteyui = false;
+	}
+	else	// Load Rest of YUI remotely (where possible)
+	{
+		var yuipath = 'https://ajax.googleapis.com/ajax/libs/yui/2.9.0/build';
+		var yuicombopath = '';
+		var remoteyui = true;
+		if (!yuicombopath)
+		{
+			document.write('<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/yui/2.9.0/build/connection/connection-min.js?v=425"><\/script>');
+		}
+	}
+	var SESSIONURL = "s=22c09551c71c1a6b64e4364ca45cbf28&";
+	var SECURITYTOKEN = "guest";
+	var IMGDIR_MISC = "images/ppc10/misc";
+	var IMGDIR_BUTTON = "images/ppc10/buttons";
+	var vb_disable_ajax = parseInt("0", 10);
+	var SIMPLEVERSION = "425";
+	var BBURL = "https://www.pocketpc.ch";
+	var LOGGEDIN = 0 > 0 ? true : false;
+	var THIS_SCRIPT = "showthread";
+	var RELPATH = "showthread.php?t=122760&amp;page=34";
+	var PATHS = {
+		forum : "",
+		cms   : "",
+		blog  : ""
+	};
+	var AJAXBASEURL = "https://www.pocketpc.ch/";
+// -->
+</script>
+
+<script type="text/javascript" src="https://www.pocketpc.ch/clientscript/vbulletin-core.js?v=425"></script>
+
+<!-- PPC jquery Scripts START -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	
+
+<!-- Galleria - JS in Footer -->
+<script type="text/javascript">
+<!--
+	var _asyncGalleriaLoader = new Array();
+// -->
+</script>
+
+<!-- PPC jquery Scripts END -->
+
+
+<script defer type="text/javascript" src="bestAnswer/bestAnswer.js?version=0"></script>
+
+
+
+<!-- PPC Ad START -->
+<script type="text/javascript" data-cookieconsent="marketing">
+<!--
+
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+(function() {
+var gads = document.createElement('script');
+gads.async = true;
+gads.type = 'text/javascript';
+var useSSL = 'https:' == document.location.protocol;
+gads.src = (useSSL ? 'https:' : 'http:') + 
+'//www.googletagservices.com/tag/js/gpt.js';
+var node = document.getElementsByTagName('script')[0];
+node.parentNode.insertBefore(gads, node);
+})();
+(function(){
+var loc = window.location.href;
+var dd = document.createElement('script'); 
+dd.type = 'text/javascript'; dd.src = '//static.digidip.net/pocketpc.js?loc=' + loc;
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(dd, s);
+})();
+
+// -->
+</script>
+<script type="text/javascript" data-cookieconsent="statistics">
+<!--
+        var __ppc_ostype = 'windows phone';
+        var __ppc_manufacturer = '-1';
+        var __ppc_devicetype = '-1';
+	
+	/* Tech auswahl */
+	googletag.cmd.push(function() {
+		if ("" != "")
+			googletag.pubads().setTargeting('MainTech', 'windows phone');
+		if ("" != "")
+			googletag.pubads().setTargeting('MainManufacturer', '-1');
+	});
+	
+	
+// -->
+</script>
+<script type="text/javascript" data-cookieconsent="marketing">
+<!--
+
+	googletag.cmd.push(function() {
+	
+		/* old CMS */
+		if (THIS_SCRIPT == "vbcms" && RELPATH != "" && !(RELPATH.length > 14 && RELPATH.substring(0, 14) == "content.php?r=" && RELPATH.length < 18)){
+			googletag.defineSlot('/26192080/CMSRectangle', [300, 250], 'div-gpt-ad-1338322361279-3').addService(googletag.pubads());
+		}
+		
+		/* Threadview */
+		if (THIS_SCRIPT != "vbcms" && !(THIS_SCRIPT == "index" && RELPATH == "forum.php") && !(THIS_SCRIPT == "forumdisplay") && THIS_SCRIPT != "devicedatabase"){
+			googletag.defineSlot('/26192080/Rectangle', [300, 250], 'div-gpt-ad-1338322361279-5').addService(googletag.pubads());
+			googletag.defineSlot('/26192080/ThreadviewFirstPostLeft', [300, 250], 'div-gpt-ad-1338322361279-7').addService(googletag.pubads());
+		}
+		
+		/* Skyscraper */
+		if ((typeof blockAdOnThisSite == 'undefined') && ($(window).width() >= 1024)){
+			googletag.defineSlot('/26192080/Skyscraper', [[160, 600], [300, 600]], 'div-gpt-ad-1338322361279-6').addService(googletag.pubads());
+		}
+		
+		/* Leader und speical idg */
+		if ($(window).width() >= 1024){
+			googletag.defineSlot('/26192080/Top_of_Site', [728, 90], 'div-gpt-ad-1338322361279-9').addService(googletag.pubads());
+		}
+		googletag.defineSlot('/26192080/GlobalAdUnit1x1', [1, 1], 'div-gpt-ad-1338322361279-12').addService(googletag.pubads());
+		//googletag.defineSlot('/26192080/Wideboard_ROS', [994, 250], 'div-gpt-ad-1338322361279-20').addService(googletag.pubads());
+		
+		googletag.pubads().enableSingleRequest();
+		googletag.pubads().collapseEmptyDivs();
+		googletag.enableServices();
+	});
+
+// -->
+</script>
+<!-- YJ Google Tag Manager -->
+<script>
+<!--
+
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-W7DBKZM');
+
+// -->
+</script>
+<!-- End YJ Google Tag Manager -->
+<!-- PPC Ad END -->
+
+<!-- Facebook Pixel Code -->
+<script type="text/javascript" data-cookieconsent="statistics">
+<!--
+
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '160533314484517', {
+em: 'insert_email_variable'
+});
+fbq('track', 'PageView');
+
+// -->
+</script>
+<noscript><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=160533314484517&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+
+<script data-cookieconsent="statistics">
+(function (tos) {
+  window.setInterval(function () {
+    tos = (function (t) {
+      return t[0] == 50 ? (parseInt(t[1]) + 1) + ':00' : (t[1] || '0') + ':' + (parseInt(t[0]) + 10);
+    })(tos.split(':').reverse());
+    ga('send', 'event', 'Time', 'Log', tos);
+  }, 10000);
+})('00');
+</script>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" data-cookieconsent="marketing"></script>
+<script data-cookieconsent="marketing">
+<!--
+
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-5163471580494836",
+          enable_page_level_ads: true
+     });
+
+// -->
+</script>
+<!-- smilewanted -->
+<script type="text/javascript" data-cookieconsent="marketing" src="//tags.smilewanted.com/formats/corner-video/pocketpc.ch"></script>
+<!-- // smilewanted -->
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"url": "https://www.pocketpc.ch",
+	"potentialAction": {
+		"@type": "SearchAction",
+		"target": "https://www.pocketpc.ch/search.php?do=process&query={search_term_string}",
+		"query-input": "required name=search_term_string"
+	}
+}
+</script><link rel="prev" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-33.html?s=22c09551c71c1a6b64e4364ca45cbf28">
+<link rel="next" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-35.html?s=22c09551c71c1a6b64e4364ca45cbf28">
+<script type="application/ld+json">
+					{
+						"@context": "http://schema.org/",
+						"@type": "DiscussionForumPosting",
+						"name": "Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!",
+						"headline": "Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!",
+						"image": "https://www.pocketpc.ch/clear.gif",
+						"datePublished": "2011-02-21T17:47:28+01:00",
+						"aggregateRating": {
+							"@type": "AggregateRating",
+							"ratingValue": "5",
+							"bestRating": "5",
+							"worstRating": "1",
+							"ratingCount": "64"
+						}
+					}
+					</script>
+				<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/dbtech_thanks.css" />
+        <!-- App Indexing for Google Search -->
+        <link href="https://www.pocketpc.ch/android-app://com.quoord.tapatalkpro.activity/tapatalk/www.pocketpc.ch?location=topic&amp;page=34&amp;perpage=20&amp;fid=286&amp;tid=122760&amp;channel=google-indexing" rel="alternate" />
+        <link href="ios-app://307880732/tapatalk/www.pocketpc.ch?location=topic&amp;page=34&amp;perpage=20&amp;fid=286&amp;tid=122760&amp;channel=google-indexing" rel="alternate" />
+        
+	<meta name="keywords" content="grrrr, dauert, langsam, dicken, hals, länger, vorbereitungsupdate, auslieferung, beginnt, mitte, microsoft, befürchtung" />
+	<meta name="description" content="Soeben wurde auf dem Windows Phone Blog bekannt gegeben, dass Microsoft mit der auslieferung des Updates beginnt. Ihr solltet in den nächsten Stunden Automatisch per Pop-up darüber Informiert werden. 
+  
+Dieses Update beinhaltet lediglich Vorbereitende Dinge die dafür Sorgen, dass NoDo ohne Probleme Eingespielt werden kann. 
+  
+Das Update wird nicht sofort für alle Nutzer freigegeben, sondern Schrittweise.  
+  
+  
+Weitere Infos findet Ihr hier oder auf unserer News-Site" />
+	<title> Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate! - Seite 34</title>
+	<link rel="canonical" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-34.html?s=22c09551c71c1a6b64e4364ca45cbf28" />
+	
+	
+	
+	
+	
+	
+	
+	
+	<script type="text/javascript" src="clientscript/vbulletin_ajax_taglist.js?v=425"></script>
+	<script type="text/javascript" src="clientscript/vbulletin_ajax_suggest.js?v=425"></script>
+	
+	
+
+	
+		<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/showthread-rollup.css?d=1582665147" />
+	
+	<!--[if lt IE 8]><link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/toolsmenu-ie.css?d=1582665147" />
+	<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/postlist-ie.css?d=1582665147" />
+	<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/showthread-ie.css?d=1582665147" />
+	<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/postbit-ie.css?d=1582665147" />
+	<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/poll-ie.css?d=1582665147" /><![endif]-->
+
+        
+        <link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/sidebar.css?d=1582665147" />
+	<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/widgets.css?d=1582665147" />
+	
+<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/includes/yilmaz/cookie_consent/assets/style/cookieconsent.min.css" />
+<script src="includes/yilmaz/cookie_consent/assets/script/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#233a5b",
+      "text": "#0e99e6"
+    },
+    "button": {
+      "background": "#af0415"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-left",
+  "content": {
+    "message": "Wir verwenden mit deiner Zustimmung Cookies, um Inhalte und Anzeigen zu personalisieren, Funktionen für soziale Medien anbieten zu können und die Zugriffe auf unsere Website zu analysieren. Ausserdem geben wir Informationen zu deiner Verwendung unserer Website an unsere Partner und Partnerinnen für soziale Medien, Werbung und Analysen weiter.  Mehr findest du unter Datenschutz und Cookies.",
+    "dismiss": "Stimme zu",
+    "link": "",
+    "href": ""
+  }
+})});
+</script>
+
+<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/additional.css?d=1582665147" />
+	<link rel="stylesheet" type="text/css" href="https://www.pocketpc.ch/clientscript/vbulletin_css/style00021l/rellect_pocketpc.css?d=1582665147" />
+
+<script>
+$(document).ready(function(){
+	$('body').on('click', '.rel_postbit_menu', function(){
+  		$(this).hide().next().show();
+	});
+});
+</script>
+
+					<script type="text/javascript">
+					<!--
+						(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+						(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+						m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+						})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+						ga('create', 'UA-3325245-1', {'cookieDomain': '.pocketpc.ch'});
+
+						ga('require', 'displayfeatures');
+
+						ga('require', 'linkid', 'linkid.js');
+
+						ga('set', 'anonymizeIp', true);
+
+						ga('send', 'pageview');
+					//-->
+					</script>
+				</head>
+
+<body>
+
+
+<!-- Tapatalk Detect body start -->
+<script type="text/javascript">if (typeof(tapatalkDetect) == "function") tapatalkDetect()</script>
+<!-- Tapatalk Detect banner body end -->
+
+<div class="above_body"> <!-- closing tag is in template navbar -->
+<!-- PPC Ad START -->
+
+<!-- PPC Ad END -->
+
+<div class="ad_global_header">
+	 
+	 
+</div>
+
+<div id="navbar" class="navbar">
+	<div style="background:#fff"><div class="rel_container" style="position:relative;">
+
+		<!-- Header User -->
+		<div class="rel_header_user">
+			<ul>
+				
+				<li class="rel_header_search">
+					<script>
+					$(document).ready(function(){
+						$('.search_toggle').click(function(e){
+							e.preventDefault();
+							$(this).next().toggleClass('expend_search').focus();
+							if($(window).width() < 1024){
+								$('.rel_header_user').toggleClass('absoluteFull');
+							}
+						});
+					});
+					</script>
+					<form action="https://www.pocketpc.ch/google.php">
+						<a href="javascript:void(0)" class="search_toggle">&nbsp;</a>
+						<input type="text" value="" name="q" tabindex="99" />
+						<input type="hidden" name="cx" value="partner-pub-5163471580494836:7047225119" />
+						<input type="hidden" name="ie" value="ISO-8859-1" />
+						<input type="hidden" name="cof" value="FORID:9" />
+						<input type="hidden" name="securitytoken" value="guest" />
+						<input type="hidden" name="do" value="process" />
+					</form>
+				</li>
+				
+
+				
+
+				
+
+				<li class="popupmenu" style="padding: 0;">
+					
+
+						<a class="popupctrl" href="javascript:void(0)" style="padding: 0 15px 0 10px;">Anmelden</a>
+						<ul class="popupbody">
+							<li>
+
+								<script type="text/javascript" src="clientscript/vbulletin_md5.js?v=425"></script>
+								<form id="navbar_loginform" action="https://www.pocketpc.ch/login.php?s=22c09551c71c1a6b64e4364ca45cbf28&amp;do=login" method="post" onsubmit="md5hash(vb_login_password, vb_login_md5password, vb_login_md5password_utf, 0)">
+
+									<div class="rel_login_unit">
+										<div><label for="navbar_username">Benutzername</label></div>
+										<input type="text" class="textbox" name="vb_login_username" id="navbar_username" size="10" accesskey="u" tabindex="101" value="" />
+									</div>
+
+									<div class="rel_login_unit">
+										<div><label for="navbar_password">Kennwort</label></div>
+										<input type="password" class="textbox" tabindex="102" name="vb_login_password" id="navbar_password" size="10" />
+									</div>
+
+									<div class="rel_login_unit">
+										<label for="cb_cookieuser_navbar"><input type="checkbox" name="cookieuser" value="1" id="cb_cookieuser_navbar" accesskey="c" tabindex="103" /> <acronym style="border-bottom: 1px dotted #000000; cursor: help;" title="Du bleibst angemeldet, bis du dich selbst abmeldest.">Angemeldet bleiben?</acronym></label>
+									</div>
+
+									<div class="rel_login_unit" style="text-align: right;">
+										<input type="submit" class="loginbutton" tabindex="104" value="Anmelden" accesskey="s" />
+									</div>
+
+									<div class="rel_login_unit">
+										<div><a rel="nofollow" href="https://www.pocketpc.ch/login.php?do=lostpw&amp;s=22c09551c71c1a6b64e4364ca45cbf28">Kennwort vergessen?</a></div>
+										<div><a href="https://www.pocketpc.ch/register.php?s=22c09551c71c1a6b64e4364ca45cbf28">Registrieren</a></div>
+									</div>
+
+									<input type="hidden" name="s" value="22c09551c71c1a6b64e4364ca45cbf28" />
+									<input type="hidden" name="securitytoken" value="guest" />
+									<input type="hidden" name="do" value="login" />
+									<input type="hidden" name="vb_login_md5password" />
+									<input type="hidden" name="vb_login_md5password_utf" />
+								</form>
+
+							</li>
+						</ul>
+
+					
+				</li>
+
+				<li class="rel_show_menu" style="display: none;">
+					<a href="javascript:void(0)">&nbsp;</a>
+				</li>
+			</ul>
+		</div>
+		<!-- Header User (end) -->
+
+		<script>
+		$(document).ready(function(){
+			$('.rel_show_menu').click(function(e){
+				e.preventDefault();
+				$('.navtabs li:not(#navtab_home)').toggle();
+			});
+		});
+		</script>
+
+		<ul id="navtabs" class="navtabs floatcontainer">
+			<li id="navtab_home"><a href="https://www.pocketpc.ch/?s=22c09551c71c1a6b64e4364ca45cbf28" class="navtab"></a></li>
+			
+			
+	
+		<li  id="tab_mjcx_429">
+			<a class="navtab" href="https://www.pocketpc.ch">NEWS</a>
+			
+		</li>
+	
+
+	
+		<li  id="tab_mjcx_238">
+			<a class="navtab" href="https://www.pocketpc.ch/magazin/testberichte">TESTS</a>
+			
+		</li>
+	
+
+	
+		<li  id="tab_ndix_352">
+			<a class="navtab" href="https://www.pocketpc.ch/magazin/editorial/">EDITORIAL</a>
+			
+		</li>
+	
+
+	
+		<li  id="tab_ndix_934">
+			<a class="navtab" href="https://www.pocketpc.ch/magazin/tutorial/">TUTORIAL</a>
+			
+		</li>
+	
+
+	
+		<li class="selected" id="vbtab_forum">
+			<a class="navtab" href="https://www.pocketpc.ch/forum">FORUM</a>
+			
+				<ul class="floatcontainer">
+					
+						
+							
+								<li id="vbqlink_posts"><a href="https://www.pocketpc.ch/search.php?do=getdaily&amp;contenttype=vBForum_Post&amp;s=22c09551c71c1a6b64e4364ca45cbf28">Heutige Beiträge</a></li>
+							
+						
+					
+						
+							
+								<li id="link_njk3_236"><a rel="nofollow" href="https://www.pocketpc.ch/search.php?do=process&amp;replyless=1&amp;replylimit=0&amp;contenttype=vBForum_Post">Themen ohne Antworten</a></li>
+							
+						
+					
+						
+							
+								<li id="vbflink_newposts"><a rel="nofollow" href="https://www.pocketpc.ch/search.php?do=getnew&amp;contenttype=vBForum_Post&amp;s=22c09551c71c1a6b64e4364ca45cbf28">Neue Beiträge</a></li>
+							
+						
+					
+						
+							<li class="popupmenu" id="vbmenu_actions">
+								<a href="javascript://" class="popupctrl">Aktionen</a>
+								<ul class="popupbody popuphover">
+									
+										<li id="vbalink_mfr"><a rel="nofollow" href="https://www.pocketpc.ch/forumdisplay.php?do=markread&amp;markreadhash=guest&amp;s=22c09551c71c1a6b64e4364ca45cbf28">Alle Foren als gelesen markieren</a></li>
+									
+								</ul>
+							</li>
+						
+					
+						
+							<li class="popupmenu" id="vbmenu_qlinks">
+								<a href="javascript://" class="popupctrl">Nützliche Links</a>
+								<ul class="popupbody popuphover">
+									
+										<li id="link_nty2_291"><a href="https://www.pocketpc.ch/search.php">Erweiterte Suche</a></li>
+									
+										<li id="link_nzay_505"><a href="http://www.pocketpc.ch/c/386-netiquette.html?i=">Netiquette</a></li>
+									
+								</ul>
+							</li>
+						
+					
+				</ul>
+			
+		</li>
+	
+
+			
+		</ul>
+	</div></div>
+</div>
+</div><!-- closing div for above_body -->
+
+<div class="body_wrapper">
+
+ 
+ 
+ 
+
+ 
+
+
+
+<!-- Main Logo (start) -->
+
+<div class="rel_main_logo floatcontainer">
+	<a href="https://www.pocketpc.ch/?s=22c09551c71c1a6b64e4364ca45cbf28"><img src="https://www.pocketpc.ch/rellect/pocketpc/logo-main.png" alt="PocketPC.ch" style="width: 328px;" /></a>
+
+	<!-- PPC Ad START -->
+	<div class="ad_container">
+		
+		      
+		          <script type='text/javascript'>
+		          <!--
+		            if($(window).width() >= 1024){   
+document.write("<div id='div-gpt-ad-1338322361279-9' style='width:728px; height:90px; margin-left:auto;margin-right:0px;'></div>");
+		              googletag.cmd.push(function() { googletag.display('div-gpt-ad-1338322361279-9'); });
+
+		            }
+		          //-->
+		          </script>
+		      
+		
+	</div>
+	<!-- PPC Ad END -->
+</div>
+
+<!-- Main Logo (end) -->
+
+<div id="breadcrumb" class="breadcrumb">
+	<ul class="floatcontainer">
+		<li class="navbit"><a href="http://www.pocketpc.ch">Home</a></li><li class="navbit">/</li>
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/forum?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Forum</span></a></li>
+
+
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/153-geraete/?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Weitere Geräte</span></a></li>
+
+
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/309-windows-phone-7-a/?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Windows Phone 7</span></a></li>
+
+
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/286-windows-phone-7-allgemein/?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Windows Phone 7 Allgemein</span></a></li>
+
+
+		
+	<li class="navbit lastnavbit"><span itemprop="title"> Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!</span></li>
+
+
+	</ul>
+	<hr />
+</div>
+
+	
+	<div id="content_container" class=" ">
+		<div id="content" >
+	
+
+
+
+<script type="text/javascript">
+<!--
+// Paul M - Doublepost Modification //
+
+function qr_do_ajax_post(ajax)
+{if(ajax.responseXML)
+{vB_Editor[QR_EditorID].initialize();document.body.style.cursor='auto';YAHOO.util.Dom.addClass("qr_posting_msg","hidden");
+var i;if(fetch_tag_count(ajax.responseXML,'postbit'))
+{qr_reset();vB_Editor[QR_EditorID].hide_autosave_button()
+ajax_last_post=ajax.responseXML.getElementsByTagName('time')[0].firstChild.nodeValue;qr_disable_controls();qr_hide_errors();
+if(fetch_tag_count(ajax.responseXML,'updatepost'))
+{var postbit=ajax.responseXML.getElementsByTagName('postbit')[0].firstChild.nodeValue;var updated=ajax.responseXML.getElementsByTagName('updatepost')[0].firstChild.nodeValue;
+var node=YAHOO.util.Dom.get("post_"+updated);node.parentNode.replaceChild(string_to_node(postbit),node);node.scrollIntoView(false);}
+else
+{var postbits=ajax.responseXML.getElementsByTagName('postbit');for(i=0;i<postbits.length;i++)
+{var newdiv=document.createElement('div');newdiv.innerHTML=postbits[i].firstChild.nodeValue;
+var newpost=newdiv.getElementsByTagName('li')[0];var posts=YAHOO.util.Dom.get('posts');if(newpost)
+{var postbit=posts.appendChild(newpost);PostBit_Init(postbit,postbits[i].getAttribute('postid'));newpost.scrollIntoView(false);}}}
+if(typeof mq_unhighlight_all=='function')
+{mq_unhighlight_all();}
+if(fetch_object('qr_submit'))
+{fetch_object('qr_submit').blur();}}
+else
+{if(!is_saf)
+{var errors=ajax.responseXML.getElementsByTagName('error');if(errors.length)
+{var error_html='<ol>';for(i=0;i<errors.length;i++)
+{error_html+='<li>'+errors[i].firstChild.nodeValue+'</li>';}
+error_html+='</ol>';qr_show_errors(error_html);return false;}}
+qr_resubmit();}}
+else
+{qr_resubmit();}}
+
+//-->
+</script>
+<div class="dbtech_thanks_box">
+<div style="padding-top:3px;padding-bottom:3px;">
+	
+		<div class="popupmenu" style="display:inline; float:none;">
+			<a href="javascript://" class="popupctrl">
+				<img src="https://www.pocketpc.ch/images/ppc10/buttons/thanks.png" alt="Danke" /> Danke: <span style="font-size:18px; float:right; font-weight:bold;">&nbsp;64</span>
+			</a>
+			<ul class="popupbody popuphover">
+				<li><a href="https://www.pocketpc.ch/938535-post1.html?s=22c09551c71c1a6b64e4364ca45cbf28" style="color: #3E3E3E;" >Post #938535 (<b>5</b>)</a></li><li><a href="https://www.pocketpc.ch/940240-post269.html?s=22c09551c71c1a6b64e4364ca45cbf28" style="color: #3E3E3E;" >Post #940240 (<b>4</b>)</a></li><li><a href="https://www.pocketpc.ch/939435-post144.html?s=22c09551c71c1a6b64e4364ca45cbf28" style="color: #3E3E3E;" >Post #939435 (<b>4</b>)</a></li><li><a href="https://www.pocketpc.ch/940944-post329.html?s=22c09551c71c1a6b64e4364ca45cbf28" style="color: #3E3E3E;" >Post #940944 (<b>4</b>)</a></li><li><a href="https://www.pocketpc.ch/940702-post309.html?s=22c09551c71c1a6b64e4364ca45cbf28" style="color: #3E3E3E;" >Post #940702 (<b>4</b>)</a></li>
+			</ul>
+		</div>
+	
+</div>
+</div>
+
+
+	<div id="above_postlist" class="above_postlist">
+		<div id="pagination_top" class="pagination_top">
+		
+			<form action="https://www.pocketpc.ch/showthread.php?t=122760&amp;page=35&amp;s=22c09551c71c1a6b64e4364ca45cbf28" method="get" class="pagination popupmenu nohovermenu">
+<input type="hidden" name="t" value="122760" /><input type="hidden" name="s" value="22c09551c71c1a6b64e4364ca45cbf28" />
+	
+		<span><a href="javascript://" class="popupctrl">Seite 34 von 40</a></span>
+		
+		<span class="first_last"><a rel="start" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Erste Seite - Ergebnis 1 bis 20 von 795"><img src="https://www.pocketpc.ch/images/pagination/first-right.png" alt="Erste" />Erste</a></span>
+		
+		
+		<span class="prev_next"><a rel="prev" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-33.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Vorherige Seite - Ergebnis 641 bis 660 von 795"><img src="https://www.pocketpc.ch/images/pagination/previous-right.png" alt="Vorherige" /></a></span>
+		
+		
+		<span class="separator">...</span>
+		
+		<span><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-33.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Zeige Ergebnis 641 bis 660 von 795"><!---1-->33</a></span><span class="selected"><a href="javascript://" title="Ergebnis 661 bis 680 von 795">34</a></span><span><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-35.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Zeige Ergebnis 681 bis 700 von 795"><!--+1-->35</a></span>
+		
+		<span class="separator">...</span>
+		
+		
+		<span class="prev_next"><a rel="next" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-35.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Nächste Seite - Ergebnis 681 bis 700 von 795"><img src="https://www.pocketpc.ch/images/pagination/next-right.png" alt="Nächste" /></a></span>
+		
+		
+		<span class="first_last"><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-40.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Letzte Seite - Ergebnis 781 bis 795 von 795">Letzte<img src="https://www.pocketpc.ch/images/pagination/last-right.png" alt="Letzte" /></a></span>
+		
+	
+	<ul class="popupbody popuphover">
+		<li class="formsubmit jumptopage"><label>Gehe zu Seite: <input type="text" name="page" size="4" /></label> <input type="submit" class="button" value="Los" /></li>
+	</ul>
+</form>
+		
+			<div id="postpagestats_above" class="postpagestats">
+				Ergebnis 661 bis 680 von 795
+			</div>
+		</div>
+	</div>
+
+	<div id="thread_controls" class="thread_controls toolsmenu">
+		<div>
+		<ul id="postlist_popups" class="postlist_popups popupgroup">
+			
+			
+			<li class="popupmenu" id="threadtools">
+				<h6><a class="popupctrl" href="javascript://">Themen-Optionen</a></h6>
+				<ul class="popupbody popuphover">
+					<li><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-34-print.html?s=22c09551c71c1a6b64e4364ca45cbf28" accesskey="3" rel="nofollow">Druckbare Version zeigen</a></li>
+					
+						<li><a href="https://www.pocketpc.ch/sendmessage.php?do=sendtofriend&amp;t=122760&amp;s=22c09551c71c1a6b64e4364ca45cbf28" rel="nofollow">Thema weiterempfehlen&hellip;</a></li>
+					
+					<li>
+						
+					</li>
+					
+				</ul>
+			</li>
+
+			
+
+			
+
+			
+
+			
+
+			
+			</ul>
+		</div>
+	</div>
+
+	<div class="cleardiv"></div>
+	<div class="rel_thread_head">
+		<h1>
+			<a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-34.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Seite neu laden">Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!</a>
+		</h1>
+		
+	</div>
+
+
+<div id="postlist" class="postlist restrain">
+	
+
+	
+		<ol id="posts" class="posts" start="1">
+			
+<!-- PPC AD START for Mobile -->
+
+
+
+<center>
+<script>
+if($(window).width() < 1024){
+  document.write('<ins class="adsbygoogle" style="display:inline-block;width:320px;height:100px;margin-left:-20px;" data-ad-client="ca-pub-5163471580494836" data-ad-slot="1242321892"></ins>');
+  document.write('<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"><\/script>');
+  (adsbygoogle = window.adsbygoogle || []).push({});
+}
+</script>
+</center>
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949757">
+	<div class="postdetails_noavatar">
+		<div class="userinfo_noavatar">
+			<div class="contact">
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/71187_predator.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Predator ist offline"><strong>Predator</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/71187_predator.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=71187&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=71187&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="Predator ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Gehöre zum Inventar
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=931&posts=4'038&joindate=15.12.2010 20:41"
+alt="931 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;14:17
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949757" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949757.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949757" class="postcounter">#661</a><a id="postcount949757" name="661"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+				
+				
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949757">
+			
+			
+			  
+			<script type="text/javascript">
+			      if($(window).width() >= 1024){
+			        document.write('<div id="xxParentDivForWerbPostbit">      <table id="xxWerb_Postbit" cellspacing="10" cellpadding="0" border="0" width="301px" align="right">        <tr>          <td valign="top" width="301px" height="250px"><div id="div-gpt-ad-1338322361279-7" style="width:301px; height:250px;">');
+			        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1338322361279-7'); });
+			      }
+			</script>        
+	<script type="text/javascript">
+		if($(window).width() >= 1024){
+			        document.write('</div></td>        </tr>      </table>    </div>');	
+			$(document).ready(function() {
+			        $('#ppost_message_949757').find('.bbcode_container').each(function(index) {
+			                if($(this).position().top < 310)
+			                {
+			                        $(this).css('margin-left','305px');
+			                }
+			        });
+			 });
+			$(document).ready(function() {
+			        $('#ppost_message_949757').find('.decimal').each(function(index) {
+			                if($(this).position().top < 310)
+			                {
+			                        $(this).css('margin-left','325px');
+			                }
+			        });
+			 });
+			$(document).ready(function() {
+			        $('#post_message_949757').find('.attachments').each(function(index) {
+			                if($(this).position().top < 310)
+			                {
+			                        $(this).css('margin-left','305px');
+			                }
+			        });
+			 });
+		}
+	</script>
+			  
+			
+	<div id="ppost_message_949757">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="https://www.pocketpc.ch/images/ppc10/misc/quote_icon.png" alt="Zitat" /> Zitat von <strong>TheFreeman</strong>
+					<a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949745.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949745" rel="nofollow"><img class="inlineimg" src="https://www.pocketpc.ch/images/ppc10/buttons/viewpost-right.png" alt="Beitrag anzeigen" /></a>
+				</div>
+				<div class="message">Gibt es denn irgendow eine Seite / Threat, wo die neuen Features genau beschrieben sind, die mit dem Update mitkommen?<br />
+<br />
+Es soll z.B. eine &quot;copy&amp;paste&quot;-Funktion dabei sein. WIe funktionoiert die?<br />
+<br />
+Nach dem Update geht da gar nichts mit copy &amp; paste.</div>
+			
+		</div>
+	</div>
+</div>Das war noch nicht das Update, sondern nur die Vorbereitung. Warum auch immer <img src="https://www.pocketpc.ch/images/smilies/icon_wink.gif" border="0" alt="" title="Winken" class="inlineimg" /><br />
+<br />
+<div class="tapatalkSignatur">Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem HD7 T9292 aus geschrieben.</div>
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+				 
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949757" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949757">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949757">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949757" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949757" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949763">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/40413_chatfix.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Chatfix ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar40413_3.gif" alt="Avatar von Chatfix" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/40413_chatfix.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Chatfix ist offline"><strong>Chatfix</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/40413_chatfix.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=40413&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=40413&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/redirect-to/?redirect=http://www.kuknet.de" class="siteicon_homepage" rel="nofollow">
+				Homepage besuchen
+			</a>
+		</li>
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="Chatfix ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Ehrenmitglied
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=1890&posts=10'351&joindate=22.09.2009 14:43"
+alt="1890 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;14:27
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949763" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949763.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949763" class="postcounter">#662</a><a id="postcount949763" name="662"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  
+			     <script type='text/javascript'>
+			      if($(window).width() >= 1024){
+			        document.write('<div id="ParentDivForWerbPostbit">');
+			        document.write('<table cellspacing="10" cellpadding="0" border="0" width="301px" align="right"><tr><td valign="top" width="301px" height="250px"><div id="div-gpt-ad-1338322361279-5" style="width:301px; height:250px;">');
+			        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1338322361279-5'); });
+			      }
+			    </script> 
+	<script type="text/javascript">
+		if($(window).width() >= 1024){
+			        document.write('</div></td>        </tr>      </table> </div>');
+
+			$(document).ready(function() {
+			        $('#ppost_message_949763').find('.bbcode_container').each(function(index) {
+			                if($(this).position().top < 310)
+			                {
+			                        $(this).css('margin-right','305px');
+			                }
+			        });
+			 });
+			$(document).ready(function() {
+			        $('#ppost_message_949763').find('.decimal').each(function(index) {
+			                if($(this).position().top < 310)
+			                {
+			                        $(this).css('margin-right','325px');
+			                }
+			        });
+			 });
+			$(document).ready(function() {
+			        $('#post_message_949763').find('.attachments').each(function(index) {
+			                if($(this).position().top < 310)
+			                {
+			                        $(this).css('margin-right','305px');
+			                }
+			        });
+			 });
+   		}
+  	</script>
+			  
+			  <div id="post_message_949763" style="margin-right: 0.5px;">
+			
+			
+	<div id="ppost_message_949763">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="https://www.pocketpc.ch/images/ppc10/misc/quote_icon.png" alt="Zitat" /> Zitat von <strong>Predator</strong>
+					<a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949697.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949697" rel="nofollow"><img class="inlineimg" src="https://www.pocketpc.ch/images/ppc10/buttons/viewpost-right.png" alt="Beitrag anzeigen" /></a>
+				</div>
+				<div class="message">Hm, ich bin ja echt geduldig, aber bei mir gibt's immer noch nix. Das update müsste doch automatisch am Handy oder beim Verbinden mit Zune angezeigt werden wenn ich alles richtig verstanden habe, oder?<br />
+Aber anscheinend müssen ja andere auch noch warten. Bin bei <a onclick="ga('send', 'event', 'Outgoing', 'aklam.io', '/53YKj3');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Faklam.io%2F53YKj3" target="_blank"  >o2</a>.<br />
+<br />
+<div class="tapatalkSignatur"><div class="tapatalkSignatur">Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem HD7 T9292 aus geschrieben.</div></div></div>
+			
+		</div>
+	</div>
+</div><div class="tapatalkSignatur"><br />
+</div><br />
+<br />
+Starte mal Zune, und klicke oben rechts auf Einstellungen.<br />
+Dann oben Links auf Gerät, Telefon oder Handy.<br />
+Dann links im Menü auf aktualisieren.<br />
+<br />
+Was kommt da dann?
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949763" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949763">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949763">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949763" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949763" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949776">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar68451_1.gif" alt="Avatar von sunsetkilling" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline"><strong>sunsetkilling</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=68451&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=68451&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="sunsetkilling ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Mich gibt's schon länger
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;14:37
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949776" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949776.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949776" class="postcounter">#663</a><a id="postcount949776" name="663"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949776">
+			
+			
+	<div id="ppost_message_949776">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			Bekomme Versuch 1000 immer noch den Fehler 801812C1 =(<br />
+<br />
+Hiiilfe!<br />
+<br />
+<div class="tapatalkSignatur">Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem HD7 T9292 aus geschrieben.</div>
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949776" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949776">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949776">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949776" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949776" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- YJ smilewanted 4/post -->
+
+<script type="text/javascript" src="//tags.smilewanted.com/formats/infeed/pocketpc.ch"></script>
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949779">
+	<div class="postdetails_noavatar">
+		<div class="userinfo_noavatar">
+			<div class="contact">
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/71187_predator.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Predator ist offline"><strong>Predator</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/71187_predator.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=71187&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=71187&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="Predator ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Gehöre zum Inventar
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=931&posts=4'038&joindate=15.12.2010 20:41"
+alt="931 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;14:39
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949779" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949779.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949779" class="postcounter">#664</a><a id="postcount949779" name="664"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949779">
+			
+			
+	<div id="ppost_message_949779">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			@Chatfix:<br />
+Also bis gestern kam nix, ich schau später nochmal wenn ich daheim bin. So wie jeden Tag sozusagen. Is ja auch net so wild, ich möchte halt nur das richtige Update rechtzeitig haben.<br />
+<br />
+Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem HD7 T9292 aus geschrieben.
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949779" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949779">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949779">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949779" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949779" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949787">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/68758_mad-jo.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="mad-jo ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar68758_3.gif" alt="Avatar von mad-jo" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/68758_mad-jo.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="mad-jo ist offline"><strong>mad-jo</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/68758_mad-jo.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=68758&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=68758&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/redirect-to/?redirect=http://www.nascar-stammtisch.de" class="siteicon_homepage" rel="nofollow">
+				Homepage besuchen
+			</a>
+		</li>
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="mad-jo ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=21&amp;posts=416&amp;joindate=18.11.2010 10:26"
+alt="21 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;14:43
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949787" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949787.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949787" class="postcounter">#665</a><a id="postcount949787" name="665"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949787">
+			
+			
+	<div id="ppost_message_949787">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			Habs grad mal installiert...ging problemlos...<br />
+<br />
+HTC HD 7 <a onclick="ga('send', 'event', 'Outgoing', 'aklam.io', '/53YKj3');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Faklam.io%2F53YKj3" target="_blank"  >O2</a> branding...<br />
+<br />
+Nun wart I mal aufs große update ..<br />
+<br />
+Keep racing jo<br />
+<br />
+<br />
+Edit...stell gerade fest daß die pocketpc-app nun nimmr so ruckelt..<br />
+<br />
+Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem HD7 T9292 aus geschrieben.
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949787" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949787">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949787">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949787" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949787" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949793">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Voll Gaga ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar45970_9.gif" alt="Avatar von Voll Gaga" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Voll Gaga ist offline"><strong>Voll Gaga</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=45970&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=45970&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="Voll Gaga ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=51&amp;posts=209&amp;joindate=06.01.2010 19:37"
+alt="51 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;14:45
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949793" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949793.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949793" class="postcounter">#666</a><a id="postcount949793" name="666"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949793">
+			
+			
+	<div id="ppost_message_949793">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			<a href="http://www.pocketpc.ch/members/sunsetkilling.html" target="_blank"><b>@sunsetkilling</b></a><br />
+<br />
+Hallo, event. hilft das weiter,<br />
+<br />
+During Step 6 (Rebooting your phone), your Windows OS detects your phone as a new device and starts searching for driver updates online. This can be seen when you click on the little indicator with a spinning green circle in the bottom-right corner of your desktop called the notification area (you might need to click on Show Hidden Icons if it's hidden).<br />
+<br />
+You have to *immediately* click on &quot;Skip Obtaining Device Software Online&quot; or Zune will time-out and show error 801812C1.<br />
+<br />
+Quelle: <a onclick="ga('send', 'event', 'Outgoing', 'forum.xda-developers.com', '/archive/index.php/t-964896.html');" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Fforum.xda-developers.com%2Farchive%2Findex.php%2Ft-964896.html" target="_blank" rel="nofollow">http://forum.xda-developers.com/arch.../t-964896.html</a>
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949793" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949793">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949793">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949793" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949793" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949802">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar68451_1.gif" alt="Avatar von sunsetkilling" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline"><strong>sunsetkilling</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=68451&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=68451&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="sunsetkilling ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Mich gibt's schon länger
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;14:54
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949802" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949802.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949802" class="postcounter">#667</a><a id="postcount949802" name="667"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949802">
+			
+			
+	<div id="ppost_message_949802">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			@voll gaga<br />
+<br />
+also das heist ich soll...wenn es aufploppt...erstmal sofort auf ignorieren drücken und dann wartn bis reconnected?Dann nochmal probieren?
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949802" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949802">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949802">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949802" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949802" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949810">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Voll Gaga ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar45970_9.gif" alt="Avatar von Voll Gaga" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Voll Gaga ist offline"><strong>Voll Gaga</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=45970&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=45970&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="Voll Gaga ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=51&amp;posts=209&amp;joindate=06.01.2010 19:37"
+alt="51 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:00
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949810" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949810.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949810" class="postcounter">#668</a><a id="postcount949810" name="668"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949810">
+			
+			
+	<div id="ppost_message_949810">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			@ sunsetkilling<br />
+<br />
+so versteh ich das auch.
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949810" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949810">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949810">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949810" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949810" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949815">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar68451_1.gif" alt="Avatar von sunsetkilling" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline"><strong>sunsetkilling</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=68451&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=68451&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="sunsetkilling ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Mich gibt's schon länger
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:01
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949815" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949815.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949815" class="postcounter">#669</a><a id="postcount949815" name="669"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949815">
+			
+			
+	<div id="ppost_message_949815">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			So ich mache nen Hardreset... <img src="https://www.pocketpc.ch/images/smilies/icon_sad.gif" border="0" alt="" title="Traurig" class="inlineimg" />
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949815" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949815">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949815">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949815" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949815" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949817">
+	<div class="postdetails_noavatar">
+		<div class="userinfo_noavatar">
+			<div class="contact">
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/71187_predator.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Predator ist offline"><strong>Predator</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/71187_predator.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=71187&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=71187&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="Predator ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Gehöre zum Inventar
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=931&posts=4'038&joindate=15.12.2010 20:41"
+alt="931 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:02
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949817" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949817.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949817" class="postcounter">#670</a><a id="postcount949817" name="670"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949817">
+			
+			
+	<div id="ppost_message_949817">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			<div class="bbcode_container">
+	<div class="bbcode_quote">
+		<div class="quote_container">
+			<div class="bbcode_quote_container"></div>
+			
+				<div class="bbcode_postedby">
+					<img src="https://www.pocketpc.ch/images/ppc10/misc/quote_icon.png" alt="Zitat" /> Zitat von <strong>sunsetkilling</strong>
+					<a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949802.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949802" rel="nofollow"><img class="inlineimg" src="https://www.pocketpc.ch/images/ppc10/buttons/viewpost-right.png" alt="Beitrag anzeigen" /></a>
+				</div>
+				<div class="message">@voll gaga<br />
+<br />
+also das heist ich soll...wenn es aufploppt...erstmal sofort auf ignorieren drücken und dann wartn bis reconnected?Dann nochmal probieren?</div>
+			
+		</div>
+	</div>
+</div><img src="https://www.pocketpc.ch/images/smilies/icon_biggrin.gif" border="0" alt="" title="Sehr glücklich" class="inlineimg" /> Das wäre albern.<br />
+<br />
+<div class="tapatalkSignatur">Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem HD7 T9292 aus geschrieben.</div>
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949817" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949817">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949817">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949817" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949817" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949827">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Voll Gaga ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar45970_9.gif" alt="Avatar von Voll Gaga" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Voll Gaga ist offline"><strong>Voll Gaga</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/45970_voll-gaga.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=45970&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=45970&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="Voll Gaga ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=51&amp;posts=209&amp;joindate=06.01.2010 19:37"
+alt="51 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:13
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949827" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949827.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949827" class="postcounter">#671</a><a id="postcount949827" name="671"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949827">
+			
+			
+	<div id="ppost_message_949827">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			so wie es event. aussieht fehlt Zune ein Treiber, der erst runtegeladen werden muss.
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949827" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949827">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949827">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949827" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949827" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949834">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar68451_1.gif" alt="Avatar von sunsetkilling" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline"><strong>sunsetkilling</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=68451&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=68451&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="sunsetkilling ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Mich gibt's schon länger
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:26
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949834" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949834.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949834" class="postcounter">#672</a><a id="postcount949834" name="672"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949834">
+			
+			
+	<div id="ppost_message_949834">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			So ich hab es nun drauf....also an alle wer den Fehler ( 801812C1) bekommt...ihr müsst nen HardReset machen dann gehts....also bei mir jedenfalls^^
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949834" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949834">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949834">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949834" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949834" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949849">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar66551_2.gif" alt="Avatar von tommyp" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline"><strong>tommyp</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=66551&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=66551&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="tommyp ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:41
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949849" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949849.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949849" class="postcounter">#673</a><a id="postcount949849" name="673"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949849">
+			
+			
+	<div id="ppost_message_949849">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			Hi, bei mir ging es ruckzuck, hd7 <a onclick="ga('send', 'event', 'Outgoing', 'aklam.io', '/53YKj3');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Faklam.io%2F53YKj3" target="_blank"  >O2</a> Branding, hat keine 5 Minuten gedauert, warum denn bei einigen 30 Minuten??<br />
+Gruss<br />
+Thomas
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949849" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949849">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949849">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949849" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949849" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949852">
+	<div class="postdetails_noavatar">
+		<div class="userinfo_noavatar">
+			<div class="contact">
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/75734_lordmgb.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="LordMGB ist offline"><strong>LordMGB</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/75734_lordmgb.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=75734&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=75734&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="LordMGB ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=16&amp;posts=377&amp;joindate=11.02.2011 04:26"
+alt="16 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:45
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949852" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949852.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949852" class="postcounter">#674</a><a id="postcount949852" name="674"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949852">
+			
+			
+	<div id="ppost_message_949852">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			Da gab's noch ein Backup zwischendurch. Wo das auch immer geblieben...<br />
+<br />
+<div class="tapatalkSignatur">Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem 7 Trophy aus geschrieben.</div>
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949852" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949852">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949852">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949852" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949852" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949853">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar66551_2.gif" alt="Avatar von tommyp" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline"><strong>tommyp</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=66551&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=66551&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="tommyp ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;15:46
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949853" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949853.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949853" class="postcounter">#675</a><a id="postcount949853" name="675"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949853">
+			
+			
+	<div id="ppost_message_949853">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			das jetzige ist das für gebrandete Geräte.
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949853" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949853">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949853">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949853" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949853" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949889">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar68451_1.gif" alt="Avatar von sunsetkilling" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="sunsetkilling ist offline"><strong>sunsetkilling</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/68451_sunsetkilling.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=68451&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=68451&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="sunsetkilling ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Mich gibt's schon länger
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;16:18
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949889" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949889.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949889" class="postcounter">#676</a><a id="postcount949889" name="676"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949889">
+			
+			
+	<div id="ppost_message_949889">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			Bei mir ging es im Endeffekt au sehr schnell ca.7min =)<br />
+<br />
+OT: Jetzt meine ganzes Handy wieder neu einstellen -.-
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949889" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949889">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949889">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949889" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949889" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949897">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar66551_2.gif" alt="Avatar von tommyp" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline"><strong>tommyp</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=66551&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=66551&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="tommyp ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;16:23
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949897" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949897.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949897" class="postcounter">#677</a><a id="postcount949897" name="677"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949897">
+			
+			
+	<div id="ppost_message_949897">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			warum neu einstellen, bei mir war alles noch da. Was mich wundert, hatte glaube ich 8 Schritte und nicht 10 wie am Anfang beschrieben.<br />
+Haben die <a onclick="ga('send', 'event', 'Outgoing', 'aklam.io', '/53YKj3');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Faklam.io%2F53YKj3" target="_blank"  >O2</a> ler was weg gelassen?
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949897" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949897">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949897">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949897" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949897" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949900">
+	<div class="postdetails_noavatar">
+		<div class="userinfo_noavatar">
+			<div class="contact">
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/74205_rafi.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="rafi ist offline"><strong>rafi</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/74205_rafi.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=74205&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=74205&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="rafi ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Bin neu hier
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;16:24
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949900" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949900.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949900" class="postcounter">#678</a><a id="postcount949900" name="678"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949900">
+			
+			
+	<div id="ppost_message_949900">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			Hat es bei euch den eine sicherheitskopie gemacht?<br />
+<br />
+<div class="tapatalkSignatur">Mit der kostenlosen <a href="http://www.pocketpc.ch/be" target="_blank">PocketPC.ch App</a> von meinem HD7 T9292 aus geschrieben.</div>
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949900" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949900">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949900">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949900" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949900" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949903">
+	<div class="postdetails_noavatar">
+		<div class="userinfo_noavatar">
+			<div class="contact">
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/45488_chrisxp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="ChrisXP ist offline"><strong>ChrisXP</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/45488_chrisxp.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=45488&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=45488&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="ChrisXP ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Gehöre zum Inventar
+					</span>
+
+					
+
+
+<img src="https://www.pocketpc.ch/yves/YJ_stars.php?post_thanks_thanked_posts=2539&posts=14'314&joindate=31.12.2009 01:04"
+alt="2539 Danke erhalten."><br>
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;16:26
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949903" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949903.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949903" class="postcounter">#679</a><a id="postcount949903" name="679"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949903">
+			
+			
+	<div id="ppost_message_949903">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			ich glabe nicht... zumindest hat es bei mir keine gemacht
+		</blockquote>
+	</div>
+</div>
+
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949903" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949903">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949903">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949903" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949903" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+<!-- PPC AD START for Mobile -->
+
+
+
+
+
+
+
+<!-- PPC AD ENDfor Mobile -->
+
+
+<li class="postbit postbitim postcontainer old" id="post_949908">
+	<div class="postdetails_noavatar">
+		<div class="userinfo">
+			<div class="contact">
+				
+					<a class="postuseravatarlink" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline">
+						
+							<img src="https://www.pocketpc.ch/customavatars/avatar66551_2.gif" alt="Avatar von tommyp" />
+						
+					</a>
+				
+
+				<div class="username_container">
+					
+						<div class="popupmenu memberaction">
+	<a class="username offline popupctrl" href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="tommyp ist offline"><strong>tommyp</strong></a>
+	<ul class="popupbody popuphover memberaction_body">
+		<li class="left">
+			<a href="https://www.pocketpc.ch/members/66551_tommyp.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_profile">
+				Profil
+			</a>
+		</li>
+		
+		<li class="right">
+			<a href="https://www.pocketpc.ch/search.php?do=finduser&amp;userid=66551&amp;contenttype=vBForum_Post&amp;showposts=1&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_forum" rel="nofollow">
+				Beiträge anzeigen
+			</a>
+		</li>
+		
+		
+		<li class="left">
+			<a href="https://www.pocketpc.ch/private.php?do=newpm&amp;u=66551&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="siteicon_message" rel="nofollow">
+				Private Nachricht
+			</a>
+		</li>
+		
+		
+				
+		
+		
+		
+
+		
+
+		
+		
+	</ul>
+</div>
+						<img class="inlineimg onlinestatus" src="https://www.pocketpc.ch/images/ppc10/statusicon/user-offline.png" alt="tommyp ist offline" border="0" />
+
+					
+
+			
+
+					<span class="usertitle">
+						Fühle mich heimisch
+					</span>
+
+					
+
+
+
+					
+
+					
+
+					
+				</div>
+			</div>
+
+			
+			<div class="userinfo_extra">
+				<dl class="userstats">
+					<dt style="display: none;"></dt>
+					<dd>
+						
+								03.03.2011,&nbsp;16:31
+						
+					</dd>
+					<dd>
+						<span class="nodecontrols">
+								
+										<a name="post949908" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-post949908.html?s=22c09551c71c1a6b64e4364ca45cbf28#post949908" class="postcounter">#680</a><a id="postcount949908" name="680"></a>
+								
+								
+								
+						</span>
+					</dd>	
+					
+				</dl>
+
+				
+
+				
+
+				
+			</div>
+			
+		</div>
+	</div>
+
+	<div class="postbody">
+		<style>.bestAnswer_container input{
+		position: absolute;
+		right: 10px;
+		background: #f2f2f2 none;
+		color: #3e3e3e;
+		border: 1px solid #e8e8e8;
+		padding-left: 3px;
+		padding-right: 3px;
+}
+</style>
+<div class="bestAnswer_container"
+
+>
+    
+        
+
+        
+    
+</div>
+
+		<div class="postrow">
+			
+
+			
+				
+			
+
+<!-- PPC Ad START -->
+			<div class="content">
+			
+			  <div id="post_message_949908">
+			
+			
+	<div id="ppost_message_949908">
+		<blockquote class="postcontent restore" style="overflow: visible;">
+			ich glaube bei mir auch net, firmware ist auch noch 1601, aber 7008, komisch, oder?
+		</blockquote>
+	</div>
+</div>
+
+
+<div style="margin-top:5px;">
+  
+    <script type="text/javascript">
+google_ad_client = "ca-pub-5163471580494836";
+google_ad_slot = "6438661496";
+google_override_format = true;
+if($(window).width() >= 800){
+google_ad_width = 740;
+}else{
+google_ad_width = 300;
+}
+google_ad_height = 250;
+    </script>
+<script  src="https://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+  
+</div>
+
+<!-- PPC Ad END -->
+				
+			</div>
+
+			
+
+				
+
+			
+
+			
+
+			
+		</div>
+	</div>
+
+	<div class="postfoot">
+		<div class="textcontrols floatcontainer">
+			<div class="postcontrols">
+
+				<div class="rel_postbit_left">
+									<div id="dbtech_thanks_actions_949908" style="display:inline">
+					<span class="dbtech-thanks-button-control" data-contenttype="post" data-button="thanks" data-postid="949908">
+	<a class="ppc-thanks-button-link" href="javascript://"  style="background:url(https://www.pocketpc.ch/images/ppc10/buttons/thanks.png) no-repeat scroll left center transparent !important; height:16px; margin:0; padding:0 0 0 20px; vertical-align:middle;cursor:default;" title="Danke">
+		
+	</a>
+	 
+		<span class="dbtech-thanks-bubble-flyout">
+			<!--<i></i>
+			<u></u>-->
+			<span class="dbtech-thanks-bubble-content clickcount" data-button="thanks" data-postid="949908">0</span>
+		</span>
+	
+</span>
+
+				</div>
+				<div id="dbtech_thanks_status_949908" style="display:inline">&nbsp;</div>
+				</div>
+
+				
+
+				<div class="rel_postbit_menulinks" style="">
+					<img style="display:none" id="progress_949908" src="https://www.pocketpc.ch/images/ppc10/misc/progress.gif" alt="" />
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					
+
+					 
+
+					
+
+					
+
+					
+
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr />
+</li>
+
+
+		</ol>
+		<div class="separator"></div>
+		<div class="postlistfoot">
+			
+		</div>
+
+	
+
+</div>
+
+<div id="below_postlist" class="noinlinemod below_postlist">
+	
+	<div id="pagination_bottom" class="pagination_bottom">
+	
+		<form action="https://www.pocketpc.ch/showthread.php?t=122760&amp;page=35&amp;s=22c09551c71c1a6b64e4364ca45cbf28" method="get" class="pagination popupmenu nohovermenu">
+<input type="hidden" name="t" value="122760" /><input type="hidden" name="s" value="22c09551c71c1a6b64e4364ca45cbf28" />
+	
+		<span><a href="javascript://" class="popupctrl">Seite 34 von 40</a></span>
+		
+		<span class="first_last"><a rel="start" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Erste Seite - Ergebnis 1 bis 20 von 795"><img src="https://www.pocketpc.ch/images/pagination/first-right.png" alt="Erste" />Erste</a></span>
+		
+		
+		<span class="prev_next"><a rel="prev" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-33.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Vorherige Seite - Ergebnis 641 bis 660 von 795"><img src="https://www.pocketpc.ch/images/pagination/previous-right.png" alt="Vorherige" /></a></span>
+		
+		
+		<span class="separator">...</span>
+		
+		<span><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-33.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Zeige Ergebnis 641 bis 660 von 795"><!---1-->33</a></span><span class="selected"><a href="javascript://" title="Ergebnis 661 bis 680 von 795">34</a></span><span><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-35.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Zeige Ergebnis 681 bis 700 von 795"><!--+1-->35</a></span>
+		
+		<span class="separator">...</span>
+		
+		
+		<span class="prev_next"><a rel="next" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-35.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Nächste Seite - Ergebnis 681 bis 700 von 795"><img src="https://www.pocketpc.ch/images/pagination/next-right.png" alt="Nächste" /></a></span>
+		
+		
+		<span class="first_last"><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-40.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Letzte Seite - Ergebnis 781 bis 795 von 795">Letzte<img src="https://www.pocketpc.ch/images/pagination/last-right.png" alt="Letzte" /></a></span>
+		
+	
+	<ul class="popupbody popuphover">
+		<li class="formsubmit jumptopage"><label>Gehe zu Seite: <input type="text" name="page" size="4" /></label> <input type="submit" class="button" value="Los" /></li>
+	</ul>
+</form>
+	
+	</div>
+</div>
+
+
+
+
+
+
+
+
+	<!-- next / previous links -->
+	<div class="navlinks">
+		
+			<strong>&laquo;</strong>
+			<a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-prev-thread.html?s=22c09551c71c1a6b64e4364ca45cbf28" rel="nofollow">Vorheriges Thema</a>
+			|
+			<a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-next-thread.html?s=22c09551c71c1a6b64e4364ca45cbf28" rel="nofollow">Nächstes Thema</a>
+			<strong>&raquo;</strong>
+		
+	</div>
+	<!-- / next / previous links -->
+
+<div id="breadcrumb_two" class="breadcrumb" style="margin-bottom:10px">
+	<ul class="floatcontainer">
+		<!--<li class="navbithome"><a href="https://www.pocketpc.ch/index.php?s=22c09551c71c1a6b64e4364ca45cbf28" ><img src="https://www.pocketpc.ch/images/ppc10/misc/navbit-home.png" alt="Startseite" /></a></li>-->
+
+		<li class="navbit"><a href="http://www.pocketpc.ch">Home</a></li><li class="navbit">/</li>
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/forum?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Forum</span></a></li>
+
+
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/153-geraete/?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Weitere Geräte</span></a></li>
+
+
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/309-windows-phone-7-a/?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Windows Phone 7</span></a></li>
+
+
+	<li class="navbit" itemscope="itemscope" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="https://www.pocketpc.ch/286-windows-phone-7-allgemein/?s=22c09551c71c1a6b64e4364ca45cbf28" itemprop="url"><span itemprop="title">Windows Phone 7 Allgemein</span></a></li>
+
+
+		
+	<li class="navbit lastnavbit"><span itemprop="title"> Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!</span></li>
+
+
+	</ul>
+	<hr />
+</div>
+<div id="thread_info" class="thread_info block">
+	
+	
+	<div id="similar_threads">
+		<h4 class="threadinfohead blockhead">Ähnliche Themen</h4>
+		<div id="similar_threads_list" class="thread_info_block blockbody formcontrols">
+			<ol class="similar_threads">
+			<li class="floatcontainer">
+  <div class="titleblock">
+    <h6><a href="https://www.pocketpc.ch/htc-hd2-android/108229-fragen-vergleich-kamera-desire.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Hallo Leute, 
+ 
+habe die SuFu benutzt aber die ist nicht wirklich hilfreich. 
+ 
+Nun zu meiner Frage: 
+Ich überlege, mir das HD2 zu besorgen und...">Fragen zum Vergleich der Kamera mit der des Desire</a></h6>
+    <div class="starter_forum">
+      Von -rhysk- im Forum HTC HD2 Android
+    </div>
+  </div>
+  <div class="dateblock">
+    <span class="shade">Antworten:</span> 6
+      <div class="starter_forum">
+        <span class="shade">Letzter Beitrag:</span> 18.10.2010, <span class="time">23:08</span>
+      </div>
+  </div>
+</li><li class="floatcontainer">
+  <div class="titleblock">
+    <h6><a href="https://www.pocketpc.ch/htc-desire-sonstiges/81108-kamera-htc-desire-baugleich-htc-legend.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="Moin Leute, 
+ 
+zwecks diesem Test vom HTC Legend: http://de.engadget.com/2010/03/21/htc-legend-engadget-deutschland-hands-on-and-review/ 
+ 
+frage ich...">Kamera des HTC Desire baugleich mit der des HTC Legend?</a></h6>
+    <div class="starter_forum">
+      Von sil.eX im Forum HTC Desire Sonstiges
+    </div>
+  </div>
+  <div class="dateblock">
+    <span class="shade">Antworten:</span> 0
+      <div class="starter_forum">
+        <span class="shade">Letzter Beitrag:</span> 23.03.2010, <span class="time">13:16</span>
+      </div>
+  </div>
+</li><li class="floatcontainer">
+  <div class="titleblock">
+    <h6><a href="https://www.pocketpc.ch/plauderecke/31521-auslieferung-ipaq-h6340.html?s=22c09551c71c1a6b64e4364ca45cbf28" title="hallo zusammen 
+ 
+wer hat einen guten draht zu hp? ich habe einen ipaq h6340, deutsche version, bei primedirect in  der schweiz bestellt....">auslieferung des ipaq h6340</a></h6>
+    <div class="starter_forum">
+      Von Schreg im Forum Plauderecke
+    </div>
+  </div>
+  <div class="dateblock">
+    <span class="shade">Antworten:</span> 1
+      <div class="starter_forum">
+        <span class="shade">Letzter Beitrag:</span> 20.09.2004, <span class="time">12:52</span>
+      </div>
+  </div>
+</li>
+			</ol>
+		</div>
+	</div>
+  <!-- PPC Ad Start YJ -->
+  
+    
+     <script type='text/javascript' async src='//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'></script>
+<!-- Contentempfehlungen responsive -->
+<ins class="adsbygoogle"\n style="display:block"\n data-ad-format="autorelaxed"></ins>
+     <script type='text/javascript'>
+	 <!--//<![CDATA[
+	 (adsbygoogle = window.adsbygoogle || []).push({});
+	 //]]>-->
+      </script>
+    
+  
+  <!-- PPC Ad END YJ -->
+
+	
+				<style type="text/css">
+				 #seofq_list_cell *{background:none;display:inline;border:none;color:black;padding:0px 0px 0px 0px;-webkit-border-top-right-radius:0px;-webkit-border-top-left-radius:0px;-webkit-box-shadow: none;font-weight:normal;}
+				 #seofq_list_cell h2{font-size: 130%;font-weight: bold;}
+				 #seofq_list_cell h3{font-size: 120%;font-weight: bold;}
+				 #seofq_list_cell h4{font-size: 120%;}
+				 #seofq_list_cell h5{font-size: 110%;}
+				 #seofq_list_cell strong{font-size: 110%;}
+				 #seof_queries_list a.seoq{margin:0px 0px 0px 0px;font-size: 100%;}
+				 </style>
+	<h4 class="threadinfohead"><span class="optiontitle">Besucher haben diese Seite mit folgenden Suchbegriffen gefunden:</span></h4>
+	<div id="seof_queries_list" class="thread_info_block">
+		<div class="inner_block">
+			<div id='seofq_list_cell'>
+			
+				<h2>801812dd</h2>,&nbsp;
+			
+				<h2>801811A5</h2>,&nbsp;
+			
+				<h2>fehlercode 801812DD</h2>,&nbsp;
+			
+				<h3>Fehlercode 801811A5</h3>,&nbsp;
+			
+				<h4>801812C1</h4>,&nbsp;
+			
+				<h4>htc mozart fehlercode 801812c1</h4>,&nbsp;
+			
+				<h4></h4>,&nbsp;
+			
+				<h4></h4>,&nbsp;
+			
+				<strong></strong>,&nbsp;
+			
+				<strong>windows phone 7 fehlercode 801811A5</strong>,&nbsp;
+			
+				<strong>zune updates werden heruntergeladen 100</strong>,&nbsp;
+			
+				<strong>Fehlercode 801812C1 htc mozart</strong>,&nbsp;
+			
+				<strong>zune updates werden heruntergeladen 99</strong>,&nbsp;
+			
+				<strong>HTC Mozart 801812C1</strong>,&nbsp;
+			
+				<strong>801811A5 fehlercode</strong>,&nbsp;
+			
+				<strong>htc 7 mozart fehlercode 801812c1</strong>,&nbsp;
+			
+				<strong>htc mozart update 801812C1</strong>,&nbsp;
+			
+				<strong></strong>,&nbsp;
+			
+				<strong>801811a</strong>,&nbsp;
+			
+				<strong>HTC Mozart Fehler 801812C1</strong>,&nbsp;
+			
+				<strong>801812c1 mozart</strong>,&nbsp;
+			
+				<strong></strong>,&nbsp;
+			
+				<strong>htc mozart update fehlercode 801812c1</strong>,&nbsp;
+			
+				<strong>HTC Mozart Update Fehler 801812C1</strong>,&nbsp;
+			
+				<strong>zune 801811a5</strong>
+			
+			</div>
+		</div>
+	</div>
+		 
+	
+	
+	
+	<h4 class="threadinfohead blockhead">Stichworte</h4>
+	<div id="thread_tags_list" class="thread_info_block blockbody formcontrols">
+		<div class="inner_block">
+			
+			<a rel="nofollow" id="tag_edit_link" href="https://www.pocketpc.ch/threadtag.php?t=122760&amp;s=22c09551c71c1a6b64e4364ca45cbf28" class="textcontrol" style="float:right; font-size:11px; margin:10px;">Stichworte bearbeiten</a>
+			
+			<div id='tag_list_cell'>
+				
+	<em>-</em>
+
+<img src="https://www.pocketpc.ch/images/ppc10/misc/11x11progress.gif" id="tag_form_progress" class="inlineimg hidden" alt="" />
+			</div>
+			<p>
+				<a href="https://www.pocketpc.ch/tags/?s=22c09551c71c1a6b64e4364ca45cbf28">Stichwortwolke anzeigen</a>
+			</p>
+		</div>
+	</div>
+	
+</div>
+
+	
+		</div>
+	</div>
+
+	<div id="sidebar_container" class="rel_sidebar ">
+		<ul id="sidebar"  >
+			<li style="background: transparent;">
+	<div class="ad_container">
+		<!-- PPC Ad START -->
+		
+		  <div id="div-gpt-ad-1338322361279-6" class="ppcAdBlocktest" style="">
+		    
+		      <script type='text/javascript'>
+		      <!--//<![CDATA[
+		      if($(window).width() >= 1024 && typeof blockAdOnThisSite == 'undefined'){
+		        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1338322361279-6'); });
+		      }
+		      //]]>-->
+		      </script>
+		    
+		  </div>
+		
+		<!-- PPC Ad END -->
+	</div>
+</li><li>
+	<div class="block smaller">
+		<div class="blocksubhead">
+			<a class="collapse" id="collapse_block_html_7" href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-34.html#top"><img alt="" src="https://www.pocketpc.ch/images/ppc10/buttons/collapse_40b.png" id="collapseimg_html_7"/></a>
+			<span class="blocktitle">Folge PocketPC.ch auch bei</span>
+		</div>
+		<div class="widget_content blockbody floatcontainer">
+		<div id="block_html_7" class="blockrow">
+			<ul><li><div style="float:left;display:inline-block;margin-right:4px;margin-top:4px;"><a href="https://www.pocketpc.ch/magazin/rssfeeds/" title="RSS Feed"><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" height="40px" id="ssp_0" onmouseover='document.getElementById("ssp_0").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_rss.png"' onmouseout='document.getElementById("ssp_0").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/rss.png"' src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/rss.png" /></a></div><div style="float:left;display:inline-block;margin-right:4px;margin-top:4px;"><a onclick="ga('send', 'event', 'Outgoing', 'www.facebook.com', '/PocketPC.ch');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Fwww.facebook.com%2FPocketPC.ch" title="Facebook"><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" height="40px" id="ssp_1" onmouseover='document.getElementById("ssp_1").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_facebook.png"' onmouseout='document.getElementById("ssp_1").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/facebook.png"' src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/facebook.png" /></a></div><div style="float:left;display:inline-block;margin-right:4px;margin-top:4px;"><a onclick="ga('send', 'event', 'Outgoing', 'twitter.com', '/pocketpcch');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Ftwitter.com%2Fpocketpcch" title="Twitter"><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" height="40px" id="ssp_2" onmouseover='document.getElementById("ssp_2").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_twitter.png"' onmouseout='document.getElementById("ssp_2").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/twitter.png"' src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/twitter.png" /></a></div><div style="float:left;display:inline-block;margin-right:4px;margin-top:4px;"><a onclick="ga('send', 'event', 'Outgoing', 'plus.google.com', '/114079476010900698662/');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=https%3A%2F%2Fplus.google.com%2F114079476010900698662%2F" title="Google+"><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" height="40px" id="ssp_3" onmouseover='document.getElementById("ssp_3").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_google.png"' onmouseout='document.getElementById("ssp_3").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/google.png"' src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/google.png" /></a></div><div style="float:left;display:inline-block;margin-right:4px;margin-top:4px;"><a onclick="ga('send', 'event', 'Outgoing', 'www.youtube.com', '/pocketpcch');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Fwww.youtube.com%2Fpocketpcch" title="YouTube"><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" height="40px" id="ssp_4" onmouseover='document.getElementById("ssp_4").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_youtube.png"' onmouseout='document.getElementById("ssp_4").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/youtube.png"' src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/youtube.png" /></a></div><div style="float:left;display:inline-block;margin-right:4px;margin-top:4px;"><a onclick="ga('send', 'event', 'Outgoing', 'instagram.com', '/pocketpcch');" rel="nofollow" href="https://www.pocketpc.ch/redirect-to/?redirect=http%3A%2F%2Finstagram.com%2Fpocketpcch" title="Instagram"><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" height="40px" id="ssp_5" onmouseover='document.getElementById("ssp_5").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_instagram.png"' onmouseout='document.getElementById("ssp_5").src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/instagram.png"' src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/instagram.png" /></a></div><div style="clear:both;"></div><div style="display:none;"><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_rss.png" /><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_facebook.png" /><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_twitter.png" /><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_google.png" /><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_youtube.png" /><img alt="Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!" src="https://www.pocketpc.ch/magazin/wp-content/plugins/social_sidebar/img/hover_instagram.png" /></div></li></ul><br/>
+		</div>
+		</div>
+	</div>
+	<div class="underblock"></div>
+</li><li>
+	<div class="block smaller">
+		<div class="blocksubhead">
+			<span class="blocktitle">Neuste Beiträge</span>
+		</div>
+		<div class="widget_content blockbody floatcontainer">
+		<ul id="block_newthreads_4" class="blockrow">
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/apple-iphone-11-pro-max-/245864-iphone-keynote-13-10-a.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">iPhone Keynote am 13.10.</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/44815_bg2406.html?s=22c09551c71c1a6b64e4364ca45cbf28">BG2406</a>,
+						
+						Heute, <span class="time">09:10</span>,
+						in <a href="https://www.pocketpc.ch/1362-apple-iphone-11-pro-max/?s=22c09551c71c1a6b64e4364ca45cbf28">Apple iPhone 11 Pro (Max)</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/allgemeine-ios-themen/245867-selektive-wiederherstellung-apps-einstellungen-backup.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Selektive Wiederherstellung von...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/44815_bg2406.html?s=22c09551c71c1a6b64e4364ca45cbf28">BG2406</a>,
+						
+						Gestern, <span class="time">19:48</span>,
+						in <a href="https://www.pocketpc.ch/630-allgemeine-ios-themen/?s=22c09551c71c1a6b64e4364ca45cbf28">Allgemeine iOS-Themen</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/plauderecke/245866-beste-online-apotheke.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Beste Online Apotheke</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/117057_akim55.html?s=22c09551c71c1a6b64e4364ca45cbf28">akim55</a>,
+						
+						10.10.2020, <span class="time">20:21</span>,
+						in <a href="https://www.pocketpc.ch/70-plauderecke/?s=22c09551c71c1a6b64e4364ca45cbf28">Plauderecke</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/apple-watch/245841-erscheint-guenstige-apple-watch.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Erscheint eine günstige Apple...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/33584_isobuster.html?s=22c09551c71c1a6b64e4364ca45cbf28">Isobuster</a>,
+						
+						10.10.2020, <span class="time">13:26</span>,
+						in <a href="https://www.pocketpc.ch/680-apple-watch/?s=22c09551c71c1a6b64e4364ca45cbf28">Apple Watch</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/allgemeine-apple-themen/245865-apple-a14-bionic-schnell-iphone-12-pro-wirklich-apple-news.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Apple A14 Bionic: Wie schnell wird...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/171467_pocketpc-ch-magazin.html?s=22c09551c71c1a6b64e4364ca45cbf28">PocketPC.ch Magazin</a>,
+						
+						09.10.2020, <span class="time">14:40</span>,
+						in <a href="https://www.pocketpc.ch/424-allgemeine-apple-themen/?s=22c09551c71c1a6b64e4364ca45cbf28">Allgemeine Apple-Themen</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/android-news/245863-huawei-mate-40-bekommt-harmonyos-2-0-android-alternative-android-news.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Huawei Mate 40 bekommt HarmonyOS...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/171467_pocketpc-ch-magazin.html?s=22c09551c71c1a6b64e4364ca45cbf28">PocketPC.ch Magazin</a>,
+						
+						06.10.2020, <span class="time">08:05</span>,
+						in <a href="https://www.pocketpc.ch/183-android-news/?s=22c09551c71c1a6b64e4364ca45cbf28">Android News</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/android-news/245862-surface-duo-phone-microsoft-hat-probleme-usb-c-anschluss-android-news.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Surface Duo Phone: Microsoft hat...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/171467_pocketpc-ch-magazin.html?s=22c09551c71c1a6b64e4364ca45cbf28">PocketPC.ch Magazin</a>,
+						
+						05.10.2020, <span class="time">13:25</span>,
+						in <a href="https://www.pocketpc.ch/183-android-news/?s=22c09551c71c1a6b64e4364ca45cbf28">Android News</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/android-news/245861-google-stellt-daydream-vr-apple-scheint-recht-behalten-android-news.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Google stellt Daydream VR ein:...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/171467_pocketpc-ch-magazin.html?s=22c09551c71c1a6b64e4364ca45cbf28">PocketPC.ch Magazin</a>,
+						
+						05.10.2020, <span class="time">12:55</span>,
+						in <a href="https://www.pocketpc.ch/183-android-news/?s=22c09551c71c1a6b64e4364ca45cbf28">Android News</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/android-games/245859-review-lego-super-mario-test-android-games.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Review: LEGO Super Mario im Test -...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/171467_pocketpc-ch-magazin.html?s=22c09551c71c1a6b64e4364ca45cbf28">PocketPC.ch Magazin</a>,
+						
+						04.10.2020, <span class="time">13:49</span>,
+						in <a href="https://www.pocketpc.ch/652-android-games/?s=22c09551c71c1a6b64e4364ca45cbf28">Android Games</a>
+
+					</div>
+				</div>
+			</li>
+			
+			<li class="avatarcontent floatcontainer widget_post_bit">
+				
+				<div class="smallavatartext widget_post_comment" style="margin-left: 0px;">
+					<h5 class="widget_post_header"><a href="https://www.pocketpc.ch/apple-games/245858-review-lego-super-mario-test-apple-gaming.html?s=22c09551c71c1a6b64e4364ca45cbf28" class="title">Review: LEGO Super Mario im Test -...</a></h5>
+					<div class="meta">
+						&lrm;
+						
+							<a href="https://www.pocketpc.ch/members/171467_pocketpc-ch-magazin.html?s=22c09551c71c1a6b64e4364ca45cbf28">PocketPC.ch Magazin</a>,
+						
+						04.10.2020, <span class="time">06:15</span>,
+						in <a href="https://www.pocketpc.ch/458-apple-games/?s=22c09551c71c1a6b64e4364ca45cbf28">Apple Games</a>
+
+					</div>
+				</div>
+			</li>
+			
+		</ul>
+		</div>
+	</div>
+	<div class="underblock"></div>
+</li>
+		</ul>
+	</div>
+	
+
+
+
+
+
+
+
+
+<div style="clear: left">
+   
+   
+</div>
+
+
+<div class="cleardiv"></div>
+
+<div id="footer" class="floatcontainer footer">
+
+	<form action="https://www.pocketpc.ch/forum.php" method="get" id="footer_select" class="footer_select">
+
+		
+		
+		
+	</form>
+
+	<ul id="footer_links" class="footer_links">
+
+		<li><a class="rellect_desktop_version" href="javascript:void(0)" rel="nofollow" style="display:none;">Desktop Ansicht</a></li>
+
+		<li><a href="//www.pocketpc.ch/magazin/impressum">Impressum</a></li>
+		<li><a href="//www.pocketpc.ch/magazin/werbung">Werbung</a></li>
+		
+		
+		
+		
+		
+		
+		<li><a href="https://www.pocketpc.ch/magazin/impressum/">Datenschutzerklärung</a></li>
+		
+		<!--<li><a href="https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-34.html#top" onclick="document.location.hash='top'; return false;">Nach oben</a></li>-->
+	</ul>
+	
+	
+	
+	
+	<script type="text/javascript" data-cookieconsent="preferences">
+	<!--
+		// Main vBulletin Javascript Initialization
+		vBulletin_init();
+	//-->
+	</script>
+        
+</div>
+</div> <!-- closing div for body_wrapper -->
+
+<div class="below_body">
+
+<div id="footer_morecopyright" class="shade footer_morecopyright">
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+	<img src="https://www.pocketpc.ch/cron.php?s=22c09551c71c1a6b64e4364ca45cbf28&amp;rand=1602518129" alt="" width="1" height="1" border="0" />
+	<!-- Do not remove cronimage or your scheduled tasks will cease to function -->
+</div>
+ 
+
+</div>
+
+
+<!-- Galleria laden - css in header -->
+
+<!-- load Galleria -->
+<link rel="stylesheet" href="https://www.pocketpc.ch/clientscript/galleria/themes/azur/galleria.azur.css?v=20">
+<script src="clientscript/galleria/galleria-1.4.2.min.js?v=20" ></script>
+
+<!-- load Theme -->
+<script src="clientscript/galleria/themes/azur/galleria.azur.min.js?v=20" async="async" ></script>
+
+<!-- load feed -->
+<script type="text/javascript">
+<!--
+	function fillTheGalleria()
+	{
+		_asyncGalleriaLoader.forEach(function(entry) {eval(entry);});
+	}
+
+
+	$('.rel_postbit_menuIconContainer').on('click', function() {
+	  ga('send', 'event', 'more_button', '0', 'postbit');
+	});
+// -->
+</script>
+
+<script type="text/javascript" src="clientscript/galleria/jquery.jfeed.js?v=22" async="async"></script>
+<script type="text/javascript" src="clientscript/galleria/feed.js?v=22" async="async" onload="fillTheGalleria()"></script>
+
+<!-- PPC Ad START -->
+
+  
+    <script type='text/javascript'><!--
+      if($(window).width() >= 1024){
+        document.write('<sc'+'rYJDISABLEipt src="//static.plista.com/autoinit/15c526ecd2dd612d4fc8dd5e/flyad.js"></sc'+'ript>');}
+    //-->
+    </script>
+  
+  
+    
+    <!-- script data-cookieconsent="marketing" type='text/javascript'><!--
+        document.write('<sc'+'ript src="//adserver.powerlinks.com/serve?id=119159"></sc'+'ript>');
+    //->
+    </script -->
+        <script>(function(d, s, host, ipid){var e = d.createElement(s);e.type='application/javascript';e.async = !0;e.src = '//' + host + '/intellitxt/front.asp?ipid=' + ipid;d.getElementsByTagName(s)[0].parentNode.appendChild(e);})(document, 'script', 'k.intellitxt.com', 37091);</script>  
+    
+  
+
+
+      <div id='div-gpt-ad-1338322361279-12' style='width:1px; height:1px;'>
+        
+          <script data-cookieconsent="statistics,marketing" type='text/javascript'>
+          <!--
+              googletag.cmd.push(function() { googletag.display('div-gpt-ad-1338322361279-12'); });
+          //-->
+          </script>
+        
+      </div>
+
+<!-- Hotjar -->
+<script data-cookieconsent="statistics">
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:102107,hjsv:5};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+<!-- PPC Ad END -->
+
+<script><!--
+/**
+ * Desktop Version For Mobiles
+ * by @rellect <http://www.rellect.com>
+ */
+
+$(function(){
+	var minWidth = 1025,
+		mobile_viewport = $('meta[property="rellect-viewport"]').prop('content'),
+		desktop_viewport = 'width=' + minWidth,
+		switchTrigger = $(".rellect_desktop_version");
+
+	switchTrigger.show().click(function(e){
+		e.preventDefault();
+
+		var viewport = $('meta[name="viewport"]'),
+			switchVP = $.proxy(function(zoomfix, content, phrase, cookielife){
+				viewport.prop('content', zoomfix); // zoom to normal
+				switchTrigger.text(phrase); // Update action phrase
+				set_cookie('desktop_version', '1', cookielife); // delete the cookie
+
+				location.reload();
+			}, this);
+
+		/* We're on desktop version, switch to mobile view */
+		if(fetch_cookie('desktop_version') == '1'){
+			switchVP(
+				mobile_viewport + ', minimum-scale=1, maximum-scale=1',
+				mobile_viewport,
+				'Desktop Ansicht',
+				(new Date(-1))
+			);
+		}
+		/* We're on mobile version, switch to desktop view */
+		else{
+			switchVP(
+				desktop_viewport + ', minimum-scale=0.3, maximum-scale=0.3',
+				desktop_viewport,
+				'Mobile Ansicht'
+			);
+		}
+	});
+});
+//--></script>
+				<script type="text/javascript">
+					<!--
+					vbphrase['dbtech_thanks_must_wait_x_seconds'] = "You must wait at least %time% seconds between button clicks. It has been %time2% seconds since your last button click."
+					vbphrase['dbtech_thanks_people_who_clicked'] = "Erhalten von"
+					vbphrase['dbtech_thanks_loading'] = "Loading"
+					vbphrase['dbtech_thanks_noone_clicked'] = "Keine Danke bisher erhalten."
+					
+		var thanksOptions = {"threadId":"122760","vbversion":"4","postCount":"795","thanksEntries":{},"colorOptions":{},"contenttype":"post","floodTime":"0","noRefresh":"1"};
+	
+					// -->
+				</script>
+			<script type="text/javascript" src="https://www.pocketpc.ch/dbtech/thanks/clientscript/thanks.version.js?v=363"></script><script type="text/javascript"> (window.jQuery && __versionCompare(window.jQuery.fn.jquery, "1.7.2", ">=")) || document.write('<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">\x3C/script>'); </script><script type="text/javascript" src="https://www.pocketpc.ch/dbtech/thanks/clientscript/jquery.qtip.min.js"></script><script type="text/javascript" src="https://www.pocketpc.ch/dbtech/thanks/clientscript/thanks.js?v=363"></script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"27107c09c5","applicationID":"12133048","transactionName":"MVZXZ0NVD0AAAEBQDQgcYEFYGwVREgZbFxIOQw==","queueTime":0,"applicationTime":499,"atts":"HRFUEQtPHE4=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

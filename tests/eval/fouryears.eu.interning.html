@@ -1,0 +1,328 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Four Years Remaining  &raquo; Blog Archive   &raquo; Interning of Small Integers in Python</title>
+<meta name="generator" content="WordPress 4.9.3" /> <!-- leave this for stats -->
+<link rel="stylesheet" href="http://fouryears.eu/wp-content/themes/modern-notepad-kt/style.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="http://fouryears.eu/wp-content/themes/modern-notepad-kt/print.css" type="text/css" media="print" />
+<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://fouryears.eu/feed/" />
+<link rel="alternate" type="text/xml" title="RSS .92" href="http://fouryears.eu/feed/rss/" />
+<link rel="alternate" type="application/atom+xml" title="Atom 0.3" href="http://fouryears.eu/feed/atom/" />
+<link rel="pingback" href="http://fouryears.eu/xmlrpc.php" />
+	<link rel='archives' title='October 2019' href='http://fouryears.eu/2019/10/' />
+	<link rel='archives' title='February 2019' href='http://fouryears.eu/2019/02/' />
+	<link rel='archives' title='November 2018' href='http://fouryears.eu/2018/11/' />
+	<link rel='archives' title='June 2018' href='http://fouryears.eu/2018/06/' />
+	<link rel='archives' title='April 2018' href='http://fouryears.eu/2018/04/' />
+	<link rel='archives' title='March 2018' href='http://fouryears.eu/2018/03/' />
+	<link rel='archives' title='December 2017' href='http://fouryears.eu/2017/12/' />
+	<link rel='archives' title='July 2017' href='http://fouryears.eu/2017/07/' />
+	<link rel='archives' title='May 2017' href='http://fouryears.eu/2017/05/' />
+	<link rel='archives' title='March 2017' href='http://fouryears.eu/2017/03/' />
+	<link rel='archives' title='November 2016' href='http://fouryears.eu/2016/11/' />
+	<link rel='archives' title='July 2016' href='http://fouryears.eu/2016/07/' />
+	<link rel='archives' title='May 2016' href='http://fouryears.eu/2016/05/' />
+	<link rel='archives' title='January 2016' href='http://fouryears.eu/2016/01/' />
+	<link rel='archives' title='September 2015' href='http://fouryears.eu/2015/09/' />
+	<link rel='archives' title='July 2015' href='http://fouryears.eu/2015/07/' />
+	<link rel='archives' title='June 2015' href='http://fouryears.eu/2015/06/' />
+	<link rel='archives' title='May 2015' href='http://fouryears.eu/2015/05/' />
+	<link rel='archives' title='April 2015' href='http://fouryears.eu/2015/04/' />
+	<link rel='archives' title='March 2015' href='http://fouryears.eu/2015/03/' />
+	<link rel='archives' title='January 2015' href='http://fouryears.eu/2015/01/' />
+	<link rel='archives' title='March 2014' href='http://fouryears.eu/2014/03/' />
+	<link rel='archives' title='January 2014' href='http://fouryears.eu/2014/01/' />
+	<link rel='archives' title='April 2013' href='http://fouryears.eu/2013/04/' />
+	<link rel='archives' title='February 2013' href='http://fouryears.eu/2013/02/' />
+	<link rel='archives' title='January 2013' href='http://fouryears.eu/2013/01/' />
+	<link rel='archives' title='November 2012' href='http://fouryears.eu/2012/11/' />
+	<link rel='archives' title='October 2012' href='http://fouryears.eu/2012/10/' />
+	<link rel='archives' title='September 2012' href='http://fouryears.eu/2012/09/' />
+	<link rel='archives' title='June 2012' href='http://fouryears.eu/2012/06/' />
+	<link rel='archives' title='May 2012' href='http://fouryears.eu/2012/05/' />
+	<link rel='archives' title='January 2012' href='http://fouryears.eu/2012/01/' />
+	<link rel='archives' title='December 2011' href='http://fouryears.eu/2011/12/' />
+	<link rel='archives' title='October 2011' href='http://fouryears.eu/2011/10/' />
+	<link rel='archives' title='May 2011' href='http://fouryears.eu/2011/05/' />
+	<link rel='archives' title='March 2011' href='http://fouryears.eu/2011/03/' />
+	<link rel='archives' title='June 2010' href='http://fouryears.eu/2010/06/' />
+	<link rel='archives' title='February 2010' href='http://fouryears.eu/2010/02/' />
+	<link rel='archives' title='November 2009' href='http://fouryears.eu/2009/11/' />
+	<link rel='archives' title='October 2009' href='http://fouryears.eu/2009/10/' />
+	<link rel='archives' title='August 2009' href='http://fouryears.eu/2009/08/' />
+	<link rel='archives' title='June 2009' href='http://fouryears.eu/2009/06/' />
+	<link rel='archives' title='March 2009' href='http://fouryears.eu/2009/03/' />
+	<link rel='archives' title='February 2009' href='http://fouryears.eu/2009/02/' />
+	<link rel='archives' title='January 2009' href='http://fouryears.eu/2009/01/' />
+	<link rel='archives' title='December 2008' href='http://fouryears.eu/2008/12/' />
+	<link rel='archives' title='November 2008' href='http://fouryears.eu/2008/11/' />
+	<link rel='archives' title='October 2008' href='http://fouryears.eu/2008/10/' />
+	<link rel='archives' title='September 2008' href='http://fouryears.eu/2008/09/' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="Four Years Remaining &raquo; Interning of Small Integers in Python Comments Feed" href="http://fouryears.eu/2019/10/21/interning-of-small-integers-in-python/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.4\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/fouryears.eu\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.3"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56692,8205,9792,65039],[55357,56692,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='wp-quicklatex-format-css'  href='http://fouryears.eu/wp-content/plugins/wp-quicklatex/css/quicklatex-format.css?ver=4.9.3' type='text/css' media='all' />
+<link rel='stylesheet' id='enlighter-wpcustom-css'  href='http://fouryears.eu/wp-content/plugins/enlighter/cache/EnlighterJS.custom.css?ver=4e5fc5af83' type='text/css' media='all' />
+<script type='text/javascript' src='http://fouryears.eu/wp-content/plugins/enlighter/resources/mootools-core-yc.js?ver=3.5'></script>
+<script type='text/javascript' src='http://fouryears.eu/wp-content/plugins/enlighter/resources/EnlighterJS.min.js?ver=3.5'></script>
+<script type='text/javascript' src='http://fouryears.eu/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='http://fouryears.eu/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='http://fouryears.eu/wp-content/plugins/wp-quicklatex/js/wp-quicklatex-frontend.js?ver=1.0'></script>
+<link rel='https://api.w.org/' href='http://fouryears.eu/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://fouryears.eu/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://fouryears.eu/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='How to Prepare A Good Presentation' href='http://fouryears.eu/2019/02/11/how-to-prepare-a-good-presentation/' />
+<meta name="generator" content="WordPress 4.9.3" />
+<link rel="canonical" href="http://fouryears.eu/2019/10/21/interning-of-small-integers-in-python/" />
+<link rel='shortlink' href='http://fouryears.eu/?p=2406' />
+<link rel="alternate" type="application/json+oembed" href="http://fouryears.eu/wp-json/oembed/1.0/embed?url=http%3A%2F%2Ffouryears.eu%2F2019%2F10%2F21%2Finterning-of-small-integers-in-python%2F" />
+<link rel="alternate" type="text/xml+oembed" href="http://fouryears.eu/wp-json/oembed/1.0/embed?url=http%3A%2F%2Ffouryears.eu%2F2019%2F10%2F21%2Finterning-of-small-integers-in-python%2F&#038;format=xml" />
+<link href='http://fouryears.eu/wp-content/plugins/yatcp/yatcp_style.css' rel='stylesheet' type='text/css' />		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<script type="text/javascript">/* <![CDATA[ */EnlighterJS_Config = {"selector":{"block":"pre.EnlighterJSRAW","inline":"code.EnlighterJSRAW"},"language":"generic","theme":"wpcustom","indent":2,"hover":"NULL","showLinenumbers":false,"rawButton":false,"infoButton":false,"windowButton":false,"rawcodeDoubleclick":false,"grouping":true,"cryptex":{"enabled":false,"email":"mail@example.tld"}};!function(){var a=function(a){var b="Enlighter Error: ";console.error?console.error(b+a):console.log&&console.log(b+a)};return window.addEvent?"undefined"==typeof EnlighterJS?void a("Javascript Resources not loaded yet!"):"undefined"==typeof EnlighterJS_Config?void a("Configuration not loaded yet!"):void window.addEvent("domready",function(){EnlighterJS.Util.Init(EnlighterJS_Config.selector.block,EnlighterJS_Config.selector.inline,EnlighterJS_Config)}):void a("MooTools Framework not loaded yet!")}();;/* ]]> */</script><!--[if IE ]>
+<link type="text/css" rel="stylesheet" media="screen" href="http://fouryears.eu/wp-content/themes/modern-notepad-kt/ie.css" />
+<![endif]-->
+</head>
+<body>
+	<div class="top-line"><div class="bottom-line">
+    <div id="root">
+        <div id="header">
+        	<div class="headers">&nbsp;<!--This text can be changed ### for your personal quote--></div>
+        	
+            <div class="content">
+                <h1><a href="http://fouryears.eu">Four Years Remaining</a></h1>
+                <div class="description">Preparing the consequences</div>
+				<!--ul id="nav-bar">
+					<li><a href="http://fouryears.eu">Home</a></li>
+					<li class="page_item page-item-2"><a href="http://fouryears.eu/about/">About</a></li>
+				</ul-->
+                <form id="searchform" action="http://fouryears.eu/">
+                    <div><input type="text" value="" name="s" id="s" class="text" /><input type="submit" value="Search" class="button" /></div>
+                </form>
+            </div>
+        </div><!--#header-->
+
+        <div id="main">
+<div id="main-block">
+    <div id="content">
+    	            <ul>
+            	                	<li class="post" id="post-2406">
+                		<div class="content">
+                            <div class="title">
+                        	    <h2><a href="http://fouryears.eu/2019/10/21/interning-of-small-integers-in-python/" rel="bookmark" title="Permanent Link to Interning of Small Integers in Python">Interning of Small Integers in Python</a></h2>
+                            </div>
+                            <div class="postdata">
+                                <!--span class="category"><a href="http://fouryears.eu/topics/uncategorized/" rel="category tag">Uncategorized</a></span-->
+										  <span class="category">Posted by Konstantin</span>
+                                <span class="date">21.10.2019</span>
+                            </div><!--.postdata-->
+                    		<div class="entry">
+                    		    <p>Can't help sharing <a href="https://www.reddit.com/r/Python/comments/2441cv/can_you_change_the_value_of_1/" target="_blank" rel="noopener">this</a> lovely example, illustrating the way Python <a href="https://en.wikipedia.org/wiki/String_interning" target="_blank" rel="noopener">interns</a> small integers, the lower level use of the <code class="EnlighterJSRAW" data-enlighter-language="python">id</code> function as well as the power of the <code class="EnlighterJSRAW" data-enlighter-language="python">ctypes</code> module.</p>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">import ctypes
+def deref(addr, type_):
+    return ctypes.cast(addr, ctypes.POINTER(type_))
+
+deref(id(29), ctypes.c_int)[4] = 100</pre>
+<pre class="EnlighterJSRAW" data-enlighter-language="python">&gt; 29
+100
+
+&gt; 29*100
+10000
+
+&gt; 25+4
+100</pre>
+<p>Note that depending on the version of Python the value of the integer may be stored at either offset [4] or [6].</p>
+                    		</div>
+                    		<p>Posted by Konstantin @ 12:00 am </p>
+                    		<p>Tags: <a href="http://fouryears.eu/tags/computer-science/" rel="tag">Computer science</a>, <a href="http://fouryears.eu/tags/fun/" rel="tag">Fun</a>, <a href="http://fouryears.eu/tags/hacks/" rel="tag">Hacks</a>, <a href="http://fouryears.eu/tags/programming/" rel="tag">Programming</a>, <a href="http://fouryears.eu/tags/python/" rel="tag">Python</a></p>                		</div>
+                		<div class="footer"></div>
+                	</li>
+            	            	<li class="post">
+            		<div class="content">
+            			
+
+<!-- You can start editing here. -->
+	<h3 id="comments">No Comments</h3> 
+	
+
+		<ol class="yatcp_commentlist">
+		
+		</ol>
+	
+ 			<h3 id="respond">Leave a comment</h3>
+					<form action="http://fouryears.eu/wp-comments-post.php" method="post" id="commentform">
+			
+							<p><input type="text" name="author" id="author" value="" size="22" tabindex="1" />
+				<label for="author"><small>Name (required)</small></label></p>
+
+				<p><input type="text" name="email" id="email" value="" size="22" tabindex="2" />
+				<label for="email"><small>E-Mail:(not displayed)(required)</small></label></p>
+
+				<p><input type="text" name="url" id="url" value="" size="22" tabindex="3" />
+				<label for="url"><small>Website:</small></label></p>
+			
+			<p><textarea name="comment" id="comment" cols="100%" rows="10" tabindex="4"></textarea></p>
+
+ <p><small><strong>Please note:</strong> Comment moderation is enabled and may delay your comment. There is no need to resubmit your comment.</small></p>
+
+
+			<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="a15ad5810a" /></p><div class="g-recaptcha" data-sitekey="6Lej-9cSAAAAAKKMC8IqI76MzjPUnfVaxIuKanqy" data-theme="standard"></div><script type="text/javascript"src="https://www.google.com/recaptcha/api.js?hl=en"></script>            <div id="recaptcha-submit-btn-area">&nbsp;</div>
+            <noscript>
+            <style type='text/css'>#submit {display:none;}</style>
+            <input name="submit" type="submit" id="submit-alt" tabindex="6"
+                value="Submit Comment"/> 
+            </noscript><a name='comment_selection'>
+<label for='comment_parent'>Reply to:</label><br />
+<select name='comment_parent' id='comment_parent'>
+	<option value='0'>Post</option>
+</select>
+</a>
+<p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="68"/></p>			<p>
+				<input name="submit" type="submit" id="submit" tabindex="5" value="Save" />
+				<input type="hidden" name="comment_post_ID" value="2406" />
+			</p>
+			</form>
+			            		</div>
+            		<div class="footer"></div>
+            	</li>
+             </ul>
+            </div><!--#content-->
+</div><!--#main-block-->
+<div id="right-block">
+    <div class="box"><div class="header"><h3>Calendar</h3></div><div id="calendar_wrap" class="calendar_wrap"><table id="wp-calendar">
+	<caption>October 2019</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="Monday">M</th>
+		<th scope="col" title="Tuesday">T</th>
+		<th scope="col" title="Wednesday">W</th>
+		<th scope="col" title="Thursday">T</th>
+		<th scope="col" title="Friday">F</th>
+		<th scope="col" title="Saturday">S</th>
+		<th scope="col" title="Sunday">S</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="http://fouryears.eu/2019/02/">&laquo; Feb</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next" class="pad">&nbsp;</td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr>
+		<td colspan="1" class="pad">&nbsp;</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td>
+	</tr>
+	<tr>
+		<td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td>
+	</tr>
+	<tr>
+		<td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td>
+	</tr>
+	<tr>
+		<td><a href="http://fouryears.eu/2019/10/21/" aria-label="Posts published on October 21, 2019">21</a></td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td>
+	</tr>
+	<tr>
+		<td>28</td><td>29</td><td>30</td><td>31</td>
+		<td class="pad" colspan="3">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></div><div class="box"><div class="header"><h3>Recent Comments</h3></div><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link"><a href='https://flappybird.onl' rel='external nofollow' class='url'>flappy bird</a></span> on <a href="http://fouryears.eu/2013/02/25/the-substring-paradox/comment-page-1/#comment-269384">The Substring Paradox</a></li><li class="recentcomments"><span class="comment-author-link"><a href='https://mope.onl' rel='external nofollow' class='url'>mope io</a></span> on <a href="http://fouryears.eu/2012/09/03/self-learning-mini-checkers-machine/comment-page-1/#comment-268932">Self-learning Mini-checkers Machine</a></li><li class="recentcomments"><span class="comment-author-link"><a href='https://ss8683.gigalogik.jp.net/' rel='external nofollow' class='url'>second</a></span> on <a href="http://fouryears.eu/2011/05/09/how-to-send-an-sms/comment-page-1/#comment-268770">How to Send an SMS</a></li><li class="recentcomments"><span class="comment-author-link"><a href='https://oncepapertripdrive.best/' rel='external nofollow' class='url'>Best western clearfield pa</a></span> on <a href="http://fouryears.eu/2015/01/22/skype-removed-messages/comment-page-1/#comment-227250">Skype "removed" messages</a></li><li class="recentcomments"><span class="comment-author-link"><a href='https://aiaspirant.com/6-regularization-techniques-for-deep-learning/' rel='external nofollow' class='url'>6 Regularization Techniques for Deep Learning | Python | Keras - AI ASPIRANT</a></span> on <a href="http://fouryears.eu/2017/12/06/the-mystery-of-early-stopping/comment-page-1/#comment-207795">The Mystery of Early Stopping</a></li></ul></div><div class="box"><div class="header"><h3>Archives</h3></div>		<ul>
+			<li><a href='http://fouryears.eu/2019/10/'>October 2019</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2019/02/'>February 2019</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2018/11/'>November 2018</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2018/06/'>June 2018</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2018/04/'>April 2018</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2018/03/'>March 2018</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2017/12/'>December 2017</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2017/07/'>July 2017</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2017/05/'>May 2017</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2017/03/'>March 2017</a>&nbsp;(4)</li>
+	<li><a href='http://fouryears.eu/2016/11/'>November 2016</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2016/07/'>July 2016</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2016/05/'>May 2016</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2016/01/'>January 2016</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2015/09/'>September 2015</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2015/07/'>July 2015</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2015/06/'>June 2015</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2015/05/'>May 2015</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2015/04/'>April 2015</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2015/03/'>March 2015</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2015/01/'>January 2015</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2014/03/'>March 2014</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2014/01/'>January 2014</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2013/04/'>April 2013</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2013/02/'>February 2013</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2013/01/'>January 2013</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2012/11/'>November 2012</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2012/10/'>October 2012</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2012/09/'>September 2012</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2012/06/'>June 2012</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2012/05/'>May 2012</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2012/01/'>January 2012</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2011/12/'>December 2011</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2011/10/'>October 2011</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2011/05/'>May 2011</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2011/03/'>March 2011</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2010/06/'>June 2010</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2010/02/'>February 2010</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2009/11/'>November 2009</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2009/10/'>October 2009</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2009/08/'>August 2009</a>&nbsp;(2)</li>
+	<li><a href='http://fouryears.eu/2009/06/'>June 2009</a>&nbsp;(1)</li>
+	<li><a href='http://fouryears.eu/2009/03/'>March 2009</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2009/02/'>February 2009</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2009/01/'>January 2009</a>&nbsp;(5)</li>
+	<li><a href='http://fouryears.eu/2008/12/'>December 2008</a>&nbsp;(4)</li>
+	<li><a href='http://fouryears.eu/2008/11/'>November 2008</a>&nbsp;(3)</li>
+	<li><a href='http://fouryears.eu/2008/10/'>October 2008</a>&nbsp;(7)</li>
+	<li><a href='http://fouryears.eu/2008/09/'>September 2008</a>&nbsp;(8)</li>
+		</ul>
+		</div></div><!--#right-block-->
+            </div><!--#main-->
+            <div id="footer">
+                <div class="wrapper">
+                    <span class="copyright">&copy; Konstantin Tretyakov. All Rights Reserved.</span>
+                    <span class="links">
+                        <a href="http://fouryears.eu/feed/" title="Syndicate this site using RSS" class="rss entries">Entries <abbr title="Really Simple Syndication">RSS</abbr></a>
+                        <a href="http://fouryears.eu/comments/feed/" title="The latest comments to all posts in RSS" class="rss">Comments <abbr title="Really Simple Syndication">RSS</abbr></a>
+                        <!-- a href="http://fouryears.eu/wp-admin/" title="User Area" class="login">Login</a-->
+                        <a href="http://www.aoemedia.de" class="powered"><img src="http://fouryears.eu/wp-content/themes/modern-notepad-kt/img/cubes.gif" alt="Open Source" /></a>
+                    </span>
+                </div>
+            </div><!--#footer-->
+        </div><!--#root-->
+        </div></div><!--end lines-->
+        <div id="img-cache"><img src="http://fouryears.eu/wp-content/themes/modern-notepad-kt/img/archive-hover.gif" alt="" /><img src="http://fouryears.eu/wp-content/themes/modern-notepad-kt/img/blogroll-hover.gif" alt="" /><img src="http://fouryears.eu/wp-content/themes/modern-notepad-kt/img/popular-hover.gif" alt="" /><img src="http://fouryears.eu/wp-content/themes/modern-notepad-kt/img/nav-hover.gif" alt="" /><img src="http://fouryears.eu/wp-content/themes/modern-notepad-kt/img/cat-hover.gif" alt="" /></div>
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-234927-5");
+pageTracker._trackPageview();
+</script>    
+	 
+	 </body>
+</html>

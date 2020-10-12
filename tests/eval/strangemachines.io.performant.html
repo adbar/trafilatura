@@ -1,0 +1,267 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" type="image/x-icon" href="https://strangemachines.io/favicon-16.ico" sizes="16x16"><link rel="icon" type="image/x-icon" href="https://strangemachines.io/favicon.ico" sizes="32x32"><link rel="icon" type="image/x-icon" href="https://strangemachines.io/favicon-48.ico" sizes="48x48"><link rel="stylesheet" type="text/css" href="https://strangemachines.io/css/main.min.css"><link rel="alternate" type="application/rss+xml" href="https://strangemachines.io/rss.xml"><link rel="stylesheet" href="https://use.typekit.net/vri6msw.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/tomorrow-night-blue.min.css"><title>Performant Python - Strangemachines</title><meta name="description" content="A look at how to write performant Python code in simple ways and how much each improvement is effective."/><link rel="canonical" href="https://strangemachines.io/articles/performant-python"/><meta property="og:title" content="Performant Python"/><meta property="og:description" content="A look at how to write performant Python code in simple ways and how much each improvement is effective."/><meta property="og:type" content="article"/><meta property="og:url" content="https://strangemachines.io/articles/performant-python"/><meta property="og:site_name" content="Strangemachines"/><meta property="og:image" content="https://strangemachines.io/images/logo.png"/><meta property="article:published_time" content="2019-12-03T00:00:00.000Z"><meta property="article:modified_time" content="2019-12-06T00:00:00.000Z"><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Performant Python",
+    "datePublished": "2019-12-03",
+    "dateCreated": "2019-12-03",
+    "description": "A look at how to write performant Python code in simple ways and how much each improvement is effective.",
+    "articleBody": "&lt;p&gt;There are many ways to improve Python's performance, such as cython or writing C modules and calling them from Python. These are invasive methods that require a specific setup or build. However, there are a number of ways to improve Python's performance that are non-invasive and require little effort.&lt;/p&gt;
+&lt;p&gt;Python has been designed to be user-friendly and intuitive and simpler constructs are presented as defaults. Sometimes performance is needed and Python has many performant constructs that provide significant improvements in memory and execution time.&lt;/p&gt;
+&lt;h2&gt;Memory&lt;/h2&gt;
+&lt;p&gt;Python uses a lot of memory but there are alternatives to default data structures that can reduce memory usage.&lt;/p&gt;
+&lt;p&gt;Counting memory in Python is complicated, there are a number of ways to do it, often producing different results, even if off by few bytes. As general rule, I will try to get the exclusive memory of an object.&lt;/p&gt;
+&lt;p&gt;I am going to use the objsize library to count the exclusive memory in use by an item; for generators I will use a custom script and sys.getsizeof since objsize does not work with generators.&lt;/p&gt;
+&lt;h3&gt;Tuples&lt;/h3&gt;
+&lt;p&gt;Tuples are immutable lists.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;(&lt;span class=&quot;hljs-string&quot;&gt;'hello'&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;'world'&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tuples take a bit less memory than lists. With more elements, the relative memory savings becomes smaller:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/memory-occupied-by-tuples-and-lists.svg&quot; alt=&quot;Graph of memory occupied by Python tuples and lists&quot; title=&quot;Graph of memory occupied by Python tuples and lists&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Tuples can also replace dictionaries, infact dict() can produce a dictionary from a tuple, in case one needs that transformation:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;t = ((&lt;span class=&quot;hljs-string&quot;&gt;'company'&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;'Strangemachines'&lt;/span&gt;), (&lt;span class=&quot;hljs-string&quot;&gt;'city'&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;'Amsterdam'&lt;/span&gt;))
+dict(t) &lt;span class=&quot;hljs-comment&quot;&gt;# {'company': 'Strangemachines', 'city': 'Amsterdam'}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Tuples provide significant savings when replacing dictionaries:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/memory-occupied-by-tuples-and-dictionaries.svg&quot; alt=&quot;Graph of memory occupied by Python tuples and dictionaries&quot; title=&quot;Graph of memory occupied by Python tuples and dictionaries&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;Generators&lt;/h3&gt;
+&lt;p&gt;Generators are lazy lists. Instead of computing and putting in memory the entire list, they do so one item at a time and only when the item is requested. Working with generators is more complicated than regular lists, because they can't be indexed or sliced.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;g = (x &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; x &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; data)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Generators are smaller than large tuples, but bigger than small tuples:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/memory-occupied-by-generators-and-tuples.svg&quot; alt=&quot;Graph of memory occupied by Python generators and tuples&quot; title=&quot;Graph of memory occupied by Python generators and tuples&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;Slots&lt;/h3&gt;
+&lt;p&gt;Slots are a mechanism that reduces the memory used by class instances. Slots disable setting dynamic properties on instances and they must be declared when defining the class.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;hljs-class&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;Users&lt;/span&gt;:&lt;/span&gt;
+    __slots__ = (&lt;span class=&quot;hljs-string&quot;&gt;'username'&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;'email'&lt;/span&gt;)
+
+    &lt;span class=&quot;hljs-function&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;__init__&lt;/span&gt;&lt;span class=&quot;hljs-params&quot;&gt;(self, username, email)&lt;/span&gt;:&lt;/span&gt;
+        self.username = username
+        self.email = email
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/memory-occupied-by-python-class-instances.svg&quot; alt=&quot;Graph of memory occupied by Python class instances and slotted class instances&quot; title=&quot;Graph of memory occupied by Python class instances and slotted class instances&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Comparing the memory for small classes, we can see that a slotted class will use at least 50% less memory. Larger clases have smaller savings, but still around half.&lt;/p&gt;
+&lt;h3&gt;Named tuples&lt;/h3&gt;
+&lt;p&gt;Named tuples provide a way to create objects without declaring a class:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;from&lt;/span&gt; collections &lt;span class=&quot;hljs-keyword&quot;&gt;import&lt;/span&gt; namedtuple
+
+Point = namedtuple(&lt;span class=&quot;hljs-string&quot;&gt;'Point'&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;'x'&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;'y'&lt;/span&gt;)
+p = Point(&lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;) &lt;span class=&quot;hljs-comment&quot;&gt;# we can access p.x and p.y&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Many Python performance articles encourage to use namedtuples for objects on the fly; at Strangemachines we know enough metaprogramming and maths to know better: a namedtuple is smaller than a class, but a slotted class is smaller than a namedtuple.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/memory-occupied-by-namedtuples-and-classes-and-slotted-classes.svg&quot; alt=&quot;Graph of memory occupied by namedtuples, classes and slotted classes&quot; title=&quot;Graph of memory occupied by namedtuples, classes and slotted classes&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Since Namedtuple is used to create inline objects, we'll need to use type to create a slotted class, in order to replace a namedtuple:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;hljs-function&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;hljs-params&quot;&gt;(self, x, y)&lt;/span&gt;:&lt;/span&gt;
+    self.x = x
+    self.y = y
+
+
+Point = type(&lt;span class=&quot;hljs-string&quot;&gt;'Point'&lt;/span&gt;, (), {&lt;span class=&quot;hljs-string&quot;&gt;'__slots__'&lt;/span&gt;: (&lt;span class=&quot;hljs-string&quot;&gt;'x'&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;'y'&lt;/span&gt;), &lt;span class=&quot;hljs-string&quot;&gt;'__init__'&lt;/span&gt;: init})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Iteration time&lt;/h2&gt;
+&lt;p&gt;In Python it's often possible to save iteration time by using alternatives to for.&lt;/p&gt;
+&lt;p&gt;As a note of caution, notice that for in Python is not slow by itself. It becomes slower in cases where there is an optimized alternative for that specific type of iteration.&lt;/p&gt;
+&lt;p&gt;For example, calling append to add elements to a list will make for slower than map, but the decrease in performance comes from the additional functions calls of the for loop.&lt;/p&gt;
+&lt;h3&gt;Tuples&lt;/h3&gt;
+&lt;p&gt;Iterating lists is slightly faster than tuples.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-iterate-tuples-and-lists.svg&quot; alt=&quot;Scatter graph of time taken to iterate Python tuples and lists&quot; title=&quot;Scatter graph of time taken to iterate Python tuples and lists&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;Generators&lt;/h3&gt;
+&lt;p&gt;Iterating generators is much faster than lists.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-iterate-lists-and-generators.svg&quot; alt=&quot;Scatter graph of time taken to iterate Python lists and generators&quot; title=&quot;Scatter graph of time taken to iterate Python lists and generators&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;Map&lt;/h3&gt;
+&lt;p&gt;Map is a function that applies a function to the elements of an iterable and produces a new iterable with the results of the function calls.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;hljs-function&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;plus_one&lt;/span&gt;&lt;span class=&quot;hljs-params&quot;&gt;(x)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; x + &lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;
+
+map(plus_one, [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;]) &lt;span class=&quot;hljs-comment&quot;&gt;# [2, 3, 4, 5]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With for it would look like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;result = []
+
+&lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;]:
+    result.append(i+&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Map is faster than for, but only if the map is not converted to a list (probably because of the extra function call):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-map-and-for.svg&quot; alt=&quot;Scatter graph of time taken to modify a list by map and for&quot; title=&quot;Scatter graph of time taken to modify a list by map and for&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;Filter&lt;/h3&gt;
+&lt;p&gt;Filter is a function that applies a function to the elements of an iterable, producing a new iterable that contains only the element for which the function returned a truthy value.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;hljs-function&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;hljs-title&quot;&gt;even&lt;/span&gt;&lt;span class=&quot;hljs-params&quot;&gt;(number)&lt;/span&gt;:&lt;/span&gt;
+    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; number % &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; == &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;:
+        &lt;span class=&quot;hljs-keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;hljs-literal&quot;&gt;True&lt;/span&gt;
+
+filter(even, [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;]) &lt;span class=&quot;hljs-comment&quot;&gt;# [2, 4]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again the equivalent with for:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;result = []
+&lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; i &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;]:
+    &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; i % &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; == &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;:
+        result.append(i)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-filter-and-for.svg&quot; alt=&quot;Scatter graph of time taken to modify a list by filter and for&quot; title=&quot;Scatter graph of time taken to modify a list by filter and for&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;List Comprehensions&lt;/h3&gt;
+&lt;p&gt;List comprehensions are mechanism to process an iterable and create a list the same time. Common cases include filtering or applying a function to the elements of the iterable.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;[city.name &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; city &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; cities]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;List comprehensions are slower than map and filter and using generators instead of list comprehension does not change the outcome:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-map-and-list-comprehension.svg&quot; alt=&quot;Scatter graph of time taken to modify a list by map and list comprehension&quot; title=&quot;Scatter graph of time taken to modify a list by map and list comprehension&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-filter-and-list-comprehension.svg&quot; alt=&quot;Scatter graph of time taken to modify a list by filter and list comprehension&quot; title=&quot;Scatter graph of time taken to modify a list by filter and list comprehension&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Even with a lambda function, map is faster:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-map-lambda-and-list-comprehension.svg&quot; alt=&quot;Scatter graph of time taken to modify a list by map plus lambda and list comprehension&quot; title=&quot;Scatter graph of time taken to modify a list by map + lambda and list comprehension&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;Dictionary comprehensions&lt;/h2&gt;
+&lt;p&gt;Comprehensions also work on dictionaries:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;{city.name: city &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; city &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; cities}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Dictionary comprehensions are slower than map and filter as well:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-modify-a-dict-by-map-and-dict-comprehension.svg&quot; alt=&quot;Scatter graph of time taken to modify a dictionary by map and dictionary comprehension&quot; title=&quot;Scatter graph of time taken to modify a dictionary by map and dictionary comprehension&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://strangemachines.io/images/graphs/time-taken-to-modify-a-dict-by-filter-and-dict-comprehension.svg&quot; alt=&quot;Scatter graph of time taken to modify a dictionary by filter and dictionary comprehension&quot; title=&quot;Scatter graph of time taken to modify a dictionary by filter and dictionary comprehension&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;I know it's a lot of graphs, so I'll summarize them:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tuples save a bit of memory when replacing lists&lt;/li&gt;
+&lt;li&gt;Tuples save lots of memory when replacing dictionaries&lt;/li&gt;
+&lt;li&gt;Generators save memory only for large tuples, but are faster to iterate&lt;/li&gt;
+&lt;li&gt;Slotted classes save a lot of memory&lt;/li&gt;
+&lt;li&gt;Namedtuples are better than classes but worse than slotted classes&lt;/li&gt;
+&lt;li&gt;Map and filter are sometimes faster than comprehensions&lt;/li&gt;
+&lt;/ul&gt;
+",
+    "url": "https://strangemachines.io/articles/performant-python",
+    "author": {
+        "@type": "Person",
+        "name": "Jacopo Cascioli",
+        "image": "https://strangemachines.io/images/jacopo.jpg",
+        "url": "https://jacopocascioli.com",
+        "sameAs": [
+            "https://linkedin.com/in/jacopocascioli"
+        ]
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "Strangemachines",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://strangemachines.io/images/logo.png"
+        }
+     }
+}
+
+</script></head><body><nav class="nav section"><ul class="container"><li><a class="logo" href="https://strangemachines.io" title="Home"><h1 class="title">Strangemachines</h1></a></li><li><a href="https://strangemachines.io/challenges" title="Challenges">Challenges</a></li><li><a href="https://strangemachines.io/articles" title="Articles">Articles</a></li><li><a href="https://strangemachines.io/contact" title="Contact">Contact</a></li></ul></nav><main class="section article-section"><div class="container article-body"><h1 class="title">Performant Python</h1><div><p>There are many ways to improve Python's performance, such as cython or writing C modules and calling them from Python. These are invasive methods that require a specific setup or build. However, there are a number of ways to improve Python's performance that are non-invasive and require little effort.</p>
+<p>Python has been designed to be user-friendly and intuitive and simpler constructs are presented as defaults. Sometimes performance is needed and Python has many performant constructs that provide significant improvements in memory and execution time.</p>
+<h2>Memory</h2>
+<p>Python uses a lot of memory but there are alternatives to default data structures that can reduce memory usage.</p>
+<p>Counting memory in Python is complicated, there are a number of ways to do it, often producing different results, even if off by few bytes. As general rule, I will try to get the exclusive memory of an object.</p>
+<p>I am going to use the objsize library to count the exclusive memory in use by an item; for generators I will use a custom script and sys.getsizeof since objsize does not work with generators.</p>
+<h3>Tuples</h3>
+<p>Tuples are immutable lists.</p>
+<pre><code class="language-python">(<span class="hljs-string">'hello'</span>, <span class="hljs-string">'world'</span>)
+</code></pre>
+<p>Tuples take a bit less memory than lists. With more elements, the relative memory savings becomes smaller:</p>
+<p><img src="https://strangemachines.io/images/graphs/memory-occupied-by-tuples-and-lists.svg" alt="Graph of memory occupied by Python tuples and lists" title="Graph of memory occupied by Python tuples and lists"></p>
+<p>Tuples can also replace dictionaries, infact dict() can produce a dictionary from a tuple, in case one needs that transformation:</p>
+<pre><code class="language-python">t = ((<span class="hljs-string">'company'</span>, <span class="hljs-string">'Strangemachines'</span>), (<span class="hljs-string">'city'</span>, <span class="hljs-string">'Amsterdam'</span>))
+dict(t) <span class="hljs-comment"># {'company': 'Strangemachines', 'city': 'Amsterdam'}</span>
+</code></pre>
+<p>Tuples provide significant savings when replacing dictionaries:</p>
+<p><img src="https://strangemachines.io/images/graphs/memory-occupied-by-tuples-and-dictionaries.svg" alt="Graph of memory occupied by Python tuples and dictionaries" title="Graph of memory occupied by Python tuples and dictionaries"></p>
+<h3>Generators</h3>
+<p>Generators are lazy lists. Instead of computing and putting in memory the entire list, they do so one item at a time and only when the item is requested. Working with generators is more complicated than regular lists, because they can't be indexed or sliced.</p>
+<pre><code class="language-python">g = (x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> data)
+</code></pre>
+<p>Generators are smaller than large tuples, but bigger than small tuples:</p>
+<p><img src="https://strangemachines.io/images/graphs/memory-occupied-by-generators-and-tuples.svg" alt="Graph of memory occupied by Python generators and tuples" title="Graph of memory occupied by Python generators and tuples"></p>
+<h3>Slots</h3>
+<p>Slots are a mechanism that reduces the memory used by class instances. Slots disable setting dynamic properties on instances and they must be declared when defining the class.</p>
+<pre><code class="language-python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Users</span>:</span>
+    __slots__ = (<span class="hljs-string">'username'</span>, <span class="hljs-string">'email'</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, username, email)</span>:</span>
+        self.username = username
+        self.email = email
+</code></pre>
+<p><img src="https://strangemachines.io/images/graphs/memory-occupied-by-python-class-instances.svg" alt="Graph of memory occupied by Python class instances and slotted class instances" title="Graph of memory occupied by Python class instances and slotted class instances"></p>
+<p>Comparing the memory for small classes, we can see that a slotted class will use at least 50% less memory. Larger clases have smaller savings, but still around half.</p>
+<h3>Named tuples</h3>
+<p>Named tuples provide a way to create objects without declaring a class:</p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> namedtuple
+
+Point = namedtuple(<span class="hljs-string">'Point'</span>, <span class="hljs-string">'x'</span>, <span class="hljs-string">'y'</span>)
+p = Point(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>) <span class="hljs-comment"># we can access p.x and p.y</span>
+</code></pre>
+<p>Many Python performance articles encourage to use namedtuples for objects on the fly; at Strangemachines we know enough metaprogramming and maths to know better: a namedtuple is smaller than a class, but a slotted class is smaller than a namedtuple.</p>
+<p><img src="https://strangemachines.io/images/graphs/memory-occupied-by-namedtuples-and-classes-and-slotted-classes.svg" alt="Graph of memory occupied by namedtuples, classes and slotted classes" title="Graph of memory occupied by namedtuples, classes and slotted classes"></p>
+<p>Since Namedtuple is used to create inline objects, we'll need to use type to create a slotted class, in order to replace a namedtuple:</p>
+<pre><code class="language-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">init</span><span class="hljs-params">(self, x, y)</span>:</span>
+    self.x = x
+    self.y = y
+
+
+Point = type(<span class="hljs-string">'Point'</span>, (), {<span class="hljs-string">'__slots__'</span>: (<span class="hljs-string">'x'</span>, <span class="hljs-string">'y'</span>), <span class="hljs-string">'__init__'</span>: init})
+</code></pre>
+<h2>Iteration time</h2>
+<p>In Python it's often possible to save iteration time by using alternatives to for.</p>
+<p>As a note of caution, notice that for in Python is not slow by itself. It becomes slower in cases where there is an optimized alternative for that specific type of iteration.</p>
+<p>For example, calling append to add elements to a list will make for slower than map, but the decrease in performance comes from the additional functions calls of the for loop.</p>
+<h3>Tuples</h3>
+<p>Iterating lists is slightly faster than tuples.</p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-iterate-tuples-and-lists.svg" alt="Scatter graph of time taken to iterate Python tuples and lists" title="Scatter graph of time taken to iterate Python tuples and lists"></p>
+<h3>Generators</h3>
+<p>Iterating generators is much faster than lists.</p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-iterate-lists-and-generators.svg" alt="Scatter graph of time taken to iterate Python lists and generators" title="Scatter graph of time taken to iterate Python lists and generators"></p>
+<h3>Map</h3>
+<p>Map is a function that applies a function to the elements of an iterable and produces a new iterable with the results of the function calls.</p>
+<pre><code class="language-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">plus_one</span><span class="hljs-params">(x)</span>:</span>
+    <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
+
+map(plus_one, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]) <span class="hljs-comment"># [2, 3, 4, 5]</span>
+</code></pre>
+<p>With for it would look like this:</p>
+<pre><code class="language-python">result = []
+
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]:
+    result.append(i+<span class="hljs-number">1</span>)
+</code></pre>
+<p>Map is faster than for, but only if the map is not converted to a list (probably because of the extra function call):</p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-map-and-for.svg" alt="Scatter graph of time taken to modify a list by map and for" title="Scatter graph of time taken to modify a list by map and for"></p>
+<h3>Filter</h3>
+<p>Filter is a function that applies a function to the elements of an iterable, producing a new iterable that contains only the element for which the function returned a truthy value.</p>
+<pre><code class="language-python"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">even</span><span class="hljs-params">(number)</span>:</span>
+    <span class="hljs-keyword">if</span> number % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+
+filter(even, [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]) <span class="hljs-comment"># [2, 4]</span>
+</code></pre>
+<p>Again the equivalent with for:</p>
+<pre><code class="language-python">result = []
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>]:
+    <span class="hljs-keyword">if</span> i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+        result.append(i)
+
+</code></pre>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-filter-and-for.svg" alt="Scatter graph of time taken to modify a list by filter and for" title="Scatter graph of time taken to modify a list by filter and for"></p>
+<h3>List Comprehensions</h3>
+<p>List comprehensions are mechanism to process an iterable and create a list the same time. Common cases include filtering or applying a function to the elements of the iterable.</p>
+<pre><code class="language-python">[city.name <span class="hljs-keyword">for</span> city <span class="hljs-keyword">in</span> cities]
+</code></pre>
+<p>List comprehensions are slower than map and filter and using generators instead of list comprehension does not change the outcome:</p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-map-and-list-comprehension.svg" alt="Scatter graph of time taken to modify a list by map and list comprehension" title="Scatter graph of time taken to modify a list by map and list comprehension"></p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-filter-and-list-comprehension.svg" alt="Scatter graph of time taken to modify a list by filter and list comprehension" title="Scatter graph of time taken to modify a list by filter and list comprehension"></p>
+<p>Even with a lambda function, map is faster:</p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-modify-a-list-by-map-lambda-and-list-comprehension.svg" alt="Scatter graph of time taken to modify a list by map plus lambda and list comprehension" title="Scatter graph of time taken to modify a list by map + lambda and list comprehension"></p>
+<h2>Dictionary comprehensions</h2>
+<p>Comprehensions also work on dictionaries:</p>
+<pre><code class="language-python">{city.name: city <span class="hljs-keyword">for</span> city <span class="hljs-keyword">in</span> cities}
+</code></pre>
+<p>Dictionary comprehensions are slower than map and filter as well:</p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-modify-a-dict-by-map-and-dict-comprehension.svg" alt="Scatter graph of time taken to modify a dictionary by map and dictionary comprehension" title="Scatter graph of time taken to modify a dictionary by map and dictionary comprehension"></p>
+<p><img src="https://strangemachines.io/images/graphs/time-taken-to-modify-a-dict-by-filter-and-dict-comprehension.svg" alt="Scatter graph of time taken to modify a dictionary by filter and dictionary comprehension" title="Scatter graph of time taken to modify a dictionary by filter and dictionary comprehension"></p>
+<h3>Conclusion</h3>
+<p>I know it's a lot of graphs, so I'll summarize them:</p>
+<ul>
+<li>Tuples save a bit of memory when replacing lists</li>
+<li>Tuples save lots of memory when replacing dictionaries</li>
+<li>Generators save memory only for large tuples, but are faster to iterate</li>
+<li>Slotted classes save a lot of memory</li>
+<li>Namedtuples are better than classes but worse than slotted classes</li>
+<li>Map and filter are sometimes faster than comprehensions</li>
+</ul>
+</div></div><footer class="footer article-footer"><ul class="level"><li class="level-item"><span>Author: </span><span>Jacopo Cascioli</span></li><li class="level-item"><span>Published: </span><time datetime="2019-12-03T00:00:00.000Z">03 December 2019</time></li><li class="level-item"><span>Updated: </span><time datetime="2019-12-06T00:00:00.000Z">06 December 2019</time></li><li class="level-item"><a href="https://strangemachines.io/rss.xml">Rss</a></li><li class="level-item"><span>License: </span><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">by-nc-sa</a></li></ul></footer></main><footer class="footer page-footer"><div class="columns is-multiline"><div class="column is-one-third"><span>&copy; 2020 Strangemachines</span></div><div class="column is-one-third"></div><div class="column is-one-third"><a href="mailto:hello@strangemachines.io" title="Say hello">hello@strangemachines.io</a></div></div></footer><script async defer src="https://sa.strangemachines.io/app.js"></script><noscript><img src="https://sa.strangemachines.io/image.gif" alt=""></noscript><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/languages/python.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>
