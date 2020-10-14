@@ -5273,4 +5273,242 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
+'https://web.archive.org/web/20130217080612/http://tv-orange.de/2012/08/future-of-hope-island-befreit-sich-von-den-bankstern-der-film/': {
+    'file': 'archive.org.tv-orange.de.future.html',  # stays empty until download
+    'author': 'oradmin',
+    'title': 'FUTURE of HOPE – Island befreit sich von den Bankstern – der Film',
+    'date': '2012-08-02',
+    'description': 'ISLAND befreit sich von der Macht der Finanzoligarchie und geht seinen eigenen Weg. Dieser Film wird bislang von den Kontinental-Europäischen Medien so gu...',  # in HTML source
+    'categories': [''],
+    'tags': ['Banken', 'Bankster', 'Bilderberger', 'demokratie', 'direkte Demokratie', 'Eurokrise', 'Fianzoligarchie', 'finanzadel', 'Finanzkrise', 'Free Iceland', 'FUTUREofHOPE', 'Island', 'Selbstbestimmt', 'Volksentscheid'],
+    'with': ['Dieser Film wird bislang von den Kontinental-Europäischen Medien', 'Ein Beispiel von Selbstzensur, symptomatisch für die Haltung gefälliger', 'Außerdem verbreitet sich über Facebook die Information über'],  # 3 segments
+    'without': ['Hiesige Medien schwören die Bevölkerung auf Gedeih', 'In den von den Banken verursachten Immobilienblasen und unsauberen', 'Wir haben Gutwettermacher, Medienmacher, Meinungsmacher, Schlechtwettermacher, Schuhmacher'],  # 3 segments
+    'comments': ['Zum Trailer des Filmes geht es hier'],  # 0 or 3 segments
+    'license': 'DE',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://web.archive.org/web/20120216182711/http://www.stol.it/Artikel/Politik-im-Ueberblick/Politik/Verfassungsgericht-Berlusconis-Sex-Prozess-geht-weiter': {
+    'file': 'archive.org.stol.it.berlusconi.html',  # stays empty until download
+    'author': 'APA/AP',
+    'title': 'Verfassungsgericht: Berlusconis Sex-Prozess geht weiter',
+    'date': '2012-02-14',
+    'description': 'taeglich aktuelle Suedtirol-Nachrichten aus Chronik, Politik, Sport, Wirtschaft, Kultur, Events. Lokale Wetter- und Service-Meldungen sowie Dolomiten-Online.',  # in HTML source
+    'categories': ['Politik'],
+    'tags': [''],
+    'with': ['Das Verfassungsgericht in Rom verwarf am Dienstag einen Antrag', 'Das Argument hatten die Mailänder Staatsanwälte „lächerlich“ genannt.', 'Das laufende Verfahren gegen den im November als'],  # 3 segments
+    'without': ['IT 00853870210', 'Hier können Sie den Artikel bewerten', 'On-Tour Fotos'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://blog.leichtathletik-ostalbkreis.de/2007/05/20/ergebnisse-rm-schuelerinnen-a-aalen-unterkochen-1952007/': {
+    'file': 'leichtathletik-ostalbkreis.de.1952007.html',  # stays empty until download
+    'author': 'Marc Scheloske',
+    'title': 'Ergebnisse: RM Schülerinnen A, Aalen-Unterkochen, 19.5.2007',
+    'date': '2007-05-20',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['1. und Regionalmeister 2007', 'Schlumberger, Lea 1993;', 'LG Staufen'],  # 3 segments
+    'without': ['LA-Kreis Ulm/Alb-Donau', 'LA-Kreis Göppingen', 'LAC Essingen'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://next2games.de/previews,id1085,0,anno_1800_beta.html': {
+    'file': 'next2games.de.anno.html',  # stays empty until download
+    'author': 'Lars',
+    'title': 'Anno 1800 Beta ',
+    'date': '',
+    'description': 'Mit Anno 1800 veröffentlichen Blue Byte und Ubisoft im April den mittlerweile siebten (Haupt-)Ableger der beliebten Aufbaustrategie-Reihe. Im Zuge des ...',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['zu entdecken, was Anno 1800 noch in petto hält.', 'Neben dem Startgebiet in einer klimatisch eher gemäßigten', 'Wie in jedem Titel der mittlerweile über 20 Jahre'],  # 3 segments
+    'without': ['n2g media network', 'CMS: Apexx by Stylemotion', 'Diese Website nutzt Cookies'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'http://www.exlibris-deg.de/2019/10/24/balsamo-stella-guido/': {
+    'file': 'exlibris-deg.de.balsamo.html',  # stays empty until download
+    'author': '',
+    'title': 'Balsamo Stella, Guido (I)',
+    'date': '',
+    'description': 'Werkliste Guido Balsamo Stella',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['M. Akt mit Axt einen Baum fällend; Rem', 'Adler nach Klippe, nach links blickend, Schooner im', 'Exlibrissammlung PALMIRANI, Remo: Guido Balsamo Stella'],  # 3 segments
+    'without': ['Winkler, Eduard', 'Rechtliches', 'German'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://foren.myoos.de/viewtopic.php?f=4&t=167&sid=58428beaa14598c2e02d93ad5c773e4d': {
+    'file': 'foren.myoos.de.html',  # stays empty until download
+    'author': 'r23',
+    'title': 'Was ist Freie Software',
+    'date': '2009-01-21',
+    'description': 'Was ist Freie Software und warum ist sie wichtig? von Georg C. F. Greve Freie Software ist Software, die ohne Ansicht der Person vier Freiheiten garantiert: Die Freiheit der unbegrenzten Nutzung zu jedem Zweck, die Freiheit des Studiums und der Modif..',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Freie Software ist Software, die ohne Ansicht der Person', 'http://www.gnu.org/philosophy/free-sw.de.html', 'Software (OSS) ein und entwickeln einen Praxisleitfaden.'],  # 3 segments
+    'without': ['Forum Software', 'Alle Zeiten sind UTC+02:00', 'Mitglieder in diesem Forum:'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'http://www.mueritzurlauber.de/blockhaus-typ-3/': {
+    'file': 'mueritzurlauber.de.blockhaus.html',  # stays empty until download
+    'author': '',
+    'title': 'Blockhaus 3',
+    'date': '',
+    'description': 'Günstiges Blockhaus in Ludorf an der Müritz für bis zu 6 Personen',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Das helle und liebevoll eingerichtete Blockhaus 1 hat', 'Buchung ab 3 Nächte oder nach Absprache.', 'über die freien Termine oder nehmen einfach Kontakt zu uns auf.'],  # 3 segments
+    'without': ['info@mueritzurlauber.de', '039931 51438', 'Datenschutzerklärung'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'http://harddecor.at/work/denkmaler-neuem-licht/': {
+    'file': 'harddecor.at.denkmaler.html',  # stays empty until download
+    'author': '',
+    'title': 'Denkmäler in neuem Licht.',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['CONDITIONING. of Atmospheres in Architecture', 'Denkmalpflegerinnen, Politikerinnen und der interessierten Öffentlichkeit fördern.', 'Thema Planen und Bauen in historisch wertvoller Umgebung'],  # 3 segments
+    'without': ['Best of 2016.', 'Gegen Leerstand und Wertminderung.', 'Mission Statement'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'AT',  # if obvious: DE, CH, AT
+},
+'https://web.archive.org/web/20130307194448/the-pain.net/2008/05/silkroad-roc-mountain-quests-und-npcs.html': {
+    'file': 'archive.org.the-pain.net.silkroad.html',  # stays empty until download
+    'author': 'ThE_PaiN',
+    'title': 'Silkroad Roc Mountain Quests und NPC’s',
+    'date': '2008-05-26',
+    'description': 'Hier findet ihr alle Informationen zu den Quests des Roc Mountain in Silkroad Online. Selbstverständlich ist auch eine NPC Map vorhanden!',  # in HTML source
+    'categories': ['Guides', 'Silkroad', 'Tipps & Tricks', 'Tutorials'],
+    'tags': ['infos', 'legend 3', 'Silkroad'],
+    'with': ['Ich wurde von vielen Leuten darum gebeten zum neuen', 'man kann ja nicht alles wissen', 'Bringe eine Nachricht über den vermissten Sohn zu'],  # 3 segments
+    'without': ['Silkroad Online und alle damit in Verbindung stehenden Logos', '2007 - 2013', 'Alle anderen Warenzeichen oder'],  # 3 segments
+    'comments': ['Servus ich wollte dich bitten ob ich diesen', 'gegeben, aber bei der vorraussetzung von Rahid', 'joymax, weil es nicht deine sachen sind !'],  # 0 or 3 segments
+    'license': 'CC BY-SA 3.0 DE',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://mywakenews.wordpress.com/2016/07/09/nwo-psyop-unitedwestrike-radio-marathon/': {
+    'file': 'mywakenews.wordpress.com.psyop.html',  # stays empty until download
+    'author': 'mywakenews',
+    'title': 'NWO – PSYOP UNITEDWESTRIKE Radio-Marathon',
+    'date': '2016-06-09',
+    'description': 'Abb.: Collage aus Internetbild und Wake News Die Aufzeichnung dieser Veranstaltung als Video: Den meisten Menschen auf dieser Erde ist nicht bewusst, dass wir in einer grossen Simulation leben, gen…',  # in HTML source
+    'categories': ['Uncategorized'],
+    'tags': ['Abzocke', 'Bankster', 'Bürgerkrieg', 'Bilderberger', 'Dallas', 'Detlev', 'Deutschland', 'DIMs', 'EU-Faschismus', 'EURO-CRASH', 'falsche Flagge Terror', 'Freiheit', 'Geheimgesellschaften', 'Globalisten', 'Grossfinanz', 'Illuminati', 'International Strike', 'Internationaler Streik', 'Korruption', 'Matrix', 'Menschenrechte', 'Neue Welt Ordnung', 'NWO', 'Obama', 'PSYOP', 'Regierung', 'Schweiz', 'Terror', 'Tyrannei', 'unitedwestrike', 'USA', 'Wake News Radio', 'Wake News TV', 'Weltelite', 'Weltkrieg III', 'ziviles Ungehorsam'],
+    'with': ['diesen Bastarden diese Worte einvernehmlicher Verkehr in den Mund???', 'Kritische Betrachter haben bereits sehr viele Indizien zusammengetragen', 'und unsere Wahrnehmung gefangen gehalten, manipuliert und gesteuert'],  # 3 segments
+    'without': ['For all who want to wake up!', 'Erstelle eine kostenlose Website oder Blog – auf WordPress.com', 'Meine persönlichen Informationen nicht verkaufen'],  # 3 segments
+    'comments': ['Hat dies auf meinfreundhawey.com rebloggt.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://uniqz.de/produkte/katzendecke-zweilagig-mit-namen-und-main-coon/': {
+    'file': 'uniqz.de.katzendecke.html',  # stays empty until download
+    'author': 'Petra Ruland',
+    'title': 'Katzendecke, zweilagig mit Namen und Main Coon',
+    'date': '',
+    'description': 'Mit Namen bestickte Geschenkideen zur Taufe, Geburt, Hochzeit, Abitur | Ringkissen, Babykissen, Babydecken, Hundedecken, fotorealistisch gestickte Rassehunde,',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Lieferzeit: 15 - 21 Tag(e)', 'Hochwertige Hunde- oder Katzendecke in besonders kuscheliger', 'Main Coon-Stickerei'],  # 3 segments
+    'without': ['Das Kleingedruckte', 'Informationen', 'Copyright / Rechte'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.oekonomenstimme.org/artikel/2015/01/eine-realistische-interpretation-des-keynes-hicks-multiplikators/': {
+    'file': 'oekonomenstimme.org.keynes.html',  # stays empty until download
+    'author': 'Georg Quaas',
+    'title': 'Eine realistische Interpretation des Keynes-Hicks-Multiplikators',
+    'date': '2015-01-21',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': ['Multiplikator', 'Selbstfinanzierung'],
+    'with': ['In seinem Beitrag von 5. Januar 2015 erörtert Wolfgang', 'Wirtschaftsdienst, 92. Jahrgang, Heft 10, Oktober 2012', 'Erfasst werden. Dabei steht T für den technologischen Fortschritt'],  # 3 segments
+    'without': ['Die paradigmatische Struktur der Makroökonomik', 'um Kommentare zu schreiben', 'Faktor Arbeit im Sinkflug'],  # 3 segments
+    'comments': ['Sie fliesst nur in die Taschen der Haushalte, die damit nichts anzufangen wissen.', 'bitte darum, die anderen Themen woanders, beispielsweise in einem eigenen', 'Multiplikators – aber der Theorie, die sich darum herumrankt, aufzudecken. '],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://leukefeld-handball.de/dago-leukefeld-wird-botschafter-des-sports-der-ifzw-impulsstiftung/': {
+    'file': 'leukefeld-handball.de.leukefeld.html',  # stays empty until download
+    'author': '',
+    'title': 'Dago Leukefeld wird „Botschafter des Sports“ der ifzw impulsstiftung',
+    'date': '',
+    'description': 'Die ifzw impulsstiftung und Dago Leukefeld besiegeln ihre gute Zusammenarbeit und richten sich für die Zukunft aus: Dago Leukefeld wird „Botschafter des Sports“ der ifzw impulsstiftung. 2012 hat sich die ifzw impulsstiftung zur Unterstützung im Bereich Sport den ehemaligen Frauen National? und langjähriger Bundesligatrainer, Dago Leukefeld, nach Zwickau geholt. Als einer der besten Trainer Deutschlands,Weiterlesen',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Die ifzw impulsstiftung und Dago Leukefeld besiegeln ihre gute', 'mit Ihm und auf spannende Projekte im Vereinssport“, so Mechthild Aßmann.', 'in die beteiligten Vereine beigetreten sind. Für uns ein tolles Ergebnis.'],  # 3 segments
+    'without': ['© 2017 Dago Leukefeld Handball', 'Lieferzeit: 9-12 Tage', 'Hier geht es zu den'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.propellets.at/soziale-energie': {
+    'file': 'propellets.at.energie.html',  # stays empty until download
+    'author': '',
+    'title': 'Soziale Energie',
+    'date': '',
+    'description': 'Besonders f&uuml;r Haushalte mit geringem Einkommen stellen steigende Energiekosten ein gro&szlig;es Problem dar. G&uuml;nstige und regionale Brennstoffe k&ouml;nnen im Kampf gegen Energiearmut helfen.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Besonders für Haushalte mit geringem Einkommen stellen steigende', 'Ziel der vorliegenden Studie war es, zu klären ob', 'hohen Anfangsinvestition von rund 2700 € schwer erschwinglich.'],  # 3 segments
+    'without': ['Newsletter', 'teilen', 'Alles über den Verein'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'AT',  # if obvious: DE, CH, AT
+},
+'https://chabermu.wordpress.com/2015/09/02/windows-expertenwissen-per-update-spioniert-microsoft-nun-auch-windows-7-8-und-8-1-aus-microsoft-privacy-windows10-chabermu/': {
+    'file': 'chabermu.wordpress.com.expertenwissen.html',  # stays empty until download
+    'author': 'C.Habermueller',
+    'title': '[Windows Expertenwissen] Per Update spioniert Microsoft nun auch Windows 7, 8 und 8.1 aus // #Microsoft #Privacy #Windows10 @chabermu',
+    'date': '2015-09-02',
+    'description': 'Die Sammelwut der Benutzerdaten von Windows 10 reicht Microsoft (Börsenwert an Nasdaq: 334,48 Milliarden US-Dollar, Stand: 1. Sep 2015) immer noch nicht – Nun hat es der Softwarekonzern auch auf di…',  # in HTML source
+    'categories': [''],
+    'tags': ['Microsoft', 'Privacy', 'Windows10', '@chabermu'],
+    'with': ['Nun hat es der Softwarekonzern auch auf die Nutzerdaten', 'Klicken Sie die betroffenen, optionalen Windows-Updates', 'Wann jedoch Microsoft diese Abhilfe gegen seine Abhör-Updates blockiert'],  # 3 segments
+    'without': ['© since 2010', 'News vom Computerarchiv München', 'Gib deine E-Mail-Adresse ein'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://web.archive.org/web/20110106023242/http://dzs-clan.de/index.php?site=news_comments&newsID=111': {
+    'file': 'archive.org.dzs-clan.de.html',  # stays empty until download
+    'author': 'Bo2man',
+    'title': 'Die Events der letzten Zeit',
+    'date': '2010-12-29',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['In dieser News möchten wir euch über das Geschehen', 'Diese Nachrichten könnt ihr auch auf unserer Homepage in unserer Twitter-Box lesen.', 'Aller Voraussicht nach wird dieses auf der kommenden'],  # 3 segments
+    'without': ['Hi, ihr habt das falsche Statment von mir', 'sein um Kommentare zu schreiben!', '© 2010 by dzs'],  # 3 segments
+    'comments': ['ich werde wohl auch auf die Mega Lan kommen'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'http://sibenlab.blogspot.com/2018/06/sibenlab-privacy-policy.html': {
+    'file': 'sibenlab.blogspot.com.privacy.html',  # stays empty until download
+    'author': 'Unknown',
+    'title': 'SibenLab privacy policy ',
+    'date': '2018-06-05',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['This privacy policy has been compiled to', 'If at any time you would like to', 'visiting the Google Ad and Content Network privacy'],  # 3 segments
+    'without': ['Thème Simple. Fourni par', 'Inscription à', 'Publier un commentaire'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
 }
