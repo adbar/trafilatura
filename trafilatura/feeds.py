@@ -8,6 +8,7 @@ Examining feeds and extracting links for further processing.
 import logging
 import re
 
+from courlan.filters import validate_url as courlan_val
 from time import sleep
 
 from .settings import SLEEP_TIME
@@ -17,10 +18,14 @@ LOGGER = logging.getLogger(__name__)
 
 
 def validate_url(url):
-    '''Superficially check if a given URL could be valid'''
-    if re.match(r'https?://[^/]+/.+$', url):
-        return True
-    return False
+    '''Check if the URL is valid and contains a path'''
+    isvalid, parsed = courlan_val(url)
+    if isvalid is False:
+        return False
+    if parsed.path == '/' and \
+        all([not parsed.params, not parsed.query, not parsed.query]):
+        return False
+    return True
 
 
 def extract_links(feed_string):
