@@ -125,29 +125,30 @@ def examine_meta(tree):
                 if author is None:
                     author = content_attr
         # name attribute
-        elif 'name' in elem.attrib: # elem.get('name') is not None:
+        elif 'name' in elem.attrib:
+            name_attr = elem.get('name').lower()
             # author
-            if elem.get('name') in ('author', 'byl', 'dc.creator', 'sailthru.author'):  # twitter:creator
+            if name_attr in ('author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author'):  # twitter:creator
                 if author is None:
                     author = content_attr
             # title
-            elif elem.get('name') in ('title', 'dc.title', 'sailthru.title', 'twitter:title'):
+            elif name_attr in ('title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title'):
                 if title is None:
                     title = content_attr
             # description
-            elif elem.get('name') in ('description', 'dc.description', 'dc:description', 'sailthru.description', 'twitter:description'):
+            elif name_attr in ('description', 'dc.description', 'dcterms.description', 'dc:description', 'sailthru.description', 'twitter:description'):
                 if description is None:
                     description = content_attr
             # site name
-            elif elem.get('name') in ('publisher', 'DC.publisher', 'twitter:site', 'application-name') or 'twitter:app:name' in elem.get('name'):
+            elif name_attr in ('publisher', 'dc.publisher', 'dcterms.publisher', 'twitter:site', 'application-name') or 'twitter:app:name' in elem.get('name'):
                 if site_name is None:
                     site_name = content_attr
             # url
-            elif elem.get('name') == 'twitter:url':
+            elif name_attr == 'twitter:url':
                 if url is None and validate_url(content_attr)[0] is True:
                     url = content_attr
             # keywords
-            elif elem.get('name') == 'keywords': # 'page-topic'
+            elif name_attr == 'keywords': # 'page-topic'
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
@@ -156,6 +157,9 @@ def examine_meta(tree):
             elif elem.get('itemprop') == 'description':
                 if description is None:
                     description = content_attr
+            elif elem.get('itemprop') == 'headline':
+                if title is None:
+                    title = content_attr
             # to verify:
             #elif elem.get('itemprop') == 'name':
             #    if title is None:

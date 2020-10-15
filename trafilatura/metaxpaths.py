@@ -45,7 +45,8 @@ tags_xpaths = [
 
 title_xpaths = [
     '//*[@class="entry-title" or @class="post-title"]',
-    '//*[(self::h1 or self::h2)][contains(@class, "post-title") or contains(@class, "entry-title") or contains(@class, "headline") or contains(@id, "headline")]',
+    '//*[(self::h1 or self::h2)][contains(@class, "post-title") or contains(@class, "entry-title") or contains(@class, "headline") or contains(@id, "headline") or contains(@itemprop, "headline") or contains(@class, "post__title")]',
     '//h1[contains(@class, "title") or contains(@id, "title")]',
+    '//header/h1',
 ]
 # json-ld headline

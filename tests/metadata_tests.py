@@ -245,7 +245,7 @@ def test_pages():
     assert metadata['description'] == 'A team of researchers affiliated with several institutions in The Netherlands has found evidence in small a cutting tool of Neanderthals using birch tar. In their paper published in Proceedings of the National Academy of Sciences, the group describes the tool and what it revealed about Neanderthal technology.'
     # assert metadata['sitename'] == 'Phys'
     # assert metadata['categories'] == ['Archaeology', 'Fossils']
-    assert metadata['tags'] == ['birch', 'carbon dating', 'tool']
+    assert metadata['tags'] == ["Science, Physics News, Science news, Technology News, Physics, Materials, Nanotech, Technology, Science"]
     assert metadata['url'] == 'https://phys.org/news/2019-10-flint-flake-tool-partially-birch.html'
 
     # metadata = extract_metadata(load_mock_page('https://gregoryszorc.com/blog/2020/01/13/mercurial%27s-journey-to-and-reflections-on-python-3/'))
@@ -274,7 +274,6 @@ def test_pages():
 
     url = 'https://www.dw.com/en/berlin-confronts-germanys-colonial-past-with-new-initiative/a-52060881'
     metadata = extract_metadata(load_mock_page(url))
-    print(metadata)
     assert "Berlin confronts Germany's colonial past with new initiative" in metadata['title']
     # assert metadata['author'] == 'Ben Knight' # "Deutsche Welle (www.dw.com)"
     assert metadata['description'] == "The German capital has launched a five-year project to mark its part in European colonialism. Streets which still honor leaders who led the Reich's imperial expansion will be renamed — and some locals aren't happy."
