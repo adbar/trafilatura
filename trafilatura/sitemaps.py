@@ -23,6 +23,7 @@ HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
 
 
 def sitemap_search(url, target_lang=None):
+    'Look for sitemaps for the given URL and gather links.'
     domain = extract_domain(url)
     sitemapurl = url.rstrip('/') + '/sitemap.xml'
     sitemapurls, linklist = process_sitemap(sitemapurl, domain, target_lang)
@@ -42,6 +43,7 @@ def sitemap_search(url, target_lang=None):
 
 
 def fix_relative_urls(domain, url):
+    'Prepend protocal and domain information to relative links.'
     urlfix = ''
     # process URL
     if url.startswith('/'):
@@ -52,6 +54,7 @@ def fix_relative_urls(domain, url):
 
 
 def process_sitemap(url, domain, target_lang=None):
+    'Download a sitemap and extract the links it contains.'
     LOGGER.info('fetching sitemap: %s', url)
     pagecontent = fetch_url(url)
     if pagecontent is None or not pagecontent.startswith('<?xml'):
@@ -65,6 +68,8 @@ def process_sitemap(url, domain, target_lang=None):
 
 
 def handle_link(link, domainname, sitemapurl, target_lang=None):
+    '''Examine a link and determine if it's valid and if it leads to
+       a sitemap or a web page.'''
     state = '0'
     # safety net: recursivity
     if link == sitemapurl:
@@ -81,6 +86,7 @@ def handle_link(link, domainname, sitemapurl, target_lang=None):
 
 
 def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, target_lang=None):
+    'Extract links corresponding to a given target language.'
     if not 'hreflang=' in pagecontent:
         return [], []
     sitemapurls, linklist = [], []
@@ -99,6 +105,7 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, target_lang=N
 
 
 def extract_sitemap_links(pagecontent, sitemapurl, domainname, target_lang=None):
+    'Extract sitemap links and web page links from a sitemap file.'
     sitemapurls, linklist = [], []
     # extract
     for link in LINK_REGEX.findall(pagecontent):
@@ -112,6 +119,8 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, target_lang=None)
 
 
 def find_robots_sitemaps(url):
+    '''Guess the location of the robots.txt file and try to extract 
+       sitemap URLs from it'''
     robotsurl = url.rstrip('/') + '/robots.txt'
     robotstxt = fetch_url(robotsurl)
     if robotstxt is None:
@@ -120,6 +129,7 @@ def find_robots_sitemaps(url):
 
 
 def extract_robots_sitemaps(robotstxt):
+    'Read a robots.txt file and find sitemap links.'
     # sanity check on length (cause: redirections)
     if len(robotstxt) > 10000:
         return []

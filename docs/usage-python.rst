@@ -2,13 +2,13 @@ Usage with Python
 =================
 
 
+The Python programming language
+-------------------------------
 
-See here for a `beginner's guide <https://wiki.python.org/moin/BeginnersGuide>`_, a `Python Tutorial <https://docs.python.org/3/tutorial/index.html>`_, and `the Hitchhiker’s Guide to Python <https://docs.python-guide.org/>`_.
-
-https://docs.python.org/3/tutorial/
-https://www.techbeamers.com/python-tutorial-step-by-step/
-https://www.freecodecamp.org/news/best-python-tutorial/
-
+-  Official `Python Tutorial <https://docs.python.org/3/tutorial/>`_
+-  `The Hitchhiker’s Guide to Python <https://docs.python-guide.org/>`_
+-  `Learn Python Programming Step by Step <https://www.techbeamers.com/python-tutorial-step-by-step/>`_
+-  `The Best Python Tutorials (freeCodeCamp) <https://www.freecodecamp.org/news/best-python-tutorial/>`_
 
 
 Quickstart
@@ -93,10 +93,15 @@ The function ``bare_extraction`` can be used to bypass output conversion, it ret
 
 For more see the `core functions <corefunctions.html>`_ page.
 
-For further configuration see the variables in ``settings.py`` and re-compile the package locally.
+For further configuration `clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_, edit ``settings.py`` and reinstall the package locally (``pip install -U .`` in the home directory of the cloned repository).
 
 
 Date extraction
 ---------------
 
-Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably: ``extensive_search`` (boolean), to activate pattern-based opportunistic text search,  ``original_date`` (boolean) to look for the original publication date, ``outputformat`` (string), to provide a custom datetime format, and ``max_date`` (string), to set the latest acceptable date manually (YYYY-MM-DD format).
+Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
+
+-  ``extensive_search`` (boolean), to activate pattern-based opportunistic text search,
+-  ``original_date`` (boolean) to look for the original publication date,
+-  ``outputformat`` (string), to provide a custom datetime format,
+-  ``max_date`` (string), to set the latest acceptable date manually (YYYY-MM-DD format).

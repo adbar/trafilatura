@@ -56,7 +56,7 @@ Features
    - `TEI-XML <https://tei-c.org/>`_
 - Robust extraction algorithm, using and `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback; reasonably efficient with `lxml <http://lxml.de/>`_:
     - Focuses on the document's main text and/or comments
-    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting (experimental)
+    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
     - Extraction of metadata (title, author, date, site name, categories and tags)
 - URL lists:
     - Generation of link lists from ATOM/RSS feeds
@@ -150,10 +150,9 @@ Going further
 Roadmap
 ~~~~~~~
 
--  [X] Language detection on the extracted content
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] URL lists and document management
--  [ ] Sitemaps processing
+-  [-] Sitemaps processing
 -  [ ] Interaction with web archives (notably WARC format)
 -  [ ] Configuration and extraction parameters
 -  [ ] Integration of natural language processing tools

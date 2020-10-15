@@ -21,7 +21,7 @@ Please send a [GitHub Pull Request to trafilatura](https://github.com/adbar/traf
 
 **Working on your first Pull Request?** See this tutorial: [How To Create a Pull Request on GitHub](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github)
 
-For further questions you can contact me by way of [GitHub issues](https://github.com/adbar/trafilatura/issues), [Twitter](https://twitter.com/adbarbaresi) or [E-Mail](http://adrien.barbaresi.eu/contact.html).
+For further questions you can contact me by way of [GitHub issues](https://github.com/adbar/trafilatura/issues), [Twitter](https://twitter.com/adbarbaresi) or [E-Mail](http://adrien.barbaresi.eu/).
 
 Thanks,
 

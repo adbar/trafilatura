@@ -55,13 +55,24 @@ The ``-i/--inputfile`` option allows for bulk download and processing of a list 
 
 For all usage instructions see ``trafilatura -h``:
 
-``usage: trafilatura [-h] [-v] [-i INPUTFILE] [--inputdir INPUTDIR] [-o OUTPUTDIR] [-u URL] [--feed FEED] [--list] [-b BLACKLIST] [--backup-dir BACKUP_DIR] [-out {txt,csv,xml,xmltei}] [--csv] [--xml] [--xmltei] [--validate] [-f] [--formatting] [--nocomments] [--notables]``
+.. code-block:: bash
+
+    usage: trafilatura [-h] [-v] [-vv] [-i INPUTFILE] [--inputdir INPUTDIR]
+                   [-o OUTPUTDIR] [-u URL] [--feed [FEED]]
+                   [--sitemap [SITEMAP]] [--list] [-b BLACKLIST]
+                   [--backup-dir BACKUP_DIR] [--timeout] [--parallel PARALLEL]
+                   [--keep-dirs] [-out {txt,csv,json,xml,xmltei}] [--csv]
+                   [--json] [--xml] [--xmltei] [--validate] [-f]
+                   [--formatting] [--nocomments] [--notables]
+                   [--with-metadata] [--target-language TARGET_LANGUAGE]
+                   [--deduplicate]
 
 Command-line interface for Trafilatura
 
 optional arguments:
   -h, --help            show this help message and exit
   -v, --verbose         increase output verbosity
+  -vv, --very-verbose   maximum output verbosity
 
 I/O:
   Input and output options affecting processing
@@ -71,8 +82,9 @@ I/O:
   --inputdir INPUTDIR   read files from a specified directory (relative path)
   -o, --outputdir OUTPUTDIR
                         write results in a specified directory (relative path)
-  -u, --URL URL     custom URL download
-  --feed FEED           pass a feed URL as input
+  -u, --URL URL         custom URL download
+  --feed FEED           look for feeds and/or pass a feed URL as input
+  --sitemap SITEMAP     look for sitemaps URLs for the given website
   --list                return a list of URLs without downloading them
   -b, --blacklist BLACKLIST
                         name of file containing already processed or unwanted
@@ -80,6 +92,10 @@ I/O:
   --backup-dir BACKUP_DIR
                         Preserve a copy of downloaded files in a backup
                         directory
+  --timeout             Use timeout for file conversion to prevent bugs
+  --parallel PARALLEL   Specify a number of cores/threads for parallel
+                        downloads and/or processing
+  --keep-dirs           Keep input directory structure and file names
 
 Format:
   Selection of the output format
@@ -100,3 +116,8 @@ Extraction:
   --formatting          include text formatting (bold, italic, etc.)
   --nocomments          don't output any comments
   --notables            don't output any table elements
+  --with-metadata       only output those documents with necessary metadata:
+                        title, URL and date (CSV and XML formats)
+  --target-language TARGET_LANGUAGE
+                        select a target language (ISO 639-1 codes)
+  --deduplicate         Filter out duplicate documents and sections

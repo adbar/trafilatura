@@ -31,3 +31,11 @@ Helpers
 .. autofunction:: trafilatura.utils.load_html
 
 .. autofunction:: trafilatura.utils.sanitize
+
+
+Link discovery
+--------------
+
+.. autofunction:: trafilatura.sitemaps.sitemap_search
+
+.. autofunction:: trafilatura.feeds.find_feed_urls

@@ -61,7 +61,7 @@ def parse_args(args):
     group1.add_argument("-u", "--URL",
                         help="custom URL download")
     group1.add_argument("--feed",
-                        help="pass a feed URL as input",
+                        help="look for feeds and/or pass a feed URL as input",
                         nargs='?', const=True, default=False)
     group1.add_argument("--sitemap",
                         help="look for sitemaps URLs for the given website",

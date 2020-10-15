@@ -23,6 +23,8 @@ Finding subpages within a website
 
 Sources used by Trafilatura may consist of previously known web pages, as well as listed web pages. It can also be useful to operate on website level by downloading portions of a website programmatically. To this end, a sitemap is a file that lists the visible URLs for a given site. For more information, refer to this blog post explaining how to use sitemaps: `to retrieve URLs within a website <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
 
+URLs can also be extracted from feeds, and a future version will allow for automatic extraction of sitemap URLs, for more information see `link discovery in core functions <corefunctions.html#link-discovery>`_.
+
 
 Filtering with coURLan
 ~~~~~~~~~~~~~~~~~~~~~~

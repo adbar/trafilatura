@@ -9,9 +9,9 @@ Trafilatura runs using `Python <https://en.wikipedia.org/wiki/Python_%28programm
 
 This software library/package is tested on Linux, macOS and Windows systems. It is compatible with Python 3 (3.4 upwards):
 
--  `Installing Python 3 on Mac OS X <https://docs.python-guide.org/starting/install3/osx/>`_ (& `official documentation <https://docs.python.org/3/using/mac.html>`_)
--  `Installing Python 3 on Windows <https://docs.python-guide.org/starting/install3/win/>`_ (& `official documentation <https://docs.python.org/3/using/windows.html>`_)
--  `Installing Python 3 on Linux <https://docs.python-guide.org/starting/install3/linux/>`_ (& `official documentation <https://docs.python.org/3/using/unix.html>`_)
+-  `Installing Python 3 on Mac OS X <https://docs.python-guide.org/starting/install3/osx/>`_ (& `official documentation for Mac <https://docs.python.org/3/using/mac.html>`_)
+-  `Installing Python 3 on Windows <https://docs.python-guide.org/starting/install3/win/>`_ (& `official documentation for Windows <https://docs.python.org/3/using/windows.html>`_)
+-  `Installing Python 3 on Linux <https://docs.python-guide.org/starting/install3/linux/>`_ (& `official documentation for Unix <https://docs.python.org/3/using/unix.html>`_)
 -  Beginners guide: `downloading Python <https://wiki.python.org/moin/BeginnersGuide/Download>`_
 
 
