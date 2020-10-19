@@ -32,11 +32,11 @@ matrix:
       env: TOXENV=py38
       env: MINIMAL=false
       after_success: codecov  # use this version for the tests!
-    - name: "Python 3.9 on Linux"
+    - name: "Python 3.9 on Linux with minimal dependencies"
       dist: xenial
       python: 3.9-dev
       env: TOXENV=py39
-      env: MINIMAL=false
+      env: MINIMAL=true
     - name: "Python Nightly on Linux with minimal dependencies"
       dist: bionic
       python: nightly
