@@ -210,8 +210,8 @@ def process_result(htmlstring, args, url, counter):
 def single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter):
     '''Implement a single threaded processing algorithm'''
     i = 0
-    while len(domain_dict) > 0:
-        domain = random.choice(list(domain_dict.keys()))
+    while domain_dict:
+        domain = random.choice(list(domain_dict))
         if domain not in backoff_dict or \
         (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
             url = domain_dict[domain].pop()
@@ -237,11 +237,8 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
     '''Implement a multi-threaded processing algorithm'''
     i = 0
     backoff_dict = dict()
-    if args.parallel is not None:
-        download_threads = args.parallel
-    else:
-        download_threads = DOWNLOAD_THREADS
-    while len(domain_dict) > 0:
+    download_threads = args.parallel or DOWNLOAD_THREADS
+    while domain_dict:
         # the remaining list is too small, process it differently
         if len({x for v in domain_dict.values() for x in v}) < download_threads:
             single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
@@ -249,7 +246,7 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
         # populate buffer
         bufferlist, bufferdomains = list(), set()
         while len(bufferlist) < download_threads:
-            domain = random.choice(list(domain_dict.keys()))
+            domain = random.choice(list(domain_dict))
             if domain not in backoff_dict or \
             (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
                 bufferlist.append(domain_dict[domain].pop())
@@ -289,7 +286,7 @@ def url_processing_pipeline(args, input_urls, sleeptime):
         return None
     # build domain-aware processing list
     domain_dict = dict()
-    while len(input_urls) > 0:
+    while input_urls:
         url = input_urls.pop()
         domain_name = extract_domain(url)
         if domain_name not in domain_dict:
@@ -315,10 +312,7 @@ def file_processing_pipeline(args):
     # init
     filebatch = []
     filecounter = None
-    if args.parallel is not None:
-        processing_cores = args.parallel
-    else:
-        processing_cores = FILE_PROCESSING_CORES
+    processing_cores = args.parallel or FILE_PROCESSING_CORES
     # loop
     for filename in generate_filelist(args.inputdir):
         filebatch.append(filename)

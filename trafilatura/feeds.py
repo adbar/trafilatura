@@ -46,7 +46,7 @@ def extract_links(feed_string):
         if validate_url(item) is False:
             feed_links.remove(item)
     # log result
-    if len(feed_links) > 0:
+    if feed_links:
         LOGGER.debug('Links found: %s', len(feed_links))
     else:
         LOGGER.debug('Does not seem to be a valid feed')
