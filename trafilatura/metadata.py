@@ -28,6 +28,7 @@ JSON_AUTHOR_1 = re.compile(r'"author":[^}]+?"name?\\?": ?\\?"([^"\\]+)|"author"[
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
+JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 URL_COMP_CHECK = re.compile(r'https?://|/')
 
@@ -56,6 +57,10 @@ def extract_json(tree, metadata):
             if mymatch:
                 metadata['categories'] = [trim(mymatch.group(1))]
         # try to extract title
+        if '"name"' in elem.text and metadata['title'] is None:
+            mymatch = JSON_NAME.search(elem.text)
+            if mymatch:
+                metadata['title'] = trim(mymatch.group(1))
         if '"headline"' in elem.text and metadata['title'] is None:
             mymatch = JSON_HEADLINE.search(elem.text)
             if mymatch:
