@@ -10,9 +10,10 @@ from multiprocessing import cpu_count
 
 from lxml.html.clean import Cleaner
 
+from trafilatura import __version__
 
 
-USER_AGENT = 'trafilatura/0.5.2 (+https://github.com/adbar/trafilatura)'
+USER_AGENT = 'trafilatura/' + __version__ + '(+https://github.com/adbar/trafilatura)'
 
 # sanity checks
 MAX_FILE_SIZE = 20000000
@@ -83,12 +84,10 @@ HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False # True
 HTML_CLEANER.style = False
 HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
-# 'a', 'span', 'dd', 'sub', 'sup', 'center',
 HTML_CLEANER.kill_tags = MANUALLY_CLEANED
 
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
-# 'span', 'item'
 # + list(CUT_EMPTY_ELEMS)
 
 # JUSTEXT_DEFAULT = 'German'
