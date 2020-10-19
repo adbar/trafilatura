@@ -5511,4 +5511,452 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
+'https://hellogiggles.com/beauty/dead-skin-cells-build-up/': {
+    'file': 'hellogiggles.com.skin.html',  # stays empty until download
+    'author': 'Jessica DeFino ',
+    'title': 'Wait, are dead skin cells actually a good thing?',
+    'date': '2020-03-12',
+    'description': 'Put down the exfoliating acid. According to dermatologists, dead skin cells actually do *so* much more than we give them credit for.',  # in HTML source
+    'categories': ['Beauty'],
+    'tags': [''],
+    'with': ['Admit it: Ever since the first rough, grainy glob', 'exfoliating acids, you kind of owe them an apology.', 'Desquamation can only take place when the skin is functioning'],  # 3 segments
+    'without': ['adhere to in the morning and at night.', 'two makeup artists to get their top tips on how to extend', 'spots caused by melasma, sun damage, or pigmentation'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://link.springer.com/article/10.1007/s11926-017-0626-z': {
+    'file': 'link.springer.com.1007.html',  # stays empty until download
+    'author': 'Marwan H. Adwan',
+    'title': 'Drug Reaction with Eosinophilia and Systemic Symptoms (DRESS) Syndrome and the Rheumatologist',
+    'date': '2017-01-30',
+    'description': 'The purpose of the review is to summarise the various drugs used in rheumatology practice implicated in the causation of DRESS syndrome. The most commonly reported drugs are allopurinol, sulfasalazine and minocycline, which pose a very high risk for DRESS syndrome development, followed by strontium ranelate and dapsone. Other, less commonly reported, drugs include leflunomide, hydroxychloroquine, non-steroidal anti-inflammatory drugs, febuxostat, bosentan and solcitinib. Reaction to some drugs is strongly associated with certain HLA alleles, which may be used to screen patients at risk of serious toxicity. DRESS syndrome is a serious reaction to many drugs used in rheumatic diseases, with a potentially fatal outcome and needs to be considered in any patient started on these medications who presents with a rash, fever and eosinophilia, sometimes with internal organ involvement.',  # in HTML source
+    'categories': [''],
+    'tags': ['DRESS syndrome', 'Eosinophilia', 'Hypersensitivity', 'Toxicity', 'Idiosynchratic', 'Allopurinol', 'Minocycline', 'Sulfasalazine'],
+    'with': ['The purpose of the review is to summarise', 'The most commonly reported drugs are allopurinol', 'Kirchhof MG, Wong A, Dutz JP. Cyclosporine treatment'],  # 3 segments
+    'without': ['Immediate online access to all issues from 2019.', '© 2020 Springer Nature Switzerland AG', 'Instant access to the full article PDF.'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.royalroad.com/fiction/34798/melas/chapter/535107/chapter-1-prologue-murdered': {
+    'file': 'royalroad.com.melas.html',  # stays empty until download
+    'author': 'delta201',
+    'title': 'Chapter 1: Prologue - Murdered',
+    'date': '2',
+    'description': ' &#xA;When I woke up, there was nothing.&#xA;A pure white empty space that seemed to stretch for all eternity was all that I saw; an expansive blank canvas filled (...)',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['When I woke up, there was nothing.', 'If it was limited to my birth, I', 'Make me the most powerful spellcaster, or whatever'],  # 3 segments
+    'without': ['Royal Road® is the home of web novels', 'Royal Road® © 2013-2020, background by', 'advertising fees by advertising and linking to amazon.com.'],  # 3 segments
+    'comments': ['Nice chapter! I had Melas in my PTR list', ' the entity is an incompetent with a quick trucker finger.', 'Her mother is wearing a purple pointed hat, something'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://harpers.org/a-letter-on-justice-and-open-debate/': {
+    'file': 'harpers.org.justice.html',  # stays empty until download
+    'author': '',
+    'title': 'A Letter on Justice and Open Debate',
+    'date': '2020-07-07',
+    'description': 'July 7, 2020 The below letter will be appearing in the Letters section of the magazine’s October issue. We welcome responses at letters@harpers.org Our cultural institutions are facing a moment of trial. Powerful protests for racial and social justice are leading to overdue demands for police reform, along with wider calls for greater equality and [&hellip;]',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Our cultural institutions are facing a moment of trial', 'expect the public or the state to defend it for us.', 'The free exchange of information and ideas, the'],  # 3 segments
+    'without': ['Do Not Sell My Personal Information', 'Privacy Policy ', 'Customer Care'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://nymag.com/intelligencer/2020/05/polarization-republicans-democracy-ezra-klein-book-review.html': {
+    'file': 'nymag.com.polarization.html',  # stays empty until download
+    'author': 'Eric Levitz',
+    'title': 'The GOP Is the Problem. Is ‘Human Identity Politics’ the Solution?',
+    'date': '2020-05-16',
+    'description': 'Ezra Klein’s new book on polarization alerts liberals and conservatives to their species’ unifying affinity for identity-based divisiveness.',  # in HTML source
+    'categories': ['Intelligencer'],
+    'tags': ['partisan polarization', 'political science', 'books', 'politics', 'conservatism', 'the republican party', 'ezra klein'],
+    'with': ['Which is to say, why was a solipsistic reality', 'of its contradictions. As African-Americans migrated North in', 'truth that our own identities are preventing'],  # 3 segments
+    'without': ['This site is protected by reCAPTCHA and the Googl', 'Daily news about the politics, business, and technolog', '© 2020 Vox Media, LLC. All rights reserved.'],  # 3 segments
+    'comments': ['I wrote Klein off as intolerably naive a', 'bombers of the grand old pedophile criminal gang.', 'Trump supporters believe Trump when he says'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'http://www.netbits.us/docs/stunnel_rsync.html': {
+    'file': 'netbits.us.stunnel_rsync.html',  # stays empty until download
+    'author': '',
+    'title': 'Rsync + Stunnel 4.x',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['documentation examples rely heavily on tcp-wrappers and Stunnel', 'cd to the directory containing the tarball', 'cert = /etc/stunnel/langly_stunnel_cert.pem'],  # 3 segments
+    'without': ['Last Modified:'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'US',  # if obvious: DE, CH, AT
+},
+'https://emacspeak.blogspot.com/2019/10/meta-programming-in-emacs-using.html': {
+    'file': 'emacspeak.blogspot.com.meta.html',  # stays empty until download
+    'author': 'T. V. Raman ',
+    'title': 'Meta-Programming In Emacs Using Defadvice',
+    'date': '2019-10-16',
+    'description': 'Here is where I plan to Blog Emacspeak tricks and introduce new features as I implement them.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Decorators in Python enable you to modify', 'entitled Beautiful Code, OReilly.', 'Speak line moved to after next-line and'],  # 3 segments
+    'without': ['Followers (7) ', 'View my complete profile', 'Simple theme. Powered by'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.politico.com/news/2019/12/30/mark-meadows-retirement-elect-wife-friend-090838': {
+    'file': 'politico.com.retirement.html',  # stays empty until download
+    'author': 'ALLY MUTNICK',
+    'title': 'Mark Meadows accused of timing retirement to help elect wife’s friend',
+    'date': '2019-12-30',
+    'description': 'Republicans in Western North Carolina are grumbling about his last-minute announcement, which boxed out a number of elected officials.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['shock retirement — revealed just 30 hours before the', 'though he faces another stiff primary challenge next year.', '“I don’t expect anyone to hand me anything.'],  # 3 segments
+    'without': ['Credit Card Payments', 'Notice to California Residents', 'Terms of Service'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html': {
+    'file': 'security.googleblog.com.protection.html',  # stays empty until download
+    'author': ['Nathan Parker', 'Varun Khaneja', 'Eric Mill', 'Kiran C Nair'],
+    'title': 'Enhanced Safe Browsing Protection now available in Chrome ',
+    'date': '2020-05-19',
+    'description': 'Posted by Nathan Parker, Varun Khaneja, Eric Mill and Kiran C Nair - Chrome Safe Browsing team   Over the past few years we’ve seen threats ...',  # in HTML source
+    'categories': [''],
+    'tags': ['android', 'android security', 'android tr', 'app security' 'big data', 'biometrics', 'blackhat' 'chrome', 'chrome security', 'federated learning', 'Gboard', 'google play', 'google play protect',' pha family highlights', 'privacy', 'Security', 'spyware', 'targeted spyware', 'vulnerabilities'],
+    'with': ['ve seen threats on the web becoming increasingly sophisticated', 'This protocol is designed so that Google cannot', 'billions of users are incredibly diverse, with'],  # 3 segments
+    'without': ['Give us feedback in our', 'Google Privacy Terms ', 'insights from Google on security and safety on the Internet'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.wevolver.com/article/2020.autonomous.vehicle.technology.report': {
+    'file': 'wevolver.com.vehicle.html',  # stays empty until download
+    'author': 'Wevolver Staff',
+    'title': '2020 Autonomous Vehicle Technology Report',
+    'date': '2020-02-20',
+    'description': 'Stay cutting edge and find information on Robotics, Automotive, Aerospace, Manufacturing, AI, Energy, and more engineering topics.',  # in HTML source
+    'categories': [''],
+    'tags': ['autonomous vehicles'],
+    'with': ['Following the Autonomous Vehicle Hype.', 'At the same time, technology developers have', 'most important market, and the company supplies'],  # 3 segments
+    'without': ['By combining two types of computers, this system could speed up', 'Moose UGV an handle tough environments', 'EngineeringClicks.com is the No. 1 mechanical design'],  # 3 segments
+    'comments': ['Thanks to all the contributors, for the comprehensive', 'With reference to FLIR dataset, the concept ', 'Keep me posted on your progress!'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www3.nhk.or.jp/news/easy/k10011959621000/k10011959621000.html': {
+    'file': 'nhk.or.jp.k100.html',  # stays empty until download
+    'author': '',
+    'title': '子どもへの体罰を禁止する法律ができる ',
+    'date': '06-24',
+    'description': '子どもへの虐待をなくすための法律ができて、親が子どもを教育するために、たたいたり蹴ったりする体罰を禁止することになりました。最近、親に虐待...',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['子どもへの虐待をなくすための法律ができて、親が子どもを教育するために、', '法律では虐待をした親に専門家が子どもの育て方を', '虐待したときに叱っていただけだと言う親がいます。新しい法律では'],  # 3 segments
+    'without': ['※下に線があることばは辞書の説明を見ることができます。 ', 'く転載することを禁じます。このページは受信料で制作しています。', 'Copyright NHK (Japan Broadcasting Corporation).'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.unocero.com/smartphones/marcas-mala-gestion-apps-segundo-plano-android/': {
+    'file': 'unocero.com.marcas.html',  # stays empty until download
+    'author': 'Alberto Ávila',
+    'title': 'Estas son las marcas que más dificultan el trabajo de tus aplicaciones en Android',
+    'date': '2019-08-27',
+    'description': 'Aunque muchas veces crees que el problema de tus aplicaciones es culpa del desarrollador, en realidad podría ser culpa del fabricante.',  # in HTML source
+    'categories': ['Smartphones'],
+    'tags': [''],
+    'with': ['pues al hacer esto se gastaba mucha', 'El problema es que a pesar de que', 'convierten en una desventaja para la experiencia de uso.'],  # 3 segments
+    'without': ['y te enviaremos un correo diario con lo', 'Derechos Reservados. unocero es una', 'Modo Nocturno'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://thepointsguy.com/news/alaska-airlines-oneworld-membership-new-date/': {
+    'file': 'thepointsguy.com.alaska.html',  # stays empty until download
+    'author': 'Edward Russell',
+    'title': 'Alaska Airlines sets new date for full Oneworld membership',
+    'date': '2020-10-13',
+    'description': 'Alaska Airlines has a new date for when it will be a full fledged member of the Oneworld alliance: March 31, 2021.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['has a new date for when it will be a full fledged member of the Oneworld', 'at its Seattle/Tacoma International Airport (SEA) base in 2019.', 'hat it launched in 2020, according to Cirium'],  # 3 segments
+    'without': ['This post contains references to products from one or more', 'Bonus value is an estimated value calculated by', 'responsibility to ensure all posts and/or questions are answered.'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.medicalnewstoday.com/articles/318674': {
+    'file': 'medicalnewstoday.com.318674.html',  # stays empty until download
+    'author': 'Ana Sandoiu',
+    'title': 'How does the brain turn unconscious information into conscious thought?',
+    'date': '2017-07-27',
+    'description': 'New research investigates the neurobiological timing of the so-called a-ha! moment that occurs we have come up with the solution to a complex problem.',  # in HTML source
+    'categories': [''],
+    'tags': ['Biology / Biochemistry', 'Neurology / Neuroscience', 'Psychology / Psychiatry'],
+    'with': ['Many of us have noticed that we seem to get our', 'But the exact moment at which information becomes', ' that the brain goes through to complete a'],  # 3 segments
+    'without': ['myths, and reveal tips for improving brain functioning.', 'to such placement, do not provide the information.', '© 2004-2020 Healthline Media UK Ltd, Brighton'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.mdavis.xyz/supermarket/': {
+    'file': 'mdavis.xyz.supermarket.html',  # stays empty until download
+    'author': 'Matthew Davis',
+    'title': 'A Stallman-esque short story about the future of offline tracking and the right to buy',
+    'date': '2019-01-11',
+    'description': 'A Stallman-esque short story about the future of offline tracking and the right to buy',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['The cameras recognise me as soon as I', 'afternoon snack on way home from work', ' FoodCorp to feed ourselves, FoodCorp feeds on us'],  # 3 segments
+    'without': ['11 Jan 2019', 'Photo by ev on Unsplash', 'find more by Matthew Davis'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://medium.com/@pimterry/host-your-node-app-on-dokku-digitalocean-1cb97e3ab041': {
+    'file': 'medium.com.dokku.html',  # stays empty until download
+    'author': 'Tim Perry',
+    'title': 'Host your Node app on Dokku & DigitalOcean',
+    'date': '2016-03-28',
+    'description': 'DigitalOcean are a superbly cheap and remarkably frictionless platform to run your servers (a cut-down and honed AWS competitor) in the cloud. If you want quick easy hosting, they’re fantastic. The…',  # in HTML source
+    'categories': [''],
+    'tags': ['Nodejs', 'Web Hosting' 'Docker'],
+    'with': ['are a superbly cheap and remarkably frictionless platform to run', 'Node project, started, and have the given port exposed.', 'You start Dokku, tell it what services you need'],  # 3 segments
+    'without': ['Creator of HTTP Toolkit', '3 min read', 'Nodejs'],  # 3 segments
+    'comments': ['what workflow do you recommend for local development when'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.economist.com/open-future/2018/06/18/why-collaborative-thinking-beats-individual-smarts': {
+    'file': 'economist.com.thinking.html',  # stays empty until download
+    'author': '',
+    'title': 'Why collaborative thinking beats individual smarts',
+    'date': '2018-06-18',
+    'description': 'An interview with Thomas Malone, author of “Superminds”, together with an extract from the book"',  # in HTML source
+    'categories': ['Open Future'],
+    'tags': [''],
+    'with': ['about the role that the proportion of men and women in', 'You might call this a measure of a person', 'Can groups be intelligent in the same way individuals'],  # 3 segments
+    'without': ['Sign up to our free daily newsletter', 'Published since September 1843 to take part in', 'Jun 18th 2018'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://diem25.org/the-eus-green-deal-isnt-enough-save-from-climate-catastrophe/': {
+    'file': 'diem25.org.climate.html',  # stays empty until download
+    'author': 'Giovanni Gaggero',
+    'title': 'The EU’s Green Deal isn’t enough to save us from climate catastrophe',
+    'date': '2020-12-12',
+    'description': 'The substantial inertia of governments on the climate crisis clearly showcases the political crisis of the European Union.',  # in HTML source
+    'categories': [''],
+    'tags': ['eu', 'european commission', 'European Union', 'Green New Deal', 'Green New Deal for Europe', 'Ursula von der Leyen'],
+    'with': ['Due to the rise of movements dedicated to addressing', 'The Green New Deal for Europe is the most', 'To answer this question, the starting point should'],  # 3 segments
+    'without': ['Democracy in Europe Movement 2025', 'Do you want to be informed of DiEM25', 'empower workers on an unprecedented scale.'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.theatlantic.com/ideas/archive/2020/08/californias-disasters-are-a-warning-climate-change-is-here/615610/': {
+    'file': 'theatlantic.com.disasters.html',  # stays empty until download
+    'author': 'Leah C. Stokes',
+    'title': 'How Can We Plan for the Future in California?',
+    'date': '2020-08-23',
+    'description': 'The state’s heat waves, blackouts, and fires—amid a pandemic—offer a warning of our fossil-fuel future.',  # in HTML source
+    'categories': ['Ideas'],
+    'tags': [''],
+    'with': ['When I moved to California five years ago', 'Yet some people refuse to acknowledge that climate change', 'happening in California has a name: climate change'],  # 3 segments
+    'without': ['We want to hear what you think about this article.', 'Some were blasted by critics, some flopped at the', 'Subscribe and support 162 years of independent journalism'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.bettycrocker.com/recipes/easy-pineapple-upside-down-cake/c4d3321d-fad9-41cb-8f29-8d91a4279b07': {
+    'file': 'bettycrocker.com.pineapple.html',  # stays empty until download
+    'author': '',
+    'title': 'Easy Pineapple Upside-Down Cake',
+    'date': '2019-06-13',
+    'description': 'This classic cake boasts all the fruity, gooey, caramel-y goodness that’s made it a favorite for generations—plus a secret shortcut so you can make it in a snap. With Betty Crocker™ Super Moist™ yellow cake mix, you can have this impressive dessert prepped for the oven in just 15 minutes. Bake, flip and bring it to the table to add a sweet and colorful flourish to any party!&quot;',  # in HTML source
+    'categories': ['recipes'],
+    'tags': [''],
+    'with': ['pineapple slices in juice, drained, juice reserved', 'Serve with sweetened whipped cream or an 8-oz', 'warm or cool. Store covered in refrigerator.'],  # 3 segments
+    'without': ['© 2020 ®/TM General Mills All Rights Reserved', 'Get kitchen tested recipes, meal ideas and more – straight to your inbox', 'Most Recent Collections'],  # 3 segments
+    'comments': ['My son loved it. Super easy and came out perfect.', 'Where can I find a cake recipe from scratch that works', 'Easy directions. my family is so excited that'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://cybercook.com.br/receitas/doces/biscoitos-doces/receita-de-sequilho-com-chocolate-amargo-124300': {
+    'file': 'cybercook.com.br.sequilho.html',  # stays empty until download
+    'author': '',
+    'title': 'Sequilho com Chocolate Amargo',
+    'date': '',
+    'description': 'Já experimentou essa deliciosa receita de Sequilho com Chocolate Amargo? Na CyberCook você encontra essa e outras receitas. Saiba mais!',  # in HTML source
+    'categories': ['Biscoitos doces', 'Amido de milho', 'Chocolate', 'Farinha de trigo', 'Manteiga', 'Ovo', 'Açúcar', 'Fermento químico em pó'],
+    'tags': [''],
+    'with': ['Todos os ingredientes', 'Composição nutricional da receita', 'Deixe secar em uma folha de papel'],  # 3 segments
+    'without': ['Geladinho de Leite em Pó e', 'Siga o CyberCook', 'Conheça os iogurtes proteicos e inclua-os na sua alimentação!'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'BR',  # if obvious: DE, CH, AT
+},
+'https://eatsmarter.de/rezepte/vanille-hafer-porridge-mit-leinsamen-und-apfel': {
+    'file': 'eatsmarter.de.porridge.html',  # stays empty until download
+    'author': 'Iris Lange-Fricke',
+    'title': 'Vanille-Hafer-Porridge mit Leinsamen und Apfel',
+    'date': '',
+    'description': 'Das Vanille-Hafer-Porridge mit Leinsamen und Apfel von EAT SMARTER sorgt für einen guten Start in den Tag.',  # in HTML source
+    'categories': [''],
+    'tags': ['Frühstück', 'Ballaststoffreich', 'Clean Eating', 'Clean Eating Frühstück',  'Porridge', 'Süßes Frühstück', 'Vegan', 'Vegetarisch'],
+    'with': ['Haferdrink mit Haferflocken, Vanille und Zimt, Leinsamen', 'Nüsse trocken in einer Pfanne anrösten. Äpfel waschen', 'Hafer ist reich an Ballaststoffen und Calcium. Insbesondere der Quellstoff'],  # 3 segments
+    'without': ['und Beauty. Erfahren Sie hier alles über die Kooperation.', 'Eine runde Sache also, wie Sie in dieser Warenkunde erfahren! ', 'Diätrezepte unter 400 Kcal'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://eatwhattonight.com/2020/09/vegan-styled-char-kway-teow-stir-fry-flat-rice-noodles/': {
+    'file': 'eatwhattonight.com.stir.html',  # stays empty until download
+    'author': '',
+    'title': 'Vegan Styled Char Kway Teow (Stir Fry Flat Rice Noodles)',
+    'date': '2020-09-28',
+    'description': 'Once in a while, I liked to go vegan ! And making it a point to do it once or twice in a month if I can. And this time with a vegan styled char kway teow. It was quite delicious though even without the eggs, meat or pork lard. [&hellip;]',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Once in a while, I liked to go vegan', 'With 2 tbsp oil left in the wok', '120g kway teow (flat rice noodles)⁣'],  # 3 segments
+    'without': ['I am Joyce from Sunny Singapore', 'Enter your keywords', 'Print Recipe'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://uk.trustpilot.com/reviews/581cf1892ae760087cadbf17': {
+    'file': 'uk.trustpilot.com.reviews.html',  # stays empty until download
+    'author': 'Mrs H Pyke',
+    'title': 'Gousto has changed my life....',
+    'date': '2016-11-04',
+    'description': 'Gousto has changed my life....',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Gousto has changed my life', 'What a fantastic idea!'],  # 3 segments
+    'without': ['4 Nov 2016', 'Useful', 'reviews'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.hassanchef.com/2020/09/bhindi-masala-okra-stir-fry.html': {
+    'file': 'hassanchef.com.bhindi.html',  # stays empty until download
+    'author': 'Mobasir hassan',
+    'title': 'Bhindi masala (okra stir fry)',
+    'date': '2020-09-15',
+    'description': 'Bhindi masala is a popular north Indian main course veg recipe made with bhindi (okra), tomato, onion and some spices. It can be made as dhaba style.',  # in HTML source
+    'categories': [''],
+    'tags': ['Veg recipes'],
+    'with': ['Tandoori roti, Naan and paratha are also served with this masala.', 'You can many popular dishes with bhindi like', 'My wife only use red chilli powder'],  # 3 segments
+    'without': ['Copyright © Hassanchef 2020', 'Post a Comment', 'You might like'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.kochbar.de/tipp/1918/Tomaten-richtig-schneiden.html': {
+    'file': 'kochbar.de.schneiden.html',  # stays empty until download
+    'author': 'Marianne1',
+    'title': 'Tomaten richtig schneiden',
+    'date': '2020-09-20',
+    'description': 'Der perfekte Tomaten richtig schneiden-Tipp mit Bild und einfacher Schritt-für-Schritt-Anleitung',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Ihr kennt es sicher auch!', 'aber ohne Strunk sieht es auch schöner aus.', 'haften am Fruchtfleisch und und können nicht'],  # 3 segments
+    'without': ['Tipp favorisieren', 'Um den Tipp "Tomaten richtig schneiden" kommentieren', 'Die besten TIPPS'],  # 3 segments
+    'comments': ['da ich meine Tomaten zum Anrichten schon lange', 'Dankeschön emari ♥ Sehr gerne...und ja'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'DE',  # if obvious: DE, CH, AT
+},
+'https://www.mindmegette.hu/levagott-ujj-vajas-kekszek-halloweenra-59841/': {
+    'file': 'mindmegette.hu.levagott.html',  # stays empty until download
+    'author': '',
+    'title': 'Ettől kitör a frász! Így készíts levágott ujj kekszeket Halloweenra',
+    'date': '',
+    'description': 'Léteznek olyan ünnepek, melyeknek nem igazán vannak magyar érdekeltségű hagyományai, ám mégis beszivárogtak a köztudatba. Én például kimondottan utálom például a Valentin napot, aminek szerintem semmi értelme nincs, de az ellenkezőjére is van példa. Ilyen az angolszász gyökerekkel bíró Halloween, amit minden évben várok, és persze készülök is rá. ',  # in HTML source
+    'categories': [''],
+    'tags': ['házisáfrány', 'halloween', 'Levágott ujj', 'desszert', 'süti', 'halloweeni süti', 'Déri Szilvi', 'recept'],
+    'with': ['Szeretem, hogy a közelgő téli hónapokat', 'Ezen az éjszakán nagy bulikat szerveznek, ahol', 'azonnal, vagy tároljuk őket jól záródó dobozban'],  # 3 segments
+    'without': ['Ezek is érdekelhetnek', 'Receptek karfiollal', 'Friss receptjeink'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'HU',  # if obvious: DE, CH, AT
+},
+'https://apply.workable.com/gousto/j/8F4D8D5904/': {
+    'file': 'workable.com.gousto.html',  # stays empty until download
+    'author': '',
+    'title': 'Health and Safety Manager',
+    'date': '',
+    'description': 'Gousto are on a mission to become the UK&#39;s favourite way to eat dinner!Delicious recipes, precise ingredients &amp;amp; a dollop of adventure, delivered to your door. We have invested into our technology, data capability and our product to ensure t...',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Gousto are on a mission to become the UK', 'Liaise with External Agencies as required.', 'consistently go the extra mile to apply and'],  # 3 segments
+    'without': ['This site is protected by reCAPTCHA and the Google', 'Gousto collects and processes personal data in accordance with', 'Spalding, England, United Kingdom'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.tine.no/presserom/nyhetsarkiv/nff-tine-fotballskole-viktig-for-barneidretten-gjennom-pandemien': {
+    'file': 'tine.no.fotballskole.html',  # stays empty until download
+    'author': '',
+    'title': 'NFF: TINE Fotballskole viktig for barneidretten gjennom pandemien',
+    'date': '2020-10-07',
+    'description': 'En annerledes sesong med TINE Fotballskole nærmer seg slutten. Norges Fotballforbund (NFF) har vært bekymret for et stort frafall i barnefotballen i løpet av koronaperioden, og derfor er det ekstra gledelig å se at nærmere 55 000 fotballglade barn har deltatt på over 350 fotballskoler rundt om i hele Norge, ifølge ferske tall.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['En annerledes sesong med TINE Fotballskole nærmer seg', 'TINE Fotballskole er en fantastisk og veldig', 'TINE være med å bidra, avslutter Syversen.'],  # 3 segments
+    'without': ['113 Kalbakken, 0902 Oslo', 'dine og tar i mot kommentarer og forslag.', '7. oktober 2020'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'NO',  # if obvious: DE, CH, AT
+},
+'https://www.vegolosi.it/news/climate-clock/': {
+    'file': 'vegolosi.it.climate.html',  # stays empty until download
+    'author': '',
+    'title': 'll Climate Clock ha iniziato a scorrere: sette anni è il tempo che ci rimane per agire ',
+    'date': '2020-09-30',
+    'description': 'A New York il Metronome si trasforma in un gigantesco orologio che fa il countdown dell&#039;emergenza climatica e ricorda al mondo l&#039;urgenza di agire per ridurre rapidamente le emissioni',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Ce lo ripetono continuamente gli esperti che', 'Ma se la nostra specie vuole sopravvivere', 'A New York il Metronome si trasforma in un'],  # 3 segments
+    'without': ['Per saperne di più', 'Guide di base', 'Frutta e verdura di stagione'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'IT',  # if obvious: DE, CH, AT
+},
+'https://web.archive.org/web/20200808063632/https://www.przepisy.pl/przepis/pierogi-z-dynia-w-sosie-szalwiowym': {
+    'file': 'archive.org.przepisy.pl.pierogi.html',  # stays empty until download
+    'author': 'przepisy.pl ',
+    'title': 'Pierogi z dynią w sosie szałwiowym',
+    'date': '',
+    'description': 'Zobacz, jak przygotować sprawdzony przepis na Pierogi z dynią w sosie szałwiowym. Wydrukuj lub pobierz PDF z przepisem.',  # in HTML source
+    'categories': [''],
+    'tags': ['ciasto na pierogi', 'Kuchnia Polska', 'cebula', 'JAJKA', 'DYNIA', 'PIEROGI', 'FRISCO', 'orzechy włoskie', 'z orzechami'],
+    'with': ['ugotowane pierogi, chwilę wymieszaj i natychmiast podawaj.', 'Przyprawa w Mini kostkach Smażona cebula', 'Przygotowanie krok po kroku'],  # 3 segments
+    'without': ['Słodkie i soczyste owoce, które mogą być', 'się do niego warzywa, sery, mięso, zioła. Skorzystaj z', 'To naprawdę pyszne danie – przekonaj się?'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'PL',  # if obvious: DE, CH, AT
+},
+'https://journals.univie.ac.at/index.php/wdr/about/submissions': {
+    'file': 'journals.univie.ac.at.submissions.html',  # stays empty until download
+    'author': '',
+    'title': 'Checkliste für Beitragseinreichungen ',
+    'date': '',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['müssen Sie registriert und eingeloggt sein.', 'Soweit möglich, wurden den Literaturangaben', 'Betonungen kursiv', 'Internetquellen', 'wird in Kürze bereitgestellt.'],  # 3 segments
+    'without': ['Beitragseinreichung', 'Aktuelle Ausgabe', 'Suchen'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'AT',  # if obvious: DE, CH, AT
+},
 }

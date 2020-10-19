@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="UTF-8"><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"38cce5be73",applicationID:"39153354"};window.NREUM||(NREUM={}),__nr_require=function(e,t,n){function r(n){if(!t[n]){var i=t[n]={exports:{}};e[n][0].call(i.exports,function(t){var i=e[n][1][t];return r(i||t)},i,i.exports)}return t[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(e,t,n){function r(){}function i(e,t,n){return function(){return o(e,[u.now()].concat(c(arguments)),t?null:this,n),t?void 0:this}}var o=e("handle"),a=e(6),c=e(7),f=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",l=p+"ixn-";a(d,function(e,t){s[t]=i(p+t,!0,"api")}),s.addPageAction=i(p+"addPageAction",!0),s.setCurrentRouteName=i(p+"routeName",!0),t.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,t){var n={},r=this,i="function"==typeof t;return o(l+"tracer",[u.now(),e,n],r),function(){if(f.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return t.apply(this,arguments)}catch(e){throw f.emit("fn-err",[arguments,this,e],n),e}finally{f.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,t){m[t]=i(l+t)}),newrelic.noticeError=function(e,t){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,t])}},{}],2:[function(e,t,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=e(8);t.exports=r,t.exports.offset=a,t.exports.getLastTimestamp=i},{}],3:[function(e,t,n){function r(e,t){var n=e.getEntries();n.forEach(function(e){"first-paint"===e.name?d("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&d("timing",["fcp",Math.floor(e.startTime)])})}function i(e,t){var n=e.getEntries();n.length>0&&d("lcp",[n[n.length-1]])}function o(e){e.getEntries().forEach(function(e){e.hadRecentInput||d("cls",[e])})}function a(e){if(e instanceof m&&!g){var t=Math.round(e.timeStamp),n={type:e.type};t<=p.now()?n.fid=p.now()-t:t>p.offset&&t<=Date.now()?(t-=p.offset,n.fid=p.now()-t):t=p.now(),g=!0,d("timing",["fi",t,n])}}function c(e){d("pageHide",[p.now(),e])}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var f,u,s,d=e("handle"),p=e("loader"),l=e(5),m=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){f=new PerformanceObserver(r);try{f.observe({entryTypes:["paint"]})}catch(v){}u=new PerformanceObserver(i);try{u.observe({entryTypes:["largest-contentful-paint"]})}catch(v){}s=new PerformanceObserver(o);try{s.observe({type:"layout-shift",buffered:!0})}catch(v){}}if("addEventListener"in document){var g=!1,y=["click","keydown","mousedown","pointerdown","touchstart"];y.forEach(function(e){document.addEventListener(e,a,!1)})}l(c)}},{}],4:[function(e,t,n){function r(e,t){if(!i)return!1;if(e!==i)return!1;if(!t)return!0;if(!o)return!1;for(var n=o.split("."),r=t.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,f=c.match(a);f&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=f[1])}t.exports={agent:i,version:o,match:r}},{}],5:[function(e,t,n){function r(e){function t(){e(a&&document[a]?document[a]:document[i]?"hidden":"visible")}"addEventListener"in document&&o&&document.addEventListener(o,t,!1)}t.exports=r;var i,o,a;"undefined"!=typeof document.hidden?(i="hidden",o="visibilitychange",a="visibilityState"):"undefined"!=typeof document.msHidden?(i="msHidden",o="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(i="webkitHidden",o="webkitvisibilitychange",a="webkitVisibilityState")},{}],6:[function(e,t,n){function r(e,t){var n=[],r="",o=0;for(r in e)i.call(e,r)&&(n[o]=t(r,e[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;t.exports=r},{}],7:[function(e,t,n){function r(e,t,n){t||(t=0),"undefined"==typeof n&&(n=e?e.length:0);for(var r=-1,i=n-t||0,o=Array(i<0?0:i);++r<i;)o[r]=e[t+r];return o}t.exports=r},{}],8:[function(e,t,n){t.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,t,n){function r(){}function i(e){function t(e){return e&&e instanceof r?e:e?f(e,c,o):o()}function n(n,r,i,o){if(!p.aborted||o){e&&e(n,r,i);for(var a=t(i),c=v(n),f=c.length,u=0;u<f;u++)c[u].apply(a,r);var d=s[w[n]];return d&&d.push([b,n,r,a]),a}}function l(e,t){h[e]=v(e).concat(t)}function m(e,t){var n=h[e];if(n)for(var r=0;r<n.length;r++)n[r]===t&&n.splice(r,1)}function v(e){return h[e]||[]}function g(e){return d[e]=d[e]||i(n)}function y(e,t){u(e,function(e,n){t=t||"feature",w[n]=t,t in s||(s[t]=[])})}var h={},w={},b={on:l,addEventListener:l,removeEventListener:m,emit:n,get:g,listeners:v,context:t,buffer:y,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(p.aborted=!0,s=p.backlog={})}var c="nr@context",f=e("gos"),u=e(6),s={},d={},p=t.exports=i();p.backlog=s},{}],gos:[function(e,t,n){function r(e,t,n){if(i.call(e,t))return e[t];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,t,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[t]=r,r}var i=Object.prototype.hasOwnProperty;t.exports=r},{}],handle:[function(e,t,n){function r(e,t,n,r){i.buffer([e],r),i.emit(e,t,n)}var i=e("ee").get("handle");t.exports=r,r.ee=i},{}],id:[function(e,t,n){function r(e){var t=typeof e;return!e||"object"!==t&&"function"!==t?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");t.exports=r},{}],loader:[function(e,t,n){function r(){if(!E++){var e=b.info=NREUM.info,t=p.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&t))return u.abort();f(h,function(t,n){e[t]||(e[t]=n)});var n=a();c("mark",["onload",n+b.offset],null,"api"),c("timing",["load",n]);var r=p.createElement("script");r.src="https://"+e.agent,t.parentNode.insertBefore(r,t)}}function i(){"complete"===p.readyState&&o()}function o(){c("mark",["domContent",a()+b.offset],null,"api")}var a=e(2),c=e("handle"),f=e(6),u=e("ee"),s=e(4),d=window,p=d.document,l="addEventListener",m="attachEvent",v=d.XMLHttpRequest,g=v&&v.prototype;NREUM.o={ST:setTimeout,SI:d.setImmediate,CT:clearTimeout,XHR:v,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var y=""+location,h={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1184.min.js"},w=v&&g&&g[l]&&!/CriOS/.test(navigator.userAgent),b=t.exports={offset:a.getLastTimestamp(),now:a,origin:y,features:{},xhrWrappable:w,userAgent:s};e(1),e(3),p[l]?(p[l]("DOMContentLoaded",o,!1),d[l]("load",r,!1)):(p[m]("onreadystatechange",i),d[m]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var E=0},{}],"wrap-function":[function(e,t,n){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(7),a="nr@original",c=Object.prototype.hasOwnProperty,f=!1;t.exports=function(e,t){function n(e,t,n,i){function nrWrapper(){var r,a,c,f;try{a=this,r=o(arguments),c="function"==typeof n?n(r,a):n||{}}catch(u){p([u,"",[r,a,i],c])}s(t+"start",[r,a,i],c);try{return f=e.apply(a,r)}catch(d){throw s(t+"err",[r,a,d],c),d}finally{s(t+"end",[r,a,f],c)}}return r(e)?e:(t||(t=""),nrWrapper[a]=e,d(e,nrWrapper),nrWrapper)}function u(e,t,i,o){i||(i="");var a,c,f,u="-"===i.charAt(0);for(f=0;f<t.length;f++)c=t[f],a=e[c],r(a)||(e[c]=n(a,u?c+i:i,o,c))}function s(n,r,i){if(!f||t){var o=f;f=!0;try{e.emit(n,r,i,t)}catch(a){p([a,n,r,i])}f=o}}function d(e,t){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(e);return n.forEach(function(n){Object.defineProperty(t,n,{get:function(){return e[n]},set:function(t){return e[n]=t,t}})}),t}catch(r){p([r])}for(var i in e)c.call(e,i)&&(t[i]=e[i]);return t}function p(t){try{e.emit("internal-error",t)}catch(n){}}return e||(e=i),n.inPlace=u,n.flag=a,n}},{}]},{},["loader"]);</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="shortcut icon" href="https://thepointsguy.com/wp-content/themes/tpg-2016/favicon-new.ico?v=3" />
+<meta name="google-site-verification" content="WsVjG8zEiyAcaLGuoGAWu1V5DEam1tonqrfuNdxxUjY" />
+<meta name="google-site-verification" content="Ljof3Duwtracp116XX76hDeY-IZn3TnvmYX8PMQIFIw" />
+<title>Alaska Airlines to become full Oneworld member by spring</title>
+<link rel='dns-prefetch' href='//ajax.googleapis.com' />
+<link rel='dns-prefetch' href='//unpkg.com' />
+<link rel='dns-prefetch' href='//cdn.cookielaw.org' />
+<link rel='dns-prefetch' href='//thepointsguy.com' />
+<link rel='dns-prefetch' href='//cdn.jsdelivr.net' />
+<link rel='dns-prefetch' href='//s.skimresources.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel="alternate" type="application/rss+xml" title="The Points Guy &raquo; Feed" href="https://thepointsguy.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="The Points Guy &raquo; Comments Feed" href="https://thepointsguy.com/comments/feed/" />
+<meta name='description' content='Alaska Airlines has a new date for when it will be a full fledged member of the Oneworld alliance: March 31, 2021.' /><!-- WP SEO -->
+<link rel='stylesheet' id='tpg-screen-css'  href='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/global-new-ui.409f0e9f.css?ver=1.1.1' type='text/css' media='all' />
+<link rel='stylesheet' id='google-fonts-css-css'  href='https://fonts.googleapis.com/css2?family=Roboto+Slab&#038;display=swap&#038;ver=5.5' type='text/css' media='all' />
+<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js?ver=5.5' id='jquery-js'></script>
+<script type='text/javascript' src='https://unpkg.com/react@16.13.1/umd/react.production.min.js?ver=5.5' id='react-js'></script>
+<script type='text/javascript' src='https://unpkg.com/react-dom@16.13.1/umd/react-dom.production.min.js?ver=5.5' id='react-dom-js'></script>
+<script type='text/javascript' src='https://cdn.cookielaw.org/consent/4d9c0bff-646f-445c-ba6f-9116f99e770a.js' id='onetrust-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/static/lib/openvv-min.js?ver=1.0' id='openvv-js'></script>
+<script type='text/javascript' id='tpg-request-js-extra'>
+/* <![CDATA[ */
+var displayObject = {"tpgPlacements":{"placements":[{"divName":"above-navigation--d","zoneIds":[217663],"networkId":10399,"siteId":1115992,"adTypes":[4,123],"properties":[],"contentKeys":[],"targetBrowserSize":"desktop","siteZone":"all","location":"Above Navigation Desktop"},{"divName":"mid-homepage--d","zoneIds":[217658],"networkId":10399,"siteId":1115992,"adTypes":[4],"properties":[],"contentKeys":[],"targetBrowserSize":"desktop","siteZone":"homepage","location":"Mid Homepage Desktop"},{"divName":"mid-hub--d","zoneIds":[217656],"networkId":10399,"siteId":1115992,"adTypes":[4],"properties":[],"contentKeys":[],"targetBrowserSize":"desktop","siteZone":"hub","location":"Mid Hub Desktop"},{"divName":"right-rail--1","zoneIds":[217662],"networkId":10399,"siteId":1115992,"adTypes":[5,43],"properties":[],"contentKeys":[],"targetBrowserSize":"desktop","siteZone":"article","location":"Right Rail 1"},{"divName":"right-rail--2","zoneIds":[217660],"networkId":10399,"siteId":1115992,"adTypes":[5,43],"properties":[],"contentKeys":[],"targetBrowserSize":"desktop","siteZone":"article","location":"Right Rail 2"},{"divName":"right-rail--3","zoneIds":[217786],"networkId":10399,"siteId":1115992,"adTypes":[5,43],"properties":[],"contentKeys":[],"targetBrowserSize":"desktop","siteZone":"article","location":"Right Rail 3"},{"divName":"above-navigation--m","zoneIds":[217659],"networkId":10399,"siteId":1115992,"adTypes":[23],"properties":[],"contentKeys":[],"targetBrowserSize":"mobile","siteZone":"all","location":"Above Navigation Mobile"},{"divName":"mid-homepage--m","zoneIds":[217657],"networkId":10399,"siteId":1115992,"adTypes":[23,43],"properties":[],"contentKeys":[],"targetBrowserSize":"mobile","siteZone":"homepage","location":"Mid Homepage Mobile"},{"divName":"mid-hub--m","zoneIds":[217655],"networkId":10399,"siteId":1115992,"adTypes":[5,43],"properties":[],"contentKeys":[],"targetBrowserSize":"mobile","siteZone":"hub","location":"Mid Hub Mobile"},{"divName":"mid-article-1--m","zoneIds":[217654],"networkId":10399,"siteId":1115992,"adTypes":[5,43],"properties":[],"contentKeys":[],"targetBrowserSize":"mobile","siteZone":"article","location":"Mid Article 2 Mobile"},{"divName":"mid-article-2--m","zoneIds":[217787],"networkId":10399,"siteId":1115992,"adTypes":[5,43],"properties":[],"contentKeys":[],"targetBrowserSize":"mobile","siteZone":"article","location":"Mid Article 1 Mobile"}],"flightViewTimes":[]},"currentUrl":"https:\/\/thepointsguy.com\/news\/alaska-airlines-oneworld-membership-new-date","siteUrl":"https:\/\/thepointsguy.com","keywords":["article","tag.airlines","tag.aviation","airline.alaska-airlines","airport.lax","airport.sea","post-1015408"]};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/request.3f3fff2a.js?ver=1.0' id='tpg-request-js'></script>
+<script type='text/javascript' src='https://cdn.jsdelivr.net/npm/search-insights@1.3.1?ver=5.5' id='algolia-insights-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/onetrust.28f88de8.js' id='onetrust-setup-js'></script>
+<script type='text/javascript' id='weekly-update-promotions-js-extra'>
+/* <![CDATA[ */
+var weekly_update_promotions = {"url":"https:\/\/thepointsguy.com\/wp-admin\/admin-ajax.php","nonce":"8d28013677","action":"action_weekly_update_promotions","firstStep":"email","lastStep":"question","listId":"30050","api_watchtower":"https:\/\/watchtower.api.thepointsguy.com\/api\/emailQuestions"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/WeeklyUpdatePromotions.8ed6d207.js?ver=5.5' id='weekly-update-promotions-js'></script>
+<link rel="https://api.w.org/" href="https://thepointsguy.com/wp-json/" /><link rel="alternate" type="application/json" href="https://thepointsguy.com/wp-json/wp/v2/posts/1015408" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://thepointsguy.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://thepointsguy.com/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Will you accept this rose-ort? Reviewing the sprawling resort where the latest season of &#8216;The Bachelorette&#8217; was filmed' href='https://thepointsguy.com/reviews/la-quinta-resort-club-waldorf-astoria/' />
+<link rel='next' title='This lucky traveler was the only tourist allowed in Machu Picchu since March' href='https://thepointsguy.com/news/machu-picchu-reopens/' />
+<meta name="generator" content="WordPress 5.5" />
+<link rel="canonical" href="https://thepointsguy.com/news/alaska-airlines-oneworld-membership-new-date/" />
+<link rel='shortlink' href='https://thepointsguy.com/?p=1015408' />
+<link rel="alternate" type="application/json+oembed" href="https://thepointsguy.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthepointsguy.com%2Fnews%2Falaska-airlines-oneworld-membership-new-date%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://thepointsguy.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fthepointsguy.com%2Fnews%2Falaska-airlines-oneworld-membership-new-date%2F&#038;format=xml" />
+
+<!-- BEGIN wp-parsely Plugin Version 1.14 -->
+<meta name="wp-parsely_version" id="wp-parsely_version" content="1.14"/>
+			<script type="application/ld+json">
+		{"@context":"http:\/\/schema.org","@type":"NewsArticle","mainEntityOfPage":{"@type":"WebPage","@id":"http:\/\/thepointsguy.com\/news\/alaska-airlines-oneworld-membership-new-date\/"},"headline":"Alaska Airlines sets new date for full Oneworld membership","url":"http:\/\/thepointsguy.com\/news\/alaska-airlines-oneworld-membership-new-date\/","thumbnailUrl":"https:\/\/thepointsguy.global.ssl.fastly.net\/us\/originals\/2019\/11\/1_ALB_3356.jpg","image":{"@type":"ImageObject","url":"https:\/\/thepointsguy.global.ssl.fastly.net\/us\/originals\/2019\/11\/1_ALB_3356.jpg"},"dateCreated":"2020-10-13T16:00:32Z","datePublished":"2020-10-13T16:00:32Z","dateModified":"2020-10-13T16:00:32Z","articleSection":"News","author":[{"@type":"Person","name":"Edward Russell"}],"creator":["Edward Russell"],"keywords":["airlines","aviation"],"publisher":{"@type":"Organization","name":"The Points Guy","logo":{"@type":"ImageObject","url":"https:\/\/thepointsguy.com"}}}
+		</script>
+
+			<!-- END wp-parsely Plugin Version 1.14 -->
+
+<meta property="og:description" content="Alaska Airlines has a new date for when it will be a full fledged member of the Oneworld alliance: March 31, 2021. The date is about three months later than executives planned when the Seattle-based carrier was officially invited to join the alliance in July. However, it is on par with the &#8220;sometime late Q1&#8221; &hellip;" />
+<meta property="og:image" content="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg" />
+<meta property="og:site_name" content="The Points Guy" />
+<meta property="og:title" content="Alaska Airlines to become full Oneworld member by spring" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://thepointsguy.com/news/alaska-airlines-oneworld-membership-new-date/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:creator" content="@byerussell" />
+<meta property="twitter:image" content="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg" />
+<meta property="twitter:site" content="@thepointsguy" />
+
+	<script type="text/javascript">
+		window.tpgGlobalVars = {"permalink":"http:\/\/thepointsguy.com\/news\/alaska-airlines-oneworld-membership-new-date\/","dsqIdentifierForPost":"http:\/\/thepointsguy.com\/news\/alaska-airlines-oneworld-membership-new-date\/"};
+	</script>
+	
+
+	<style type='text/css'>
+		.preampjs [data-preamp],
+		.fusejs [data-fuse] {
+			opacity: 0 !important;
+		}
+	</style>
+
+	<script>
+!function(w){var c=w._CohesionConfig=w._CohesionConfig||{};c.tagular=Object.assign({apiHost:"https://beam.thepointsguy.com/v1/t",apiKey:"8830ce36-13f9-40da-8176-b8cbf73a598c.17a68289-d4ec-4835-a672-712d0d381d34",cookieDomain:"thepointsguy.com",sourceKey:'src_1NT28rcFt1kjLbFIr8unyx85B32',writeKey:'wk_1NT28o6EVMolo1DRuTlXaAqszMS',domainWhitelist:["thepointsguy.com"]},c.tagular);c.preamp=Object.assign({siteId:"1J0NDsEnrxse6tLymGTyGi",cookies:["segments","mailsub"]},c.preamp)}(window);!function(co,h,e,s,i,o,n){var d="documentElement";var a="className";h[d][a]+=" preampjs fusejs";n.k=e;co._Cohesion=n;co._Preamp={k:s,start:new Date};co._Fuse={k:i};co._Tagular={k:o};[e,s,i,o].map(function(x){co[x]=co[x]||function(){(co[x].q=co[x].q||[]).push([].slice.call(arguments))}});h.addEventListener("DOMContentLoaded",function(){co.setTimeout(function(){var u=h[d][a];h[d][a]=u.replace(/ ?preampjs| ?fusejs/g,"")},3e3);co._Preamp.docReady=co._Fuse.docReady=!0});var z=h.createElement("script");z.async=1;z.src="https://cdn.cohesionapps.com/cohesion/cohesion-latest.min.js";h.head.appendChild(z)}(window,document,"cohesion","preamp","fuse","tagular",window._CohesionConfig);if(typeof cohesion!=="undefined"){cohesion("ready",function(){dataLayer.push({event:"cohesion",anonymousId:window._Cohesion.anonymousId,sessionId:window._Cohesion.sessionId})})}
+	</script>
+
+
+<style>.async-hide { opacity: 0 !important }</style>
+<script>
+  (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+  h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+  (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+  })(window,document.documentElement,'async-hide','dataLayer',4000,
+  {'GTM-T5Z95LR':true});
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-16558039-1', 'auto');
+  ga('require', 'GTM-T5Z95LR');
+  ga('send', 'pageview');
+</script>
+
+<!-- Google Tag Manager dataLayer -->
+<script>
+	window.dataLayer = window.dataLayer || [];
+	window.dataLayer.push({"channel":"NEWS","url":"\/news\/alaska-airlines-oneworld-membership-new-date\/","pageName":"alaska-airlines-oneworld-membership-new-date","author":"Edward Russell","eVar20":"Airlines, Aviation","eVar21":"10132020","eVar22":0,"eVar23":299,"eVar24":"1","eVar25":"Alaska Airlines"});
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer', "GTM-MHZQXGF");</script>
+<!-- End Google Tag Manager -->
+<link rel="amphtml" href="https://thepointsguy.com/news/alaska-airlines-oneworld-membership-new-date/amp/"></head>
+
+
+<body class="post-template-default single single-post postid-1015408 single-format-standard en-us tpg-live fastly_migration use_archiveless global-search permalinks_archives_checker" data-page="1015408" data-preamp>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MHZQXGF"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<script>
+const ALGOLIA_INSIGHTS_SRC = "https://cdn.jsdelivr.net/npm/search-insights@1.3.1";
+
+!function(e,a,t,n,s,i,c){e.AlgoliaAnalyticsObject=s,e[s]=e[s]||function(){
+(e[s].queue=e[s].queue||[]).push(arguments)},i=a.createElement(t),c=a.getElementsByTagName(t)[0],
+i.async=1,i.src=n,c.parentNode.insertBefore(i,c)
+}(window,document,"script",ALGOLIA_INSIGHTS_SRC,"aa");
+
+window.aa('init', {
+	appId: 'I3YV53GFV0',
+	apiKey: 'af91bcfe1e28c5c10128e405470aa50e',
+});
+</script>
+
+<div class="above-footer">
+	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+			<div id="tpg_above-navigation--d" class="display-desktop"></div>
+		<div id="tpg_above-navigation--m" class="display-mobile"></div>
+		
+
+	<section class="header-nav">
+		<div class="header-nav__wrapper header-nav-wrapper">
+			<div class="header-nav__logo header-nav__logo--desktop logo">
+				<a href="https://thepointsguy.com">
+											<div class="header-nav__logo-img header-nav__logo-img--us"></div>
+									</a>
+			</div>
+
+			<div class="header-nav__inner-content fixed">
+				<div class="header-nav__inner-content--top">
+					<div class="header-nav__tagline tagline">
+						<div
+						class="search-trigger gs-trigger-open gs-trigger-autofocus"
+						data-beam-element-clicked
+						data-beam-action-outcome="OPEN"
+						data-beam-location="NAVIGATION"
+						data-beam-element-type="BUTTON"
+						data-beam-text="Search">
+						<span class="icon icon-search">
+	<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Icons-/-Interface-/-Search" fill="#000000" fill-rule="nonzero">
+				<g id="Group">
+					<g id="search-alternate">
+						<path d="M23.384,21.619 L16.855,15.09 C19.8121553,11.2027145 19.2516834,5.68892669 15.5728164,2.47618737 C11.8939495,-0.736551948 6.35490842,-0.549443611 2.9012324,2.9042324 C-0.552443611,6.35790842 -0.739551948,11.8969495 2.47318737,15.5758164 C5.68592669,19.2546834 11.1997145,19.8151553 15.087,16.858 L21.616,23.387 C22.1077348,23.8666586 22.8922652,23.8666586 23.384,23.387 C23.871759,22.8985895 23.871759,22.1074105 23.384,21.619 Z M2.75,9.5 C2.75,5.77207794 5.77207794,2.75 9.5,2.75 C13.2279221,2.75 16.25,5.77207794 16.25,9.5 C16.25,13.2279221 13.2279221,16.25 9.5,16.25 C5.77390544,16.2455917 2.75440828,13.2260946 2.75,9.5 Z" id="Shape"></path>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+						<button>Search...</button>
+						</div>
+					</div>
+					<div class="header-nav__top-right-components">
+						<div class="disclosure uk-live">
+							<button id="disclosure">Advertiser Disclosure</button>
+						</div>
+
+						
+<div class="social-icons">
+			<a
+			href="https://facebook.com/thepointsguy/"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="Facebook"
+			data-beam-position="0"
+			class="facebook-icon"
+			title="Like us on Facebook">
+			<span class="icon icon-facebook">
+	<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Global-Elements-/-Top-Navigation-/-Desktop" transform="translate(-1212.000000, -18.000000)" fill="#000000">
+				<g id="Header">
+					<g id="social-medias" transform="translate(1212.000000, 18.000000)">
+						<g id="Icons-/-Social-Media-/-Facebook">
+							<g id="Group">
+								<g id="Bold" fill-rule="nonzero">
+									<path d="M13.0333333,9.70666667 C13.0129922,9.87498835 12.8695419,10.0012246 12.7,10 L11.3333333,10 C11.1492384,10 11,10.1492384 11,10.3333333 L11,15.6666667 C11,15.8507616 11.1492384,16 11.3333333,16 L15.3333333,16 C15.7015232,16 16,15.7015232 16,15.3333333 L16,0.666666667 C16,0.298476833 15.7015232,0 15.3333333,0 L0.666666667,0 C0.298476833,0 0,0.298476833 0,0.666666667 L0,15.3333333 C0,15.7015232 0.298476833,16 0.666666667,16 L8,16 C8.18409492,16 8.33333333,15.8507616 8.33333333,15.6666667 L8.33333333,10.3333333 C8.33333333,10.1492384 8.18409492,10 8,10 L6.66666667,10 C6.48257175,10 6.33333333,9.85076158 6.33333333,9.66666667 L6.33333333,7.66666667 C6.33333333,7.48257175 6.48257175,7.33333333 6.66666667,7.33333333 L8,7.33333333 C8.18409492,7.33333333 8.33333333,7.18409492 8.33333333,7 L8.33333333,6.12666667 C8.33333333,4.03166652 10.0316665,2.33333333 12.1266667,2.33333333 L13,2.33333333 C13.0884055,2.33333333 13.1731901,2.36845228 13.2357023,2.43096441 C13.2982144,2.49347653 13.3333333,2.57826117 13.3333333,2.66666667 L13.3333333,4.66666667 C13.3333333,4.85076158 13.1840949,5 13,5 L12.1266667,5 C11.5044258,5 11,5.50442585 11,6.12666667 L11,7 C11,7.18409492 11.1492384,7.33333333 11.3333333,7.33333333 L12.9533333,7.33333333 C13.0491266,7.3326408 13.1405875,7.37319502 13.204389,7.4446527 C13.2681905,7.51611038 13.2981647,7.61156342 13.2866667,7.70666667 L13.0333333,9.70666667 Z" id="Shape"></path>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+		</a>
+	
+			<a
+			href="https://www.instagram.com/thepointsguy/"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="Instagram"
+			data-beam-position="0"
+			class="instagram-icon"
+			title="Follow us on Instagram">
+			<span class="icon icon-instagram">
+	<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Global-Elements-/-Top-Navigation-/-Desktop" transform="translate(-1240.000000, -18.000000)" fill="#000000">
+				<g id="Header">
+					<g id="social-medias" transform="translate(1212.000000, 18.000000)">
+						<g id="Icons-/-Social-Media-/-Instagram" transform="translate(28.000000, 0.000000)">
+							<g id="Group">
+								<g id="Bold" fill-rule="nonzero">
+									<path d="M12.0466667,7.5 C11.9957364,7.50054797 11.9478524,7.52435407 11.9166725,7.56462816 C11.8854925,7.60490224 11.8744398,7.65722283 11.8866667,7.70666667 C12.2852301,9.32055627 11.6440549,11.0127371 10.2760893,11.9572806 C8.90812358,12.901824 7.09854309,12.901824 5.73057741,11.9572806 C4.36261172,11.0127371 3.72143653,9.32055627 4.12,7.70666667 C4.13222692,7.65722283 4.12117413,7.60490224 4.08999419,7.56462816 C4.05881425,7.52435407 4.01093025,7.50054797 3.96,7.5 L0.333333333,7.5 C0.149238417,7.5 0,7.64923842 0,7.83333333 L0,11.6666667 C0.00367109113,14.0583783 1.94162168,15.9963289 4.33333333,16 L11.6666667,16 C14.0583783,15.9963289 15.9963289,14.0583783 16,11.6666667 L16,7.83333333 C16,7.64923842 15.8507616,7.5 15.6666667,7.5 L12.0466667,7.5 Z" id="Shape"></path>
+									<path d="M15.6666667,6.50004074 C15.8507616,6.50004074 16,6.35076158 16,6.16666667 L16,4.33333333 C15.9963289,1.94162168 14.0583783,0.00367109113 11.6666667,5.67045326e-14 L4.37681688,5.67045326e-14 C2.00448044,5.67045326e-14 0.00450801258,1.94162168 0,4.33333333 L0,6.16666667 C0,6.35076158 0.149238417,6.50004074 0.333333333,6.50004074 L4.46666667,6.50004074 C4.57512884,6.5005828 4.6770926,6.44835746 4.74,6.36 C5.48999101,5.30193099 6.70641524,4.67314841 8.00333333,4.67314841 C9.30025143,4.67314841 10.5166757,5.30193099 11.2666667,6.36 C11.3295741,6.44835746 11.4315378,6.5005828 11.54,6.50004074 L15.6666667,6.50004074 Z M11.6666667,3 C11.6666667,2.63181017 11.9651435,2.33333333 12.3333333,2.33333333 L13,2.33333333 C13.3681898,2.33333333 13.6666667,2.63181017 13.6666667,3 L13.6666667,3.66666667 C13.6666667,4.0348565 13.3681898,4.33333333 13,4.33333333 L12.3333333,4.33333333 C11.9651435,4.33333333 11.6666667,4.0348565 11.6666667,3.66666667 L11.6666667,3 Z" id="Shape"></path>
+									<circle id="Oval" cx="8" cy="8.66666667" r="2"></circle>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+		</a>
+	
+			<a
+			href="https://www.youtube.com/user/ThePointsGuy"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="YouTube"
+			data-beam-position="0"
+			class="youtube-icon"
+			title="Follow us on YouTube">
+			<span class="icon icon-youtube">
+	<svg width="16px" height="12px" viewBox="0 0 16 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Global-Elements-/-Top-Navigation-/-Desktop" transform="translate(-1268.000000, -21.000000)" fill="#000000">
+				<g id="Header">
+					<g id="social-medias" transform="translate(1212.000000, 18.000000)">
+						<g id="Icons-/-Social-Media-/-YouTube" transform="translate(56.000000, 1.000000)">
+							<g id="Group">
+								<g id="Bold" fill-rule="nonzero">
+									<path d="M13.3733333,2.33333333 L2.62666667,2.33333333 C1.17599872,2.33333333 0,3.50933206 0,4.96 L0,11.04 C0,12.4906679 1.17599872,13.6666667 2.62666667,13.6666667 L13.3733333,13.6666667 C14.8240013,13.6666667 16,12.4906679 16,11.04 L16,4.96 C16,3.50933206 14.8240013,2.33333333 13.3733333,2.33333333 Z M11.0266667,8 L6.51333333,10.9066667 C6.41083329,10.9724294 6.2806279,10.9770597 6.17371549,10.9187438 C6.06680309,10.860428 6.00020266,10.7484491 6,10.6266667 L6,4.85333333 C6.00020266,4.7315509 6.06680309,4.61957204 6.17371549,4.56125619 C6.2806279,4.50294033 6.41083329,4.50757056 6.51333333,4.57333333 L11.0266667,7.46 C11.1217243,7.52140114 11.1791379,7.62683619 11.1791379,7.74 C11.1791379,7.85316381 11.1217243,7.95859886 11.0266667,8.02 L11.0266667,8 Z" id="Shape"></path>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+	</g>
+	</svg>
+</span>
+		</a>
+	
+	
+			<a
+			href="https://twitter.com/thepointsguy/"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="Twitter"
+			data-beam-position="0"
+			class="twitter-icon"
+			title="Follow us on Twitter">
+			<span class="icon icon-twitter">
+	<svg width="16px" height="14px" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Global-Elements-/-Top-Navigation-/-Desktop" transform="translate(-1296.000000, -20.000000)" fill="#000000">
+				<g id="Header">
+					<g id="social-medias" transform="translate(1212.000000, 18.000000)">
+						<g id="Icons-/-Social-Media-/-Twitter" transform="translate(84.000000, 1.000000)">
+							<g id="Group">
+								<g id="Bold" fill-rule="nonzero">
+									<path d="M15.5466667,4.29333333 C15.6434059,4.21292485 15.6866395,4.08490465 15.6584565,3.96230885 C15.6302736,3.83971304 15.5354748,3.74342441 15.4133333,3.71333333 L14.8866667,3.58 C14.7896948,3.55572276 14.7087377,3.48920638 14.6661109,3.39878582 C14.6234841,3.30836526 14.6236881,3.20358722 14.6666667,3.11333333 L14.96,2.52 C15.0165878,2.40258886 14.9995534,2.26296658 14.9163965,2.1626048 C14.8332396,2.06224302 14.6992164,2.01955433 14.5733333,2.05333333 L13.24,2.42666667 C13.1392777,2.45604401 13.0306019,2.43628479 12.9466667,2.37333333 C12.3696794,1.94059291 11.6679007,1.70666667 10.9466667,1.70666667 C9.1057175,1.70666667 7.61333333,3.19905083 7.61333333,5.04 L7.61333333,5.28 C7.61394565,5.36477095 7.55082751,5.4364961 7.46666667,5.44666667 C5.59333333,5.66666667 3.8,4.71333333 1.86666667,2.48666667 C1.78104083,2.39223177 1.64978499,2.35362712 1.52666667,2.38666667 C1.41585131,2.437603 1.34170122,2.54499279 1.33333333,2.66666667 C1.066305,3.76356116 1.17426675,4.9182824 1.64,5.94666667 C1.66809174,6.0022709 1.66282783,6.06889999 1.62635324,6.11940326 C1.58987865,6.16990654 1.5282833,6.19585182 1.46666667,6.18666667 L0.72,6.04 C0.612377629,6.02269682 0.503094415,6.05910782 0.427356798,6.1375029 C0.351619181,6.21589797 0.318997096,6.32637141 0.34,6.43333333 C0.456593416,7.46970631 1.03793029,8.39690184 1.92,8.95333333 C1.97749839,8.98118107 2.01401835,9.03944624 2.01401835,9.10333333 C2.01401835,9.16722043 1.97749839,9.22548559 1.92,9.25333333 L1.56666667,9.39333333 C1.4799082,9.42811504 1.41173943,9.49772548 1.37878075,9.58519275 C1.34582207,9.67266002 1.35110204,9.76994679 1.39333333,9.85333333 C1.7899572,10.7212034 2.58728349,11.3391312 3.52666667,11.5066667 C3.59258075,11.5305903 3.63647093,11.593212 3.63647093,11.6633333 C3.63647093,11.7334547 3.59258075,11.7960764 3.52666667,11.82 C2.62024233,12.1948907 1.64750965,12.3830884 0.666666667,12.3733333 C0.482571752,12.3365144 0.303485658,12.4559051 0.266666675,12.64 C0.229847693,12.8240949 0.349238421,13.003181 0.533333333,13.04 C2.23169647,13.8454971 4.08078859,14.2839182 5.96,14.3266667 C7.61296892,14.3518776 9.23652146,13.8880054 10.6266667,12.9933333 C12.9491853,11.4429857 14.3408191,8.83242096 14.3333333,6.04 L14.3333333,5.46 C14.3341568,5.36202316 14.3780448,5.2693706 14.4533333,5.20666667 L15.5466667,4.29333333 Z" id="Shape"></path>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+		</a>
+	</div>
+
+												<div class="region-wrapper top-right-components_region">
+							<button class="region-toggle">
+								<span class="pin-icon"><svg width="12px" height="16px" viewBox="0 0 12 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Global-Elements-/-Top-Navigation-/-Desktop" transform="translate(-1364.000000, -18.000000)" fill="#000000">
+      <g id="Header">
+        <g id="Country-Toggle" transform="translate(1362.000000, 16.000000)">
+          <g id="Icons-/-Interface-/-Location" transform="translate(0.000000, 2.000000)">
+            <g id="Group">
+              <g id="pin" fill-rule="nonzero">
+                <path d="M8,-8.8917762e-16 C5.05585206,0.0033065897 2.66997326,2.38918539 2.66666667,5.33333333 C2.66666667,7.67333333 6,13.35 7.432,15.6826667 C7.55335899,15.8799256 7.76839886,16 8,16 C8.23204043,16.0011034 8.44764932,15.8803928 8.568,15.682 C10,13.3506667 13.3333333,7.676 13.3333333,5.33333333 C13.3300267,2.38918539 10.9441479,0.0033065897 8,-8.8917762e-16 Z M8,7.66666667 C6.71133558,7.66666667 5.66666667,6.62199775 5.66666667,5.33333333 C5.66666667,4.04466892 6.71133558,3 8,3 C9.28866442,3 10.3333333,4.04466892 10.3333333,5.33333333 C10.3333333,6.62199775 9.28866442,7.66666667 8,7.66666667 Z" id="Shape"></path>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
+</span>
+																		US
+															</button>
+
+															<div
+									class="switch-region display-active"
+									id="beam-uk-toggle">
+									<a
+										href="https://thepointsguy.co.uk"
+										data-beam-element-clicked
+										data-beam-action-outcome="EXTERNALLINK"
+										data-beam-location="HEADER"
+										data-beam-position="0"
+										data-beam-element-type="TOGGLE"
+										data-beam-text="Change to UK"
+										>
+										Change To <strong>UK</strong>
+									</a>
+								</div>
+														<button class="close-region-toggle close display-active">&#x2715;</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="header-nav__inner-content--bottom">
+												<div class="main-nav">
+		<nav class="menu-main-menu-container"><ul id="menu-main-menu" class="menu"><li id="menu-item-507720" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-507720"><a href="#" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="OPEN" data-beam-text="News" data-beam-position="0">News</a>
+<ul class="sub-menu">
+	<li id="menu-item-532502" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-532502"><a href="/news/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="All News" data-beam-position="0">All News</a></li>
+	<li id="menu-item-507722" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507722"><a href="/news/airlines/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Airlines" data-beam-position="0">Airlines</a></li>
+	<li id="menu-item-507723" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507723"><a href="/news/aviation/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Aviation" data-beam-position="0">Aviation</a></li>
+	<li id="menu-item-507724" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507724"><a href="/news/credit-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Credit Cards" data-beam-position="0">Credit Cards</a></li>
+	<li id="menu-item-507725" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507725"><a href="/news/travel-tips/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Travel Tips" data-beam-position="0">Travel Tips</a></li>
+	<li id="menu-item-507726" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507726"><a href="/news/hotels/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Hotels" data-beam-position="0">Hotels</a></li>
+</ul>
+</li>
+<li id="menu-item-507727" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-507727"><a href="#" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="OPEN" data-beam-text="Cards" data-beam-position="0">Cards</a>
+<ul class="sub-menu">
+	<li id="menu-item-507728" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507728"><a href="/cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Best Credit Cards" data-beam-position="0">Best Credit Cards</a></li>
+	<li id="menu-item-985353" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-985353"><a href="https://thepointsguy.com/guide/covid-credit-card-benefits/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="COVID Card Benefits" data-beam-position="0">COVID Card Benefits</a></li>
+	<li id="menu-item-767872" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-767872"><a href="https://thepointsguy.com/guide/top-travel-rewards-credit-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Travel Cards" data-beam-position="0">Travel Cards</a></li>
+	<li id="menu-item-837916" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-837916"><a href="https://thepointsguy.com/guide/top-airline-cards-to-have/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Airline Cards" data-beam-position="0">Airline Cards</a></li>
+	<li id="menu-item-818837" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-818837"><a href="https://thepointsguy.com/guide/best-rewards-credit-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Rewards Cards" data-beam-position="0">Rewards Cards</a></li>
+	<li id="menu-item-507729" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507729"><a href="/guide/top-business-credit-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Business Cards" data-beam-position="0">Business Cards</a></li>
+	<li id="menu-item-861678" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-861678"><a href="/guide/best-cash-back-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Cash Back Cards" data-beam-position="0">Cash Back Cards</a></li>
+	<li id="menu-item-742297" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-742297"><a href="/guide/how-to-choose-the-best-amex-for-you/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Amex Cards" data-beam-position="0">Amex Cards</a></li>
+	<li id="menu-item-742300" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-742300"><a href="/guide/chase-quartet/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Chase Cards" data-beam-position="0">Chase Cards</a></li>
+	<li id="menu-item-742299" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-742299"><a href="/guide/best-capital-one-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Capital One Cards" data-beam-position="0">Capital One Cards</a></li>
+	<li id="menu-item-916303" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-916303"><a href="/guide/best-citi-credit-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Citi Cards" data-beam-position="0">Citi Cards</a></li>
+	<li id="menu-item-507730" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507730"><a href="/reviews/credit-card-reviews/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Card Reviews" data-beam-position="0">Card Reviews</a></li>
+	<li id="menu-item-507731" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507731"><a href="/tag/credit-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="All Card Stories" data-beam-position="0">All Card Stories</a></li>
+</ul>
+</li>
+<li id="menu-item-507743" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-507743"><a href="#" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="OPEN" data-beam-text="Points &amp; Miles" data-beam-position="0">Points &#038; Miles</a>
+<ul class="sub-menu">
+	<li id="menu-item-507744" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507744"><a href="/guide/beginners/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Beginner Guide" data-beam-position="0">Beginner Guide</a></li>
+	<li id="menu-item-507745" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507745"><a href="/guide/monthly-valuations/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Point Valuations" data-beam-position="0">Point Valuations</a></li>
+	<li id="menu-item-859073" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-859073"><a href="/guide/redeeming-american-express-membership-rewards-maximum-value/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Amex Rewards" data-beam-position="0">Amex Rewards</a></li>
+	<li id="menu-item-859072" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-859072"><a href="/guide/redeeming-chase-ultimate-rewards-maximum-value/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Chase Rewards" data-beam-position="0">Chase Rewards</a></li>
+	<li id="menu-item-859082" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-859082"><a href="/guide/redeeming-citi-thankyou-points-maximum-value/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Citi Rewards" data-beam-position="0">Citi Rewards</a></li>
+	<li id="menu-item-507747" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507747"><a href="/guides/credit-cards/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Credit Card Guides" data-beam-position="0">Credit Card Guides</a></li>
+</ul>
+</li>
+<li id="menu-item-507733" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-507733"><a href="#" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="OPEN" data-beam-text="Reviews" data-beam-position="0">Reviews</a>
+<ul class="sub-menu">
+	<li id="menu-item-532504" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-532504"><a href="/reviews/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="All Reviews" data-beam-position="0">All Reviews</a></li>
+	<li id="menu-item-507736" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507736"><a href="/reviews/flight-reviews/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Flight" data-beam-position="0">Flight</a></li>
+	<li id="menu-item-507737" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507737"><a href="/reviews/hotel-reviews/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Hotel" data-beam-position="0">Hotel</a></li>
+	<li id="menu-item-507738" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507738"><a href="/reviews/lounge-reviews/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Lounge" data-beam-position="0">Lounge</a></li>
+	<li id="menu-item-507739" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507739"><a href="/reviews/credit-card-reviews/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Credit Card" data-beam-position="0">Credit Card</a></li>
+	<li id="menu-item-706539" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-706539"><a href="https://thepointsguy.com/product-reviews/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Travel Gear" data-beam-position="0">Travel Gear</a></li>
+</ul>
+</li>
+<li id="menu-item-507748" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-507748"><a href="#" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="OPEN" data-beam-text="Travel" data-beam-position="0">Travel</a>
+<ul class="sub-menu">
+	<li id="menu-item-988195" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-988195"><a href="https://thepointsguy.com/road-trip/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-position="0">Road Trip</a></li>
+	<li id="menu-item-532505" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-532505"><a href="/deals/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Deals" data-beam-position="0">Deals</a></li>
+	<li id="menu-item-507750" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-507750"><a href="/tag/travel-tips/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Travel Tips" data-beam-position="0">Travel Tips</a></li>
+	<li id="menu-item-865715" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-865715"><a href="https://thepointsguy.com/podcast/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="TPG Podcasts" data-beam-position="0">TPG Podcasts</a></li>
+	<li id="menu-item-698462" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-698462"><a href="https://thepointsguy.com/purposeful-travel/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-position="0">Purpose Project</a></li>
+</ul>
+</li>
+<li id="menu-item-910635" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-910635"><a href="https://thepointsguy.com/coronavirus/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-position="0">Coronavirus</a></li>
+<li id="menu-item-1013327" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1013327"><a href="https://thepointsguy.com/news/hilton-honors-tpg-giveaway/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Sweepstakes" data-beam-position="0">Sweepstakes</a></li>
+</ul></nav>			<div class="header-nav__bottom-right-components">
+				<button
+					class="bc-btn bc-btn--secondary"
+					data-beam-element-clicked
+					data-beam-element-viewed
+					data-beam-action-outcome="LINK"
+					data-beam-location="Nav bar"
+					data-beam-position="0"
+					data-beam-element-type="LINK"
+					data-beam-text="Subscribe"><a href="/mailing-list/">Subscribe</a>
+				</button>
+			</div>
+			</div>
+									</div>
+			</div>
+
+			<div class="header-nav__mobile-components">
+				<div
+					data-beam-element-clicked
+					data-beam-element-type="BUTTON"
+					data-beam-text="HAMBURGER"
+					data-beam-action-outcome="OPEN"
+					data-beam-location="NAVIGATION"
+					class="header-nav__hamburger gs-trigger-close">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+				<div class="header-nav__logo header-nav__logo--mobile logo">
+				<a href="https://thepointsguy.com">
+											<div class="header-nav__logo-img header-nav__logo-img--us"></div>
+									</a>
+			</div>
+				<div
+					class="search-trigger gs-trigger-open gs-trigger-autofocus"
+					data-beam-element-clicked
+					data-beam-action-outcome="OPEN"
+					data-beam-location="NAVIGATION"
+					data-beam-element-type="BUTTON"
+					data-beam-text="Search">
+					<span class="icon icon-search">
+	<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Icons-/-Interface-/-Search" fill="#000000" fill-rule="nonzero">
+				<g id="Group">
+					<g id="search-alternate">
+						<path d="M23.384,21.619 L16.855,15.09 C19.8121553,11.2027145 19.2516834,5.68892669 15.5728164,2.47618737 C11.8939495,-0.736551948 6.35490842,-0.549443611 2.9012324,2.9042324 C-0.552443611,6.35790842 -0.739551948,11.8969495 2.47318737,15.5758164 C5.68592669,19.2546834 11.1997145,19.8151553 15.087,16.858 L21.616,23.387 C22.1077348,23.8666586 22.8922652,23.8666586 23.384,23.387 C23.871759,22.8985895 23.871759,22.1074105 23.384,21.619 Z M2.75,9.5 C2.75,5.77207794 5.77207794,2.75 9.5,2.75 C13.2279221,2.75 16.25,5.77207794 16.25,9.5 C16.25,13.2279221 13.2279221,16.25 9.5,16.25 C5.77390544,16.2455917 2.75440828,13.2260946 2.75,9.5 Z" id="Shape"></path>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+					<button>Search</button>
+				</div>
+			</div>
+		</div>
+				<div id="gs-mount-app-modal"></div>
+											<div
+						class="gs-modal-top-card"
+						style="display: none;"
+						data-card-title="Chase Sapphire Preferred® Card"
+						data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209-2.png"
+						data-card-url="https://thepointsguy.com/card-hub/chase-sapphire-preferred-card/"
+						>
+					</div>
+										<div
+						class="gs-modal-top-card"
+						style="display: none;"
+						data-card-title="The Platinum Card® from American Express"
+						data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/the-platinum-card-from-american-express-060117-10.png"
+						data-card-url="https://thepointsguy.com/card-hub/the-platinum-card-from-american-express/"
+						>
+					</div>
+										<div
+						class="gs-modal-top-card"
+						style="display: none;"
+						data-card-title="American Express® Gold Card"
+						data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/e51be4d0-56e9-11e9-8567-cdfc14c95d1a-2.png"
+						data-card-url="https://thepointsguy.com/card-hub/the-american-express-gold-card/"
+						>
+					</div>
+										<div
+						class="gs-modal-top-card"
+						style="display: none;"
+						data-card-title="Capital One® Venture® Rewards Credit Card"
+						data-card-image="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/1f91b970-fcdc-11ea-a1b7-33b2711caa9e.png"
+						data-card-url="https://thepointsguy.com/card-hub/capital-one-venture-rewards-credit-card/"
+						>
+					</div>
+								</section>
+	<div class="disclosure uk-live disclosure--mobile-only">
+		<button id="disclosure">Advertiser Disclosure</button>
+	</div>
+
+	
+<div id="gs-mount-app-nav"></div>
+	
+
+<div id="notification-waypoint"></div>
+	
+<div class="article-header use-lightbox template-two-columns article-header has-background-image has-overlay">
+	<div class="article-header__hero">
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg?width=2560&dpr=1&crop=16:9,smart 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg?width=2560&dpr=2&crop=16:9,smart 2x" media="--desktop" /> <source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg?width=375&dpr=1&crop=16:9,smart 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg?width=375&dpr=2&crop=16:9,smart 2x"  /><img src="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg?width=25"class="lazyload blur-up background-image"alt=""onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2019/11/1_ALB_3356.jpg';this.srcset='';this.onerror='';" /></picture>			
+	</div>
+</div>
+
+<div class="post-content use-lightbox template-two-columns">
+	<div class="global__container">
+		<div class="article-body__inner-wrap">
+			<section class="article-content">
+				<div class="article-body__title-wrap">
+											<div class="label rotated"><a href="https://thepointsguy.com/category/news/" title="News">News</a></div>
+										<h1 class="title">Alaska Airlines sets new date for full Oneworld membership</h1>
+				</div>
+									
+<div class="article-body__author">
+	<div class="meta">
+		<div class="byline">
+			<a href="https://thepointsguy.com/author/edwardrussell/" title="Edward Russell"><span class="byline-photo"><picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/06/Image-from-iOS-1-2.jpg?width=100&dpr=1&crop=1:1,smart 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2019/06/Image-from-iOS-1-2.jpg?width=100&dpr=2&crop=1:1,smart 2x"  /><img src="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/06/Image-from-iOS-1-2.jpg?width=25"class="lazyload blur-up"alt=""onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2019/06/Image-from-iOS-1-2.jpg';this.srcset='';this.onerror='';" /></picture></span></a>&nbsp;<a href="https://thepointsguy.com/author/edwardrussell/" title="Edward Russell">Edward Russell</a>		</div>
+		<div class="timestamp" data-timestamp="2020-10-13T16:00:32.000Z">Oct 13, 2020</div>
+	</div>
+</div>
+				
+				
+<div class="article-body__social">
+			<div class="social">
+						
+	<div class="article_social-sharing">
+		<ul>
+			<li>
+				<a class="facebook-share" target="_blank" href="#" onClick="window.open('https://www.facebook.com/sharer/sharer.php?u=https://thepointsguy.com/news/alaska-airlines-oneworld-membership-new-date/','Post on Facebook','resizable,height=600,width=500'); return false;">
+				</a>
+			</li>
+			<li>
+				<a class="twitter-share" target="_blank" href="#" onClick="window.open('https://twitter.com/intent/tweet?text=Alaska Airlines sets new date for full Oneworld membership https://thepointsguy.com/news/alaska-airlines-oneworld-membership-new-date/','Share on Twiiter','resizable,height=600,width=500'); return false;">
+				</a>
+			</li>
+		</ul>
+	</div>
+		</div>
+	</div>
+
+				<div class="article-wrapper">
+					
+<section class="editorial-disclosure">
+	<p>This post contains references to products from one or more of our advertisers. We may receive compensation when you click on links to those products. Terms apply to the offers listed on this page. For an explanation of our Advertising Policy, visit <a href="/advertising-policy/">this page</a>.</p>
+
+</section>
+					<div class="article-body-content">
+						<div class="beam-the-content">
+							<p><a href="https://thepointsguy.com/airline/alaska-airlines/" target="_blank" rel="noopener noreferrer">Alaska Airlines</a> has a new date for when it will be a full fledged member of the Oneworld alliance: March 31, 2021.</p>
+<p>The date is about three months later than executives planned when the Seattle-based carrier was <a href="https://thepointsguy.com/news/alaska-airlines-invitation-oneworld-member/" target="_blank" rel="noopener noreferrer">officially invited to join the alliance</a> in July. However, it is on par with the <a href="https://thepointsguy.com/news/alaska-airlines-delays-full-oneworld-membership-early-2021/" target="_blank" rel="noopener noreferrer">&ldquo;sometime late Q1&rdquo; timeline</a> that was disclosed in September.</p>
+<p>One thing that has not changed are the benefits Oneworld membership will bring to Alaska frequent flyers. They will still be able to earn and burn miles across the alliance&rsquo;s 13 member carriers, use lounges around the world and have access to more than 1,000 destinations across the alliance map.</p>
+<p class="standout"><a href="https://thepointsguy.com/mailing-list/" target="_blank" rel="noopener noreferrer"><strong>Sign up for the free daily TPG newsletter for more airline news! </strong></a></p>
+<p>In addition, frequent flyers on other Oneworld members will have access to Alaska&rsquo;s network and lounges. This includes the <a href="https://thepointsguy.com/news/first-look-new-photos-of-alaska-airlines-flagship-seattle-lounge/" target="_blank" rel="noopener noreferrer">new flagship lounge that the airline opened</a> at its Seattle/Tacoma International Airport (SEA) base in 2019.</p>
+<p>&ldquo;We are officially joining a family with some of the best airlines in the world,&rdquo; Nathaniel Pieper, senior vice president of fleet, finances and alliances at Alaska, said in a <a href="https://blog.alaskaair.com/destinations/oneworld-alliance-countdown/" target="_blank" rel="noopener noreferrer">statement</a> on Oct. 12. &ldquo;The possibilities are tremendous.&rdquo;</p>
+<p>Alaska&rsquo;s Oneworld membership is part and parcel with an expanded codeshare arrangement with American Airlines. The carriers have expanded the number of flights carrying each airline&rsquo;s code from West Coast hubs, including <a href="https://airlinemaps.tumblr.com/post/190876217487/alaska-airlines-los-angeles-diagram-2020" target="_blank" rel="noopener noreferrer">Los Angeles (LAX)</a> and Seattle. At the same time, American plans to begin <a href="https://thepointsguy.com/news/american-airlines-long-haul-plans-lax-seattle-dfw/" target="_blank" rel="noopener noreferrer">new international service between Alaska&rsquo;s Seattle home</a> and London Heathrow (LHR), Bangalore (BLR) and <a href="https://thepointsguy.com/news/american-seattle-shanghai-schedule/" target="_blank" rel="noopener noreferrer">Shanghai Pudong (PVG)</a> in 2021.</p>
+<p>The codeshare expansion includes <a href="https://thepointsguy.com/news/alaska-airlines-lax-los-angeles-hub-new-routes/" target="_blank" rel="noopener noreferrer">several of Alaska&rsquo;s new routes from LAX</a> &mdash; to Boise (BOI), Missoula (MSO) and Spokane (GEG) &mdash; that it launched in 2020, according to Cirium schedule data.</p>
+<p><strong>Related:</strong> <a href="https://thepointsguy.com/news/alaska-airlines-delays-full-oneworld-membership-early-2021/" target="_blank" rel="noopener noreferrer">Alaska Airlines delays full Oneworld membership to early 2021</a></p>
+<p><em>Featured image by Alberto Riva/The Points Guy.</em></p>
+
+						</div>
+						<!-- CTA for sponsored posts -->
+												<!-- Email capture -->
+						<section class="article-email-capture">
+							
+<div class="hub--email-capture hub-module hub-module--full-bleed">
+	<div data-iterable>
+	<div class="newsletter js-newsletter " data-iterable-before-success>
+		<div class="newsletter__title">
+			<span>Sign up for our daily newsletter</span>
+		</div>
+		<div class="newsletter__form">
+			<form
+				method="post"
+				data-beam-form-viewed
+				data-formtype="Email Capture"
+				data-list-id="26874"
+				name="Email Capture (Homepage)"
+				id="email-capture-homepage"
+				class="newsletter-form beam-newsletter-form newsletter__form js-newsletter-form"
+			>
+				<fieldset id="">
+					<div class="newsletter__input" data-beam-form-started>
+						<input
+							type="email"
+							name="email"
+							value=""
+							class="email input js-email-input"
+							placeholder="Enter your email address"
+							required
+							data-iterable-input
+							/>
+						<button
+							type="submit"
+							name="subscribe"
+							class="button tpg-cta"
+							>Sign up</button>
+											</div>
+					<div class="newsletter__consent">
+						<label class="newsletter__checkboxes--item">
+							<input checked type="checkbox" class="" data-iterable-consent>
+							<span class="newsletter__checkboxes--label">
+																		I would like to subscribe to The Points Guy newsletters and special email promotions. The Points Guy will not sell your email.																 See 								<a href="https://thepointsguy.com/privacy-policy/" rel="nofollow" target="_blank">PRIVACY POLICY.</a>
+							</span>
+						</label>
+					</div>
+										<div class="newsletter__errors js-email-capture-errors">
+						<span class="js-email-error" style="display: none;">Please enter a valid email address</span>
+						<span class="js-checkbox-error" style="display: none;">Please check mailing preferences</span>
+					</div>
+									</fieldset>
+			</form>
+		</div>
+	</div>
+		<div class="iterable-show-success" data-iterable-show-success>
+		<h3 class="heading">Sign-up Successful!</h3>
+		<p>Welcome to The Points Guy!</p>
+	</div>
+		<div class="newsletter-loading js-newsletter-loading" data-iterable-is-loading>
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	</div>
+</div>
+						</section>
+						  <div class="article-body-content--author-blurb">
+		<a href="https://thepointsguy.com/author/edwardrussell/">Edward Russell</a>
+		Is a Senior Aviation Business Reporter at The Points Guy. Edward joined the TPG team in June 2019 after seven years at FlightGlobal.		<div class="article-body-content--author-blurb_icons">
+			<!-- email -->
+			<a href="mailto:edward.russell@thepointsguy.com"><span class="icon icon-email">
+  <svg width="24px" height="16px" viewBox="0 0 24 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+	  <g id="TPG-Flight-Review" transform="translate(-214.000000, -13854.000000)" fill="#000000">
+		<g id="social" transform="translate(214.000000, 13850.000000)">
+		  <g transform="translate(0.000000, 0.000000)" id="Icons-/-Social-Media-/-Email">
+			<g>
+			  <g id="Group">
+				<g id="envelope" fill-rule="nonzero">
+				  <path d="M11.114,14.556 C11.6026381,15.0432087 12.3933619,15.0432087 12.882,14.556 L22.568,4.87 C22.7021223,4.73636618 22.7492592,4.53843826 22.6897682,4.3586951 C22.6302772,4.17895193 22.4743642,4.04822898 22.287,4.021 C22.1919748,4.00699854 22.0960512,3.99999853 22,3.99999853 L2,3.99999853 C1.90328126,3.99988169 1.80668563,4.00690075 1.711,4.021 C1.52363575,4.04822898 1.36772277,4.17895193 1.30823181,4.3586951 C1.24874084,4.53843826 1.29587774,4.73636618 1.43,4.87 L11.114,14.556 Z" id="Shape"></path>
+				  <path d="M23.888,5.832 C23.8196217,5.80296424 23.7404595,5.81840086 23.688,5.871 L17.488,12.071 C17.3906217,12.1689099 17.3906217,12.3270901 17.488,12.425 L22.531,17.468 C22.7260542,17.6562144 22.8043761,17.935029 22.7358629,18.1972822 C22.6673497,18.4595354 22.4626635,18.6644146 22.2004751,18.7331751 C21.9382866,18.8019356 21.6593982,18.7238766 21.471,18.529 L16.428,13.486 C16.3810979,13.4389791 16.3174136,13.4125531 16.251,13.4125531 C16.1845864,13.4125531 16.1209021,13.4389791 16.074,13.486 L13.945,15.615 C12.8711827,16.6882171 11.1308173,16.6882171 10.057,15.615 L7.926,13.488 C7.82809011,13.3906217 7.66990989,13.3906217 7.572,13.488 L2.529,18.531 C2.23458233,18.8150936 1.76680228,18.8108096 1.47763704,18.5213716 C1.1884718,18.2319335 1.18462895,17.7641496 1.469,17.47 L6.512,12.427 C6.60937828,12.3290901 6.60937828,12.1709099 6.512,12.073 L0.312,5.873 C0.259816909,5.81988452 0.180316146,5.80438187 0.112,5.834 C0.0448452062,5.86197599 0.000801278477,5.92725538 -2.0206059e-17,6 L-2.0206059e-17,18 C-2.0206059e-17,19.1045695 0.8954305,20 2,20 L22,20 C23.1045695,20 24,19.1045695 24,18 L24,6 C24.0002713,5.92644459 23.9560016,5.86004015 23.888,5.832 Z" id="Shape"></path>
+				</g>
+			  </g>
+			</g>
+		  </g>
+		</g>
+	  </g>
+	</g>
+  </svg>
+</span>
+</a>
+			<a href="https://www.instagram.com/airbus777/" target="_blank"><span class="icon icon-instagram">
+	<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Global-Elements-/-Top-Navigation-/-Desktop" transform="translate(-1240.000000, -18.000000)" fill="#000000">
+				<g id="Header">
+					<g id="social-medias" transform="translate(1212.000000, 18.000000)">
+						<g id="Icons-/-Social-Media-/-Instagram" transform="translate(28.000000, 0.000000)">
+							<g id="Group">
+								<g id="Bold" fill-rule="nonzero">
+									<path d="M12.0466667,7.5 C11.9957364,7.50054797 11.9478524,7.52435407 11.9166725,7.56462816 C11.8854925,7.60490224 11.8744398,7.65722283 11.8866667,7.70666667 C12.2852301,9.32055627 11.6440549,11.0127371 10.2760893,11.9572806 C8.90812358,12.901824 7.09854309,12.901824 5.73057741,11.9572806 C4.36261172,11.0127371 3.72143653,9.32055627 4.12,7.70666667 C4.13222692,7.65722283 4.12117413,7.60490224 4.08999419,7.56462816 C4.05881425,7.52435407 4.01093025,7.50054797 3.96,7.5 L0.333333333,7.5 C0.149238417,7.5 0,7.64923842 0,7.83333333 L0,11.6666667 C0.00367109113,14.0583783 1.94162168,15.9963289 4.33333333,16 L11.6666667,16 C14.0583783,15.9963289 15.9963289,14.0583783 16,11.6666667 L16,7.83333333 C16,7.64923842 15.8507616,7.5 15.6666667,7.5 L12.0466667,7.5 Z" id="Shape"></path>
+									<path d="M15.6666667,6.50004074 C15.8507616,6.50004074 16,6.35076158 16,6.16666667 L16,4.33333333 C15.9963289,1.94162168 14.0583783,0.00367109113 11.6666667,5.67045326e-14 L4.37681688,5.67045326e-14 C2.00448044,5.67045326e-14 0.00450801258,1.94162168 0,4.33333333 L0,6.16666667 C0,6.35076158 0.149238417,6.50004074 0.333333333,6.50004074 L4.46666667,6.50004074 C4.57512884,6.5005828 4.6770926,6.44835746 4.74,6.36 C5.48999101,5.30193099 6.70641524,4.67314841 8.00333333,4.67314841 C9.30025143,4.67314841 10.5166757,5.30193099 11.2666667,6.36 C11.3295741,6.44835746 11.4315378,6.5005828 11.54,6.50004074 L15.6666667,6.50004074 Z M11.6666667,3 C11.6666667,2.63181017 11.9651435,2.33333333 12.3333333,2.33333333 L13,2.33333333 C13.3681898,2.33333333 13.6666667,2.63181017 13.6666667,3 L13.6666667,3.66666667 C13.6666667,4.0348565 13.3681898,4.33333333 13,4.33333333 L12.3333333,4.33333333 C11.9651435,4.33333333 11.6666667,4.0348565 11.6666667,3.66666667 L11.6666667,3 Z" id="Shape"></path>
+									<circle id="Oval" cx="8" cy="8.66666667" r="2"></circle>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+</a>
+			<a href="https://twitter.com/byerussell" target="_blank"><span class="icon icon-twitter">
+	<svg width="16px" height="14px" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Global-Elements-/-Top-Navigation-/-Desktop" transform="translate(-1296.000000, -20.000000)" fill="#000000">
+				<g id="Header">
+					<g id="social-medias" transform="translate(1212.000000, 18.000000)">
+						<g id="Icons-/-Social-Media-/-Twitter" transform="translate(84.000000, 1.000000)">
+							<g id="Group">
+								<g id="Bold" fill-rule="nonzero">
+									<path d="M15.5466667,4.29333333 C15.6434059,4.21292485 15.6866395,4.08490465 15.6584565,3.96230885 C15.6302736,3.83971304 15.5354748,3.74342441 15.4133333,3.71333333 L14.8866667,3.58 C14.7896948,3.55572276 14.7087377,3.48920638 14.6661109,3.39878582 C14.6234841,3.30836526 14.6236881,3.20358722 14.6666667,3.11333333 L14.96,2.52 C15.0165878,2.40258886 14.9995534,2.26296658 14.9163965,2.1626048 C14.8332396,2.06224302 14.6992164,2.01955433 14.5733333,2.05333333 L13.24,2.42666667 C13.1392777,2.45604401 13.0306019,2.43628479 12.9466667,2.37333333 C12.3696794,1.94059291 11.6679007,1.70666667 10.9466667,1.70666667 C9.1057175,1.70666667 7.61333333,3.19905083 7.61333333,5.04 L7.61333333,5.28 C7.61394565,5.36477095 7.55082751,5.4364961 7.46666667,5.44666667 C5.59333333,5.66666667 3.8,4.71333333 1.86666667,2.48666667 C1.78104083,2.39223177 1.64978499,2.35362712 1.52666667,2.38666667 C1.41585131,2.437603 1.34170122,2.54499279 1.33333333,2.66666667 C1.066305,3.76356116 1.17426675,4.9182824 1.64,5.94666667 C1.66809174,6.0022709 1.66282783,6.06889999 1.62635324,6.11940326 C1.58987865,6.16990654 1.5282833,6.19585182 1.46666667,6.18666667 L0.72,6.04 C0.612377629,6.02269682 0.503094415,6.05910782 0.427356798,6.1375029 C0.351619181,6.21589797 0.318997096,6.32637141 0.34,6.43333333 C0.456593416,7.46970631 1.03793029,8.39690184 1.92,8.95333333 C1.97749839,8.98118107 2.01401835,9.03944624 2.01401835,9.10333333 C2.01401835,9.16722043 1.97749839,9.22548559 1.92,9.25333333 L1.56666667,9.39333333 C1.4799082,9.42811504 1.41173943,9.49772548 1.37878075,9.58519275 C1.34582207,9.67266002 1.35110204,9.76994679 1.39333333,9.85333333 C1.7899572,10.7212034 2.58728349,11.3391312 3.52666667,11.5066667 C3.59258075,11.5305903 3.63647093,11.593212 3.63647093,11.6633333 C3.63647093,11.7334547 3.59258075,11.7960764 3.52666667,11.82 C2.62024233,12.1948907 1.64750965,12.3830884 0.666666667,12.3733333 C0.482571752,12.3365144 0.303485658,12.4559051 0.266666675,12.64 C0.229847693,12.8240949 0.349238421,13.003181 0.533333333,13.04 C2.23169647,13.8454971 4.08078859,14.2839182 5.96,14.3266667 C7.61296892,14.3518776 9.23652146,13.8880054 10.6266667,12.9933333 C12.9491853,11.4429857 14.3408191,8.83242096 14.3333333,6.04 L14.3333333,5.46 C14.3341568,5.36202316 14.3780448,5.2693706 14.4533333,5.20666667 L15.5466667,4.29333333 Z" id="Shape"></path>
+								</g>
+							</g>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+</a>
+		</div>
+  </div>
+
+
+					</div>
+
+																<section class="related-articles">
+
+						<div class="related-articles__related-header">
+							<span>You might like</span>
+						</div>
+						<div
+							id="js-related-articles-swiper"
+							class="swiper-container related-articles__swiper"
+							data-posts=""
+						>
+							<div class="swiper-wrapper">
+								
+			<div 
+			class="swiper-slide related-link beam-related-link "
+			data-beam-text="It&#8217;s official: Northern lights season is back"
+			data-beam-position="1"
+			data-beam-outbound-url="https://thepointsguy.com/news/northern-lights-season-returns/?navtid=More-1"
+			data-beam-location="More from the Points Guy">
+			<a href="https://thepointsguy.com/news/northern-lights-season-returns/?navtid=More-1">
+									<div class="attachment-image size-related-article">
+				<figure>
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/09/Aurora_Sjo.jpg?width=250&dpr=1&crop=16:9,smart 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2019/09/Aurora_Sjo.jpg?width=250&dpr=2&crop=16:9,smart 2x"  /><img src="https://thepointsguy.global.ssl.fastly.net/us/originals/2019/09/Aurora_Sjo.jpg?width=25"class="lazyload blur-up"alt=""onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2019/09/Aurora_Sjo.jpg';this.srcset='';this.onerror='';" /></picture>
+				</figure>
+			</div>					
+			</a>
+			<div class="editorial-meta meta">
+							<div class="title">
+					<a href="https://thepointsguy.com/news/northern-lights-season-returns/?navtid=More-1">
+						It&#8217;s official: Northern lights season is back					</a>
+				</div>
+				<div class="editorial-meta__text-wrap">
+											<div class="tpg-label label"><a href="https://thepointsguy.com/category/news/?navtid=More-1" title="News">News</a></div>
+										<div class="tpg-label timestamp">Yesterday</div>
+				</div>
+			</div>
+		</div>
+				<div 
+			class="swiper-slide related-link beam-related-link "
+			data-beam-text="Flying as a vegan: What are your options, and which airlines do it best?"
+			data-beam-position="2"
+			data-beam-outbound-url="https://thepointsguy.com/news/flying-as-a-vegan-meal-options/?navtid=More-2"
+			data-beam-location="More from the Points Guy">
+			<a href="https://thepointsguy.com/news/flying-as-a-vegan-meal-options/?navtid=More-2">
+									<div class="attachment-image size-related-article">
+				<figure>
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/01/GettyImages-1173390260-scaled.jpg?width=250&dpr=1&crop=16:9,smart 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/01/GettyImages-1173390260-scaled.jpg?width=250&dpr=2&crop=16:9,smart 2x"  /><img src="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/01/GettyImages-1173390260-scaled.jpg?width=25"class="lazyload blur-up"alt=""onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2020/01/GettyImages-1173390260-scaled.jpg';this.srcset='';this.onerror='';" /></picture>
+				</figure>
+			</div>					
+			</a>
+			<div class="editorial-meta meta">
+							<div class="title">
+					<a href="https://thepointsguy.com/news/flying-as-a-vegan-meal-options/?navtid=More-2">
+						Flying as a vegan: What are your options, and which airlines do it best?					</a>
+				</div>
+				<div class="editorial-meta__text-wrap">
+											<div class="tpg-label label"><a href="https://thepointsguy.com/category/news/?navtid=More-2" title="News">News</a></div>
+										<div class="tpg-label timestamp">Yesterday</div>
+				</div>
+			</div>
+		</div>
+				<div 
+			class="swiper-slide related-link beam-related-link "
+			data-beam-text="Emirates brings back first class showers, bar and other amenities"
+			data-beam-position="3"
+			data-beam-outbound-url="https://thepointsguy.com/news/emirates-brings-back-first-class-showers-bar/?navtid=More-3"
+			data-beam-location="More from the Points Guy">
+			<a href="https://thepointsguy.com/news/emirates-brings-back-first-class-showers-bar/?navtid=More-3">
+									<div class="attachment-image size-related-article">
+				<figure>
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2018/11/Emirates-A380-First-Class_WP-60.jpg?width=250&dpr=1&crop=16:9,smart 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2018/11/Emirates-A380-First-Class_WP-60.jpg?width=250&dpr=2&crop=16:9,smart 2x"  /><img src="https://thepointsguy.global.ssl.fastly.net/us/originals/2018/11/Emirates-A380-First-Class_WP-60.jpg?width=25"class="lazyload blur-up"alt=""onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2018/11/Emirates-A380-First-Class_WP-60.jpg';this.srcset='';this.onerror='';" /></picture>
+				</figure>
+			</div>					
+			</a>
+			<div class="editorial-meta meta">
+							<div class="title">
+					<a href="https://thepointsguy.com/news/emirates-brings-back-first-class-showers-bar/?navtid=More-3">
+						Emirates brings back first class showers, bar and other amenities					</a>
+				</div>
+				<div class="editorial-meta__text-wrap">
+											<div class="tpg-label label"><a href="https://thepointsguy.com/category/news/?navtid=More-3" title="News">News</a></div>
+										<div class="tpg-label timestamp">Yesterday</div>
+				</div>
+			</div>
+		</div>
+									</div>
+						</div>
+						<div class="swiper-pagination"></div>
+					</section>
+												<section
+  class="card-feature beam-card-feature"
+  data-beam-product-id="22125056"
+  data-beam-sku="204650"
+  data-beam-name="Chase Sapphire Preferred&#174; Card (22125056)"
+  data-beam-brand="Chase"
+  data-beam-location="Featured Card"
+  data-beam-position=0
+  data-beam-text="Apply Now">
+
+  <div class="title"></div>
+  <div class="header"></div>
+  <div class="sub-header">Chase Sapphire Preferred® Card</div>
+
+  <div class="summary-wrapper">
+				<div class="summary">
+			<p><strong>WELCOME OFFER:</strong> <a href="http://thepointsguy.com/apply/chase-sapphire-preferred-card/?influenced=1" target="_blank" rel="noopener">80,000 Points</a></p>
+<p><strong>TPG'S BONUS VALUATION*: </strong>$1,600</p>
+<p><strong>CARD HIGHLIGHTS: </strong>2X points on all travel and dining, points transferrable to over a dozen travel partners</p>
+<p><em>*Bonus value is an estimated value calculated by TPG and not the card issuer</em>. View our latest valuations <a href="https://thepointsguy.com/guide/monthly-valuations/" target="_blank" rel="noopener">here</a>.</p>
+		</div>
+		
+	<div class="card">
+	  <div class="img-wrapper">
+		<a href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=CARD-FEATURE&#038;influenced=1" data-type="Link">
+			<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=500&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=500&dpr=2 2x" media="--desktop" /> <source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=100&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=100&dpr=2 2x"  /><img class="lazyload"alt=""data-src="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png"onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png';this.srcset='';this.onerror='';" /></picture>		</a>
+	  </div>
+	</div>
+  </div>
+
+  <a
+	href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=CARD-FEATURE&#038;influenced=1"
+	class="apply"
+	data-type="Button"
+  >
+		Apply Now  </a>
+
+				<div class="more-things-to-know">
+	<div class="overlay"></div>
+
+	<div class="sub-header">More Things to Know</div>
+	<div class="card-content">
+		<ul><li>Earn 80,000 bonus points after you spend $4,000 on purchases in the first 3 months from account opening. That's $1,000 toward travel when you redeem through Chase Ultimate Rewards®.</li><li>2X points on travel and dining at restaurants worldwide, eligible delivery services, takeout and dining out & 1 point per dollar spent on all other purchases.</li><li>Get 25% more value when you redeem for airfare, hotels, car rentals and cruises through Chase Ultimate Rewards. For example, 80,000 points are worth $1,000 toward travel.</li><li>Get unlimited deliveries with a $0 delivery fee and reduced service fees on orders over $12 for a minimum of one year on qualifying food purchases with DashPass, DoorDash's subscription service. Activate by 12/31/21.</li><li>Earn 5X points on Lyft rides through March 2022. That’s 3X points in addition to the 2X points you already earn on travel.</li></ul>	</div>
+
+			<div class="terms">
+							<div class="term">
+					<div class="sub-header">Intro APR on Purchases</div>
+					<div class="description">N/A</div>
+				</div>
+							<div class="term">
+					<div class="sub-header">Regular APR</div>
+					<div class="description">15.99%-22.99% Variable</div>
+				</div>
+							<div class="term">
+					<div class="sub-header">Annual Fee</div>
+					<div class="description">$95</div>
+				</div>
+							<div class="term">
+					<div class="sub-header">Balance Transfer Fee</div>
+					<div class="description">Either $5 or 5% of the amount of each transfer, whichever is greater.</div>
+				</div>
+							<div class="term">
+					<div class="sub-header">Recommended Credit</div>
+					<div class="description">Excellent/Good</div>
+				</div>
+					</div>
+	</div>
+<div class="carat-trigger"></div>
+	</section>
+
+<section class="comments-disclosure">
+	<p>Editorial Disclaimer: Opinions expressed here are the author&rsquo;s alone, not those of any bank, credit card issuer, airlines or hotel chain, and have not been reviewed, approved or otherwise endorsed by any of these entities.</p>
+<p>Disclaimer: The responses below are not provided or commissioned by the bank advertiser. Responses have not been reviewed, approved or otherwise endorsed by the bank advertiser. It is not the bank advertiser&rsquo;s responsibility to ensure all posts and/or questions are answered.</p>
+
+</section>
+
+
+				</div>
+			</section>
+							<aside class="sidebar" role="complementary">
+					<div id="right-rail" class="right-rail-sticky">
+						<div id="tpg_right-rail--1" class="tpg-right-rail"></div>
+						<div id="tpg_right-rail--2"	class="tpg-right-rail"></div>
+						<div id="tpg_right-rail--3"	class="tpg-right-rail"></div>
+					</div>
+					
+<section class="favorite-cards favorite-cards-shortcode">
+	<div class="favorite-cards-wrapper">
+	<div class="favorite-cards-intro">
+							<div class="favorite-cards-meta">
+					<div class="title">Top offers from our partners</div>
+					<a class="chose-modal-toggle" id="js-modal-toggle" data-beam-text="FAV-CARD-HOW-WE-CHOOSE">How we chose</a>
+					<div class="chose-content" id="js-modal-content">
+						<span class="chose-content__close-icon" id="js-close-content">&#10005;</span>
+						<div class="chose-content__title">How we chose these cards</div>
+						Our points-obsessed staff uses a plethora of credit cards on a daily basis. If anyone on our team
+						wouldn't recommend an offer to a friend or family member, we wouldn't recommend it on The Points Guy
+						either. Our opinions are our own, and have not been reviewed, approved, or endorsed by our advertising
+						partners.
+					</div>
+									</div>
+				</div>
+	<div class="cards-main-content">
+		<div class="cards-wrapper">
+			
+<div
+	class="card beam-card"
+	data-beam-position=1	data-beam-product-id="22036110"
+	data-beam-sku="165588"
+	data-beam-name="Blue Cash Preferred&#174; Card from American Express (22036110)"
+	data-beam-brand="American Express"
+	data-beam-location="links"
+	data-beam-text="FAV-CARD-WIDGET-1-CARD"
+	>
+										<div class="offer-flag mobile-only">Best for U.S. supermarkets</div>
+									<div class="img-wrapper">
+			<a href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-1-CTA">
+									<div class="attachment-image size-card">
+				<figure>
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/ede1f860-726a-11e9-ad1f-e3d0fefdcf91-6.png?width=500&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/ede1f860-726a-11e9-ad1f-e3d0fefdcf91-6.png?width=500&dpr=2 2x" media="--desktop" /> <source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/ede1f860-726a-11e9-ad1f-e3d0fefdcf91-6.png?width=100&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/ede1f860-726a-11e9-ad1f-e3d0fefdcf91-6.png?width=100&dpr=2 2x"  /><img class="lazyload"alt=""data-src="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/ede1f860-726a-11e9-ad1f-e3d0fefdcf91-6.png"onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/ede1f860-726a-11e9-ad1f-e3d0fefdcf91-6.png';this.srcset='';this.onerror='';" /></picture>
+				</figure>
+			</div>					
+			</a>
+							<a
+					href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1"
+					class="learn-more-button desktop-only"
+					data-beam-text="FAV-CARD-WIDGET-1-TEXT">Learn More</a>
+					<a
+						class="terms-link hide-for-tablet"
+						href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-1-TEXT">Terms Apply</a>
+					</div>
+
+		<div class="meta">
+											<div class="offer-flag show-tablet-up">Best for U.S. supermarkets</div>
+										<div class="title">
+				<a href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-1-TEXT">
+					Blue Cash Preferred® Card from American Express				</a>
+			</div>
+
+			
+					<div class="current-offer override">
+				<a href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1" style="color:#efa526">
+								</a>
+			</div>
+
+		
+					<div class="offer override" style="color:#efa526">
+				<a href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1" style="color:#efa526"><strong>$300 cash back</strong></a>
+			</div>
+									<a
+					href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1"
+					class="learn-more-button"
+					data-beam-text="FAV-CARD-WIDGET-1-TEXT">Learn More <span class="icon-arrow"><svg width="8px" height="10px" viewBox="0 0 8 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+	<title>Group</title>
+	<desc>Created with Sketch.</desc>
+	<defs>
+		<path d="M3.25,2.81066017 L1.53033009,4.53033009 C1.23743687,4.8232233 0.762563133,4.8232233 0.469669914,4.53033009 C0.176776695,4.23743687 0.176776695,3.76256313 0.469669914,3.46966991 L3.46966991,0.469669914 C3.76256313,0.176776695 4.23743687,0.176776695 4.53033009,0.469669914 L7.53033009,3.46966991 C7.8232233,3.76256313 7.8232233,4.23743687 7.53033009,4.53033009 C7.23743687,4.8232233 6.76256313,4.8232233 6.46966991,4.53033009 L4.75,2.81066017 L4.75,8.5472477 C4.75,8.96146126 4.41421356,9.2972477 4,9.2972477 C3.58578644,9.2972477 3.25,8.96146126 3.25,8.5472477 L3.25,2.81066017 Z" id="path-1"></path>
+	</defs>
+	<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		<g id="Icons-/-Arrows-/-Arrow-Up-Small-Tail" transform="translate(-8.000000, -6.000000)">
+			<g id="Group" transform="translate(8.000000, 6.000000)">
+				<g id="Blue">
+					<mask id="mask-2" fill="white">
+						<use xlink:href="#path-1"></use>
+					</mask>
+					<use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+					<g id="Colors-/-Azure-Blue" mask="url(#mask-2)" fill="#1B6FFF">
+						<g transform="translate(-8.000000, -6.000000)" id="Rectangle">
+							<rect x="0" y="0" width="24" height="24"></rect>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
+</span>
+				</a>
+						<div class="terms">
+									<a
+						class="terms-link tablet-only"
+						href="https://thepointsguy.com/apply/blue-cash-preferred-card-from-american-express/?tid=FAV-CARD-WIDGET-1-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-1-TEXT">Terms Apply</a>
+							</div>
+
+			
+			
+			
+					</div>
+</div>
+
+<div
+	class="card beam-card"
+	data-beam-position=2	data-beam-product-id="22125056"
+	data-beam-sku="204650"
+	data-beam-name="Chase Sapphire Preferred&#174; Card (22125056)"
+	data-beam-brand="Chase"
+	data-beam-location="links"
+	data-beam-text="FAV-CARD-WIDGET-2-CARD"
+	>
+										<div class="img-wrapper">
+			<a href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-2-CTA">
+									<div class="attachment-image size-card">
+				<figure>
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=500&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=500&dpr=2 2x" media="--desktop" /> <source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=100&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png?width=100&dpr=2 2x"  /><img class="lazyload"alt=""data-src="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png"onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/5570d9a0-49b8-11e9-a27b-d7eb75c86209.png';this.srcset='';this.onerror='';" /></picture>
+				</figure>
+			</div>					
+			</a>
+							<a
+					href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1"
+					class="learn-more-button desktop-only"
+					data-beam-text="FAV-CARD-WIDGET-2-TEXT">Learn More</a>
+					<a
+						class="terms-link hide-for-tablet"
+						href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-2-TEXT">Terms Apply</a>
+					</div>
+
+		<div class="meta">
+												<div class="title">
+				<a href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-2-TEXT">
+					Chase Sapphire Preferred® Card				</a>
+			</div>
+
+			
+			<div class="current-offer">
+				<a href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1">
+				Limited Time Offer				</a>
+			</div>
+		
+					<div class="offer">
+				<a href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1">80,000 points<br><strike><small>60,000 points</small></strike><br></a>
+			</div>
+		
+								<a
+					href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1"
+					class="learn-more-button"
+					data-beam-text="FAV-CARD-WIDGET-2-TEXT">Learn More <span class="icon-arrow"><svg width="8px" height="10px" viewBox="0 0 8 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+	<title>Group</title>
+	<desc>Created with Sketch.</desc>
+	<defs>
+		<path d="M3.25,2.81066017 L1.53033009,4.53033009 C1.23743687,4.8232233 0.762563133,4.8232233 0.469669914,4.53033009 C0.176776695,4.23743687 0.176776695,3.76256313 0.469669914,3.46966991 L3.46966991,0.469669914 C3.76256313,0.176776695 4.23743687,0.176776695 4.53033009,0.469669914 L7.53033009,3.46966991 C7.8232233,3.76256313 7.8232233,4.23743687 7.53033009,4.53033009 C7.23743687,4.8232233 6.76256313,4.8232233 6.46966991,4.53033009 L4.75,2.81066017 L4.75,8.5472477 C4.75,8.96146126 4.41421356,9.2972477 4,9.2972477 C3.58578644,9.2972477 3.25,8.96146126 3.25,8.5472477 L3.25,2.81066017 Z" id="path-1"></path>
+	</defs>
+	<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		<g id="Icons-/-Arrows-/-Arrow-Up-Small-Tail" transform="translate(-8.000000, -6.000000)">
+			<g id="Group" transform="translate(8.000000, 6.000000)">
+				<g id="Blue">
+					<mask id="mask-2" fill="white">
+						<use xlink:href="#path-1"></use>
+					</mask>
+					<use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+					<g id="Colors-/-Azure-Blue" mask="url(#mask-2)" fill="#1B6FFF">
+						<g transform="translate(-8.000000, -6.000000)" id="Rectangle">
+							<rect x="0" y="0" width="24" height="24"></rect>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
+</span>
+				</a>
+						<div class="terms">
+									<a
+						class="terms-link tablet-only"
+						href="https://thepointsguy.com/apply/chase-sapphire-preferred-card/?tid=FAV-CARD-WIDGET-2-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-2-TEXT">Terms Apply</a>
+							</div>
+
+			
+			
+			
+					</div>
+</div>
+
+<div
+	class="card beam-card"
+	data-beam-position=3	data-beam-product-id="6343"
+	data-beam-sku=""
+	data-beam-name="American Express&reg; Gold Card (6343)"
+	data-beam-brand="American Express"
+	data-beam-location="links"
+	data-beam-text="FAV-CARD-WIDGET-3-CARD"
+	>
+										<div class="img-wrapper">
+			<a href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-3-CTA">
+									<div class="attachment-image size-card">
+				<figure>
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/e51be4d0-56e9-11e9-8567-cdfc14c95d1a-1.png?width=500&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/e51be4d0-56e9-11e9-8567-cdfc14c95d1a-1.png?width=500&dpr=2 2x" media="--desktop" /> <source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/e51be4d0-56e9-11e9-8567-cdfc14c95d1a-1.png?width=100&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/e51be4d0-56e9-11e9-8567-cdfc14c95d1a-1.png?width=100&dpr=2 2x"  /><img class="lazyload"alt=""data-src="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/e51be4d0-56e9-11e9-8567-cdfc14c95d1a-1.png"onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2020/10/e51be4d0-56e9-11e9-8567-cdfc14c95d1a-1.png';this.srcset='';this.onerror='';" /></picture>
+				</figure>
+			</div>					
+			</a>
+							<a
+					href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1"
+					class="learn-more-button desktop-only"
+					data-beam-text="FAV-CARD-WIDGET-3-TEXT">Learn More</a>
+					<a
+						class="terms-link hide-for-tablet"
+						href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-3-TEXT">Terms Apply</a>
+					</div>
+
+		<div class="meta">
+												<div class="title">
+				<a href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-3-TEXT">
+					American Express® Gold Card				</a>
+			</div>
+
+			
+		
+			<div class="current-offer">
+			<a href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1">
+				Current Offer				</a>
+			</div>
+
+		
+					<div class="offer">
+				<a href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1">60,000 bonus points</a>
+			</div>
+										<a
+					href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1"
+					class="learn-more-button"
+					data-beam-text="FAV-CARD-WIDGET-3-TEXT">Learn More <span class="icon-arrow"><svg width="8px" height="10px" viewBox="0 0 8 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+	<title>Group</title>
+	<desc>Created with Sketch.</desc>
+	<defs>
+		<path d="M3.25,2.81066017 L1.53033009,4.53033009 C1.23743687,4.8232233 0.762563133,4.8232233 0.469669914,4.53033009 C0.176776695,4.23743687 0.176776695,3.76256313 0.469669914,3.46966991 L3.46966991,0.469669914 C3.76256313,0.176776695 4.23743687,0.176776695 4.53033009,0.469669914 L7.53033009,3.46966991 C7.8232233,3.76256313 7.8232233,4.23743687 7.53033009,4.53033009 C7.23743687,4.8232233 6.76256313,4.8232233 6.46966991,4.53033009 L4.75,2.81066017 L4.75,8.5472477 C4.75,8.96146126 4.41421356,9.2972477 4,9.2972477 C3.58578644,9.2972477 3.25,8.96146126 3.25,8.5472477 L3.25,2.81066017 Z" id="path-1"></path>
+	</defs>
+	<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		<g id="Icons-/-Arrows-/-Arrow-Up-Small-Tail" transform="translate(-8.000000, -6.000000)">
+			<g id="Group" transform="translate(8.000000, 6.000000)">
+				<g id="Blue">
+					<mask id="mask-2" fill="white">
+						<use xlink:href="#path-1"></use>
+					</mask>
+					<use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+					<g id="Colors-/-Azure-Blue" mask="url(#mask-2)" fill="#1B6FFF">
+						<g transform="translate(-8.000000, -6.000000)" id="Rectangle">
+							<rect x="0" y="0" width="24" height="24"></rect>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
+</span>
+				</a>
+						<div class="terms">
+									<a
+						class="terms-link tablet-only"
+						href="https://thepointsguy.com/apply/the-american-express-gold-card/?tid=FAV-CARD-WIDGET-3-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-3-TEXT">Terms Apply</a>
+							</div>
+
+			
+			
+			
+					</div>
+</div>
+
+<div
+	class="card beam-card"
+	data-beam-position=4	data-beam-product-id="6948"
+	data-beam-sku="85740bba7b8949589dbff133d07532e4"
+	data-beam-name="Capital One® Venture® Rewards Credit Card (6948)"
+	data-beam-brand="Capital One"
+	data-beam-location="links"
+	data-beam-text="FAV-CARD-WIDGET-4-CARD"
+	>
+										<div class="img-wrapper">
+			<a href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-4-CTA">
+									<div class="attachment-image size-card">
+				<figure>
+					<picture><source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/1f91b970-fcdc-11ea-a1b7-33b2711caa9e-1.png?width=500&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/1f91b970-fcdc-11ea-a1b7-33b2711caa9e-1.png?width=500&dpr=2 2x" media="--desktop" /> <source data-srcset="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/1f91b970-fcdc-11ea-a1b7-33b2711caa9e-1.png?width=100&dpr=1 1x,https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/1f91b970-fcdc-11ea-a1b7-33b2711caa9e-1.png?width=100&dpr=2 2x"  /><img class="lazyload"alt=""data-src="https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/1f91b970-fcdc-11ea-a1b7-33b2711caa9e-1.png"onerror="this.src='https://thepointsguy.global.ssl.fastly.net/us/originals/2020/09/1f91b970-fcdc-11ea-a1b7-33b2711caa9e-1.png';this.srcset='';this.onerror='';" /></picture>
+				</figure>
+			</div>					
+			</a>
+							<a
+					href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1"
+					class="learn-more-button desktop-only"
+					data-beam-text="FAV-CARD-WIDGET-4-TEXT">Learn More</a>
+					<a
+						class="terms-link hide-for-tablet"
+						href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-4-TEXT">Terms Apply</a>
+					</div>
+
+		<div class="meta">
+												<div class="title">
+				<a href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1" data-beam-text="FAV-CARD-WIDGET-4-TEXT">
+					Capital One® Venture® Rewards Credit Card				</a>
+			</div>
+
+			
+			<div class="current-offer">
+				<a href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1">
+				Limited Time Offer				</a>
+			</div>
+		
+					<div class="offer">
+				<a href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1">Up to 100,000 bonus miles<br><strike><small>50,000 miles</small></strike><br></a>
+			</div>
+		
+								<a
+					href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1"
+					class="learn-more-button"
+					data-beam-text="FAV-CARD-WIDGET-4-TEXT">Learn More <span class="icon-arrow"><svg width="8px" height="10px" viewBox="0 0 8 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<!-- Generator: Sketch 56.2 (81672) - https://sketch.com -->
+	<title>Group</title>
+	<desc>Created with Sketch.</desc>
+	<defs>
+		<path d="M3.25,2.81066017 L1.53033009,4.53033009 C1.23743687,4.8232233 0.762563133,4.8232233 0.469669914,4.53033009 C0.176776695,4.23743687 0.176776695,3.76256313 0.469669914,3.46966991 L3.46966991,0.469669914 C3.76256313,0.176776695 4.23743687,0.176776695 4.53033009,0.469669914 L7.53033009,3.46966991 C7.8232233,3.76256313 7.8232233,4.23743687 7.53033009,4.53033009 C7.23743687,4.8232233 6.76256313,4.8232233 6.46966991,4.53033009 L4.75,2.81066017 L4.75,8.5472477 C4.75,8.96146126 4.41421356,9.2972477 4,9.2972477 C3.58578644,9.2972477 3.25,8.96146126 3.25,8.5472477 L3.25,2.81066017 Z" id="path-1"></path>
+	</defs>
+	<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		<g id="Icons-/-Arrows-/-Arrow-Up-Small-Tail" transform="translate(-8.000000, -6.000000)">
+			<g id="Group" transform="translate(8.000000, 6.000000)">
+				<g id="Blue">
+					<mask id="mask-2" fill="white">
+						<use xlink:href="#path-1"></use>
+					</mask>
+					<use id="Mask" fill="#000000" fill-rule="nonzero" xlink:href="#path-1"></use>
+					<g id="Colors-/-Azure-Blue" mask="url(#mask-2)" fill="#1B6FFF">
+						<g transform="translate(-8.000000, -6.000000)" id="Rectangle">
+							<rect x="0" y="0" width="24" height="24"></rect>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>
+</span>
+				</a>
+						<div class="terms">
+									<a
+						class="terms-link tablet-only"
+						href="https://thepointsguy.com/apply/capital-one-venture-rewards-credit-card/?tid=FAV-CARD-WIDGET-4-CARD&#038;influenced=1"
+						data-beam-text="FAV-CARD-WIDGET-4-TEXT">Terms Apply</a>
+							</div>
+
+			
+			
+			
+					</div>
+</div>
+							<a class="see-all-button" href="https://thepointsguy.com/cards/">See all cards</a>
+					</div>
+		</div>
+	</div>
+</section>
+				</aside>
+
+					</div>
+	</div>
+</div>
+</div> <!-- ./above-footer -->
+
+
+<section class="advertiser-disclosure-body">
+	<div class="advertiser-disclosure-heading"><h3>Advertiser Disclosure</h3></div>
+			<span
+	class="icon icon-x-close">
+	<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 42.4 42.4" xml:space="preserve">
+		<rect x="-6.8" y="19.2" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -8.7868 21.2132)" width="56" height="4"/>
+		<rect x="-6.8" y="19.2" transform="matrix(0.7071 0.7071 -0.7071 0.7071 21.2132 -8.7868)" width="56" height="4"/>
+	</svg>
+</span>
+		<p>Many of the credit card offers that appear on the website are from credit card companies from which ThePointsGuy.com receives compensation. This compensation may impact how and where products appear on this site (including, for example, the order in which they appear). This site does not include all credit card companies or all available credit card offers. Please view our <a href="/advertising-policy/">advertising policy page</a> for more information.</p>
+<p>Editorial Note: Opinions expressed here are the author&#8217;s alone, not those of any bank, credit card issuer, airlines or hotel chain, and have not been reviewed, approved or otherwise endorsed by any of these entities.</p>
+</section>
+
+<footer class="footer-nav">
+	<section class="footer-nav-wrapper">
+		<div class="column-main">
+			<div class="column-main-header">
+				<div class="footer-logo">
+					<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 329 136.15"><defs><style>.cls-1{fill:url(#linear-gradient);}.cls-2{fill:#fff;}.cls-3{fill:#231f20;}</style><linearGradient id="linear-gradient" x1="234.38" y1="88.84" x2="329" y2="88.84" gradientUnits="userSpaceOnUse"><stop offset="0.02" stop-color="#45c36a"/><stop offset="0.15" stop-color="#3cc47d"/><stop offset="1" stop-color="#00cdff"/></linearGradient></defs><title>TPG-Secondary-Digital</title><circle class="cls-1" cx="281.69" cy="88.84" r="47.31"/><path class="cls-2" d="M303.11,67.6h-37.5a3.6,3.6,0,0,0-3.6,3.59l0,5.08a3.6,3.6,0,0,0,3.61,3.62h20.15l-24,24a3.59,3.59,0,0,0,0,5.09l3.58,3.59a3.62,3.62,0,0,0,5.1,0l24-24v20.16a3.62,3.62,0,0,0,1.06,2.55,4.06,4.06,0,0,0,2.56,1l5.09,0a3.61,3.61,0,0,0,3.59-3.61V71.2A3.61,3.61,0,0,0,303.11,67.6Z" transform="translate(-2 -1.79)"/><path class="cls-3" d="M146.36,31.43V56.7c0,20.14-13.31,28.13-33.45,28.13H100.56v43.89c0,4.94-2.66,7.6-7.6,7.6H86.12c-4.94,0-7.6-2.66-7.6-7.6V10.91c0-4.94,2.66-7.6,7.6-7.6h26.79C133.05,3.31,146.36,11.29,146.36,31.43Zm-22.05,3.42c0-9.5-4.94-12.16-12.16-12.16H100.56V65.44h11.59c7.22,0,12.16-2.66,12.16-12.16Z" transform="translate(-2 -1.79)"/><path class="cls-3" d="M68.51,10.91v4.18c0,4.94-2.66,7.6-7.6,7.6H46.28v106c0,4.94-2.67,7.6-7.61,7.6H31.83c-4.94,0-7.6-2.66-7.6-7.6v-106H9.6C4.66,22.69,2,20,2,15.09V10.91C2,6,4.66,3.31,9.6,3.31H60.91C65.85,3.31,68.51,6,68.51,10.91Z" transform="translate(-2 -1.79)"/><path class="cls-3" d="M225.76,75.52v34.2c0,20.52-13.31,28.12-33.45,28.12h-1.52c-20.14,0-33.44-7.41-33.44-28.12V29.91c0-19.76,13.3-28.12,33.44-28.12h1.52c20.14,0,33.45,8.36,33.45,28.12v11.4c0,4.94-2.66,7.6-7.6,7.6h-6.85c-4.94,0-7.6-2.66-7.6-7.6v-8c0-9.5-4.94-12.16-12.16-12.16s-12.16,2.66-12.16,12.16v73c0,9.5,4.94,12.16,12.16,12.16s12.16-2.66,12.16-12.16V86.54h-5.32c-4.94,0-7.6-2.66-7.6-7.6V75.52c0-4.94,2.66-7.61,7.6-7.61h19.77C223.1,67.91,225.76,70.58,225.76,75.52Z" transform="translate(-2 -1.79)"/></svg>
+					</div>
+
+				<div class="row__header row__header--green">
+					Maximize your travel.				</div>
+
+															<div class="row__header">
+							<button
+								type="button"
+								class="searchbar-btn searchbar-btn--header gs-trigger-open"
+								data-beam-element-clicked
+								data-beam-action-outcome="OPEN"
+								data-beam-location="FOOTER"
+								data-beam-element-type="BUTTON"
+								data-beam-text="Search">
+								<span>Search</span>
+								<span class="icon icon-search">
+	<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Icons-/-Interface-/-Search" fill="#000000" fill-rule="nonzero">
+				<g id="Group">
+					<g id="search-alternate">
+						<path d="M23.384,21.619 L16.855,15.09 C19.8121553,11.2027145 19.2516834,5.68892669 15.5728164,2.47618737 C11.8939495,-0.736551948 6.35490842,-0.549443611 2.9012324,2.9042324 C-0.552443611,6.35790842 -0.739551948,11.8969495 2.47318737,15.5758164 C5.68592669,19.2546834 11.1997145,19.8151553 15.087,16.858 L21.616,23.387 C22.1077348,23.8666586 22.8922652,23.8666586 23.384,23.387 C23.871759,22.8985895 23.871759,22.1074105 23.384,21.619 Z M2.75,9.5 C2.75,5.77207794 5.77207794,2.75 9.5,2.75 C13.2279221,2.75 16.25,5.77207794 16.25,9.5 C16.25,13.2279221 13.2279221,16.25 9.5,16.25 C5.77390544,16.2455917 2.75440828,13.2260946 2.75,9.5 Z" id="Shape"></path>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+							</button>
+						</div>
+									
+				<div class="footer-handle">
+					@thepointsguy				</div>
+
+				<div class="footer-social-links">
+					<section class="row">
+						<nav class="footer_social">
+							
+<div class="social-icons">
+			<a
+			href="https://facebook.com/thepointsguy/"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="Facebook"
+			data-beam-position="0"
+			class="facebook-icon"
+			title="Like us on Facebook">
+			<span class="icon icon-facebook">
+	<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+		<path d="M18.86.04H1.14C.534.04.04.534.04 1.14v17.72c0 .607.493 1.1 1.1 1.1h9.54v-7.714H8.084V9.24h2.596V7.023c0-2.573 1.57-3.974 3.866-3.974 1.1 0 2.044.08 2.32.117v2.688h-1.592c-1.248 0-1.49.594-1.49 1.465v1.92h2.977l-.386 3.006h-2.59v7.713h5.076c.607 0 1.1-.494 1.1-1.1V1.14c0-.607-.493-1.1-1.1-1.1" fill-rule="evenodd"/>
+	</svg>
+</span>			<span class="social_text">Facebook</span>
+		</a>
+	
+			<a
+			href="https://www.instagram.com/thepointsguy/"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="Instagram"
+			data-beam-position="0"
+			class="instagram-icon"
+			title="Follow us on Instagram">
+			<span class="icon icon-instagram">
+	<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+		<path d="M17.5 0h-15C1.12 0 0 1.12 0 2.5v15C0 18.88 1.12 20 2.5 20h15c1.38 0 2.5-1.12 2.5-2.5v-15C20 1.12 18.88 0 17.5 0zM6.148 9.585c.004-.04.012-.078.018-.117.013-.096.027-.193.047-.287l.033-.122c.022-.09.046-.18.074-.266l.044-.12c.032-.085.064-.17.1-.25l.018-.044h.004C7.1 7.048 8.44 6.126 10 6.126c1.56 0 2.9.922 3.514 2.25h.004l.017.042c.037.082.07.166.1.25.016.04.032.08.045.122.03.087.052.176.074.266.01.042.024.082.033.125.02.097.034.194.047.29.006.04.014.078.018.117.015.137.023.275.023.415 0 2.14-1.735 3.876-3.875 3.876-2.14 0-3.875-1.735-3.875-3.875 0-.14.008-.277.023-.414zM17.75 16.75c0 .552-.448 1-1 1H3.25c-.552 0-1-.448-1-1V8.375h1.843c-.142.518-.218 1.063-.218 1.625 0 3.383 2.742 6.125 6.125 6.125s6.125-2.742 6.125-6.125c0-.563-.076-1.107-.218-1.625h1.843v8.375zm0-11.5c0 .552-.448 1-1 1h-2c-.552 0-1-.448-1-1v-2c0-.552.448-1 1-1h2c.552 0 1 .447 1 1v2z" fill="#0F1568" fill-rule="evenodd"/>
+	</svg>
+</span>
+			<span class="social_text">Instagram</span>
+		</a>
+	
+			<a
+			href="https://www.youtube.com/user/ThePointsGuy"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="YouTube"
+			data-beam-position="0"
+			class="youtube-icon"
+			title="Follow us on YouTube">
+			<span class="icon icon-youtube">
+	<svg width="20" height="14" xmlns="http://www.w3.org/2000/svg">
+		<path d="M8 10l5.19-3L8 4v6zm11.56-7.83c.13.47.22 1.1.28 1.9.07.8.1 1.49.1 2.09L20 7c0 2.19-.16 3.8-.44 4.83-.25.9-.83 1.48-1.73 1.73-.47.13-1.33.22-2.65.28-1.3.07-2.49.1-3.59.1L10 14c-4.19 0-6.8-.16-7.83-.44-.9-.25-1.48-.83-1.73-1.73-.13-.47-.22-1.1-.28-1.9-.07-.8-.1-1.49-.1-2.09L0 7c0-2.19.16-3.8.44-4.83.25-.9.83-1.48 1.73-1.73C2.64.31 3.5.22 4.82.16c1.3-.07 2.49-.1 3.59-.1L10 0c4.19 0 6.8.16 7.83.44.9.25 1.48.83 1.73 1.73z" fill="#000" fill-rule="nonzero"/>
+	</svg>
+</span>
+			<span class="social_text">YouTube</span>
+		</a>
+	
+	
+			<a
+			href="https://twitter.com/thepointsguy/"
+			data-beam-element-clicked
+			data-beam-location="Navigation"
+			data-beam-text="Twitter"
+			data-beam-position="0"
+			class="twitter-icon"
+			title="Follow us on Twitter">
+			<span class="icon icon-twitter">
+	<svg xmlns="http://www.w3.org/2000/svg" width="25" height="21">
+		<path fill-rule="evenodd" d="M7.71 20c-2.84 0-5.484-.833-7.71-2.26.394.046.794.07 1.2.07 2.357 0 4.526-.804 6.247-2.153-2.2-.04-4.06-1.495-4.7-3.494.308.06.624.09.948.09.46 0 .903-.06 1.325-.176C2.72 11.615.985 9.582.985 7.145V7.08c.678.378 1.454.604 2.28.63-1.35-.902-2.24-2.44-2.24-4.187 0-.92.25-1.786.682-2.528C4.187 4.038 7.895 6.04 12.075 6.25c-.085-.368-.13-.752-.13-1.146 0-2.778 2.252-5.03 5.03-5.03 1.448 0 2.755.61 3.673 1.588 1.145-.225 2.222-.644 3.194-1.22-.376 1.174-1.173 2.16-2.212 2.783 1.018-.122 1.987-.392 2.89-.792-.675 1.008-1.528 1.894-2.51 2.604.01.215.014.432.014.65C22.024 12.335 16.964 20 7.71 20"/>
+	</svg>
+</span>			<span class="social_text">Twitter</span>
+		</a>
+	</div>
+						</nav>
+					</section>
+				</div>
+			</div>
+
+			<div class="column-main-content">
+				
+									<section class="row site_links">
+						<nav class="site__wrapper link_row">
+							<a href="https://thepointsguy.com/about/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK">About</a>
+<a href="/jobs/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Jobs at TPG">Jobs at TPG</a>
+<a href="/about-us/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Team">Team</a>
+<a href="https://thepointsguy.com/contact-us/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK">Contact Us</a>
+<a href="/guide/beginners/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Beginner Guide">Beginner Guide</a>
+<a href="https://thepointsguy.com/giving-back/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Charity">Charity</a>
+<a href="https://shop.thepointsguy.com" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Shop">Shop</a>
+<a href="https://thepointsguy.com/sitemap/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK">Site Map</a>
+						</nav>
+					</section>
+				
+				
+				
+														<div class="row searchbar">
+						<button
+							type="button"
+							class="searchbar-btn searchbar-btn--content gs-trigger-open"
+							data-beam-element-clicked
+							data-beam-action-outcome="OPEN"
+							data-beam-location="FOOTER"
+							data-beam-element-type="BUTTON"
+							data-beam-text="Search">
+							<span>Search</span>
+							<span class="icon icon-search">
+	<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+			<g id="Icons-/-Interface-/-Search" fill="#000000" fill-rule="nonzero">
+				<g id="Group">
+					<g id="search-alternate">
+						<path d="M23.384,21.619 L16.855,15.09 C19.8121553,11.2027145 19.2516834,5.68892669 15.5728164,2.47618737 C11.8939495,-0.736551948 6.35490842,-0.549443611 2.9012324,2.9042324 C-0.552443611,6.35790842 -0.739551948,11.8969495 2.47318737,15.5758164 C5.68592669,19.2546834 11.1997145,19.8151553 15.087,16.858 L21.616,23.387 C22.1077348,23.8666586 22.8922652,23.8666586 23.384,23.387 C23.871759,22.8985895 23.871759,22.1074105 23.384,21.619 Z M2.75,9.5 C2.75,5.77207794 5.77207794,2.75 9.5,2.75 C13.2279221,2.75 16.25,5.77207794 16.25,9.5 C16.25,13.2279221 13.2279221,16.25 9.5,16.25 C5.77390544,16.2455917 2.75440828,13.2260946 2.75,9.5 Z" id="Shape"></path>
+					</g>
+				</g>
+			</g>
+		</g>
+	</svg>
+</span>
+						</button>
+					</div>
+									
+				<section class="row newsletter__wrapper" data-iterable>
+					<div data-iterable>
+	<div class="newsletter js-newsletter " data-iterable-before-success>
+		<div class="newsletter__title">
+			<span>Sign up for our daily newsletter</span>
+		</div>
+		<div class="newsletter__form">
+			<form
+				method="post"
+				data-beam-form-viewed
+				data-formtype="Email Capture"
+				data-list-id="26874"
+				name="Email Capture (Footer)"
+				id="email-capture-footer"
+				class="newsletter-form beam-newsletter-form newsletter__form js-newsletter-form"
+			>
+				<fieldset id="">
+					<div class="newsletter__input" data-beam-form-started>
+						<input
+							type="email"
+							name="email"
+							value=""
+							class="email input js-email-input"
+							placeholder="Enter your email address"
+							required
+							data-iterable-input
+							/>
+						<button
+							type="submit"
+							name="subscribe"
+							class="button tpg-cta"
+							>Sign up</button>
+											</div>
+					<div class="newsletter__consent">
+						<label class="newsletter__checkboxes--item">
+							<input checked type="checkbox" class="" data-iterable-consent>
+							<span class="newsletter__checkboxes--label">
+																		I would like to subscribe to The Points Guy newsletters and special email promotions. The Points Guy will not sell your email.																 See 								<a href="https://thepointsguy.com/privacy-policy/" rel="nofollow" target="_blank">PRIVACY POLICY.</a>
+							</span>
+						</label>
+					</div>
+										<div class="newsletter__errors js-email-capture-errors">
+						<span class="js-email-error" style="display: none;">Please enter a valid email address</span>
+						<span class="js-checkbox-error" style="display: none;">Please check mailing preferences</span>
+					</div>
+									</fieldset>
+			</form>
+		</div>
+	</div>
+		<div class="iterable-show-success" data-iterable-show-success>
+		<h3 class="heading">Sign-up Successful!</h3>
+		<p>Welcome to The Points Guy!</p>
+	</div>
+		<div class="newsletter-loading js-newsletter-loading" data-iterable-is-loading>
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+	</div>
+	</div>
+				</section>
+
+				
+<section class="footer-disclosure">
+		<p><em>The credit card offers that appear on the website are from credit card companies from which ThePointsGuy.com receives compensation. This compensation may impact how and where products appear on this site (including, for example, the order in which they appear). This site does not include all credit card companies or all available credit card offers. Please view our <a href="/advertising-policy/">advertising policy page</a> for more information.</em></p>
+<p><em>Editorial Note: Opinions expressed here are the author&#8217;s alone, not those of any bank, credit card issuer, airlines or hotel chain, and have not been reviewed, approved or otherwise endorsed by any of these entities.</em></p>
+</section>
+
+				<div class="row yatta">
+					<div class="copy">
+						&copy; 2020 THE POINTS GUY, LLC. ALL RIGHTS RESERVED. A RED VENTURES COMPANY.					</div>
+
+					
+											<nav class="legal-links">
+							<a target="_blank" rel="nofollow" href="https://thepointsguy.com/privacy-policy/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK">Privacy Policy</a>
+<a target="_blank" rel="nofollow" href="https://privacyportal-cdn.onetrust.com/dsarwebform/79ba7c84-ebc2-4740-8d11-bf1cc4501e59/f19446d8-ae7f-4391-ae0f-4e759f911c4c.html" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK" data-beam-text="Do Not Sell My Info">Do Not Sell My Info</a>
+<a target="_blank" rel="nofollow" href="https://thepointsguy.com/terms-of-use/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK">Terms of Use</a>
+<a target="_blank" rel="nofollow" href="https://thepointsguy.com/cookie-policy/" data-beam-element-clicked="1" data-beam-location="NAVIGATION" data-beam-element-type="BUTTON" data-beam-action-outcome="LINK">Cookie Policy</a>
+						</nav>
+					
+				</div>
+			</div>
+		</div>
+	</section>
+</footer>
+
+<div id="placement--tpg-modal"></div>
+
+
+<!-- START Parse.ly Include: Standard -->
+
+<div id="parsely-root" style="display: none">
+	<div id="parsely-cfg" data-parsely-site="thepointsguy.com"></div>
+</div>
+<script data-cfasync="false">
+	(function (s, p, d) {
+		var h = d.location.protocol, i = p + "-" + s,
+			e = d.getElementById(i), r = d.getElementById(p + "-root"),
+			u = h === "https:" ? "d1z2jf7jlzjs58.cloudfront.net"
+				: "static." + p + ".com";
+		if (e) return;
+		e = d.createElement(s);
+		e.id = i;
+		e.async = true;
+		e.setAttribute('data-cfasync', 'false');
+		e.src = h + "//" + u + "/p.js";
+		r.appendChild(e);
+	})("script", "parsely", document);
+</script>
+
+<!-- END Parse.ly Include: Standard -->
+<script type='text/javascript' id='tpg-global-js-js-extra'>
+/* <![CDATA[ */
+var ajaxObject = {"isLocal":"","isPantheonDev":"","isProduction":"1","ajax_url":"https:\/\/thepointsguy.com\/wp-admin\/admin-ajax.php","base_url":"https:\/\/thepointsguy.com","endpoint_url":"https:\/\/thepointsguy.com\/endpoint","guid":"https:\/\/thepointsguy.com\/?p=1015408","post_id":"1015408","eventName":"visit","cardID":"","nonce":"3c7d851c5a"};
+var tpg = {"channel":"NEWS","url":"\/news\/alaska-airlines-oneworld-membership-new-date\/","pageName":"alaska-airlines-oneworld-membership-new-date","author":"Edward Russell","eVar20":"Airlines, Aviation","eVar21":"10132020","eVar22":"0","eVar23":"299","eVar24":"1","eVar25":"Alaska Airlines"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/global.9165c8e2.js?ver=1.0' id='tpg-global-js-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/header-nav.03b3e77b.js?ver=1.0' id='tpg-header-nav-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/iterable.bdf1c9ea.js?ver=1.0' id='tpg-iterable-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/affiliateProgram.2718b41d.js?ver=1.0' id='tpg-affiliateProgram-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/Modal.243d8fe1.js' id='tpg-global-search-modal-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/Nav.c75cbeee.js' id='tpg-global-search-nav-js'></script>
+<script src="https://s.skimresources.com/js/108360X1565867.skimlinks.js?ver=1.0" async></script><script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/tableResponsive.0bce3085.js?ver=1.0' id='tpg-tableResponsive-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/accordion.2b5ea5f3.js?ver=1.0' id='tpg-accordion-js-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/summary-drawer.b99168c6.js?ver=1.0' id='tpg-summary-drawer-js-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-content/themes/tpg-2016/dist/article-gallery-slider.9a11190a.js?ver=1.0' id='tpg-article-gallery-slider-js'></script>
+<script type='text/javascript' src='https://thepointsguy.com/wp-includes/js/wp-embed.min.js?ver=5.5' id='wp-embed-js'></script>
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","licenseKey":"38cce5be73","applicationID":"39153354","transactionName":"Y1JVYEdVCERZUBEKX1oYdldBXQlZF0AMDVdYUg==","queueTime":0,"applicationTime":339,"atts":"TxVWFg9PG0o=","errorBeacon":"bam-cell.nr-data.net","agent":""}</script></body>
+</html>

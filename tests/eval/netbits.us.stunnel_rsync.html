@@ -1,0 +1,531 @@
+<HTML><HEAD><TITLE>Rsync + Stunnel 4.x</TITLE></HEAD>
+<BODY>
+<H1>Rsync + Stunnel 4.x</H1>
+<H2>Contents</H2>
+<UL>
+<LI><a href="#purpose">Purpose / Overview</a></LI>
+<LI><a href="#source1">Building the Sources I</a></LI>
+<LI><a href="#cert">Generating Certs</a></LI>
+<LI><a href="#source2">Building the Sources II</a></LI>
+<LI><a href="#stunnel">Configuring Stunnel</a></LI>
+<LI><a href="#rsync">Configuring Rsync</a></LI>
+<LI><a href="#firewall">Firewall</a></LI>
+<LI><a href="#testing">Testing</a></LI>
+<LI><a href="#credits">Credits</a></LI>
+<LI><a href="#todo">TODO</a></LI>
+</UL>
+<H2><a name="purpose">Purpose / Overview</H2>
+<blockquote>
+<P>
+A while back I went to a great <a href="http://www.tclug.org/">TCLUG<a/> meeting with Mick Bauer giving the main presentation.
+I was impressed enough with his presentation to purchase a copy of his book: <a href="http://www.oreilly.com/catalog/bssrvrlnx/">Building Secure Servers
+with Linux</a>.  I also enjoy his Paranoid Penguin security related columns in the <a href="http://www.linuxjournal.com/">Linux Journal</a>.
+<p>
+One of Mick's columns and a portion of his book deal with setting up stunnel to tunnel rsync over
+an SSL encrypted connection.  Unfortunately, I had a heck of a hard time getting this to work because
+Mick's documentation examples rely heavily on tcp-wrappers and Stunnel version 3.x syntax.  Stunnel 4.x
+has been stable for a long time and I always like to have my software up to date, so I wrote this
+documentation to record my solution to this problem in the hopes that someone may find it useful and so I can
+remember exactly what I did when I need to set this up again.  If you find any errors or omissions, please
+feel free to <a href="http://www.netbits.us/contact.php">contact</a> me.
+<p>
+All right then, it's go time.
+</blockquote>
+<H2><a name="source1">Building the Sources I</H2>
+<blockquote>
+As much as I like certain un-named Linux distros, I abhore dealing with RPM's.  This led to a natural migration
+to Slackware and Debian as my Linux distros of choice, in that order.  Unfortunately, many people do not feel
+comfortable working with source, so I'll go into detail on how to build the source for the three packages that
+we need: OpenSSL, Stunnel and Rsync.
+<p>
+<H3>OpenSSL</H3>
+<p>
+This is probably an optional step for many users as almost all distributions come with a version of OpenSSL which is
+usually installed by default as it is required by many other packages.  To find out, try the following:
+<p>
+<ul>
+<li>rpm -qa | grep -i ssl</li>
+<li>which openssl</li>
+<li>openssl version</li>
+</ul>
+Follow the steps below to install the latest version from source if desired.
+<p>
+As of this writing, the latest version of OpenSSL is 0.9.7c.
+<p>Download the latest OpenSSL source tarball (.tar.gz, .tar.bz2, .tar, etc) from <a href="http://www.openssl.org/source/">http://www.openssl.org</a>.  You can
+save the file to wherever you wish.  I like to keep downloaded custom source packages in /usr/local/source/ - whatever, it's
+up to you.  Unpack the tarball using tar [z,j]xvf name_of_tarball.  (The z or j is option, use tar zxvf for .tar.gz, tar jxvf for
+.tar.bz2, tar xvf for .tar)  Remove the tarball file and cd into the directory it created.  In this example, here are the steps:
+<p>
+<ul>
+<li>Download openssl source tarball - probably something like openssl-0.9.7c.tar.gz</li>
+<li>cd to the directory containing the tarball</li>
+<li>tar zxvf openssl-0.9.7c.tar.gz</li>
+<li>rm openssl-0.9.7c.tar.gz</li>
+<li>cd openssl-0.9.7c</li>
+</ul>
+<p>
+At this point you will configure and build openssl.  Openssl doesn't use the standard autoconf program but it's very close.  The next thing to
+type is:
+<p>
+<code>./config --prefix=/usr/local --openssldir=/usr/local/ssl zlib shared</code>
+<p>
+You may want to change the prefix or the openssldir depending on your preferences.  Your distro probably already requires
+OpenSSL so you should choose a location that will not interfere with the installed version of OpenSSL, Anything in /usr/local is a logical
+choice.
+<p>
+After this type: <code>make</code>
+<p>
+If you get errors on zlib, make sure you have zlib-devel (on RPM systems) or zlib1g-dev on Debian.
+<p>
+This will probably take a few minutes depending on your system, once it's finished, type <code>su</code> to log in as root, then type:
+<code>make install</code> to install openssl into /usr/local/ or wherever you designated about with --prefix.  Type <code>make clean</code> to remove
+objects created during the make process that are no longer needed.
+<p>
+Since your system probably contains another version of openssl, it's a good idea to make sure that you can find the version
+you just installed.  /usr/local/bin should be in your PATH, so type:
+<p>
+<code>rehash<br>which openssl<br>openssl version</code>
+<p>
+Make sure the last command returns the version you just installed (0.9.7c)
+<p>
+Also, make sure that it can find the openssl shared library.  Type:
+<p><code>ldd `which openssl`</code>
+<p>You should see something similar to:
+<p><pre>
+# ldd `which openssl`
+        libssl.so.0.9.7 => /usr/local/lib/libssl.so.0.9.7 (0x4001b000)
+        libcrypto.so.0.9.7 => /usr/local/lib/libcrypto.so.0.9.7 (0x4004a000)
+        libdl.so.2 => /lib/libdl.so.2 (0x40142000)
+        libz.so.1 => /usr/lib/libz.so.1 (0x40145000)
+        libc.so.6 => /lib/libc.so.6 (0x40153000)
+        /lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x4000000
+</pre><p>
+Make sure that libssl.so.0.9.7 points to the lib directory in your --prefix.  If not, make sure /usr/local/lib is somewhere in
+/etc/ld.so.conf and type: <code>ldconfig</code>.
+<p>
+Note that you should do this on both the rsync client and server as stunnel will link against the openssl libraries.
+<p>
+Ok, enough of this, time to actually do some work, it's time to make some certs.
+</blockquote>
+<H2><a name="cert">Generating Certs</H2>
+<blockquote>
+Much of this was taken from Mick Bower's book - openssl has a cryptic (IMO) syntax, I'll do my best to
+explain.
+
+<p>
+To use stunnel we are going to sign our own SSL certificates.  If you want to pay Verisign $200 a year to get
+3rd party signed certs, by all means go ahead, but for tunneling you do not need to pay anyone to sign certificates.
+In the https world of secure web transmissions, it's important because the client (your web browser) needs the
+certificate to verify the identity of the server, in our case though, it's the server (rsync, or more specifically stunnel)
+that needs to verify client connections.
+In addition, chances are you will generate both the client and the server certificates for the purposes of tunneling instead
+of handing them out to strangers.  For these reasons, the server can quite safely and affordable be it's own CA (Certificate Authority).
+<p>
+To be a certificate authority though, you need to perform some simple steps with openssl.
+<p>
+First, cd to /usr/local/ssl (or wherever you chose for --sysconfdir).
+<p>
+In this directory, you will find an openssl.conf file, open it with your favorite editor.
+<p>Change the follwoing values:
+<p>
+<code>dir = ./demoCA</code> (change ./demoCA to something more appropriate, like ./localCA or ./CA)
+<br><code>default_bits = 1024</code> (Change to 2048 for more security - does not hinder tunnel performance)
+<br><code>default_days = 365</code> (You might want to change this to a higher value so you don't have to resign your certs every year)
+<br>You may also want to change the default values in the req_distinguished_name section so you don't have to type in
+your country, city, state, etc. each time you use openssl.
+<p>
+Next, edit misc/CA.pl and change some of the same values, namely change $CATOP and $DAYS to match the values you used for dir and default_days in
+openssl.conf.
+<p>
+Finally, type:  <code>/usr/local/ssl/misc/CA.pl -newca</code>
+<p>
+Press return at the first prompt and then enter a very secure passphrase.  I like to use sentences and not typical passwords
+for openssl pass phrases as they allow puncuation and whitespace.  Something like "Don't worry, this is my 1st CA and it's
+much more secure than a password like 52334XCq24sdf122, Dude!".  You'll want to remember this pass phrase though, so store it off site
+somewhere extremely secure.  After this you'll be prompted from a number or certificate credentials.  For Organizational Unit Name you might want to type something like
+"Certificate Authority", for Common Name you should use your domain name.  A challenge password is not needed.
+<p>
+Copy the openssl.conf file in the /usr/local/ssl/ directory to the new CA directory created, which is dependant on what you
+set for $CATOP above.  You should edit the copy and set the CA dir parameter to an absolute path.
+<P>
+You now have your own Certificate Authority which you can use to sign certificates.  But first, lets tighten things up a little.
+Type:
+<p>
+<code>chmod 400 /usr/local/ssl/CA/private/*.pem</code>
+<br><code>chmod 500 /usr/local/ssl/CA/private</code>
+<br><code>chmod 500 /usr/local/ssl/private</code>
+<p>Make sure these files and directories are only readable by root!
+<p>Now that you have your CA setup, lets create and sign some certs for use with stunnel and rsync.
+<p>First decide which computer is your rsync server and which is your client.
+For this exercise, frokhike is a co-located web server in Utah and langly is a computer in my basement
+that has a lot of diskspace, access to a tape drive, and whose only purpose in life is to store backup data.
+This scenario is not actually pretend for me, only the names of the computers were changed to hide the guilty.
+<p>
+In this situation, even though frokhike is a web server and a very important computer, it is the client in the eyes of our
+rsync scenario.  langly is the computer which runs the rsync daemon waiting for clients to send it data.  (Remember, this is
+not the only way to use rsync, it can certainly push data as well as pull.)
+<p>Note that it doesn't matter on which computer the CA
+is, it can sign and create certs for both the client and the server even if it is neither a client nor a server.
+<p>
+Let's start with the server, langly.  First cd to the CA directory.  Create the stunnel signing request and key with:
+<p>
+<code>/usr/local/bin/openssl req -nodes -new -keyout langly_stunnel_key.pem
+-out langly_stunnel_req.pem -config ./openssl.cnf</code>
+<p>
+Here you will have to enter the usual openssl certificate credentials.  Use your domain name or the name of the computer (e.g. langly)
+for the Common name and "stunnel server" for the Organizational Unit Name.  This will create two files, langly_stunnel_key.pem (the key)
+and langly_stunnel_req.pem (the signing request).  An important note about this openssl command, the -nodes parameter specifies
+that the new certificate should be unencrypted, which means that it will not ask for a pass phrase everytime you start the stunnel server.  This
+is desirable behavior for a certificate for a daemon process that starts on boot.
+<p>Now to sign the request with the new CA.
+<p>
+<code>/usr/local/bin/openssl ca -config ./openssl.cnf
+-policy policy_anything -out langly_stunnel_pubcert.pem -infiles langly_stunnel_req.pem</code>
+<p>
+You will be required for the CA pass phrase to complete the signing.  Enter y at the "are you sure?" prompts.
+<p>
+Some versions of stunnel require a specially formatted certificate, so we're not quite done yet.  Edit langly_stunnel_key.pem and add a single
+blank line at the end.  Edit langly_stunnel_pubcert.pem and delete everything up to, but not including the line: "-----BEGIN CERTIFICATE-----".
+Note that you can look at this information again by examining the files in the newcerts directory in the CA directory.
+Also add a single blank line at the end of this file.  Finally, type:
+<p>
+<code>cat langly_stunnel_key.pem langly_stunnel_pubcert.pem > langly_stunnel_cert.pem</code>
+You should chmod 400 the key file and the cert as it contains a copy of the key.
+<p>
+The client certificate can be created in exactly the same fashion, except change the name of the files to something else like
+frohike_stunnel_req.pem, etc. and change the Common Name to the domain name or computer name of the client and the Organizational
+Unit Name to "stunnel client" or something similar.  This is important as the certificates cannot have the same exact credentials.
+<p>
+That's it!  We'll copy/move the *_stunnel_cert.pem files to the client/server in the stunnel configuration section.
+</blockquote>
+<H2><a name="source2">Building the Sources II</H2>
+<blockquote>
+In order to have a stunnel'd rsync connection, it follows that you probably need to install rsync and stunnel.  The process
+is pretty painless, but it should be done on both the cleint and the server.
+<h3>Stunnel</h3>
+Log out of the root account and download the latest version of the stunnel source code from <A href="http://www.stunnel.org/download/source.html">http://www.stunnel.org</a>.
+<p>
+As of this writing, the latest version of stunnel is 4.05.
+<p>
+Follow the same process to uncompress the tarball as in the <a href="#sources">OpenSSL</a> section.
+<p>
+Chances are that you do not have stunnel installed, but it might be useful to check just in case.  If you have it and you
+know you are not using it, it'd be prudent to remove it.
+<p>
+The configure command to build stunnel that I recommend is:
+<p>
+<code>./configure --prefix=/usr/local --with-tcp-wrappers --with-ssl=/usr/local --sysconfdir=/etc
+</code><p>
+The --with-ssl directory is the same as the --prefix used in the OpenSSL config command.  If you use your
+distro's ssl, you probably can omit the --with-ssl flag completely, if you installed OpenSSL as described above,
+make sure you use this flag or the configure script might link against an older version of OpenSSL instead of the one that
+you spent so much of your hard time building.
+<p>
+--with-tcp-wrappers requires that you have libwrap.a.  Make sure you have tcpd (on RPM systems) or libwrap0-dev on Debian.
+<p>
+Since you most likely do not have stunnel installed, using /etc as sysconfdif is convenient as it create a /etc/stunnel directory
+containing the all-important stunnel configuration file.
+<p>
+Assuming that the ./configure command works, next type: <code>make</code>
+<p>
+As part of the make process, stunnel wants to create a test certificate and will ask you the usual openssl questions (country, city, state, etc.).
+Since we will not be using this test certificate, you can just press return at each prompt to accept the default values, even
+though they will not make sense.
+<p>
+If this succeeds, log back into the root account and type: <code>make install</code> to install the stunnel program.  The stunnel binary is in
+/usr/local/sbin not /usr/local/bin so make sure it is in your path or call with a full path.  The program installs the test
+certificate as /etc/stunnel/stunnel.pem.  You can remove this file as you will not need it, especially now that you can sign
+your own certificates.
+<p>
+Log out of the root account and type <code>make distclean</code> to free up some space from the stunnel build.
+<p>
+You may want to type: <code>stunnel -version</code> to verify that it has libwrap support - check for LIBWRAP in the first line of output.
+<h3>rsync</h3>
+Rsync is the actual program we are going to tunnel and the last piece of the puzzle.  Some systems may or may not install
+rsync by default.  If it is and you feel comfortable, you should probably remove it as we'll now install the new version.
+<p>
+Download the latest version of the rsync source code from <A href="http://samba.org/ftp/rsync/">http://www.samba.org/rsync/</a>.
+<p>
+As of this writing, the latest version of stunnel is 2.6.0.
+<p>
+Follow the same process to uncompress the tarball as in the <a href="#sources">OpenSSL</a> section.
+<p>
+The configure command to build rsync that I recommend is:
+<p>
+<code>./configure --prefix=/usr/local --sysconfdir=/etc
+</code>
+<p>The process should be familiar by now:
+<p>
+<code>make
+<br>su
+<br>make install
+<br>make distclean
+</code>
+Now that all the software is installed (on both client and server), we'll configure and test.
+</blockquote>
+<H2><a name="rsync">Configuring Rsync</H2>
+<blockquote>
+There are a variety of uses to the rsync program, just look at rsync --help or man rsync to see the huge number of options.
+What I primarily use rsync for is for backing up important files to an off-site computer.  It's great for backups as rsync only copies the
+differences between files, it doesn't copy the entire file, which can save dramatic bandwidth depending on your situation.
+<p>
+So let's go back to our pretend scenario.   Recall that frohike is the client and langly is the server, and that
+the client frohike is pushing important, possibly sensitive backup data over TCP/IP to my basement rsync server langly.
+<p>
+We'll start with rsync.  There is fortunately no configuration that needs to be done on the client side.  All that needs
+to happen on the client is a command line call to rsync.  The server on the other hand requires configuration.  Here is what I
+use in /etc/rsyncd.conf
+<p><pre>
+syslog facility = local5
+
+use chroot = yes
+uid = root
+gid = root
+max connections = 10
+timeout = 600
+read only = yes
+
+[frohike]
+        path = /backup/frohike
+        comment = Frohike Backups
+        hosts allow = 127.0.0.1
+        read only = no
+        ignore nonreadable = yes
+        refuse options = checksum
+        dont compress = *
+</pre><p>
+You will need to look at the manpage for rsyncd.conf to determine what to place in your config file,
+but you should be able to tweek this to meet your needs.  Couple important notes:
+<p>
+Do NOT change hosts allow to the actual IP address of your client.  Because the connection to rsync is tunnelled, it
+actually appears to the rsync daemon to be coming from a local process, hence the 127.0.0.1.
+<p>The directory in path needs to exist before you can transfer files.
+<p>Since I am transfering backup files that may be owned by root, I had difficulty getting rsync to work without
+setting the uid and gid to root.  You may not want to do this depending on your usage.
+<p>
+syslog facility allows me to direct all rsync log messages to /var/log/rsyncd.log by placing this line in /etc/syslog.conf
+<p><code>local5.* /var/log/rsyncd.log</code>
+<P>You do do the same, or remove this completely, logging will go to whatever log has the
+deamon facility.
+<p>
+You can start the rsync daemon simply by executing /usr/local/bin/rsync --daemon - probably a good thing to start on boot -
+use whatever method you are familiar with.  I recommend <a href="http://cr.yp.to/daemontools.html">daemontools</a>.
+The following run script works for daemontools (the only difference being the --no-detach):
+<p><pre>
+#!/bin/sh
+
+/usr/local/bin/rsync --daemon --no-detach
+</pre><p>
+Note, there is no config file parameter (that I know of) to increase the debug level of logging, however, you can pass -v or -vv
+to the rsync startup command to get verbose and very verbose logs.
+</blockquote>
+<H2><a name="stunnel">Configuring Stunnel</H2>
+<blockquote>
+<p>Stunnel is not quite as fun to setup, especially since the documentation on the stunnel page still shows a lot of examples
+using the old stunnel 3 syntax.  But, once you get the config file syntax down it's not too difficult.
+<p>
+Before anything, copy or move the certificates created in the <a href="#cert">Generating Certs</a> section to the /etc/stunnel
+directories on both the client and the server.  So copy frohike_stunnel_cert.pem to /etc/stunnel on frohike, likewise on langly.
+<P>
+Both client and server need to be configured.  The client needs to be told that when you attempt to use rsync over the standard
+port (port 873), place the stream instead on a secure port using stunnel.  The server needs to be told to accept connections on the secure
+port and forward them to the local rsync process.
+<p>Following Mick Bauer's examples, we'll be using tcp-wrappers to control the access to these ports.
+<p>First, choose a port that has no traffic on it.  Mr. Bauer uses port 273 for secure rsync, so we'll do that too.
+<p>
+First add the following line to /etc/services to give this port a service name:
+<p>
+<code>ssync           273/tcp                         # rsync over stunnel</code>
+<p>
+Next, edit /etc/hosts.allow and add the following line to let Local connections pass on the ssync port
+<p>
+<code>ssync : LOCAL</code>
+<p>
+Note, some systems like Redhat may have slightly different format, read your hosts_access manpage.
+<p>
+Now for the config file, this should be placed in /etc/stunnel/stunnel.conf
+<p><pre>
+cert = /etc/stunnel/frohike_stunnel_cert.pem
+
+client = yes
+pid = /var/run/stunnel.pid
+
+#debug = 7
+#foreground = yes
+
+[ssync]
+accept = 873
+connect = domain.of.langly.com:273
+</pre><p>
+Replace the cert with your actual certificate and "domain.of.langly.com" with something that resolves to an IP address
+for the rsync server langly, or an IP address if no DNS records will do.
+<p>
+In addition to the many config file options supported, it might be very useful to investigate the chroot parameter, instructions can be found
+<a href="http://www.stunnel.org/examples/chroot.html">here</a>.
+<p>
+The debug and foreground parameters can be uncommented to test stunnel from the command line.
+<p>
+The stunnel daemon should be running at all times on both the client and the server and started at system boot.
+An init script with simply: /usr/local/sbin/daemon should do the trick.
+<p>
+Note that by doing this ALL connections on the standard rsync port (873) LOCALLY will be tunneled to langly.  This may not be desirable.
+If not, you will either have to setup a second port for non-encrypted rsync and have the default port tunneled, or setup the
+tunnel to accept connections on a different port (change the accept = 873 above to something else) and call rsync using: rsync --port=PORT
+where PORT is the alternate port.  This way rsync by default is not tunnelled, only those connections on the port you choose.  Note
+that the LOCALLY is in all caps, stunnel does not shut down port 873 and normal rsync is still possible by bypassing the tunnel (demonstration forthcoming).
+<p>
+On the server things are pretty similar, just a few more steps.
+<p>
+In /etc/services, this time add the following:
+<p>
+<code>ssyncd          273/tcp                         # secure rsync over stunnel</code>
+<p>
+Yes, the "d" is there on purpose.
+<p>In /etc/hosts.allow, add the following line:
+<p><code>ssyncd : xxx.xxx.xxx.xxx</code>
+<p>Where xxx.xxx.xxx.xxx is the IP address of langly or a DNS record that resolves to the IP address of langly.  man 5 hosts_access
+will give you more information.  Either way, you should restrict connections on the ssyncd port only to those connections you
+expect, namely, only from the clients.
+<p>
+Finally, the config file:
+<p>
+<pre>
+cert = /etc/stunnel/langly_stunnel_cert.pem
+
+client = no
+pid = /var/run/stunnel.pid
+
+#debug = 7
+#foreground = yes
+
+[rsync]
+accept = 273
+connect = 873
+</pre>
+<p>
+Remember to replace the cert with your certificate path.
+<p>
+That's it!  Hopefully....
+</blockquote>
+<H2><a name="firewall">Firewall</H2>
+<blockquote>
+Before testing, it'd be wise to consider your firewall.  Make sure traffic on port 273 is accepted and routed to the correct
+computer (the rsync server).  You can safely block port 873 all-together since you now have tunnelled rsync, why even accept
+it otherwise?
+<p>
+An IPTables rule that I used to accept 273:
+<p><code>
+$IPTABLES -A FORWARD -p tcp -j ACCEPT --dport 273 -m state --state NEW
+</code>
+<p>An IPTables rule to NAT connections on 273 to my rsync server langly (whose ip is 192.168.0.2)
+<p>
+<code>
+$IPTABLES -t nat -A PREROUTING -i $EXTIF -p tcp --dport 273 -j DNAT --to 192.168.0.2
+</code>
+<p>IPTables and firewalls are certainly out of scope, bottom line is to make sure connections on port 273 get to the right
+place and connections on port 873 are dropped.
+</blockquote>
+<H2><a name="testing">Testing</H2>
+<blockquote>
+Ok, now to see if this pig flies.
+<p>
+To start out with, it'd be good to run the client stunnel, the server stunnel and the server rsync all in the foreground with
+as much debugging info as possible.  Comment out the two lines for debug and foreground in /etc/stunnel/stunnel.conf on client and
+server and run rsync in the foreground using /usr/local/bin/rsync -v.
+<p>
+Once all three of these processes are running without complaint and waiting for connections, you can finally test the tunnel.
+<p>
+On the client, invoke rsync.  You might be tempted to do this:
+<p>
+<code>/usr/local/bin/rsync domain.of.langly.com::</code>
+But this should timeout if you've setup your firewall to drop unencrypted rsync.  The reason is that you bypassed the tunnel.
+Stunnel is running locally on the client computer, just waiting for a connection which it will then forward to the server.  The
+right way to invoke rsync is with:
+<p>
+<code>/usr/local/bin/rsync localhost::</code>
+<p>
+Assuming you've set things up correctly, you should see something like:
+<p>
+<pre>
+/usr/local/bin/rsync -vv localhost::
+opening tcp connection to localhost port 873
+frohike        Frohike Backups
+</pre>
+<p>
+(-vv is very verbose)  If it doesn't respond after a second or two or errors out, you're on your own to figure out what's going on.  Check if all the
+processes logged messages, starting with the client stunnel, then the server stunnel, then the rsync process.  If none of the
+processes prints a message when you invoke rsync as above, the problem is in your client-side stunnel setup.  If the client stunnel prints
+messages but the server stunnel does not, chances are the problem is in your firewall.  If the client and server stunnel print
+messages but rsync does not, chances are that the server stunnel is miss-configured.  Lastly if they app print messages, chances
+are that the rsync configuration is hosed.
+<p>
+If you get a positive response, why not try to backup a file from the client?  How about /etc/stunnel/stunnel.conf?
+<p>
+<code>/usr/local/bin/rsync -vv -a -R --numeric-ids /etc/stunnel/stunnel.conf localhost::frohike</code>
+<p>
+You should see something like:
+<p><pre>
+opening tcp connection to localhost port 873
+building file list ...
+expand file_list to 4000 bytes, did move
+done
+etc/
+etc/stunnel/
+/etc/stunnel/stunnel.conf
+total: matches=0  tag_hits=0  false_alarms=0 data=172
+
+wrote 360 bytes  read 66 bytes  121.71 bytes/sec
+total size is 172  speedup is 0.40
+</pre>
+<p>And on the server you shoulld see the file in the directory you specified in the config file.  Note that rsync will
+create sub-directories for you if they do not exist, as long as the root backup directory exists.
+<p>Replace /etc/stunnel/stunnel.conf with /etc to backup the entire directory.  The first time will take a while, but subsequent
+backups will only change those files that have been modified.  This document will not cover the details of using rsync so you're
+on your own to learn was -a -R --numeric-ids do.
+<p>
+So what is actually happening?  On the client side, instead of trying to directly connect to the server computer via port 873 (which
+should be closed now) you are connecting to the local port 873.  Stunnel is watching this port.  When it sees a connection it
+knows that it should forward all traffic from port 873 locally to port 273 on the server computer, but not as plain text, rather
+encrypted using SSL.  The firewall sees a connection on port 273 and permits it, perhaps forwarding it to the right server as in
+my example.  The rsync server computer has stunnel waiting for connections on port 273 (and incidentally local unencrypted connections on port 873
+from within the firewall are still accepted by rsync).  When the server-side stunnel receives a connection, it forwards to the local port 873, but
+first decrypting the stream so rsync daemon can understand it.  Responses work pretty much the same in reverse.
+<p>
+Hopefully at this point you have a working rsync tunnel.  Create some init scripts that start all processes on boot up and
+you should be finished.  The fun part is over, now you have to design a backup policy and write
+a nightly rsync cron job.
+</blockquote>
+<H2><a name="credits">Credits / Resources</H2>
+<blockquote>
+<ul>
+<li>Mick Bauer's Rsync Article <a href="http://www.linuxjournal.com/article.php?sid=6475">Part I</a>, <a href="http://www.linuxjournal.com/article.php?sid=6508">Part II</a></li>
+<li><a href="http://www.oreilly.com/catalog/bssrvrlnx/">Building Secure Servers with Linux - Mick Bauer</a></li>
+<li><a href="http://www.linuxjournal.com">The Linux Journal</a></li>
+<li><a href="http://www.openssl.org">OpenSSL Homepage</a></li>
+<li><a href="http://www.stunnel.org">Stunnel Homepage</a></li>
+<li><a href="http://www.samba.org/rsync/">Rsync Homepage</a></li>
+<li><a href="http://www.stunnel.org/examples/chroot.html">How to run stunnel in a chroot</a></li>
+<li><a href="http://www.stunnel.org/examples/">Stunnel Examples (many not updated for stunnel 4.x)</a></li>
+<li><a href="http://www.freebsddiary.org/stunnel-v3-to-v4.php">Converting from stunnel 3.x to stunnel 4.x</a></li>
+<li><a href="http://www.freebsddiary.org/stunnel-v4-man.html">Stunnel version 4 manpage</a></li>
+<li><a href="http://www.freebsddiary.org/stunnel-v3-man.html">Stunnel version 3 manpage</a></li>
+<li><a href="http://www.stunnel.org/examples/qmail-pop3d.html">Wrapping POP3 In Stunnel with Qmail</a></li>
+<li><a href="http://www.tclug.org/">Twin Cities Linux Users Group</a>
+<li><a href="http://www.geocrawler.com/mail/msg.php3?msg_id=10311911&list=503">Stunnel 4.x and daemontools logging</a></li>
+</ul>
+
+</blockquote>
+<H2><a name="todo">TODO</H2>
+<blockquote>
+<ul>
+<li>More on stunnel in a chroot</li>
+<li>More on rsync configuration</li>
+<li>More on debugging / testing</li>
+<li>More on Cryptic openssl commands</li>
+</ul>
+</blockquote>
+<p>
+<small><address>stunnel_rsync.html - Created 03-10-2004 2:20pm - Last Modified: 03-10-2004 2:20pm</address></small>
+</BODY></HTML>
+
+

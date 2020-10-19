@@ -1,0 +1,3615 @@
+<!DOCTYPE html>
+<html class='v2 detail-page' dir='ltr' itemscope='' itemtype='http://schema.org/Blog' lang='en' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/3416767676-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<title>
+Google Online Security Blog: Enhanced Safe Browsing Protection now available in Chrome
+</title>
+<meta content='width=device-width, height=device-height, minimum-scale=1.0, initial-scale=1.0, user-scalable=0' name='viewport'/>
+<meta content='IE=Edge' http-equiv='X-UA-Compatible'/>
+<meta content='article' property='og:type'/>
+<meta content='Enhanced Safe Browsing Protection now available in Chrome' property='og:title'/>
+<meta content='http://2.bp.blogspot.com/-7bZ5EziliZQ/VynIS9F7OAI/AAAAAAAASQ0/BJFntXCAntstZe6hQuo5KTrhi5Dyz9yHgCK4B/s1600/googlelogo_color_200x200.png' property='og:image'/>
+<meta content='en_US' property='og:locale'/>
+<meta content='https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html' property='og:url'/>
+<meta content='Google Online Security Blog' property='og:site_name'/>
+<!-- Twitter Card properties -->
+<meta content='Google Online Security Blog' property='twitter:site'/>
+<meta content='Enhanced Safe Browsing Protection now available in Chrome' property='twitter:title'/>
+<meta content='summary' name='twitter:card'/>
+<meta content='@google' name='twitter:creator'/>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400italic,400,500,500italic,700,700italic' rel='stylesheet' type='text/css'/>
+<link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'/>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js' type='text/javascript'></script>
+<!-- End -->
+<style id='page-skin-1' type='text/css'><!--
+/*
+<Group description="Header Color" selector="header">
+<Variable name="header.background.color" description="Header Background"
+type="color" default="#ffffff"/>
+</Group>
+*/
+.header-outer {
+border-bottom: 1px solid #e0e0e0;
+background: #ffffff;
+}
+html, .Label h2, #sidebar .rss a, .BlogArchive h2, .FollowByEmail h2.title, .widget .post h2 {
+font-family: Roboto, sans-serif;
+}
+.plusfollowers h2.title, .post h2.title, .widget h2.title {
+font-family: Roboto, sans-serif;
+}
+.widget-item-control {
+height: 100%;
+}
+.widget.Header, #header {
+position: relative;
+height: 100%;
+width: 100%;
+}
+}
+.widget.Header .header-logo1 {
+float: left;
+margin-right: 15px;
+padding-right: 15px;
+border-right: 1px solid #ddd;
+}
+.header-title h2 {
+color: rgba(0,0,0,.54);
+display: inline-block;
+font-size: 40px;
+font-family: Roboto, sans-serif;
+font-weight: normal;
+line-height: 52px;
+vertical-align: top;
+}
+.header-inner {
+background-repeat: no-repeat;
+background-position: right 0px;
+}
+.post-author,
+.byline-author {
+font-size: 14px;
+font-weight: normal;
+color: #757575;
+color: rgba(0,0,0,.54);
+}
+.post-content .img-border {
+border: 1px solid rgb(235, 235, 235);
+padding: 4px;
+}
+.header-title a {
+text-decoration: none !important;
+}
+pre {
+border: 1px solid #bbbbbb;
+margin-top: 1em 0 0 0;
+padding: 0.99em;
+overflow-x: auto;
+overflow-y: auto;
+}
+pre, code {
+font-size: 9pt;
+background-color: #fafafa;
+line-height: 125%;
+font-family: monospace;
+}
+pre, code {
+color: #060;
+font: 13px/1.54 "courier new",courier,monospace;
+}
+.header-left .header-logo1 {
+width: 128px !important;
+}
+.header-desc {
+line-height: 20px;
+margin-top: 8px;
+}
+.fb-custom img, .twitter-custom img, .gplus-share img {
+cursor: pointer;
+opacity: 0.54;
+}
+.fb-custom img:hover, .twitter-custom img:hover, .gplus-share img:hover {
+opacity: 0.87;
+}
+.fb-like {
+width: 80px;
+}
+.post .share {
+float: right;
+}
+#twitter-share{
+border: #CCC solid 1px;
+border-radius: 3px;
+background-image: -webkit-linear-gradient(top,#ffffff,#dedede);
+}
+.twitter-follow {
+background: url(//3.bp.blogspot.com/-M7uPAxKEeh4/WKrvV1ujKCI/AAAAAAAATZE/cdHhTldtvk4q4ad1Me1XDIgQD9Aul09CACK4B/s1600/twitter-bird.png) no-repeat left center;
+padding-left: 18px;
+font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+font-weight: bold;
+text-shadow: 0 1px 0 rgba(255,255,255,.5);
+cursor: pointer;
+margin-bottom: 10px;
+}
+.twitter-fb {
+padding-top: 2px;
+}
+.fb-follow-button  {
+background: -webkit-linear-gradient(#4c69ba, #3b55a0);
+background: -moz-linear-gradient(#4c69ba, #3b55a0);
+background: linear-gradient(#4c69ba, #3b55a0);
+border-radius: 2px;
+height: 18px;
+padding: 4px 0 0 3px;
+width: 57px;
+border: #4c69ba solid 1px;
+}
+.fb-follow-button a {
+text-decoration: none !important;
+text-shadow: 0 -1px 0 #354c8c;
+text-align: center;
+white-space: nowrap;
+font-size: 11px;
+color: white;
+vertical-align: top;
+}
+.fb-follow-button a:visited {
+color: white;
+}
+.fb-follow {
+padding: 0px 5px 3px 0px;
+width: 14px;
+vertical-align: bottom;
+}
+.gplus-wrapper {
+margin-top: 3px;
+display: inline-block;
+vertical-align: top;
+}
+.twitter-custom, .gplus-share {
+margin-right: 12px;
+}
+.fb-follow-button{
+margin: 10px auto;
+}
+/** CUSTOM CODE **/
+
+--></style>
+<style id='template-skin-1' type='text/css'><!--
+.header-outer {
+clear: both;
+}
+.header-inner {
+margin: auto;
+padding: 0px;
+}
+.footer-outer {
+background: #f5f5f5;
+clear: both;
+margin: 0;
+}
+.footer-inner {
+margin: auto;
+padding: 0px;
+}
+.footer-inner-2 {
+/* Account for right hand column elasticity. */
+max-width: calc(100% - 248px);
+}
+.google-footer-outer {
+clear: both;
+}
+.cols-wrapper, .google-footer-outer, .footer-inner, .header-inner {
+max-width: 978px;
+margin-left: auto;
+margin-right: auto;
+}
+.cols-wrapper {
+margin: auto;
+clear: both;
+margin-top: 60px;
+margin-bottom: 60px;
+overflow: hidden;
+}
+.col-main-wrapper {
+float: left;
+width: 100%;
+}
+.col-main {
+margin-right: 278px;
+max-width: 660px;
+}
+.col-right {
+float: right;
+width: 248px;
+margin-left: -278px;
+}
+/* Tweaks for layout mode. */
+body#layout .google-footer-outer {
+display: none;
+}
+body#layout .header-outer, body#layout .footer-outer {
+background: none;
+}
+body#layout .header-inner {
+height: initial;
+}
+body#layout .cols-wrapper {
+margin-top: initial;
+margin-bottom: initial;
+}
+--></style>
+<!-- start all head -->
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+<meta content='blogger' name='generator'/>
+<link href='https://security.googleblog.com/favicon.ico' rel='icon' type='image/x-icon'/>
+<link href='https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html' rel='canonical'/>
+<link rel="alternate" type="application/atom+xml" title="Google Online Security Blog - Atom" href="https://security.googleblog.com/feeds/posts/default" />
+<link rel="alternate" type="application/rss+xml" title="Google Online Security Blog - RSS" href="https://security.googleblog.com/feeds/posts/default?alt=rss" />
+<link rel="service.post" type="application/atom+xml" title="Google Online Security Blog - Atom" href="https://www.blogger.com/feeds/1176949257541686127/posts/default" />
+
+<link rel="alternate" type="application/atom+xml" title="Google Online Security Blog - Atom" href="https://security.googleblog.com/feeds/8124570213217375432/comments/default" />
+<!--[if IE]><script type="text/javascript" src="https://www.blogger.com/static/v1/jsbin/4244862144-ieretrofit.js"></script>
+<![endif]-->
+<meta content='https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html' property='og:url'/>
+<meta content='Enhanced Safe Browsing Protection now available in Chrome' property='og:title'/>
+<meta content='Posted by Nathan Parker, Varun Khaneja, Eric Mill and Kiran C Nair - Chrome Safe Browsing team   Over the past few years we’ve seen threats ...' property='og:description'/>
+<!--[if IE]> <script> (function() { var html5 = ("abbr,article,aside,audio,canvas,datalist,details," + "figure,footer,header,hgroup,mark,menu,meter,nav,output," + "progress,section,time,video").split(','); for (var i = 0; i < html5.length; i++) { document.createElement(html5[i]); } try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {} })(); </script> <![endif]-->
+<!-- end all head -->
+<base target='_self'/>
+<style>
+      html {
+        font-family: Roboto, sans-serif;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+      }
+      body {
+        padding: 0;
+        /* This ensures that the scroll bar is always present, which is needed */
+        /* because content render happens after page load; otherwise the header */
+        /* would "bounce" in-between states. */
+        min-height: 150%;
+      }
+      h2 {
+        font-size: 16px;
+      }
+      h1, h2, h3, h4, h5 {
+        line-height: 2em;
+      }
+      html, h4, h5, h6 {
+        font-size: 14px;
+      }
+      a, a:visited {
+        color: #4184F3;
+        text-decoration: none;
+      }
+      a:focus, a:hover, a:active {
+        text-decoration: none;
+      }
+      .Header {
+        margin-top: 15px;
+      }
+      .Header h1 {
+        font-size: 32px;
+        font-weight: 300;
+        line-height: 32px;
+        height: 42px;
+      }
+      .header-inner .Header .titlewrapper {
+        padding: 0;
+        margin-top: 30px;
+      }
+      .header-inner .Header .descriptionwrapper {
+        padding: 0;
+        margin: 0;
+      }
+      .cols-wrapper {
+        margin-top: 56px;
+      }
+      .header-outer, .cols-wrapper, .footer-outer, .google-footer-outer {
+        padding: 0 60px;
+      }
+      .header-inner {
+        height: 256px;
+        position: relative;
+      }
+      html, .header-inner a {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+      }
+      .header-inner .google-logo {
+        display: inline-block;
+        background-size: contain;
+        z-index: 1;
+        height: 46px;
+        overflow: hidden;
+        margin-top: 4px;
+        margin-right: 8px;
+      }
+      .header-left {
+        position: absolute;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        margin-top: 12px;
+        width: 100%;
+      }
+      .google-logo {
+        margin-left: -4px;
+      }
+      #google-footer {
+        position: relative;
+        font-size: 13px;
+        list-style: none;
+        text-align: right;
+      }
+      #google-footer a {
+        color: #444;
+      }
+      #google-footer ul {
+        margin: 0;
+        padding: 0;
+        height: 144px;
+        line-height: 144px;
+      }
+      #google-footer ul li {
+        display: inline;
+      }
+      #google-footer ul li:before {
+        color: #999;
+        content: "\00b7";
+        font-weight: bold;
+        margin: 5px;
+      }
+      #google-footer ul li:first-child:before {
+        content: '';
+      }
+      #google-footer .google-logo-dark {
+        left: 0;
+        margin-top: -16px;
+        position: absolute;
+        top: 50%;
+      }
+      /** Sitemap links. **/
+      .footer-inner-2 {
+        font-size: 14px;
+        padding-top: 42px;
+        padding-bottom: 74px;
+      }
+      .footer-inner-2 .HTML h2 {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-size: 14px;
+        font-weight: 500;
+        padding-left: 0;
+        margin: 10px 0;
+      }
+      .footer-inner-2 .HTML ul {
+        font-weight: normal;
+        list-style: none;
+        padding-left: 0;
+      }
+      .footer-inner-2 .HTML li {
+        line-height: 24px;
+        padding: 0;
+      }
+      .footer-inner-2 li a {
+        color: rgba(65,132,243,.87);
+      }
+      /** Archive widget. **/
+      .BlogArchive {
+        font-size: 13px;
+        font-weight: normal;
+      }
+      .BlogArchive .widget-content {
+        display: none;
+      }
+      .BlogArchive h2, .Label h2 {
+        color: #4184F3;
+        text-decoration: none;
+      }
+      .BlogArchive .hierarchy li {
+        display: inline-block;
+      }
+      /* Specificity needed here to override widget CSS defaults. */
+      .BlogArchive #ArchiveList ul li, .BlogArchive #ArchiveList ul ul li {
+        margin: 0;
+        padding-left: 0;
+        text-indent: 0;
+      }
+      .BlogArchive .intervalToggle {
+        cursor: pointer;
+      }
+      .BlogArchive .expanded .intervalToggle .new-toggle {
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
+      .BlogArchive .new-toggle {
+        float: right;
+        padding-top: 3px;
+        opacity: 0.87;
+      }
+      #ArchiveList {
+        text-transform: uppercase;
+      }
+      #ArchiveList .expanded > ul:last-child {
+        margin-bottom: 16px;
+      }
+      #ArchiveList .archivedate {
+        width: 100%;
+      }
+      /* Months */
+      .BlogArchive .items {
+        max-width: 150px;
+        margin-left: -4px;
+      }
+      .BlogArchive .expanded .items {
+        margin-bottom: 10px;
+        overflow: hidden;
+      }
+      .BlogArchive .items > ul {
+        float: left;
+        height: 32px;
+      }
+      .BlogArchive .items a {
+        padding: 0 4px;
+      }
+      .Label {
+        font-size: 13px;
+        font-weight: normal;
+      }
+      .sidebar-icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        margin-right: 12px;
+        margin-top: -1px
+      }
+      .Label a {
+        margin-right: 4px;
+      }
+      .Label .widget-content {
+        display: none;
+      }
+      .FollowByEmail {
+        font-size: 13px;
+        font-weight: normal;
+      }
+      .FollowByEmail h2 {
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAALCAYAAACZIGYHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUBJREFUeNrMkSGLAlEUhb+ZB4JFi8mx2cz+ApvhRUGTcUCrNqNJDYIi+DO0GUwmQXDK2DSIoGgZcSaIjDrzwrK4ssvChj1w0733O+fdp+m6PozH4yQSCfb7Pa7r8pOi0SjJZBLP8zgej4gAIMvlMuPxmADIYrHger1+C6lUKmo+NJ/NZojb7SZDWiwWo1qtks1msW2bw+HwZdkwDHq9HvV6nel0SqvVYrvdIh6Ph3Qch+VyqRYLhQJSSjRNw7IsfN9XgGKxSLfbJZfL0e/3aTabrFYr7vc7IujLcOh8PqunrNdr0uk0pVKJVCpFJBJRgEajweVyod1uMxgM2O12BAGUgRbU8DV2JpOhVquRz+cRQii3+XxOp9NRN3jVR5LPOp1OjEYjlSL8hclkgmmabDabt4d+m+S30vkD/R/IU4ABAPTZgnZdmG/PAAAAAElFTkSuQmCC");
+        background-repeat: no-repeat;
+        background-position: 0 50%;
+        text-indent: 30px;
+      }
+      .FollowByEmail .widget-content {
+        display: none;
+      }
+      .searchBox input {
+        border: 1px solid #eee;
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-size: 14px;
+        padding: 8px 8px 8px 40px;
+        width: 164px;
+        font-family: Roboto, sans-serif;
+        background: url("https://www.gstatic.com/images/icons/material/system/1x/search_grey600_24dp.png") 8px center no-repeat;
+      }
+      .searchBox ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+        color:    rgba(0,0,0,.54);
+      }
+      .searchBox :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color:    #000;
+        opacity:  0.54;
+      }
+      .searchBox ::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color:    #000;
+        opacity:  0.54;
+      }
+      .searchBox :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color:    #757575;
+      }
+      .widget-item-control {
+        margin-top: 0px;
+      }
+      .section {
+        margin: 0;
+        padding: 0;
+      }
+      #sidebar-top {
+        border: 1px solid #eee;
+      }
+      #sidebar-top > div {
+        margin: 16px 0;
+      }
+      .widget ul {
+        line-height: 1.6;
+      }
+      /*main post*/
+      .post {
+        margin-bottom:30px;
+      }
+      #main .post .title {
+        margin: 0;
+      }
+      #main .post .title a {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-weight: normal;
+        font-size: 24px;
+      }
+      #main .post .title a:hover {
+        text-decoration:none;
+        color:#4184F3;
+      }
+      .message,  #main .post .post-header {
+        margin: 0;
+        padding: 0;
+      }
+      #main .post .post-header .caption, #main .post .post-header .labels-caption,  #main .post .post-footer .caption, #main .post .post-footer .labels-caption {
+        color: #444;
+        font-weight: 500;
+      }
+      #main .tr-caption-container td {
+        text-align: left;
+      }
+      #main .post .tr-caption {
+        color: #757575;
+        color: rgba(0,0,0,.54);
+        display: block;
+        max-width: 560px;
+        padding-bottom: 20px;
+      }
+      #main .post .tr-caption-container {
+        line-height: 24px;
+        margin: -1px 0 0 0 !important;
+        padding: 4px 0;
+        text-align: left;
+      }
+      #main .post .post-header .published{
+        font-size:11px;
+        font-weight:bold;
+      }
+      .post-header .publishdate {
+        font-size: 17px;
+        font-weight:normal;
+        color: #757575;
+        color: rgba(0,0,0,.54);
+      }
+      #main .post .post-footer{
+        font-size:12px;
+        padding-bottom: 21px;
+      }
+      .label-footer {
+        margin-bottom: 12px;
+        margin-top: 12px;
+      }
+      .comment-img {
+        margin-right: 16px;
+        opacity: 0.54;
+        vertical-align: middle;
+      }
+      #main .post .post-header .published {
+        margin-bottom: 40px;
+        margin-top: -2px;
+      }
+      .post .post-content {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-size: 17px;
+        margin: 25px 0 36px 0;
+        line-height: 32px;
+      }
+      .post-body .post-content ul, .post-body .post-content ol {
+        margin: 16px 0;
+        padding: 0 48px;
+      }
+      .post-summary {
+        display: none;
+      }
+      /* Another old-style caption. */
+      .post-content div i, .post-content div + i {
+        font-size: 14px;
+        font-style: normal;
+        color: #757575;
+        color: rgba(0,0,0,.54);
+        display: block;
+        line-height: 24px;
+        margin-bottom: 16px;
+        text-align: left;
+      }
+      /* Another old-style caption (with link) */
+      .post-content a > i {
+        color: #4184F3 !important;
+      }
+      /* Old-style captions for images. */
+      .post-content .separator + div:not(.separator) {
+        margin-top: -16px;
+      }
+      /* Capture section headers. */
+      .post-content br + br + b, .post-content .space + .space + b, .post-content .separator + b {
+        display: inline-block;
+        margin-bottom: 8px;
+        margin-top: 24px;
+      }
+      .post-content li {
+        line-height: 32px;
+      }
+      /* Override all post images/videos to left align. */
+      .post-content .separator > a, .post-content .separator > span {
+        margin-left: 0 !important;
+      }
+      .post-content img {
+        max-width: 100%;
+        height: auto;
+        width: auto;
+      }
+      .post-content .tr-caption-container img {
+        margin-bottom: 12px;
+      }
+      .post-content iframe, .post-content embed {
+        max-width: 100%;
+      }
+      .post-content .carousel-container {
+        margin-bottom: 48px;
+      }
+      #main .post-content b {
+        font-weight: 500;
+      }
+      /* These are the main paragraph spacing tweaks. */
+      #main .post-content br {
+        content: ' ';
+        display: block;
+        padding: 4px;
+      }
+      .post-content .space {
+        display: block;
+        height: 8px;
+      }
+      .post-content iframe + .space, .post-content iframe + br {
+        padding: 0 !important;
+      }
+      #main .post .jump-link {
+        margin-bottom:10px;
+      }
+      .post-content img, .post-content iframe {
+        margin: 30px 0 20px 0;
+      }
+      .post-content > img:first-child, .post-content > iframe:first-child {
+        margin-top: 0;
+      }
+      .col-right .section {
+        padding: 0 16px;
+      }
+      #aside {
+        background:#fff;
+        border:1px solid #eee;
+        border-top: 0;
+      }
+      #aside .widget {
+        margin:0;
+      }
+      #aside .widget h2, #ArchiveList .toggle + a.post-count-link {
+        color: #212121;
+        color: rgba(0,0,0,.87);
+        font-weight: 400 !important;
+        margin: 0;
+      }
+      #ArchiveList .toggle {
+        float: right;
+      }
+      #ArchiveList .toggle .material-icons {
+        padding-top: 4px;
+      }
+      #sidebar .tab {
+        cursor: pointer;
+      }
+      #sidebar .tab .arrow {
+        display: inline-block;
+        float: right;
+      }
+      #sidebar .tab .icon {
+        display: inline-block;
+        vertical-align: top;
+        height: 24px;
+        width: 24px;
+        margin-right: 13px;
+        margin-left: -1px;
+        margin-top: 1px;
+        color: #757575;
+        color: rgba(0,0,0,.54);
+      }
+      #sidebar .widget-content > :first-child {
+        padding-top: 8px;
+      }
+      #sidebar .active .tab .arrow {
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
+      #sidebar .arrow {
+        color: #757575;
+        color: rgba(0,0,0,.54);
+      }
+      #sidebar .widget h2 {
+        font-size: 14px;
+        line-height: 24px;
+        display: inline-block;
+      }
+      #sidebar .widget .BlogArchive {
+        padding-bottom: 8px;
+      }
+      #sidebar .widget {
+        border-bottom: 1px solid #eee;
+        box-shadow: 0px 1px 0 white;
+        margin-bottom: 0;
+        padding: 14px 0;
+        min-height: 20px;
+      }
+      #sidebar .widget:last-child {
+        border-bottom: none;
+        box-shadow: none;
+        margin-bottom: 0;
+      }
+      #sidebar ul {
+        margin: 0;
+        padding: 0;
+      }
+      #sidebar ul li {
+        list-style:none;
+        padding:0;
+      }
+      #sidebar ul li a {
+        line-height: 32px;
+      }
+      #sidebar .archive {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAYCAYAAADzoH0MAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAE1JREFUeNpiNDY23s9AAWBioBCwYBM8c+YMVsUmJibEGYBNMS5DaeMFfDYSZQA2v9I3FrB5AZeriI4FmnrBccCT8mhmGs1MwyAzAQQYAKEWG9zm9QFEAAAAAElFTkSuQmCC");
+        height: 24px;
+        line-height: 24px;
+        padding-left: 30px;
+      }
+      #sidebar .labels {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUxJREFUeNpiNDY23s9AAMycOfM7UF05kHkZmzwTMkdSUhKrIcXFxZy3bt3qBjIN8RrS09PDsHnzZjCNDr58+cKQlpbGDjSoHcg1w2oIyAUODg5gARCNzUVIBrUCuVYYhjx//pzhwIEDYAEQDeJjA1CDWIAGNQK59jBxRuSABbkAlwHIgIeHh2HWrFn/1NTU2oDcvSgBS4wBSC5iArqoCsj1YGIgEyAZVMoEchqlBjEB/cZAiUHg2AEGznpKDAImxOeM////B4VLKtBvEUCngZ1ILKivr3/u6+ubBzJAGZQ9gC5aQoqLgAY8BhkAZL4BuQQkxgXE34A4BuiiZEIuAhrwEGhAEZD5DpzYoIaA2UAM4kQADUrHZRDUgAIg8wO2XAwzbQXQa5OweQ1owB10AyA6gS7BgX1u3ry5397eHow3bdo0EyjGi00tQIABANPgyAH1q1eaAAAAAElFTkSuQmCC");
+        height: 20px;
+        line-height: 20px;
+        padding-left: 30px;
+      }
+      #sidebar .rss a {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAX5JREFUeNqsVDGSgkAQHL2rIiIikohIc/EBRkbwAIwuwgfwAXiAD9AHSI7kEkECRCb6AIyINDLx7K0aa6kT7uq0q7YYtnZ7umdnt7darXbr9Zpegeu61DNNc0dvwCcH4/GYJpMJnc9nOhwOVJbl/4hAAokMECZJQtvt9k+kH7qufyEYDAakqqqYxFdRFBqNRmTbNg2HQ0rTlK7XayvR0xqBdDqdkuM4dE/0ULhYLOh4PHYrknG5XGi/31MYhuL/nkwonM1mlGUZ1XXdrsiyLGEDhY7juJEZ1u5tIixDGdYhmYw+B7CAzPP5nDabjdgIAgCksMX1832/3drtdqPT6SQWapomiGEFNkDEdpDMMAzK81ys/7XYy+XyoQgq2WoURSIJ2iIIgp/WZCCTvFm2wgeAU31aI3Q2GhIDMeB53qPYPIcm5VrxXIOIOxsDMStjVawAc1VViRgN22lNBiuQN3GR+SY07hpOoStmFQAKXRRFY93bnpG+fONfedi+BRgAbkS8Fxp7QQIAAAAASUVORK5CYII=");
+      }
+      #sidebar .subscription a {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAALCAYAAACZIGYHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUBJREFUeNrMkSGLAlEUhb+ZB4JFi8mx2cz+ApvhRUGTcUCrNqNJDYIi+DO0GUwmQXDK2DSIoGgZcSaIjDrzwrK4ssvChj1w0733O+fdp+m6PozH4yQSCfb7Pa7r8pOi0SjJZBLP8zgej4gAIMvlMuPxmADIYrHger1+C6lUKmo+NJ/NZojb7SZDWiwWo1qtks1msW2bw+HwZdkwDHq9HvV6nel0SqvVYrvdIh6Ph3Qch+VyqRYLhQJSSjRNw7IsfN9XgGKxSLfbJZfL0e/3aTabrFYr7vc7IujLcOh8PqunrNdr0uk0pVKJVCpFJBJRgEajweVyod1uMxgM2O12BAGUgRbU8DV2JpOhVquRz+cRQii3+XxOp9NRN3jVR5LPOp1OjEYjlSL8hclkgmmabDabt4d+m+S30vkD/R/IU4ABAPTZgnZdmG/PAAAAAElFTkSuQmCC");
+      }
+      #sidebar-bottom {
+        background: #f5f5f5;
+        border-top:1px solid #eee;
+      }
+      #sidebar-bottom .widget {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 15px 0;
+        text-align: center;
+      }
+      #sidebar-bottom > div:last-child {
+        border-bottom: 0;
+      }
+      #sidebar-bottom .text {
+        line-height: 20px;
+      }
+      /* Home, forward, and backward pagination. */
+      .blog-pager {
+        border-top : 1px #e0e0e0 solid;
+        padding-top: 10px;
+        margin-top: 15px;
+        text-align: right !important;
+      }
+      #blog-pager {
+        margin-botom: 0;
+        margin-top: -14px;
+        padding: 16px 0 0 0;
+      }
+      #blog-pager a {
+        display: inline-block;
+      }
+      .blog-pager i.disabled {
+        opacity: 0.2 !important;
+      }
+      .blog-pager i {
+        color: black;
+        margin-left: 16px;
+        opacity: 0.54;
+      }
+      .blog-pager i:hover, .blog-pager i:active {
+        opacity: 0.87;
+      }
+      #blog-pager-older-link, #blog-pager-newer-link {
+        float: none;
+      }
+      .gplus-profile {
+        background-color: #fafafa;
+        border: 1px solid #eee;
+        overflow: hidden;
+        width: 212px;
+      }
+      .gplus-profile-inner {
+        margin-left: -1px;
+        margin-top: -1px;
+      }
+      /* Sidebar follow buttons. */
+      .followgooglewrapper {
+        padding: 12px 0 0 0;
+      }
+      .loading {
+        visibility: hidden;
+      }
+      .detail-page .post-footer .cmt_iframe_holder {
+        padding-top: 40px !important;
+      }
+      /** Desktop **/
+      @media (max-width: 900px) {
+        .col-right {
+          display: none;
+        }
+        .col-main {
+          margin-right: 0;
+          min-width: initial;
+        }
+        .footer-outer {
+          display: none;
+        }
+        .cols-wrapper {
+          min-width: initial;
+        }
+        .google-footer-outer {
+          background-color: #f5f5f5;
+        }
+      }
+      /** Tablet **/
+      @media (max-width: 712px) {
+        .header-outer, .cols-wrapper, .footer-outer, .google-footer-outer {
+          padding: 0 40px;
+        }
+      }
+      /* An extra breakpoint accommodating for long blog titles. */
+      @media (max-width: 600px) {
+        .header-left {
+          height: 100%;
+          top: inherit;
+          margin-top: 0;
+          -webkit-transform: initial;
+          transform: initial;
+        }
+        .header-title {
+          margin-top: 18px;
+        }
+        .header-inner .google-logo {
+          height: 40px;
+          margin-top: 3px;
+        }
+        .header-inner .google-logo img {
+          height: 42px;
+        }
+        .header-title h2 {
+          font-size: 32px;
+          line-height: 40px;
+        }
+        .header-desc {
+          bottom: 24px;
+          position: absolute;
+        }
+      }
+      /** Mobile/small desktop window; also landscape. **/
+      @media (max-width: 480px), (max-height: 480px) {
+        .header-outer, .cols-wrapper, .footer-outer, .google-footer-outer {
+          padding: 0 16px;
+        }
+        .cols-wrapper {
+          margin-top: 0;
+        }
+        .post-header .publishdate, .post .post-content {
+          font-size: 16px;
+        }
+        .post .post-content {
+          line-height: 28px;
+          margin-bottom: 30px;
+        }
+        .post {
+          margin-top: 30px;
+        }
+        .byline-author {
+          display: block;
+          font-size: 12px;
+          line-height: 24px;
+          margin-top: 6px;
+        }
+        #main .post .title a {
+          font-weight: 500;
+          color: #4c4c4c;
+          color: rgba(0,0,0,.70);
+        }
+        #main .post .post-header {
+          padding-bottom: 12px;
+        }
+        #main .post .post-header .published {
+          margin-bottom: -8px;
+          margin-top: 3px;
+        }
+        .post .read-more {
+          display: block;
+          margin-top: 14px;
+        }
+        .post .tr-caption {
+          font-size: 12px;
+        }
+        #main .post .title a {
+          font-size: 20px;
+          line-height: 30px;
+        }
+        .post-content iframe {
+          /* iframe won't keep aspect ratio when scaled down. */
+          max-height: 240px;
+        }
+        .post-content .separator img, .post-content .tr-caption-container img, .post-content iframe {
+          margin-left: -16px;
+          max-width: inherit;
+          width: calc(100% + 32px);
+        }
+        .post-content table, .post-content td {
+          width: 100%;
+        }
+        #blog-pager {
+          margin: 0;
+          padding: 16px 0;
+        }
+        /** List page tweaks. **/
+        .list-page .post-original {
+          display: none;
+        }
+        .list-page .post-summary {
+          display: block;
+        }
+        .list-page .comment-container {
+          display: none;
+        } 
+        .list-page #blog-pager {
+          padding-top: 0;
+          border: 0;
+          margin-top: -8px;
+        }
+        .list-page .label-footer {
+          display: none;
+        }
+        .list-page #main .post .post-footer {
+          border-bottom: 1px solid #eee;
+          margin: -16px 0 0 0;
+          padding: 0 0 20px 0;
+        }
+        .list-page .post .share {
+          display: none;
+        }
+        /** Detail page tweaks. **/
+        .detail-page .post-footer .cmt_iframe_holder {
+          padding-top: 32px !important;
+        }
+        .detail-page .label-footer {
+          margin-bottom: 0;
+        }
+        .detail-page #main .post .post-footer {
+          padding-bottom: 0;
+        }
+        .detail-page #comments {
+          display: none;
+        }
+      }
+      [data-about-pullquote], [data-is-preview], [data-about-syndication] {
+        display: none;
+      }
+    </style>
+<noscript>
+<style>
+        .loading { visibility: visible }</style>
+</noscript>
+<script type='text/javascript'>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-961555-22', 'auto', 'blogger');
+        ga('blogger.send', 'pageview');
+      </script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1176949257541686127&amp;zx=5a0db22a-6c4f-418e-85ba-324e4455f0ce' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=1176949257541686127&amp;zx=5a0db22a-6c4f-418e-85ba-324e4455f0ce' rel='stylesheet'/></noscript>
+
+<script type="text/javascript" language="javascript">
+  // Supply ads personalization default for EEA readers
+  // See https://www.blogger.com/go/adspersonalization
+  adsbygoogle = window.adsbygoogle || [];
+  if (typeof adsbygoogle.requestNonPersonalizedAds === 'undefined') {
+    adsbygoogle.requestNonPersonalizedAds = 1;
+  }
+</script>
+
+
+</head>
+<body>
+<script type='text/javascript'>
+      //<![CDATA[
+      var axel = Math.random() + "";
+      var a = axel * 10000000000000;
+      document.write('<iframe src="https://2542116.fls.doubleclick.net/activityi;src=2542116;type=gblog;cat=googl0;ord=ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+      //]]>
+    </script>
+<noscript>
+<img alt='' height='1' src='https://ad.doubleclick.net/ddm/activity/src=2542116;type=gblog;cat=googl0;ord=1?' width='1'/>
+</noscript>
+<!-- Header -->
+<div class='header-outer'>
+<div class='header-inner'>
+<div class='section' id='header'><div class='widget Header' data-version='1' id='Header1'>
+<div class='header-left'>
+<div class='header-title'>
+<a class='google-logo' href='https://security.googleblog.com/'>
+<img height='50' src='https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_150x54dp.png'/>
+</a>
+<a href='/.'>
+<h2>
+            Security Blog
+          </h2>
+</a>
+</div>
+<div class='header-desc'>
+The latest news and insights from Google on security and safety on the Internet
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<!-- all content wrapper start -->
+<div class='cols-wrapper loading'>
+<div class='col-main-wrapper'>
+<div class='col-main'>
+<div class='section' id='main'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='post' data-id='8124570213217375432' itemscope='' itemtype='http://schema.org/BlogPosting'>
+<h2 class='title' itemprop='name'>
+<a href='https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html' itemprop='url' title='Enhanced Safe Browsing Protection now available in Chrome'>
+Enhanced Safe Browsing Protection now available in Chrome
+</a>
+</h2>
+<div class='post-header'>
+<div class='published'>
+<span class='publishdate' itemprop='datePublished'>
+May 19, 2020
+</span>
+</div>
+</div>
+<div class='post-body'>
+<div class='post-content' itemprop='articleBody'>
+<script type='text/template'>
+                          <span class="byline-author">Posted by Nathan Parker, Varun Khaneja, Eric Mill and Kiran C Nair - Chrome Safe Browsing team
+</span>
+<p>
+Over the past few years we&#8217;ve seen threats on the web becoming increasingly sophisticated. Phishing sites rotate domains very quickly to avoid being blocked, and malware campaigns are directly targeting at-risk users. We&#8217;ve realized that to combat these most effectively, security cannot be one-size-fits-all anymore: That&#8217;s why today we are announcing Enhanced Safe Browsing protection in Chrome, a new option for users who require or want a more advanced level of security while browsing the web.
+</p>
+<p>
+Turning on Enhanced Safe Browsing will substantially increase protection from dangerous websites and downloads. By sharing real-time data with Google Safe Browsing, Chrome can proactively protect you against dangerous sites. If you&#8217;re signed in, Chrome and other Google apps you use (Gmail, Drive, etc) will be able to provide improved protection based on a holistic view of threats you encounter on the web and attacks against your Google Account. In other words, we&#8217;re bringing the intelligence of Google&#8217;s cutting-edge security tools directly into your browser.  
+</p>
+<p>
+Over the next year, we&#8217;ll be adding even more protections to this mode, including tailored warnings for phishing sites and file downloads and cross-product alerts. 
+</p>
+<p>
+<strong>Building upon Safe Browsing</strong>
+</p>
+<p>
+Safe Browsing&#8217;s blocklist API is an existing security protocol that protects billions of devices worldwide. Every day, Safe Browsing discovers thousands of new unsafe sites and adds them to the blocklist API that is shared with the web industry. Chrome checks the URL of each site you visit or file you download against a local list, which is updated approximately every 30 minutes. Increasingly, some sophisticated phishing sites slip through that 30-minute refresh window by switching domains very quickly. 
+</p>
+<p>
+This protocol is designed so that Google cannot determine the actual URL Chrome visited from this information, and thus by necessity the same verdict is returned regardless of the user&#8217;s situation. This means Chrome can&#8217;t adjust protection based on what kinds of threats a particular user is seeing or the type of sites they normally visit. So while the Safe Browsing blocklist API remains very powerful and will continue to protect users, we&#8217;ve been looking for ways to provide more proactive and tailored protections. 
+</p>
+<p>
+<strong>How Enhanced Safe Browsing works</strong>
+</p>
+<p>
+When you switch to Enhanced Safe Browsing, Chrome will share additional security data directly with Google Safe Browsing to enable more accurate threat assessments. For example, Chrome will check uncommon URLs in real time to detect whether the site you are about to visit may be a phishing site. Chrome will also send a small sample of pages and suspicious downloads to help discover new threats against you and other Chrome users.
+</p>
+<p>
+If you are signed in to Chrome, this data is temporarily linked to your Google Account. We do this so that when an attack is detected against your browser or account, Safe Browsing can tailor its protections to your situation. In this way, we can provide the most precise protection without unnecessary warnings. After a short period, Safe Browsing anonymizes this data so it is no longer connected to your account.
+</p>
+<p>
+You can opt in to this mode by visiting Privacy and Security settings > Security > and selecting the &#8220;Enhanced protection&#8221; mode under Safe Browsing. It will be rolled out gradually in M83 on desktop platforms, with Android support coming in a future release. Enterprise administrators can control this setting via the SafeBrowsingProtectionLevel policy. 
+</p>
+<p>
+<strong>Tailored protections</strong>
+</p>
+<p>
+Chrome&#8217;s billions of users are incredibly diverse, with a full spectrum of needs and perspectives in security and privacy. We will continue to invest in both Standard and Enhanced Safe Browsing with the goal to expand Chrome&#8217;s security offerings to cover all users. 
+<span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+  <meta content='https://plus.google.com/116899029375914044550' itemprop='url'/>
+</span>
+                        </script>
+<noscript>
+<span class="byline-author">Posted by Nathan Parker, Varun Khaneja, Eric Mill and Kiran C Nair - Chrome Safe Browsing team
+</span>
+<p>
+Over the past few years we&#8217;ve seen threats on the web becoming increasingly sophisticated. Phishing sites rotate domains very quickly to avoid being blocked, and malware campaigns are directly targeting at-risk users. We&#8217;ve realized that to combat these most effectively, security cannot be one-size-fits-all anymore: That&#8217;s why today we are announcing Enhanced Safe Browsing protection in Chrome, a new option for users who require or want a more advanced level of security while browsing the web.
+</p>
+<p>
+Turning on Enhanced Safe Browsing will substantially increase protection from dangerous websites and downloads. By sharing real-time data with Google Safe Browsing, Chrome can proactively protect you against dangerous sites. If you&#8217;re signed in, Chrome and other Google apps you use (Gmail, Drive, etc) will be able to provide improved protection based on a holistic view of threats you encounter on the web and attacks against your Google Account. In other words, we&#8217;re bringing the intelligence of Google&#8217;s cutting-edge security tools directly into your browser.  
+</p>
+<p>
+Over the next year, we&#8217;ll be adding even more protections to this mode, including tailored warnings for phishing sites and file downloads and cross-product alerts. 
+</p>
+<p>
+<strong>Building upon Safe Browsing</strong>
+</p>
+<p>
+Safe Browsing&#8217;s blocklist API is an existing security protocol that protects billions of devices worldwide. Every day, Safe Browsing discovers thousands of new unsafe sites and adds them to the blocklist API that is shared with the web industry. Chrome checks the URL of each site you visit or file you download against a local list, which is updated approximately every 30 minutes. Increasingly, some sophisticated phishing sites slip through that 30-minute refresh window by switching domains very quickly. 
+</p>
+<p>
+This protocol is designed so that Google cannot determine the actual URL Chrome visited from this information, and thus by necessity the same verdict is returned regardless of the user&#8217;s situation. This means Chrome can&#8217;t adjust protection based on what kinds of threats a particular user is seeing or the type of sites they normally visit. So while the Safe Browsing blocklist API remains very powerful and will continue to protect users, we&#8217;ve been looking for ways to provide more proactive and tailored protections. 
+</p>
+<p>
+<strong>How Enhanced Safe Browsing works</strong>
+</p>
+<p>
+When you switch to Enhanced Safe Browsing, Chrome will share additional security data directly with Google Safe Browsing to enable more accurate threat assessments. For example, Chrome will check uncommon URLs in real time to detect whether the site you are about to visit may be a phishing site. Chrome will also send a small sample of pages and suspicious downloads to help discover new threats against you and other Chrome users.
+</p>
+<p>
+If you are signed in to Chrome, this data is temporarily linked to your Google Account. We do this so that when an attack is detected against your browser or account, Safe Browsing can tailor its protections to your situation. In this way, we can provide the most precise protection without unnecessary warnings. After a short period, Safe Browsing anonymizes this data so it is no longer connected to your account.
+</p>
+<p>
+You can opt in to this mode by visiting Privacy and Security settings > Security > and selecting the &#8220;Enhanced protection&#8221; mode under Safe Browsing. It will be rolled out gradually in M83 on desktop platforms, with Android support coming in a future release. Enterprise administrators can control this setting via the SafeBrowsingProtectionLevel policy. 
+</p>
+<p>
+<strong>Tailored protections</strong>
+</p>
+<p>
+Chrome&#8217;s billions of users are incredibly diverse, with a full spectrum of needs and perspectives in security and privacy. We will continue to invest in both Standard and Enhanced Safe Browsing with the goal to expand Chrome&#8217;s security offerings to cover all users. 
+<span itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+<meta content='https://plus.google.com/116899029375914044550' itemprop='url'/>
+</span>
+</noscript>
+</div>
+</div>
+<div class='share'>
+<span class='twitter-custom social-wrapper' data-href='http://twitter.com/share?text=Google Online Security Blog:Enhanced Safe Browsing Protection now available in Chrome&url=https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html&via=google'>
+<img alt='Share on Twitter' height='24' src='https://www.gstatic.com/images/icons/material/system/2x/post_twitter_black_24dp.png' width='24'/>
+</span>
+<span class='fb-custom social-wrapper' data-href='https://www.facebook.com/sharer.php?u=https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html'>
+<img alt='Share on Facebook' height='24' src='https://www.gstatic.com/images/icons/material/system/2x/post_facebook_black_24dp.png' width='24'/>
+</span>
+</div>
+<div class='post-footer'>
+<div class='cmt_iframe_holder' data-href='https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html' data-viewtype='FILTERED_POSTMOD'></div>
+<a href='https://plus.google.com/112374322230920073195' rel='author' style='display:none;'>
+                        Google
+                      </a>
+<div class='label-footer'>
+</div>
+</div>
+<div class='comments' id='comments'>
+<a name='comments'></a>
+<h4>
+No comments
+                      :
+                    </h4>
+<div id='Blog1_comments-block-wrapper'>
+<dl class='' id='comments-block'>
+</dl>
+</div>
+<p class='comment-footer'>
+<a href='https://www.blogger.com/comment.g?blogID=1176949257541686127&postID=8124570213217375432&isPopup=true' onclick='javascript:window.open(this.href, "bloggerPopup", "toolbar=0,location=0,statusbar=1,menubar=0,scrollbars=yes,width=640,height=500"); return false;'>
+Post a Comment
+</a>
+</p>
+<div id='backlinks-container'>
+<div id='Blog1_backlinks-container'>
+<a name='links'></a>
+<h4>
+<!--Can't find substitution for tag [post.backlinksLabel]-->
+</h4>
+<p class='comment-footer'>
+<a class='comment-link' href='' id='Blog1_backlinks-create-link' target='_blank'>
+<!--Can't find substitution for tag [post.createLinkLabel]-->
+</a>
+</p>
+</div>
+</div>
+</div>
+</div>
+<div class='blog-pager' id='blog-pager'>
+<a class='home-link' href='https://security.googleblog.com/'>
+<i class='material-icons'>
+                      &#59530;
+                    </i>
+</a>
+<span id='blog-pager-newer-link'>
+<a class='blog-pager-newer-link' href='https://security.googleblog.com/2020/05/expanding-our-work-with-open-source.html' id='Blog1_blog-pager-newer-link' title='Newer Post'>
+<i class='material-icons'>
+                          &#58820;
+                        </i>
+</a>
+</span>
+<span id='blog-pager-older-link'>
+<a class='blog-pager-older-link' href='https://security.googleblog.com/2020/05/introducing-portability-of-google.html' id='Blog1_blog-pager-older-link' title='Older Post'>
+<i class='material-icons'>
+                          &#58824;
+                        </i>
+</a>
+</span>
+</div>
+<div class='clear'></div>
+</div></div>
+</div>
+</div>
+<div class='col-right'>
+<div class='section' id='sidebar-top'><div class='widget HTML' data-version='1' id='HTML8'>
+<div class='widget-content'>
+<div class='searchBox'>
+<input type='text' title='Search This Blog' placeholder='Search blog ...' />
+</div>
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=1176949257541686127&widgetType=HTML&widgetId=HTML8&action=editWidget&sectionId=sidebar-top' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML8"));' rel='nofollow' target='configHTML8' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div></div>
+<div id='aside'>
+<div class='section' id='sidebar'><div class='widget Label' data-version='1' id='Label1'>
+<div class='tab'>
+<img class='sidebar-icon' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAYpJREFUeNrs2aFuwzAQBmAvKRkMKRjZA4QMDJaWFgyMjuzFRg37DIUlA3uFkoGQSaWzJU+tpri5O9+l/zSfdFJlpe59yTmyVedq1PjfcZMZ70NuQnaF8w8htyE/rABtpviXkLcK88c5HhLkMBfgVan43zfFBNGMjHVGT/s55KP2pAvidbGHd+nzKt1RKSLG3rKF1iPFv6UWiPke8i7kEqGdGsI1O+LYVdqJAjgirwkKYD0ytkJBUNbAMvX8V3q9PhUsYvU1sWD8SO/sQvx2ahxOiNoJCSBCoAHYCEQAC4EKICOQASQEOmAS8RcAFxFN5hiIiugpgC3wk9hQAHH/70EBHXUN7IER5EWMiBgo2+nzOKQv9SCAeEM/OQAkhE/ncccFICB87qzQMia5FsJfOui0zMnmRvipU1ormHQuxGTxUsAcCFLxJQBLBLn4UoAFglW8BkATwS5eC6CBEBWvCShBiIvXBkgQRcVbADiI4uKtABSESvGWgB9EzHt3+tNwyO0qa9SoIYtvAQYAqDJhaWWeMecAAAAASUVORK5CYII='/>
+<h2>
+Labels
+</h2>
+<i class='material-icons arrow'>
+                      &#58821;
+                    </i>
+</div>
+<div class='widget-content list-label-widget-content'>
+<ul>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/android'>
+android
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/android%20security'>
+android security
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/android%20tr'>
+android tr
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/app%20security'>
+app security
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/big%20data'>
+big data
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/biometrics'>
+biometrics
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/blackhat'>
+blackhat
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/chrome'>
+chrome
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/chrome%20security'>
+chrome security
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/federated%20learning'>
+federated learning
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/Gboard'>
+Gboard
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/google%20play'>
+google play
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/google%20play%20protect'>
+google play protect
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/pha%20family%20highlights'>
+pha family highlights
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/privacy'>
+privacy
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/Security'>
+Security
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/spyware'>
+spyware
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/targeted%20spyware'>
+targeted spyware
+</a>
+</li>
+<li>
+<a dir='ltr' href='https://security.googleblog.com/search/label/vulnerabilities'>
+vulnerabilities
+</a>
+</li>
+</ul>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=1176949257541686127&widgetType=Label&widgetId=Label1&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("Label1"));' rel='nofollow' target='configLabel1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div>
+</div><div class='widget BlogArchive' data-version='1' id='BlogArchive1'>
+<div class='tab'>
+<i class='material-icons icon'>
+                      &#58055;
+                    </i>
+<h2>
+Archive
+</h2>
+<i class='material-icons arrow'>
+                      &#58821;
+                    </i>
+</div>
+<div class='widget-content'>
+<div id='ArchiveList'>
+<div id='BlogArchive1_ArchiveList'>
+<ul class='hierarchy'>
+<li class='archivedate expanded'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy toggle-open'>
+<i class='material-icons'>
+                        &#58823;
+                      </i>
+                      &#160;
+                      
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2020/'>
+2020
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate expanded'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2020/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2019/'>
+2019
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2019/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2018/'>
+2018
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2018/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2017/'>
+2017
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2017/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2016/'>
+2016
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2016/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2015/'>
+2015
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2015/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2014/'>
+2014
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2014/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2013/'>
+2013
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2013/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2012/'>
+2012
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2012/01/'>
+Jan
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2011/'>
+2011
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2011/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2010/'>
+2010
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/04/'>
+Apr
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2010/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2009/'>
+2009
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2009/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2009/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2009/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2009/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2009/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2009/03/'>
+Mar
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2008/'>
+2008
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2008/12/'>
+Dec
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2008/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2008/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2008/08/'>
+Aug
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2008/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2008/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2008/02/'>
+Feb
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class='intervalToggle'>
+<span class='new-toggle' href='javascript:void(0)'>
+<i class='material-icons arrow'>
+                    &#58821;
+                  </i>
+</span>
+<a class='toggle' href='javascript:void(0)' style='display: none'>
+<span class='zippy'>
+<i class='material-icons'>
+                        &#58821;
+                      </i>
+                      &#160;
+                    
+</span>
+</a>
+<a class='post-count-link' href='https://security.googleblog.com/2007/'>
+2007
+</a>
+</div>
+<div class='items'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2007/11/'>
+Nov
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2007/10/'>
+Oct
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2007/09/'>
+Sep
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2007/07/'>
+Jul
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2007/06/'>
+Jun
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<div class=''>
+<a class='post-count-link' href='https://security.googleblog.com/2007/05/'>
+May
+</a>
+</div>
+<div class='items'>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=1176949257541686127&widgetType=BlogArchive&widgetId=BlogArchive1&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("BlogArchive1"));' rel='nofollow' target='configBlogArchive1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div>
+</div><div class='widget HTML' data-version='1' id='HTML6'>
+<div class='widget-content'>
+<a href="https://googleonlinesecurity.blogspot.com/atom.xml">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAihJREFUeNrsWa9Pw0AU7viRMDFRBAkzJDMIBIhJJhCzk7NILIqMv4AEhdz+BCY3OYssAlGBoAJREpZwAlHEBO8lr8nSvNeVbu1dyX3JlzTrXfa+u/e9d7c5joWFhYVO1Fa8PwH2gK6m+BRwAvSlAdsrgr8E1jUuMH73GTAEzrkBWymTewZlihhLmgDXIAFuHgGVQOUF7OSYM1p6PgTuA1vAZlUEvAnPdapcMY0VICECekQ0XRfYrqoHsAGNgXfAoMomRiFDEhOZkkL3S88hMaB2LwXp0bj+ps2edpToZpjfoIDQtBeU+xjoDzP2G/gCPKZ5f8WsCAFJoJgOCcFdWSTeL9YQMSvTA1h9BkI5jaiXhLpSCL/8mVZY0UpyJ9ZdOkniu1dmJ96BpzQu9w6s28gcOq9j6pwLdR8/36NK5CQKwJSMrb2MhhSglBpt4UjsrdsnNu0B3J0HCozbCc4TjyY2srEgos/4RQljCzNxl4ireQD8FOq+T+W0mTB2g7njhlR+Sy2jsXFvU658U8YTbeaGpdIu7mWkEAq5ZtIjIhFZdtfX7QHckSvB2B6zC3VdAkZk0kAQwaXTk/CzTXK3wjIExCs6ZJpTnE4uY1KV+KzFzA3KTiFPENHJkOPcsfpLhwe4btoSuvUqAR+6TOxlCE6ZfKUsJLgsqGW8OpqAGx2X+sLxrwUog+JUeQRMDBIwyXOcnlPtPnL0/UsT/8LnOxYWFhZG4leAAQAAQHEaYuzHbAAAAABJRU5ErkJggg==" class="sidebar-icon" />
+<h2>Feed</h2>
+</a>
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=1176949257541686127&widgetType=HTML&widgetId=HTML6&action=editWidget&sectionId=sidebar' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML6"));' rel='nofollow' target='configHTML6' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div></div>
+<div class='section' id='sidebar-bottom'><div class='widget HTML' data-version='1' id='HTML5'>
+<div class='widget-content'>
+<div class='followgooglewrapper'>
+  <script src="https://apis.google.com/js/plusone.js"></script>
+<div class="g-ytsubscribe" data-channel="Google" data-layout="full"></div>
+</div>
+
+		   <div class="share followgooglewrapper">
+<button data-href="https://twitter.com/intent/follow?original_referer=http://googleonlinesecurity.blogspot.in/&amp;screen_name=google" onclick='sharingPopup(this);' id='twitter-share'><span class="twitter-follow">Follow @google</span></button>
+<script>     
+      function sharingPopup (button) {
+      var url = button.getAttribute("data-href");
+	    window.open(
+ url,'popUpWindow','height=500,width=500,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
+          }
+    </script>
+</div>
+<div class="fb-follow-button">
+     <a href="https://www.facebook.com/google" target="_blank"><img class="fb-follow" src="https://4.bp.blogspot.com/-x8BajdAYuGk/WKrvLsxVn-I/AAAAAAAATY8/5yw6fVqqJn0qaYz9JK2EMkfXcMdFDUn-wCK4B/s1600/facebook-logo.png" />Follow</a>
+</div>
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=1176949257541686127&widgetType=HTML&widgetId=HTML5&action=editWidget&sectionId=sidebar-bottom' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML5"));' rel='nofollow' target='configHTML5' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div><div class='widget HTML' data-version='1' id='HTML1'>
+<div class='widget-content'>
+Give us feedback in our <a href="https://support.google.com/bin/static.py?hl=en&page=portal_groups.cs">Product Forums</a>.
+</div>
+<div class='clear'></div>
+<span class='widget-item-control'>
+<span class='item-control blog-admin'>
+<a class='quickedit' href='//www.blogger.com/rearrange?blogID=1176949257541686127&widgetType=HTML&widgetId=HTML1&action=editWidget&sectionId=sidebar-bottom' onclick='return _WidgetManager._PopupConfig(document.getElementById("HTML1"));' rel='nofollow' target='configHTML1' title='Edit'>
+<img alt='' height='18' src='https://resources.blogblog.com/img/icon18_wrench_allbkg.png' width='18'/>
+</a>
+</span>
+</span>
+<div class='clear'></div>
+</div></div>
+</div>
+</div>
+<div style='clear:both;'></div>
+</div>
+<!-- Footer -->
+<div class='google-footer-outer loading'>
+<div id='google-footer'>
+<a href='//www.google.com/'>
+<img class='google-logo-dark' height='36' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALgAAABICAYAAABFoT/eAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAACLVJREFUeNrsXd+L20YQ3vOprdLqiMXFXE2qB7dcwEcTSB7ykIc+9A/PQx/yEMq1TWhNuYIpJriNr7XpmZ5IxFEvmW2EKs3Ornb1w50PxIFP0kiz387OzM6uhGAwGAxGP3Ho+f7x7ri1O7LdccPqZjSNA4dEHsLfaHcEFedJom93x9Xu2OyOFTcBo6sED3fHZHeMEELrkAHJF0B8Rr+gDFsZ5n0luLTQ95AXs4W06D/tjpR50xtM4CjD0y48YGB4rnyZxNOzyA7zBHr+nLnDaJLg0mo/ALekCasg3Z4XbM0ZdTEgnDPeHY8bIne+Qz2GvwyGNwsuyT218KWvIIBMcwGpLiipcolecjMxfBDchNyS1EvxLiOSIecp31q6IJ/C3yrIrMqMm4jhg+AxkdwbIO3aUO4KjqqMjCT3uaazMBhWBJfuxH3CtRfiXf66DhSRZWbmlMnNaILgZxrXJQO/eO3wORZwvwm4JUxuhheCjzVBYAbW1ces45YDSoZrFNOEE835M8FT6oyeEnws8Fz3QnBxFKPHBMem4GU+m6fPGb0leCTwWcM5B36MPgeZI01gudyDdw3hPeXfo8L/rmCUWnuMMdqUL2WqWeRbhf+twfVsO7YagZGNC79fw7OthEVtkiJ4jJzTd3KPwf3CRqhhiTu23AP5sl0/0xiwISQXpNwLIJK87mHF+U8ddzzdmgKlGzlPYjyxGJQouIhNT4k9AqWEFkqfguIvagTWbcq3KW1WE3xS3m8NtA9WS451xofwjKT5kkDoK/b6mDk5FfXr1lWDL4BofZEv2/SRsK/EHGlGdBdu8QNRb8HMCFwt7Yy3DDI/QP7fx5z3VLhdlJEIs4rKNuXXJXdxZPdB7kfCzWqwCO4V1LHgLjInX3tQ1KzCR52Cz+vDj1dydeRuS74rcvs2Pi6fT5H8OaaUQPQPYcWwRSGXyhhscn5dpAnEFMkuEZetbfkTAnlSuH4DxisE+aMGeJAQ3lFl7C4LJE6QWCaCd583ORQ1jYAwjFctal7nOs2ZZvicwvlZx+RHGrcoAwKUVX8uwcc/9TT65INeDOr5shL9LDRB6QTeIy3zwfdh3WOi6axLCEhSjXU7F3h6LqggUtvyJxpynwu8tDkD98fXApOxRj8zoZ9MnGveYVIVZKaGrkBXCY65BCYNN9NkjpKOyQ81Q79JgdxS+Jn3SDTEXRI7SWzaiSTB32oI3nU3BvMfM0urhOVYgwKhuiAfc4tM07wXwm1ZRoQYSl2NUwiu01fEAHVcpixd745FvVz4dzUUc0o8rwoLy8ZSwU6CyFx1RP5II9+1bFPEFs9HWbNLiimDXE+vCm7u1CS47cofzD3aEhVY57mxRo5zlqdt+RFC1JUH2S7bcVXg4liTMakaBZZVxiTICRoivcn1sEUBlk24JmaC6kxUbYmWoqvyfck2xZGGnDFYa9MMzkYQ1ijkCX6qidybrgePiQ0QIQqoi6qRLeqQfIoRsEHaQJLBdHOnLGetSdm/IPcymJuS1PAnbQPH0MOw/39C1vL11DiLOqIsbDI8QcHvGiLnySi2qUXBicaqUSxN5LEB0g7Jt3ENXJLPJ5S1tnaZBoWbpRqrmjRE7qHmpSmNHdQcYrEUadoh+TbBnc9ri7iycI1kzPeNcLDIvbiqXpez9Tmdq6zGREPuzECBoxrPMiI2WtvyNwhJba2wy3JZ6ky5dD1lSvmZS3e4SPA1wcf1VTFHKX+cGwZzdUYcqpvUtvwrD/InDttVlyZeAKlNN5MKbAiurHhKIPlUuJvlTCCiDjSKSCsUmCFWbGLZwCESfK07JB8LvMYWVtw0D00JEHV8Mq2HkqPbE0oHLvvK2g0o8ETg+4cfwTlZDT9JDoWygu4uQQE/ivIvtcnfPkaCqhiupz7jWOAzqL/vjtcdkv9G4MVMt+EaylfuImiPAXEUjRF3pjjaHiPPZ6If9TGGAO4ZY0am6jOCb+DQ+ZCqLkIpOIPrdNfIjnFPY6nyFut7TS/fanrziOBOKMupKw94WaLMtuVnSFt9CPrWWdJE6PeltCX432DEBoh+5Dv8RRhdis8YAv9uyq4/JAwtlEApgBe9Cw9xDD3tdk4Jn0MDfiHwPHcRPxBePCMER3GuIx7kGlv9fkZ4V9lolx2Uv4X7hEj7qJ3LDoAMGbTRMRibu4L2xQ8bgt8AyU+Q+x7nYrvDnH4iuO5LxKsYwPVbkPMvKF9Zky9wXzRfVWizi62r9X5VHf55h+WHhDjGBZ4WRhyTr6z5SlCoLMxLSpBZFsQ9F80uQFbF/6aFWi+Ev51vzzsuX+msyzuQXXjUz8zEBy+zpq9yweXAoxJW4JbYrDS6gYDqGHxPl+TKeiBfxj9/EBIElPYeOA4y8/qRQfknjvSzgRgtq0Pw/M1eQeMdOSb2Bnrhr6Led+1vcp2x7oTFHMnedFW+Ivlty062BUt74oHgSj+vHepnhunn0JJAMtBZgDI/qmGtMujRv8DDpo47zBJ8UtPOuAR/7rKn8t9AJ0tBdmBAmJ/Fu71yxp4I3qh+DhyRqbi5Y1ShVPlSb8X7bRNcfgZFl+WRGYo7uecrWq1r8X5bhmzP5OdlDwsGRm1suSxkg5rYm7ConyGQ3Zl+DgSD8V/kPwrWBMG9YcBtyShBnTLdTiHgttw7qAW7cqh/ZnmPKr/6ignOaKsdyxbsToT5UkPsW00bJjijDXficcX/JsLs6w2BwGtherdckH3w/kNXRPVI0OqJQoHX42/66IMfMj/2huRjxIidgKV/W0JS+bsstDoTeAHcrI8E5zTh/sDkqxL5rZup55/3USlswfcHf4IrQplVDgW9XFlOqnwr6pVPMMEZTuC60EttvdzbLbaZ4PsFVa3nohhO+vW+yn/ZB2fUhpysmQrzBcTSai9EszuZMcEZ1lCFVrp9zGXhm69iLyY4oxFIa178lPe12I/P2DAYDAaDwWAwGAwGg8FgMBgMBoPBYDD2Cf8IMADDRGoQTe+E9AAAAABJRU5ErkJggg==' style='margin-top: -16px;' width='92'/>
+</a>
+<ul>
+<li>
+<a href='//www.google.com/'>
+              Google
+            </a>
+</li>
+<li>
+<a href='//www.google.com/policies/privacy/'>
+              Privacy
+            </a>
+</li>
+<li>
+<a href='//www.google.com/policies/terms/'>
+              Terms
+            </a>
+</li>
+</ul>
+</div>
+</div>
+<script type='text/javascript'>
+      //<![CDATA[
+      // Social sharing popups.
+      var postEl = document.getElementsByClassName('social-wrapper');
+      var postCount = postEl.length;
+      for(i=0; i<postCount;i++){
+        postEl[i].addEventListener("click", function(event){
+          var postUrl = this.getAttribute("data-href");
+          window.open(
+            postUrl,'popUpWindow','height=500,width=500,left=10,top=10,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes');
+        });}
+      //]]>
+    </script>
+<script type='text/javascript'>
+      //<![CDATA[
+      var BreakpointHandler = function() {
+        this.initted = false;
+        this.isHomePage = false;
+        this.isMobile = false;
+      };
+      BreakpointHandler.prototype.finalizeSummary = function(summaryHtml, lastNode) {
+        // Use $.trim for IE8 compatibility
+        summaryHtml = $.trim(summaryHtml).replace(/(<br>|\s)+$/,'');
+        if (lastNode.nodeType == 3) {
+          var lastChar = summaryHtml.slice(-1);
+          if (!lastChar.match(/[.”"?]/)) {
+            if (!lastChar.match(/[A-Za-z]/)) {
+              summaryHtml = summaryHtml.slice(0, -1);
+            }
+            summaryHtml += ' ...';
+          }
+        } else if (lastNode.nodeType == 1 && (lastNode.nodeName == 'I' || lastNode.nodeName == 'A')) {
+          summaryHtml += ' ...';
+        }
+        return summaryHtml;
+      };
+      BreakpointHandler.prototype.generateSummaryFromContent = function(content, numWords) {
+        var seenWords = 0;
+        var summaryHtml = '';
+        for (var i=0; i < content.childNodes.length; i++) {
+          var node = content.childNodes[i];
+          var nodeText;
+          if (node.nodeType == 1) {
+            if (node.hasAttribute('data-about-pullquote')) {
+              continue;
+            }
+            nodeText = node.textContent;
+            if (nodeText === undefined) {
+              // innerText for IE8
+              nodeText = node.innerText;
+            }
+            if (node.nodeName == 'DIV' || node.nodeName == 'B') {
+              // Don't end early if we haven't seen enough words.
+              if (seenWords < 10) {
+                continue;
+              }
+              if (i > 0) {
+                summaryHtml = this.finalizeSummary(summaryHtml, content.childNodes[i-1]);
+              }
+              break;
+            }
+            summaryHtml += node.outerHTML;
+          } else if (node.nodeType == 3) {
+            nodeText = node.nodeValue;
+            summaryHtml += nodeText + ' ';
+          }
+          var words = nodeText.match(/\S+\s*/g);
+          if (!words) {
+            continue;
+          }
+          var remain = numWords - seenWords;
+          if (words.length >= remain) {
+            summaryHtml = this.finalizeSummary(summaryHtml, node);
+            break;
+          }
+          seenWords += words.length;
+        }
+        return summaryHtml;
+      };
+      BreakpointHandler.prototype.detect = function() {
+        var match,
+            pl     = /\+/g,
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+            query  = window.location.search.substring(1);
+        var urlParams = {};
+        while (match = search.exec(query))
+          urlParams[decode(match[1])] = decode(match[2]);
+        this.isListPage = $('html').hasClass('list-page');
+        this.isMobile = urlParams['m'] === '1';
+        this.isHomePage = window.location.pathname == '/';
+      };
+      BreakpointHandler.prototype.initContent = function() {
+        var self = this;
+        $('.post').each(function(index) {
+          var body = $(this).children('.post-body')[0];
+          var content = $(body).children('.post-content')[0];
+          $(content).addClass('post-original');
+          var data = $(content).children('script').html();
+          data = self.rewriteForSSL(data);
+          // If exists, extract specified editor's preview.
+          var match = data.match(/([\s\S]+?)<div data-is-preview.+?>([\s\S]+)<\/div>/m);
+          if (match) {
+            data = match[1];
+          }
+          // Prevent big images from loading when they aren't needed.
+          // This must be done as a pre-injection step, since image loading can't be
+          // canceled once embedded into the DOM.
+          if (self.isListPage && self.isMobile) {
+            data = data.replace(/<(img|iframe) .+?>/g, '');
+          }
+          // Insert template to be rendered as nodes.
+          content.innerHTML = data;
+          if (self.isListPage) {
+            var summary = document.createElement('div');
+            $(summary).addClass('post-content');
+            $(summary).addClass('post-summary');
+            body.insertBefore(summary, content);
+            if (match) {
+              // Use provided summary.
+              summary.innerHTML = match[2];
+            } else {
+              // Generate a summary.
+              // Summary generation relies on DOM, so it must occur after content is
+              // inserted into the page.
+              summary.innerHTML = self.generateSummaryFromContent(content, 30);
+            }
+            // Add read more link to summary.
+            var titleAnchor = $(this).find('.title a')[0];
+            var link = titleAnchor.cloneNode(true);
+            link.innerHTML = 'Read More';
+            $(link).addClass('read-more');
+            summary.appendChild(link);
+          }
+        });
+        // Firefox does not allow for proper styling of BR.
+        if (navigator.userAgent.indexOf('Firefox') > -1) {
+          $('.post-content br').replaceWith('<span class="space"></span>');
+        }
+        $('.loading').removeClass('loading');
+      };
+      BreakpointHandler.prototype.process = function() {
+        if (!this.initted) {
+          var makeInsecureImageRegex = function(hosts) {
+            var whitelist = hosts.join('|').replace(/\./g,'\\.');
+            // Normal image tags, plus input images (yes, this is possible!)
+            return new RegExp('(<(img|input)[^>]+?src=("|\'))http:\/\/(' + whitelist +')', 'g');
+          };
+          this.sslImageRegex = makeInsecureImageRegex(BreakpointHandler.KNOWN_HTTPS_HOSTS);
+          this.sslImageCurrentDomainRegex = makeInsecureImageRegex([window.location.hostname]);
+          this.detect();
+          this.initContent();
+          this.initted = true;
+        }
+      };
+      BreakpointHandler.KNOWN_HTTPS_HOSTS = [
+        "www.google.org",
+        "www.google.com",
+        "services.google.com",
+        "blogger.com",
+        "draft.blogger.com",
+        "www.blogger.com",
+        "photos1.blogger.com",
+        "photos2.blogger.com",
+        "photos3.blogger.com",
+        "blogblog.com",
+        "img1.blogblog.com",
+        "img2.blogblog.com",
+        "www.blogblog.com",
+        "www1.blogblog.com",
+        "www2.blogblog.com",
+        "0.bp.blogspot.com",
+        "1.bp.blogspot.com",
+        "2.bp.blogspot.com",
+        "3.bp.blogspot.com",
+        "4.bp.blogspot.com",
+        "lh3.googleusercontent.com",
+        "lh4.googleusercontent.com",
+        "lh5.googleusercontent.com",
+        "lh6.googleusercontent.com",
+        "themes.googleusercontent.com",
+      ];
+        BreakpointHandler.prototype.rewriteForSSL = function(html) {
+        // Handle HTTP -> HTTPS source replacement of images, movies, and other embedded content.
+        return html.replace(this.sslImageRegex, '$1https://$4')
+        .replace(this.sslImageCurrentDomainRegex, '$1//$4')
+        .replace(/(<(embed|iframe)[^>]+?src=("|'))http:\/\/([^"']*?(youtube|picasaweb\.google)\.com)/g, '$1https://$4')
+        // Slideshow SWF takes a image host, so we need to rewrite that parameter.
+        .replace(/(<embed[^>]+?feed=http(?=[^s]))/g, '$1s');
+        };
+        $(document).ready(function() {
+        var handler = new BreakpointHandler();
+        handler.process();
+        // Top-level navigation.
+        $(".BlogArchive .tab").click(function(ev) {
+        ev.preventDefault();
+        $(this).parent().toggleClass('active');
+        $(this).siblings().slideToggle(300);
+        });
+        $(".Label .tab").click(function(ev) {
+        ev.preventDefault();
+        $(this).parent().toggleClass('active');
+        $(this).siblings().slideToggle(300);
+        });
+        // Blog archive year expansion.
+        $('.BlogArchive .intervalToggle').click(function(ev) {
+        ev.preventDefault();
+        if ($(this).parent().hasClass('collapsed')) {
+        $(this).parent().removeClass('collapsed');
+        $(this).parent().addClass('expanded');
+        } else {
+        $(this).parent().removeClass('expanded');
+        $(this).parent().addClass('collapsed');
+        }
+        });
+        // Reverse order of months.
+        $('.BlogArchive .intervalToggle + div').each(function(_, items) {
+        var year = $(this);
+        year.children().each(function(_, month) {
+        year.prepend(month);
+        });
+        });
+        // Set anchors to open in new tab.
+        $('.post-content img').parent().each(function(_, node) {
+        if (node.nodeName == 'A') {
+        $(this).attr('target', '_blank');
+        }
+        });
+        // Process search requests.
+        $('.searchBox input').on("keypress", function(ev) {
+        if (ev.which == 13) {
+        window.location.href = 'https://www.google.com/search?q=site%3A' + window.location.hostname + '%20' + encodeURIComponent ($(this).val());
+        }
+        });
+        });
+        //]]>
+    </script>
+<!--Es liegt in deiner Verantwortung, deine Besucher \xfcber die in deinem Blog verwendeten Cookies und die dort erfassten Daten zu informieren. Blogger stellt daf\xfcr eine Standardbenachrichtigung zur Verf\xfcgung, die du \xfcbernehmen, anpassen oder durch deine eigene Mitteilung ersetzen kannst. Weitere Informationen findest du unter http://www.blogger.com/go/cookiechoices.-->
+<script defer='' src='/js/cookienotice.js'></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(event) {
+      window.cookieChoices && cookieChoices.showCookieConsentBar && cookieChoices.showCookieConsentBar(
+          (window.cookieOptions && cookieOptions.msg) || 'Diese Website verwendet Cookies von Google, um Dienste anzubieten und Zugriffe zu analysieren. Deine IP-Adresse und dein User-Agent werden zusammen mit Messwerten zur Leistung und Sicherheit f\xfcr Google freigegeben. So k\xf6nnen Nutzungsstatistiken generiert, Missbrauchsf\xe4lle erkannt und behoben und die Qualit\xe4t des Dienstes gew\xe4hrleistet werden.',
+          (window.cookieOptions && cookieOptions.close) || 'OK',
+          (window.cookieOptions && cookieOptions.learn) || 'Weitere Informationen',
+          (window.cookieOptions && cookieOptions.link) || 'https://www.blogger.com/go/blogspot-cookies');
+    });
+  </script>
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/104323843-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AOuZoY71-cn0_Ps8yu6t0vg07MMvNj60Zg:1603108154534';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d1176949257541686127','//security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html','1176949257541686127');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '1176949257541686127', 'title': 'Google Online Security Blog', 'url': 'https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html', 'canonicalUrl': 'https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html', 'homepageUrl': 'https://security.googleblog.com/', 'searchUrl': 'https://security.googleblog.com/search', 'canonicalHomepageUrl': 'https://security.googleblog.com/', 'blogspotFaviconUrl': 'https://security.googleblog.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': false, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': 'UA-961555-22', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Google Online Security Blog - Atom\x22 href\x3d\x22https://security.googleblog.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22Google Online Security Blog - RSS\x22 href\x3d\x22https://security.googleblog.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Google Online Security Blog - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/1176949257541686127/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Google Online Security Blog - Atom\x22 href\x3d\x22https://security.googleblog.com/feeds/8124570213217375432/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'ieCssRetrofitLinks': '\x3c!--[if IE]\x3e\x3cscript type\x3d\x22text/javascript\x22 src\x3d\x22https://www.blogger.com/static/v1/jsbin/4244862144-ieretrofit.js\x22\x3e\x3c/script\x3e\n\x3c![endif]--\x3e', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/7b2645503bad93ae', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'disableGComments': true, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 300, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '8124570213217375432', 'pageName': 'Enhanced Safe Browsing Protection now available in Chrome', 'pageTitle': 'Google Online Security Blog: Enhanced Safe Browsing Protection now available in Chrome'}}, {'name': 'features', 'data': {'sharing_get_link_dialog': 'true', 'sharing_native': 'false'}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'Enhanced Safe Browsing Protection now available in Chrome', 'description': 'Posted by Nathan Parker, Varun Khaneja, Eric Mill and Kiran C Nair - Chrome Safe Browsing team   Over the past few years we&#8217;ve seen threats ...', 'url': 'https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 8124570213217375432}}]);
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'header', document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'main', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'showBacklinks': true, 'postId': '8124570213217375432'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML8', 'sidebar-top', document.getElementById('HTML8'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_LabelView', new _WidgetInfo('Label1', 'sidebar', document.getElementById('Label1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1', 'sidebar', document.getElementById('BlogArchive1'), {'languageDirection': 'ltr', 'loadingMessage': 'Loading\x26hellip;'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML6', 'sidebar', document.getElementById('HTML6'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML5', 'sidebar-bottom', document.getElementById('HTML5'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML1', 'sidebar-bottom', document.getElementById('HTML1'), {}, 'displayModeFull'));
+</script>
+</body>
+</html>
