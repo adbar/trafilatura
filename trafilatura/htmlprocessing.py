@@ -124,7 +124,7 @@ def convert_tags(tree):
         elem.tag = 'hi'
         elem.set('rend', '#u')
     # tt (very rare)
-    for elem in tree.iter('tt'):
+    for elem in tree.iter('kbd', 'samp', 'tt', 'var'):
         elem.attrib.clear()
         elem.tag = 'hi'
         elem.set('rend', '#t')

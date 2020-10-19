@@ -46,18 +46,25 @@ MAX_REPETITIONS = 2
 CUT_EMPTY_ELEMS = {'article', 'b', 'blockquote', 'dd', 'div', 'dt', 'em',
                    'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'i', 'li', 'main',
                    'p', 'pre', 'q', 'section', 'span', 'strong'}
-                   # 'meta', 'td', 'a'
+                   # 'meta', 'td', 'a', 'caption', 'dl', 'header',
+                   # 'colgroup', 'col',
 
-MANUALLY_CLEANED = ['audio', 'aside', 'canvas', 'figure', 'footer', 'form', 'head', 'map',
-                    'object', 'picture', 'script', 'svg', 'video',
-                    # secondary
-                    'applet', 'area', 'blink', 'button', 'datalist', 'details', 'dialog', 'embed',
-                    'fieldset', 'iframe', 'link', 'input', 'label', 'legend',
-                    'marquee', 'math', 'menu', 'menuitem', 'nav', 'noscript', 'option',
-                    'rp', 'rt', 'rtc', 'select', 'source', 'style', 'track', 'textarea', 'time', 'use']
-                    # 'frame', 'frameset', 'meta', 'hr', 'ins'
+MANUALLY_CLEANED = [
+    # important
+    'aside', 'embed', 'footer', 'form', 'head', 'iframe', 'menu', 'object', 'script',
+    # other content
+    'applet', 'audio', 'canvas', 'figure', 'map', 'picture', 'svg', 'video',
+    # secondary
+    'area', 'blink', 'button', 'datalist', 'details', 'dialog',
+    'frame', 'frameset', 'fieldset', 'link', 'input', 'ins', 'label', 'legend',
+    'marquee', 'math', 'menuitem', 'nav', 'noscript', 'optgroup', 'option',
+    'output', 'param', 'progress', 'rp', 'rt', 'rtc', 'select', 'source',
+    'style', 'summary', 'track', 'template', 'textarea', 'time', 'use',
+]
+# 'meta', 'hr', 'img', 'data'
 
-MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small']
+MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn', 'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small']
+# 'center', 'rb', 'wbr'
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
 HTML_CLEANER = Cleaner()
@@ -80,8 +87,9 @@ HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
 HTML_CLEANER.kill_tags = MANUALLY_CLEANED
 
 
-TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'q', 'quote'])
+TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
 # 'span', 'item'
+# + list(CUT_EMPTY_ELEMS)
 
 # JUSTEXT_DEFAULT = 'German'
 # JT_STOPLIST = None  # could be a list
