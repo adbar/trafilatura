@@ -469,22 +469,19 @@ def baseline(filecontent):
     if tree is None:
         return postbody, 0, ''
     # scrape from json text
-    for elem in tree.xpath('//script[@type="application/ld+json"]'):
-        if elem.text and '"articleBody":' in elem.text:
-            mymatch = re.search(r'"articleBody":"(.+?)","', elem.text)
+    for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
+        if elem.text and '"article' in elem.text:
+            mymatch = re.search(r'"article[Bb]ody":"(.+?)","', elem.text)
             if mymatch:
-                temp_text = mymatch.group(1).replace('\\"', '"')
                 postbody = etree.Element('body')
                 elem = etree.Element('p')
-                elem.text = temp_text
+                elem.text = trim(mymatch.group(1).replace('\\"', '"'))
                 postbody.append(elem)
-                # temp_text = trim(temp_text)
-                return postbody, temp_text, len(temp_text)
+                return postbody, elem.text, len(elem.text)
     # scrape from article tag
-    elems = tree.xpath('//article') # |//main
-    if elems:  # len(elems) > 0:
-        article_elem = elems[0]
-        temp_text = sanitize(article_elem.text_content())
+    article_elem = tree.find('.//article') # |.//main
+    if article_elem is not None:  # len(elems) > 0:
+        temp_text = trim(article_elem.text_content())
         len_text = len(temp_text)
         if len_text > 0:
             elem = etree.Element('p')
@@ -493,19 +490,15 @@ def baseline(filecontent):
             return postbody, temp_text, len_text
     # scrape from text paragraphs
     results = set()
-    resultlist = []
-    # search_tree = discard_unwanted(tree)
-    # search_tree = prune_html(tree)
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
         entry = element.text_content()
         if entry not in results:
-            resultlist.append(entry)
-        results.add(entry)
-    for textpart in resultlist:
-        elem = etree.Element('p')
-        elem.text = textpart
-        postbody.append(elem)
-    temp_text = sanitize('\n'.join(postbody.itertext()))
+            elem = etree.Element('p')
+            elem.text = entry
+            postbody.append(elem)
+            results.add(entry)
+            # elem.getparent().remove(elem)
+    temp_text = trim('\n'.join(postbody.itertext()))
     return postbody, temp_text, len(temp_text)
 
 
