@@ -6,18 +6,18 @@ X-Path expressions needed to extract and filter the main text content
 
 
 BODY_XPATH = [
-    '''//*[(self::article or self::div or self::main or self::section)][contains(@id, "content-main") or
+    '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "content-main") or
     contains(@class, "content-main") or contains(@class, "content_main") or
     contains(@id, "content-body") or contains(@class, "content-body") or
     contains(@class, "story-body") or
     @id="article" or @class="post" or @class="entry"]''',
-    '''//*[(self::article or self::div or self::main or self::section)][
+    '''.//*[(self::article or self::div or self::main or self::section)][
     contains(@class, "post-text") or contains(@class, "post_text") or
     contains(@class, "post-body") or contains(@class, "post-entry") or contains(@class, "postentry") or
     contains(@class, "post-content") or contains(@class, "post_content") or
     contains(@class, "postcontent") or contains(@class, "postContent") or
     contains(@class, "article-text") or contains(@class, "articletext") or contains(@class, "articleText")]''',
-    '''//*[(self::article or self::div or self::main or self::section)][contains(@id, "entry-content") or
+    '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "entry-content") or
     contains(@class, "entry-content") or contains(@id, "article-content") or
     contains(@class, "article-content") or contains(@id, "article__content") or
     contains(@class, "article__content") or contains(@id, "article-body") or
@@ -25,8 +25,8 @@ BODY_XPATH = [
     contains(@class, "article__body") or @itemprop="articleBody" or @id="articleContent" or
     contains(@class, "ArticleContent") or contains(@class, "page-content") or
     contains(@class, "text-content") or contains(@class, "content__body")]''',
-    '//article',
-    """//*[(self::article or self::div or self::main or self::section)][contains(@class, 'post-bodycopy') or
+    './/article',
+    """.//*[(self::article or self::div or self::main or self::section)][contains(@class, 'post-bodycopy') or
     contains(@class, 'storycontent') or contains(@class, 'story-content') or
     @class='postarea' or @class='art-postcontent' or
     contains(@class, 'theme-content') or contains(@class, 'blog-content') or
@@ -35,9 +35,9 @@ BODY_XPATH = [
     starts-with(@id, 'primary') or @class="text" or
     @class="cell" or @id="story" or @class="story" or
     contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]""",
-    '''//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
+    '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
     contains(@class, "main-content") or contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "page-content")]''',
-    '//*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")]|//main',
+    './/*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")]|//main',
 ]
 # starts-with(@id, "article") or
 # or starts-with(@id, "story") or contains(@class, "story")
@@ -52,23 +52,23 @@ BODY_XPATH = [
 
 
 COMMENTS_XPATH = [
-    """//*[(self::div or self::list or self::section)][contains(@id, 'commentlist')
+    """.//*[(self::div or self::list or self::section)][contains(@id, 'commentlist')
     or contains(@class, 'commentlist')  or contains(@class, 'comment-page') or
     contains(@class, 'comment-list') or contains(@class, 'comments-list') or
     contains(@class, 'comments-content')]""",
-    """//*[(self::div or self::section or self::list)][starts-with(@id, 'comments')
+    """.//*[(self::div or self::section or self::list)][starts-with(@id, 'comments')
     or starts-with(@class, 'comments') or starts-with(@class, 'Comments') or
     starts-with(@id, 'comment-') or starts-with(@class, 'comment-') or
     contains(@class, 'article-comments')]""",
-    """//*[(self::div or self::section or self::list)][starts-with(@id, 'comol') or
+    """.//*[(self::div or self::section or self::list)][starts-with(@id, 'comol') or
     starts-with(@id, 'disqus_thread') or starts-with(@id, 'dsq-comments')]""",
-    """//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]"""
+    """.//*[(self::div or self::section)][starts-with(@id, 'social') or contains(@class, 'comment')]"""
 ]
 # or contains(@class, 'Comments')
 
 
 DISCARD_XPATH = [
-    '''.//aside|.//footer|.//*[contains(@id, "footer") or contains(@class, "footer") or
+    '''.//*[contains(@id, "footer") or contains(@class, "footer") or
     contains(@id, "bottom") or contains(@class, "bottom")]''',
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
     # or self::article
