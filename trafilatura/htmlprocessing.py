@@ -10,6 +10,7 @@ import logging
 import re
 
 from lxml import etree
+from lxml.html.clean import Cleaner
 
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
@@ -20,28 +21,51 @@ from .xpaths import COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 LOGGER = logging.getLogger(__name__)
 
 
-def manual_cleaning(tree, include_tables):
+# HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
+HTML_CLEANER = Cleaner()
+HTML_CLEANER.annoying_tags = False # True
+HTML_CLEANER.comments = True
+HTML_CLEANER.embedded = False # True
+HTML_CLEANER.forms = False # True
+HTML_CLEANER.frames = False # True
+HTML_CLEANER.javascript = False
+HTML_CLEANER.links = False
+HTML_CLEANER.meta = False
+HTML_CLEANER.page_structure = False
+HTML_CLEANER.processing_instructions = True
+HTML_CLEANER.remove_unknown_tags = False
+HTML_CLEANER.safe_attrs_only = False
+HTML_CLEANER.scripts = False
+HTML_CLEANER.style = False
+HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
+HTML_CLEANER.kill_tags = [] # MANUALLY_CLEANED
+
+
+
+def tree_cleaning(tree, include_tables):
     '''Prune the tree by discarding unwanted elements'''
     if include_tables is False:
         MANUALLY_CLEANED.append('table')
     for expression in MANUALLY_CLEANED:
-        #for element in tree.iter(expression):
         for element in tree.getiterator(expression):
             element.drop_tree()
+    # save space and processing time
+    tree = prune_html(tree)
+    tree = HTML_CLEANER.clean_html(tree)
+    # etree.strip_tags(tree, MANUALLY_STRIPPED)
     return tree
 
 
 def prune_html(tree):
-    '''delete selected empty elements'''
-    for element in tree.xpath("//*[not(node())]"):
+    '''Delete selected empty elements'''
+    for element in tree.xpath(".//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
-            element.getparent().remove(element)
-            #element.drop_tree()
+            element.drop_tree()
     return tree
 
 
 def discard_unwanted(tree):
-    '''delete unwanted sections'''
+    '''Delete unwanted sections'''
     for expr in DISCARD_XPATH:
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
@@ -60,9 +84,9 @@ def discard_unwanted_comments(tree):
 
 def link_density_test(element):
     '''Remove sections which are rich in links (probably boilerplate)'''
-    links_xpath = element.xpath('//link')
+    links_xpath = element.xpath('.//link')
     flag = False
-    if len(links_xpath) > 0:
+    if links_xpath:
         elemlen = len(trim(element.text_content()))
         if elemlen < 100:
             flag = True
@@ -81,8 +105,6 @@ def link_density_test(element):
 
 def convert_tags(tree):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
-    # strip tags
-    etree.strip_tags(tree, MANUALLY_STRIPPED)
     # ul/ol → list / li → item
     for elem in tree.iter('ul', 'ol', 'dl'):
         elem.tag = 'list'

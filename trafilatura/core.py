@@ -20,10 +20,10 @@ from .external import justext_rescue, sanitize_tree, try_readability
 from .filters import content_fingerprint, duplicate_test, language_filter, text_chars_test
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
-                             link_density_test,
-                             manual_cleaning, process_node, prune_html)
+                             link_density_test, process_node, prune_html,
+                             tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
-from .settings import (HTML_CLEANER, MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
+from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, MAX_OUTPUT_TREE_LENGTH,
                        TAG_CATALOG)
 from .utils import load_html, sanitize, trim, txttocsv
@@ -581,12 +581,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         else:
             docmeta = dict.fromkeys(METADATA_LIST)
 
-        # clean
-        cleaned_tree = manual_cleaning(tree, include_tables)
-        # save space and processing time
-        cleaned_tree = prune_html(cleaned_tree)
-        # use LXML cleaner
-        cleaned_tree = HTML_CLEANER.clean_html(cleaned_tree)
+        # clean + use LXML cleaner
+        cleaned_tree = tree_cleaning(tree, include_tables)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree)
