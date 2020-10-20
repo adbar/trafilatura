@@ -35,7 +35,7 @@ URL_COMP_CHECK = re.compile(r'https?://|/')
 
 def extract_json(tree, metadata):
     '''Crudely extract metadata from JSON-LD data'''
-    for elem in tree.xpath('//script[@type="application/ld+json"]|//script[@type="application/settings+json"]'):
+    for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
         if '"author":' in elem.text:
@@ -65,6 +65,9 @@ def extract_json(tree, metadata):
             mymatch = JSON_HEADLINE.search(elem.text)
             if mymatch:
                 metadata['title'] = trim(mymatch.group(1))
+        # exit if found
+        if all([metadata['author'], metadata['sitename'], metadata['categories'], metadata['title']]):
+            break
     return metadata
 
 
@@ -72,7 +75,7 @@ def extract_opengraph(tree):
     '''Search meta tags following the OpenGraph guidelines (https://ogp.me/)'''
     title, author, url, description, site_name = (None,) * 5
     # detect OpenGraph schema
-    for elem in tree.xpath('//head/meta[starts-with(@property, "og:")]'):
+    for elem in tree.xpath('.//head/meta[starts-with(@property, "og:")]'):
         # safeguard
         if not elem.get('content'):
             continue
@@ -112,7 +115,7 @@ def examine_meta(tree):
         return metadata
     tags = []
     # skim through meta tags
-    for elem in tree.xpath('//head/meta[@content]'):
+    for elem in tree.iterfind('.//head/meta[@content]'):
         # content
         if not elem.get('content'):
             continue
@@ -248,14 +251,14 @@ def extract_url(tree, default_url=None):
         url = element.attrib['href']
     # try default language link
     else:
-        for element in tree.xpath('//head//link[@rel="alternate"]'):
+        for element in tree.iterfind('.//head//link[@rel="alternate"]'):
             if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib['hreflang'] == 'x-default':
                 if URL_COMP_CHECK.match(element.attrib['href']):
                     LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
                     url = element.attrib['href']
     # add domain name if it's missing
     if url is not None and url.startswith('/'):
-        for element in tree.xpath('//head//meta[@content]'):
+        for element in tree.iterfind('.//head//meta[@content]'):
             if 'name' in element.attrib:
                 attrtype = element.attrib['name']
             elif 'property' in element.attrib:
