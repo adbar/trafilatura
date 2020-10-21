@@ -33,7 +33,7 @@ except ImportError:
 
 # own
 from .htmlprocessing import convert_tags, prune_html
-from .settings import JUSTEXT_LANGUAGES
+from .settings import JUSTEXT_LANGUAGES, MANUALLY_STRIPPED
 from .utils import sanitize, trim, HTML_PARSER
 from .xml import TEI_VALID_TAGS
 
@@ -115,35 +115,31 @@ def justext_rescue(tree, url, target_language, postbody, len_text, text):
 def sanitize_tree(tree):
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
     # delete unnecessary elements
-    #for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
-    #    elem.getparent().remove(elem)
-    etree.strip_elements(tree, 'aside', 'audio', 'button', 'fieldset', 'figure', 'footer', 'iframe', 'image', 'img', 'input', 'label', 'link', 'nav', 'noindex', 'noscript', 'object', 'option', 'select', 'source', 'svg', 'time')
+    for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
+        elem.getparent().remove(elem)
+    etree.strip_tags(tree, MANUALLY_STRIPPED + ['a', 'span'])
     tree = prune_html(tree)
     # convert
     cleaned_tree = convert_tags(tree)
-    etree.strip_tags(cleaned_tree, 'thead', 'tbody', 'tfoot')
-    for elem in cleaned_tree.iter():
-        elem.text = sanitize(elem.text)
-        elem.tail = sanitize(elem.tail)
-        # remove attributes
-        if elem.tag not in ('del', 'hi'):
-            elem.attrib.clear()
+    for elem in cleaned_tree.iter('td', 'th', 'tr'):
+        # elem.text, elem.tail = trim(elem.text), trim(elem.tail)
         # finish table conversion
         if elem.tag == 'tr':
             elem.tag = 'row'
-        elif elem.tag == 'td' or elem.tag == 'th':
-            elem.tag = 'cell'
+        elif elem.tag in ('td', 'th'):
             if elem.tag == 'th':
                 elem.set('role', 'head')
+            elem.tag = 'cell'
     # sanitize
+    sanitization_list = list()
     for tagname in [element.tag for element in set(cleaned_tree.iter())]:
         if tagname not in TEI_VALID_TAGS:
-            etree.strip_tags(cleaned_tree, tagname)
-            #if tagname in ('article', 'content', 'link', 'main', 'section', 'span'):
-            #    for element in cleaned_tree.iter(tagname):
-            #        merge_with_parent(element)
-            #else:
-            #    print(tagname)
-            #    etree.strip_elements(cleaned_tree, tagname)
+            sanitization_list.append(tagname)
+        #    if tagname in ('article', 'content', 'link', 'main', 'section', 'span'):
+        #        for element in cleaned_tree.iter(tagname):
+        #            merge_with_parent(element)
+        #    else:
+        #    print(tagname)
+    etree.strip_tags(cleaned_tree, sanitization_list)
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)
