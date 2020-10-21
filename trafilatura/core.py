@@ -20,13 +20,12 @@ from .external import justext_rescue, sanitize_tree, try_readability
 from .filters import content_fingerprint, duplicate_test, language_filter, text_chars_test
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
-                             link_density_test, process_node, prune_html,
-                             tree_cleaning)
+                             link_density_test, process_node, tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, MAX_OUTPUT_TREE_LENGTH,
                        TAG_CATALOG)
-from .utils import load_html, sanitize, trim, txttocsv
+from .utils import load_html, trim, txttocsv
 from .xml import (add_xml_meta, build_json_output, build_xml_output,
                   build_tei_output, control_xml_output, xmltotxt)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
@@ -406,8 +405,6 @@ def extract_comments(tree, dedupbool):
 def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
-    #if tree is None:
-    #    return body, text, len_text
     # try with readability
     temppost_algo = try_readability(backup_tree, url)
     algo_text = trim(' '.join(temppost_algo.itertext()))
@@ -421,12 +418,11 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = True
     elif len_text > 2*len_algo:
         algo_flag = False
-    elif len_algo > 2*len_text: # or 0.95*len_text < len_algo < 0.99*len_text:
+    elif len_algo > 2*len_text:
         algo_flag = True
     elif not body.xpath('//p//text()') and len_algo > 0:
         algo_flag = True  # borderline case
     else:
-        # print(sure_thing, len_text, len_algo)
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
         algo_flag = False
     # apply decision
