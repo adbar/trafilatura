@@ -8,8 +8,9 @@ Examining feeds and extracting links for further processing.
 import logging
 import re
 
-from courlan.filters import validate_url as courlan_val
 from time import sleep
+
+from courlan import validate_url as courlan_val
 
 from .settings import SLEEP_TIME
 from .utils import fetch_url

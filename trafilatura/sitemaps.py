@@ -10,7 +10,7 @@ import re
 # import urllib.robotparser # Python >= 3.8
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
-from courlan.core import check_url, extract_domain
+from courlan import check_url, extract_domain
 
 from .utils import fetch_url
 
@@ -119,7 +119,7 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, target_lang=None)
 
 
 def find_robots_sitemaps(url):
-    '''Guess the location of the robots.txt file and try to extract 
+    '''Guess the location of the robots.txt file and try to extract
        sitemap URLs from it'''
     robotsurl = url.rstrip('/') + '/robots.txt'
     robotstxt = fetch_url(robotsurl)

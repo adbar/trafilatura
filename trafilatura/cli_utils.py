@@ -21,7 +21,7 @@ from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan.core import extract_domain
+from courlan import extract_domain
 
 from .core import extract
 from .settings import (DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,

@@ -34,7 +34,7 @@ except ImportError:
 # own
 from .htmlprocessing import convert_tags, prune_html
 from .settings import JUSTEXT_LANGUAGES, MANUALLY_STRIPPED
-from .utils import sanitize, trim, HTML_PARSER
+from .utils import trim, HTML_PARSER
 from .xml import TEI_VALID_TAGS
 
 

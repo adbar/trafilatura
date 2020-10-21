@@ -68,12 +68,9 @@ def handle_lists(element, dedupbool):
         if len(child) == 0:
             processed_child = process_node(child)
             if processed_child is not None:
-                # processed_element.append(deepcopy(processed_child))
-                # childelem = etree.SubElement(processed_element, processed_child.tag)
                 newchildelem.text, newchildelem.tail = processed_child.text, processed_child.tail
                 processed_element.append(newchildelem)
         else:
-            # print(child.tag, child.text, child.tail)
             # proceed with iteration, fix for nested elements
             for subelem in child.iter():
                 processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool)
@@ -100,7 +97,6 @@ def handle_quotes(element):
     for child in element.iter():
         processed_child = process_node(child) # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
-            # processed_element.append(deepcopy(processed_child))
             newsub = etree.SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
         child.tag = 'done'
@@ -156,7 +152,10 @@ def handle_paragraphs(element, potential_tags, dedupbool):
             # needing attention!
             if child.tag == 'p':
                 LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
-                processed_element.text = trim(' ' + child.text)
+                if processed_element.text:
+                    processed_element.text += ' ' + trim(child.text)
+                else:
+                    processed_element.text = trim(child.text)
                 continue
             newsub = etree.Element(child.tag)
             # handle formatting
