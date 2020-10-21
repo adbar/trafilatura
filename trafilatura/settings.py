@@ -8,8 +8,6 @@ Listing a series of settings that are applied module-wide.
 
 from multiprocessing import cpu_count
 
-from lxml.html.clean import Cleaner
-
 from trafilatura import __version__
 
 
@@ -49,6 +47,7 @@ CUT_EMPTY_ELEMS = {'article', 'b', 'blockquote', 'dd', 'div', 'dt', 'em',
                    'p', 'pre', 'q', 'section', 'span', 'strong'}
                    # 'meta', 'td', 'a', 'caption', 'dl', 'header',
                    # 'colgroup', 'col',
+#CUT_EMPTY_ELEMS = {'div', 'span'}
 
 MANUALLY_CLEANED = [
     # important
@@ -64,28 +63,8 @@ MANUALLY_CLEANED = [
 ]
 # 'meta', 'hr', 'img', 'data'
 
-MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn', 'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small']
+MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn', 'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small', 'tbody', 'tfoot', 'thead']
 # 'center', 'rb', 'wbr'
-
-# HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
-HTML_CLEANER = Cleaner()
-HTML_CLEANER.annoying_tags = False # True
-HTML_CLEANER.comments = True
-HTML_CLEANER.embedded = False # True
-HTML_CLEANER.forms = False # True
-HTML_CLEANER.frames = False # True
-HTML_CLEANER.javascript = False # True
-HTML_CLEANER.links = False
-HTML_CLEANER.meta = False
-HTML_CLEANER.page_structure = False
-HTML_CLEANER.processing_instructions = True
-HTML_CLEANER.remove_unknown_tags = False
-HTML_CLEANER.safe_attrs_only = False
-HTML_CLEANER.scripts = False # True
-HTML_CLEANER.style = False
-HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
-HTML_CLEANER.kill_tags = MANUALLY_CLEANED
-
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
 # + list(CUT_EMPTY_ELEMS)
