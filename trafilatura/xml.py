@@ -42,6 +42,15 @@ def build_json_output(docmeta, postbody, commentsbody):
     return json.dumps(outputdict)
 
 
+
+def clean_attributes(tree):
+    '''Remove unnecessary attributes'''
+    for elem in tree.iter():
+        if elem.tag not in ('del', 'hi'):
+            elem.attrib.clear()
+    return tree
+
+
 def build_xml_output(postbody, commentsbody):
     '''Build XML output tree based on extracted information'''
     output = etree.Element('doc')
@@ -52,7 +61,7 @@ def build_xml_output(postbody, commentsbody):
         output.append(commentsbody)
 # XML invalid characters
 # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
-    return output
+    return clean_attributes(output)
 
 
 def control_xml_output(output_tree, output_format, tei_validation, docmeta):
@@ -222,11 +231,13 @@ def write_teitree(postbody, commentsbody, docmeta):
     textelem = etree.SubElement(tei, 'text')
     textbody = etree.SubElement(textelem, 'body')
     # post
+    postbody = clean_attributes(postbody)
     postbody.tag = 'div'
     postbody.set('type', 'entry') # rendition='#pst'
     textbody.append(postbody)
     # comments
     if commentsbody is not None and len(commentsbody) > 0:
+        commentsbody = clean_attributes(commentsbody)
         commentsbody.tag = 'div'
         commentsbody.set('type', 'comments') # rendition='#cmt'
         textbody.append(commentsbody)
