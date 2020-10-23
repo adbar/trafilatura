@@ -112,7 +112,7 @@ def justext_rescue(tree, url, target_language, postbody, len_text, text):
     return postbody, text, len_text, result_bool
 
 
-def sanitize_tree(tree):
+def sanitize_tree(tree, include_formatting=False):
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
     # delete unnecessary elements
     for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
@@ -120,7 +120,7 @@ def sanitize_tree(tree):
     etree.strip_tags(tree, MANUALLY_STRIPPED + ['a', 'span'])
     tree = prune_html(tree)
     # convert
-    cleaned_tree = convert_tags(tree)
+    cleaned_tree = convert_tags(tree, include_formatting)
     for elem in cleaned_tree.iter('td', 'th', 'tr'):
         # elem.text, elem.tail = trim(elem.text), trim(elem.tail)
         # finish table conversion

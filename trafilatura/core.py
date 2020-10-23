@@ -401,7 +401,7 @@ def extract_comments(tree, dedupbool):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, include_formatting):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # try with readability
@@ -437,7 +437,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             LOGGER.debug('justext length %s', len_text)  #MIN_EXTRACTED_SIZE:
         else:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body)
+            body, text, len_text = sanitize_tree(body, include_formatting)
     # try with justext
     elif len_text < MIN_EXTRACTED_SIZE:
         LOGGER.error('not enough text %s', url)
@@ -445,10 +445,10 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.debug('justext length %s', len_text)
         if jt_result is False:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body)
+            body, text, len_text = sanitize_tree(body, include_formatting)
     else:
         if algo_flag is True:
-            body, text, len_text = sanitize_tree(body)
+            body, text, len_text = sanitize_tree(body, include_formatting)
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, temp_text2, len_text2 = baseline(backup_tree)
@@ -580,10 +580,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         cleaned_tree = tree_cleaning(tree, include_tables)
 
         # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree)
-        # remove hi-element to avoid tail bug
-        if 'xml' not in output_format or include_formatting is False:
-            etree.strip_tags(cleaned_tree, 'hi')
+        cleaned_tree = convert_tags(cleaned_tree, include_formatting)
 
         # comments first, then remove
         if include_comments is True:
@@ -597,7 +594,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         # compare if necessary
         if no_fallback is False:
             #if sure_thing is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language)
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting)
         else:
             # rescue: try to use original/dirty tree
             if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
