@@ -34,8 +34,12 @@ def extract_links(feed_string):
     feed_links = []
     # could be Atom
     if '<link ' in feed_string:
-        for item in re.findall(r'<link .*?href="(.+?)"', feed_string):
-            feed_links.append(item)
+        for link in re.findall(r'<link .*?href=".+?"', feed_string):
+            if 'atom+xml' in link or 'rel="self"' in link:
+                continue
+            mymatch = re.search(r'<link .*?href="(.+?)"', link)
+            if mymatch:
+                feed_links.append(mymatch.group(1))
     # could be RSS
     elif '<link>' in feed_string:
         for item in re.findall(r'<link>(.+?)</link>', feed_string):

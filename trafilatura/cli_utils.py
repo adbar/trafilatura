@@ -184,7 +184,9 @@ def url_processing_checks(blacklist, input_urls):
     if blacklist:
         input_urls = [u for u in input_urls if u not in blacklist]
     # deduplicate
-    return list(OrderedDict.fromkeys(input_urls))
+    if input_urls:
+        return list(OrderedDict.fromkeys(input_urls))
+    return []
 
 
 def process_result(htmlstring, args, url, counter):

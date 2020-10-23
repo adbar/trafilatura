@@ -24,6 +24,7 @@ def test_atom_extraction():
     with open(filepath) as f:
         teststring = f.read()
     assert len(feeds.extract_links(teststring)) > 0
+    assert len(feeds.extract_links('<link type="application/atom+xml" rel="self" href="https://www.dwds.de/api/feed/themenglossar/Corona"/>')) == 0
 
 
 def test_rss_extraction():
@@ -44,6 +45,7 @@ def test_feeds_helpers():
     assert len(feeds.determine_feed('<html><meta><link rel="alternate" href="https://www.theguardian.com/international/rss" title="RSS" type="application/rss+xml"></meta><body/></html>')) == 1
     # no comments wanted
     assert len(feeds.determine_feed('<html><meta><link rel="alternate" type="application/rss+xml" title="Feed" href="https://example.org/blog/comments-feed/"/></meta><body/></html>')) == 0
+
 
 def test_cli_behavior():
     '''Test command-line interface with respect to feeds'''
