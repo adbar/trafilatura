@@ -25,7 +25,10 @@ HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
 def sitemap_search(url, target_lang=None):
     'Look for sitemaps for the given URL and gather links.'
     domain = extract_domain(url)
-    sitemapurl = url.rstrip('/') + '/sitemap.xml'
+    if url.endswith('.xml') or url.endswith('sitemap'):
+        sitemapurl = url
+    else:
+        sitemapurl = url.rstrip('/') + '/sitemap.xml'
     sitemapurls, linklist = process_sitemap(sitemapurl, domain, target_lang)
     if sitemapurls == [] and len(linklist) > 0:
         return linklist
