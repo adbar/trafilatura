@@ -7,40 +7,40 @@ matrix:
   include:
     - name: "Python 3.4 on Linux with minimal dependencies"
       python: 3.4
-      env: TOXENV=py34
+      env: TOXENV=py
       env: MINIMAL=true
     - name: "Python 3.5 on Linux"
       python: 3.5
-      env: TOXENV=py35
+      env: TOXENV=py
       env: MINIMAL=false
     - name: "Python 3.6 on Linux"
       python: 3.6
-      env: TOXENV=py36
+      env: TOXENV=py
       env: MINIMAL=false
     - name: "Python 3.7 on Linux"
       python: 3.7
-      env: TOXENV=py37
+      env: TOXENV=py
       env: MINIMAL=false
     - name: "Python 3.8 on Linux with minimal dependencies"
       dist: xenial
       python: 3.8
       env: MINIMAL=true
-      env: TOXENV=py38
+      env: TOXENV=py
     - name: "Python 3.8 on Linux"
       dist: xenial
       python: 3.8
-      env: TOXENV=py38
+      env: TOXENV=py
       env: MINIMAL=false
       after_success: codecov  # use this version for the tests!
     - name: "Python 3.9 on Linux with minimal dependencies"
       dist: xenial
       python: 3.9-dev
-      env: TOXENV=py39
+      env: TOXENV=py
       env: MINIMAL=true
     - name: "Python Nightly on Linux with minimal dependencies"
       dist: bionic
       python: nightly
-      env: TOXENV=py39
+      env: TOXENV=py
       env: MINIMAL=true
     - name: "Python Nightly on Linux"
       dist: bionic

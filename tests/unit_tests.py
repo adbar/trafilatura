@@ -235,7 +235,7 @@ def test_filters():
     assert extract(doc) is not None
     doc = html.fromstring('<html><body>' + my_p*(MAX_OUTPUT_TREE_LENGTH + 1) + '</body></html>')
     assert extract(doc) is None
-    my_p = '<p><hi>abc</hi></p>'
+    my_p = '<p><hi rend="#i">abc</hi></p>'
     doc = html.fromstring('<html><body>' + my_p*(MAX_OUTPUT_TREE_LENGTH + 1) + '</body></html>')
     assert extract(doc, include_formatting=True) is None
     doc = html.fromstring('<html><body>' + my_p*(MAX_OUTPUT_TREE_LENGTH - 1) + '</body></html>')
