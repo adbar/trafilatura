@@ -19,19 +19,6 @@ As well as these compendia:
 - `Basic Bash Command Line Tips You Should Know <https://www.freecodecamp.org/news/basic-linux-commands-bash-tips-you-should-know/>`_
 
 
-Quickstart
-----------
-
-.. code-block:: bash
-
-    $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
-    # outputs main content and comments as plain text ...
-    $ trafilatura --xml --nocomments -u "URL..."
-    # outputs main content without comments as XML ...
-    $ trafilatura -h
-    # displays help message
-
-
 Usage
 -----
 
@@ -39,10 +26,12 @@ URLs can be used directly (``-u/--URL``):
 
 .. code-block:: bash
 
-    $ trafilatura -u https://de.creativecommons.org/index.php/was-ist-cc/
-    $ # outputs main content in plain text format ...
+    $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
+    # outputs main content and comments as plain text ...
     $ trafilatura --xml --URL "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     $ # outputs main text with basic XML structure ...
+    $ trafilatura -h
+    # displays help message
 
 You can also pipe a HTML document (and response body) to trafilatura:
 
@@ -51,7 +40,74 @@ You can also pipe a HTML document (and response body) to trafilatura:
     $ cat myfile.html | trafilatura # use the contents of an already existing file
     $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura # use a custom download
 
-The ``-i/--inputfile`` option allows for bulk download and processing of a list of URLs from a file listing one link per line. Beware that there should be a tacit scraping etiquette and that a server may block you after the download of a certain number of pages from the same website/domain in a short period of time. In addition, some website may block the requests `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
+
+Output format
+-------------
+
+Output as TXT without metadata is the default, another format can be selected in two different ways:
+
+-  ``--csv``, ``--json``, ``--xml`` or ``--xmltei``
+-  ``-out`` or ``--output-format`` {txt,csv,json,xml,xmltei}
+
+
+Process a list of links
+-----------------------
+
+The ``-i/--inputfile`` option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
+
+Beware that there should be a tacit scraping etiquette and that a server may block you after the download of a certain number of pages from the same website/domain in a short period of time. In addition, some website may block the ``requests`` `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
+
+Two major command line arguments are necessary here:
+
+-  ``-i`` or ``--inputfile`` to select an input list to read links from
+-  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
+
+The output directory can be created on demand, but it must be writable.
+
+.. code-block:: bash
+
+    $ trafilatura -i list.txt -o txtfiles	# output as raw text
+    $ trafilatura --xml -i list.txt -o xmlfiles	# output in XML format
+
+
+Backup of HTML sources can be useful for archival and further processing:
+
+.. code-block:: bash
+
+    $ trafilatura --inputfile links.txt --outputdir converted/ --backup-dir html-sources/ --xml
+
+
+Link discovery
+--------------
+
+Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS) or `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_.
+
+The ``--list`` option is useful to list URLs prior to processing. URLs can be gathered straight from the homepage (using heuristics) or using a particular URL if it is already known.
+
+Feeds
+^^^^^
+
+-  ``trafilatura --feed "https://www.dwds.de/" --list``
+-  ``trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list``
+
+Sitemaps
+^^^^^^^^
+
+-  ``trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list``
+-  ``trafilatura --sitemap "https://www.sitemaps.org/" --list``
+
+URL inspection prior to download and processing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+    $ trafilatura --sitemap "https://www.sitemaps.org/" --list > mylist.txt
+    $ trafilatura -i mylist.txt -o myfiles/
+
+
+Further information
+-------------------
+
 
 For all usage instructions see ``trafilatura -h``:
 

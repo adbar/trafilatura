@@ -80,12 +80,12 @@ Hier ist eine Empfehlung für die Kommandozeile, die eine Datei namens ``linklis
 
 Diese Linkliste kann zunächst gefiltert werden, um deutschsprachige, inhaltsreiche Webseiten zu bevorzugen. Der dafür nötige Softwareteil, `courlan <https://github.com/adbar/courlan>`_ wird mit ``trafilatura`` installiert:
 
-``courlan --language --strict --inputfile linkliste-roh.txt --outputfile linkliste-gefiltert.txt``
+``courlan --language de --strict --inputfile linkliste-roh.txt --outputfile linkliste-gefiltert.txt``
 
 Die Ausgabe von ``trafilatura`` erfolgt auf zweierlei Weise: die extrahierten Texte (TXT-Format) im Verzeichnis ``ausgabe`` und eine Kopie der heruntergeladenen Webseiten unter ``html-quellen`` (zur Archivierung und ggf. erneuten Verarbeitung):
 
 ``trafilatura --inputfile linkliste.txt --outputdir ausgabe/ --backup-dir html-quellen/``
 
-So werden TXT-Dateien ohne Metadaten ausgegeben. Wenn Sie ``--csv`` oder ``--xml`` hinzufügen, werden Metadaten einbezogen und das entsprechende Format für die Ausgabe bestimmt.
+So werden TXT-Dateien ohne Metadaten ausgegeben. Wenn Sie ``--csv``, ``--json``, ``--xml`` oder ``--xmltei`` hinzufügen, werden Metadaten einbezogen und das entsprechende Format für die Ausgabe bestimmt.
 
 Für bis zu einige Tausend URLs gelingt dieses Verfahren problemlos von einem Laptop aus, für mehr URLs ist ein Server notwendig, vor allem um lange Wartezeiten zu managen (zunächst werden die Seiten nämlich heruntergeladen).

@@ -31,7 +31,7 @@ Filtering with coURLan
 
 It is better to examine a list of URLs for content adequacy, most notably to make download and extraction more efficient by removing unwanted and redundant content. The `courlan <https://github.com/adbar/courlan>`_ software package is installed along with ``trafilatura``. It separates the wheat from the chaff by focusing on non-spam text-rich HTML pages, and can be used on the command-line:
 
-``courlan --inputfile linkliste-roh.txt --outputfile linkliste-gefiltert.txt``
+``courlan --inputfile raw-linklist.txt --outputfile filtered-linklist.txt``
 
 
 Custom filtering
@@ -69,7 +69,7 @@ Two major command line arguments are necessary here:
 
 The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
 
-The output directory can be created on demand, but it must be  writable.
+The output directory can be created on demand, but it must be writable.
 
 .. code-block:: bash
 
