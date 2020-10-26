@@ -47,7 +47,7 @@ def extract_json_author(elemtext, regular_expression):
             break
     # final trimming
     if json_authors:
-        return ', '.join(json_authors).strip(', ')
+        return '; '.join(json_authors).strip('; ')
     return None
 
 
