@@ -32,7 +32,6 @@ from trafilatura.core import baseline, extract, process_record, sanitize_tree, t
 from trafilatura.metadata import METADATA_LIST
 from trafilatura.filters import duplicate_test, textfilter
 from trafilatura.lru import LRUCache
-from trafilatura.settings import MAX_OUTPUT_TREE_LENGTH
 from trafilatura import utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -232,14 +231,14 @@ def test_filters():
     ## recursion limit
     my_p = '<p>abc</p>'
     doc = html.fromstring('<html><body>' + my_p*50 + '</body></html>')
-    assert extract(doc) is not None
-    doc = html.fromstring('<html><body>' + my_p*(MAX_OUTPUT_TREE_LENGTH + 1) + '</body></html>')
-    assert extract(doc) is None
+    assert extract(doc, max_tree_size=500) is not None
+    doc = html.fromstring('<html><body>' + my_p*(501) + '</body></html>')
+    assert extract(doc, max_tree_size=500) is None
     my_p = '<p><hi rend="#i">abc</hi></p>'
-    doc = html.fromstring('<html><body>' + my_p*(MAX_OUTPUT_TREE_LENGTH + 1) + '</body></html>')
-    assert extract(doc, include_formatting=True) is None
-    doc = html.fromstring('<html><body>' + my_p*(MAX_OUTPUT_TREE_LENGTH - 1) + '</body></html>')
-    assert extract(doc, include_formatting=True) is not None
+    doc = html.fromstring('<html><body>' + my_p*(501) + '</body></html>')
+    assert extract(doc, include_formatting=True, max_tree_size=500) is None
+    doc = html.fromstring('<html><body>' + my_p*(499) + '</body></html>')
+    assert extract(doc, include_formatting=True, max_tree_size=500) is not None
     ## deduplication
     doc = html.fromstring('<html><body>' + my_p*50 + '</body></html>')
     lru_test = LRUCache(maxsize=2)

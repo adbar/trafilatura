@@ -23,8 +23,7 @@ from .htmlprocessing import (convert_tags, discard_unwanted,
                              link_density_test, process_node, tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
-                       MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, MAX_OUTPUT_TREE_LENGTH,
-                       TAG_CATALOG)
+                       MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, trim, txttocsv
 from .xml import (add_xml_meta, build_json_output, build_xml_output,
                   build_tei_output, control_xml_output, xmltotxt)
@@ -548,7 +547,8 @@ def map_format(output_format, csv_output, json_output, xml_output, tei_output):
 def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_comments=True, output_format='txt', target_language=None,
                     include_tables=True, include_formatting=False, deduplicate=False,
-                    date_extraction_params=None, with_metadata=False, url_blacklist=set()):
+                    date_extraction_params=None, with_metadata=False, max_tree_size=None,
+                    url_blacklist=set()):
     '''Main process for text extraction returning Python variables'''
     try:
         # load data
@@ -605,12 +605,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                 LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
-        if len(postbody) > MAX_OUTPUT_TREE_LENGTH:
-            LOGGER.warning('output tree too long: %s', len(postbody))
-            etree.strip_tags(postbody, 'hi')
-            if len(postbody) > MAX_OUTPUT_TREE_LENGTH:
-                LOGGER.error('output tree too long: %s, discarding file', len(postbody))
-                raise ValueError
+        if max_tree_size is not None:
+            if len(postbody) > max_tree_size:
+                LOGGER.warning('output tree too long: %s', len(postbody))
+                etree.strip_tags(postbody, 'hi')
+                if len(postbody) > max_tree_size:
+                    LOGGER.error('output tree too long: %s, discarding file', len(postbody))
+                    raise ValueError
         # size checks
         if len_comments < MIN_EXTRACTED_COMM_SIZE:
             LOGGER.info('not enough comments %s', url)
@@ -638,7 +639,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False, deduplicate=False,
-            date_extraction_params=None, with_metadata=False, url_blacklist=set()):
+            date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=set()):
     '''Wrapper for text extraction and conversion to chosen output format'''
     # metadata mapping for compatibility
     output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
@@ -649,7 +650,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         target_language=target_language, include_tables=include_tables,
         include_formatting=include_formatting, deduplicate=deduplicate,
         date_extraction_params=date_extraction_params, with_metadata=with_metadata,
-        url_blacklist=url_blacklist
+        max_tree_size=max_tree_size, url_blacklist=url_blacklist
         )
     if docmeta is None:
         return None
