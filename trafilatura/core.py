@@ -16,7 +16,7 @@ from copy import deepcopy
 from lxml import etree, html
 
 # own
-from .external import justext_rescue, sanitize_tree, try_readability
+from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import content_fingerprint, duplicate_test, language_filter, text_chars_test
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
@@ -429,11 +429,12 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.info('using generic algorithm: %s', url)
     else:
         LOGGER.info('using custom extraction: %s', url)
-    # override faulty extraction
-    if body.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//image|//img|//input|//label|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
-        body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
-        if jt_result is True:
-            LOGGER.debug('justext length %s', len_text)  #MIN_EXTRACTED_SIZE:
+    # override faulty extraction # len_text < MIN_EXTRACTED_SIZE*10
+    if body.xpath(SANITIZED_XPATH):
+        body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
+        if jt_result is True: # and not len_text > 2*len_text2:
+            LOGGER.debug('using justext, length: %s', len_text2)  #MIN_EXTRACTED_SIZE:
+            body, text, len_text = body2, text2, len_text2
         else:
             # post-processing: remove unwanted sections
             body, text, len_text = sanitize_tree(body, include_formatting)

@@ -40,6 +40,9 @@ from .xml import TEI_VALID_TAGS
 
 LOGGER = logging.getLogger(__name__)
 
+SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
+
+
 class LXMLDocument(Document):
     '''Sub-class of readability.Document accepting parsed trees as input'''
     def __init__(self, input_, *args, **kwargs):
@@ -90,12 +93,11 @@ def try_justext(tree, url, target_language):
         LOGGER.error('justext %s %s', err, url)
         result_body = None
     else:
-        for paragraph in paragraphs:
-            if not paragraph.is_boilerplate:
-                #if duplicate_test(paragraph) is not True:
-                elem = etree.Element('p')
-                elem.text = paragraph.text
-                result_body.append(elem)
+        for paragraph in [p for p in paragraphs if not p.is_boilerplate]:
+            #if duplicate_test(paragraph) is not True:
+            elem = etree.Element('p')
+            elem.text = paragraph.text
+            result_body.append(elem)
     return result_body
 
 
@@ -115,7 +117,7 @@ def justext_rescue(tree, url, target_language, postbody, len_text, text):
 def sanitize_tree(tree, include_formatting=False):
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
     # delete unnecessary elements
-    for elem in tree.xpath('//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'):
+    for elem in tree.xpath(SANITIZED_XPATH):
         elem.getparent().remove(elem)
     etree.strip_tags(tree, MANUALLY_STRIPPED + ['a', 'span'])
     tree = prune_html(tree)
