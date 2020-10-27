@@ -88,7 +88,13 @@ def link_density_test(element):
     flag = False
     if links_xpath:
         elemlen = len(trim(element.text_content()))
-        if elemlen < 100:
+        if element.getnext() is None:
+            limitlen = 200
+            threshold = 0.75
+        else:
+            limitlen = 100
+            threshold = 0.9
+        if elemlen < limitlen:
             flag = True
         #if element.getnext() is None and len(links_xpath) < 5:
         #    flag = True
@@ -96,14 +102,32 @@ def link_density_test(element):
             linklen = 0
             for subelem in links_xpath:
                 linklen += len(trim(subelem.text_content()))
-            if linklen > 0.9*elemlen:
+            LOGGER.debug('list link text: %s / total: %s', linklen, elemlen)
+            if linklen > threshold*elemlen:
                 return True
-            #elif 250 < elemlen < 300 and linklen > 0.85*elemlen:
-            #    return True
     return False
 
 
-def convert_tags(tree, include_formatting=False):
+def link_density_test_tables(element):
+    '''Remove tables which are rich in links (probably boilerplate)'''
+    #if element.getnext() is not None:
+    #    return False
+    links_xpath = element.xpath('.//link')
+    if links_xpath:
+        elemlen = len(trim(element.text_content()))
+        #if element.getnext() is None and len(links_xpath) < 5:
+        #    return True
+        linklen = 0
+        for subelem in links_xpath:
+            linklen += len(trim(subelem.text_content()))
+        # if (elemlen < 300 and linklen > 0.9*elemlen) or (elemlen > 300 and linklen > 0.5*elemlen):
+        LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
+        if elemlen > 1000 and linklen > 0.5*elemlen:
+            return True
+    return False
+
+
+def convert_tags(tree, include_formatting=False, include_tables=False):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # ul/ol → list / li → item
     for elem in tree.iter('ul', 'ol', 'dl'):
@@ -112,13 +136,16 @@ def convert_tags(tree, include_formatting=False):
             subelem.tag = 'item'
         for subelem in elem.iter('a'):
             subelem.tag = 'link'
-            #if subelem.text is not None:
-            #    subelem.text = ' ' + subelem.text + ' '
+    for elem in tree.xpath('//div//a'):
+        elem.tag = 'link'
+    if include_tables is True:
+        for elem in tree.xpath('//table//a'):
+            elem.tag = 'link'
     # delete links for faster processing
     etree.strip_tags(tree, 'a')
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
-        # etree.strip_tags(elem, 'span')
+        #etree.strip_tags(elem, 'span')
         elem.tag = 'head'
         elem.attrib.clear()
         # elem.set('rendition', '#i')

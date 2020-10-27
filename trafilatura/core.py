@@ -20,7 +20,7 @@ from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readab
 from .filters import content_fingerprint, duplicate_test, language_filter, text_chars_test
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
-                             link_density_test, process_node, tree_cleaning)
+                             link_density_test, link_density_test_tables, process_node, tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
@@ -294,31 +294,26 @@ def extract_content(tree, include_tables=False, deduplicate=True):
         # remove elements by link density
         for elem in subtree.iter('list'):
             if link_density_test(elem) is True:
-                #previous = elem.getprevious()
-                # delete whole list
                 elem.getparent().remove(elem)
-                # clean-up previous title
-                #if previous is not None and previous.tag == 'head':
-                #    print(previous.tag, previous.text, previous.tail)
-                #    previous.getparent().remove(previous)
-            else:
-                elem.attrib.clear()
-            #for subelem in elem.iter('item'):
-            #    subelem.attrib.clear()
-        # skip if empty tree
-        if len(subtree) == 0:
-            continue
-        etree.strip_tags(subtree, 'a', 'link', 'span')
+        for elem in subtree.iter('div'):
+            if link_density_test(elem) is True:
+                elem.getparent().remove(elem)
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?
         if include_tables is True:
             potential_tags.add('table')
+            for elem in subtree.iter('table'):
+                if link_density_test_tables(elem) is True:
+                    elem.getparent().remove(elem)
+        # skip if empty tree
+        if len(subtree) == 0:
+            continue
         # no paragraphs containing text
         if not subtree.xpath('//p//text()'):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
+        etree.strip_tags(subtree, 'link', 'span') # 'a',
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
-        # print(html.tostring(subtree, pretty_print=True, encoding='unicode'))
         # extract content
         # list(filter(None.__ne__, processed_elems))
         result_body.extend([e for e in
@@ -581,7 +576,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         cleaned_tree = tree_cleaning(tree, include_tables)
 
         # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree, include_formatting)
+        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables)
 
         # comments first, then remove
         if include_comments is True:
