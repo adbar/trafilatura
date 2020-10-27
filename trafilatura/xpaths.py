@@ -43,8 +43,7 @@ BODY_XPATH = [
 # or starts-with(@id, "story") or contains(@class, "story")
 # or @class="content" or @id="content"
 # starts-with(@class, "content ") or contains(@class, " content")
-# '//body',
-# '//div[contains(@class, "text")]',
+# '//div[contains(@class, "text") or contains(@class, "article-wrapper") or contains(@class, "content-wrapper")]',
 # '//div[contains(@class, "article-wrapper") or contains(@class, "content-wrapper")]',
 # |//*[(self::article or self::div or self::main or self::section)][contains(@class, "article") or contains(@class, "Article")]
 # or @class="content" or @class="Content"
@@ -109,14 +108,13 @@ DISCARD_XPATH = [
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
-    or contains(@style, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden")]''', # or contains(@class, "hidden ")
+    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden")]''',
 ]
 # conflicts:
 # .//header # contains(@id, "header") or contains(@class, "header") or
-# './/*[(self::div or self::section)][contains(@class, "clearfix")]',
 # contains(@id, "link") or contains(@class, "link")
-# contains(@class, "infobox") or
 # class contains cats
+# or contains(@class, "hidden ")
 
 
 COMMENTS_DISCARD_XPATH = [
