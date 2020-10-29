@@ -259,7 +259,7 @@ def write_fullheader(header, docmeta):
         idno = etree.SubElement(publicationstmt_a, 'idno', type='id')
         idno.text = docmeta['id']
     notesstmt = etree.SubElement(filedesc, 'notesStmt')
-    note = etree.SubElement(notesstmt, 'note', ana='fingerprint')
+    note = etree.SubElement(notesstmt, 'note', type='fingerprint')
     note.text = docmeta['fingerprint']
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_bibl = etree.SubElement(sourcedesc, 'bibl')
