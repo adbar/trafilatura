@@ -398,6 +398,9 @@ def extract_comments(tree, dedupbool):
 def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, include_formatting):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
+    # bypass
+    #if len_text > MIN_EXTRACTED_SIZE*10:
+    #    return body, text, len_text
     # try with readability
     temppost_algo = try_readability(backup_tree, url)
     algo_text = trim(' '.join(temppost_algo.itertext()))
