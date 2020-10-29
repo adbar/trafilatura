@@ -27,6 +27,7 @@ from jparser import PageModel
 # from libextract.api import extract as lib_extract
 from newspaper import fulltext
 from newsplease import NewsPlease
+from readabilipy import simple_json_from_html_string
 from readability import Document
 from trafilatura import extract
 
@@ -273,6 +274,18 @@ def run_jparser(htmlstring):
     return sanitize(returnstring)
 
 
+def run_readabilipy(htmlstring):
+    '''try with the dragnet module'''
+    try:
+        article = simple_json_from_html_string(htmlstring, use_readability=True)
+    except ValueError:
+        return ''
+    returnlist = []
+    for textelem in article['plain_text']:
+        returnlist.append(textelem['text'])
+    return '\n'.join(returnlist) # sanitize(content)
+
+
 #def run_libextract(htmlstring):
 #    '''try with the libextract module'''
 #    textlist = list()
@@ -330,7 +343,7 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
 everything.update(template_dict)
 baseline_result.update(template_dict)
@@ -347,6 +360,7 @@ dragnet_result.update(template_dict)
 boilerpipe_result.update(template_dict)
 newsplease_result.update(template_dict)
 jparser_result.update(template_dict)
+readabilipy_result.update(template_dict)
 
 
 i = 0
@@ -496,7 +510,18 @@ for item in EVAL_PAGES:
     jparser_result['false positives'] += fp
     jparser_result['true negatives'] += tn
     jparser_result['false negatives'] += fn
+    # readabilipy
+    start = time.time()
+    result = run_readabilipy(htmlstring)
+    readabilipy_result['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    readabilipy_result['true positives'] += tp
+    readabilipy_result['false positives'] += fp
+    readabilipy_result['true negatives'] += tn
+    readabilipy_result['false negatives'] += fn
+    # counter
     i += 1
+
 
 print('number of documents:', i)
 print('nothing')
@@ -567,6 +592,11 @@ print('readability')
 print(readability_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readability_result)))
 print("time diff.: %.2f" % (readability_result['time'] / baseline_result['time']))
+
+print('readabilipy')
+print(readabilipy_result)
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(readabilipy_result)))
+print("time diff.: %.2f" % (readabilipy_result['time'] / baseline_result['time']))
 
 print('trafilatura')
 print(trafilatura_result)
