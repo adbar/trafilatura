@@ -148,7 +148,7 @@ def load_html(htmlobject):
     # try to detect encoding and convert to string
     if isinstance(htmlobject, bytes):
         # test
-        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore'):
+        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore').lower():
             check_flag = True
         guessed_encoding = detect_encoding(htmlobject)
         if guessed_encoding is not None:
@@ -166,7 +166,7 @@ def load_html(htmlobject):
     # use string if applicable
     elif isinstance(htmlobject, str):
         # test
-        if 'html' not in htmlobject[:50]:
+        if 'html' not in htmlobject[:50].lower():
             check_flag = True
         try:
             tree = html.fromstring(htmlobject, parser=HTML_PARSER)
@@ -181,11 +181,10 @@ def load_html(htmlobject):
     # default to None
     else:
         LOGGER.error('this type cannot be processed: %s', type(htmlobject))
-    # further test
-    # test if it's HTML
+    # further test: is it (well-formed) HTML at all?
     if tree is not None and check_flag is True:
         if len(tree) < 2:
-            LOGGER.error('Parse tree empty: not valid HTML')
+            LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
             tree = None
     #if tree is None:
     #    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):

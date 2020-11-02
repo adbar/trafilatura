@@ -124,6 +124,10 @@ def test_exotic_tags(xmloutput=False):
         content = etree.fromstring(f.read())
     res = xml.check_tei(content, 'http://dummy')
     assert etree.tostring(res).startswith(b'<html>\n<text>\n<body>\n<div>\n\n<hi rend="uppercase">Hello</hi>\n<p>Teletype text</p>')
+    # misformed HTML declaration
+    htmlstring = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 2012"http://www.w3.org/TR/html4/loose.dtd"><html><head></head><body><p>ABC</p></body></html>'
+    # outputs '012"http://www.w3.org/TR/html4/loose.dtd">\nABC'
+    assert 'ABC' in extract(htmlstring)
 
 
 def test_lrucache():
