@@ -38,7 +38,7 @@ HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False
 HTML_CLEANER.style = False
 HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
-HTML_CLEANER.kill_tags = [] # MANUALLY_CLEANED
+HTML_CLEANER.kill_tags = MANUALLY_CLEANED
 
 
 
@@ -93,10 +93,10 @@ def link_density_test(element):
             threshold = 0.75
         else:
             limitlen = 100
-            threshold = 0.9
+            threshold = 0.75
         if elemlen < limitlen:
             flag = True
-        #if element.getnext() is None and len(links_xpath) < 5:
+        #elif element.getnext() is None and len(links_xpath) < 5:
         #    flag = True
         if flag is True:
             linklen = 0
@@ -115,15 +115,14 @@ def link_density_test_tables(element):
     links_xpath = element.xpath('.//link')
     if links_xpath:
         elemlen = len(trim(element.text_content()))
-        #if element.getnext() is None and len(links_xpath) < 5:
-        #    return True
-        linklen = 0
-        for subelem in links_xpath:
-            linklen += len(trim(subelem.text_content()))
-        # if (elemlen < 300 and linklen > 0.9*elemlen) or (elemlen > 300 and linklen > 0.5*elemlen):
-        LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
-        if elemlen > 1000 and linklen > 0.5*elemlen:
-            return True
+        if elemlen > 1000:
+            linklen = 0
+            for subelem in links_xpath:
+                linklen += len(trim(subelem.text_content()))
+            # if (elemlen < 300 and linklen > 0.9*elemlen) or (elemlen > 300 and linklen > 0.5*elemlen):
+            LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
+            if linklen > 0.5*elemlen:
+                return True
     return False
 
 

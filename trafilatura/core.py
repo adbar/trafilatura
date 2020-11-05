@@ -336,9 +336,6 @@ def extract_content(tree, include_tables=False, deduplicate=True):
     len_text = len(temp_text)
     if len(result_body) == 0 or len_text < MIN_EXTRACTED_SIZE:
         result_body = recover_wild_paragraphs(tree, result_body, deduplicate=deduplicate)
-        #search_tree = discard_unwanted(tree)
-        #search_tree = prune_html(search_tree)
-        #result_body, _, _ = baseline(search_tree)
         temp_text = trim(' '.join(result_body.itertext()))
         len_text = len(temp_text)
     # filter output
@@ -416,7 +413,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_algo > 2*len_text:
         algo_flag = True
-    elif not body.xpath('//p//text()') and len_algo > 0:
+    elif not body.xpath('//p//text()') and len_algo > MIN_EXTRACTED_SIZE:
         algo_flag = True  # borderline case
     else:
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
@@ -464,7 +461,7 @@ def baseline(filecontent):
     # scrape from json text
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and '"article' in elem.text:
-            mymatch = re.search(r'"article[Bb]ody":"(.+?)","', elem.text)
+            mymatch = re.search(r'"articlebody":"(.+?)","', elem.text, re.I)
             if mymatch:
                 postbody = etree.Element('body')
                 elem = etree.Element('p')
