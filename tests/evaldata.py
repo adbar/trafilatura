@@ -5959,4 +5959,354 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': 'AT',  # if obvious: DE, CH, AT
 },
+'https://flawlessfood.co.uk/olive-herb-focaccia-bread/': {
+    'file': 'flawlessfood.co.uk.olive.html',  # stays empty until download
+    'author': 'Kay',
+    'title': 'Olive & Herb Focaccia Bread',
+    'date': '2020-04-12',
+    'description': 'Oven-baked Italian Olive &amp; Herb Focaccia Bread with fantastic flavours of olive oil, garlic, sundried tomato, olives and herbs a great side or starter',  # in HTML source
+    'categories': [''],
+    'tags': ['Focaccia', 'Focaccia Bread', 'Garlic Focaccia', 'Italian Focaccia Bread', 'Olive Bread', 'Sundried tomato and garlic Focaccia bread'],
+    'with': ['Oven-baked Italian Olive & Herb Focaccia', 'oil mixture for dipping the focaccia bread into.', 'Carbohydrates: 31g'],  # 3 segments
+    'without': ['email address will not be published. Required fields', 'We occasionally get sponsored by products, we', 'We publish new recipes weekly, so keep'],  # 3 segments
+    'comments': ['Yum how delicious! Love the special touch of', 'Great to hear Jenny!', 'It is a great bread, hope you get'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UK',  # if obvious: DE, CH, AT
+},
+'https://sportowefakty.wp.pl/zuzel/relacja/110331/fogo-unia-leszno-rm-solar-falubaz-zielona-gora': {
+    'file': 'sportowefakty.wp.pl.falubaz.html',  # stays empty until download
+    'author': '',
+    'title': 'RM Solar Falubaz Zielona Góra',
+    'date': '',
+    'description': 'Zobacz relację live z wydarzenia Fogo Unia Leszno - RM Solar Falubaz Zielona Góra – 57 : 33, 28.09.2020, Żużel, PGE Ekstraliga. Wyniki online, komentarze, informacje.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Znów lepszy moment startowy miejscowych, lecz', 'W Lesznie zaczął mocno padać deszcz.', 'Stadion im. Alfreda Smoczyka w Lesznie'],  # 3 segments
+    'without': ['© 1995-2020 Grupa WP', 'Polskie gwiazdy', 'Zobacz również'],  # 3 segments
+    'comments': ['W rundzie zasadniczej zespół z Zielonej Góry zaskoczy', 'pierwszym meczu w tej parze półfinałowe', 'Wylosowano I zestaw startowy.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.healthline.com/nutrition/ways-to-measure-body-fat': {
+    'file': 'healthline.com.fat.html',  # stays empty until download
+    'author': 'Grant Tinsley',
+    'title': 'The 10 Best Ways to Measure Your Body Fat Percentage',
+    'date': '2018-04-29',
+    'description': 'Focusing on body fat percentage instead of weight is much more useful to track fat loss progress. Here are the 10 best ways to measure your body fat percentage.',  # in HTML source
+    'categories': ['Nutrition'],
+    'tags': [''],
+    'with': ['It can be frustrating to step on the scale', 'Skinfold measurements have been used to estimate', 'Some methods, such as skinfold measurements, circumference'],  # 3 segments
+    'without': ['to improve your health or lose weight, ', '© 2005-2020 Healthline Media a Red Ventures', 'Filter out the noise and nurture your inbox'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.realsimple.com/home-organizing/gardening/outdoor/hydrangea-care': {
+    'file': 'realsimple.com.hydrangea.html',  # stays empty until download
+    'author': 'Sarah Yang',
+    'title': 'How to Care for Hydrangeas to Get the Most Beautiful Blooms on the Block',
+    'date': '2019-05-06',
+    'description': 'It&#x27;s not too late to start a garden this year. Here are the best fall plants, including beautiful hydrangea, to grow right now.',  # in HTML source
+    'categories': [''],
+    'tags': ['Real Simple', 'Home Organizing', 'Gardening' 'Outdoor Gardening'],
+    'with': ['Hydrangeas may be just about everywhere', 'Make sure that the bottom of your container has holes', '1. Choose the Right Pot'],  # 3 segments
+    'without': ['choosing your hydrangeas at the store, look for', 'Fall is the time of year when root', 'Sarah Yang'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://thepostpartumparty.com/how-to-set-up-a-baby-nursery-in-a-small-space': {
+    'file': 'thepostpartumparty.com.nursery.html',  # stays empty until download
+    'author': 'Amy Motroni',
+    'title': '20 Clever Small Nursery Ideas When You’re Tight On Space + Free Printable',
+    'date': '2019-07-24',
+    'description': 'Set up your baby nursery in a small space. With these simple small nursery ideas, you can set up a functional nursery, even if you&#039;re tight on space.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Pick products that can serve multiple purposes', 'Sometimes space is in the eye of the beholder', 'the idea of where to put everything can'],  # 3 segments
+    'without': ['must-haves, and so much more.', 'Notify me of follow-up comments by email.', 'The Postpartum Party does not offer medical advice'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.instyle.com/beauty/wigs-for-black-women-cancer': {
+    'file': 'instyle.com.cancer.html',  # stays empty until download
+    'author': 'Kayla Greaves',
+    'title': 'Black Women Battling Breast Cancer Deserve More Wig Options, According to Coils to Locs Founder Dianne Austin',
+    'date': '2020-10-13',
+    'description': 'Dianne Austin is the co-founder of Coils to Locs, a company that creates medical wigs for Black women battling cancer that match the texture of their natural hair. ',  # in HTML source
+    'categories': ['Beauty'],
+    'tags': [''],
+    'with': ['decided to ditch her relaxer and transition back', 'to see themselves provides privacy and dignity.', 'All women, regardless of hair type, should'],  # 3 segments
+    'without': ['Scroll Down For the Next Article', 'A lot of the royal families had these', 'On the other hand, Black doo-wop girl'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.dailymail.co.uk/news/article-8772683/Chef-Jamie-Oliver-joins-Mail-Sundays-war-toxic-food.html': {
+    'file': 'dailymail.co.uk.food.html',  # stays empty until download
+    'author': 'Glen Owen And Brendan Carlin For The Mail On Sunday',
+    'title': "Jamie's war on toxic US food: Chef and fitness guru Joe Wicks lead plea to Boris Johnson to block sub-standard products from flooding into the UK under post-Brexit trade deals",
+    'date': '2020-09-26',
+    'description': 'The move comes as International Trade Secretary Liz Truss faces growing Parliamentary pressure to bolster protections against poor quality foreign food.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['A powerful alliance of chefs, celebrities and charities', ' would also help secure the goal set out so', 'Even George Eustice, the current Environment Secretary'],  # 3 segments
+    'without': ['As many as a million young people', "The letter also argues that 'the British public", 'As things stand the Government is telling Tory MP'],  # 3 segments
+    'comments': ['Cont) Some Chefs in Britain cannot even COOK MEAT PROPERLY', 'vegetarian animals, as in the EU! No BSE in the US!', 'If we want distinctively British standards and regulation'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UK',  # if obvious: DE, CH, AT
+},
+'https://www.independent.co.uk/news/uk/politics/coronavirus-false-reporting-contact-fine-penalty-b671230.html': {
+    'file': 'independent.co.uk.penalty.html',  # stays empty until download
+    'author': 'Andrew Woodcock',
+    'title': 'Coronavirus: £1,000 fine for falsely reporting a contact to force them to self-isolate',
+    'date': '2020-09-28',
+    'description': 'Pubs and bars face penalties for playing loud music or allowing singing and dancing ',  # in HTML source
+    'categories': [''],
+    'tags': ['pubs', 'regulations', 'Coronavirus'],
+    'with': ['Anyone falsely naming an antagonist as a coronavirus contact', 'But it is understood that the ban on giving', 'New fines for failure to self-isolate, starting'],  # 3 segments
+    'without': ['Code of conduct and complaints', 'Share your thoughts and debate the big issues', 'Popular videos'],  # 3 segments
+    'comments': ['Is this fake news?  I cannot', 'Rather than trying to force people to isolate', 'At least we don&amp;#x27;t have to go to prayers?'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UK',  # if obvious: DE, CH, AT
+},
+'https://stardewvalleywiki.com/Penny': {
+    'file': 'stardewvalleywiki.com.penny.html',  # stays empty until download
+    'author': '',
+    'title': 'Penny',
+    'date': '2020-10-25',
+    'description': "Penny is a villager who lives in Pelican Town. She's one of the twelve characters available to marry. Her trailer is just east of the center of town, west of the river.",  # in HTML source
+    'categories': ['Marriage candidates'],
+    'tags': [''],
+    'with': ['Penny lives with her mom, Pam, in a little trailer by', 'Penny is a villager who lives in Pelican Town', 'A fermented beverage made from honey.'],  # 3 segments
+    'without': ['Content is available under', 'Privacy policy', 'Admin noticeboard'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': 'CC BY-NC-SA 3.0',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://statisticsglobe.com/change-font-size-of-ggplot2-plot-in-r-axis-text-main-title-legend': {
+    'file': 'statisticsglobe.com.ggplot2.html',  # stays empty until download
+    'author': 'oachim Schork',
+    'title': 'Change Font Size of ggplot2 Plot in R (5 Examples) | Axis Text, Main Title & Legend',
+    'date': '',
+    'description': 'How to modify font sizes of ggplot2 graphics in R - 5 programming examples - Change font size of axes, main title &amp; legend - Reproducible R code',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['explain how to increase and decrease the text', 'y = Probability', 'If you have any further questions, please'],  # 3 segments
+    'without': ['Get regular updates on the latest tutorials', 'On this website, I provide statistics tutorials', 'Related Tutorials'],  # 3 segments
+    'comments': ['I posted on your youtube channel a question', 'Very helpful.'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.tomshardware.com/uk/news/where-and-how-to-buy-rtx-3080-3090-3070': {
+    'file': 'tomshardware.com.rtx.html',  # stays empty until download
+    'author': 'Michelle Ehrhardt',
+    'title': 'Where and How to Buy an RTX 3080, 3090 or 3070 ',
+    'date': '2020-11-02',
+    'description': 'The RTX 3000 series is finally here, which is why we’ve compiled a guide to get your hands on an RTX 3000 card before they sell out.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['RTX 3000 series graphics cards are finally', 'also some aftermarket RTX 3080 cards up on', 'RTX 3080 and RTX 3090 cards are'],  # 3 segments
+    'without': ['No spam, we promise.', 'More about...', 'When you purchase through links on our site'],  # 3 segments
+    'comments': ['How to buy: be a bot, otherwise, you', 'As predicted by many reviewers and journalists', 'As predicted by many reviewers and journalists'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.corkbeo.ie/news/local-news/level-3-live-cork-ireland-19056312': {
+    'file': 'corkbeo.ie.level.html',  # stays empty until download
+    'author': "Gavin O'Callaghan",
+    'title': 'Level 3 LIVE from Cork as Ireland adapts to incoming coronavirus restrictions',
+    'date': '2020-10-06',
+    'description': 'The country avoided Level 5 last night, but NPHET have warned it may be down the line',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Tonight at midnight Cork will be moved into Level 3 ', 'So we thought that this is not the', 'Taoiseach Micheal Martin confirmed this evening that'],  # 3 segments
+    'without': ['Never miss the latest news by signing', 'Corrections and Clarifications', 'The latest update for the Irish abroad'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'IE',  # if obvious: DE, CH, AT
+},
+'https://www.nationalrail.co.uk/service_disruptions/245738.aspx': {
+    'file': 'nationalrail.co.uk.disruptions.html',  # stays empty until download
+    'author': '',
+    'title': 'Rail Replacement Services Travel Advice',
+    'date': '',
+    'description': 'The gateway to Britain&#39;s National Rail network. A portal into UK rail travel including train company information and promotions; train times; fares enquiries; ticket purchase and train running information.',  # in HTML source
+    'categories': [''],
+    'tags': ['Coronavirus', 'Facebook', 'Twitter', 'Museums'],
+    'with': ['Customers with disabilities will be asked about the best', 'only on longer journeys over 60 minutes', 'LNER are able to carry foldable wheelchairs as'],  # 3 segments
+    'without': ['About this site', 'Rail Replacement', 'You are here'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UK',  # if obvious: DE, CH, AT
+},
+'https://www.chocolate.com/view/woman-sees-a-car-stop-for-pregnant-beggar-this-is-what-she-finds-when-she-follows/&page=2': {
+    'file': 'chocolate.com.pregnant.html',  # stays empty until download
+    'author': 'Cara Stiles',
+    'title': 'Woman Sees a Car Stop for Pregnant Beggar, This is What She Finds When She Follows ',
+    'date': '2020-04-13',
+    'description': "Woman Sees a Car Stop for Pregnant Beggar, This is What She Finds When She Follows - A Mysterious Woman She couldn't take her eyes off the woman. Could it be true? Was she trying to fool her all along? So many thoughts were racing through her head. Maybe she was just being lured. But, maybe she was also in danger. . But, when the beggar agreed to sit into that car, she knew that something was wrong. She decided to go after her and find out the truth. But, little did she know that she'd discover a web of lies.",  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Could it be true? Was she trying', 'working to catch those who run operations', 'she was lucky enough to receive a'],  # 3 segments
+    'without': ['CHOCOLATE.COM2020', 'Terms Of Service', 'DMCA'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.thelist.com/214894/when-you-take-a-multivitamin-every-day-this-is-what-happens-to-your-body/': {
+    'file': 'thelist.com.multivitamin.html',  # stays empty until download
+    'author': 'Cat Lafuente',
+    'title': 'When you take a multivitamin every day, this is what happens to your body',
+    'date': '2020-06-12',
+    'description': 'Do you take a multivitamin every day? It certainly seems like a rational way to give yourself an extra boost, whether it&#039;s to amp up your immunity or increase your energy levels. But just what happens to your body if you start taking a multivitamin daily? Here&#039;s what you need to know.',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Do you take a multivitamin every day?', 'sleeping for seven to nine hours a night', 'help steel yourself against any nutritional fallout.'],  # 3 segments
+    'without': ['If you take turmeric every day, you might', 'retro-hipster chic (so 2010!) to your bathroom.', 'everyone has different nutritional needs, and she'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.sports.fr/direct-foot/50918/177512/lorient-olympique-lyonnais.html': {
+    'file': 'sports.fr.lorient.html',  # stays empty until download
+    'author': '',
+    'title': 'Match en direct',
+    'date': '',
+    'description': "Toute l'actualité sportive : football, basket, nba, rugby, tennis...",  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['terminé au Moustoir ! Lorient a tenu', 'Le coup de pied de coin ne donne rien.', 'se cherchent en ce début de match.'],  # 3 segments
+    'without': ['Ligue des Champions de la CAF', 'Europa League', 'Tous les sports'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'FR',  # if obvious: DE, CH, AT
+},
+'https://pawszilla.com/pop-culture/celebrities/fans-expressed-fears-celine-dions-appearance-savagely-responded/21/': {
+    'file': 'pawszilla.com.celine.html',  # stays empty until download
+    'author': 'Staff Writer',
+    'title': 'Fans Expressed Fears Over Céline Dion’s Major Weight Loss – Then The Star Confirmed The Real Cause',
+    'date': '',
+    'description': 'When Céline Dion became the victim of trolling and body-shaming, she responded in surprising style. Even though Céline Dion is a multi-million-selling pop icon, people have occasionally chosen to focus more on her body than her considerable professional accomplishments. Recently, for instance, fans of the “My Heart Will Go On” songstress took to her Instagram&hellip;',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Even though Céline Dion is a multi-million-selling', 'So this led to the star coming clean to her critics in spectacular fashion.', 'Her most iconic looks of the 1990s'],  # 3 segments
+    'without': ['Getty Images', 'Staff Writer', 'Battery Media Group'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.foxyfolksy.com/chocolate-buttercream-frosting-without-powdered-sugar-ermine-icing/': {
+    'file': 'foxyfolksy.com.buttercream.html',  # stays empty until download
+    'author': 'Bebs',
+    'title': 'Chocolate Buttercream Frosting without Powdered Sugar (Ermine Icing)',
+    'date': '2018-01-28',
+    'description': 'Try this Chocolate Buttercream Frosting. No powdered sugar needed. It is so light and fluffy and smoother than the classic American Buttercream Frosting. It is a bit more work but definitely easier than Swiss Meringue Frosting. It is easily the best buttercream frosting I&#039;ve tried.',  # in HTML source
+    'categories': ['Cake Recipes'],
+    'tags': [''],
+    'with': ['Try this Chocolate Buttercream Frosting. No powdered sugar', 'Combine and sift together the flour, sugar, salt', 'work but definitely easier than Swiss Meringue Frosting'],  # 3 segments
+    'without': ['Send me email every new post.', 'Receive new posts directly delivered to your inbox', 'miss a post. Get updates directly to your inbox '],  # 3 segments
+    'comments': ['not as sweet as the American version', 'Amazing! Just sweet enough, silky smooth texture', 'Hi Fiona, glad this recipe was able'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://mydailymagazine.com/get-in-the-spooky-spirit-with-these-halloween-workouts/': {
+    'file': 'mydailymagazine.com.halloween.html',  # stays empty until download
+    'author': 'Ariel H',
+    'title': 'Get in the Spooky Spirit With These Halloween Workouts',
+    'date': '2020-10-26',
+    'description': 'Get in the Spooky Spirit With These Halloween Workouts - My Daily Magazine - Art, Design, DIY, Fashion and Beauty !',  # in HTML source
+    'categories': [''],
+    'tags': ['halloween', 'Halloween workout'],
+    'with': ['Believe it or not, Halloween is just days', 'Kelsey Ellis, is perfect for you. The workout', '12 reps of each exercise with one to'],  # 3 segments
+    'without': ['Terms & Conditions', 'Find Beauty in Imperfection with Public Holiday', 'Hot Buttered Rum Cocktail All Season Long'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://youhadmeatgardening.com/lemon-tree-from-seed': {
+    'file': 'youhadmeatgardening.com.lemon.html',  # stays empty until download
+    'author': 'Florina Ionescu',
+    'title': 'How to Grow a Lemon Tree from Seed | Step-by-Step Guide',
+    'date': '',
+    'description': 'Learn how to grow a lemon tree from seed with this step-by-step guide on germinating and planting lemon seeds from store-bought lemons!',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['Now you know how to grow lemon trees', 'for planting lemon seeds has a pH between', 'Place the seeds about one inch apart on a paper'],  # 3 segments
+    'without': ['Your email address will not be published', 'We can help you grow the indoor', 'apartment gardening. Learn how to stop killing'],  # 3 segments
+    'comments': ['I have grown a lemon tree from seed', 'Hello Tarina! Thank you for contacting us', 'inches tall but they are doing well'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.standard.co.uk/news/uk/turkey-poland-caribbean-islands-added-to-uk-quarantine-list-a4561256.html': {
+    'file': 'standard.co.uk.caribbean.html',  # stays empty until download
+    'author': "Daniel O'Mahony",
+    'title': 'Turkey, Poland and three Caribbean islands added to UK quarantine list',
+    'date': '2020-10-01',
+    'description': 'Penalties for those who refuse to self-isolate are to be increased to a maximum of £10,000 for repeat offenders',  # in HTML source
+    'categories': [''],
+    'tags': ['Turkey', 'Poland', 'Caribbean', 'Quarantine', 'Coronavirus', 'covid-19', 'Travel', 'Grant Shapps', 'air bridges'],
+    'with': ['Penalties for those who refuse to self-isolate are', 'Travellers arriving in the UK from those places after', 'to defend what the Government is doing'],  # 3 segments
+    'without': ['There are no comments yet', 'This is London Magazine', 'Be part of the conversation'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UK',  # if obvious: DE, CH, AT
+},
+'https://ext.theperspective.com/items-we-never-knew-we-wanted/1/': {
+    'file': 'ext.theperspective.com.items.html',  # stays empty until download
+    'author': 'Adi Tzlil',
+    'title': 'Items We Never Knew We Wanted',
+    'date': '2020-09-21',
+    'description': '',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['dawn of the internet brought about a lot', 'to turn any laundry day into a blast', 'This item is perfect for those of'],  # 3 segments
+    'without': ['All Rights Reserved', 'The Perspective Challenge', 'DMCA'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.popsugar.co.uk/smart-living/Cheap-Homemade-Halloween-Costumes-42432483/amp': {
+    'file': 'popsugar.co.uk.halloween.html',  # stays empty until download
+    'author': 'Emily Co',
+    'title': '90+ Costumes For Adults to DIY on the Cheap This Halloween',
+    'date': '2020-10-30',
+    'description': 'Cheap and easy DIY costumes are all that matter this Halloween, and we are here to tell you that you can consider your 2020 costume complete thanks to these',  # in HTML source
+    'categories': [''],
+    'tags': ['Budget Tips', 'DIY Costumes', 'DIY', 'Halloween'],
+    'with': ['thanks to these genius ideas. This year', 'With a bowler hat, a set of false lashes', 'Long hair or not, you can still pull'],  # 3 segments
+    'without': ['Send You Push Notifications.', 'POPSUGAR Would Like To ', 'Want More?'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UK',  # if obvious: DE, CH, AT
+},
+'https://harrypotter.fandom.com/wiki/Water-Making_Spell': {
+    'file': 'harrypotter.fandom.com.spell.html',  # stays empty until download
+    'author': '',
+    'title': 'Water-Making Spell',
+    'date': '',
+    'description': 'The Water-Making Spell2 (Aguamenti) was a charm that conjured a jet of clean, drinkable water from the tip of the caster&#039;s wand. This spell, in addition to being a charm, can also be classified as conjuration, an advanced form of Transfiguration. 1 History 2 Effects 3 Known uses 4 Known...',  # in HTML source
+    'categories': ['Articles with information from Wonderbook: Book of Spells', 'Articles with information from Harry Potter and the Half-Blood Prince', 'Articles with information from Harry Potter and the Deathly Hallows', 'Articles with information from Harry Potter and the Goblet of Fire', 'Articles with information from Harry Potter and the Order of the Phoenix', 'Articles with information from Harry Potter: Hogwarts Mystery', 'Articles with information from Harry Potter: Puzzles &amp; Spells', 'Articles with information from Harry Potter: Wizards Unite Articles with information from Pottermore', 'Articles with information from Wizarding World', 'Spells', 'Charms', 'Conjurations', 'Crystal Cave', 'Spells with a light', 'Spells with Incantations of Latin Origin', 'Transfiguration Spells', 'Water', 'Water-based magic'],
+    'tags': [''],
+    'with': ['"The Water-Making Spell conjures clean, drinkable water from', 'A jet of water flew out of the umbrella tip', 'Hermione used this charm to extinguish his burning eyebrows'],  # 3 segments
+    'without': ['Take your favorite fandoms with you and never miss a beat.', 'What is your opinion on people becoming obsessed with Draco?', 'Harry Potter Wiki is a FANDOM Movies Community.'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://www.msn.com/en-gb/news/uknews/uk-university-student-halls-too-full-to-be-safe-experts-warn/ar-BB19DUqK': {
+    'file': 'msn.com.university.html',  # stays empty until download
+    'author': 'Anna Fazackerley',
+    'title': 'UK university student halls too full to be safe, experts warn ',
+    'date': '2020-10-02',
+    'description': 'As increasing numbers of UK universities wrestle with Covid-19 outbreaks, experts are warning that student halls are too full to be safe.&amp;nbsp;',  # in HTML source
+    'categories': [''],
+    'tags': [''],
+    'with': ['s increasing numbers of UK universities wrestle with', 'seven days. In Northern Ireland, call your GP.', 'Some UK universities, including Cambridge, Imperial College London'],  # 3 segments
+    'without': ['powered by Microsoft News', 'Sign in', 'Commenting is not currently available, but don’t worry'],  # 3 segments
+    'comments': [''],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UK',  # if obvious: DE, CH, AT
+},
 }
