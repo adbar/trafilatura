@@ -16,7 +16,7 @@ here = path.abspath(path.dirname(__file__))
 extras = {
     'all': [
         'cchardet == 2.1.4; python_version == "3.4"',
-        'cchardet >= 2.1.6; python_version > "3.4"',
+        'cchardet >= 2.1.7; python_version > "3.4"',
         'pycld3 >= 0.20',
     ],
 }
@@ -29,7 +29,7 @@ def readme():
 
 setup(
     name='trafilatura',
-    version='0.5.2',
+    version='0.6.0',
     description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
     long_description=readme(),
     classifiers=[
@@ -79,7 +79,7 @@ setup(
         'htmldate >= 0.7.2',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
-        'lxml >= 4.5.2; python_version > "3.4"',
+        'lxml >= 4.6.1; python_version > "3.4"',
         'requests == 2.21.0; python_version == "3.4"',
         'requests >= 2.21.0; python_version > "3.4"',
         'readability-lxml >= 0.8.1',

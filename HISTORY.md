@@ -1,6 +1,14 @@
 ## History / Changelog
 
 
+### 0.6.0
+- link discovery in sitemaps
+- compatibility with Python 3.9
+- extraction coverage improved
+- deduplication now optional
+- bug fixes
+
+
 ### 0.5.2
 - optional language detector changed: `langid` → `pycld3`
 - helper function `bare_extraction()`
