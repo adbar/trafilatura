@@ -71,20 +71,20 @@ Evaluation and alternatives
 For more detailed results see the `evaluation page <https://github.com/adbar/trafilatura/blob/master/docs/evaluation.rst>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 =============================== =========  ========== ========= ========= ======
-400 documents, 1186 text and 1198 boilerplate segments (2020-07-16)
+500 documents, 1487 text and 1496 boilerplate segments (2020-11-06)
 --------------------------------------------------------------------------------
 Python Package                  Precision  Recall     Accuracy  F-Score   Diff.
 =============================== =========  ========== ========= ========= ======
-newspaper3k 0.2.8               0.916      0.577      0.763     0.708     11.8x
-justext 2.2.0 (tweaked)         0.867      0.651      0.777     0.744     4.9x
-goose3 3.1.6                    **0.953**  0.635      0.803     0.762     17.3x
-*baseline (text markup)*        0.738      0.804      0.760     0.770     **1x**
-boilerpy3 1.0.2 (article mode)  0.847      0.711      0.792     0.773     4.4x
-dragnet 2.0.4                   0.906      0.704      0.816     0.792     2.8x
-readability-lxml 0.8.1          0.913      0.739      0.835     0.817     5.4x
-news-please 1.4.25              0.918      0.739      0.837     0.819     56.4x
-trafilatura 0.5.1               0.927      0.854      0.894     0.889     3.1x
-trafilatura 0.5.1 (+ fallbacks) 0.933      **0.885**  **0.911** **0.908** 6.8x
+justext 2.2.0 (tweaked)         0.870      0.584      0.749     0.699     6.1x
+newspaper3k 0.2.8               0.921      0.574      0.763     0.708     12.9x
+goose3 3.1.6                    **0.950**  0.629      0.799     0.757     19.0x
+boilerpy3 1.0.2 (article mode)  0.851      0.696      0.788     0.766     4.8x
+*baseline (text markup)*        0.746      0.804      0.766     0.774     **1x**
+dragnet 2.0.4                   0.906      0.689      0.810     0.783     3.1x
+readability-lxml 0.8.1          0.917      0.716      0.826     0.804     5.9x
+news-please 1.5.13              0.923      0.711      0.827     0.804     184x
+trafilatura 0.6.0               0.924      0.849      0.890     0.885     3.9x
+trafilatura 0.6.0 (+ fallbacks) 0.933      **0.877**  **0.907** **0.904** 8.4x
 =============================== =========  ========== ========= ========= ======
 
 **External evaluations:**

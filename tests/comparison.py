@@ -185,8 +185,11 @@ def run_trafilatura_fallback(htmlstring):
 
 def run_goose(htmlstring):
     '''try with the goose algorithm'''
-    article = g.extract(raw_html=htmlstring)
-    return article.cleaned_text # sanitize(article.cleaned_text)
+    try:
+        article = g.extract(raw_html=htmlstring)
+        return article.cleaned_text # sanitize(article.cleaned_text)
+    except ValueError:
+        return ''
 
 
 def run_readability(htmlstring):
@@ -219,7 +222,10 @@ def run_html2text(htmlstring):
 
 def run_html_text(htmlstring):
     '''try with the html2text module'''
-    text = html_text.extract_text(htmlstring, guess_layout=False)
+    try:
+        text = html_text.extract_text(htmlstring, guess_layout=False)
+    except TypeError:
+        text = ''
     return text
 
 
@@ -261,7 +267,7 @@ def run_jparser(htmlstring):
     '''try with jparser'''
     try:
         pm = PageModel(htmlstring)
-    except ValueError:
+    except (TypeError, ValueError):
         return ''
     result = pm.extract()
     mylist = list()
@@ -278,7 +284,7 @@ def run_readabilipy(htmlstring):
     '''try with the dragnet module'''
     try:
         article = simple_json_from_html_string(htmlstring, use_readability=True)
-    except ValueError:
+    except (TypeError, ValueError):
         return ''
     returnlist = []
     for textelem in article['plain_text']:
