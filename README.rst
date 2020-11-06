@@ -59,7 +59,7 @@ Features
     - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
     - Extraction of metadata (title, author, date, site name, categories and tags)
 - URL lists:
-    - Generation of link lists from ATOM/RSS feeds
+    - Link discovery using sitemaps and ATOM/RSS feeds
     - Efficient processing of URL queues
     - Blacklists or already processed URLs
 - Optional language detection on extracted content
@@ -152,7 +152,6 @@ Roadmap
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] URL lists and document management
--  [-] Sitemaps processing
 -  [ ] Interaction with web archives (notably WARC format)
 -  [ ] Configuration and extraction parameters
 -  [ ] Integration of natural language processing tools

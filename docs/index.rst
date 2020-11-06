@@ -39,32 +39,32 @@ Welcome to Trafilatura's documentation!
 Description
 -----------
 
-*Trafilatura* is a Python package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving part of the text formatting and page structure. The output can then be converted to different formats.
+*Trafilatura* is a Python package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving parts of the text formatting and page structure. The output can be converted to different formats.
 
-Distinguishing between a whole page and its essential parts can help to alleviate many quality problems related to web texts by dealing with noise caused by recurring elements, such as headers and footers, ads, links/blogroll, and so on.
+Distinguishing between a whole page and the page's essential parts can help to alleviate many quality problems related to web text processing, by dealing with the noise caused by recurring elements (headers and footers, ads, links/blogroll, etc.).
 
-The extractor has to be precise enough not to miss texts or discard valid documents; it should robust but also reasonably fast. Trafilatura is designed to run in production on millions of web documents.
+The extractor aims to be precise enough in order not to  miss texts or to discard valid documents. In addition, it must be robust, but also reasonably fast. With these objectives in mind, Trafilatura is designed to run in production on millions of web documents.
 
 
 Features
 ~~~~~~~~
 
-- Seamless online (including page retrieval) or parallelized offline processing with URLs, HTML files or parsed HTML trees as input
+- Seamless online (including page retrieval) or parallelized offline processing using URLs, HTML files or parsed HTML trees as input
 - Several output formats supported:
    - Plain text (minimal formatting)
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
    - XML (for metadata and structure)
    - `TEI-XML <https://tei-c.org/>`_
-- Robust extraction algorithm, using `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback, reasonably efficient with `lxml <http://lxml.de/>`_:
-    - Focuses on main text and/or comments
+- Robust extraction algorithm, using and `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback; reasonably efficient with `lxml <http://lxml.de/>`_:
+    - Focuses on the document's main text and/or comments
     - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
     - Extraction of metadata (title, author, date, site name, categories and tags)
 - URL lists:
-    - Generation of link lists from ATOM/RSS feeds
-    - Efficient processing of URL queue
+    - Link discovery using sitemaps and ATOM/RSS feeds
+    - Efficient processing of URL queues
     - Blacklists or already processed URLs
-- Optional language detection on the extracted content
+- Optional language detection on extracted content
 
 
 Evaluation and alternatives
@@ -84,7 +84,7 @@ External evaluations:
 Installation
 ------------
 
-Primarily, with Python package manager: ``pip install --upgrade trafilatura``.
+Primary method is with Python package manager: ``pip install --upgrade trafilatura``.
 
 For more details please read the `installation documentation <installation.html>`_.
 
@@ -116,7 +116,7 @@ For more information please refer to `quickstart <quickstart.html>`_, `usage doc
 License
 -------
 
-*trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/htmldate/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
+*trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
 
 See also `GPL and free software licensing: What's in it for business? <https://www.techrepublic.com/blog/cio-insights/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
 
@@ -126,7 +126,8 @@ Going further
 
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
--  In order to gather web documents it can be useful to download the portions of a website programmatically, here is `how to use sitemaps to crawl websites <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_
+-  In order to gather web documents, it can be useful to download the portions of a website programmatically, here is `how to use sitemaps to crawl websites <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_
+-  `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_ (Tutorial video in German by Simon Meier-Vieracker)
 -  `Download von Web-Daten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_wwwdownload.html>`_ & `Daten aufbereiten und verwalten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_aufbereitenXML.html>`_ (Tutorials in German by Noah Bubenhofer)
 
 
@@ -135,7 +136,6 @@ Roadmap
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] URL lists and document management
--  [-] Sitemaps processing
 -  [ ] Interaction with web archives (notably WARC format)
 -  [ ] Configuration and extraction parameters
 -  [ ] Integration of natural language processing tools
@@ -152,7 +152,7 @@ Feel free to file issues on the `dedicated page <https://github.com/adbar/trafil
 Author
 ------
 
-This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts presents a substantial challenge for those who must meet scientific expectations. Web corpus construction involves numerous design decisions, and this software package can help facilitate collection and enhance corpus quality and thus aid in these decisions.
+This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research. Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
 
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
