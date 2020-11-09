@@ -254,13 +254,14 @@ def write_fullheader(header, docmeta):
         bib_author = etree.SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta['author']
     publicationstmt_a = etree.SubElement(filedesc, 'publicationStmt')
+    # insert an empty paragraph for conformity
     publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
-    if docmeta['id'] is not None:
-        idno = etree.SubElement(publicationstmt_a, 'idno', type='id')
-        idno.text = docmeta['id']
     notesstmt = etree.SubElement(filedesc, 'notesStmt')
-    note = etree.SubElement(notesstmt, 'note', type='fingerprint')
-    note.text = docmeta['fingerprint']
+    if docmeta['id'] is not None:
+        idno = etree.SubElement(notesstmt, 'note', type='id')
+        idno.text = docmeta['id']    
+    fingerprint = etree.SubElement(notesstmt, 'note', type='fingerprint')
+    fingerprint.text = docmeta['fingerprint']
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_bibl = etree.SubElement(sourcedesc, 'bibl')
     if docmeta['sitename'] and docmeta['date']:

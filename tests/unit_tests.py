@@ -279,18 +279,19 @@ def test_tei():
     # download, parse and validate simple html file
     result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False)
     assert result is not None
-    mytree = etree.fromstring(result)
-    assert xml.validate_tei(mytree) is True
-    mytree = etree.fromstring(teststring)
-    assert xml.validate_tei(mytree) is False
+    assert xml.validate_tei(etree.fromstring(result)) is True
+    assert xml.validate_tei(etree.fromstring(teststring)) is False
     # test with another file
     with open(os.path.join(resources_dir, 'http_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
     result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False)
     assert result is not None
-    mytree = etree.fromstring(result)
-    assert xml.validate_tei(mytree) is True
+    assert xml.validate_tei(etree.fromstring(result)) is True
+    # include ID in metadata
+    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False, record_id='0001')
+    assert result is not None
+    assert xml.validate_tei(etree.fromstring(result)) is True
 
 
 
