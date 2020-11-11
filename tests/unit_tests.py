@@ -28,7 +28,7 @@ except ImportError:
     LANGID_FLAG = False
 
 import trafilatura.filters
-from trafilatura.core import baseline, extract, process_record, sanitize_tree, trim
+from trafilatura.core import baseline, bare_extraction, extract, process_record, sanitize_tree, trim
 from trafilatura.metadata import METADATA_LIST
 from trafilatura.filters import duplicate_test, textfilter
 from trafilatura.lru import LRUCache
@@ -107,10 +107,14 @@ def test_txttocsv():
     mymeta['url'] = 'https://example.org'
     mymeta['hostname'] = 'example.org'
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == 'https://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\n'
-    assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True) is not None
-    assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', csv_output=True, include_comments=False).endswith('\t\n')
+    mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
+    assert extract(mystring, csv_output=True) is not None
+    assert extract(mystring, csv_output=True, include_comments=False).endswith('\t\n')
     # test json
-    assert extract('<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>', json_output=True).endswith('}')
+    assert extract(mystring, json_output=True).endswith('}')
+    # bare extraction for python
+    result = bare_extraction(mystring)
+    assert isinstance(result, dict) and len(result) == 13
 
 
 @patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)

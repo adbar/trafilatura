@@ -25,8 +25,8 @@ from .metadata import extract_metadata, METADATA_LIST
 from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
 from .utils import load_html, trim, txttocsv
-from .xml import (add_xml_meta, build_json_output, build_xml_output,
-                  build_tei_output, control_xml_output, xmltotxt)
+from .xml import (build_json_output, build_xml_output, build_tei_output,
+                  control_xml_output, xmltotxt)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
 
 
@@ -492,37 +492,39 @@ def baseline(filecontent):
     return postbody, temp_text, len(temp_text)
 
 
-def determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation):
+def determine_returnstring(docmeta, output_format, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if 'xml' in output_format:
         # last cleaning
-        for element in postbody.iter():
+        for element in docmeta['body'].iter():
             if len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
                 if parent is not None:
                     parent.remove(element)
         # build output trees
         if output_format == 'xml':
-            output = build_xml_output(postbody, commentsbody)
-            output = add_xml_meta(output, docmeta)
+            output = build_xml_output(docmeta)
         elif output_format == 'xmltei':
-            output = build_tei_output(postbody, commentsbody, docmeta)
+            output = build_tei_output(docmeta)
         # can be improved
         returnstring = control_xml_output(output, output_format, tei_validation, docmeta)
-    # CSV. JSON and TXT output
+    # CSV, JSON and TXT output
     else:
         if output_format == 'csv':
-            posttext = xmltotxt(postbody)
-            if commentsbody is not None:
-                commentstext = xmltotxt(commentsbody)
+            posttext = xmltotxt(docmeta['body'])
+            if docmeta['commentsbody'] is not None:
+                commentstext = xmltotxt(docmeta['commentsbody'])
             else:
                 commentstext = ''
             returnstring = txttocsv(posttext, commentstext, docmeta)
         elif output_format == 'json':
-            returnstring = build_json_output(docmeta, postbody, commentsbody)
+            returnstring = build_json_output(docmeta)
         else:  # txt
-            returnstring = xmltotxt(build_xml_output(postbody, commentsbody))
+            returnstring = xmltotxt(docmeta['body'])
+            if docmeta['commentsbody'] is not None:
+                returnstring += '\n' + xmltotxt(docmeta['commentsbody'])
+                returnstring = returnstring.strip()
     return returnstring
 
 
@@ -541,7 +543,7 @@ def map_format(output_format, csv_output, json_output, xml_output, tei_output):
 
 
 def bare_extraction(filecontent, url=None, no_fallback=False,
-                    include_comments=True, output_format='txt', target_language=None,
+                    include_comments=True, output_format='python', target_language=None,
                     include_tables=True, include_formatting=False, deduplicate=False,
                     date_extraction_params=None, with_metadata=False, max_tree_size=None,
                     url_blacklist=set()):
@@ -626,8 +628,15 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
     except ValueError:
         LOGGER.info('discarding data for url: %s', url) # docmeta['url'] , record_id
-        return None, None, None, None
-    return docmeta, temp_text, postbody, commentsbody
+        return None
+
+    # special case: python variables
+    if output_format == 'python':
+        docmeta['text'] = xmltotxt(postbody)
+        docmeta['comments'] = xmltotxt(commentsbody)
+    else:
+        docmeta['raw-text'], docmeta['body'], docmeta['commentsbody'] = temp_text, postbody, commentsbody
+    return docmeta
 
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
@@ -641,7 +650,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     # metadata mapping for compatibility
     output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
     # extraction
-    docmeta, temp_text, postbody, commentsbody = bare_extraction(
+    docmeta = bare_extraction(
         filecontent, url=url, no_fallback=no_fallback,
         include_comments=include_comments, output_format=output_format,
         target_language=target_language, include_tables=include_tables,
@@ -655,9 +664,9 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         # add record ID to metadata
         docmeta['id'] = record_id
         # calculate fingerprint
-        docmeta['fingerprint'] = content_fingerprint(temp_text)
+        docmeta['fingerprint'] = content_fingerprint(docmeta['raw-text'])
     # return
-    return determine_returnstring(docmeta, postbody, commentsbody, output_format, tei_validation)
+    return determine_returnstring(docmeta, output_format, tei_validation)
 
 
 # for legacy and backwards compatibility

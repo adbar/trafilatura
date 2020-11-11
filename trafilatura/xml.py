@@ -29,18 +29,17 @@ TEI_RELAXNG = None # to be downloaded later if necessary
 CONTROL_PARSER = etree.XMLParser(remove_blank_text=True)
 
 
-def build_json_output(docmeta, postbody, commentsbody):
+def build_json_output(docmeta):
     '''Build JSON output based on extracted information'''
     outputdict = docmeta
     outputdict['source'] = outputdict.pop('url')
-    outputdict['source-hostname'] = outputdict.pop('hostname')
+    outputdict['source-hostname'] = outputdict.pop('sitename')
     outputdict['excerpt'] = outputdict.pop('description')
     outputdict['categories'] = ';'.join(outputdict['categories'])
     outputdict['tags'] = ';'.join(outputdict['tags'])
-    outputdict['text'] = xmltotxt(postbody)
-    outputdict['comments'] = xmltotxt(commentsbody)
+    outputdict['text'] = xmltotxt(outputdict.pop('body'))
+    outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'))
     return json.dumps(outputdict)
-
 
 
 def clean_attributes(tree):
@@ -51,14 +50,15 @@ def clean_attributes(tree):
     return tree
 
 
-def build_xml_output(postbody, commentsbody):
+def build_xml_output(docmeta):
     '''Build XML output tree based on extracted information'''
     output = etree.Element('doc')
-    postbody.tag = 'main'
-    output.append(postbody)
-    if commentsbody is not None:
-        commentsbody.tag = 'comments'
-        output.append(commentsbody)
+    output = add_xml_meta(output, docmeta)
+    docmeta['body'].tag = 'main'
+    output.append(docmeta['body'])
+    if docmeta['commentsbody'] is not None:
+        docmeta['commentsbody'].tag = 'comments'
+        output.append(docmeta['commentsbody'])
 # XML invalid characters
 # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
     return clean_attributes(output)
@@ -105,10 +105,10 @@ def add_xml_meta(output, docmeta):
     return output
 
 
-def build_tei_output(postbody, commentsbody, docmeta):
+def build_tei_output(docmeta):
     '''Build TEI-XML output tree based on extracted information'''
     # build TEI tree
-    output = write_teitree(postbody, commentsbody, docmeta)
+    output = write_teitree(docmeta)
     # filter output (strip unwanted elements), just in case
     # check and repair
     output = check_tei(output, docmeta['url'])
@@ -220,7 +220,7 @@ def xmltotxt(xmloutput):
     return sanitize(''.join(returnlist))
 
 
-def write_teitree(postbody, commentsbody, docmeta):
+def write_teitree(docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
@@ -231,13 +231,13 @@ def write_teitree(postbody, commentsbody, docmeta):
     textelem = etree.SubElement(tei, 'text')
     textbody = etree.SubElement(textelem, 'body')
     # post
-    postbody = clean_attributes(postbody)
+    postbody = clean_attributes(docmeta['body'])
     postbody.tag = 'div'
     postbody.set('type', 'entry') # rendition='#pst'
     textbody.append(postbody)
     # comments
-    if commentsbody is not None and len(commentsbody) > 0:
-        commentsbody = clean_attributes(commentsbody)
+    if docmeta['commentsbody'] is not None and len(docmeta['commentsbody']) > 0:
+        commentsbody = clean_attributes(docmeta['commentsbody'])
         commentsbody.tag = 'div'
         commentsbody.set('type', 'comments') # rendition='#cmt'
         textbody.append(commentsbody)
@@ -259,7 +259,7 @@ def write_fullheader(header, docmeta):
     notesstmt = etree.SubElement(filedesc, 'notesStmt')
     if docmeta['id'] is not None:
         idno = etree.SubElement(notesstmt, 'note', type='id')
-        idno.text = docmeta['id']    
+        idno.text = docmeta['id']
     fingerprint = etree.SubElement(notesstmt, 'note', type='fingerprint')
     fingerprint.text = docmeta['fingerprint']
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
