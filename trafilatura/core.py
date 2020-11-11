@@ -545,7 +545,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_tables=True, include_formatting=False, deduplicate=False,
                     date_extraction_params=None, with_metadata=False, max_tree_size=None,
                     url_blacklist=set()):
-    '''Main process for text extraction returning Python variables'''
+    '''Internal function for text extraction returning bare Python variables'''
     try:
         # load data
         tree = load_html(filecontent)
@@ -636,7 +636,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_formatting=False, deduplicate=False,
             date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=set()):
-    '''Wrapper for text extraction and conversion to chosen output format'''
+    '''Function exposed by the package:
+       wrapper for text extraction and conversion to chosen output format'''
     # metadata mapping for compatibility
     output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
     # extraction
