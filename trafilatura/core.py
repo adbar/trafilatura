@@ -633,7 +633,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
     # special case: python variables
     if output_format == 'python':
         docmeta['text'] = xmltotxt(postbody)
-        docmeta['comments'] = xmltotxt(commentsbody)
+        if include_comments is True:
+            docmeta['comments'] = xmltotxt(commentsbody)
     else:
         docmeta['raw-text'], docmeta['body'], docmeta['commentsbody'] = temp_text, postbody, commentsbody
     return docmeta

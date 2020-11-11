@@ -38,7 +38,10 @@ def build_json_output(docmeta):
     outputdict['categories'] = ';'.join(outputdict['categories'])
     outputdict['tags'] = ';'.join(outputdict['tags'])
     outputdict['text'] = xmltotxt(outputdict.pop('body'))
-    outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'))
+    if outputdict['commentsbody'] is not None:
+        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'))
+    else:
+        del outputdict['commentsbody']
     return json.dumps(outputdict)
 
 
@@ -236,7 +239,7 @@ def write_teitree(docmeta):
     postbody.set('type', 'entry') # rendition='#pst'
     textbody.append(postbody)
     # comments
-    if docmeta['commentsbody'] is not None and len(docmeta['commentsbody']) > 0:
+    if docmeta['commentsbody'] is not None:
         commentsbody = clean_attributes(docmeta['commentsbody'])
         commentsbody.tag = 'div'
         commentsbody.set('type', 'comments') # rendition='#cmt'
