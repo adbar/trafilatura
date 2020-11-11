@@ -48,7 +48,10 @@ def tree_cleaning(tree, include_tables):
         MANUALLY_CLEANED.append('table')
     for expression in MANUALLY_CLEANED:
         for element in tree.getiterator(expression):
-            element.drop_tree()
+            try:
+                element.drop_tree()
+            except AttributeError:
+                element.getparent().remove(element)
     # save space and processing time
     tree = prune_html(tree)
     tree = HTML_CLEANER.clean_html(tree)
@@ -60,7 +63,10 @@ def prune_html(tree):
     '''Delete selected empty elements'''
     for element in tree.xpath(".//*[not(node())]"):
         if element.tag in CUT_EMPTY_ELEMS:
-            element.drop_tree()
+            try:
+                element.drop_tree()
+            except AttributeError:
+                element.getparent().remove(element)
     return tree
 
 
@@ -69,7 +75,6 @@ def discard_unwanted(tree):
     for expr in DISCARD_XPATH:
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
-            #subtree.drop_tree()
     return tree
 
 
@@ -78,7 +83,6 @@ def discard_unwanted_comments(tree):
     for expr in COMMENTS_DISCARD_XPATH:
         for subtree in tree.xpath(expr):
             subtree.getparent().remove(subtree)
-            #subtree.drop_tree()
     return tree
 
 
