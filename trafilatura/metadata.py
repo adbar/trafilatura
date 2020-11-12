@@ -297,13 +297,15 @@ def extract_url(tree, default_url=None):
 
 
 def extract_sitename(tree):
-    '''Extract the name of a site from the main title'''
-    try:
-        mymatch = re.search(r'^.*?[-|]\s+(.*)$', tree.find('.//head/title').text)
-        if mymatch:
-            return mymatch.group(1)
-    except AttributeError:
-        pass
+    '''Extract the name of a site from the main title (if it exists)'''
+    title_elem = tree.find('.//head/title')
+    if title_elem is not None:
+        try:
+            mymatch = re.search(r'^.*?[-|]\s+(.*)$', title_elem.text)
+            if mymatch:
+                return mymatch.group(1)
+        except AttributeError:
+            pass
     return None
 
 
