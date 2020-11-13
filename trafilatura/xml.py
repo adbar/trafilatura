@@ -11,16 +11,17 @@ import logging
 import pickle
 
 from io import StringIO
+from pathlib import Path
+
 from lxml import etree
 
-import pkg_resources
-
+from . import __version__
 from .utils import sanitize
 
 
 LOGGER = logging.getLogger(__name__)
 # validation
-TEI_SCHEMA = pkg_resources.resource_filename('trafilatura', 'data/tei-schema.pickle')
+TEI_SCHEMA = Path(__file__).parent / 'data/tei-schema.pickle'
 TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'head', 'hi', 'item', \
                   'lb', 'list', 'p', 'quote', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
@@ -314,7 +315,7 @@ def write_fullheader(header, docmeta):
             tags_list.text = ','.join(docmeta['tags'])
     encodingdesc = etree.SubElement(header, 'encodingDesc')
     appinfo = etree.SubElement(encodingdesc, 'appInfo')
-    application = etree.SubElement(appinfo, 'application', version=pkg_resources.get_distribution('trafilatura').version, ident='Trafilatura')
+    application = etree.SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')
     label = etree.SubElement(application, 'label')
     label.text = 'Trafilatura'
     pointer = etree.SubElement(application, 'ptr', target='https://github.com/adbar/trafilatura')

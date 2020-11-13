@@ -8,10 +8,10 @@ Listing a series of settings that are applied module-wide.
 
 from multiprocessing import cpu_count
 
-from trafilatura import __version__
+from . import __version__
 
 
-USER_AGENT = 'trafilatura/' + __version__ + '(+https://github.com/adbar/trafilatura)'
+USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
 
 # sanity checks
 MAX_FILE_SIZE = 20000000
