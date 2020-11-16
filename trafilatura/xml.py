@@ -21,7 +21,7 @@ from .utils import sanitize
 
 LOGGER = logging.getLogger(__name__)
 # validation
-TEI_SCHEMA = Path(__file__).parent / 'data/tei-schema.pickle'
+TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema.pickle')
 TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'head', 'hi', 'item', \
                   'lb', 'list', 'p', 'quote', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
