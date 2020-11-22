@@ -52,17 +52,17 @@ MANUALLY_CLEANED = [
     # important
     'aside', 'embed', 'footer', 'form', 'head', 'iframe', 'menu', 'object', 'script',
     # other content
-    'applet', 'audio', 'canvas', 'figure', 'map', 'picture', 'svg', 'video',
+    'applet', 'audio', 'canvas', 'map', 'svg', 'video',
     # secondary
     'area', 'blink', 'button', 'datalist', 'details', 'dialog',
     'frame', 'frameset', 'fieldset', 'link', 'input', 'ins', 'label', 'legend',
     'marquee', 'math', 'menuitem', 'nav', 'noscript', 'optgroup', 'option',
-    'output', 'param', 'progress', 'rp', 'rt', 'rtc', 'select', 'source',
+    'output', 'param', 'progress', 'rp', 'rt', 'rtc', 'select',
     'style', 'summary', 'track', 'template', 'textarea', 'time', 'use',
 ]
 # 'meta', 'hr', 'img', 'data'
 
-MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn', 'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small', 'tbody', 'tfoot', 'thead']
+MANUALLY_STRIPPED = ['abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn', 'font', 'hgroup', 'ins', 'mark', 'meta', 'ruby', 'small', 'tbody', 'tfoot', 'thead']
 # 'center', 'rb', 'wbr'
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])

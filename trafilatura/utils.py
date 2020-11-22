@@ -259,3 +259,22 @@ def trim(string):
         return SPACE_TRIMMING.sub(r' ', NO_TAG_SPACE.sub(r' ', string)).strip(' \t\n\r\v')
     except TypeError:
         return None
+
+
+def isImageFile(imageSrc):
+    # Regex to check valid image file extension.
+    regex = "([^\\s]+(\\.(?i:)(jpe?g|png|gif|bmp)))"
+
+    # Compile the ReGex
+    p = re.compile(regex)
+
+    # If the string is empty return false
+    if imageSrc == None:
+        return False
+
+    # Return if the string
+    # matched the ReGex
+    if re.search(p, imageSrc):
+        return True
+    else:
+        return False
