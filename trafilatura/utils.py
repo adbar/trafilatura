@@ -261,7 +261,7 @@ def trim(string):
         return None
 
 
-def isImageFile(imageSrc):
+def is_image_file(imageSrc):
     # Regex to check valid image file extension.
     regex = "([^\\s]+(\\.(?i:)(jpe?g|png|gif|bmp)))"
 

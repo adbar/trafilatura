@@ -24,7 +24,7 @@ from .htmlprocessing import (convert_tags, discard_unwanted,
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
-from .utils import load_html, trim, txttocsv, isImageFile
+from .utils import load_html, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
@@ -239,9 +239,9 @@ def handle_table(table_elem):
 def handle_image(element):
     '''Process image element'''
     processed_element = etree.Element(element.tag)
-    if element.get('data-src') is not None and isImageFile(element.get('data-src')):
+    if element.get('data-src') is not None and is_image_file(element.get('data-src')):
         processed_element.set('src', element.get('data-src'))
-    elif element.get('src') is not None and isImageFile(element.get('src')):
+    elif element.get('src') is not None and is_image_file(element.get('src')):
         processed_element.set('src', element.get('src'))
     else:
         return None

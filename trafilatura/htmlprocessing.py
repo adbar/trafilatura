@@ -45,9 +45,7 @@ def tree_cleaning(tree, include_tables, include_images=False):
         MANUALLY_CLEANED.append('table')
     if include_images is False:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
-        MANUALLY_CLEANED.append('figure')
-        MANUALLY_CLEANED.append('picture')
-        MANUALLY_CLEANED.append('source')
+        MANUALLY_CLEANED.extend(['figure', 'picture', 'source'])
     for expression in MANUALLY_CLEANED:
         for element in tree.getiterator(expression):
             try:
