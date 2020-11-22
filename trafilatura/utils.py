@@ -278,3 +278,4 @@ def isImageFile(imageSrc):
         return True
     else:
         return False
+
