@@ -155,7 +155,7 @@ def validate_tei(tei):  # , filename=""
         TEI_RELAXNG = etree.RelaxNG(relaxng_doc)
     result = TEI_RELAXNG.validate(tei)
     if result is False:
-        print(TEI_RELAXNG.error_log.last_error)
+        LOGGER.warning('not a valid TEI document: %s', TEI_RELAXNG.error_log.last_error)
     return result
 
 
