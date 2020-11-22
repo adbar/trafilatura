@@ -9,7 +9,7 @@ Module bundling all functions needed to extract the text in a webpage.
 
 # standard
 import logging
-import re  # import regex as re
+import re # import regex as re
 
 from copy import deepcopy
 
@@ -28,6 +28,7 @@ from .utils import load_html, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
+
 
 LOGGER = logging.getLogger(__name__)
 
@@ -93,7 +94,7 @@ def handle_quotes(element):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
-        processed_child = process_node(child)  # handle_textnode(child, comments_fix=True)
+        processed_child = process_node(child) # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
             newsub = etree.SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
@@ -132,7 +133,7 @@ def handle_paragraphs(element, potential_tags, dedupbool):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
-    # etree.strip_tags(element, 'p')  # change in precision
+    #etree.strip_tags(element, 'p')  # change in precision
     # no children
     if len(element) == 0:
         processed_element = process_node(element)  # handle_textnode(element, comments_fix=False)
@@ -210,8 +211,8 @@ def handle_table(table_elem):
                 newtable.append(newrow)
                 newrow = etree.Element('row')
             # skip rows empty of text
-            # textcontent = ''.join(subelement.itertext())
-            # if len(textcontent) == 0 or not re.search(r'[p{L}]+', textcontent):
+            #textcontent = ''.join(subelement.itertext())
+            #if len(textcontent) == 0 or not re.search(r'[p{L}]+', textcontent):
             #    continue
         elif subelement.tag in ('td', 'th'):
             # process
@@ -223,7 +224,7 @@ def handle_table(table_elem):
             if subelement.tag == 'th':
                 newsub.set('role', 'head')
             newsub.text = processed_cell.text
-            # newrow.append(newsub)
+            #newrow.append(newsub)
         # beware of nested tables
         elif subelement.tag == 'table' and i > 1:
             break
@@ -257,8 +258,7 @@ def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG, dedup
     # prune
     search_tree = discard_unwanted(tree)
     etree.strip_tags(search_tree, 'a', 'link', 'span')
-    processed_elems = [handle_paragraphs(element, potential_tags, deduplicate) for element in
-                       search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote')]  # 'head', 'list'
+    processed_elems = [handle_paragraphs(element, potential_tags, deduplicate) for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote')] # 'head', 'list'
     result_body.extend(list(filter(None.__ne__, processed_elems)))
     return result_body
 
@@ -269,7 +269,7 @@ def handle_textelem(element, potential_tags, dedupbool):
     # bypass: nested elements
     if element.tag == 'list':
         new_element = handle_lists(element, dedupbool)
-    elif element.tag == 'quote':  # + 'code'?
+    elif element.tag == 'quote':   # + 'code'?
         new_element = handle_quotes(element)
     elif element.tag == 'head':
         new_element = handle_titles(element)
@@ -329,7 +329,7 @@ def extract_content(tree, include_tables=False, deduplicate=True):
         if not subtree.xpath('//p//text()'):
             potential_tags.add('div')
         LOGGER.debug(sorted(potential_tags))
-        etree.strip_tags(subtree, 'link', 'span')  # 'a',
+        etree.strip_tags(subtree, 'link', 'span') # 'a',
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # extract content
         # list(filter(None.__ne__, processed_elems))
@@ -368,7 +368,7 @@ def process_comments_node(elem, potential_tags, dedupbool):
         # print(elem.tag, elem.text_content())
         processed_element = handle_textnode(elem, comments_fix=True, deduplicate=dedupbool)
         # test length and remove
-        if processed_element is not None:  # and processed_element.text not in COMMENTS_BLACKLIST:
+        if processed_element is not None: # and processed_element.text not in COMMENTS_BLACKLIST:
             processed_element.attrib.clear()
             # if textfilter(elem) is True: # ^Pingback
             #    return None
@@ -392,7 +392,7 @@ def extract_comments(tree, dedupbool):
         subtree = discard_unwanted_comments(subtree)
         etree.strip_tags(subtree, 'a', 'link', 'span')
         # extract content
-        # for elem in subtree.xpath('.//*'):
+        #for elem in subtree.xpath('.//*'):
         #    processed_elem = process_comments_node(elem, potential_tags)
         #    if processed_elem is not None:
         #        comments_body.append(processed_elem)
@@ -413,7 +413,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass
-    # if len_text > MIN_EXTRACTED_SIZE*10:
+    #if len_text > MIN_EXTRACTED_SIZE*10:
     #    return body, text, len_text
     # try with readability
     temppost_algo = try_readability(backup_tree, url)
@@ -426,9 +426,9 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_text == 0 and len_algo > 0:
         algo_flag = True
-    elif len_text > 2 * len_algo:
+    elif len_text > 2*len_algo:
         algo_flag = False
-    elif len_algo > 2 * len_text:
+    elif len_algo > 2*len_text:
         algo_flag = True
     elif not body.xpath('//p//text()') and len_algo > MIN_EXTRACTED_SIZE:
         algo_flag = True  # borderline case
@@ -444,8 +444,8 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     # override faulty extraction # len_text < MIN_EXTRACTED_SIZE*10
     if body.xpath(SANITIZED_XPATH):
         body2, text2, len_text2, jt_result = justext_rescue(tree, url, target_language, body, 0, '')
-        if jt_result is True:  # and not len_text > 2*len_text2:
-            LOGGER.debug('using justext, length: %s', len_text2)  # MIN_EXTRACTED_SIZE:
+        if jt_result is True: # and not len_text > 2*len_text2:
+            LOGGER.debug('using justext, length: %s', len_text2)  #MIN_EXTRACTED_SIZE:
             body, text, len_text = body2, text2, len_text2
         else:
             # post-processing: remove unwanted sections
@@ -462,7 +462,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         if algo_flag is True:
             body, text, len_text = sanitize_tree(body, include_formatting)
     # second backup
-    # if len_text < MIN_EXTRACTED_SIZE:
+    #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, temp_text2, len_text2 = baseline(backup_tree)
     #     if len_text2 > MIN_EXTRACTED_SIZE:
     #         body, text, len_text = body2, len_text2, temp_text2
@@ -486,7 +486,7 @@ def baseline(filecontent):
                 postbody.append(elem)
                 return postbody, elem.text, len(elem.text)
     # scrape from article tag
-    article_elem = tree.find('.//article')  # |.//main
+    article_elem = tree.find('.//article') # |.//main
     if article_elem is not None:  # len(elems) > 0:
         temp_text = trim(article_elem.text_content())
         len_text = len(temp_text)
@@ -586,7 +586,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             if with_metadata is True and any(
                     x is None for x in
                     [docmeta['date'], docmeta['title'], docmeta['url']]
-            ):
+                ):
                 raise ValueError
         else:
             docmeta = dict.fromkeys(METADATA_LIST)
@@ -608,16 +608,15 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # compare if necessary
         if no_fallback is False:
-            # if sure_thing is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text,
-                                                               target_language, include_formatting)
+            #if sure_thing is False:
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting)
         else:
             # rescue: try to use original/dirty tree
             if sure_thing is False and len_text < MIN_EXTRACTED_SIZE:
                 postbody, temp_text, len_text = baseline(filecontent)
-                # tree = load_html(filecontent)
-                # tree = convert_tags(tree)
-                # postbody, temp_text, len_text, sure_thing = extract_content(tree)
+                #tree = load_html(filecontent)
+                #tree = convert_tags(tree)
+                #postbody, temp_text, len_text, sure_thing = extract_content(tree)
                 LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
@@ -641,11 +640,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # sanity check on language
         if target_language is not None and \
-                language_filter(temp_text, temp_comments, target_language, docmeta) is True:
+            language_filter(temp_text, temp_comments, target_language, docmeta) is True:
             raise ValueError
 
     except ValueError:
-        LOGGER.info('discarding data for url: %s', url)  # docmeta['url'] , record_id
+        LOGGER.info('discarding data for url: %s', url) # docmeta['url'] , record_id
         return None
 
     # special case: python variables
@@ -676,7 +675,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         include_formatting=include_formatting, deduplicate=deduplicate,
         date_extraction_params=date_extraction_params, with_metadata=with_metadata,
         max_tree_size=max_tree_size, url_blacklist=url_blacklist
-    )
+        )
     if docmeta is None:
         return None
     if output_format != 'txt':
