@@ -8,24 +8,17 @@ Functions grounding on third-party software.
 
 
 import logging
-import os
 
 # third-party
+from justext.core import classify_paragraphs, ParagraphMaker, preprocessor, revise_paragraph_classification
+from justext.utils import get_stoplist, get_stoplists
+
 from lxml import etree, html
 from readability import Document
 from readability.readability import Unparseable
 
-# try this option
-try:
-    import justext
-    JT_STOPLIST = set()
-    for language in justext.get_stoplists():
-        JT_STOPLIST.update(justext.get_stoplist(language))
-except ImportError:
-    justext = JT_STOPLIST = None
-
 # own
-from .htmlprocessing import convert_tags, prune_html
+from .htmlprocessing import convert_tags, prune_html  #, tree_cleaning
 from .settings import JUSTEXT_LANGUAGES, MANUALLY_STRIPPED
 from .utils import trim, HTML_PARSER
 from .xml import TEI_VALID_TAGS
@@ -34,6 +27,16 @@ from .xml import TEI_VALID_TAGS
 LOGGER = logging.getLogger(__name__)
 
 SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
+
+
+def jt_stoplist_init():
+    'Retrieve and return the content of all JusText stoplists'
+    stoplist = set()
+    for language in get_stoplists():
+        stoplist.update(get_stoplist(language))
+    return stoplist
+
+JT_STOPLIST = jt_stoplist_init()
 
 
 class LXMLDocument(Document):
@@ -55,35 +58,33 @@ def try_readability(htmlinput, url):
         return etree.Element('div')
 
 
-# bypass parsing
-#def my_bypass(html_tree, default_encoding, encoding, enc_errors):
-#    return html_tree
-#if justext:
-#    justext.html_to_dom = my_bypass
+def custom_justext(tree, stoplist):
+    'Customized version of JusText processing'
+    dom = preprocessor(tree) # tree_cleaning(tree, True)
+    paragraphs = ParagraphMaker.make_paragraphs(dom)
+    classify_paragraphs(paragraphs, stoplist, 50, 200, 0.1, 0.2, 0.2, True)
+    revise_paragraph_classification(paragraphs, 200)
+    return paragraphs
 
 
 def try_justext(tree, url, target_language):
     '''Second safety net: try with the generic algorithm justext'''
     result_body = etree.Element('body')
-    justtextstring = html.tostring(tree, pretty_print=False, encoding='utf-8')
     # determine language
     if target_language is not None and target_language in JUSTEXT_LANGUAGES:
-        langsetting = JUSTEXT_LANGUAGES[target_language]
-        justext_stoplist = justext.get_stoplist(langsetting)
+        justext_stoplist = get_stoplist(JUSTEXT_LANGUAGES[target_language])
     else:
-        #justext_stoplist = justext.get_stoplist(JUSTEXT_DEFAULT)
         justext_stoplist = JT_STOPLIST
     # extract
     try:
-        paragraphs = justext.justext(justtextstring, justext_stoplist, 50, 200, 0.1, 0.2, 0.2, 200, True)
+        paragraphs = custom_justext(tree, justext_stoplist)
     except ValueError as err:  # not an XML element: HtmlComment
         LOGGER.error('justext %s %s', err, url)
         result_body = None
     else:
         for paragraph in [p for p in paragraphs if not p.is_boilerplate]:
             #if duplicate_test(paragraph) is not True:
-            elem = etree.Element('p')
-            elem.text = paragraph.text
+            elem, elem.text = etree.Element('p'), paragraph.text
             result_body.append(elem)
     return result_body
 
