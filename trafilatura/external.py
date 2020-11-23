@@ -10,13 +10,6 @@ Functions grounding on third-party software.
 import logging
 import os
 
-try:
-    from contextlib import redirect_stderr
-    MUFFLE_FLAG = True
-except ImportError:
-    MUFFLE_FLAG = False
-
-
 # third-party
 from lxml import etree, html
 from readability import Document
@@ -57,13 +50,7 @@ def try_readability(htmlinput, url):
     # defaults: min_text_length=25, retry_length=250
     try:
         doc = LXMLDocument(htmlinput, url=url, min_text_length=25, retry_length=250)
-        if MUFFLE_FLAG is False:
-            resultstring = doc.summary(html_partial=True)
-        else:
-            with open(os.devnull, 'w') as devnull:
-                with redirect_stderr(devnull):
-                    resultstring = doc.summary(html_partial=True)
-        return html.fromstring(resultstring, parser=HTML_PARSER)
+        return html.fromstring(doc.summary(html_partial=True), parser=HTML_PARSER)
     except (etree.SerialisationError, Unparseable):
         return etree.Element('div')
 
