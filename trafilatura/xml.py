@@ -49,7 +49,7 @@ def build_json_output(docmeta):
 def clean_attributes(tree):
     '''Remove unnecessary attributes'''
     for elem in tree.iter():
-        if elem.tag != 'image' and elem.tag not in ('del', 'hi'):
+        if elem.tag not in ('del', 'hi', 'image'):
             elem.attrib.clear()
     return tree
 
