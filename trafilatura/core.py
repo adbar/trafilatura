@@ -24,7 +24,7 @@ from .htmlprocessing import (convert_tags, discard_unwanted,
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
-from .utils import load_html, trim, txttocsv
+from .utils import load_html, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import BODY_XPATH, COMMENTS_XPATH
@@ -236,6 +236,21 @@ def handle_table(table_elem):
     return None
 
 
+def handle_image(element):
+    '''Process image element'''
+    processed_element = etree.Element(element.tag)
+    if element.get('data-src') is not None and is_image_file(element.get('data-src')):
+        processed_element.set('src', element.get('data-src'))
+    elif element.get('src') is not None and is_image_file(element.get('src')):
+        processed_element.set('src', element.get('src'))
+    else:
+        return None
+    if element.get('alt') is not None: processed_element.set('alt', element.get('alt'))
+    if element.get('title') is not None: processed_element.set('title', element.get('title'))
+
+    return processed_element
+
+
 def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG, deduplicate=True):
     '''Look for all p-elements, including outside of the determined frame
        and throughout the document to recover potentially missing text parts'''
@@ -270,6 +285,8 @@ def handle_textelem(element, potential_tags, dedupbool):
         new_element = handle_formatting(element)
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element)
+    elif element.tag == 'image':
+        new_element = handle_image(element)
     else:
         # other elements (div, ??, ??)
         new_element = handle_other_elements(element, potential_tags, dedupbool)
@@ -498,7 +515,7 @@ def determine_returnstring(docmeta, output_format, tei_validation):
     if 'xml' in output_format:
         # last cleaning
         for element in docmeta['body'].iter():
-            if len(element) == 0 and not element.text and not element.tail:
+            if element.tag != 'image' and len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
                 if parent is not None:
                     parent.remove(element)
@@ -544,7 +561,7 @@ def map_format(output_format, csv_output, json_output, xml_output, tei_output):
 
 def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_comments=True, output_format='python', target_language=None,
-                    include_tables=True, include_formatting=False, deduplicate=False,
+                    include_tables=True, include_images=False, include_formatting=False, deduplicate=False,
                     date_extraction_params=None, with_metadata=False, max_tree_size=None,
                     url_blacklist=None):
     '''Internal function for text extraction returning bare Python variables'''
@@ -577,10 +594,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             docmeta = dict.fromkeys(METADATA_LIST)
 
         # clean + use LXML cleaner
-        cleaned_tree = tree_cleaning(tree, include_tables)
+        cleaned_tree = tree_cleaning(tree, include_tables, include_images)
 
         # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables)
+        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images)
 
         # comments first, then remove
         if include_comments is True:
@@ -646,7 +663,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             include_comments=True, output_format='txt',
             csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
-            include_tables=True, include_formatting=False, deduplicate=False,
+            include_tables=True, include_images=False, include_formatting=False, deduplicate=False,
             date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=None):
     '''Function exposed by the package:
        wrapper for text extraction and conversion to chosen output format'''
@@ -658,7 +675,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     docmeta = bare_extraction(
         filecontent, url=url, no_fallback=no_fallback,
         include_comments=include_comments, output_format=output_format,
-        target_language=target_language, include_tables=include_tables,
+        target_language=target_language, include_tables=include_tables, include_images=include_images,
         include_formatting=include_formatting, deduplicate=deduplicate,
         date_extraction_params=date_extraction_params, with_metadata=with_metadata,
         max_tree_size=max_tree_size, url_blacklist=url_blacklist

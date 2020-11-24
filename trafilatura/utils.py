@@ -58,6 +58,9 @@ NOPRINT_TRANS_TABLE = {
     if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
 }
 
+# Regex to check image file extensions
+IMAGE_EXTENSION = re.compile(r'[^\s]+(\.(?i:)(bmp|gif|jpe?g|png))')
+
 
 def isutf8(data):
     """Simple heuristic to determine if a bytestring uses standard unicode encoding"""
@@ -265,3 +268,11 @@ def trim(string):
         return SPACE_TRIMMING.sub(r' ', NO_TAG_SPACE.sub(r' ', string)).strip(' \t\n\r\v')
     except TypeError:
         return None
+
+
+def is_image_file(imagesrc):
+    '''Check if the observed string corresponds to a valid image extension,
+       return False otherwise'''
+    if imagesrc is not None and IMAGE_EXTENSION.search(imagesrc):
+        return True
+    return False

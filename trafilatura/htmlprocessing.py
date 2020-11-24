@@ -17,17 +17,15 @@ from .settings import CUT_EMPTY_ELEMS, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import trim
 from .xpaths import COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
-
 LOGGER = logging.getLogger(__name__)
-
 
 # HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
 HTML_CLEANER = Cleaner()
-HTML_CLEANER.annoying_tags = False # True
+HTML_CLEANER.annoying_tags = False  # True
 HTML_CLEANER.comments = True
-HTML_CLEANER.embedded = False # True
-HTML_CLEANER.forms = False # True
-HTML_CLEANER.frames = False # True
+HTML_CLEANER.embedded = False  # True
+HTML_CLEANER.forms = False  # True
+HTML_CLEANER.frames = False  # True
 HTML_CLEANER.javascript = False
 HTML_CLEANER.links = False
 HTML_CLEANER.meta = False
@@ -41,11 +39,14 @@ HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
 HTML_CLEANER.kill_tags = MANUALLY_CLEANED
 
 
-
-def tree_cleaning(tree, include_tables):
+def tree_cleaning(tree, include_tables, include_images=False):
     '''Prune the tree by discarding unwanted elements'''
     if include_tables is False:
         MANUALLY_CLEANED.append('table')
+    if include_images is False:
+        # Many websites have <img> inside <figure> or <picture> or <source> tag
+        MANUALLY_CLEANED.extend(['figure', 'picture', 'source'])
+        MANUALLY_STRIPPED.append('img')
     for expression in MANUALLY_CLEANED:
         for element in tree.getiterator(expression):
             try:
@@ -100,21 +101,21 @@ def link_density_test(element):
             threshold = 0.75
         if elemlen < limitlen:
             flag = True
-        #elif element.getnext() is None and len(links_xpath) < 5:
+        # elif element.getnext() is None and len(links_xpath) < 5:
         #    flag = True
         if flag is True:
             linklen = 0
             for subelem in links_xpath:
                 linklen += len(trim(subelem.text_content()))
             LOGGER.debug('list link text: %s / total: %s', linklen, elemlen)
-            if linklen > threshold*elemlen:
+            if linklen > threshold * elemlen:
                 return True
     return False
 
 
 def link_density_test_tables(element):
     '''Remove tables which are rich in links (probably boilerplate)'''
-    #if element.getnext() is not None:
+    # if element.getnext() is not None:
     #    return False
     links_xpath = element.xpath('.//link')
     if links_xpath:
@@ -125,12 +126,12 @@ def link_density_test_tables(element):
                 linklen += len(trim(subelem.text_content()))
             # if (elemlen < 300 and linklen > 0.9*elemlen) or (elemlen > 300 and linklen > 0.5*elemlen):
             LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
-            if linklen > 0.5*elemlen:
+            if linklen > 0.5 * elemlen:
                 return True
     return False
 
 
-def convert_tags(tree, include_formatting=False, include_tables=False):
+def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # ul/ol → list / li → item
     for elem in tree.iter('ul', 'ol', 'dl'):
@@ -146,6 +147,10 @@ def convert_tags(tree, include_formatting=False, include_tables=False):
     if include_tables is True:
         for elem in tree.xpath('//table//a'):
             elem.tag = 'link'
+    # images
+    if include_images is True:
+        for elem in tree.iter('img'):
+            elem.tag = 'image'
     # delete links for faster processing
     etree.strip_tags(tree, 'a')
     # head tags + delete attributes
