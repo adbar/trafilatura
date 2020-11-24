@@ -18,8 +18,6 @@ try:
     import cchardet
 except ImportError:
     cchardet = None
-# https://charset-normalizer.readthedocs.io/en/latest/
-# https://ftfy.readthedocs.io/en/latest/
 
 import requests
 #import urllib3
@@ -45,15 +43,20 @@ SESSION.headers.update(HEADERS)
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
 RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
-UNICODE_WHITESPACE = re.compile(r'\u00A0|\u1680|\u2000|\u2001|\u2002|\u2003|\u2004|\u2005|\u2006|\u2007|\u2008|\u2009|\u200a|\u2028|\u2029|\u202F|\u205F|\u3000')
+UNICODE_WHITESPACE = re.compile(
+    r'''
+    \u00A0|\u1680|\u2000|\u2001|\u2002|\u2003|\u2004|\u2005|\u2006|\u2007|
+    \u2008|\u2009|\u200a|\u2028|\u2029|\u202F|\u205F|\u3000
+    '''
+)
 
 NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
 SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
 
 NOPRINT_TRANS_TABLE = {
-    i: None for i in range(0, sys.maxunicode + 1) if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
+    i: None for i in range(0, sys.maxunicode + 1)
+    if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
 }
-# .isspace() # unicodedata.category(char)[0] != "C" or char in ('\t', '\n')
 
 
 def isutf8(data):
@@ -119,7 +122,8 @@ def fetch_url(url):
         LOGGER.error('redirects: %s', url)
     except requests.exceptions.SSLError as err:
         LOGGER.error('SSL: %s %s', url, err)
-    except (socket.timeout, requests.exceptions.ConnectionError, requests.exceptions.Timeout, socket.error, socket.gaierror) as err:
+    except (socket.timeout, requests.exceptions.ConnectionError,
+            requests.exceptions.Timeout, socket.error, socket.gaierror) as err:
         LOGGER.error('connection: %s %s', url, err)
     #except Exception as err:
     #    logging.error('unknown: %s %s', url, err) # sys.exc_info()[0]
@@ -200,7 +204,9 @@ def txttocsv(text, comments, docmeta):
     text = trim(' '.join(text.splitlines()))
     if comments is not None:
         comments = trim(' '.join(comments.splitlines()))
-    tsv_output = '{url}\t{fingerprint}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\n'.format(
+    tsv_output = \
+        '{url}\t{fingerprint}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\n' \
+        .format(
         url=docmeta['url'],
         fingerprint=docmeta['fingerprint'],
         hostname=docmeta['hostname'],
