@@ -3,14 +3,29 @@ Scrapes the main text of web pages while preserving some structure
 http://github.com/adbar/trafilatura
 """
 
-# workaround for open() with encoding=''
-from codecs import open
-
-from os import path
+import re
+from pathlib import Path
 from setuptools import setup
 
 
-here = path.abspath(path.dirname(__file__))
+
+def get_version(package):
+    "Return package version as listed in `__version__` in `init.py`"
+    # version = Path(package, '__init__.py').read_text() # Python >= 3.5
+    with open(str(Path(package, '__init__.py')), 'r', encoding='utf-8') as filehandle:
+        initfile = filehandle.read()
+    return re.search('__version__ = [\'"]([^\'"]+)[\'"]', initfile).group(1)
+
+
+def get_long_description():
+    "Return the README"
+    with open('README.rst', 'r', encoding='utf-8') as filehandle:
+        long_description = filehandle.read()
+    #long_description += "\n\n"
+    #with open("CHANGELOG.md", encoding="utf8") as f:
+    #    long_description += f.read()
+    return long_description
+
 
 # some problems with installation solved this way
 extras = {
@@ -21,17 +36,11 @@ extras = {
     ],
 }
 
-
-def readme():
-    with open(path.join(here, 'README.rst'), 'r', 'utf-8') as readmefile:
-        return readmefile.read()
-
-
 setup(
     name='trafilatura',
-    version='0.6.0',
+    version=get_version('trafilatura'),
     description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
-    long_description=readme(),
+    long_description=get_long_description(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 4 - Beta',
