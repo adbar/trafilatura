@@ -10,26 +10,33 @@ import re
 
 from time import sleep
 
-from courlan import validate_url as courlan_val
+from courlan import check_url, clean_url, extract_domain, validate_url
 
 from .settings import SLEEP_TIME
+from .sitemaps import fix_relative_urls
 from .utils import fetch_url
 
 LOGGER = logging.getLogger(__name__)
 
 
-def validate_url(url):
-    '''Check if the URL is valid and contains a path'''
-    isvalid, parsed = courlan_val(url)
-    if isvalid is False:
-        return False
-    if parsed.path == '/' and \
-        all([not parsed.params, not parsed.query, not parsed.query]):
-        return False
-    return True
+def handle_link_list(linklist, domainname, target_lang=None):
+    '''Examine links to determine if they are valid and
+       lead to a web page'''
+    output_links = []
+    # sort and uniq
+    for item in sorted(list(set(linklist))):
+        # fix and check
+        link = fix_relative_urls(domainname, item)
+        # control output for validity
+        checked = check_url(link, language=target_lang)
+        if checked is not None:
+            output_links.append(checked[0])
+            if checked[1] != domainname:
+                LOGGER.warning('Diverging domain names: %s %s', domainname, checked[1])
+    return output_links
 
 
-def extract_links(feed_string):
+def extract_links(feed_string, domainname, reference, target_lang=None):
     '''Extract links from Atom and RSS feeds'''
     feed_links = []
     # could be Atom
@@ -44,21 +51,18 @@ def extract_links(feed_string):
     elif '<link>' in feed_string:
         for item in re.findall(r'<link>(.+?)</link>', feed_string):
             feed_links.append(item)
-    # sort and uniq
-    feed_links = sorted(list(set(feed_links)))
-    # control output for validity
-    for item in feed_links:
-        if validate_url(item) is False:
-            feed_links.remove(item)
+    # refine
+    output_links = handle_link_list(feed_links, domainname, target_lang)
+    output_links = [l for l in output_links if l != reference]
     # log result
     if feed_links:
-        LOGGER.debug('Links found: %s', len(feed_links))
+        LOGGER.debug('Links found: %s of which %s valid', len(feed_links), len(output_links))
     else:
-        LOGGER.debug('Does not seem to be a valid feed')
-    return feed_links
+        LOGGER.debug('Invalid feed for %s', domainname)
+    return output_links
 
 
-def determine_feed(htmlstring):
+def determine_feed(htmlstring, domainname, reference):
     '''Try to extract the feed URL from the home page'''
     feed_urls = []
     # try to find RSS URL
@@ -75,23 +79,35 @@ def determine_feed(htmlstring):
     for item in feed_urls:
         if 'comments' in item:
             feed_urls.remove(item)
-    return feed_urls
+    # refine
+    output_urls = []
+    for link in sorted(list(set(feed_urls))):
+        link = fix_relative_urls(domainname, link)
+        link = clean_url(link)
+        if link == reference or validate_url(link)[0] is False:
+            continue
+        output_urls.append(link)
+    # log result
+    LOGGER.debug('Feed URLs found: %s of which %s valid', len(feed_urls), len(output_urls))
+    return output_urls
 
 
-def find_feed_urls(url):
+def find_feed_urls(url, target_lang=None):
     '''Try to find feed URLs'''
+    url = url.rstrip('/')
     downloaded = fetch_url(url)
     if downloaded is None:
         LOGGER.debug('Could not download web page: %s', url)
         return None
+    domainname = extract_domain(url)
     # assume it's a feed
     if downloaded.startswith('<?xml'):
-        feed_links = extract_links(downloaded)
+        feed_links = extract_links(downloaded, domainname, url, target_lang)
     # assume it's a web page
     else:
         feed_links = []
-        for feed in determine_feed(downloaded):
+        for feed in determine_feed(downloaded, domainname, url):
             sleep(SLEEP_TIME)
             feed_string = fetch_url(feed)
-            feed_links.extend(extract_links(feed_string))
+            feed_links.extend(extract_links(feed_string, domainname, url, target_lang))
     return feed_links
