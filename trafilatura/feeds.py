@@ -38,6 +38,9 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None):
 def extract_links(feed_string, domainname, baseurl, reference, target_lang=None):
     '''Extract links from Atom and RSS feeds'''
     feed_links = []
+    # check if it's a feed
+    if feed_string is None or not feed_string.startswith('<?xml'):
+        return feed_links
     # could be Atom
     if '<link ' in feed_string:
         for link in re.findall(r'<link .*?href=".+?"', feed_string):
@@ -103,8 +106,6 @@ def find_feed_urls(url, target_lang=None):
     if downloaded is None:
         LOGGER.warning('Could not download web page: %s', url)
         return None
-    # assume it's a feed
-    if downloaded.startswith('<?xml'):
         feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
     # assume it's a web page
     else:
