@@ -139,7 +139,7 @@ def test_download():
     assert cli.examine(teststring, args, url) is not None
     # multiprocessing
     domain_dict = dict()
-    domain_dict['httpbin.org'] = ['https://httpbin.org/status/301', 'https://httpbin.org/status/304', 'https://httpbin.org/status/200', 'https://httpbin.org/status/300', 'https://httpbin.org/status/400', 'https://httpbin.org/status/500']
+    domain_dict['httpbin.org'] = ['https://httpbin.org/status/301', 'https://httpbin.org/status/304', 'https://httpbin.org/status/200', 'https://httpbin.org/status/300', 'https://httpbin.org/status/400', 'https://httpbin.org/status/505']
     assert cli_utils.multi_threaded_processing(domain_dict, args, 0.25, None) is None
 
 

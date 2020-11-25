@@ -25,7 +25,10 @@ import requests
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
-from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, USER_AGENT
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
+from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, TIMEOUT, USER_AGENT
 
 
 LOGGER = logging.getLogger(__name__)
@@ -35,8 +38,16 @@ HEADERS = {
     # 'Connection': 'close',  # another way to cover tracks
     'User-Agent': USER_AGENT,  # your string here
 }
+RETRY_STRATEGY = Retry(
+    total=3,
+    backoff_factor=TIMEOUT*2,
+    status_forcelist=[429, 500, 502, 503, 504],
+)
+ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
 # urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 SESSION = requests.Session()
+SESSION.mount("https://", ADAPTER)
+SESSION.mount("http://", ADAPTER)
 SESSION.headers.update(HEADERS)
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
@@ -120,7 +131,7 @@ def fetch_url(url):
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
-        response = SESSION.get(url, timeout=30, verify=False, allow_redirects=True, headers=HEADERS)
+        response = SESSION.get(url, timeout=TIMEOUT, verify=False, allow_redirects=True, headers=HEADERS)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
     except requests.exceptions.TooManyRedirects:

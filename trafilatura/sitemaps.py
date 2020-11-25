@@ -54,7 +54,7 @@ def process_sitemap(url, domain, baseurl, target_lang=None):
     LOGGER.info('fetching sitemap: %s', url)
     pagecontent = fetch_url(url)
     if pagecontent is None or not pagecontent.startswith('<?xml'):
-        logging.warning('not a sitemap: %s', domain) # respheaders
+        logging.warning('not a sitemap: %s', url) # respheaders
         return [], []
     if target_lang is not None:
         sitemapurls, linklist = extract_sitemap_langlinks(pagecontent, url, domain, baseurl, target_lang)
