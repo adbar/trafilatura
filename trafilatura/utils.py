@@ -133,11 +133,11 @@ def fetch_url(url):
     else:
         # safety checks
         if response.status_code != 200:
-            LOGGER.error('not a 200 response: %s', response.status_code)
+            LOGGER.error('not a 200 response: %s for URL %s', response.status_code, url)
         elif response.text is None or len(response.text) < MIN_FILE_SIZE:
-            LOGGER.error('too small/incorrect: %s %s', url, len(response.text))
+            LOGGER.error('too small/incorrect for URL %s', url)
         elif len(response.text) > MAX_FILE_SIZE:
-            LOGGER.error('too large: %s %s', url, len(response.text))
+            LOGGER.error('too large: length %s for URL %s', len(response.text), url)
         else:
             return decode_response(response)
     return None
