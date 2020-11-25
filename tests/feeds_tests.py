@@ -23,20 +23,20 @@ def test_atom_extraction():
     filepath = os.path.join(RESOURCES_DIR, 'feed1.atom')
     with open(filepath) as f:
         teststring = f.read()
-    assert len(feeds.extract_links(teststring, 'example.org', 'https://example.org')) > 0
-    assert len(feeds.extract_links('<link type="application/atom+xml" rel="self" href="https://www.dwds.de/api/feed/themenglossar/Corona"/>', 'dwds.de', 'https://www.dwds.de')) == 0
-    assert len(feeds.extract_links('<link type="application/atom+xml" rel="self" href="123://api.exe"/>', 'example.org', 'https://example.org')) == 0
+    assert len(feeds.extract_links(teststring, 'example.org', 'https://example.org', '')) > 0
+    assert len(feeds.extract_links('<link type="application/atom+xml" rel="self" href="https://www.dwds.de/api/feed/themenglossar/Corona"/>', 'dwds.de', 'https://www.dwds.de', '')) == 0
+    assert len(feeds.extract_links('<link type="application/atom+xml" rel="self" href="123://api.exe"/>', 'example.org', 'https://example.org', '')) == 0
 
 
 def test_rss_extraction():
     '''Test link extraction from a RSS feed'''
-    assert len(feeds.extract_links('<link>http://example.org/article1/</link>', 'example.org', 'http://example.org/')) == 1
-    assert len(feeds.extract_links('<link>http://example.org/</link>', 'example.org', 'http://example.org')) == 0
-    assert feeds.extract_links('<link>/api/feed/themenglossar/Corona</link>', 'www.dwds.de', 'https://www.dwds.de') == ['http://www.dwds.de/api/feed/themenglossar/Corona']
+    assert len(feeds.extract_links('<link>http://example.org/article1/</link>', 'example.org', 'http://example.org/', '')) == 1
+    assert len(feeds.extract_links('<link>http://example.org/</link>', 'example.org', 'http://example.org', 'http://example.org')) == 0
+    assert feeds.extract_links('<link>/api/feed/themenglossar/Corona</link>', 'www.dwds.de', 'https://www.dwds.de', 'https://www.dwds.de') == ['https://www.dwds.de/api/feed/themenglossar/Corona']
     filepath = os.path.join(RESOURCES_DIR, 'feed2.rss')
     with open(filepath) as f:
         teststring = f.read()
-    assert len(feeds.extract_links(teststring, 'example.com', 'https://example.org')) > 0
+    assert len(feeds.extract_links(teststring, 'example.com', 'https://example.org', '')) > 0
 
 
 def test_feeds_helpers():

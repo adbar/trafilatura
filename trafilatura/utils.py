@@ -61,6 +61,8 @@ NOPRINT_TRANS_TABLE = {
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+(\.(?i:)(bmp|gif|jpe?g|png))')
 
+HOSTINFO = re.compile(r'https?://[^/]+')
+
 
 def isutf8(data):
     """Simple heuristic to determine if a bytestring uses standard unicode encoding"""
@@ -165,7 +167,7 @@ def load_html(htmlobject):
                 try:
                     htmlobject = htmlobject.decode(guessed_encoding)
                     tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-                except UnicodeDecodeError:
+                except (LookupError, UnicodeDecodeError):  # VISCII encoding
                     LOGGER.warning('encoding issue: %s', guessed_encoding)
                     tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
         else:
@@ -276,3 +278,14 @@ def is_image_file(imagesrc):
     if imagesrc is not None and IMAGE_EXTENSION.search(imagesrc):
         return True
     return False
+
+
+def fix_relative_urls(baseurl, url):
+    'Prepend protocol and host information to relative links.'
+    if url.startswith('/'):
+        urlfix = baseurl + url
+    elif not url.startswith('http'):
+        urlfix = baseurl + '/' + url
+    else:
+        urlfix = url
+    return urlfix
