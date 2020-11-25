@@ -68,25 +68,24 @@ def determine_feed(htmlstring, baseurl, reference):
     '''Try to extract the feed URL from the home page'''
     feed_urls = []
     # try to find RSS URL
-    for feed_url in re.findall(r'type="application/rss\+xml".+?href="(.+?)"', htmlstring):
+    for feed_url in re.findall(r'<link[^<>]+?type="application/rss\+xml"[^<>]+?href="(.+?)"', htmlstring):
         feed_urls.append(feed_url)
-    for feed_url in re.findall(r'href="(.+?)".+?type="application/rss\+xml"', htmlstring):
+    for feed_url in re.findall(r'<link[^<>]+?href="(.+?)"[^<>]+?type="application/rss\+xml"', htmlstring):
         feed_urls.append(feed_url)
     # try to find Atom URL
     if len(feed_urls) == 0:
-        for feed_url in re.findall(r'type="application/atom\+xml".+?href="(.+?)"', htmlstring):
+        for feed_url in re.findall(r'<link[^<>]+?type="application/atom\+xml"[^<>]+?href="(.+?)"', htmlstring):
             feed_urls.append(feed_url)
-        for feed_url in re.findall(r'href="(.+?)".+?type="application/atom\+xml"', htmlstring):
+        for feed_url in re.findall(r'<link[^<>]+?href="(.+?)"[^<>]+?type="application/atom\+xml"', htmlstring):
             feed_urls.append(feed_url)
-    for item in feed_urls:
-        if 'comments' in item:
-            feed_urls.remove(item)
     # refine
     output_urls = []
     for link in sorted(list(set(feed_urls))):
         link = fix_relative_urls(baseurl, link)
         link = clean_url(link)
         if link == reference or validate_url(link)[0] is False:
+            continue
+        if 'comments' in link:
             continue
         output_urls.append(link)
     # log result
@@ -105,13 +104,11 @@ def find_feed_urls(url, target_lang=None):
     downloaded = fetch_url(url)
     if downloaded is None:
         LOGGER.warning('Could not download web page: %s', url)
-        return None
-        feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
+        return []
     # assume it's a web page
-    else:
-        feed_links = []
-        for feed in determine_feed(downloaded, baseurl, url):
-            sleep(SLEEP_TIME)
-            feed_string = fetch_url(feed)
-            feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
-    return feed_links
+    feed_links = []
+    for feed in determine_feed(downloaded, baseurl, url):
+        sleep(SLEEP_TIME)
+        feed_string = fetch_url(feed)
+        feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
+    return sorted(list(set(feed_links)))
