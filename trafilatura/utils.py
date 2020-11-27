@@ -70,7 +70,8 @@ NOPRINT_TRANS_TABLE = {
 }
 
 # Regex to check image file extensions
-IMAGE_EXTENSION = re.compile(r'[^\s]+(\.(?i:)(bmp|gif|jpe?g|png))')
+IMAGE_EXTENSION = re.compile("([^\\s]+(\\.(?i:)(jpe?g|png|gif|bmp)))")
+
 
 HOSTINFO = re.compile(r'https?://[^/]+')
 

@@ -28,7 +28,7 @@ except ImportError:
     LANGID_FLAG = False
 
 import trafilatura.filters
-from trafilatura.core import baseline, bare_extraction, extract, process_record, sanitize_tree, trim
+from trafilatura.core import baseline, bare_extraction, extract, handle_image, process_record, sanitize_tree, trim
 from trafilatura.metadata import METADATA_LIST
 from trafilatura.filters import duplicate_test, textfilter
 from trafilatura.lru import LRUCache
@@ -274,6 +274,16 @@ def test_external():
     # assert result is None
 
 
+def test_images():
+    '''Test image extraction function'''
+    mydoc = html.fromstring('<html><body><img src="test.jpg"/></body></html>')
+    assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
+    assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
+    assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
+    assert utils.is_image_file('test.jpg') is True
+    assert utils.is_image_file('test.txt') is False
+
+
 def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
@@ -308,5 +318,6 @@ if __name__ == '__main__':
     test_baseline()
     test_txttocsv()
     test_exotic_tags()
+    test_images()
     test_external()
     test_tei()

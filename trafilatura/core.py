@@ -238,16 +238,19 @@ def handle_table(table_elem):
 
 def handle_image(element):
     '''Process image element'''
+    if not 'data-src' in element.attrib and not 'src' in element.attrib:
+        return None
+    # image source
     processed_element = etree.Element(element.tag)
     if element.get('data-src') is not None and is_image_file(element.get('data-src')):
         processed_element.set('src', element.get('data-src'))
     elif element.get('src') is not None and is_image_file(element.get('src')):
         processed_element.set('src', element.get('src'))
-    else:
-        return None
-    if element.get('alt') is not None: processed_element.set('alt', element.get('alt'))
-    if element.get('title') is not None: processed_element.set('title', element.get('title'))
-
+    # additional data
+    if element.get('alt') is not None:
+        processed_element.set('alt', element.get('alt'))
+    if element.get('title') is not None:
+        processed_element.set('title', element.get('title'))
     return processed_element
 
 
