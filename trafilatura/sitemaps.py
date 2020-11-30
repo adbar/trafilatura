@@ -13,7 +13,7 @@ import re
 
 from courlan import check_url, extract_domain
 
-from .utils import fetch_url, fix_relative_urls, HOSTINFO
+from .utils import fetch_url, fix_relative_urls, is_gz_file, HOSTINFO
 
 
 LOGGER = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ def sitemap_search(url, target_lang=None):
         LOGGER.warning('Invalid URL: %s', url)
         return []
     baseurl = hostmatch.group(0)
-    if url.endswith('.xml') or url.endswith('sitemap'):
+    if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
         sitemapurl = url
     else:
         sitemapurl = url.rstrip('/') + '/sitemap.xml'
@@ -51,22 +51,23 @@ def sitemap_search(url, target_lang=None):
 
 
 def check_sitemap(url, contents):
-    '''Check if the sitemap corresponds to an expected format.'''
+    '''Check if the sitemap corresponds to an expected format,
+       i.e. XML or GZipped XML.'''
     if contents is None:
         logging.warning('not a sitemap: %s', url) # respheaders
         return None
+    if is_gz_file(contents):
+        try:
+            contents = str(gzip.decompress(contents), encoding='utf-8', errors='replace')
+        except OSError:
+            logging.warning('not a valid XML GZ sitemap: %s', url)
+            return None
     # strip query and fragments
     url = re.sub(r'\?.*$|#.*$', '', url)
-    if url.endswith('.xml') and \
+    if re.search(r'\.xml\b', url) and \
         (not isinstance(contents, str) or not contents.startswith('<?xml')):
         logging.warning('not a valid XML sitemap: %s', url)
         return None
-    if url.endswith('.gz') and isinstance(contents, bytes):
-        try:
-            return str(gzip.decompress(contents), encoding='utf-8', errors='replace')
-        except IOError:
-            logging.warning('not a valid XML GZ sitemap: %s', url)
-            return None
     return contents
 
 

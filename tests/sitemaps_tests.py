@@ -54,7 +54,6 @@ def test_extraction():
     sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl)
     assert len(sitemapurls) == 0 and len(linklist) == 84
     # check contents
-    assert sitemaps.check_sitemap('http://example.org/sitemap.xml', teststring) is None
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is not None
 
 

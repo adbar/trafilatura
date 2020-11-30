@@ -6,6 +6,7 @@ Module bundling functions related to HTML and text processing.
 ## under GNU GPL v3 license
 
 # import csv
+import gzip
 import logging
 import re
 import socket
@@ -72,8 +73,14 @@ NOPRINT_TRANS_TABLE = {
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'([^\s]+(\.(jpe?g|png|gif|bmp)))')
 
-
+# Regex for crude extraction of host/domain name
 HOSTINFO = re.compile(r'https?://[^/]+')
+
+
+def is_gz_file(contents):
+    """Tell if a file's magic number corresponds to the GZip format"""
+    # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
+    return contents[:2] == b'\x1f\x8b'
 
 
 def isutf8(data):
@@ -104,7 +111,13 @@ def detect_encoding(bytesobject):
 
 
 def decode_response(response):
-    """Read the first chunk of server response and decode it"""
+    """Read the Requests object corresponding to the server response,
+       check if it could be GZip and eventually decompress it, then
+       try to guess its encoding and decode it to return a unicode string"""
+    if is_gz_file(response.content):
+        decompressed = gzip.decompress(response.content)
+        response.content, response.text = decompressed, \
+            str(decompressed, encoding='utf-8', errors='replace')
     guessed_encoding = detect_encoding(response.content)
     LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
     # process
