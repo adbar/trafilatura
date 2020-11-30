@@ -59,20 +59,27 @@ def check_sitemap(url, contents):
     url = re.sub(r'\?.*$|#.*$', '', url)
     if url.endswith('.xml') and \
         (not isinstance(contents, str) or not contents.startswith('<?xml')):
+        logging.warning('not a valid XML sitemap: %s', url)
         return None
     if url.endswith('.gz'):
         try:
             return str(gzip.decompress(contents), encoding='utf-8', errors='replace')
         except IOError:
+            logging.warning('not a valid XML GZ sitemap: %s', url)
             return None
     return contents
 
 
 def process_sitemap(url, domain, baseurl, target_lang=None):
     'Download a sitemap and extract the links it contains.'
+    # fetch and pre-process
     LOGGER.info('fetching sitemap: %s', url)
     pagecontent = fetch_url(url)
     contents = check_sitemap(url, pagecontent)
+    # safeguard
+    if contents is None:
+        return [], []
+    # process
     if target_lang is not None:
         sitemapurls, linklist = extract_sitemap_langlinks(contents, url, domain, baseurl, target_lang)
         if len(sitemapurls) != 0 or len(linklist) != 0:
