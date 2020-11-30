@@ -5,6 +5,7 @@ Deriving link info from sitemaps.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+import gzip
 import logging
 import re
 # import urllib.robotparser # Python >= 3.8
@@ -49,18 +50,34 @@ def sitemap_search(url, target_lang=None):
     return linklist
 
 
+def check_sitemap(url, contents):
+    '''Check if the sitemap corresponds to an expected format.'''
+    if contents is None:
+        logging.warning('not a sitemap: %s', url) # respheaders
+        return None
+    # strip query and fragments
+    url = re.sub(r'\?.*$|#.*$', '', url)
+    if url.endswith('.xml') and \
+        (not isinstance(contents, str) or not contents.startswith('<?xml')):
+        return None
+    if url.endswith('.gz'):
+        try:
+            return str(gzip.decompress(contents), encoding='utf-8', errors='replace')
+        except IOError:
+            return None
+    return contents
+
+
 def process_sitemap(url, domain, baseurl, target_lang=None):
     'Download a sitemap and extract the links it contains.'
     LOGGER.info('fetching sitemap: %s', url)
     pagecontent = fetch_url(url)
-    if pagecontent is None or not pagecontent.startswith('<?xml'):
-        logging.warning('not a sitemap: %s', url) # respheaders
-        return [], []
+    contents = check_sitemap(url, pagecontent)
     if target_lang is not None:
-        sitemapurls, linklist = extract_sitemap_langlinks(pagecontent, url, domain, baseurl, target_lang)
+        sitemapurls, linklist = extract_sitemap_langlinks(contents, url, domain, baseurl, target_lang)
         if len(sitemapurls) != 0 or len(linklist) != 0:
             return sitemapurls, linklist
-    return extract_sitemap_links(pagecontent, url, domain, baseurl, target_lang)
+    return extract_sitemap_links(contents, url, domain, baseurl, target_lang)
 
 
 def handle_link(link, sitemapurl, domainname, baseurl, target_lang=None):

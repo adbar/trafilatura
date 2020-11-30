@@ -27,7 +27,8 @@ def test_extraction():
     filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml')
     with open(filepath) as f:
         teststring = f.read()
-    sitemapurls, linklist = sitemaps.extract_sitemap_links(teststring, url, domain, baseurl)
+    contents = sitemaps.check_sitemap('http://example.org/sitemap.xml', teststring)
+    sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl)
     assert len(sitemapurls) == 0 and len(linklist) == 84
     # hreflang
     assert sitemaps.extract_sitemap_langlinks(teststring, url, domain, baseurl) == ([], [])
@@ -45,7 +46,16 @@ def test_extraction():
         teststring = f.read()
     _, linklist = sitemaps.extract_sitemap_langlinks(teststring, url, domain, baseurl, target_lang='de')
     assert len(linklist) > 0
-    
+    # GZ-compressed sitemaps
+    filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml.gz')
+    with open(filepath, 'rb') as f:
+        teststring = f.read()
+    contents = sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', teststring)
+    sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl)
+    assert len(sitemapurls) == 0 and len(linklist) == 84
+    # check contents
+    assert sitemaps.check_sitemap('http://example.org/sitemap.xml', teststring) is None
+    assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is not None
 
 
 def test_robotstxt():
