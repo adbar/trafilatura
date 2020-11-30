@@ -114,26 +114,27 @@ def decode_response(response):
     """Read the Requests object corresponding to the server response,
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
+    resp_content, resp_text = response.content, response.text
     if is_gz_file(response.content):
         decompressed = gzip.decompress(response.content)
-        response.content, response.text = decompressed, \
+        resp_content, resp_text = decompressed, \
             str(decompressed, encoding='utf-8', errors='replace')
-    guessed_encoding = detect_encoding(response.content)
+    guessed_encoding = detect_encoding(resp_content)
     LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
     # process
     if guessed_encoding is not None:
         try:
-            htmltext = response.content.decode(guessed_encoding)
+            htmltext = resp_content.decode(guessed_encoding)
         except UnicodeDecodeError:
             LOGGER.warning('encoding error: %s / %s', response.encoding, guessed_encoding)
-            htmltext = response.text
+            htmltext = resp_text
     else:
-        htmltext = response.text
+        htmltext = resp_text
     return htmltext
 
 
 def fetch_url(url):
-    """ Fetch page using requests/urllib3
+    """ Fetch page using requests/urllib3 and decode the response
     Args:
         URL: URL of the page to fetch
     Returns:
