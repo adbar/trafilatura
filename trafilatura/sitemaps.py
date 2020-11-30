@@ -61,7 +61,7 @@ def check_sitemap(url, contents):
         (not isinstance(contents, str) or not contents.startswith('<?xml')):
         logging.warning('not a valid XML sitemap: %s', url)
         return None
-    if url.endswith('.gz'):
+    if url.endswith('.gz') and isinstance(contents, bytes):
         try:
             return str(gzip.decompress(contents), encoding='utf-8', errors='replace')
         except IOError:
