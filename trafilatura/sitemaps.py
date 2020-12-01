@@ -59,7 +59,7 @@ def check_sitemap(url, contents):
     if is_gz_file(contents):
         try:
             contents = str(gzip.decompress(contents), encoding='utf-8', errors='replace')
-        except OSError:
+        except (EOFError, OSError):
             logging.warning('not a valid XML GZ sitemap: %s', url)
             return None
     # strip query and fragments

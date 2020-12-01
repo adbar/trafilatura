@@ -42,14 +42,19 @@ def test_parser():
         args = cli.parse_args(testargs)
     args = cli.map_args(args)
     assert args.output_format == 'xml'
-    args.xml = False
-    args.csv = True
+    args.xml, args.csv = False, True
     args = cli.map_args(args)
     assert args.output_format == 'csv'
-    args.csv = False
-    args.json = True
+    args.csv, args.json = False, True
     args = cli.map_args(args)
     assert args.output_format == 'json'
+    # process_args
+    args.inputdir = '/dev/null'
+    args.verbose = True
+    args.blacklist = os.path.join(TEST_DIR, 'resources/list-discard.txt')
+    cli.process_args(args)
+    assert len(args.blacklist) == 4
+    
 
 
 def test_climain():
@@ -78,7 +83,7 @@ def test_input_type():
         teststring = f.read()
     assert cli.examine(teststring, args) is None
     # test file list
-    assert cli_utils.generate_filelist(os.path.join(TEST_DIR, 'resources')) is not None
+    assert 10 <= len(list(cli_utils.generate_filelist(os.path.join(TEST_DIR, 'resources')))) <= 20
 
 
 def test_sysoutput():
@@ -98,6 +103,11 @@ def test_sysoutput():
     # test fileslug for name
     filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, new_filename='AAZZ')
     assert filepath.endswith('AAZZ.xml')
+    # test json output
+    args2 = args
+    args2.xml, args2.json = False, True
+    filepath2, destdir2 = cli_utils.determine_output_path(args, args.outputdir, new_filename='AAZZ')
+    assert filepath2.endswith('AAZZ.json')
     # test directory counter
     assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir/1'
     # test file writing
@@ -115,6 +125,7 @@ def test_sysoutput():
     filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt')
     print(filepath, destdir)
     assert filepath == 'test/testfile.txt'
+
     
 
 def test_download():
@@ -122,6 +133,7 @@ def test_download():
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
+    assert cli.examine(None, args) is None
     assert cli.examine(' ', args) is None
     assert cli.examine('0'*int(10e7), args) is None
     #assert utils.fetch_url('https://httpbin.org/status/404') is None
@@ -196,8 +208,13 @@ def test_cli_pipeline():
     with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is not None
-    # file processing pipeline
+    # dry-run file processing pipeline
     testargs = ['', '--parallel', '1', '--inputdir', '/dev/null']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    cli_utils.file_processing_pipeline(args)
+    # file processing pipeline on resources/
+    args.inputdir = resources_dir
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     cli_utils.file_processing_pipeline(args)

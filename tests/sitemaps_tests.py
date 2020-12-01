@@ -15,14 +15,24 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')
 
 
+def test_search():
+    '''Test search for sitemaps'''
+    assert sitemaps.sitemap_search('12345') == []
+    assert sitemaps.sitemap_search('12345.xml.gz') == []
+    
+
 def test_extraction():
     '''Test simple link extraction'''
     url, domain, baseurl = 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'https://www.sitemaps.org'
     # fixing partial URLs
     assert fix_relative_urls('https://example.org', 'https://example.org/test.html') == 'https://example.org/test.html'
     assert fix_relative_urls('https://example.org', '/test.html') == 'https://example.org/test.html'
+    assert fix_relative_urls('https://example.org', 'test.html') == 'https://example.org/test.html'
     # link handling
-    # assert sitemaps.handle_link(url, domain, url) == (url, '0')
+    assert sitemaps.handle_link(url, url, domain, baseurl) == (url, '0')
+    # safety belts
+    assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is None
+    assert sitemaps.check_sitemap('http://example.org/sitemap.xml', 'ABC') is None
     # parsing a file
     filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml')
     with open(filepath) as f:
@@ -62,9 +72,11 @@ def test_robotstxt():
     baseurl = 'https://httpbin.org'
     assert sitemaps.find_robots_sitemaps('https://httpbin.org/', baseurl) == []
     assert sitemaps.extract_robots_sitemaps('# test', baseurl) == []
+    assert sitemaps.extract_robots_sitemaps('# test'*10000, baseurl) == []
     assert sitemaps.extract_robots_sitemaps('sitemap: https://example.org/sitemap.xml', baseurl) == ['https://example.org/sitemap.xml']
 
 
 if __name__ == '__main__':
+    test_search()
     test_extraction()
     test_robotstxt()

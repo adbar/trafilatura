@@ -136,11 +136,21 @@ def test_authors():
 
 
 def test_url():
-    '''Test the extraction of author names'''
+    '''Test URL extraction'''
     metadata = extract_metadata('<html><head><meta property="og:url" content="https://example.org"/></head><body></body></html>')
     assert metadata['url'] == 'https://example.org'
     metadata = extract_metadata('<html><head><link rel="canonical" href="https://example.org"/></head><body></body></html>')
     assert metadata['url'] == 'https://example.org'
+    metadata = extract_metadata('<html><head><meta name="twitter:url" content="https://example.org"/></head><body></body></html>')
+    assert metadata['url'] == 'https://example.org'
+    metadata = extract_metadata('<html><head><link rel="alternate" hreflang="x-default" href="https://example.org"/></head><body></body></html>')
+    assert metadata['url'] == 'https://example.org'
+
+
+def test_description():
+    '''Test the extraction of descriptions'''
+    metadata = extract_metadata('<html><head><meta itemprop="description" content="Description"/></head><body></body></html>')
+    assert metadata['description'] == 'Description'
 
 
 def test_dates():
@@ -163,6 +173,10 @@ def test_meta():
     assert metadata['title'] == 'Open Graph Title'
     assert metadata['author'] == 'Jenny Smith'
     assert metadata['description'] == 'This is an Open Graph description'
+    metadata = extract_metadata('<html><head><meta itemprop="headline" content="Title"/></head><body></body></html>')
+    assert metadata['title'] == 'Title'
+    metadata = extract_metadata('')
+    assert metadata is None
 
 
 def test_catstags():
@@ -403,5 +417,6 @@ if __name__ == '__main__':
     test_dates()
     test_meta()
     test_url()
+    test_description()
     test_catstags()
     test_pages()
