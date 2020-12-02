@@ -88,7 +88,7 @@ setup(
         'htmldate >= 0.7.2',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
-        'lxml >= 4.6.1; python_version > "3.4"',
+        'lxml >= 4.6.2; python_version > "3.4"',
         'requests == 2.21.0; python_version == "3.4"',
         'requests >= 2.21.0; python_version > "3.4"',
         'readability-lxml >= 0.8.1',

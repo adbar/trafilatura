@@ -1,6 +1,13 @@
 ## History / Changelog
 
 
+### 0.6.1
+- added `bare_extraction` function returning Python variables
+- improved link discovery in feeds and sitemaps
+- option to preserve image info
+- fixes (many thanks to bug reporters!)
+
+
 ### 0.6.0
 - link discovery in sitemaps
 - compatibility with Python 3.9
