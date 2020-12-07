@@ -153,6 +153,20 @@ def test_download():
     domain_dict = dict()
     domain_dict['httpbin.org'] = ['https://httpbin.org/status/301', 'https://httpbin.org/status/304', 'https://httpbin.org/status/200', 'https://httpbin.org/status/300', 'https://httpbin.org/status/400', 'https://httpbin.org/status/505']
     assert cli_utils.multi_threaded_processing(domain_dict, args, 0.25, None) is None
+    # test backoff algorithm
+    testdict = dict()
+    backoffdict = dict()
+    testdict['test.org'] = ['http://test.org/1']
+    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
+    testdict['test.org'] = ['http://test.org/1']
+    backoffdict['test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
+    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
+    testdict['test.org'] = ['http://test.org/1']
+    backoffdict['test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
+    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 3)
+    testdict['test.org'] = ['http://test.org/1']
+    backoffdict['test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
+    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 0)
 
 
 def test_cli_pipeline():
@@ -171,15 +185,16 @@ def test_cli_pipeline():
     my_urls = cli_utils.load_input_urls(args.inputfile)
     assert my_urls is not None and len(my_urls) == 2
     resources_dir = os.path.join(TEST_DIR, 'resources')
-    #testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '--blacklist', os.path.join(resources_dir, 'list-discard.txt')]
-    #with patch.object(sys, 'argv', testargs):
-    #    args = cli.parse_args(testargs)
-    #print(args.blacklist)
-    #assert args.blacklist is not None
+    testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '--blacklist', os.path.join(resources_dir, 'list-discard.txt')]
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    print(args.blacklist)
+    assert args.blacklist is not None
     # test backoff between domain requests
     reftime = datetime.now()
     assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
     delta = (datetime.now() - reftime).total_seconds()
+    print(delta)
     assert delta > 2
     # test backup
     testargs = ['', '--backup-dir', '/tmp/']

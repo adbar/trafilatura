@@ -21,7 +21,7 @@ from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan import extract_domain
+from courlan import extract_domain, validate_url
 
 from .core import extract
 from .settings import (DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
@@ -183,9 +183,13 @@ def url_processing_checks(blacklist, input_urls):
     # control blacklist
     if blacklist:
         input_urls = [u for u in input_urls if u not in blacklist]
+    # check for invalid URLs
+    if input_urls:
+        input_urls = [u for u in input_urls if validate_url(u)[0] is True]
     # deduplicate
     if input_urls:
         return list(OrderedDict.fromkeys(input_urls))
+    LOGGER.error('No URLs to process, invalid or blacklisted input')
     return []
 
 
@@ -209,36 +213,45 @@ def process_result(htmlstring, args, url, counter):
     return counter
 
 
+def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
+    '''Select a random URL from the domains pool and apply backoff rule'''
+    domain = random.choice(list(domain_dict))
+    # safeguard
+    if domain in backoff_dict and \
+        (datetime.now() - backoff_dict[domain]).total_seconds() < sleeptime:
+        i += 1
+        if i >= len(domain_dict)*3:
+            LOGGER.debug('spacing request for domain name %s', domain)
+            sleep(sleeptime)
+            i = 0
+    # draw URL
+    url = domain_dict[domain].pop()
+    # clean registries
+    if not domain_dict[domain]:
+        del domain_dict[domain]
+        try:
+            del backoff_dict[domain]
+        except KeyError:
+            pass
+    # register backoff
+    else:
+        backoff_dict[domain] = datetime.now()
+    return url, domain_dict, backoff_dict, i
+
+
 def single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter):
     '''Implement a single threaded processing algorithm'''
-    i = 0
+    # start with a higher level
+    i = 3
     while domain_dict:
-        domain = random.choice(list(domain_dict))
-        if domain not in backoff_dict or \
-        (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
-            url = domain_dict[domain].pop()
-            htmlstring = fetch_url(url)
-            # register in backoff dictionary to ensure time between requests
-            backoff_dict[domain] = datetime.now()
-            # process result
-            counter = process_result(htmlstring, args, url, counter)
-            # clean registries
-            if not domain_dict[domain]:
-                del domain_dict[domain]
-                del backoff_dict[domain]
-        # safeguard
-        else:
-            i += 1
-            if i > len(domain_dict)*3:
-                LOGGER.debug('spacing request for domain name %s', domain)
-                sleep(sleeptime)
-                i = 0
+        url, domain_dict, backoff_dict, i = draw_backoff_url(domain_dict, backoff_dict, sleeptime, i)
+        htmlstring = fetch_url(url)
+        counter = process_result(htmlstring, args, url, counter)
 
 
 def multi_threaded_processing(domain_dict, args, sleeptime, counter):
     '''Implement a multi-threaded processing algorithm'''
-    i = 0
-    backoff_dict = dict()
+    i, backoff_dict = 0, dict()
     download_threads = args.parallel or DOWNLOAD_THREADS
     while domain_dict:
         # the remaining list is too small, process it differently
@@ -246,36 +259,17 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
             single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
             return
         # populate buffer
-        bufferlist, bufferdomains = list(), set()
+        bufferlist = []
         while len(bufferlist) < download_threads:
-            domain = random.choice(list(domain_dict))
-            if domain not in backoff_dict or \
-            (datetime.now() - backoff_dict[domain]).total_seconds() > sleeptime:
-                bufferlist.append(domain_dict[domain].pop())
-                bufferdomains.add(domain)
-                backoff_dict[domain] = datetime.now()
-            # safeguard
-            else:
-                i += 1
-                if i > len(domain_dict)*3:
-                    LOGGER.debug('spacing request for domain name %s', domain)
-                    sleep(sleeptime)
-                    i = 0
+            url, domain_dict, backoff_dict, i = draw_backoff_url(domain_dict, backoff_dict, sleeptime, i)
+            bufferlist.append(url)
         # start several threads
         with ThreadPoolExecutor(max_workers=download_threads) as executor:
             future_to_url = {executor.submit(fetch_url, url): url for url in bufferlist}
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
-                # register in backoff dictionary to ensure time between requests
-                domain = extract_domain(url)
-                backoff_dict[domain] = datetime.now()
                 # handle result
                 counter = process_result(future.result(), args, url, counter)
-        # clean registries
-        for domain in bufferdomains:
-            if not domain_dict[domain]:
-                del domain_dict[domain]
-                del backoff_dict[domain]
 
 
 def url_processing_pipeline(args, input_urls, sleeptime):
@@ -300,8 +294,7 @@ def url_processing_pipeline(args, input_urls, sleeptime):
     else:
         counter = None
     if len(domain_dict) <= 5:
-        backoff_dict = dict()
-        single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
+        single_threaded_processing(domain_dict, dict(), args, sleeptime, counter)
     else:
         multi_threaded_processing(domain_dict, args, sleeptime, counter)
 
