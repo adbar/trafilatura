@@ -140,7 +140,6 @@ def test_download():
     assert cli.examine(None, args) is None
     assert cli.examine(' ', args) is None
     assert cli.examine('0'*int(10e7), args) is None
-    #assert utils.fetch_url('https://httpbin.org/status/404') is None
     #url = 'https://httpbin.org/status/200'
     #teststring = utils.fetch_url(url)
     #assert teststring is None  # too small

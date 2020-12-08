@@ -328,6 +328,12 @@ def test_htmlprocessing():
     assert myconverted.xpath('.//link') and myconverted.xpath('.//image') and myconverted.xpath('.//hi[@rend="#t"]')
 
 
+def test_fetch():
+    '''test URL fetching'''
+    assert utils.fetch_url('1234') == ''
+    assert utils.fetch_url('https://httpbin.org/status/404') is None
+
+
 if __name__ == '__main__':
     test_trim()
     test_lrucache()
@@ -340,4 +346,5 @@ if __name__ == '__main__':
     test_exotic_tags()
     test_images()
     test_external()
+    test_fetch()
     test_tei()

@@ -149,6 +149,7 @@ def fetch_url(url):
         response = SESSION.get(url, timeout=TIMEOUT, verify=False, allow_redirects=True, headers=HEADERS)
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
+        return ''
     except requests.exceptions.TooManyRedirects:
         LOGGER.error('redirects: %s', url)
     except requests.exceptions.SSLError as err:
@@ -164,8 +165,10 @@ def fetch_url(url):
             LOGGER.error('not a 200 response: %s for URL %s', response.status_code, url)
         elif response.text is None or len(response.text) < MIN_FILE_SIZE:
             LOGGER.error('too small/incorrect for URL %s', url)
+            return ''
         elif len(response.text) > MAX_FILE_SIZE:
             LOGGER.error('too large: length %s for URL %s', len(response.text), url)
+            return ''
         else:
             return decode_response(response)
     return None
