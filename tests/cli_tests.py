@@ -91,8 +91,7 @@ def test_sysoutput():
     testargs = ['', '--csv', '-o', '/root/forbidden/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir)
-    print(filepath)
+    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, '')
     assert len(filepath) >= 10 and filepath.endswith('.csv')
     assert destdir == '/root/forbidden/'
     assert cli_utils.check_outputdir_status(args.outputdir) is False
@@ -101,12 +100,12 @@ def test_sysoutput():
         args = cli.parse_args(testargs)
     assert cli_utils.check_outputdir_status(args.outputdir) is True
     # test fileslug for name
-    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, new_filename='AAZZ')
+    filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
     assert filepath.endswith('AAZZ.xml')
     # test json output
     args2 = args
     args2.xml, args2.json = False, True
-    filepath2, destdir2 = cli_utils.determine_output_path(args, args.outputdir, new_filename='AAZZ')
+    filepath2, destdir2 = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
     assert filepath2.endswith('AAZZ.json')
     # test directory counter
     assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir/1'
@@ -122,10 +121,15 @@ def test_sysoutput():
     testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt')
-    print(filepath, destdir)
+    filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt', '')
     assert filepath == 'test/testfile.txt'
-
+    # test hash as output file name
+    assert args.hash_as_name is False
+    args.hash_as_name = True
+    assert args.keep_dirs is True
+    args.keep_dirs = False
+    filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt', '')
+    assert filepath == 'test/2jmj7l5rSw0yVb-vlWAYkK-YBwk.txt'
     
 
 def test_download():

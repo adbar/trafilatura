@@ -24,6 +24,7 @@ from time import sleep
 from courlan import extract_domain, validate_url
 
 from .core import extract
+from .filters import content_fingerprint
 from .settings import (DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
                        MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY,
                        PROCESSING_TIMEOUT)
@@ -73,6 +74,7 @@ def load_blacklist(filename):
     return blacklist
 
 
+
 def check_outputdir_status(directory):
     '''Check if the output directory is within reach and writable'''
     # check the directory status
@@ -109,7 +111,7 @@ def get_writable_path(destdir, extension):
     return output_path, filename
 
 
-def determine_output_path(args, orig_filename, counter=None, new_filename=None):
+def determine_output_path(args, orig_filename, content, counter=None, new_filename=None):
     '''Pick a directory based on selected options and a file name based on output type'''
     # determine extension
     extension = '.txt'
@@ -119,6 +121,9 @@ def determine_output_path(args, orig_filename, counter=None, new_filename=None):
         extension = '.csv'
     elif args.json or args.output_format == 'json':
         extension = '.json'
+    # use cryptographic hash on file contents to define name
+    if args.hash_as_name is True:
+         new_filename = content_fingerprint(content)[:27].replace('/', '-')
     # determine directory
     if args.keep_dirs is True:
         # strip directory
@@ -156,7 +161,7 @@ def write_result(result, args, orig_filename=None, counter=None, new_filename=No
     if args.outputdir is None:
         sys.stdout.write(result + '\n')
     else:
-        destination_path, destination_directory = determine_output_path(args, orig_filename, counter, new_filename)
+        destination_path, destination_directory = determine_output_path(args, orig_filename, result, counter, new_filename)
         # check the directory status
         if check_outputdir_status(destination_directory) is True:
             with open(destination_path, mode='w', encoding='utf-8') as outputfile:

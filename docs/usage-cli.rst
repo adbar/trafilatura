@@ -117,11 +117,12 @@ For all usage instructions see ``trafilatura -h``:
                    [-o OUTPUTDIR] [-u URL] [--feed [FEED]]
                    [--sitemap [SITEMAP]] [--list] [-b BLACKLIST]
                    [--backup-dir BACKUP_DIR] [--timeout] [--parallel PARALLEL]
-                   [--keep-dirs] [-out {txt,csv,json,xml,xmltei}] [--csv]
-                   [--json] [--xml] [--xmltei] [--validate] [-f]
-                   [--formatting] [--nocomments] [--notables]
-                   [--with-metadata] [--target-language TARGET_LANGUAGE]
-                   [--deduplicate]
+                   [--keep-dirs] [--hash-as-name]
+                   [-out {txt,csv,json,xml,xmltei}] [--csv] [--json] [--xml]
+                   [--xmltei] [--validate] [-f] [--formatting] [--nocomments]
+                   [--notables] [--with-metadata]
+                   [--target-language TARGET_LANGUAGE] [--deduplicate]
+
 
 Command-line interface for Trafilatura
 
@@ -152,6 +153,8 @@ I/O:
   --parallel PARALLEL   Specify a number of cores/threads for parallel
                         downloads and/or processing
   --keep-dirs           Keep input directory structure and file names
+  --hash-as-name        Use file content hash as output file name (for
+                        deduplication) instead of random default
 
 Format:
   Selection of the output format

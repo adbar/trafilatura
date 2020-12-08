@@ -85,6 +85,10 @@ def parse_args(args):
     group1.add_argument('--keep-dirs',
                         help="Keep input directory structure and file names",
                         action="store_true")
+    group1.add_argument('--hash-as-name',
+                        help="""Use file content hash as output file name (for deduplication) 
+                        instead of random default""",
+                        action="store_true")
 
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group2.add_argument('-out', '--output-format',
