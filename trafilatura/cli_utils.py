@@ -123,7 +123,7 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
         extension = '.json'
     # use cryptographic hash on file contents to define name
     if args.hash_as_name is True:
-         new_filename = content_fingerprint(content)[:27].replace('/', '-')
+        new_filename = content_fingerprint(content)[:27].replace('/', '-')
     # determine directory
     if args.keep_dirs is True:
         # strip directory
@@ -200,21 +200,17 @@ def url_processing_checks(blacklist, input_urls):
 
 def process_result(htmlstring, args, url, counter):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
-    if htmlstring is not None:
-        # backup option
-        if args.backup_dir:
-            fileslug = archive_html(htmlstring, args, counter)
-        else:
-            fileslug = None
-        # process
-        result = examine(htmlstring, args, url=url)
-        write_result(result, args, orig_filename=None, counter=None, new_filename=fileslug)
-        # increment written file counter
-        if counter is not None:
-            counter += 1
+    # backup option
+    if args.backup_dir:
+        fileslug = archive_html(htmlstring, args, counter)
     else:
-        # log the error
-        print('No result for URL: ' + url, file=sys.stderr)
+        fileslug = None
+    # process
+    result = examine(htmlstring, args, url=url)
+    write_result(result, args, orig_filename=None, counter=None, new_filename=fileslug)
+    # increment written file counter
+    if counter is not None:
+        counter += 1
     return counter
 
 
@@ -248,21 +244,27 @@ def single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, count
     '''Implement a single threaded processing algorithm'''
     # start with a higher level
     i = 3
+    errors = []
     while domain_dict:
         url, domain_dict, backoff_dict, i = draw_backoff_url(domain_dict, backoff_dict, sleeptime, i)
         htmlstring = fetch_url(url)
-        counter = process_result(htmlstring, args, url, counter)
+        if htmlstring is not None:
+            counter = process_result(htmlstring, args, url, counter)
+        else:
+            LOGGER.debug('No result for URL: %s', url)
+            errors.append(url)
+    return errors, counter
 
 
 def multi_threaded_processing(domain_dict, args, sleeptime, counter):
     '''Implement a multi-threaded processing algorithm'''
-    i, backoff_dict = 0, dict()
+    i, backoff_dict, errors = 0, dict(), []
     download_threads = args.parallel or DOWNLOAD_THREADS
     while domain_dict:
         # the remaining list is too small, process it differently
         if len({x for v in domain_dict.values() for x in v}) < download_threads:
-            single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
-            return
+            errors, counter = single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
+            return errors, counter
         # populate buffer
         bufferlist = []
         while len(bufferlist) < download_threads:
@@ -274,7 +276,12 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
                 # handle result
-                counter = process_result(future.result(), args, url, counter)
+                if future.result() is not None:
+                    counter = process_result(future.result(), args, url, counter)
+                else:
+                    LOGGER.debug('No result for URL: %s', url)
+                    errors.append(url)
+    return errors, counter
 
 
 def url_processing_pipeline(args, input_urls, sleeptime):
@@ -299,9 +306,16 @@ def url_processing_pipeline(args, input_urls, sleeptime):
     else:
         counter = None
     if len(domain_dict) <= 5:
-        single_threaded_processing(domain_dict, dict(), args, sleeptime, counter)
+        errors, counter = single_threaded_processing(domain_dict, dict(), args, sleeptime, counter)
     else:
-        multi_threaded_processing(domain_dict, args, sleeptime, counter)
+        errors, counter = multi_threaded_processing(domain_dict, args, sleeptime, counter)
+    LOGGER.debug('%s URLs could not be found', len(errors))
+    # option to retry
+    if args.archived is True:
+        domain_dict = dict()
+        domain_dict['archive.org'] = ['https://web.archive.org/web/20/' + e for e in errors]
+        archived_errors, _ = single_threaded_processing(domain_dict, dict(), args, sleeptime, counter)
+        LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
 
 
 def file_processing_pipeline(args):
