@@ -13,6 +13,7 @@ import socket
 import sys
 
 from functools import lru_cache
+from random import randint
 
 try:
     # this module is faster
@@ -29,16 +30,12 @@ from lxml import etree, html
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
-from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, TIMEOUT, USER_AGENT
+from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, TIMEOUT, USER_AGENTS, USER_AGENTS_NUM
 
 
 LOGGER = logging.getLogger(__name__)
 
 # customize headers
-HEADERS = {
-    # 'Connection': 'close',  # another way to cover tracks
-    'User-Agent': USER_AGENT,  # your string here
-}
 RETRY_STRATEGY = Retry(
     total=3,
     backoff_factor=TIMEOUT*2,
@@ -49,7 +46,6 @@ ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
 SESSION = requests.Session()
 SESSION.mount("https://", ADAPTER)
 SESSION.mount("http://", ADAPTER)
-SESSION.headers.update(HEADERS)
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
@@ -133,20 +129,35 @@ def decode_response(response):
     return htmltext
 
 
-def fetch_url(url):
+def determine_headers():
+    'Decide on user-agent string'
+    if USER_AGENTS_NUM == 1:
+        rnumber = 0
+    else:
+        rnumber = randint(0, USER_AGENTS_NUM - 1)
+    headers = {
+    'User-Agent': USER_AGENTS[rnumber],
+    }
+    return headers
+
+
+def fetch_url(url, decode=True):
     """ Fetch page using requests/urllib3 and decode the response
     Args:
-        URL: URL of the page to fetch
+        url: URL of the page to fetch
+        decode: decode response instead of returning Requests object (boolean)
     Returns:
         request object (headers + body).
     Raises:
         Nothing.
     """
+
     # send
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
-        response = SESSION.get(url, timeout=TIMEOUT, verify=False, allow_redirects=True, headers=HEADERS)
+        response = SESSION.get(url, timeout=TIMEOUT, verify=False, allow_redirects=True,
+                               headers=determine_headers())
     except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
         LOGGER.error('malformed URL: %s', url)
         return ''
@@ -170,7 +181,9 @@ def fetch_url(url):
             LOGGER.error('too large: length %s for URL %s', len(response.text), url)
             return ''
         else:
-            return decode_response(response)
+            if decode is True:
+                return decode_response(response)
+            return response
     return None
 
 

@@ -12,6 +12,9 @@ from . import __version__
 
 
 USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
+USER_AGENTS = [USER_AGENT]
+USER_AGENTS_NUM = len(USER_AGENTS)
+
 
 # sanity checks
 MAX_FILE_SIZE = 20000000
