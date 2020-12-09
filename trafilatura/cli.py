@@ -9,12 +9,14 @@ import argparse
 import logging
 import sys
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
                         convert_inputlist,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .feeds import find_feed_urls
-from .settings import SLEEP_TIME
+from .settings import DOWNLOAD_THREADS, SLEEP_TIME
 from .sitemaps import sitemap_search
 
 
@@ -174,6 +176,7 @@ def process_args(args):
     # fetch urls from a feed or a sitemap
     elif args.feed or args.sitemap:
         inputdict = None
+        download_threads = args.parallel or DOWNLOAD_THREADS
         # load input URLs
         if args.inputfile:
             input_urls = load_input_urls(args.inputfile)
@@ -183,13 +186,17 @@ def process_args(args):
             input_urls = [args.sitemap]
         # link discovery and storage
         if args.feed:
-            for url in input_urls:
-                links = find_feed_urls(url)
-                inputdict = convert_inputlist(args.blacklist, links, inputdict)
+            with ThreadPoolExecutor(max_workers=download_threads) as executor:
+                future_to_url = {executor.submit(find_feed_urls, url): url for url in input_urls}
+                for future in as_completed(future_to_url):
+                    if future.result() is not None:
+                        inputdict = convert_inputlist(args.blacklist, future.result(), inputdict)
         elif args.sitemap:
-            for url in input_urls:
-                links = sitemap_search(url, target_lang=args.target_language)
-                inputdict = convert_inputlist(args.blacklist, links, inputdict)
+            with ThreadPoolExecutor(max_workers=download_threads) as executor:
+                future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
+                for future in as_completed(future_to_url):
+                    if future.result() is not None:
+                        inputdict = convert_inputlist(args.blacklist, future.result(), inputdict)
         # processing
         url_processing_pipeline(args, inputdict, SLEEP_TIME)
     # read files from an input directory
