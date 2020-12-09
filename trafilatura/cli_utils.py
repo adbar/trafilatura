@@ -13,7 +13,7 @@ import signal
 import string
 import sys
 
-from collections import OrderedDict
+from collections import defaultdict, OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -28,7 +28,7 @@ from .filters import content_fingerprint
 from .settings import (DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
                        MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY,
                        PROCESSING_TIMEOUT)
-from .utils import fetch_url
+from .utils import fetch_url, HOSTINFO
 
 
 LOGGER = logging.getLogger(__name__)
@@ -41,19 +41,52 @@ def handler(signum, frame):
     raise Exception('unusual file processing time, aborting')
 
 
-def load_input_urls(filename):
-    '''Read list of URLs to process'''
-    input_urls = []
+def load_input_dict(filename, blacklist):
+    '''Read input list of URLs to process and build domain-aware processing dictionary'''
+    inputdict = defaultdict(list)
     try:
         # optional: errors='strict', buffering=1
         with open(filename, mode='r', encoding='utf-8') as inputfile:
             for line in inputfile:
-                url_match = re.match(r'https?://[^ ]+', line.strip())  # if not line.startswith('http'):
+                # control input validity
+                url_match = re.match(r'https?://[^\s]+', line)
+                if url_match:
+                    url = url_match.group(0)
+                    # validation
+                    if validate_url(url)[0] is False:
+                        LOGGER.warning('Invalid URL, discarding line: %s', line)
+                        continue
+                    # control blacklist
+                    if blacklist:
+                        if re.sub(r'^https?://', '', url) in blacklist:
+                            continue
+                    # segment URL and add to domain dictionary
+                    try:
+                        _, hostinfo, urlpath = HOSTINFO.split(url)
+                        inputdict[hostinfo].append(urlpath)
+                    except ValueError:
+                        LOGGER.warning('Could not parse URL, discarding line: %s', line)
+                else:
+                    LOGGER.warning('Not an URL, discarding line: %s', line)
+    except UnicodeDecodeError:
+        sys.exit('ERROR: system, file type or buffer encoding')
+    # deduplicate
+    for hostname in inputdict:
+        inputdict[hostname] = list(OrderedDict.fromkeys(inputdict[hostname]))
+    return inputdict
+
+
+def load_input_urls(filename):
+    '''Read list of URLs to process'''
+    input_urls = []
+    try:
+        with open(filename, mode='r', encoding='utf-8') as inputfile:
+            for line in inputfile:
+                url_match = re.match(r'https?://[^\s]+', line)
                 try:
                     input_urls.append(url_match.group(0))
                 except AttributeError:
                     LOGGER.warning('Not an URL, discarding line: %s', line)
-                    continue
     except UnicodeDecodeError:
         sys.exit('ERROR: system, file type or buffer encoding')
     return input_urls
@@ -65,14 +98,30 @@ def load_blacklist(filename):
     with open(filename, mode='r', encoding='utf-8') as inputfh:
         for line in inputfh:
             url = line.strip()
-            blacklist.add(url)
-            # add http/https URLs for safety
-            if url.startswith('https'):
-                blacklist.add(re.sub(r'^https:', 'http:', url))
-            else:
-                blacklist.add(re.sub(r'^http:', 'https:', url))
+            if validate_url(url)[0] is True:
+                blacklist.add(re.sub(r'^https?://', '', url))
     return blacklist
 
+
+def convert_inputlist(blacklist, inputlist, inputdict=None):
+    '''Add input URls to domain-aware processing dictionary'''
+    # control
+    if inputdict is None:
+        inputdict = defaultdict(list)
+    # filter
+    if blacklist:
+        inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]
+    # validate
+    inputlist = [u for u in inputlist if validate_url(u)[0] is True]
+    # deduplicate
+    for url in list(OrderedDict.fromkeys(inputlist)):
+        # segment URL and add to domain dictionary
+        try:
+            _, hostinfo, urlpath = HOSTINFO.split(url)
+            inputdict[hostinfo].append(urlpath)
+        except ValueError:
+            LOGGER.warning('Could not parse URL, discarding: %s', url)
+    return inputdict
 
 
 def check_outputdir_status(directory):
@@ -183,21 +232,6 @@ def file_processing(filename, args, counter=None):
     write_result(result, args, filename, counter, new_filename=None)
 
 
-def url_processing_checks(blacklist, input_urls):
-    '''Filter and deduplicate input urls'''
-    # control blacklist
-    if blacklist:
-        input_urls = [u for u in input_urls if u not in blacklist]
-    # check for invalid URLs
-    if input_urls:
-        input_urls = [u for u in input_urls if validate_url(u)[0] is True]
-    # deduplicate
-    if input_urls:
-        return list(OrderedDict.fromkeys(input_urls))
-    LOGGER.error('No URLs to process, invalid or blacklisted input')
-    return []
-
-
 def process_result(htmlstring, args, url, counter):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
@@ -216,7 +250,8 @@ def process_result(htmlstring, args, url, counter):
 
 def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
     '''Select a random URL from the domains pool and apply backoff rule'''
-    domain = random.choice(list(domain_dict))
+    host = random.choice(list(domain_dict))
+    domain = extract_domain(host)
     # safeguard
     if domain in backoff_dict and \
         (datetime.now() - backoff_dict[domain]).total_seconds() < sleeptime:
@@ -226,10 +261,10 @@ def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
             sleep(sleeptime)
             i = 0
     # draw URL
-    url = domain_dict[domain].pop()
+    url = host + domain_dict[host].pop()
     # clean registries
-    if not domain_dict[domain]:
-        del domain_dict[domain]
+    if not domain_dict[host]:
+        del domain_dict[host]
         try:
             del backoff_dict[domain]
         except KeyError:
@@ -284,37 +319,32 @@ def multi_threaded_processing(domain_dict, args, sleeptime, counter):
     return errors, counter
 
 
-def url_processing_pipeline(args, input_urls, sleeptime):
+def url_processing_pipeline(args, inputdict, sleeptime):
     '''Aggregated functions to show a list and download and process an input list'''
-    input_urls = url_processing_checks(args.blacklist, input_urls)
     # print list without further processing
     if args.list:
-        for url in input_urls:
-            write_result(url, args)  # print('\n'.join(input_urls))
-        return None
-    # build domain-aware processing list
-    domain_dict = dict()
-    while input_urls:
-        url = input_urls.pop()
-        domain_name = extract_domain(url)
-        if domain_name not in domain_dict:
-            domain_dict[domain_name] = []
-        domain_dict[domain_name].append(url)
+        for hostname in inputdict:
+            for urlpath in inputdict[hostname]:
+                write_result(hostname + urlpath, args)  # print('\n'.join(input_urls))
+        return # sys.exit(0)
     # initialize file counter if necessary
-    if len(input_urls) > MAX_FILES_PER_DIRECTORY:
-        counter = 0
+    counter, i = None, 0
+    for hostname in inputdict:
+        i += len(inputdict[hostname])
+        if i > MAX_FILES_PER_DIRECTORY:
+            counter = 0
+            break
+    # opt for a download strategy
+    if len(inputdict) <= 4:
+        errors, counter = single_threaded_processing(inputdict, dict(), args, sleeptime, counter)
     else:
-        counter = None
-    if len(domain_dict) <= 5:
-        errors, counter = single_threaded_processing(domain_dict, dict(), args, sleeptime, counter)
-    else:
-        errors, counter = multi_threaded_processing(domain_dict, args, sleeptime, counter)
+        errors, counter = multi_threaded_processing(inputdict, args, sleeptime, counter)
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
-        domain_dict = dict()
-        domain_dict['archive.org'] = ['https://web.archive.org/web/20/' + e for e in errors]
-        archived_errors, _ = single_threaded_processing(domain_dict, dict(), args, sleeptime, counter)
+        inputdict = dict()
+        inputdict['https://web.archive.org'] = ['/web/20/' + e for e in errors]
+        archived_errors, _ = single_threaded_processing(inputdict, dict(), args, sleeptime, counter)
         LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
 
 

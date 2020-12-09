@@ -74,7 +74,7 @@ NOPRINT_TRANS_TABLE = {
 IMAGE_EXTENSION = re.compile(r'([^\s]+(\.(jpe?g|png|gif|bmp)))')
 
 # Regex for crude extraction of host/domain name
-HOSTINFO = re.compile(r'https?://[^/]+')
+HOSTINFO = re.compile(r'(https?://[^/]+)')
 
 
 def is_gz_file(contents):

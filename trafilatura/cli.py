@@ -9,10 +9,10 @@ import argparse
 import logging
 import sys
 
-from .cli_utils import (examine,
-                        load_blacklist, load_input_urls,
+from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
+                        convert_inputlist,
                         file_processing_pipeline, url_processing_pipeline,
-                        write_result)
+                        examine, write_result)
 from .feeds import find_feed_urls
 from .settings import SLEEP_TIME
 from .sitemaps import sitemap_search
@@ -169,26 +169,29 @@ def process_args(args):
     # processing according to mutually exclusive options
     # read url list from input file
     if args.inputfile and args.feed is False and args.sitemap is False:
-        input_urls = load_input_urls(args.inputfile)
-        url_processing_pipeline(args, input_urls, SLEEP_TIME)
-    # fetch urls from a feed
-    elif args.feed:
+        inputdict = load_input_dict(args.inputfile, args.blacklist)
+        url_processing_pipeline(args, inputdict, SLEEP_TIME)
+    # fetch urls from a feed or a sitemap
+    elif args.feed or args.sitemap:
+        inputdict = None
+        # load input URLs
         if args.inputfile:
             input_urls = load_input_urls(args.inputfile)
-        else:
+        elif args.feed:
             input_urls = [args.feed]
-        for url in input_urls:
-            links = find_feed_urls(url)
-            url_processing_pipeline(args, links, SLEEP_TIME)
-    # fetch urls from a sitemap
-    elif args.sitemap:
-        if args.inputfile:
-            input_urls = load_input_urls(args.inputfile)
-        else:
+        elif args.sitemap:
             input_urls = [args.sitemap]
-        for url in input_urls:
-            links = sitemap_search(url, target_lang=args.target_language)
-            url_processing_pipeline(args, links, SLEEP_TIME)
+        # link discovery and storage
+        if args.feed:
+            for url in input_urls:
+                links = find_feed_urls(url)
+                inputdict = convert_inputlist(args.blacklist, links, inputdict)
+        elif args.sitemap:
+            for url in input_urls:
+                links = sitemap_search(url, target_lang=args.target_language)
+                inputdict = convert_inputlist(args.blacklist, links, inputdict)
+        # processing
+        url_processing_pipeline(args, inputdict, SLEEP_TIME)
     # read files from an input directory
     elif args.inputdir:
         file_processing_pipeline(args)
@@ -196,9 +199,8 @@ def process_args(args):
     else:
         # process input URL
         if args.URL:
-            url_processing_pipeline(args, [args.URL], 0)  # process single url
-            #if htmlstring is None:
-            #    sys.exit('ERROR: no valid result for url: ' + args.URL + '\n')
+            inputdict = convert_inputlist(args, [args.URL], None)
+            url_processing_pipeline(args, inputdict, 0)  # process single url
         # process input on STDIN
         else:
             # file type and unicode check

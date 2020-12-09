@@ -53,8 +53,7 @@ def test_parser():
     args.verbose = True
     args.blacklist = os.path.join(TEST_DIR, 'resources/list-discard.txt')
     cli.process_args(args)
-    assert len(args.blacklist) == 4
-    
+    assert len(args.blacklist) == 2
 
 
 def test_climain():
@@ -154,20 +153,20 @@ def test_download():
     assert cli.examine(teststring, args, url) is not None
     # multiprocessing
     domain_dict = dict()
-    domain_dict['httpbin.org'] = ['https://httpbin.org/status/301', 'https://httpbin.org/status/304', 'https://httpbin.org/status/200', 'https://httpbin.org/status/300', 'https://httpbin.org/status/400', 'https://httpbin.org/status/505']
+    domain_dict['https://httpbin.org'] = ['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505']
     assert cli_utils.multi_threaded_processing(domain_dict, args, 0.25, None) == (['https://httpbin.org/status/301'], None)
     # test backoff algorithm
     testdict = dict()
     backoffdict = dict()
-    testdict['test.org'] = ['http://test.org/1']
+    testdict['http://test.org'] = ['/1']
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
-    testdict['test.org'] = ['http://test.org/1']
+    testdict['http://test.org'] = ['/1']
     backoffdict['test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
-    testdict['test.org'] = ['http://test.org/1']
+    testdict['http://test.org'] = ['/1']
     backoffdict['test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 3)
-    testdict['test.org'] = ['http://test.org/1']
+    testdict['http://test.org'] = ['/1']
     backoffdict['test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 0)
 
@@ -178,8 +177,9 @@ def test_cli_pipeline():
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    assert cli_utils.url_processing_pipeline(args, [], 0) is None
-    assert cli_utils.url_processing_pipeline(args, ['https://www.example.org/'], 0) is None
+    assert cli_utils.url_processing_pipeline(args, dict(), 0) is None
+    inputdict = cli.convert_inputlist(None, ['https://www.example.org/'], None)
+    assert cli_utils.url_processing_pipeline(args, inputdict, 0) is None
     # test inputlist + blacklist
     resources_dir = os.path.join(TEST_DIR, 'resources')
     testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt')]
@@ -191,20 +191,23 @@ def test_cli_pipeline():
     testargs = ['', '-i', os.path.join(resources_dir, 'list-process.txt'), '--blacklist', os.path.join(resources_dir, 'list-discard.txt')]
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    print(args.blacklist)
     assert args.blacklist is not None
     # test backoff between domain requests
+    inputdict = cli_utils.convert_inputlist(args.blacklist, my_urls, None)
     reftime = datetime.now()
-    assert cli_utils.url_processing_pipeline(args, my_urls, 2) is None
+    cli_utils.url_processing_pipeline(args, inputdict, 2)
     delta = (datetime.now() - reftime).total_seconds()
-    print(delta)
     assert delta > 2
+    # test blacklist and empty dict
+    args.blacklist = cli_utils.load_blacklist(args.blacklist)
+    assert len(args.blacklist) == 2
+    inputdict = cli_utils.convert_inputlist(args.blacklist, my_urls, None)
+    cli_utils.url_processing_pipeline(args, inputdict, 2)
     # test backup
     testargs = ['', '--backup-dir', '/tmp/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     cli_utils.archive_html('00Test', args)
-    cli_utils.url_processing_pipeline(args, my_urls, 2)
     # test date-based exclusion
     testargs = ['', '-out', 'xml', '--with-metadata']
     with patch.object(sys, 'argv', testargs):
@@ -237,6 +240,7 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     cli_utils.file_processing_pipeline(args)
     # sitemaps
+    print('##')
     testargs = ['', '--sitemap', 'https://httpbin.org/', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
@@ -250,14 +254,15 @@ def test_input_filtering():
     '''test internal functions to filter urls'''
     # deduplication and filtering
     myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
-    myblacklist = {'https://example.org/1', 'https://example.org/3', 'https://example.org/5'}
-    assert cli_utils.url_processing_checks(myblacklist, myinput) == ['https://example.org/2', 'https://example.org/4', 'https://example.org/6']
+    myblacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
+    inputdict = cli_utils.convert_inputlist(myblacklist, myinput, None)
+    assert inputdict['https://example.org'] == ['/2', '/4', '/6']
     # URL in blacklist
     resources_dir = os.path.join(TEST_DIR, 'resources')
     my_urls = cli_utils.load_input_urls(os.path.join(resources_dir, 'list-process.txt'))
     my_blacklist = cli_utils.load_blacklist(os.path.join(resources_dir, 'list-discard.txt'))
-    print(cli_utils.url_processing_checks(my_blacklist, my_urls))
-    assert len(cli_utils.url_processing_checks(my_blacklist, my_urls)) == 0
+    inputdict = cli_utils.convert_inputlist(my_blacklist, my_urls, None)
+    assert len(inputdict) == 0
 
 
 if __name__ == '__main__':
