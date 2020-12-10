@@ -24,6 +24,8 @@ LOGGER = logging.getLogger(__name__)
 
 LRU_TEST = LRUCache(maxsize=LRU_SIZE)
 
+RE_HTML_LANG = re.compile(r'([a-z]{2})', re.I)
+
 RE_FILTER = re.compile(r'\W*(Drucken|E-?Mail|Facebook|Flipboard|Google|Instagram|Linkedin|Mail|PDF|Pinterest|Pocket|Print|Reddit|Twitter|Whatsapp|Xing)$', flags=re.IGNORECASE)
 # COMMENTS_BLACKLIST = ('( Abmelden / Ändern )') # Fill in your details below|Trage deine Daten unten|Kommentar verfassen|Bitte logge dich|Hinterlasse einen Kommentar| to %s| mit %s)
 
@@ -51,6 +53,20 @@ def duplicate_test(element):
             LRU_TEST.put(teststring, cacheval + 1)
             return True
     put_in_cache(teststring)
+    return False
+
+
+def check_html_lang(tree, target_language):
+    '''Check HTML meta-elements for language information and split
+       the result in case there are several languages'''
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Language
+    for elem in tree.xpath('//html[@lang]'):
+        if target_language in RE_HTML_LANG.split(elem.get('lang')):
+            return True
+    for elem in tree.xpath('//meta[@http-equiv="content-language"]'):
+        if target_language in RE_HTML_LANG.split(elem.get('content')):
+            return True
+    LOGGER.warning('HTML lang detection failed')
     return False
 
 

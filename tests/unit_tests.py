@@ -31,7 +31,7 @@ import trafilatura.filters
 import trafilatura.htmlprocessing
 from trafilatura.core import baseline, bare_extraction, extract, handle_image, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
 from trafilatura.metadata import METADATA_LIST
-from trafilatura.filters import duplicate_test, textfilter
+from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.lru import LRUCache
 from trafilatura import utils, xml
 
@@ -248,12 +248,12 @@ def test_filters():
     my_p = '<p>abc</p>'
     doc = html.fromstring('<html><body>' + my_p*50 + '</body></html>')
     assert extract(doc, max_tree_size=500) is not None
-    doc = html.fromstring('<html><body>' + my_p*(501) + '</body></html>')
+    doc = html.fromstring('<html><body>' + my_p*501 + '</body></html>')
     assert extract(doc, max_tree_size=500) is None
     my_p = '<p><hi rend="#i">abc</hi></p>'
-    doc = html.fromstring('<html><body>' + my_p*(501) + '</body></html>')
+    doc = html.fromstring('<html><body>' + my_p*501 + '</body></html>')
     assert extract(doc, include_formatting=True, max_tree_size=500) is None
-    doc = html.fromstring('<html><body>' + my_p*(499) + '</body></html>')
+    doc = html.fromstring('<html><body>' + my_p*499 + '</body></html>')
     assert extract(doc, include_formatting=True, max_tree_size=500) is not None
     ## deduplication
     doc = html.fromstring('<html><body>' + my_p*50 + '</body></html>')
@@ -263,6 +263,14 @@ def test_filters():
     assert extract(doc, deduplicate=True) is not None
     assert extract(doc, deduplicate=True) is not None
     assert extract(doc, deduplicate=True) is None
+    # HTML lang filter
+    my_p = '<p>In sleep a king, but waking no such matter.</p>'
+    assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='en') is not None
+    assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='de') is None
+    assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='de') is True
+    assert check_html_lang(html.fromstring('<html lang="en"><body></body></html>'), target_language='it') is False
+    assert check_html_lang(html.fromstring('<html><head><meta http-equiv="content-language" content="en"></head><body></body></html>'), target_language='en') is True
+    assert check_html_lang(html.fromstring('<html><head><meta http-equiv="content-language" content="en"></head><body></body></html>'), target_language='de') is False
 
 
 def test_external():

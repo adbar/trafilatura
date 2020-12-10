@@ -17,10 +17,12 @@ from lxml import etree, html
 
 # own
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
-from .filters import content_fingerprint, duplicate_test, language_filter, text_chars_test
+from .filters import (check_html_lang, content_fingerprint, duplicate_test,
+                     language_filter, text_chars_test)
 from .htmlprocessing import (convert_tags, discard_unwanted,
                              discard_unwanted_comments, handle_textnode,
-                             link_density_test, link_density_test_tables, process_node, tree_cleaning)
+                             link_density_test, link_density_test_tables,
+                             process_node, tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import (MIN_EXTRACTED_SIZE, MIN_EXTRACTED_COMM_SIZE,
                        MIN_OUTPUT_SIZE, MIN_OUTPUT_COMM_SIZE, TAG_CATALOG)
@@ -575,6 +577,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         tree = load_html(filecontent)
         if tree is None:
             raise ValueError
+
+        # HTML lang check
+        if target_language is not None and check_html_lang(tree, target_language) is False:
+            raise ValueError
+
         # backup (or not) for further processing
         if no_fallback is False:
             backup_tree = deepcopy(tree)
