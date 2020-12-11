@@ -1,7 +1,7 @@
 Core functions
 ==============
 
-.. contents:: **Contents**
+.. contents:: Contents
     :backlinks: none
 
 
@@ -17,6 +17,28 @@ Extraction
 .. autofunction:: trafilatura.metadata.extract_metadata
 
 
+Link discovery
+--------------
+
+.. autofunction:: trafilatura.sitemaps.sitemap_search
+
+.. autofunction:: trafilatura.feeds.find_feed_urls
+
+
+Helpers
+-------
+
+.. autofunction:: trafilatura.utils.fetch_url
+
+.. autofunction:: trafilatura.utils.decode_response
+
+.. autofunction:: trafilatura.utils.load_html
+
+.. autofunction:: trafilatura.utils.sanitize
+
+.. autofunction:: trafilatura.utils.trim
+
+
 XML processing
 --------------
 
@@ -25,17 +47,11 @@ XML processing
 .. autofunction:: trafilatura.xml.validate_tei
 
 
-Helpers
--------
-
-.. autofunction:: trafilatura.utils.load_html
-
-.. autofunction:: trafilatura.utils.sanitize
+External processing
+-------------------
 
 
-Link discovery
---------------
+.. autofunction:: trafilatura.external.try_readability
 
-.. autofunction:: trafilatura.sitemaps.sitemap_search
+.. autofunction:: trafilatura.external.try_justext
 
-.. autofunction:: trafilatura.feeds.find_feed_urls

@@ -14,17 +14,65 @@ The following instructions use the `command-line interface <https://en.wikipedia
 - For general information see `this section <usage-cli.html#introduction>`_ of the documentation.
 
 
-Find and filter sources
------------------------
+Content discovery
+-----------------
+
+Sources used by Trafilatura can consist of previously known or listed web pages. Currently, functions to discover content within a website are available. Other methods include sifting through Wikipedia, social networks, or using lists of links gathered by other projects.
 
 
 Finding subpages within a website
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Sources used by Trafilatura may consist of previously known web pages, as well as listed web pages. It can also be useful to operate on website level by downloading portions of a website programmatically. To this end, a sitemap is a file that lists the visible URLs for a given site. For more information, refer to this blog post explaining how to use sitemaps: `to retrieve URLs within a website <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
+In order to gather web documents it can be useful to download the portions of a website programmatically.  The retrieval and download of documents within a website is often called crawling. Web crawlers usually discover pages from links within the site and from other sites. Trafilatura supports two different ways to gather further links `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS) or `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_. As a result, a comprehensive overview of the available documents can be obtained faster and more efficiently than by systematically extracting and following links within a website.
 
-URLs can also be extracted from feeds, and a future version will allow for automatic extraction of sitemap URLs, for more information see `link discovery in core functions <corefunctions.html#link-discovery>`_.
+The formats supported are all machine-readable rather than human-readable they can also be used to automatically transfer information from one website to another without any human intervention. However, link inspection and filtering prior to systematic download is recommended to avoid undesired content or overstreching computing resources.
 
+
+Sitemaps
+~~~~~~~~
+
+A `sitemap <https://en.wikipedia.org/wiki/Sitemaps>`_ is a file that lists the visible/whitelisted URLs for a given site, the main goal being to reveal where machines can look for content.
+
+The `sitemaps protocol <https://en.wikipedia.org/wiki/Sitemaps>`_ primarily allows webmasters to inform search engines about pages on their sites that are available for crawling. Crawlers can use it to pick up all URLs in the sitemap and learn about those URLs using the associated metadata. Sitemaps follow the `XML format <https://en.wikipedia.org/wiki/XML>`_, so each sitemap is or should be a valid XML file.
+
+Sitemaps are particularly useful by large or complex websites since they are made so that machines can more intelligently crawl the site.
+
+
+Feeds
+~~~~~
+
+A `web feed <https://en.wikipedia.org/wiki/Web_feed>`_  (or news feed) is a data format used for providing users with frequently updated content. This process is also called web syndication, meaning a form of syndication in which content is made available from one website to other sites.
+
+Most commonly, feeds are made available to provide either summaries or full renditions of a website's recently added content. The term may also describe other kinds of content licensing for reuse. The kinds of content delivered by a web feed are typically HTML (webpage content) or links to webpages and other kinds of digital media. Many news websites, weblogs, schools, and podcasters operate web feeds. The `feed icon <https://en.wikipedia.org/wiki/File:Feed-icon.svg>`_ is commonly used to indicate that a web feed is available. 
+
+*Trafilatura* supports XML-based feeds with the two common formats *Atom* and *RSS*.
+
+
+Functioning
+~~~~~~~~~~~
+
+- Links can be gathered straight from the homepage (using heuristics) or using a particular URL if it is already known
+- The ``--list`` option is useful to list URLs prior to processing
+- Links discovery can start from an input file (``-i``) containing a list of sources which will then be processed in parallel
+
+The following examples return lists of links. If ``--list`` is absent the pages that have been found are directly retrieved, processed, and returned in the chosen output format (per default: TXT and standard output).
+
+.. code-block:: bash
+
+    # attempting sitemap discovery
+    $ trafilatura --sitemap "https://www.sitemaps.org/" --list
+    # using an already known sitemap
+    $ trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list
+    # looking for feeds
+    $ trafilatura --feed "https://www.dwds.de/" --list
+    # already known feed
+    $ trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list
+    # processing a list in parallel
+    $ trafilatura -i mylist.txt --feed --list
+
+
+Link filtering
+--------------
 
 Filtering with coURLan
 ~~~~~~~~~~~~~~~~~~~~~~

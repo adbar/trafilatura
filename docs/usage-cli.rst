@@ -19,8 +19,8 @@ As well as these compendia:
 - `Basic Bash Command Line Tips You Should Know <https://www.freecodecamp.org/news/basic-linux-commands-bash-tips-you-should-know/>`_
 
 
-Usage
------
+Quickstart
+----------
 
 URLs can be used directly (``-u/--URL``):
 
@@ -82,7 +82,13 @@ Link discovery
 
 Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS) or `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_.
 
-The ``--list`` option is useful to list URLs prior to processing. URLs can be gathered straight from the homepage (using heuristics) or using a particular URL if it is already known.
+Both homepages and particular sitemaps or feed URLs can be used as input.
+
+The ``--list`` option is useful to list URLs prior to processing.
+
+This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
+
+For more information please refer to the `tutorial on content discovery <tutorial0.html#content-discovery>`_.
 
 Feeds
 ^^^^^
@@ -96,6 +102,7 @@ Sitemaps
 -  ``trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list``
 -  ``trafilatura --sitemap "https://www.sitemaps.org/" --list``
 
+
 URL inspection prior to download and processing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -104,10 +111,11 @@ URL inspection prior to download and processing
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list > mylist.txt
     $ trafilatura -i mylist.txt -o myfiles/
 
+For more information see `tutorial on link filtering <tutorial0.html#link-filtering>`_.
+
 
 Further information
 -------------------
-
 
 For all usage instructions see ``trafilatura -h``:
 

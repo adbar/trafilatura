@@ -43,27 +43,28 @@ Description
 
 Distinguishing between a whole page and the page's essential parts can help to alleviate many quality problems related to web text processing, by dealing with the noise caused by recurring elements (headers and footers, ads, links/blogroll, etc.).
 
-The extractor aims to be precise enough in order not to  miss texts or to discard valid documents. In addition, it must be robust, but also reasonably fast. With these objectives in mind, Trafilatura is designed to run in production on millions of web documents.
+The extractor aims to be precise enough in order not to  miss texts or to discard valid documents. In addition, it must be robust, but also reasonably fast. With these objectives in mind, Trafilatura is designed to run in production on millions of web documents. It is based on `lxml <http://lxml.de/>`_ as well as `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback.
 
 
 Features
 ~~~~~~~~
 
-- Seamless online (including page retrieval) or parallelized offline processing using URLs, HTML files or parsed HTML trees as input
+- Seamless parallelized online and offline processing:
+   - Download and conversion utilities included
+   - URLs, HTML files or parsed HTML trees as input
+- Robust and efficient extraction:
+    - Main text and/or comments
+    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
+    - Extraction of metadata (title, author, date, site name, categories and tags)
 - Several output formats supported:
    - Plain text (minimal formatting)
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
-   - XML (for metadata and structure)
-   - `TEI-XML <https://tei-c.org/>`_
-- Robust extraction algorithm, using and `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback; reasonably efficient with `lxml <http://lxml.de/>`_:
-    - Focuses on the document's main text and/or comments
-    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
-    - Extraction of metadata (title, author, date, site name, categories and tags)
-- URL lists:
-    - Link discovery using sitemaps and ATOM/RSS feeds
-    - Efficient processing of URL queues
-    - Blacklists or already processed URLs
+   - XML (for metadata and structure) and `TEI-XML <https://tei-c.org/>`_
+- Link discovery and URL lists:
+    - Support for sitemaps and ATOM/RSS feeds
+    - Efficient and polite processing of URL queues
+    - Blacklisting
 - Optional language detection on extracted content
 
 
@@ -77,7 +78,7 @@ For reproducible results see the `evaluation page <evaluation.html>`_ and the `e
 External evaluations:
 ^^^^^^^^^^^^^^^^^^^^^
 
-- Trafilatura is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
+- *Trafilatura* is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
 - Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French).
 
 
@@ -110,13 +111,13 @@ On the command-line:
     $ trafilatura -u "https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/"
     # outputs main content and comments as plain text ...
 
-For more information please refer to `quickstart <quickstart.html>`_, `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
+For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
 
 
 License
 -------
 
-*trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
+*Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
 
 See also `GPL and free software licensing: What's in it for business? <https://www.techrepublic.com/blog/cio-insights/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
 
@@ -167,10 +168,9 @@ Further documentation
 =====================
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    installation
-   quickstart
    usage
    tutorials
    evaluation
