@@ -1,9 +1,6 @@
 Core functions
 ==============
 
-.. contents:: Contents
-    :backlinks: none
-
 
 Extraction
 ----------

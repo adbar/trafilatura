@@ -333,7 +333,17 @@ def extract_catstags(metatype, tree):
 
 
 def extract_metadata(filecontent, default_url=None, date_config=None):
-    '''Main process for metadata extraction'''
+    """Main process for metadata extraction.
+
+    Args:
+        filecontent: HTML code as string.
+        default_url: Previously known URL of the downloaded document.
+        date_config: Provide extraction parameters to htmldate as dict().
+
+    Returns:
+        A dict() containing the extracted metadata information or None.
+
+    """
     # load contents
     tree = load_html(filecontent)
     if tree is None:

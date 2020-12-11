@@ -475,7 +475,17 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
 
 
 def baseline(filecontent):
-    """Use baseline extraction function targeting JSON metadata and/or text paragraphs"""
+    """Use baseline extraction function targeting text paragraphs and/or JSON metadata.
+
+    Args:
+        filecontent: HTML code as binary string or string.
+
+    Returns:
+        A LXML <body> element containing the extracted paragraphs, 
+        the main text as string, and its length as integer.
+
+    """
+
     tree = load_html(filecontent)
     postbody = etree.Element('body')
     if tree is None:
@@ -569,7 +579,33 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_tables=True, include_images=False, include_formatting=False, deduplicate=False,
                     date_extraction_params=None, with_metadata=False, max_tree_size=None,
                     url_blacklist=None):
-    '''Internal function for text extraction returning bare Python variables'''
+    """Internal function for text extraction returning bare Python variables.
+
+    Args:
+        filecontent: HTML code as string.
+        url: URL of the webpage.
+        no_fallback: Skip the backup extraction with readability-lxml and justext.
+        include_comments: Extract comments along with the main text.
+        output_format: Define an output format, Python being the default
+            and the interest of this internal function.
+        target_language: Define a language to discard invalid documents (ISO 639-1 format).
+        include_tables: Take into account information within the HTML <table> element.
+        include_images: Take images into account.
+        include_formatting: Keep structural elements related to formatting
+            (only valuable if output_format is set to XML).
+        deduplicate: Remove duplicate segments and documents.
+        date_extraction_params: Provide extraction parameters to htmldate as dict().
+        with_metadata: Only keep documents featuring all essential metadata
+            (date, title, url).
+        max_tree_size: Discard documents with too many elements.
+        url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
+
+    Returns:
+        A Python dict() containing all the extracted information or None.
+
+    Raises:
+        ValueError: Extraction problem.
+    """
     if url_blacklist is None:
         url_blacklist = set()
     try:
@@ -675,8 +711,38 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_images=False, include_formatting=False, deduplicate=False,
             date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=None):
-    '''Function exposed by the package:
-       wrapper for text extraction and conversion to chosen output format'''
+    """Main function exposed by the package:
+       Wrapper for text extraction and conversion to chosen output format.
+
+    Args:
+        filecontent: HTML code as string.
+        url: URL of the webpage.
+        record_id: Add an ID to the metadata.
+        no_fallback: Skip the backup extraction with readability-lxml and justext.
+        include_comments: Extract comments along with the main text.
+        output_format: Define an output format:
+            'txt', 'csv', 'json', 'xml', or 'xmltei'.
+        csv_output: Set output format to CSV (alternative to output_format).
+        json_output: Set output format to JSON (alternative to output_format).
+        xml_output: Set output format to XML (alternative to output_format).
+        tei_output: Set output format to XML-TEI (alternative to output_format).
+        tei_validation: Validate the XML-TEI output with respect to the TEI standard.
+        target_language: Define a language to discard invalid documents (ISO 639-1 format).
+        include_tables: Take into account information within the HTML <table> element.
+        include_images: Take images into account.
+        include_formatting: Keep structural elements related to formatting
+            (only valuable if output_format is set to XML).
+        deduplicate: Remove duplicate segments and documents.
+        date_extraction_params: Provide extraction parameters to htmldate as dict().
+        with_metadata: Only keep documents featuring all essential metadata
+            (date, title, url).
+        max_tree_size: Discard documents with too many elements.
+        url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
+
+    Returns:
+        A string in the desired format or None.
+
+    """
     # metadata mapping for compatibility
     output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
     if url_blacklist is None:

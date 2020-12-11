@@ -24,7 +24,17 @@ HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
 
 
 def sitemap_search(url, target_lang=None):
-    'Look for sitemaps for the given URL and gather links.'
+    """Look for sitemaps for the given URL and gather links.
+
+    Args:
+        url: Homepage or sitemap URL as string.
+        target_lang: Define a language to filter URLs based on heuristics
+            (two-letter string, ISO 639-1 format).
+
+    Returns:
+        The extracted links as list (sorted list of unique links).
+
+    """
     domainname, hostmatch = extract_domain(url), HOSTINFO.match(url)
     if domainname is None or hostmatch is None:
         LOGGER.warning('Invalid URL: %s', url)
@@ -46,7 +56,8 @@ def sitemap_search(url, target_lang=None):
         tmp_sitemapurls, tmp_linklist = process_sitemap(sitemapurls.pop(), domainname, baseurl, target_lang)
         sitemapurls.extend(tmp_sitemapurls)
         linklist.extend(tmp_linklist)
-    LOGGER.debug('%s links found for %s', len(linklist), domainname)
+    linklist = sorted(list(set(linklist)))
+    LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
     return linklist
 
 

@@ -77,7 +77,7 @@ def test_input_type():
     with open(testfile, 'rb') as f:
         teststring = f.read(1024)
     assert cli.examine(teststring, args) is None
-    testfile = 'docs/index.rst'
+    testfile = 'docs/usage.rst'
     with open(testfile, 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None

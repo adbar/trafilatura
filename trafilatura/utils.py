@@ -142,14 +142,16 @@ def determine_headers():
 
 
 def fetch_url(url, decode=True):
-    """ Fetch page using requests/urllib3 and decode the response
+    """Fetches page using requests/urllib3 and decodes the response.
+
     Args:
-        url: URL of the page to fetch
-        decode: decode response instead of returning Requests object (boolean)
+        url: URL of the page to fetch.
+        decode: Decode response instead of returning Requests object (boolean).
+
     Returns:
-        request object (headers + body).
-    Raises:
-        Nothing.
+        HTML code as string, or Request object (headers + body), or empty string in case
+        the result is invalid, or None if there was a problem with the network.
+
     """
 
     # send

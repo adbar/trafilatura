@@ -94,7 +94,17 @@ def determine_feed(htmlstring, baseurl, reference):
 
 
 def find_feed_urls(url, target_lang=None):
-    '''Try to find feed URLs'''
+    """Try to find feed URLs.
+
+    Args:
+        url: Homepage or feed URL as string.
+        target_lang: Define a language to filter URLs based on heuristics
+            (two-letter string, ISO 639-1 format).
+
+    Returns:
+        The extracted links as list (sorted list of unique links).
+
+    """
     url = url.rstrip('/')
     domainname, hostmatch = extract_domain(url), HOSTINFO.match(url)
     if domainname is None or hostmatch is None:
@@ -111,4 +121,6 @@ def find_feed_urls(url, target_lang=None):
         sleep(SLEEP_TIME)
         feed_string = fetch_url(feed)
         feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
-    return sorted(list(set(feed_links)))
+    feed_links = sorted(list(set(feed_links)))
+    LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
+    return feed_links
