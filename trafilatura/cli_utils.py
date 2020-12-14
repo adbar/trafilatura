@@ -275,31 +275,15 @@ def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
     return url, domain_dict, backoff_dict, i
 
 
-def single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter):
-    '''Implement a single threaded processing algorithm'''
-    # start with a higher level
-    i = 3
-    errors = []
-    while domain_dict:
-        url, domain_dict, backoff_dict, i = draw_backoff_url(domain_dict, backoff_dict, sleeptime, i)
-        htmlstring = fetch_url(url)
-        if htmlstring is not None:
-            counter = process_result(htmlstring, args, url, counter)
-        else:
-            LOGGER.debug('No result for URL: %s', url)
-            errors.append(url)
-    return errors, counter
-
-
-def multi_threaded_processing(domain_dict, args, sleeptime, counter):
-    '''Implement a multi-threaded processing algorithm'''
+def download_queue_processing(domain_dict, args, sleeptime, counter):
+    '''Implement a download queue consumer, single- or multi-threaded'''
     i, backoff_dict, errors = 0, dict(), []
-    download_threads = args.parallel or DOWNLOAD_THREADS
     while domain_dict:
+        download_threads = args.parallel or DOWNLOAD_THREADS
         # the remaining list is too small, process it differently
-        if len({x for v in domain_dict.values() for x in v}) < download_threads:
-            errors, counter = single_threaded_processing(domain_dict, backoff_dict, args, sleeptime, counter)
-            return errors, counter
+        if len(domain_dict) < download_threads or \
+           len({x for v in domain_dict.values() for x in v}) < download_threads:
+            download_threads, i = 1, 3
         # populate buffer
         bufferlist = []
         while len(bufferlist) < download_threads:
@@ -334,30 +318,22 @@ def url_processing_pipeline(args, inputdict, sleeptime):
         if i > MAX_FILES_PER_DIRECTORY:
             counter = 0
             break
-    # opt for a download strategy
-    if len(inputdict) <= 4:
-        errors, counter = single_threaded_processing(inputdict, dict(), args, sleeptime, counter)
-    else:
-        errors, counter = multi_threaded_processing(inputdict, args, sleeptime, counter)
+    # download strategy
+    errors, counter = download_queue_processing(inputdict, args, sleeptime, counter)
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
         inputdict = dict()
         inputdict['https://web.archive.org'] = ['/web/20/' + e for e in errors]
-        archived_errors, _ = single_threaded_processing(inputdict, dict(), args, sleeptime, counter)
+        archived_errors, _ = download_queue_processing(inputdict, args, sleeptime, counter)
         LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
 
 
 def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
-    #if not args.outputdir:
-    #    sys.exit('ERROR: please specify an output directory along with the input directory')
-    # iterate through file list
-    # init
-    filebatch = []
-    filecounter = None
+    filebatch, filecounter = [], None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
-    # loop
+    # loop: iterate through file list
     for filename in generate_filelist(args.inputdir):
         filebatch.append(filename)
         if len(filebatch) > MAX_FILES_PER_DIRECTORY:

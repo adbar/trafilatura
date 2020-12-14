@@ -151,10 +151,11 @@ def test_download():
     teststring = utils.fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
-    # multiprocessing
+    # single/multiprocessing
     domain_dict = dict()
     domain_dict['https://httpbin.org'] = ['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505']
-    assert cli_utils.multi_threaded_processing(domain_dict, args, 0.25, None) == (['https://httpbin.org/status/301'], None)
+    results = cli_utils.download_queue_processing(domain_dict, args, 0.25, None)
+    assert len(results[0]) == 5 and results[1] is None
     # test backoff algorithm
     testdict = dict()
     backoffdict = dict()
