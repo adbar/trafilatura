@@ -30,6 +30,8 @@ def get_long_description():
 # some problems with installation solved this way
 extras = {
     'all': [
+        'cchardet == 2.1.4; python_version == "3.4"',
+        'cchardet >= 2.1.7; python_version > "3.4"',
         'pycld3 >= 0.20',
     ],
 }
@@ -82,8 +84,8 @@ setup(
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[
-        'cchardet == 2.1.4; python_version == "3.4"',
-        'cchardet >= 2.1.7; python_version > "3.4"',
+        'chardet == 3.0.4; python_version < "3.6"',
+        'chardet >= 4.0.0; python_version >= "3.6"',
         'courlan >= 0.2.3',
         'htmldate >= 0.7.2',
         'justext >= 2.2.0',

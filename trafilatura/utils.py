@@ -14,11 +14,11 @@ import sys
 from functools import lru_cache
 from random import randint
 
+# CChardet is faster and can be more accurate
 try:
-    # this module is faster
-    import cchardet
+    import cchardet as chardet
 except ImportError:
-    cchardet = None
+    import chardet
 
 import urllib3
 
@@ -89,15 +89,12 @@ def detect_encoding(bytesobject):
     if isutf8(bytesobject):
         return 'UTF-8'
     # try one of the installed detectors
-    if cchardet is not None:
-        guess = cchardet.detect(bytesobject)
-        LOGGER.debug('guessed encoding: %s', guess['encoding'])
-        return guess['encoding']
+    guess = chardet.detect(bytesobject)
+    LOGGER.debug('guessed encoding: %s', guess['encoding'])
+    return guess['encoding']
     # fallback on full response
     #if guess is None or guess['encoding'] is None: # or guess['confidence'] < 0.99:
     #    guessed_encoding = chardet.detect(bytesobject)['encoding']
-    # return
-    return None
 
 
 def decode_response(response):
@@ -119,7 +116,7 @@ def decode_response(response):
             htmltext = resp_content.decode(guessed_encoding)
         except UnicodeDecodeError:
             LOGGER.warning('encoding error: %s', guessed_encoding)
-    # force decoding
+    # force decoding # ascii instead?
     if htmltext is None:
         htmltext = str(resp_content, encoding='utf-8', errors='replace')
     return htmltext
