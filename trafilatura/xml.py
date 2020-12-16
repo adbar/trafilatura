@@ -59,13 +59,13 @@ def build_xml_output(docmeta):
     output = etree.Element('doc')
     output = add_xml_meta(output, docmeta)
     docmeta['body'].tag = 'main'
-    output.append(docmeta['body'])
+    output.append(clean_attributes(docmeta['body']))
     if docmeta['commentsbody'] is not None:
         docmeta['commentsbody'].tag = 'comments'
-        output.append(docmeta['commentsbody'])
+        output.append(clean_attributes(docmeta['commentsbody']))
 # XML invalid characters
 # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
-    return clean_attributes(output)
+    return output
 
 
 def control_xml_output(output_tree, output_format, tei_validation, docmeta):
