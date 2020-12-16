@@ -119,6 +119,7 @@ MOCK_PAGES = {
 'https://wikimediafoundation.org/news/2020/01/15/access-to-wikipedia-restored-in-turkey-after-more-than-two-and-a-half-years/': 'wikimediafoundation.org.turkey.html',
 'https://www.reuters.com/article/us-awards-sag/parasite-scores-upset-at-sag-awards-boosting-oscar-chances-idUSKBN1ZI0EH': 'reuters.com.parasite.html',
 'https://vancouversun.com/technology/microsoft-moves-to-erase-its-carbon-footprint-from-the-atmosphere-in-climate-push/wcm/76e426d9-56de-40ad-9504-18d5101013d2': 'vancouversun.com.microsoft.html',
+'https://www.lanouvellerepublique.fr/indre-et-loire/commune/saint-martin-le-beau/family-park-la-derniere-saison-a-saint-martin-le-beau': 'lanouvellerepublique.fr.martin.html',
 }
 # '': '', \
 
@@ -427,6 +428,9 @@ def test_extract(xmloutput): # xmloutput=False
     assert 'Microsoft Corp said on Thursday' in result and 'Postmedia is committed' in result and 'I consent to receiving' not in result and 'It was not immediately clear if' in result and 'turns CO2 into soap' not in result
     if xmloutput is False:
         assert 'Reuters files' not in result
+
+    result = load_mock_page('https://www.lanouvellerepublique.fr/indre-et-loire/commune/saint-martin-le-beau/family-park-la-derniere-saison-a-saint-martin-le-beau', xmloutput)
+    assert result is None
 
     #result = load_mock_page('', xmloutput)
     #assert '' in result and '' in result and '' not in result and '' not in result and '' not in result

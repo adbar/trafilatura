@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html xmlns:ng="http://angularjs.org" id="ng-app" ng-app="rubedo" ng-controller="RubedoController as rubedo" ng-attr-lang="{{rubedo.current.page.locale}}">
+<head>
+
+    <!--[if lte IE 8]>
+    <script type="text/javascript" >
+        document.createElement('ng-include');
+        document.createElement('ng-repeat');
+        document.createElement('ng-view');
+        document.createElement('rubedo-block');
+        document.createElement('rubedo-field');
+        document.createElement('rubedo-notification');
+        document.createElement('snap-drawer');
+        document.createElement('snap-content');
+        document.createElement('rubedo-custom-template');
+    </script>
+    <![endif]-->
+    <!--[if IE]>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <![endif]-->
+
+    <meta charset="UTF-8">
+    <meta name="fragment" content="!">
+    <meta ng-if="rubedo.current.page.metaKeywords" name="keywords"
+          ng-attr-content="{{ rubedo.current.page.metaKeywords }}">
+    <meta ng-if="rubedo.current.page.metaRobots" name="robots" ng-attr-content="{{ rubedo.current.page.metaRobots }}">
+    <meta ng-if="rubedo.current.page.metaAuthor" name="author" ng-attr-content="{{ rubedo.current.page.metaAuthor }}">
+
+    <link ng-if="rubedo.current.page.contentCanonicalUrl" rel="canonical"
+          ng-href="{{ rubedo.current.page.contentCanonicalUrl }}"/>
+    <link ng-if="rubedo.current.page.ampurl" rel="amphtml"
+          ng-href="{{ rubedo.current.page.ampurl }}"/>
+    <link rel="alternate" ng-repeat="alternate in rubedo.current.page.i18n track by $index" ng-href="{{alternate.fullUrl}}" />
+
+    <link rel="apple-touch-icon" sizes="57x57" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-57x57.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-60x60.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-72x72.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-76x76.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-114x114.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-120x120.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-144x144.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-152x152.png?v=xQQjwJyoqP">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/apple-touch-icon-180x180.png?v=xQQjwJyoqP">
+    <link rel="icon" type="image/png" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/favicon-32x32.png?v=xQQjwJyoqP" sizes="32x32">
+    <link rel="icon" type="image/png" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/android-chrome-192x192.png?v=xQQjwJyoqP" sizes="192x192">
+    <link rel="icon" type="image/png" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/favicon-96x96.png?v=xQQjwJyoqP" sizes="96x96">
+    <link rel="icon" type="image/png" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/favicon-16x16.png?v=xQQjwJyoqP" sizes="16x16">
+    <link rel="manifest" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/manifest.json?v=xQQjwJyoqP">
+    <link rel="mask-icon" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/safari-pinned-tab.svg?v=xQQjwJyoqP" color="#cb1c27">
+    <link rel="shortcut icon" href="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/favicon.ico?v=xQQjwJyoqP">
+    <meta name="apple-mobile-web-app-title" content="Nouvelle République">
+    <meta name="application-name" content="Nouvelle République">
+    <meta name="msapplication-TileColor" content="#cb1c27">
+    <meta name="msapplication-TileImage" content="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/mstile-144x144.png?v=xQQjwJyoqP">
+    <meta name="msapplication-config" content="https://www.lanouvellerepublique.fr/theme/nrco/images/favicons/browserconfig.xml?v=xQQjwJyoqP">
+    <meta name="theme-color" content="#ffffff">
+
+    <!--mobile meta-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title ng-bind-template="{{rubedo.current.page.title}}"></title>
+
+    <meta name="description"
+          ng-if="rubedo.current.page.description"
+          ng-attr-content="{{rubedo.current.page.description}}"/>
+    <!--og-->
+    <meta property="og:site_name" content="lanouvellerepublique.fr">
+    <meta property="og:type" content="article" />
+    <meta property="og:url" ng-attr-content="{{rubedo.current.page.contentCanonicalUrl}}" >
+    <meta property="og:title" ng-attr-content="{{rubedo.current.page.title}}"  />
+    <!-- content case  -->
+    <meta property="og:description"
+          ng-if="rubedo.current.page.contentId && rubedo.current.page.contentId != ''"
+          content=""/>
+    <meta property="og:description"
+          ng-if="!rubedo.current.page.contentId"
+          ng-attr-content="{{rubedo.current.page.description}}"/>
+
+            <meta property="og:image"  ng-if="rubedo.current.page.metaImage&&rubedo.current.page.metaImage!=''" ng-attr-content="{{rubedo.current.page.metaImage}}" />
+        <meta property="og:image"  ng-if="!rubedo.current.page.metaImage" content="https://www.lanouvellerepublique.fr/theme/nrco/images/meta/placeholder_nr.png" />
+
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@lanouvellerep_">
+    <meta name="twitter:creator" content="@lanouvellerep_">
+    <meta name="twitter:domain" content="La Nouvelle République">
+    <meta name="twitter:title" ng-attr-content="{{rubedo.current.page.title}}">
+            <meta name="twitter:image" ng-if="rubedo.current.page.metaImage&&rubedo.current.page.metaImage!=''" ng-attr-content="{{rubedo.current.page.metaImage}}" >
+        <meta name="twitter:image" ng-if="!rubedo.current.page.metaImage" content="https://www.lanouvellerepublique.fr/theme/nrco/images/meta/placeholder_nr.png" />
+
+    <meta name="twitter:url"  ng-attr-content="{{rubedo.current.page.contentCanonicalUrl}}" >
+    <meta name="twitter:description"
+          ng-if="!rubedo.current.page.contentId"
+          ng-attr-content="{{rubedo.current.page.description}}" >
+    <meta name="twitter:description"
+          ng-if="rubedo.current.page.contentId &&rubedo.current.page.contentId != ''"
+          content=""/>
+
+    <!--css-->
+    <!--[if lte IE 9]>
+            <link rel="stylesheet" type="text/css" href="/components/jtrussell/angular-snap.js-bower/angular-snap-only.min.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/jquery/fullCalendar/fullcalendar.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/jquery/fullCalendar/fullcalendar.print.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/vitalets/angular-xeditable/dist/css/xeditable.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/dalelotts/angular-bootstrap-datetimepicker/src/css/datetimepicker.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/OwlFonk/OwlCarousel/owl-carousel/owl.carousel.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/OwlFonk/OwlCarousel/owl-carousel/owl.theme.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/OwlFonk/OwlCarousel/owl-carousel/owl.transitions.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/components/mozilla/metrics-graphics/dist/metricsgraphics.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/rubedo.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/libraryOverrides/chosen.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/bootstrap.min.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/select.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/darkroom.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/nrcomodel.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/owl-carousel.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/focuspoint.css?v=11081">
+        <link rel="stylesheet" type="text/css" href="/theme/nrco/css/main.min.css?v=11081">
+            <![endif]-->
+    <![if !lte IE 9]>
+            <link rel="stylesheet" type="text/css"
+              href="/theme/nrco/css/rubedo-all-vendors.css?v=11081">
+
+            <link rel="stylesheet" type="text/css"
+              href="/theme/nrco/css/rubedo-all-internal.css?v=11081">
+
+
+            <link rel="stylesheet" type="text/css"
+              href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" type="text/css"
+              href="//fonts.googleapis.com/css?family=Lato:400,100,100italic,300,300italic,400italic,700,700italic,900,900italic">
+            <link rel="stylesheet" type="text/css"
+              href="/theme/nrco/css/rubedo-all-theme.css?v=11081">
+        <![endif]>
+
+    <script type="text/javascript">
+        window.gdprAppliesGlobally = true;
+        (function () {
+            function a(e) {
+                if (!window.frames[e]) {
+                    if (document.body && document.body.firstChild) {
+                        var t = document.body;
+                        var n = document.createElement("iframe");
+                        n.style.display = "none";
+                        n.name = e;
+                        n.title = e;
+                        t.insertBefore(n, t.firstChild)
+                    } else {
+                        setTimeout(function () {
+                            a(e)
+                        }, 5)
+                    }
+                }
+            }
+
+            function e(n, r, o, c, s) {
+                function e(e, t, n, a) {
+                    if (typeof n !== "function") {
+                        return
+                    }
+                    if (!window[r]) {
+                        window[r] = []
+                    }
+                    var i = false;
+                    if (s) {
+                        i = s(e, t, n)
+                    }
+                    if (!i) {
+                        window[r].push({command: e, parameter: t, callback: n, version: a})
+                    }
+                }
+
+                e.stub = true;
+
+                function t(a) {
+                    if (!window[n] || window[n].stub !== true) {
+                        return
+                    }
+                    if (!a.data) {
+                        return
+                    }
+                    var i = typeof a.data === "string";
+                    var e;
+                    try {
+                        e = i ? JSON.parse(a.data) : a.data
+                    } catch (t) {
+                        return
+                    }
+                    if (e[o]) {
+                        var r = e[o];
+                        window[n](r.command, r.parameter, function (e, t) {
+                            var n = {};
+                            n[c] = {returnValue: e, success: t, callId: r.callId};
+                            a.source.postMessage(i ? JSON.stringify(n) : n, "*")
+                        }, r.version)
+                    }
+                }
+
+                if (typeof window[n] !== "function") {
+                    window[n] = e;
+                    if (window.addEventListener) {
+                        window.addEventListener("message", t, false)
+                    } else {
+                        window.attachEvent("onmessage", t)
+                    }
+                }
+            }
+
+            e("__tcfapi", "__tcfapiBuffer", "__tcfapiCall", "__tcfapiReturn");
+            a("__tcfapiLocator");
+
+
+            window.didomiConfig = {"website":{"noticeId":"6xCeCWFJ","noticeIdV2":"6xCeCWFJ","apiKey":"08793271-2f36-46e1-9fee-fc591a2dbcd2","name":"La Nouvelle R\u00e9publique","logoUrl":"https:\/\/www.lanouvellerepublique.fr\/theme\/nrco\/images\/logo.svg?width=200&height=61","privacyPolicyURL":"https:\/\/www.lanouvellerepublique.fr\/politique-d-utilisation-des-cookies"},"notice":{"position":"popup","content":{"notice":{"fr":"La Nouvelle Republique et ses partenaires utilisent des cookies. Ils nous permettent de mesurer notre audience, d'am\u00e9liorer votre exp\u00e9rience sur notre site  en vous proposant des contenus et services adapt\u00e9s \u00e0 vos centres d'int\u00e9r\u00eats et des publicit\u00e9s personnalis\u00e9es; les cookies rendent \u00e9galement possible vos partages sur les r\u00e9seaux sociaux de nos articles."}}},"languages":{"enabled":["fr"]},"theme":{"color":"#CB1C27"},"tagManager":{"provider":"gtm"}};
+            window.didomiOnReady = window.didomiOnReady || [];
+            window.didomiOnReady.push(function (Didomi) {
+                // Call other functions on the SDK
+                var url = new URL(window.location.href);
+                var didomiAgreeToAll = url.searchParams.get("didomiAgreeToAll");
+                if(didomiAgreeToAll) {
+                    Didomi.setUserAgreeToAll();
+                }
+            });
+
+            (function (e) {
+                var t = document.createElement("script");
+                t.id = "spcloader";
+                t.type = "text/javascript";
+                t.async = true;
+                t.src = "https://sdk.privacy-center.org/" + e + "/loader.js?target=" + document.location.hostname;
+                t.charset = "utf-8";
+                var n = document.getElementsByTagName("script")[0];
+                n.parentNode.insertBefore(t, n)
+            })(window.didomiConfig.website.apiKey, window.didomiConfig.website.noticeId);
+        })();
+    </script>
+
+
+
+    <script type='application/javascript' src='https://livemap.getwemap.com/js/sdk.min.js'></script>
+
+    <!--[if lte IE 8]>
+    <script type="text/javascript" src="https://www.lanouvellerepublique.fr/theme/nrco/legacyFixes/respond.js"></script>
+    <![endif]-->
+
+    <!--library scripts-->
+    <!--[if lte IE 9]>
+            <script type="text/javascript" src="/components/jquery/jquery/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="/components/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/components/angular/angular.js/angular.min.js"></script>
+        <script type="text/javascript" src="/components/angular/angular.js/angular-route.min.js"></script>
+        <script type="text/javascript" src="/components/lodash/lodash/dist/lodash.underscore.min.js"></script>
+        <script type="text/javascript" src="/components/jakiestfu/Snap.js/snap.min.js"></script>
+        <script type="text/javascript" src="/components/jquery/fullCalendar/lib/moment.min.js"></script>
+        <script type="text/javascript" src="/components/ded/script.js/dist/script.min.js"></script>
+        <script type="text/javascript" src="/components/longtailvideo/jwplayer/jwplayer.js"></script>
+        <script type="text/javascript" src="/components/jtrussell/angular-snap.js-bower/angular-snap.min.js"></script>
+        <script type="text/javascript" src="/components/vitalets/angular-xeditable/dist/js/xeditable.min.js"></script>
+        <script type="text/javascript" src="/components/vitalets/angular-xeditable/libs/checklist-model.js"></script>
+        <script type="text/javascript" src="/components/ivpusic/angular-cookie/angular-cookie.min.js"></script>
+        <script type="text/javascript" src="/components/dalelotts/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+            <![endif]-->
+    <![if !lte IE 9]>
+            <script type="text/javascript" src="/theme/nrco/js/rubedo-all-vendors.js?v=11081"></script>
+        <![endif]>
+    <script type="text/javascript">
+        try {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/v1/nrcoConfig?block=all&v=11081', false);  // `false` makes the request synchronous
+            xhr.send(null);
+
+            if (xhr.status === 200) {
+                data = JSON.parse(xhr.responseText);
+                window.nrcoConfig = data.vars;
+
+                var sNew = document.createElement("script");
+                sNew.async = true;
+                sNew.src = "//s7.addthis.com/js/300/addthis_widget.js#pubid="+window.nrcoConfig.social.addthis.pubid;
+                var s0 = document.getElementsByTagName('script')[0];
+                s0.parentNode.insertBefore(sNew, s0);
+            }
+        } catch(err) {
+            console.log(err);
+        }
+
+        /*// disable browser auto scrolling to the last position
+        if ('scrollRestoration' in history) {
+            // Back off, browser, I got this...
+            history.scrollRestoration = 'manual';
+        }*/
+
+    </script>
+
+    <!--[if lte IE 9]>
+    <script type="text/javascript" src="https://www.lanouvellerepublique.fr/theme/nrco/legacyFixes/angular.js"></script>
+    <script type="text/javascript" src="https://www.lanouvellerepublique.fr/theme/nrco/legacyFixes/history.js"></script>
+    <![endif]-->
+
+            <script type="text/javascript" src="/components/Valve/fingerprintjs2/dist/fingerprint2.min.js"></script>
+
+    <script type="text/javascript">
+        moment.locale('fr', {
+            months : 'janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre'.split('_'),
+            monthsShort : 'janv._févr._mars_avr._mai_juin_juil._août_sept._oct._nov._déc.'.split('_'),
+            monthsParseExact : true,
+            weekdays : 'dimanche_lundi_mardi_mercredi_jeudi_vendredi_samedi'.split('_'),
+            weekdaysShort : 'dim._lun._mar._mer._jeu._ven._sam.'.split('_'),
+            weekdaysMin : 'Di_Lu_Ma_Me_Je_Ve_Sa'.split('_'),
+            weekdaysParseExact : true,
+            longDateFormat : {
+                LT : 'HH:mm',
+                LTS : 'HH:mm:ss',
+                L : 'DD/MM/YYYY',
+                LL : 'D MMMM YYYY',
+                LLL : 'D MMMM YYYY HH:mm',
+                LLLL : 'dddd D MMMM YYYY HH:mm'
+            },
+            calendar : {
+                sameDay: '[Aujourd\'hui à] LT',
+                nextDay: '[Demain à] LT',
+                nextWeek: 'dddd [à] LT',
+                lastDay: '[Hier à] LT',
+                lastWeek: 'dddd [dernier à] LT',
+                sameElse: 'L'
+            },
+            relativeTime : {
+                future : 'dans %s',
+                past : 'il y a %s',
+                s : 'quelques secondes',
+                m : 'une minute',
+                mm : '%d minutes',
+                h : 'une heure',
+                hh : '%d heures',
+                d : 'un jour',
+                dd : '%d jours',
+                M : 'un mois',
+                MM : '%d mois',
+                y : 'un an',
+                yy : '%d ans'
+            },
+            ordinalParse: /\d{1,2}(er|)/,
+            ordinal : function (number) {
+                return number + (number === 1 ? 'er' : '');
+            },
+            week : {
+                dow : 1, // Monday is the first day of the week.
+                doy : 4  // The week that contains Jan 4th is the first week of the year.
+            }
+        });
+    </script>
+            <script type="text/javascript" src="/theme/nrco/js/gravity.js?v=11081"></script>
+
+
+    <script type="application/javascript">
+        var googletag = {};
+        googletag.cmd = googletag.cmd || [];
+        var gads = document.createElement('script');
+        gads.async = true;
+        gads.type = 'text/javascript';
+        var useSSL = 'https:' == document.location.protocol;
+        gads.src = (useSSL ? 'https:' : 'http:') + '//www.googletagservices.com/tag/js/gpt.js';
+        var node = document.getElementsByTagName('script')[0];
+        node.parentNode.insertBefore(gads, node);
+    </script>
+
+            <script type="text/javascript" src="/components/lemonde/angular-ckeditor/angular-ckeditor.min.js"></script>
+        <script>window.CKEDITOR=function(){};</script>
+
+            <script type="text/javascript"
+                src="/components/angular/angular.js/i18n/angular-locale_fr.js"></script>
+        <!--internal angular modules scripts-->
+    <!--[if lte IE 9]>
+            <script type="text/javascript" src="/theme/nrco/js/ui-bootstrap-tpls-0.12.1.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/carouselv2.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/scrollpoint.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/select.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/nrcoFilters.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/satellizer.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/ng-file-upload.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/imageEditor.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/ui.atinternet.smartTag.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/acpm.audience.tag.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/angular-drag-and-drop-lists.min.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/angular-recaptcha.min.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/ng-scrollable.min.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/chartbeat.tag.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/clientela.chat.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/mediego.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/hotjar.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/weborama.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/nrcotrk.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/nrcoTrackers.js"></script>
+        <script type="text/javascript" src="/components/angular/angular.js/angular-sanitize.js"></script>
+            <![endif]-->
+    <![if !lte IE 9]>
+                <script type="text/javascript" src="/components/angular/angular.js/angular-sanitize.js?v=11081"></script>
+                    <script type="text/javascript" src="/theme/nrco/js/rubedo-all-angularModules.js?v=11081"></script>
+            <![endif]>
+    <script type="text/javascript">
+        window.rubedoConfig = {
+            siteTheme: "nrco",
+            isMimified:true,
+            extensionAngularModules:["ngSanitize","ui.bootstrap","ui.bootstrap.carousel","ui.scrollpoint","ui.select","nrcoFilters","satellizer","ngFileUpload","imageEditor","ui.atinternet.smartTag","acpm.audience.tag","dndLists","vcRecaptcha","ngScrollable","chartbeat.tag","clientela.chat","mediego","hotjar","weborama","matomo","nrcoTrackers"]        };
+    </script>
+
+
+    <!--frontoffice scripts-->
+    <!--[if lte IE 9]>
+            <script type="text/javascript" src="/theme/nrco/libraryOverrides/lrInfiniteScroll.js"></script>
+        <script type="text/javascript" src="/theme/nrco/libraryOverrides/chosen.jquery.js"></script>
+        <script type="text/javascript" src="/theme/nrco/libraryOverrides/angular-inview.js"></script>
+        <script type="text/javascript" src="/theme/nrco/lib/toaster/jquery.toaster.js"></script>
+        <script type="text/javascript" src="/theme/nrco/lib/angularStrap/ngStrap.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoDataAccess/rubedoDataAccessOverride.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoFields/rubedoFieldsOverride.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/rubedoBlocksOverride.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/AuthenticationController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/MostReadController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/NavigationNrController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/AdminTopNavigationController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/AboHeaderController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/AboProHeaderController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/AboFooterController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/LiseuseBiblioController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedo/rubedoOverride.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/blockConfig.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/jquery.matchHeight.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoFields/rubedoFieldsControllers.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/nrImageDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/customScrollDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/slideablesDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/slyDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/controllers/SocialController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/SocialDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/textLimitDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/nrPlaceholder.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/nrCarrouselDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/damInlineDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/matchHeightDirective.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/directives/nrElections.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/ContentDetailController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/src/modules/rubedoBlocks/controllers/DisturbanceController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/jquery.mCustomScrollbar.concat.min.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/angular-touch.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/didactitielController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/focuspoint.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/piexif.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/nrcoController.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/clusterone.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/payementScript.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/topEntreprises.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="/theme/nrco/js/kameleoon.js"></script>
+            <![endif]-->
+    <![if !lte IE 9]>
+            <script type="text/javascript" src="/theme/nrco/js/rubedo-all-internal.js?v=11081"></script>
+
+
+            <script type="text/javascript" src="/theme/nrco/js/rubedo-all-theme.js?v=11081"></script>
+        <![endif]>
+
+    <!-- Script for google analytics -->
+            <script type="text/javascript">
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            var GA_LOCAL_STORAGE_KEY = 'nr:ga:clientId';
+
+            if (window.localStorage) {
+                ga('create', 'UA-67552962-1', {
+                    'storage': 'none',
+                    'clientId': localStorage.getItem(GA_LOCAL_STORAGE_KEY)
+                });
+            }
+            else {
+                ga('create', 'UA-67552962-1', 'auto', {'allowAnchor': true});
+            }
+
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.2.2/isotope.pkgd.min.js"></script>
+
+    <!--base href for angular routing-->
+    <base href="/">
+
+    <!-- Script for Sora Sports -->
+    <script>
+        var soraMsg=function(e){
+            try{
+                var msg=e.data;
+                var aMsg;
+                if (msg.indexOf('iFrameSora_')>-1) {
+                    aMsg=msg.split('=');
+                    document.getElementById(aMsg[0]).height=aMsg[1];
+                }
+            }catch(e){}
+        }
+        //Ecouteur de message sora
+        try{
+            if(window.addEventListener)
+                window.addEventListener('message',soraMsg,false);
+            else if (window.attachEvent) window.attachEvent('onmessage',soraMsg);
+        }catch(e){}
+    </script>
+
+    <!-- Disable addThis Share thrackers in URL -->
+    <script type="text/javascript">
+        var addthis_config = addthis_config||{};
+        addthis_config.data_track_addressbar = false;
+        addthis_config.data_track_clickback = false;
+    </script>
+
+    <!--load dfp script-->
+    <script type="text/javascript" src="https://www.lanouvellerepublique.fr/theme/nrco/js/dfp-config-position-ads.js?v=11081"></script>
+    <script type="text/javascript" src="https://www.lanouvellerepublique.fr/theme/nrco/js/dfp-ads.js?v=11081"></script>
+
+    <!-- BEGIN Krux Control Tag for "NRC_LaNouvelleRepublique" -->
+    <!-- Source: /snippet/controltag?confid=JJ8sG3Qm&site=NRC_LaNouvelleRepublique&edit=1 -->
+    <script class="kxct" data-id="JJ8sG3Qm" data-timing="async" data-version="3" type="text/javascript">
+        window.Krux||((Krux=function(){Krux.q.push(arguments)}).q=[]);
+        (function(){
+            var k=document.createElement('script');k.type='text/javascript';k.async=true;
+            k.src=(location.protocol==='https:'?'https:':'http:')+'//cdn.krxd.net/controltag/JJ8sG3Qm.js';
+            var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(k,s);
+        }());
+
+    </script>
+
+    <!-- Script for sitelinks search box -->
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-5SMFXTN');</script>
+    <!-- End Google Tag Manager -->
+
+
+
+    <!-- AT Internet -->
+    <script type="text/javascript" src="//tag.aticdn.net/smarttag.js"></script>
+    <!-- End AT Internet -->
+</head>
+<body ng-controller="NrcoController as nrco" ng-class="[rubedo.current.page.pageProperties.bodyClass, rubedo.isLoading ? 'loading' : '', rubedo.fieldEditMode ? 'edition-mode' : '', nrco.epinglageMode && !rubedo.current.page.isRealDetail ? 'epinglage-mode':'', nrco.leftPaneOpen ? 'translateNav': '' ]">
+
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5SMFXTN"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<snap-drawer ng-if="rubedo.current.user.rights.canContributeFO" class="rubedo-admin-drawer" style="display: none;">
+    <ng-include src="rubedo.themePath+'/templates/admin/admin.html'"></ng-include>
+</snap-drawer>
+<div id="globalContainer">
+    <div ng-show="nrco.contentDetailController && rubedo.current.page.isRealDetail">
+        <div class="inline-edition-header" ng-if="rubedo.fieldEditMode && rubedo.current.user.rights.canContributeFO">
+            <div class="inline-block inline-edition-header-status">
+                {{nrco.contentDetailController.content.status === "published" ? "Contenu publié" :
+                nrco.contentDetailController.content.status === "pending" ? "En attente de validation" :
+                nrco.contentDetailController.content.status === "refused" ? "Contenu refusé" :
+                nrco.contentDetailController.content.status === "draft" ? "Brouillon" : "Inconnu"}}
+                <img src="https://www.lanouvellerepublique.fr/theme/nrco/images/loading-search.gif" ng-show="nrco.autoloadLoader" class="inline-edition-header-loader">
+            </div>
+            <div class="inline-block inline-edition-header-full-name">
+                {{nrco.contentDetailController.content.lastUpdateUser.fullName}} - {{nrco.contentDetailController.content.lastUpdateTime*1000 | date : 'dd/MM/yyyy'}} - {{nrco.contentDetailController.content.lastUpdateTime*1000 | date : 'HH:mm:ss'}}
+            </div>
+            <div class="inline-block inline-edition-header-version" ng-if="nrco.contentDetailController.content.hasPublished && nrco.contentDetailController.content.status != 'published'">
+                <a href="" ng-click="nrco.displayDraftWarningModal = true">Repartir de la version publiée </a>
+                <a target="_blank" ng-href="{{nrco.contentDetailController.content.canonicalUrl}}">(voir)</a>
+            </div>
+            <div class="inline-block inline-edition-header-mode-avance">
+                <a href="" class="inline-link" ng-click="nrco.launchContentDetailFullEditor()">Ouvrir le mode avancé</a>
+            </div>
+        </div>
+    </div>
+    <div ng-hide="nrco.contentDetailController && rubedo.current.page.isRealDetail">
+        <div class="inline-edition-header" ng-if="rubedo.fieldEditMode && rubedo.current.user.rights.canContributeFO">
+            <h2>Modification de page en cours</h2>
+        </div>
+        <div class="inline-epinglage-header" ng-if="nrco.epinglageMode && rubedo.current.user.rights.canContributeFO">
+            <h2>Modification des mises en avant en cours</h2>
+        </div>
+    </div>
+    <div id="content-page">
+        <div ng-if="rubedo.current.page.rows[0]">
+            <first-row></first-row>
+        </div>
+        <div ng-view></div>
+        <div ng-if="rubedo.current.page.rows.length > 0 && rubedo.current.page.rows[rubedo.current.page.rows.length - 1]">
+            <last-row></last-row>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
