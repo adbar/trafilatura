@@ -9,7 +9,6 @@ Module bundling functions related to HTML and text processing.
 import gzip
 import logging
 import re
-import socket
 import sys
 
 from functools import lru_cache
@@ -21,14 +20,10 @@ try:
 except ImportError:
     cchardet = None
 
-import requests
-#import urllib3
+import urllib3
 
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
-
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
 
 from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, TIMEOUT, USER_AGENTS, USER_AGENTS_NUM
 
@@ -36,16 +31,15 @@ from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, TIMEOUT, USER_AGENTS, USER_A
 LOGGER = logging.getLogger(__name__)
 
 # customize headers
-RETRY_STRATEGY = Retry(
+RETRY_STRATEGY = urllib3.util.Retry(
     total=3,
+    redirect=2, # raise_on_redirect=False,
+    connect=0,
     backoff_factor=TIMEOUT*2,
     status_forcelist=[429, 500, 502, 503, 504],
 )
-ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
-# urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-SESSION = requests.Session()
-SESSION.mount("https://", ADAPTER)
-SESSION.mount("http://", ADAPTER)
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY)
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
@@ -107,25 +101,27 @@ def detect_encoding(bytesobject):
 
 
 def decode_response(response):
-    """Read the Requests object corresponding to the server response,
+    """Read the urllib3 object corresponding to the server response,
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
-    resp_content, resp_text = response.content, response.text
-    if is_gz_file(response.content):
-        decompressed = gzip.decompress(response.content)
-        resp_content, resp_text = decompressed, \
-            str(decompressed, encoding='utf-8', errors='replace')
+    if isinstance(response, bytes):
+        resp_content = response
+    elif is_gz_file(response.data):
+        resp_content = gzip.decompress(response.data)
+    else:
+        resp_content = response.data
     guessed_encoding = detect_encoding(resp_content)
-    LOGGER.debug('response/guessed encoding: %s / %s', response.encoding, guessed_encoding)
+    LOGGER.debug('response encoding: %s', guessed_encoding)
     # process
+    htmltext = None
     if guessed_encoding is not None:
         try:
             htmltext = resp_content.decode(guessed_encoding)
         except UnicodeDecodeError:
-            LOGGER.warning('encoding error: %s / %s', response.encoding, guessed_encoding)
-            htmltext = resp_text
-    else:
-        htmltext = resp_text
+            LOGGER.warning('encoding error: %s', guessed_encoding)
+    # force decoding
+    if htmltext is None:
+        htmltext = str(resp_content, encoding='utf-8', errors='replace')
     return htmltext
 
 
@@ -142,14 +138,14 @@ def determine_headers():
 
 
 def fetch_url(url, decode=True):
-    """Fetches page using requests/urllib3 and decodes the response.
+    """Fetches page using urllib3 and decodes the response.
 
     Args:
         url: URL of the page to fetch.
-        decode: Decode response instead of returning Requests object (boolean).
+        decode: Decode response instead of returning Urllib3 response object (boolean).
 
     Returns:
-        HTML code as string, or Request object (headers + body), or empty string in case
+        HTML code as string, or Urllib3 response object (headers + body), or empty string in case
         the result is invalid, or None if there was a problem with the network.
 
     """
@@ -158,33 +154,30 @@ def fetch_url(url, decode=True):
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
-        response = SESSION.get(url, timeout=TIMEOUT, verify=False, allow_redirects=True,
-                               headers=determine_headers())
-    except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL):
-        LOGGER.error('malformed URL: %s', url)
-        return ''
-    except requests.exceptions.TooManyRedirects:
-        LOGGER.error('redirects: %s', url)
-    except requests.exceptions.SSLError as err:
-        LOGGER.error('SSL: %s %s', url, err)
-    except (socket.timeout, requests.exceptions.ConnectionError,
-            requests.exceptions.Timeout, socket.error, socket.gaierror) as err:
-        LOGGER.error('connection: %s %s', url, err)
+        response = HTTP_POOL.request('GET', url, headers=determine_headers(), timeout=TIMEOUT)
+    except urllib3.exceptions.NewConnectionError as err:
+        LOGGER.error('connection refused: %s %s', url, err)
+        return ''  # raise error instead?
+    except urllib3.exceptions.MaxRetryError as err:
+        LOGGER.error('retries/redirects: %s %s', url, err)
+        return ''  # raise error instead?
+    except urllib3.exceptions.TimeoutError as err:
+        LOGGER.error('connection timeout: %s %s', url, err)
     #except Exception as err:
     #    logging.error('unknown: %s %s', url, err) # sys.exc_info()[0]
     else:
         # safety checks
-        if response.status_code != 200:
-            LOGGER.error('not a 200 response: %s for URL %s', response.status_code, url)
-        elif response.text is None or len(response.text) < MIN_FILE_SIZE:
+        if response.status != 200:
+            LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
+        elif response.data is None or len(response.data) < MIN_FILE_SIZE:
             LOGGER.error('too small/incorrect for URL %s', url)
-            return ''
-        elif len(response.text) > MAX_FILE_SIZE:
-            LOGGER.error('too large: length %s for URL %s', len(response.text), url)
-            return ''
+            return ''  # raise error instead?
+        elif len(response.data) > MAX_FILE_SIZE:
+            LOGGER.error('too large: length %s for URL %s', len(response.data), url)
+            return ''  # raise error instead?
         else:
             if decode is True:
-                return decode_response(response)
+                return decode_response(response.data)
             return response
     return None
 
