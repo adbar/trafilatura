@@ -33,6 +33,11 @@ JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 URL_COMP_CHECK = re.compile(r'https?://|/')
 
 
+def normalize_json(inputstring):
+    'Normalize unicode strings and trim the output'
+    outputstring = inputstring.encode('unicode-escape').decode('unicode-escape')
+    return trim(outputstring)
+
 
 def extract_json_author(elemtext, regular_expression):
     '''Crudely extract author names from JSON-LD data'''
@@ -45,9 +50,10 @@ def extract_json_author(elemtext, regular_expression):
             mymatch = regular_expression.search(elemtext)
         else:
             break
-    # final trimming
     if json_authors:
-        return '; '.join(json_authors).strip('; ')
+        # prevent unicode strings and final trimming
+        return normalize_json('; '.join(json_authors).strip('; '))
+
     return None
 
 
@@ -65,21 +71,21 @@ def extract_json(tree, metadata):
         if '"publisher"' in elem.text:
             mymatch = JSON_PUBLISHER.search(elem.text)
             if mymatch and not ',' in mymatch.group(1):
-                metadata['sitename'] = trim(mymatch.group(1))
+                metadata['sitename'] = normalize_json(mymatch.group(1))
         # category
         if '"articleSection"' in elem.text:
             mymatch = JSON_CATEGORY.search(elem.text)
             if mymatch:
-                metadata['categories'] = [trim(mymatch.group(1))]
+                metadata['categories'] = [normalize_json(mymatch.group(1))]
         # try to extract title
         if '"name"' in elem.text and metadata['title'] is None:
             mymatch = JSON_NAME.search(elem.text)
             if mymatch:
-                metadata['title'] = trim(mymatch.group(1))
+                metadata['title'] = normalize_json(mymatch.group(1))
         if '"headline"' in elem.text and metadata['title'] is None:
             mymatch = JSON_HEADLINE.search(elem.text)
             if mymatch:
-                metadata['title'] = trim(mymatch.group(1))
+                metadata['title'] = normalize_json(mymatch.group(1))
         # exit if found
         if all([metadata['author'], metadata['sitename'], metadata['categories'], metadata['title']]):
             break
