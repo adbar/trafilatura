@@ -262,7 +262,7 @@ def extract_url(tree, default_url=None):
     url = default_url
     # try canonical link first
     element = tree.find('.//head//link[@rel="canonical"]')
-    if element is not None and URL_COMP_CHECK.match(element.attrib['href']):
+    if element is not None and 'href' in element.attrib and URL_COMP_CHECK.match(element.attrib['href']):
         url = element.attrib['href']
     # try default language link
     else:
