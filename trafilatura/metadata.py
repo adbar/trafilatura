@@ -35,8 +35,9 @@ URL_COMP_CHECK = re.compile(r'https?://|/')
 
 def normalize_json(inputstring):
     'Normalize unicode strings and trim the output'
-    outputstring = inputstring.encode('unicode-escape').decode('unicode-escape')
-    return trim(outputstring)
+    if '\\' in inputstring:
+        return trim(inputstring.encode().decode('unicode-escape'))
+    return trim(inputstring)
 
 
 def extract_json_author(elemtext, regular_expression):
@@ -53,7 +54,6 @@ def extract_json_author(elemtext, regular_expression):
     if json_authors:
         # prevent unicode strings and final trimming
         return normalize_json('; '.join(json_authors).strip('; '))
-
     return None
 
 
