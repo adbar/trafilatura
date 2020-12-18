@@ -160,8 +160,8 @@ def fetch_url(url, decode=True):
         return ''  # raise error instead?
     except urllib3.exceptions.TimeoutError as err:
         LOGGER.error('connection timeout: %s %s', url, err)
-    #except Exception as err:
-    #    logging.error('unknown: %s %s', url, err) # sys.exc_info()[0]
+    except Exception as err:
+        logging.error('unknown error: %s %s', url, err) # sys.exc_info()[0]
     else:
         # safety checks
         if response.status != 200:
