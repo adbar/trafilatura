@@ -103,7 +103,7 @@ def load_blacklist(filename):
     return blacklist
 
 
-def convert_inputlist(blacklist, inputlist, inputdict=None):
+def convert_inputlist(blacklist, inputlist, url_filter=None, inputdict=None):
     '''Add input URls to domain-aware processing dictionary'''
     # control
     if inputdict is None:
@@ -111,6 +111,15 @@ def convert_inputlist(blacklist, inputlist, inputdict=None):
     # filter
     if blacklist:
         inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]
+    if url_filter:
+        filtered_list = []
+        while inputlist:
+            u = inputlist.pop()
+            for f in url_filter:
+                if f in u:
+                    filtered_list.append(u)
+                    break
+        inputlist = filtered_list
     # validate
     inputlist = [u for u in inputlist if validate_url(u)[0] is True]
     # deduplicate
@@ -305,6 +314,9 @@ def download_queue_processing(domain_dict, args, sleeptime, counter):
 
 def url_processing_pipeline(args, inputdict, sleeptime):
     '''Aggregated functions to show a list and download and process an input list'''
+    # filter based on pattern
+    if args.url_filter:
+        inputdict = url_filtering(inputdict, args.url_filter)
     # print list without further processing
     if args.list:
         for hostname in inputdict:

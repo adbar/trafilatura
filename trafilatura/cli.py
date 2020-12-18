@@ -75,6 +75,9 @@ def parse_args(args):
                         help="""name of file containing already processed or
                                 unwanted URLs to discard during batch processing""",
                         type=str)
+    group1.add_argument('--url-filter',
+                        help="Only process/output URLs containing these patterns (space-separated strings)",
+                        nargs='+', type=str)
     group1.add_argument('--backup-dir',
                         help="Preserve a copy of downloaded files in a backup directory",
                         type=str)
@@ -190,13 +193,16 @@ def process_args(args):
                 future_to_url = {executor.submit(find_feed_urls, url): url for url in input_urls}
                 for future in as_completed(future_to_url):
                     if future.result() is not None:
-                        inputdict = convert_inputlist(args.blacklist, future.result(), inputdict)
+                        inputdict = convert_inputlist(args.blacklist, future.result(), args.url_filter, inputdict)
         elif args.sitemap:
             with ThreadPoolExecutor(max_workers=download_threads) as executor:
                 future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
                 for future in as_completed(future_to_url):
                     if future.result() is not None:
-                        inputdict = convert_inputlist(args.blacklist, future.result(), inputdict)
+                        inputdict = convert_inputlist(args.blacklist, future.result(), args.url_filter, inputdict)
+        # add simple conversion
+        else:
+            inputdict = convert_inputlist(args.blacklist, input_urls, args.url_filter)
         # processing
         url_processing_pipeline(args, inputdict, SLEEP_TIME)
     # read files from an input directory

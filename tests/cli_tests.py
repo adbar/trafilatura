@@ -54,6 +54,12 @@ def test_parser():
     args.blacklist = os.path.join(TEST_DIR, 'resources/list-discard.txt')
     cli.process_args(args)
     assert len(args.blacklist) == 2
+    # filter
+    testargs = ['', '-i', 'resources/list-discard.txt', '--url-filter', 'test1', 'test2']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    assert args.inputfile == 'resources/list-discard.txt'
+    assert args.url_filter == ['test1', 'test2']
 
 
 def test_climain():
@@ -179,7 +185,7 @@ def test_cli_pipeline():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli_utils.url_processing_pipeline(args, dict(), 0) is None
-    inputdict = cli.convert_inputlist(None, ['https://www.example.org/'], None)
+    inputdict = cli.convert_inputlist(None, ['https://www.example.org/'], None, None)
     assert cli_utils.url_processing_pipeline(args, inputdict, 0) is None
     # test inputlist + blacklist
     resources_dir = os.path.join(TEST_DIR, 'resources')
@@ -194,7 +200,7 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     assert args.blacklist is not None
     # test backoff between domain requests
-    inputdict = cli_utils.convert_inputlist(args.blacklist, my_urls, None)
+    inputdict = cli_utils.convert_inputlist(args.blacklist, my_urls, None, None)
     reftime = datetime.now()
     cli_utils.url_processing_pipeline(args, inputdict, 2)
     delta = (datetime.now() - reftime).total_seconds()
@@ -202,7 +208,7 @@ def test_cli_pipeline():
     # test blacklist and empty dict
     args.blacklist = cli_utils.load_blacklist(args.blacklist)
     assert len(args.blacklist) == 2
-    inputdict = cli_utils.convert_inputlist(args.blacklist, my_urls, None)
+    inputdict = cli_utils.convert_inputlist(args.blacklist, my_urls, None, None)
     cli_utils.url_processing_pipeline(args, inputdict, 2)
     # test backup
     testargs = ['', '--backup-dir', '/tmp/']
@@ -256,14 +262,21 @@ def test_input_filtering():
     # deduplication and filtering
     myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
     myblacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
-    inputdict = cli_utils.convert_inputlist(myblacklist, myinput, None)
+    inputdict = cli_utils.convert_inputlist(myblacklist, myinput, None, None)
     assert inputdict['https://example.org'] == ['/2', '/4', '/6']
     # URL in blacklist
     resources_dir = os.path.join(TEST_DIR, 'resources')
     my_urls = cli_utils.load_input_urls(os.path.join(resources_dir, 'list-process.txt'))
     my_blacklist = cli_utils.load_blacklist(os.path.join(resources_dir, 'list-discard.txt'))
-    inputdict = cli_utils.convert_inputlist(my_blacklist, my_urls, None)
+    inputdict = cli_utils.convert_inputlist(my_blacklist, my_urls, None, None)
     assert len(inputdict) == 0
+    # URL filter
+    my_urls = cli_utils.load_input_urls(os.path.join(resources_dir, 'list-process.txt'))
+    assert len(cli.convert_inputlist(None, my_urls, ['status'], None)) == 1
+    my_urls = cli_utils.load_input_urls(os.path.join(resources_dir, 'list-process.txt'))
+    assert len(cli.convert_inputlist(None, my_urls, ['teststring'], None)) == 0
+    my_urls = cli_utils.load_input_urls(os.path.join(resources_dir, 'list-process.txt'))
+    assert len(cli.convert_inputlist(None, my_urls, ['status', 'teststring'], None)) == 1
 
 
 if __name__ == '__main__':
