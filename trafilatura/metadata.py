@@ -333,7 +333,7 @@ def extract_catstags(metatype, tree):
     # category fallback
     if metatype == 'category' and not results:
         element = tree.find('.//head//meta[@property="article:section"]')
-        if element is not None:
+        if element is not None and 'content' in element.attrib:
             results.append(element.attrib['content'])
     return [trim(x) for x in results if x is not None]
 
