@@ -146,12 +146,12 @@ def fetch_url(url, decode=True):
         the result is invalid, or None if there was a problem with the network.
 
     """
-
     # send
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
-        response = HTTP_POOL.request('GET', url, headers=determine_headers(), timeout=TIMEOUT)
+        response = HTTP_POOL.request('GET', url, headers=determine_headers(),
+                                     timeout=TIMEOUT)
     except urllib3.exceptions.NewConnectionError as err:
         LOGGER.error('connection refused: %s %s', url, err)
         return ''  # raise error instead?

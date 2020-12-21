@@ -16,7 +16,7 @@ except ImportError:
     LANGID_FLAG = False
 
 from .lru import LRUCache
-from .settings import LRU_SIZE, MAX_REPETITIONS, MIN_DUPLCHECK_SIZE
+from .settings import LRU_SIZE
 from .utils import trim  #, remove_control_characters
 
 
@@ -42,14 +42,14 @@ def put_in_cache(teststring):
         LRU_TEST.put(teststring, 1)
 
 
-def duplicate_test(element):
+def duplicate_test(element, config):
     '''Check for duplicate text with LRU cache'''
     teststring = trim(' '.join(element.itertext()))
     # teststring = element.text
-    if len(teststring) > MIN_DUPLCHECK_SIZE:
+    if len(teststring) > config.getint('DEFAULT', 'MIN_DUPLCHECK_SIZE'):
         # retrieve value from cache
         cacheval = LRU_TEST.get(teststring)
-        if cacheval > MAX_REPETITIONS:  # non-existent key will return -1
+        if cacheval > config.getint('DEFAULT', 'MAX_REPETITIONS'):  # non-existent key will return -1
             LRU_TEST.put(teststring, cacheval + 1)
             return True
     put_in_cache(teststring)

@@ -6,42 +6,48 @@ Listing a series of settings that are applied module-wide.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+import configparser
+
 from multiprocessing import cpu_count
+from pathlib import Path
 
 from . import __version__
 
 
-USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
-USER_AGENTS = [USER_AGENT]
-USER_AGENTS_NUM = len(USER_AGENTS)
+def use_config(filename=None, config=None):
+    'Use configuration object or read and parse a settings file'
+    # expert option: use config file directly
+    if config is not None:
+        return config
+    # default filename
+    if filename is None:
+        filename = str(Path(__file__).parent / 'settings.cfg')
+    # load
+    config = configparser.ConfigParser()
+    config.read(filename)
+    return config
+
+DEFAULT_CONFIG = use_config()
 
 
-# sanity checks
+# Safety checks
 MAX_FILE_SIZE = 20000000
 MIN_FILE_SIZE = 10
-SLEEP_TIME = 2
 DOWNLOAD_THREADS = 5
 TIMEOUT = 30
+LRU_SIZE = 65536
 
-
-# extraction config
-MIN_EXTRACTED_SIZE = 200
-MIN_EXTRACTED_COMM_SIZE = 10
-MIN_OUTPUT_SIZE = 10
-MIN_OUTPUT_COMM_SIZE = 10
-
-
-# file output
+# Files
 MAX_FILES_PER_DIRECTORY = 1000
 FILENAME_LEN = 8
 FILE_PROCESSING_CORES = min(cpu_count(), 16)  # 16 processes at most
 PROCESSING_TIMEOUT = 30
 
-
-# deduplication
-LRU_SIZE = 65536
-MIN_DUPLCHECK_SIZE = 100
-MAX_REPETITIONS = 2
+# Network
+SLEEP_TIME = 2
+USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
+USER_AGENTS = [USER_AGENT]
+USER_AGENTS_NUM = len(USER_AGENTS)
 
 
 # filters
@@ -76,8 +82,6 @@ MANUALLY_STRIPPED = [
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])
 # + list(CUT_EMPTY_ELEMS)
 
-# JUSTEXT_DEFAULT = 'German'
-# JT_STOPLIST = None  # could be a list
 
 JUSTEXT_LANGUAGES = {
     'ar': 'Arabic',

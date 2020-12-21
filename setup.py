@@ -80,7 +80,7 @@ setup(
     author_email='barbaresi@bbaw.de',
     license='GPLv3+',
     packages=['trafilatura'],
-    package_data={'trafilatura': ['data/tei-schema.pickle']},
+    package_data={'trafilatura': ['data/tei-schema.pickle', 'settings.cfg']},
     include_package_data=True,
     python_requires='>=3.4',
     install_requires=[

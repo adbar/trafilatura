@@ -30,9 +30,11 @@ except ImportError:
 import trafilatura.filters
 import trafilatura.htmlprocessing
 from trafilatura.core import baseline, bare_extraction, extract, handle_image, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
-from trafilatura.metadata import METADATA_LIST
-from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.lru import LRUCache
+from trafilatura.filters import check_html_lang, duplicate_test, textfilter
+from trafilatura.metadata import METADATA_LIST
+from trafilatura.settings import DEFAULT_CONFIG
+
 from trafilatura import utils, xml
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -41,6 +43,8 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 SAMPLE_META = dict.fromkeys(METADATA_LIST)
 
+ZERO_CONFIG = DEFAULT_CONFIG
+ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
@@ -101,7 +105,6 @@ def test_input():
     assert process_record(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
 
 
-@patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_txttocsv():
     mymeta = dict.fromkeys(METADATA_LIST)
     assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\n'
@@ -111,17 +114,15 @@ def test_txttocsv():
     mymeta['id'] = '1'
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
-    assert extract(mystring, csv_output=True) is not None
-    assert extract(mystring, csv_output=True, include_comments=False).endswith('\t\n')
+    assert extract(mystring, csv_output=True, config=ZERO_CONFIG) is not None
+    assert extract(mystring, csv_output=True, include_comments=False, config=ZERO_CONFIG).endswith('\t\n')
     # test json
-    assert extract(mystring, json_output=True).endswith('}')
+    assert extract(mystring, json_output=True, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
-    result = bare_extraction(mystring)
+    result = bare_extraction(mystring, config=ZERO_CONFIG)
     assert isinstance(result, dict) and len(result) == 13
 
 
-@patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
-@patch('trafilatura.core.MIN_OUTPUT_COMM_SIZE', 0)
 def test_exotic_tags(xmloutput=False):
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xmloutput, tei_output=True)
@@ -134,7 +135,7 @@ def test_exotic_tags(xmloutput=False):
     # misformed HTML declaration
     htmlstring = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 2012"http://www.w3.org/TR/html4/loose.dtd"><html><head></head><body><p>ABC</p></body></html>'
     # outputs '012"http://www.w3.org/TR/html4/loose.dtd">\nABC'
-    assert 'ABC' in extract(htmlstring)
+    assert 'ABC' in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
     assert handle_quotes(etree.Element('quote')) is None
     assert handle_table(etree.Element('table')) is None
@@ -149,74 +150,72 @@ def test_lrucache():
     #my_element = html.fromstring('<p>AAAA BBBB</p>')
     #my_body.append(my_element)
     #put_in_cache(my_body)
-    #assert duplicate_test(my_element) is False
+    #assert duplicate_test(my_element, DEFAULT_CONFIG) is False
     ### cached element
     my_element = html.fromstring('<p>AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB AAAA BBBB</p>')
     my_body.append(my_element)
-    assert duplicate_test(my_element) is False
-    assert duplicate_test(my_element) is False
-    assert duplicate_test(my_body) is False
-    assert duplicate_test(my_element) is True
+    assert duplicate_test(my_element, DEFAULT_CONFIG) is False
+    assert duplicate_test(my_element, DEFAULT_CONFIG) is False
+    assert duplicate_test(my_body, DEFAULT_CONFIG) is False
+    assert duplicate_test(my_element, DEFAULT_CONFIG) is True
     other_body = etree.Element('body')
     other_element = html.fromstring('<p>CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD CCCC DDDD</p>')
     other_body.append(other_element)
-    assert duplicate_test(other_body) is False
-    assert duplicate_test(other_element) is False
-    assert duplicate_test(other_body) is False
-    assert duplicate_test(other_element) is True
+    assert duplicate_test(other_body, DEFAULT_CONFIG) is False
+    assert duplicate_test(other_element, DEFAULT_CONFIG) is False
+    assert duplicate_test(other_body, DEFAULT_CONFIG) is False
+    assert duplicate_test(other_element, DEFAULT_CONFIG) is True
     yet_another_body = etree.Element('body')
     yet_another_element = html.fromstring('<p>EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF EEEE FFFF</p>')
     yet_another_body.append(yet_another_element)
-    assert duplicate_test(yet_another_body) is False
-    assert duplicate_test(yet_another_body) is False
-    assert duplicate_test(yet_another_body) is False
+    assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
+    assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
+    assert duplicate_test(yet_another_body, DEFAULT_CONFIG) is False
     # 2 elements in cache, original element has been cleared?
     # print(LRU_TEST.maxsize, LRU_TEST.full)
-    assert duplicate_test(other_element) is True
-    assert duplicate_test(yet_another_element) is True
-    assert duplicate_test(my_element) is False
+    assert duplicate_test(other_element, DEFAULT_CONFIG) is True
+    assert duplicate_test(yet_another_element, DEFAULT_CONFIG) is True
+    assert duplicate_test(my_element, DEFAULT_CONFIG) is False
     # clear the cache
     lru_test.clear()
-    assert duplicate_test(other_element) is False
+    assert duplicate_test(other_element, DEFAULT_CONFIG) is False
     # get wrong key
     assert lru_test.get('tralala') == -1
 
 
-@patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_formatting():
     '''Test HTML formatting conversion and extraction'''
     # simple
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold and italic font.</hi>' in my_result
     # empty
     my_document = html.fromstring('<html><body><p><b><i></i></b></p></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<main/>' in my_result
     # wild div
     my_document = html.fromstring('<html><body><article><div><strong>Wild text</strong></div></article></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True)
+    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
     assert '<p>' in my_result and '<hi>Wild text</hi>' in my_result  # no rend so far
-    my_result = extract(my_document)
+    my_result = extract(my_document, config=ZERO_CONFIG)
     assert my_result == 'Wild text'
     # links
     doc = html.fromstring('<html><body><p><a href="">Link text</a></p></body></html>')
-    my_result = extract(doc)
+    my_result = extract(doc, config=ZERO_CONFIG)
     assert my_result == 'Link text'
     # line-breaks
     doc = html.fromstring('<html><body><p><br/></p></body></html>')
-    my_result = extract(doc)
+    my_result = extract(doc, config=ZERO_CONFIG)
     assert my_result == ''
     doc = html.fromstring('<html><body><p><br/>Here is the text.</p></body></html>')
-    my_result = extract(doc)
+    my_result = extract(doc, config=ZERO_CONFIG)
     assert my_result == 'Here is the text.'
 
 
-@patch('trafilatura.core.MIN_OUTPUT_SIZE', 0)
 def test_baseline():
     _, length, string = baseline('')
     assert (length, string) == (0, '')
@@ -300,7 +299,7 @@ def test_images():
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
     assert utils.is_image_file('test.jpg') is True
     assert utils.is_image_file('test.txt') is False
-    assert handle_textelem(etree.Element('image'), [], False) is None
+    assert handle_textelem(etree.Element('image'), [], False, DEFAULT_CONFIG) is None
 
 
 def test_tei():
