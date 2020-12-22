@@ -121,8 +121,8 @@ Roadmap
 
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] URL lists and document management
+-  [-] Configuration and extraction parameters
 -  [ ] Interaction with web archives (notably WARC format)
--  [ ] Configuration and extraction parameters
 -  [ ] Integration of natural language processing tools
 
 

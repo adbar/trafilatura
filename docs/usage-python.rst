@@ -88,7 +88,7 @@ The function ``bare_extraction`` can be used to bypass output conversion, it ret
 
 .. code-block:: python
 
-    >>> from trafilatura.core import bare_extraction
+    >>> from trafilatura import bare_extraction
     >>> bare_extraction(downloaded)
 
 For more see the `core functions <corefunctions.html>`_ page.
@@ -96,8 +96,28 @@ For more see the `core functions <corefunctions.html>`_ page.
 For further configuration `clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_, edit ``settings.py`` and reinstall the package locally (``pip install -U .`` in the home directory of the cloned repository).
 
 
+Extraction settings
+-------------------
+
+Text extraction
+^^^^^^^^^^^^^^^
+
+Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``config`` parameter in ``bare_extraction`` or ``extract``, which overrides the standard settings:
+
+.. code-block:: python
+
+    >>> from trafilatura import extract
+    >>> from trafilatura.settings import use_config
+    # load the new settings by providing a file name
+    >>> newconfig = use_config("myfile.cfg")
+    # use with a previously downloaded document
+    >>> extract(downloaded, config=newconfig)
+    # provide a file name directly (can be slower)
+    >>> extract(downloaded, settingsfile="myfile.cfg")
+
+
 Date extraction
----------------
+^^^^^^^^^^^^^^^
 
 Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
 
@@ -105,3 +125,10 @@ Among metadata extraction, dates are handled by an external module: `htmldate <h
 -  ``original_date`` (boolean) to look for the original publication date,
 -  ``outputformat`` (string), to provide a custom datetime format,
 -  ``max_date`` (string), to set the latest acceptable date manually (YYYY-MM-DD format).
+
+.. code-block:: python
+
+    >>> from trafilatura import extract
+    # pass the new parameters as dict, with a previously downloaded document
+    >>> extract(downloaded, output_format="xml", date_extraction_params={"extensive_search": True, "max_date": "2018-07-01"})
+

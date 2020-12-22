@@ -114,6 +114,12 @@ URL inspection prior to download and processing
 For more information see `tutorial on link filtering <tutorial0.html#link-filtering>`_.
 
 
+Extraction settings
+-------------------
+
+Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``--config-file`` option, which overrides the standard settings.
+
+
 Further information
 -------------------
 
@@ -121,15 +127,17 @@ For all usage instructions see ``trafilatura -h``:
 
 .. code-block:: bash
 
-    usage: trafilatura [-h] [-v] [-vv] [-i INPUTFILE] [--inputdir INPUTDIR]
+    usage:  trafilatura [-h] [-v] [-vv] [-i INPUTFILE] [--inputdir INPUTDIR]
                    [-o OUTPUTDIR] [-u URL] [--feed [FEED]]
                    [--sitemap [SITEMAP]] [--list] [-b BLACKLIST]
+                   [--url-filter URL_FILTER [URL_FILTER ...]]
                    [--backup-dir BACKUP_DIR] [--timeout] [--parallel PARALLEL]
-                   [--keep-dirs] [--hash-as-name]
+                   [--keep-dirs] [--hash-as-name] [--archived]
                    [-out {txt,csv,json,xml,xmltei}] [--csv] [--json] [--xml]
                    [--xmltei] [--validate] [-f] [--formatting] [--nocomments]
                    [--notables] [--with-metadata]
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
+                   [--config-file CONFIG_FILE]
 
 
 Command-line interface for Trafilatura
@@ -149,20 +157,26 @@ I/O:
                         write results in a specified directory (relative path)
   -u, --URL URL         custom URL download
   --feed FEED           look for feeds and/or pass a feed URL as input
-  --sitemap SITEMAP     look for sitemaps URLs for the given website
+  --sitemap SITEMAP     look for sitemaps for the given website and/or enter a
+                        sitemap URL
   --list                return a list of URLs without downloading them
   -b, --blacklist BLACKLIST
                         name of file containing already processed or unwanted
                         URLs to discard during batch processing
+  --url-filter URL_FILTER
+                        only process/output URLs containing these patterns
+                        (space-separated strings)
   --backup-dir BACKUP_DIR
-                        Preserve a copy of downloaded files in a backup
+                        preserve a copy of downloaded files in a backup
                         directory
-  --timeout             Use timeout for file conversion to prevent bugs
-  --parallel PARALLEL   Specify a number of cores/threads for parallel
+  --timeout             use timeout for file conversion to prevent bugs
+  --parallel PARALLEL   specify a number of cores/threads for parallel
                         downloads and/or processing
-  --keep-dirs           Keep input directory structure and file names
-  --hash-as-name        Use file content hash as output file name (for
+  --keep-dirs           keep input directory structure and file names
+  --hash-as-name        use file content hash as output file name (for
                         deduplication) instead of random default
+  --archived            try to fetch URLs from the Internet Archive if
+                        downloads fail
 
 Format:
   Selection of the output format
@@ -187,4 +201,7 @@ Extraction:
                         title, URL and date (CSV and XML formats)
   --target-language TARGET_LANGUAGE
                         select a target language (ISO 639-1 codes)
-  --deduplicate         Filter out duplicate documents and sections
+  --deduplicate         filter out duplicate documents and sections
+  --config-file CONFIG_FILE
+                        Override standard extraction parameters with a custom
+                        config file
