@@ -336,8 +336,9 @@ def url_processing_pipeline(args, inputdict, sleeptime):
     if args.archived is True:
         inputdict = dict()
         inputdict['https://web.archive.org'] = ['/web/20/' + e for e in errors]
-        archived_errors, _ = download_queue_processing(inputdict, args, sleeptime, counter, config)
-        LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
+        if len(inputdict['https://web.archive.org']) > 0:
+            archived_errors, _ = download_queue_processing(inputdict, args, sleeptime, counter, config)
+            LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
 
 
 def file_processing_pipeline(args):

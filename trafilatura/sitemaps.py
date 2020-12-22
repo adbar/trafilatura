@@ -50,12 +50,10 @@ def sitemap_search(url, target_lang=None):
     if sitemapurls == [] and linklist == []:
         for sitemapurl in find_robots_sitemaps(url, baseurl):
             tmp_sitemapurls, tmp_linklist = process_sitemap(sitemapurl, domainname, baseurl, target_lang)
-            sitemapurls.extend(tmp_sitemapurls)
-            linklist.extend(tmp_linklist)
+            sitemapurls, linklist = sitemapurls + tmp_sitemapurls, linklist + tmp_linklist
     while sitemapurls:
         tmp_sitemapurls, tmp_linklist = process_sitemap(sitemapurls.pop(), domainname, baseurl, target_lang)
-        sitemapurls.extend(tmp_sitemapurls)
-        linklist.extend(tmp_linklist)
+        sitemapurls, linklist = sitemapurls + tmp_sitemapurls, linklist + tmp_linklist
     linklist = sorted(list(set(linklist)))
     LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
     return linklist

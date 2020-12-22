@@ -66,7 +66,7 @@ def parse_args(args):
                         help="look for feeds and/or pass a feed URL as input",
                         nargs='?', const=True, default=False)
     group1.add_argument("--sitemap",
-                        help="look for sitemaps URLs for the given website",
+                        help="look for sitemaps for the given website and/or enter a sitemap URL",
                         nargs='?', const=True, default=False)
     group1.add_argument("--list",
                         help="return a list of URLs without downloading them",
@@ -76,26 +76,26 @@ def parse_args(args):
                                 unwanted URLs to discard during batch processing""",
                         type=str)
     group1.add_argument('--url-filter',
-                        help="Only process/output URLs containing these patterns (space-separated strings)",
+                        help="only process/output URLs containing these patterns (space-separated strings)",
                         nargs='+', type=str)
     group1.add_argument('--backup-dir',
-                        help="Preserve a copy of downloaded files in a backup directory",
+                        help="preserve a copy of downloaded files in a backup directory",
                         type=str)
     group1.add_argument('--timeout',
-                        help="Use timeout for file conversion to prevent bugs",
+                        help="use timeout for file conversion to prevent bugs",
                         action="store_true")
     group1.add_argument('--parallel',
-                        help="Specify a number of cores/threads for parallel downloads and/or processing",
+                        help="specify a number of cores/threads for parallel downloads and/or processing",
                         type=int)
     group1.add_argument('--keep-dirs',
-                        help="Keep input directory structure and file names",
+                        help="keep input directory structure and file names",
                         action="store_true")
     group1.add_argument('--hash-as-name',
-                        help="""Use file content hash as output file name (for deduplication) 
+                        help="""use file content hash as output file name (for deduplication)
                         instead of random default""",
                         action="store_true")
     group1.add_argument('--archived',
-                        help='Try to fetch URLs from the Internet Archive if downloads fail',
+                        help='try to fetch URLs from the Internet Archive if downloads fail',
                         action="store_true")
 
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
@@ -141,7 +141,7 @@ def parse_args(args):
                         help="Filter out duplicate documents and sections",
                         action="store_true")
     group3.add_argument("--config-file",
-                        help="Override standard extraction parameters with a custom config file",
+                        help="override standard extraction parameters with a custom config file",
                         type=str)
     return parser.parse_args()
 
