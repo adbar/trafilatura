@@ -46,4 +46,15 @@
                hreflang="en"
                href="http://www.example.com/english/page.html"/>
   </url>
+  <sitemap>
+    <loc>http://www.example.com/sitemap2.xml.gz</loc>
+    <xhtml:link 
+               rel="alternate"
+               hreflang="de"
+               href="http://www.example.com/sitemap-de.xml.gz"/>
+    <xhtml:link 
+               rel="alternate"
+               hreflang="en"
+               href="http://www.example.com/sitemap-en.xml.gz"/>
+  </sitemap>
 </urlset>

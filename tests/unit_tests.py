@@ -29,7 +29,7 @@ except ImportError:
 
 import trafilatura.filters
 import trafilatura.htmlprocessing
-from trafilatura.core import baseline, bare_extraction, extract, handle_image, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
+from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
 from trafilatura.lru import LRUCache
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.metadata import METADATA_LIST
@@ -139,6 +139,16 @@ def test_exotic_tags(xmloutput=False):
     # quotes
     assert handle_quotes(etree.Element('quote')) is None
     assert handle_table(etree.Element('table')) is None
+    # p within p
+    element, second = etree.Element('p'), etree.Element('p')
+    element.text, second.text = '1st part.', '2nd part.'
+    element.append(second)
+    converted = handle_paragraphs(element, ['p'], False, ZERO_CONFIG)
+    assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
+    # delete last <lb>
+    third = etree.Element('lb')
+    element.append(third)
+    assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
 
 
 def test_lrucache():
@@ -214,6 +224,12 @@ def test_formatting():
     doc = html.fromstring('<html><body><p><br/>Here is the text.</p></body></html>')
     my_result = extract(doc, config=ZERO_CONFIG)
     assert my_result == 'Here is the text.'
+    # handle formatting tails
+    element = etree.Element("hi")
+    element.text = 'Here is the text.'
+    element.tail = 'And a tail.'
+    converted = handle_formatting(element)
+    assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
 
 
 def test_baseline():

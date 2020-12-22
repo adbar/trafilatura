@@ -19,6 +19,7 @@ def test_search():
     '''Test search for sitemaps'''
     assert sitemaps.sitemap_search('12345') == []
     assert sitemaps.sitemap_search('12345.xml.gz') == []
+    assert sitemaps.sitemap_search('https://1.net/sitemap.xml.gz') == []
     
 
 def test_extraction():
@@ -54,7 +55,8 @@ def test_extraction():
     filepath = os.path.join(RESOURCES_DIR, 'sitemap-hreflang.xml')
     with open(filepath) as f:
         teststring = f.read()
-    _, linklist = sitemaps.extract_sitemap_langlinks(teststring, url, domain, baseurl, target_lang='de')
+    sitemapsurls, linklist = sitemaps.extract_sitemap_langlinks(teststring, url, domain, baseurl, target_lang='de')
+    assert sitemapsurls == ['http://www.example.com/sitemap-de.xml.gz']
     assert len(linklist) > 0
     # GZ-compressed sitemaps
     filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml.gz')
@@ -69,6 +71,7 @@ def test_extraction():
 
 def test_robotstxt():
     '''Check if sitemaps can be found over robots.txt'''
+    assert sitemaps.find_robots_sitemaps('https://http.org/', 'https://http.org') == []
     baseurl = 'https://httpbin.org'
     assert sitemaps.find_robots_sitemaps('https://httpbin.org/', baseurl) == []
     assert sitemaps.extract_robots_sitemaps('# test', baseurl) == []

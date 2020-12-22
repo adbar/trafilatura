@@ -17,4 +17,12 @@
     <summary>Some text.</summary>
   </entry>
 
+  <entry>
+    <title>Self-referenced link</title>
+    <link href="http://example.org/1000" rel="self"/>
+    <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa60</id>
+    <updated>2003-12-13T18:30:02Z</updated>
+    <summary>Some text.</summary>
+  </entry>
+
 </feed>
