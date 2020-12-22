@@ -140,6 +140,9 @@ def parse_args(args):
     group3.add_argument("--deduplicate",
                         help="Filter out duplicate documents and sections",
                         action="store_true")
+    group3.add_argument("--config-file",
+                        help="Override standard extraction parameters with a custom config file",
+                        type=str)
     return parser.parse_args()
 
 

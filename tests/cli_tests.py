@@ -12,6 +12,7 @@ from datetime import datetime
 from unittest.mock import patch
 
 from trafilatura import cli, cli_utils, utils
+from trafilatura.settings import DEFAULT_CONFIG
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -121,7 +122,7 @@ def test_sysoutput():
     result = 'DADIDA'
     cli_utils.write_result(result, args)
     # process with no counter
-    assert cli_utils.process_result('DADIDA', args, None, None) is None
+    assert cli_utils.process_result('DADIDA', args, None, None, DEFAULT_CONFIG) is None
     # test keeping dir structure
     testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']
     with patch.object(sys, 'argv', testargs):
@@ -160,7 +161,7 @@ def test_download():
     # single/multiprocessing
     domain_dict = dict()
     domain_dict['https://httpbin.org'] = ['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505']
-    results = cli_utils.download_queue_processing(domain_dict, args, 0.25, None)
+    results = cli_utils.download_queue_processing(domain_dict, args, 0.25, None, DEFAULT_CONFIG)
     assert len(results[0]) == 5 and results[1] is None
     # test backoff algorithm
     testdict = dict()

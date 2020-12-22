@@ -25,7 +25,7 @@ from courlan import extract_domain, validate_url
 
 from .core import extract
 from .filters import content_fingerprint
-from .settings import (DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
+from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
                        MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY,
                        PROCESSING_TIMEOUT)
 from .utils import fetch_url, HOSTINFO
@@ -233,15 +233,15 @@ def generate_filelist(inputdir):
             yield path.join(root, fname)
 
 
-def file_processing(filename, args, counter=None):
+def file_processing(filename, args, counter=None, config=None):
     '''Aggregated functions to process a file in a list'''
     with open(filename, 'rb') as inputf:
         htmlstring = inputf.read()
-    result = examine(htmlstring, args, url=args.URL)
+    result = examine(htmlstring, args, url=args.URL, config=config)
     write_result(result, args, filename, counter, new_filename=None)
 
 
-def process_result(htmlstring, args, url, counter):
+def process_result(htmlstring, args, url, counter, config):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
     if args.backup_dir:
@@ -249,7 +249,7 @@ def process_result(htmlstring, args, url, counter):
     else:
         fileslug = None
     # process
-    result = examine(htmlstring, args, url=url)
+    result = examine(htmlstring, args, url=url, config=config)
     write_result(result, args, orig_filename=None, counter=None, new_filename=fileslug)
     # increment written file counter
     if counter is not None:
@@ -284,7 +284,7 @@ def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
     return url, domain_dict, backoff_dict, i
 
 
-def download_queue_processing(domain_dict, args, sleeptime, counter):
+def download_queue_processing(domain_dict, args, sleeptime, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
     i, backoff_dict, errors = 0, dict(), []
     while domain_dict:
@@ -305,7 +305,7 @@ def download_queue_processing(domain_dict, args, sleeptime, counter):
                 url = future_to_url[future]
                 # handle result
                 if future.result() is not None:
-                    counter = process_result(future.result(), args, url, counter)
+                    counter = process_result(future.result(), args, url, counter, config)
                 else:
                     LOGGER.debug('No result for URL: %s', url)
                     errors.append(url)
@@ -314,15 +314,14 @@ def download_queue_processing(domain_dict, args, sleeptime, counter):
 
 def url_processing_pipeline(args, inputdict, sleeptime):
     '''Aggregated functions to show a list and download and process an input list'''
-    # filter based on pattern
-    if args.url_filter:
-        inputdict = url_filtering(inputdict, args.url_filter)
     # print list without further processing
     if args.list:
         for hostname in inputdict:
             for urlpath in inputdict[hostname]:
                 write_result(hostname + urlpath, args)  # print('\n'.join(input_urls))
         return # sys.exit(0)
+    # parse config
+    config = use_config(filename=args.config_file)
     # initialize file counter if necessary
     counter, i = None, 0
     for hostname in inputdict:
@@ -331,13 +330,13 @@ def url_processing_pipeline(args, inputdict, sleeptime):
             counter = 0
             break
     # download strategy
-    errors, counter = download_queue_processing(inputdict, args, sleeptime, counter)
+    errors, counter = download_queue_processing(inputdict, args, sleeptime, counter, config)
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
         inputdict = dict()
         inputdict['https://web.archive.org'] = ['/web/20/' + e for e in errors]
-        archived_errors, _ = download_queue_processing(inputdict, args, sleeptime, counter)
+        archived_errors, _ = download_queue_processing(inputdict, args, sleeptime, counter, config)
         LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
 
 
@@ -345,6 +344,7 @@ def file_processing_pipeline(args):
     '''Define batches for parallel file processing and perform the extraction'''
     filebatch, filecounter = [], None
     processing_cores = args.parallel or FILE_PROCESSING_CORES
+    config = use_config(filename=args.config_file)
     # loop: iterate through file list
     for filename in generate_filelist(args.inputdir):
         filebatch.append(filename)
@@ -353,7 +353,7 @@ def file_processing_pipeline(args):
                 filecounter = 0
             # multiprocessing for the batch
             with Pool(processes=processing_cores) as pool:
-                pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)
+                pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
             filecounter += len(filebatch)
             filebatch = []
     # update counter
@@ -361,10 +361,10 @@ def file_processing_pipeline(args):
         filecounter += len(filebatch)
     # multiprocessing for the rest
     with Pool(processes=processing_cores) as pool:
-        pool.map(partial(file_processing, args=args, counter=filecounter), filebatch)
+        pool.map(partial(file_processing, args=args, counter=filecounter, config=config), filebatch)
 
 
-def examine(htmlstring, args, url=None):
+def examine(htmlstring, args, url=None, config=None):
     """Generic safeguards and triggers"""
     result = None
     # safety check
@@ -386,7 +386,8 @@ def examine(htmlstring, args, url=None):
                              include_formatting=args.formatting,
                              with_metadata=args.with_metadata,
                              output_format=args.output_format, tei_validation=args.validate,
-                             target_language=args.target_language, deduplicate=args.deduplicate)
+                             target_language=args.target_language, deduplicate=args.deduplicate,
+                             settingsfile=args.config_file, config=config)
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
