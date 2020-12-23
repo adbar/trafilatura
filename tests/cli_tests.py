@@ -188,11 +188,22 @@ def test_download():
 
 def test_cli_pipeline():
     '''test command-line processing pipeline'''
+    # straight command-line input
+    #testargs = ['', '<html><body>Text</body></html>']
+    #with patch.object(sys, 'argv', testargs):
+    #    args = cli.parse_args(testargs)
+    #f = io.StringIO()
+    #with redirect_stdout(f):
+    #    cli.process_args(args)
+    #assert len(f.getvalue()) == 0 
     # test URL listing
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli_utils.url_processing_pipeline(args, dict(), 0) is None
+    # test conversion and storage
+    inputdict = cli.convert_inputlist(None, ['ftps://www.example.org/'], None, None)
+    assert inputdict == dict()
     inputdict = cli.convert_inputlist(None, ['https://www.example.org/'], None, None)
     assert cli_utils.url_processing_pipeline(args, inputdict, 0) is None
     # test inputlist + blacklist
@@ -253,7 +264,6 @@ def test_cli_pipeline():
     args.inputdir = resources_dir
     cli_utils.file_processing_pipeline(args)
     # sitemaps
-    print('##')
     testargs = ['', '--sitemap', 'https://httpbin.org/', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
@@ -261,6 +271,13 @@ def test_cli_pipeline():
     with redirect_stdout(f):
         cli.process_args(args)
     assert len(f.getvalue()) == 0
+    # config file
+    testargs = ['', '--inputdir', '/dev/null', '--config-file', 'resources/newsettings.cfg']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
+        teststring = f.read()
+    assert cli.examine(teststring, args) is None
 
 
 def test_input_filtering():

@@ -348,13 +348,17 @@ def test_htmlprocessing():
     assert trafilatura.htmlprocessing.prune_html(etree.Element('unwanted')) is not None
     mydoc = html.fromstring('<html><body><table><a href="">Link</a></table><img src="test.jpg"/><u>Underlined</u><tt>True Type</tt><sub>Text</sub><sup>Text</sup></body></html>')
     myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, include_formatting=True, include_tables=True, include_images=True)
-    assert myconverted.xpath('.//link') and myconverted.xpath('.//image') and myconverted.xpath('.//hi[@rend="#t"]')
+    assert myconverted.xpath('.//link') and myconverted.xpath('.//image') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
+    myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, include_tables=False, include_images=True)
+    print(etree.tostring(myconverted))
+    assert myconverted.xpath('.//img') and not myconverted.xpath('.//table')
 
 
 def test_fetch():
     '''test URL fetching'''
     assert utils.fetch_url('1234') == ''
     assert utils.fetch_url('https://httpbin.org/status/404') is None
+    assert utils.decode_response(b'\x1f\x8babcdef') is not None
 
 
 if __name__ == '__main__':
