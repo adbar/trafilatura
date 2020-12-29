@@ -88,29 +88,41 @@ def discard_unwanted_comments(tree):
     return tree
 
 
+def collect_link_info(links_xpath):
+    '''Collect heuristics on link text'''
+    linklen, elemnum, shortelems, mylist = 0, 0, 0, []
+    for subelem in links_xpath:
+        subelemtext = trim(subelem.text_content())
+        subelemlen = len(subelemtext)
+        if subelemlen == 0:
+            continue
+        linklen += subelemlen
+        elemnum += 1
+        if subelemlen < 10:
+            shortelems += 1
+        mylist.append(subelemtext)
+    return linklen, elemnum, shortelems, mylist
+
+
 def link_density_test(element):
     '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath = element.xpath('.//link')
-    flag = False
     if links_xpath:
         elemlen = len(trim(element.text_content()))
         if element.getnext() is None:
-            limitlen = 200
-            threshold = 0.75
+            limitlen, threshold = 200, 0.66
         else:
-            limitlen = 100
-            threshold = 0.75
+            limitlen, threshold = 100, 0.66
         if elemlen < limitlen:
-            flag = True
-        # elif element.getnext() is None and len(links_xpath) < 5:
-        #    flag = True
-        if flag is True:
-            linklen = 0
-            for subelem in links_xpath:
-                linklen += len(trim(subelem.text_content()))
-            LOGGER.debug('list link text: %s / total: %s', linklen, elemlen)
-            if linklen > threshold * elemlen:
+            linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
+            if elemnum == 0:
                 return True
+            #if len(set(mylist))/len(mylist) <= 0.5:
+            #    return True
+            LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
+            if linklen > threshold * elemlen or shortelems/elemnum > threshold:
+                return True
+            #print(mylist)
     return False
 
 
@@ -121,13 +133,17 @@ def link_density_test_tables(element):
     links_xpath = element.xpath('.//link')
     if links_xpath:
         elemlen = len(trim(element.text_content()))
-        if elemlen > 1000:
-            linklen = 0
-            for subelem in links_xpath:
-                linklen += len(trim(subelem.text_content()))
-            # if (elemlen < 300 and linklen > 0.9*elemlen) or (elemlen > 300 and linklen > 0.5*elemlen):
+        if elemlen > 250:
+            linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
+            if elemnum == 0:
+                return True
+            #if len(set(mylist))/len(mylist) <= 0.5:
+            #    return True
             LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
-            if linklen > 0.5 * elemlen:
+            if (elemlen < 1000 and linklen > 0.8*elemlen) or (elemlen > 1000 and linklen > 0.5*elemlen):
+            #if linklen > 0.5 * elemlen:
+                return True
+            if shortelems > len(links_xpath) * 0.66:
                 return True
     return False
 
