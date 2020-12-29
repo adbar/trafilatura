@@ -88,13 +88,14 @@ def detect_encoding(bytesobject):
     # unicode-test
     if isutf8(bytesobject):
         return 'UTF-8'
-    # try one of the installed detectors
-    guess = chardet.detect(bytesobject)
-    LOGGER.debug('guessed encoding: %s', guess['encoding'])
-    return guess['encoding']
+    # try one of the installed detectors on first part
+    guess = chardet.detect(bytesobject[:1999])
+    LOGGER.debug('guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
     # fallback on full response
-    #if guess is None or guess['encoding'] is None: # or guess['confidence'] < 0.99:
-    #    guessed_encoding = chardet.detect(bytesobject)['encoding']
+    if guess is None or guess['confidence'] < 0.95:
+        guess = chardet.detect(bytesobject)
+        LOGGER.debug('second-guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
+    return guess['encoding']
 
 
 def decode_response(response):
