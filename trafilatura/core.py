@@ -319,6 +319,9 @@ def extract_content(tree, include_tables=False, deduplicate=False, config=None):
         for elem in subtree.iter('div'):
             if link_density_test(elem) is True:
                 elem.getparent().remove(elem)
+        for elem in subtree.iter('p'):
+            if link_density_test(elem) is True:
+                elem.getparent().remove(elem)
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?
         if include_tables is True:

@@ -109,7 +109,9 @@ def link_density_test(element):
     links_xpath = element.xpath('.//link')
     if links_xpath:
         elemlen = len(trim(element.text_content()))
-        if element.getnext() is None:
+        if element.tag == 'p':
+            limitlen, threshold = 25, 1
+        elif element.getnext() is None:
             limitlen, threshold = 200, 0.66
         else:
             limitlen, threshold = 100, 0.66
@@ -120,7 +122,7 @@ def link_density_test(element):
             #if len(set(mylist))/len(mylist) <= 0.5:
             #    return True
             LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
-            if linklen > threshold * elemlen or shortelems/elemnum > threshold:
+            if linklen >= threshold*elemlen or shortelems/elemnum >= threshold:
                 return True
             #print(mylist)
     return False
