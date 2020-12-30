@@ -297,6 +297,31 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     return new_element
 
 
+def delete_by_link_density(subtree, tagname, backtracking=True):
+    '''Determine the link density of elements with respect to their length,
+       and remove the elements identified as boilerplate.'''
+    myelems, deletions = dict(), list()
+    for elem in subtree.iter(tagname):
+        result, templist = link_density_test(elem)
+        if result is True:
+            deletions.append(elem)
+        elif backtracking is True:
+            text = trim(' '.join(templist))
+            if len(templist) >= 2 and text in myelems:
+                if len(text) > 0: # or not re.search(r'[?!.]', myelems[text].text_content()):
+                    #print(tagname, len(templist), text)
+                    deletions.append(elem)
+                    #print('backtrack', trim(myelems[text].text_content()))
+                    deletions.append(myelems[text])
+            myelems[text] = elem
+    for elem in deletions:
+        try:
+            elem.getparent().remove(elem)
+        except AttributeError:
+            pass
+    return subtree
+
+
 def extract_content(tree, include_tables=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
@@ -313,15 +338,9 @@ def extract_content(tree, include_tables=False, deduplicate=False, config=None):
         # prune
         subtree = discard_unwanted(subtree)
         # remove elements by link density
-        for elem in subtree.iter('list'):
-            if link_density_test(elem) is True:
-                elem.getparent().remove(elem)
-        for elem in subtree.iter('div'):
-            if link_density_test(elem) is True:
-                elem.getparent().remove(elem)
-        for elem in subtree.iter('p'):
-            if link_density_test(elem) is True:
-                elem.getparent().remove(elem)
+        subtree = delete_by_link_density(subtree, 'p', backtracking=False)
+        subtree = delete_by_link_density(subtree, 'list', backtracking=False)
+        subtree = delete_by_link_density(subtree, 'div', backtracking=False)
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?
         if include_tables is True:
