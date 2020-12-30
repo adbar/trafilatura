@@ -127,7 +127,7 @@ def handle_other_elements(element, potential_tags, dedupbool, config):
             # insert
             return processed_element
     else:
-        LOGGER.debug('processing other element: %s %s', element.tag, element.text)
+        LOGGER.warning('unexpected element seen: %s %s', element.tag, element.text)
     return None
 
 
@@ -146,13 +146,13 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     processed_element = etree.Element(element.tag)
     for child in element.iter():
         if child.tag not in potential_tags:
-            LOGGER.debug('unexpected elem in paragraph: %s %s %s', child.tag, child.text, child.tail)
+            LOGGER.warning('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
         processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
         if processed_child is not None:
             # needing attention!
             if child.tag == 'p':
-                LOGGER.debug('extra elem within p: %s %s %s', child.tag, child.text, child.tail)
+                LOGGER.debug('extra p within p: %s %s %s', child.tag, child.text, child.tail)
                 if processed_element.text:
                     processed_element.text += ' ' + trim(child.text)
                 else:
@@ -369,29 +369,24 @@ def extract_content(tree, include_tables=False, deduplicate=False, config=None):
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                             if e is not None])
         # remove trailing titles
-        try:
-            while result_body[-1].tag == 'head' and result_body[-1].tail is None:
-                # print(lastelem.tag, lastelem.text, lastelem.tail)
-                result_body[-1].getparent().remove(result_body[-1])
-        except IndexError:
-            continue
+        while len(result_body) > 0 and result_body[-1].tag in ('fw', 'head'): # and result_body[-1].tail is None:
+            result_body[-1].getparent().remove(result_body[-1])
         # exit the loop if the result has children
-        if len(result_body) > 0:
-            sure_thing = True
+        if len(result_body) > 1: # try to change this to 0 or 2
             LOGGER.debug(expr)
             break
-    # try parsing wild <p> elements if nothing found or text too short
     temp_text = trim(' '.join(result_body.itertext()))
-    len_text = len(temp_text)
-    if len(result_body) == 0 or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    # try parsing wild <p> elements if nothing found or text too short
+    if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         result_body = recover_wild_paragraphs(tree, result_body, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
-        len_text = len(temp_text)
+    else:
+        sure_thing = True
     # filter output
     etree.strip_elements(result_body, 'done')
     etree.strip_tags(result_body, 'div')
     # return
-    return result_body, temp_text, len_text, sure_thing
+    return result_body, temp_text, len(temp_text), sure_thing
 
 
 def process_comments_node(elem, potential_tags, dedupbool, config):
@@ -483,7 +478,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             # post-processing: remove unwanted sections
             body, text, len_text = sanitize_tree(body, include_formatting)
     # try with justext
-    elif len_text <config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         LOGGER.error('not enough text %s', url)
         body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
