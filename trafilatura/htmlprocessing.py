@@ -108,12 +108,15 @@ def link_density_test(element):
     '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath, mylist = element.xpath('.//link'), []
     if links_xpath:
-        elemlen = len(trim(element.text_content()))
+        elemtext = trim(element.text_content())
+        elemlen = len(elemtext)
         if element.tag == 'p':
-            limitlen, threshold = 25, 1
+            limitlen, threshold = 25, 0.9
         else:
             if element.getnext() is None:
                 limitlen, threshold = 200, 0.66
+            #elif re.search(r'[.?!]', elemtext):
+            #    limitlen, threshold = 150, 0.66
             else:
                 limitlen, threshold = 100, 0.66
         if elemlen < limitlen:
@@ -121,7 +124,7 @@ def link_density_test(element):
             if elemnum == 0:
                 return True, mylist
             #if len(set(mylist))/len(mylist) <= 0.5:
-            #    return True
+            #    return True, mylist
             LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
             if linklen >= threshold*elemlen or shortelems/elemnum >= threshold:
                 return True, mylist

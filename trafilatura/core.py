@@ -11,6 +11,7 @@ Module bundling all functions needed to extract the text in a webpage.
 import logging
 import re # import regex as re
 
+from collections import OrderedDict
 from copy import deepcopy
 
 from lxml import etree, html
@@ -297,7 +298,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     return new_element
 
 
-def delete_by_link_density(subtree, tagname, backtracking=True):
+def delete_by_link_density(subtree, tagname, backtracking=False):
     '''Determine the link density of elements with respect to their length,
        and remove the elements identified as boilerplate.'''
     myelems, deletions = dict(), list()
@@ -305,20 +306,25 @@ def delete_by_link_density(subtree, tagname, backtracking=True):
         result, templist = link_density_test(elem)
         if result is True:
             deletions.append(elem)
-        elif backtracking is True:
-            text = trim(' '.join(templist))
-            if len(templist) >= 2 and text in myelems:
-                if len(text) > 0: # or not re.search(r'[?!.]', myelems[text].text_content()):
-                    #print(tagname, len(templist), text)
-                    deletions.append(elem)
-                    #print('backtrack', trim(myelems[text].text_content()))
-                    deletions.append(myelems[text])
-            myelems[text] = elem
-    for elem in deletions:
-        try:
-            elem.getparent().remove(elem)
-        except AttributeError:
-            pass
+        elif backtracking is True and len(templist) > 0:
+            text = trim(elem.text_content())
+            if text not in myelems:
+                myelems[text] = [elem]
+            else:
+                myelems[text].append(elem)
+    # summing up
+    if backtracking is True:
+        for item in myelems:
+            if 0 < len(item) < 100 and len(myelems[item]) >= 3:
+                deletions.extend(myelems[item])
+                #print('backtrack:', item)
+            #elif 20 < len(item) < 100 and len(myelems[item]) >= 3:
+            #    deletions.extend(myelems[item])
+            #    print('backtrack 2:', item)
+            #else: # and not re.search(r'[?!.]', text):
+                #print(elem.tag, templist)
+    for elem in list(OrderedDict.fromkeys(deletions)):
+        elem.getparent().remove(elem)
     return subtree
 
 
@@ -338,9 +344,9 @@ def extract_content(tree, include_tables=False, deduplicate=False, config=None):
         # prune
         subtree = discard_unwanted(subtree)
         # remove elements by link density
-        subtree = delete_by_link_density(subtree, 'p', backtracking=False)
+        subtree = delete_by_link_density(subtree, 'div', backtracking=True)
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
-        subtree = delete_by_link_density(subtree, 'div', backtracking=False)
+        subtree = delete_by_link_density(subtree, 'p', backtracking=False)
         # define iteration strategy
         potential_tags = set(TAG_CATALOG)  # + 'span'?
         if include_tables is True:
