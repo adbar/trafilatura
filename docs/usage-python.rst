@@ -88,7 +88,7 @@ The function ``bare_extraction`` can be used to bypass output conversion, it ret
 
 .. code-block:: python
 
-    >>> from trafilatura import bare_extraction
+    >>> from trafilatura.core import bare_extraction
     >>> bare_extraction(downloaded)
 
 For more see the `core functions <corefunctions.html>`_ page.
