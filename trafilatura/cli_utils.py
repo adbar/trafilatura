@@ -252,7 +252,7 @@ def process_result(htmlstring, args, url, counter, config):
     result = examine(htmlstring, args, url=url, config=config)
     write_result(result, args, orig_filename=None, counter=None, new_filename=fileslug)
     # increment written file counter
-    if counter is not None:
+    if counter is not None and result is not None:
         counter += 1
     return counter
 
@@ -308,7 +308,8 @@ def download_queue_processing(domain_dict, args, sleeptime, counter, config):
                     counter = process_result(future.result(), args, url, counter, config)
                 else:
                     LOGGER.debug('No result for URL: %s', url)
-                    errors.append(url)
+                    if args.archived is True:
+                        errors.append(url)
     return errors, counter
 
 

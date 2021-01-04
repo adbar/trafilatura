@@ -168,6 +168,7 @@ def test_download():
     # single/multiprocessing
     domain_dict = dict()
     domain_dict['https://httpbin.org'] = ['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505']
+    args.archived = True
     results = cli_utils.download_queue_processing(domain_dict, args, 0.25, None, DEFAULT_CONFIG)
     assert len(results[0]) == 5 and results[1] is None
     # test backoff algorithm
