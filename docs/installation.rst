@@ -56,10 +56,11 @@ For local or user installations where trafilatura cannot be used from the comman
 Additional functionality
 ------------------------
 
-A few additional libraries can be installed for extended functionality and faster processing: language detection and faster processing of downloads (``cchardet``, may not work on all systems).
+A few additional libraries can be installed for extended functionality and faster processing: language detection and faster encoding detection: the ``cchardet`` package may not work on all systems but it is highly recommended.
 
 .. code-block:: bash
 
+    $ pip install cchardet # speed-up only
     $ pip install trafilatura[all] # all additional functionality
 
 For extended date extraction you can use ``pip install htmldate[all]``.

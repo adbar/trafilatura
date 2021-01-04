@@ -1,6 +1,15 @@
 ## History / Changelog
 
 
+### 0.7.0
+- customizable configuration file to parametrize extraction and downloads
+- better handling of feeds and sitemaps
+- additional CLI options: crytographic hash for file name, use Internet Archive as backup
+- more precise extraction
+- faster downloads: `requests` replaced with bare `urllib3` and custom decoding
+- consolidation: bug fixes and improvements, many thanks to the issues reporters!
+
+
 ### 0.6.1
 - added `bare_extraction` function returning Python variables
 - improved link discovery in feeds and sitemaps

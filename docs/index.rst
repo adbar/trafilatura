@@ -78,7 +78,7 @@ For reproducible results see the `evaluation page <evaluation.html>`_ and the `e
 External evaluations:
 ^^^^^^^^^^^^^^^^^^^^^
 
-- *Trafilatura* is the most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
 - Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French).
 
 

@@ -10,7 +10,7 @@ Get your system up and running
 
 The following instructions use the `command-line interface <https://en.wikipedia.org/wiki/Command-line_interface>`_ (CLI):
 
-- For the very most basic introduction, please refer to this excellent `step-by-step introduction to the CLI <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_
+- For a primer please refer to this excellent `step-by-step introduction to the CLI <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_
 - For general information see `this section <usage-cli.html#introduction>`_ of the documentation.
 
 
