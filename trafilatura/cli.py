@@ -138,7 +138,7 @@ def parse_args(args):
                         help="select a target language (ISO 639-1 codes)",
                         type=str)
     group3.add_argument("--deduplicate",
-                        help="Filter out duplicate documents and sections",
+                        help="filter out duplicate documents and sections",
                         action="store_true")
     group3.add_argument("--config-file",
                         help="override standard extraction parameters with a custom config file",

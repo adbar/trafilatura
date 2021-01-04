@@ -86,8 +86,8 @@ setup(
     install_requires=[
         'chardet == 3.0.4; python_version < "3.6"',
         'chardet >= 3.0.4; python_version >= "3.6"',
-        'courlan >= 0.2.3',
-        'htmldate >= 0.7.2',
+        'courlan >= 0.3.0',
+        'htmldate >= 0.7.3',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
         'lxml >= 4.6.2; python_version > "3.4"',
