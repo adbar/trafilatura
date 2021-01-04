@@ -102,12 +102,18 @@ def decode_response(response):
     """Read the urllib3 object corresponding to the server response,
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
+    # urllib3 response object / bytes switch
     if isinstance(response, bytes):
         resp_content = response
-    elif is_gz_file(response.data):
-        resp_content = gzip.decompress(response.data)
     else:
         resp_content = response.data
+    # decode GZipped data
+    if is_gz_file(resp_content):
+        try:
+            resp_content = gzip.decompress(resp_content)
+        except (EOFError, OSError):
+            logging.warning('invalid GZ file')
+    # detect encoding
     guessed_encoding = detect_encoding(resp_content)
     LOGGER.debug('response encoding: %s', guessed_encoding)
     # process

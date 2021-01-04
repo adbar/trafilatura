@@ -7,7 +7,7 @@ import os
 import sys
 
 from trafilatura import sitemaps
-from trafilatura.utils import fix_relative_urls
+from trafilatura.utils import decode_response, fix_relative_urls
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -62,11 +62,15 @@ def test_extraction():
     filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml.gz')
     with open(filepath, 'rb') as f:
         teststring = f.read()
+    teststring = decode_response(teststring)
     contents = sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', teststring)
     sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl)
     assert len(sitemapurls) == 0 and len(linklist) == 84
     # check contents
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is not None
+    # TXT links
+    assert sitemaps.process_sitemap('https://test.org/sitemap', 'test.org', 'https://test.org/', 'Tralala\nhttps://test.org/1\nhttps://test.org/2') == ([], ['https://test.org/1', 'https://test.org/2'])
+
 
 
 def test_robotstxt():

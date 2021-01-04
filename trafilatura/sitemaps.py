@@ -5,7 +5,6 @@ Deriving link info from sitemaps.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
-import gzip
 import logging
 import re
 # import urllib.robotparser # Python >= 3.8
@@ -61,40 +60,48 @@ def sitemap_search(url, target_lang=None):
 
 def check_sitemap(url, contents):
     '''Check if the sitemap corresponds to an expected format,
-       i.e. XML or GZipped XML.'''
-    if contents is None:
-        logging.warning('not a sitemap: %s', url) # respheaders
-        return None
-    if is_gz_file(contents):
-        try:
-            contents = str(gzip.decompress(contents), encoding='utf-8', errors='replace')
-        except (EOFError, OSError):
-            logging.warning('not a valid XML GZ sitemap: %s', url)
+       i.e. TXT or XML.'''
+    if contents is not None:
+        # strip query and fragments
+        url = re.sub(r'\?.*$|#.*$', '', url)
+        if re.search(r'\.xml\b', url) and \
+            (not isinstance(contents, str) or not contents.startswith('<?xml')):
+            logging.warning('not a valid XML sitemap: %s', url)
             return None
-    # strip query and fragments
-    url = re.sub(r'\?.*$|#.*$', '', url)
-    if re.search(r'\.xml\b', url) and \
-        (not isinstance(contents, str) or not contents.startswith('<?xml')):
-        logging.warning('not a valid XML sitemap: %s', url)
-        return None
     return contents
 
 
-def process_sitemap(url, domain, baseurl, target_lang=None):
-    'Download a sitemap and extract the links it contains.'
+def download_and_process_sitemap(url, domain, baseurl, target_lang=None):
+    'Helper function chaining download and processing of sitemaps.'
     # fetch and pre-process
     LOGGER.info('fetching sitemap: %s', url)
     pagecontent = fetch_url(url)
+    return process_sitemap(url, domain, baseurl, pagecontent, target_lang)
+
+
+def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
+    'Download a sitemap and extract the links it contains.'
     contents = check_sitemap(url, pagecontent)
     # safeguard
     if contents is None:
+        logging.warning('not a sitemap: %s', url) # respheaders
         return [], []
-    # process
+    # try to extract links from TXT file
+    if not contents.startswith('<?xml'):
+        sitemapurls, linklist = [], []
+        for result in re.findall(r'https?://[^\s\r\n]+', contents):
+            link, state = handle_link(result, url, domain, baseurl, target_lang)
+            if state == 'sitemap':
+                sitemapurls.append(link)
+            elif state == 'link':
+                linklist.append(link)
+        return sitemapurls, linklist
+    # process XML sitemap
     if target_lang is not None:
         sitemapurls, linklist = extract_sitemap_langlinks(contents, url, domain, baseurl, target_lang)
         if len(sitemapurls) != 0 or len(linklist) != 0:
             return sitemapurls, linklist
-    return extract_sitemap_links(contents, url, domain, baseurl, target_lang)
+    return extract_sitemap_links(contents, url, domain, baseurl)
 
 
 def handle_link(link, sitemapurl, domainname, baseurl, target_lang=None):
@@ -136,12 +143,12 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
     return sitemapurls, linklist
 
 
-def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_lang=None):
+def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl):
     'Extract sitemap links and web page links from a sitemap file.'
     sitemapurls, linklist = [], []
     # extract
     for link in LINK_REGEX.findall(pagecontent):
-        link, state = handle_link(link, sitemapurl, domainname, baseurl, target_lang)
+        link, state = handle_link(link, sitemapurl, domainname, baseurl)
         if state == 'sitemap':
             sitemapurls.append(link)
         elif state == 'link':
