@@ -35,30 +35,32 @@ HTML_CLEANER.remove_unknown_tags = False
 HTML_CLEANER.safe_attrs_only = False
 HTML_CLEANER.scripts = False
 HTML_CLEANER.style = False
-HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
-HTML_CLEANER.kill_tags = MANUALLY_CLEANED
+#HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
+#HTML_CLEANER.kill_tags = MANUALLY_CLEANED
 
 
 def tree_cleaning(tree, include_tables, include_images=False):
     '''Prune the tree by discarding unwanted elements'''
+    # determine cleaning strategy
+    cleaner, cleaning_list, stripping_list = \
+        HTML_CLEANER, MANUALLY_CLEANED, MANUALLY_STRIPPED
     if include_tables is False:
-        MANUALLY_CLEANED.append('table')
+        cleaning_list.append('table')
     if include_images is True:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
-        for element in ['figure', 'picture', 'source']:
-            MANUALLY_CLEANED.remove(element)
-        MANUALLY_STRIPPED.remove('img')
-    for expression in MANUALLY_CLEANED:
+        cleaning_list = [e for e in cleaning_list if e
+                         not in ('figure', 'picture', 'source')]
+        stripping_list.remove('img')
+    # delete targeted elements
+    for expression in cleaning_list:
         for element in tree.getiterator(expression):
             try:
                 element.drop_tree()
             except AttributeError:
                 element.getparent().remove(element)
+    cleaner.kill_tags, cleaner.remove_tags = cleaning_list, stripping_list
     # save space and processing time
-    tree = prune_html(tree)
-    tree = HTML_CLEANER.clean_html(tree)
-    # etree.strip_tags(tree, MANUALLY_STRIPPED)
-    return tree
+    return cleaner.clean_html(prune_html(tree))
 
 
 def prune_html(tree):
@@ -140,7 +142,7 @@ def link_density_test_tables(element):
     if links_xpath:
         elemlen = len(trim(element.text_content()))
         if elemlen > 250:
-            linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
+            linklen, elemnum, shortelems, _ = collect_link_info(links_xpath)
             if elemnum == 0:
                 return True
             #if len(set(mylist))/len(mylist) <= 0.5:
