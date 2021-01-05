@@ -1,5 +1,5 @@
-Usage on the command-line
-=========================
+On the command-line
+===================
 
 
 Introduction
@@ -7,16 +7,19 @@ Introduction
 
 Trafilatura includes a `command-line interface <https://en.wikipedia.org/wiki/Command-line_interface>`_ and can be conveniently used without writing code.
 
-For the very first steps please refer to this nice `step-by-step introduction <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_ and for general instructions see:
+For the very first steps please refer to this multilingual, step-by-step `Introduction to the command-line interface <https://tutorial.djangogirls.org/en/intro_to_command_line/>`_ and this `section of the Introduction to Cultural Analytics & Python <https://melaniewalsh.github.io/Intro-Cultural-Analytics/Command-Line/The-Command-Line.html>`_.
+
+For instructions related to specific platforms see:
 
 - `Comment Prompt <https://www.lifewire.com/how-to-open-command-prompt-2618089>`_ (tutorial for Windows systems)
+- `Introduction to the Windows Command Line with PowerShell <https://programminghistorian.org/en/lessons/intro-to-powershell>`_
 - `How to use the Terminal command line in macOS <https://macpaw.com/how-to/use-terminal-on-mac>`_
 - or `An introduction to the Linux Terminal <https://www.digitalocean.com/community/tutorials/an-introduction-to-the-linux-terminal>`_
 
 As well as these compendia:
 
-- `Commands toolbox <http://cb.vu/unixtoolbox.xhtml>`_
-- `Basic Bash Command Line Tips You Should Know <https://www.freecodecamp.org/news/basic-linux-commands-bash-tips-you-should-know/>`_
+- `Introduction to the Bash Command Line <https://programminghistorian.org/en/lessons/intro-to-bash>`_ (The Programming Historian)
+- `Basic Bash Command Line Tips You Should Know <https://www.freecodecamp.org/news/basic-linux-commands-bash-tips-you-should-know/>`_ (freeCodeCamp)
 
 
 Quickstart

@@ -39,7 +39,7 @@ extras = {
 setup(
     name='trafilatura',
     version=get_version('trafilatura'),
-    description='Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
+    description='Web scraping library and command-line tool for text discovery and retrieval. Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
     long_description=get_long_description(),
     classifiers=[
         # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers

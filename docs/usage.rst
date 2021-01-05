@@ -8,4 +8,5 @@ Usage
 
    usage-cli
    usage-python
+   usage-r
 

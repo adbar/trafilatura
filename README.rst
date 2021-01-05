@@ -1,5 +1,5 @@
-trafilatura: manage URLs and scrape main text and metadata
-==========================================================
+trafilatura: Web scraping tool for text discovery and retrieval
+===============================================================
 
 .. image:: https://img.shields.io/pypi/v/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
@@ -97,15 +97,13 @@ trafilatura 0.6.0 (+ fallbacks) 0.933      **0.877**  **0.907** **0.904** 8.4x
 Usage and documentation
 -----------------------
 
+For further information please refer to the `documentation <https://trafilatura.readthedocs.io>`_:
+
 - `Installation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_
-- Usage
-   - `On the command-line <https://trafilatura.readthedocs.io/en/latest/usage-cli.html>`_
-   - `With Python <https://trafilatura.readthedocs.io/en/latest/usage-python.html>`_
-   - `Core Python functions <https://trafilatura.readthedocs.io/en/latest/corefunctions.html>`_
+- Usage: `On the command-line <https://trafilatura.readthedocs.io/en/latest/usage-cli.html>`_, `With Python <https://trafilatura.readthedocs.io/en/latest/usage-python.html>`_, `With R <https://trafilatura.readthedocs.io/en/latest/usage-r.html>`_
+- `Core Python functions <https://trafilatura.readthedocs.io/en/latest/corefunctions.html>`_
 - `Tutorials <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
 - `Evaluation <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_
-
-For further information please refer to the `documentation <https://trafilatura.readthedocs.io>`_.
 
 
 License
@@ -124,6 +122,7 @@ Roadmap
 -  [-] Configuration and extraction parameters
 -  [ ] Interaction with web archives (notably WARC format)
 -  [ ] Integration of natural language processing tools
+-  [ ] Guided-user interface
 
 
 Contributing
@@ -151,13 +150,10 @@ You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or `Git
 Going further
 -------------
 
-**Online documentation:** `trafilatura.readthedocs.io <https://trafilatura.readthedocs.io/>`_
+**Online documentation:** `trafilatura.readthedocs.io <https://trafilatura.readthedocs.io/>`_.
 
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
--  In order to gather web documents, it can be useful to download the portions of a website programmatically, here is `how to use sitemaps to crawl websites <http://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_
+Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
 
--  `Content von Webseiten laden mit Trafilatura <https://www.youtube.com/watch?v=9RPrVE0hHgI>`_ (Tutorial video in German by Simon Meier-Vieracker)
-
--  `Download von Web-Daten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_wwwdownload.html>`_ & `Daten aufbereiten und verwalten <https://www.bubenhofer.com/korpuslinguistik/kurs/index.php?id=eigenes_aufbereitenXML.html>`_ (Tutorials in German by Noah Bubenhofer)
 
