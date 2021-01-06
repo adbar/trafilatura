@@ -48,6 +48,7 @@ SLEEP_TIME = 2
 USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
 USER_AGENTS = [USER_AGENT]
 USER_AGENTS_NUM = len(USER_AGENTS)
+MAX_SITEMAPS_SEEN = 10000
 
 
 # filters
