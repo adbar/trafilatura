@@ -10,7 +10,8 @@ import re
 # import urllib.robotparser # Python >= 3.8
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
-from courlan import check_url, extract_domain
+from courlan import clean_url, extract_domain
+from courlan.filters import lang_filter
 
 from .utils import fetch_url, fix_relative_urls, is_gz_file, HOSTINFO
 
@@ -113,14 +114,18 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang=None):
         return link, state
     # fix and check
     link = fix_relative_urls(baseurl, link)
-    if re.search(r'\.xml$|\.xml[.?#]', link):
-        state = 'sitemap'
-    else:
-        checked = check_url(link, language=target_lang)
-        if checked is not None:
-            link, state = checked[0], 'link'
-            if checked[1] != domainname:
-                LOGGER.warning('Diverging domain names: %s %s', domainname, checked[1])
+    # clean and normalize
+    link = clean_url(link, target_lang)
+    if link is not None:
+        if lang_filter(link, target_lang) is True:
+            newdomain = extract_domain(link)
+            if newdomain != domainname:
+                LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
+            else:
+                if re.search(r'\.xml$|\.xml[.?#]', link):
+                    state = 'sitemap'
+                else:
+                    state = 'link'
     return link, state
 
 

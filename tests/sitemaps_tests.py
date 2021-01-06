@@ -44,6 +44,7 @@ def test_extraction():
     # hreflang
     assert sitemaps.extract_sitemap_langlinks(teststring, url, domain, baseurl) == ([], [])
     # nested sitemaps
+    url, domain, baseurl = 'http://www.example.com/sitemap.xml', 'example.com', 'http://www.example.com'
     filepath = os.path.join(RESOURCES_DIR, 'sitemap2.xml')
     with open(filepath) as f:
         teststring = f.read()
@@ -59,6 +60,7 @@ def test_extraction():
     assert sitemapsurls == ['http://www.example.com/sitemap-de.xml.gz']
     assert len(linklist) > 0
     # GZ-compressed sitemaps
+    url, domain, baseurl = 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'https://www.sitemaps.org'
     filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml.gz')
     with open(filepath, 'rb') as f:
         teststring = f.read()
@@ -70,7 +72,6 @@ def test_extraction():
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is not None
     # TXT links
     assert sitemaps.process_sitemap('https://test.org/sitemap', 'test.org', 'https://test.org/', 'Tralala\nhttps://test.org/1\nhttps://test.org/2') == ([], ['https://test.org/1', 'https://test.org/2'])
-
 
 
 def test_robotstxt():
