@@ -41,9 +41,109 @@ except AttributeError:
 def parse_args(args):
     """Define parser for command-line arguments"""
     parser = argparse.ArgumentParser(description='Command-line interface for Trafilatura')
-    group1 = parser.add_argument_group('I/O', 'Input and output options affecting processing')
-    group2 = parser.add_argument_group('Format', 'Selection of the output format')
-    group3 = parser.add_argument_group('Extraction', 'Customization of text and metadata extraction')
+    group1 = parser.add_argument_group('Input', 'URLs, files or directories to process')
+    group1_ex = group1.add_mutually_exclusive_group()
+    group2 = parser.add_argument_group('Output', 'Determines if and how files will be written')
+    group3 = parser.add_argument_group('Navigation', 'Link discovery and web crawling')
+    group3_ex = group3.add_mutually_exclusive_group()
+    group4 = parser.add_argument_group('Extraction', 'Customization of text and metadata processing')
+    group5 = parser.add_argument_group('Format', 'Selection of the output format')
+    group5_ex = group5.add_mutually_exclusive_group()
+
+    group1_ex.add_argument("-i", "--inputfile",
+                        help="name of input file for batch processing",
+                        type=str)
+    group1_ex.add_argument("--inputdir",
+                        help="read files from a specified directory (relative path)",
+                        type=str)
+    group1_ex.add_argument("-u", "--URL",
+                        help="custom URL download")
+
+    group1.add_argument('--parallel',
+                        help="specify a number of cores/threads for downloads and/or processing",
+                        type=int)
+    group1.add_argument('-b', '--blacklist',
+                        help="file containing unwanted URLs to discard during processing",
+                        type=str)
+
+    group2.add_argument("--list",
+                        help="display a list of URLs without downloading them",
+                        action="store_true")
+    group2.add_argument("-o", "--outputdir",
+                        help="write results in a specified directory (relative path)",
+                        type=str)
+    group2.add_argument('--backup-dir',
+                        help="preserve a copy of downloaded files in a backup directory",
+                        type=str)
+    group2.add_argument('--keep-dirs',
+                        help="keep input directory structure and file names",
+                        action="store_true")
+    group2.add_argument('--hash-as-name',
+                        help="use hash value as output file name instead of random default",
+                        action="store_true")
+
+    group3_ex.add_argument("--feed",
+                        help="look for feeds and/or pass a feed URL as input",
+                        nargs='?', const=True, default=False)
+    group3_ex.add_argument("--sitemap",
+                        help="look for sitemaps for the given website and/or enter a sitemap URL",
+                        nargs='?', const=True, default=False)
+    group3.add_argument('--archived',
+                        help='try to fetch URLs from the Internet Archive if downloads fail',
+                        action="store_true")
+    group3.add_argument('--url-filter',
+                        help="only process/output URLs containing these patterns (space-separated strings)",
+                        nargs='+', type=str)
+
+    group4.add_argument("-f", "--fast",
+                        help="fast (without fallback detection)",
+                        action="store_true")
+    group4.add_argument("--formatting",
+                        help="include text formatting (bold, italic, etc.)",
+                        action="store_true")
+    group4.add_argument("--nocomments",
+                        help="don't output any comments",
+                        action="store_false")  # false = no comments
+    group4.add_argument("--notables",
+                        help="don't output any table elements",
+                        action="store_false")  # false = no tables
+    group4.add_argument("--with-metadata",
+                        help="only output those documents with necessary metadata: title, URL and date (CSV and XML formats)",
+                        action="store_true")
+    group4.add_argument("--target-language",
+                        help="select a target language (ISO 639-1 codes)",
+                        type=str)
+    group4.add_argument("--deduplicate",
+                        help="filter out duplicate documents and sections",
+                        action="store_true")
+    group4.add_argument("--config-file",
+                        help="override standard extraction parameters with a custom config file",
+                        type=str)
+    group4.add_argument('--timeout',
+                        help="use timeout for file conversion to prevent bugs",
+                        action="store_true")
+
+    # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
+    group5_ex.add_argument('-out', '--output-format',
+                        help="determine output format",
+                        choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
+                        default='txt')
+    group5_ex.add_argument("--csv",
+                        help="CSV output",
+                        action="store_true")
+    group5_ex.add_argument("--json",
+                        help="JSON output",
+                        action="store_true")
+    group5_ex.add_argument("--xml",
+                        help="XML output",
+                        action="store_true")
+    group5_ex.add_argument("--xmltei",
+                        help="XML TEI output",
+                        action="store_true")
+    group5.add_argument("--validate",
+                        help="validate TEI output",
+                        action="store_true")
+
     parser.add_argument("-v", "--verbose",
                         help="increase output verbosity",
                         action="store_true")
@@ -51,98 +151,6 @@ def parse_args(args):
                         help="maximum output verbosity",
                         action="store_true")
 
-    group1.add_argument("-i", "--inputfile",
-                        help="name of input file for batch processing",
-                        type=str)
-    group1.add_argument("--inputdir",
-                        help="read files from a specified directory (relative path)",
-                        type=str)
-    group1.add_argument("-o", "--outputdir",
-                        help="write results in a specified directory (relative path)",
-                        type=str)
-    group1.add_argument("-u", "--URL",
-                        help="custom URL download")
-    group1.add_argument("--feed",
-                        help="look for feeds and/or pass a feed URL as input",
-                        nargs='?', const=True, default=False)
-    group1.add_argument("--sitemap",
-                        help="look for sitemaps for the given website and/or enter a sitemap URL",
-                        nargs='?', const=True, default=False)
-    group1.add_argument("--list",
-                        help="return a list of URLs without downloading them",
-                        action="store_true")
-    group1.add_argument('-b', '--blacklist',
-                        help="""name of file containing already processed or
-                                unwanted URLs to discard during batch processing""",
-                        type=str)
-    group1.add_argument('--url-filter',
-                        help="only process/output URLs containing these patterns (space-separated strings)",
-                        nargs='+', type=str)
-    group1.add_argument('--backup-dir',
-                        help="preserve a copy of downloaded files in a backup directory",
-                        type=str)
-    group1.add_argument('--timeout',
-                        help="use timeout for file conversion to prevent bugs",
-                        action="store_true")
-    group1.add_argument('--parallel',
-                        help="specify a number of cores/threads for parallel downloads and/or processing",
-                        type=int)
-    group1.add_argument('--keep-dirs',
-                        help="keep input directory structure and file names",
-                        action="store_true")
-    group1.add_argument('--hash-as-name',
-                        help="""use file content hash as output file name (for deduplication)
-                        instead of random default""",
-                        action="store_true")
-    group1.add_argument('--archived',
-                        help='try to fetch URLs from the Internet Archive if downloads fail',
-                        action="store_true")
-
-    # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
-    group2.add_argument('-out', '--output-format',
-                        help="determine output format",
-                        choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
-                        default='txt')
-    group2.add_argument("--csv",
-                        help="CSV output",
-                        action="store_true")
-    group2.add_argument("--json",
-                        help="JSON output",
-                        action="store_true")
-    group2.add_argument("--xml",
-                        help="XML output",
-                        action="store_true")
-    group2.add_argument("--xmltei",
-                        help="XML TEI output",
-                        action="store_true")
-    group2.add_argument("--validate",
-                        help="validate TEI output",
-                        action="store_true")
-
-    group3.add_argument("-f", "--fast",
-                        help="fast (without fallback detection)",
-                        action="store_true")
-    group3.add_argument("--formatting",
-                        help="include text formatting (bold, italic, etc.)",
-                        action="store_true")
-    group3.add_argument("--nocomments",
-                        help="don't output any comments",
-                        action="store_false")  # false = no comments
-    group3.add_argument("--notables",
-                        help="don't output any table elements",
-                        action="store_false")  # false = no tables
-    group3.add_argument("--with-metadata",
-                        help="only output those documents with necessary metadata: title, URL and date (CSV and XML formats)",
-                        action="store_true")
-    group3.add_argument("--target-language",
-                        help="select a target language (ISO 639-1 codes)",
-                        type=str)
-    group3.add_argument("--deduplicate",
-                        help="filter out duplicate documents and sections",
-                        action="store_true")
-    group3.add_argument("--config-file",
-                        help="override standard extraction parameters with a custom config file",
-                        type=str)
     return parser.parse_args()
 
 
