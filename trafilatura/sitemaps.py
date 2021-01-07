@@ -11,7 +11,7 @@ import re
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
 from courlan import clean_url, extract_domain
-from courlan.filters import lang_filter
+from courlan.filters import lang_filter # next courlan version: usable directly
 
 from .settings import MAX_SITEMAPS_SEEN
 from .utils import fetch_url, fix_relative_urls, is_gz_file, HOSTINFO
@@ -121,7 +121,7 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang=None):
     # fix and check
     link = fix_relative_urls(baseurl, link)
     # clean and normalize
-    link = clean_url(link, target_lang)
+    link = clean_url(link) # next courlan version: clean_url(link, target_lang)
     if link is not None:
         if lang_filter(link, target_lang) is True:
             newdomain = extract_domain(link)
