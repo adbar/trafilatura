@@ -42,8 +42,8 @@ HTML_CLEANER.style = False
 def tree_cleaning(tree, include_tables, include_images=False):
     '''Prune the tree by discarding unwanted elements'''
     # determine cleaning strategy
-    cleaner, cleaning_list, stripping_list = \
-        HTML_CLEANER, MANUALLY_CLEANED, MANUALLY_STRIPPED
+    cleaning_list, stripping_list = \
+        MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     if include_tables is False:
         cleaning_list.append('table')
     if include_images is True:
@@ -55,12 +55,12 @@ def tree_cleaning(tree, include_tables, include_images=False):
     for expression in cleaning_list:
         for element in tree.getiterator(expression):
             try:
-                element.drop_tree()
+                element.drop_tree() # faster when applicable
             except AttributeError:
                 element.getparent().remove(element)
-    cleaner.kill_tags, cleaner.remove_tags = cleaning_list, stripping_list
+    HTML_CLEANER.kill_tags, HTML_CLEANER.remove_tags = cleaning_list, stripping_list
     # save space and processing time
-    return cleaner.clean_html(prune_html(tree))
+    return HTML_CLEANER.clean_html(prune_html(tree))
 
 
 def prune_html(tree):
