@@ -31,6 +31,7 @@ def test_extraction():
     assert fix_relative_urls('https://example.org', 'test.html') == 'https://example.org/test.html'
     # link handling
     assert sitemaps.handle_link(url, url, domain, baseurl) == (url, '0')
+    assert sitemaps.handle_link('https://mydomain.wordpress.com/1', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org') == ('https://mydomain.wordpress.com/1', 'link')
     # safety belts
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is None
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml', 'ABC') is None

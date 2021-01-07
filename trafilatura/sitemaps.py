@@ -22,6 +22,7 @@ LOGGER = logging.getLogger(__name__)
 LINK_REGEX = re.compile(r'(?<=<loc>).+?(?=</loc>)')
 XHTML_REGEX = re.compile(r'(?<=<xhtml:link).+?(?=/>)', re.DOTALL)
 HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
+WHITELISTED_PLATFORMS = re.compile(r'(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.')
 
 
 def sitemap_search(url, target_lang=None):
@@ -125,7 +126,8 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang=None):
     if link is not None:
         if lang_filter(link, target_lang) is True:
             newdomain = extract_domain(link)
-            if newdomain != domainname:
+            # don't take links from another domain and make an exception for main platforms
+            if newdomain != domainname and not WHITELISTED_PLATFORMS.search(newdomain):
                 LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
             else:
                 if re.search(r'\.xml$|\.xml[.?#]', link):
