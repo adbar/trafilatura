@@ -57,11 +57,12 @@ def parse_args(args):
                         help="read files from a specified directory (relative path)",
                         type=str)
     group1_ex.add_argument("-u", "--URL",
-                        help="custom URL download")
+                        help="custom URL download",
+                        type=str)
 
     group1.add_argument('--parallel',
                         help="specify a number of cores/threads for downloads and/or processing",
-                        type=int)
+                        type=int, default=DOWNLOAD_THREADS)
     group1.add_argument('-b', '--blacklist',
                         help="file containing unwanted URLs to discard during processing",
                         type=str)
@@ -81,6 +82,10 @@ def parse_args(args):
     group2.add_argument('--hash-as-name',
                         help="use hash value as output file name instead of random default",
                         action="store_true")
+
+    group2.add_argument('--verbose', '-v', action='count', default=0,
+                        help="increase output verbosity (-v or -vv)",
+                        )
 
     group3_ex.add_argument("--feed",
                         help="look for feeds and/or pass a feed URL as input",
@@ -144,14 +149,8 @@ def parse_args(args):
                         help="validate TEI output",
                         action="store_true")
 
-    parser.add_argument("-v", "--verbose",
-                        help="increase output verbosity",
-                        action="store_true")
-    parser.add_argument("-vv", "--very-verbose",
-                        help="maximum output verbosity",
-                        action="store_true")
-
-    return parser.parse_args()
+    # wrap in mapping to prevent invalid input
+    return map_args(parser.parse_args())
 
 
 def map_args(args):
@@ -170,15 +169,15 @@ def map_args(args):
 def main():
     """ Run as a command-line utility. """
     args = parse_args(sys.argv[1:])
-    args = map_args(args)
     process_args(args)
 
 
 def process_args(args):
     """Perform the actual processing according to the arguments"""
-    if args.verbose:
+    # verbosity
+    if args.verbose == 1:
         logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
-    if args.very_verbose:
+    elif args.verbose >= 2:
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     if args.blacklist:
         args.blacklist = load_blacklist(args.blacklist)
@@ -198,8 +197,7 @@ def process_args(args):
             input_urls = [args.sitemap]
         # link discovery and storage
         inputdict = None
-        download_threads = args.parallel or DOWNLOAD_THREADS
-        with ThreadPoolExecutor(max_workers=download_threads) as executor:
+        with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             if args.feed:
                 future_to_url = {executor.submit(find_feed_urls, url): url for url in input_urls}
             elif args.sitemap:

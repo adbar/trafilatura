@@ -21,11 +21,11 @@ TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 
 def test_parser():
     '''test argument parsing for the command-line interface'''
-    testargs = ['', '-fv', '--xmltei', '--notables', '-u', 'https://www.example.org']
+    testargs = ['', '-fvv', '--xmltei', '--notables', '-u', 'https://www.example.org']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert args.fast is True
-    assert args.verbose is True
+    assert args.verbose == 2
     assert args.notables is False
     assert args.xmltei is True
     assert args.URL == 'https://www.example.org'
@@ -35,7 +35,7 @@ def test_parser():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert args.fast is False
-    assert args.verbose is False
+    assert args.verbose == 0
     assert args.output_format == 'csv'
     # test args mapping
     testargs = ['', '--xml']
@@ -51,7 +51,7 @@ def test_parser():
     assert args.output_format == 'json'
     # process_args
     args.inputdir = '/dev/null'
-    args.verbose = True
+    args.verbose == 1
     args.blacklist = os.path.join(TEST_DIR, 'resources/list-discard.txt')
     cli.process_args(args)
     assert len(args.blacklist) == 2
@@ -118,6 +118,7 @@ def test_sysoutput():
     # test json output
     args2 = args
     args2.xml, args2.json = False, True
+    args2 = cli.map_args(args2)
     filepath2, destdir2 = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
     assert filepath2.endswith('AAZZ.json')
     # test directory counter

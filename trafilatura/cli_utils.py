@@ -173,11 +173,11 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
     '''Pick a directory based on selected options and a file name based on output type'''
     # determine extension
     extension = '.txt'
-    if args.xml or args.xmltei or args.output_format == 'xml':
+    if args.output_format in ('xml', 'xmltei'):
         extension = '.xml'
-    elif args.csv or args.output_format == 'csv':
+    elif args.output_format == 'csv':
         extension = '.csv'
-    elif args.json or args.output_format == 'json':
+    elif args.output_format == 'json':
         extension = '.json'
     # use cryptographic hash on file contents to define name
     if args.hash_as_name is True:
