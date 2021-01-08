@@ -92,7 +92,7 @@ def detect_encoding(bytesobject):
     guess = chardet.detect(bytesobject[:1999])
     LOGGER.debug('guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
     # fallback on full response
-    if guess is None or guess['confidence'] < 0.95:
+    if guess is None or (guess['confidence'] is not None and guess['confidence'] < 0.95):
         guess = chardet.detect(bytesobject)
         LOGGER.debug('second-guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
     return guess['encoding']
@@ -122,7 +122,9 @@ def decode_response(response):
         try:
             htmltext = resp_content.decode(guessed_encoding)
         except UnicodeDecodeError:
-            LOGGER.warning('encoding error: %s', guessed_encoding)
+            LOGGER.warning('wrong encoding detected: %s', guessed_encoding)
+    else:
+        LOGGER.error('no encoding detected: %s', guessed_encoding)
     # force decoding # ascii instead?
     if htmltext is None:
         htmltext = str(resp_content, encoding='utf-8', errors='replace')
