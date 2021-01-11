@@ -27,6 +27,7 @@ from .xml import TEI_VALID_TAGS
 LOGGER = logging.getLogger(__name__)
 
 SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
+SANITIZED_XPATH_WITH_IMAGES = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
 
 
 def jt_stoplist_init():
@@ -102,10 +103,14 @@ def justext_rescue(tree, url, target_language, postbody, len_text, text):
     return postbody, text, len_text, result_bool
 
 
-def sanitize_tree(tree, include_formatting=False):
+def sanitize_tree(tree, include_formatting=False, include_images=False):
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
+    if include_images is False:
+        sanitized_xpath = SANITIZED_XPATH
+    else:
+        sanitized_xpath = SANITIZED_XPATH_WITH_IMAGES
     # delete unnecessary elements
-    for elem in tree.xpath(SANITIZED_XPATH):
+    for elem in tree.xpath(sanitized_xpath):
         elem.getparent().remove(elem)
     etree.strip_tags(tree, MANUALLY_STRIPPED + ['a', 'span'])
     tree = prune_html(tree)

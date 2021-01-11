@@ -175,7 +175,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
     # images
     if include_images is True:
         for elem in tree.iter('img'):
-            elem.tag = 'image'
+            elem.tag = 'graphic'
     # delete links for faster processing
     etree.strip_tags(tree, 'a')
     # head tags + delete attributes

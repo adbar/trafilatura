@@ -316,6 +316,11 @@ def test_images():
     assert utils.is_image_file('test.jpg') is True
     assert utils.is_image_file('test.txt') is False
     assert handle_textelem(etree.Element('image'), [], False, DEFAULT_CONFIG) is None
+    resources_dir = os.path.join(TEST_DIR, 'resources')
+    with open(os.path.join(resources_dir, 'http_sample.html')) as f:
+        teststring = f.read()
+    assert 'test.jpg Example image' not in extract(teststring)
+    assert 'test.jpg Example image' in extract(teststring, include_images=True, no_fallback=True)
 
 
 def test_tei():
@@ -348,10 +353,9 @@ def test_htmlprocessing():
     assert trafilatura.htmlprocessing.prune_html(etree.Element('unwanted')) is not None
     mydoc = html.fromstring('<html><body><table><a href="">Link</a></table><img src="test.jpg"/><u>Underlined</u><tt>True Type</tt><sub>Text</sub><sup>Text</sup></body></html>')
     myconverted = trafilatura.htmlprocessing.convert_tags(mydoc, include_formatting=True, include_tables=True, include_images=True)
-    assert myconverted.xpath('.//link') and myconverted.xpath('.//image') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
+    assert myconverted.xpath('.//link') and myconverted.xpath('.//graphic') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
     myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, include_tables=False, include_images=True)
-    print(etree.tostring(myconverted))
-    assert myconverted.xpath('.//img') and not myconverted.xpath('.//table')
+    assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
 
 
 def test_fetch():

@@ -22,8 +22,8 @@ from .utils import sanitize
 LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema.pickle')
-TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'head', 'hi', 'item', \
-                  'lb', 'list', 'p', 'quote', 'row', 'table'}
+TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
+                  'item', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
@@ -205,8 +205,14 @@ def xmltotxt(xmloutput):
     for element in xmloutput.iter():
         # process text
         if element.text is None and element.tail is None:
+            if element.tag == 'graphic':
+               returnlist.extend(['\n', element.get('src')])
+               if element.get('alt') is not None:
+                   returnlist.extend([' ', element.get('alt')])
+               if element.get('title') is not None:
+                   returnlist.extend([' ', element.get('title')])
             # newlines for textless elements
-            if element.tag in ('row', 'table'):
+            if element.tag in ('image', 'row', 'table'):
                 returnlist.append('\n')
             continue
         textelement = replace_element_text(element)

@@ -290,7 +290,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
         new_element = handle_formatting(element)
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element)
-    elif element.tag == 'image':
+    elif element.tag == 'graphic':
         new_element = handle_image(element)
     else:
         # other elements (div, ??, ??)
@@ -328,7 +328,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     return subtree
 
 
-def extract_content(tree, include_tables=False, deduplicate=False, config=None):
+def extract_content(tree, include_tables=False, include_images=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -354,6 +354,8 @@ def extract_content(tree, include_tables=False, deduplicate=False, config=None):
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
                     elem.getparent().remove(elem)
+        if include_images is True:
+            potential_tags.add('graphic')
         # skip if empty tree
         if len(subtree) == 0:
             continue
@@ -436,7 +438,7 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, include_formatting, config):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, include_formatting, include_images, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass
@@ -476,7 +478,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             body, text, len_text = body2, text2, len_text2
         else:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body, include_formatting)
+            body, text, len_text = sanitize_tree(body, include_formatting, include_images)
     # try with justext
     elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         LOGGER.error('not enough text %s', url)
@@ -484,10 +486,10 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.debug('justext length %s', len_text)
         if jt_result is False:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body, include_formatting)
+            body, text, len_text = sanitize_tree(body, include_formatting, include_images)
     else:
         if algo_flag is True:
-            body, text, len_text = sanitize_tree(body, include_formatting)
+            body, text, len_text = sanitize_tree(body, include_formatting, include_images)
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, temp_text2, len_text2 = baseline(backup_tree)
@@ -552,7 +554,7 @@ def determine_returnstring(docmeta, output_format, tei_validation):
     if 'xml' in output_format:
         # last cleaning
         for element in docmeta['body'].iter():
-            if element.tag != 'image' and len(element) == 0 and not element.text and not element.tail:
+            if element.tag != 'graphic' and len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
                 if parent is not None:
                     parent.remove(element)
@@ -677,12 +679,12 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             commentsbody, temp_comments, len_comments = None, '', 0
 
         # extract content
-        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, deduplicate, config)
+        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, include_images, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
             #if sure_thing is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting, config)
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting, include_images, config)
         else:
             # rescue: try to use original/dirty tree
             if sure_thing is False and len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
