@@ -25,8 +25,8 @@ from courlan import extract_domain, validate_url
 
 from .core import extract
 from .filters import content_fingerprint
-from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
-                       MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY)
+from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
+                       FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
 from .utils import fetch_url, HOSTINFO
 
 
@@ -283,7 +283,7 @@ def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
     return url, domain_dict, backoff_dict, i
 
 
-def download_queue_processing(domain_dict, args, sleeptime, counter, config):
+def download_queue_processing(domain_dict, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
     i, backoff_dict, errors = 0, dict(), []
     while domain_dict:
@@ -295,7 +295,9 @@ def download_queue_processing(domain_dict, args, sleeptime, counter, config):
         # populate buffer
         bufferlist = []
         while len(bufferlist) < download_threads:
-            url, domain_dict, backoff_dict, i = draw_backoff_url(domain_dict, backoff_dict, sleeptime, i)
+            url, domain_dict, backoff_dict, i = draw_backoff_url(
+                domain_dict, backoff_dict, config.getfloat('DEFAULT', 'SLEEP_TIME'), i
+                )
             bufferlist.append(url)
         # start several threads
         with ThreadPoolExecutor(max_workers=download_threads) as executor:
@@ -312,7 +314,7 @@ def download_queue_processing(domain_dict, args, sleeptime, counter, config):
     return errors, counter
 
 
-def url_processing_pipeline(args, inputdict, sleeptime):
+def url_processing_pipeline(args, inputdict):
     '''Aggregated functions to show a list and download and process an input list'''
     # print list without further processing
     if args.list:
@@ -330,14 +332,14 @@ def url_processing_pipeline(args, inputdict, sleeptime):
             counter = 0
             break
     # download strategy
-    errors, counter = download_queue_processing(inputdict, args, sleeptime, counter, config)
+    errors, counter = download_queue_processing(inputdict, args, counter, config)
     LOGGER.debug('%s URLs could not be found', len(errors))
     # option to retry
     if args.archived is True:
         inputdict = dict()
         inputdict['https://web.archive.org'] = ['/web/20/' + e for e in errors]
         if len(inputdict['https://web.archive.org']) > 0:
-            archived_errors, _ = download_queue_processing(inputdict, args, sleeptime, counter, config)
+            archived_errors, _ = download_queue_processing(inputdict, args, counter, config)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
 
 
@@ -373,9 +375,9 @@ def examine(htmlstring, args, url=None, config=None):
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')
-    elif len(htmlstring) > MAX_FILE_SIZE:
+    elif len(htmlstring) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
         sys.stderr.write('ERROR: file too large\n')
-    elif len(htmlstring) < MIN_FILE_SIZE:
+    elif len(htmlstring) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
         sys.stderr.write('ERROR: file too small\n')
     # proceed
     else:

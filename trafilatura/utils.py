@@ -25,7 +25,7 @@ import urllib3
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
-from .settings import MAX_FILE_SIZE, MIN_FILE_SIZE, TIMEOUT, USER_AGENTS, USER_AGENTS_NUM
+from .settings import DEFAULT_CONFIG, TIMEOUT, USER_AGENTS, USER_AGENTS_NUM
 
 
 LOGGER = logging.getLogger(__name__)
@@ -143,7 +143,7 @@ def determine_headers():
     return headers
 
 
-def fetch_url(url, decode=True):
+def fetch_url(url, decode=True, config=DEFAULT_CONFIG):
     """Fetches page using urllib3 and decodes the response.
 
     Args:
@@ -175,10 +175,10 @@ def fetch_url(url, decode=True):
         # safety checks
         if response.status != 200:
             LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-        elif response.data is None or len(response.data) < MIN_FILE_SIZE:
+        elif response.data is None or len(response.data) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
             LOGGER.error('too small/incorrect for URL %s', url)
             return ''  # raise error instead?
-        elif len(response.data) > MAX_FILE_SIZE:
+        elif len(response.data) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
             LOGGER.error('too large: length %s for URL %s', len(response.data), url)
             return ''  # raise error instead?
         else:

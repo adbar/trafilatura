@@ -8,11 +8,8 @@ Examining feeds and extracting links for further processing.
 import logging
 import re
 
-from time import sleep
-
 from courlan import check_url, clean_url, extract_domain, validate_url
 
-from .settings import SLEEP_TIME
 from .utils import fetch_url, fix_relative_urls, HOSTINFO
 
 LOGGER = logging.getLogger(__name__)
@@ -118,7 +115,6 @@ def find_feed_urls(url, target_lang=None):
     # assume it's a web page
     feed_links = []
     for feed in determine_feed(downloaded, baseurl, url):
-        sleep(SLEEP_TIME)
         feed_string = fetch_url(feed)
         feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
     feed_links = sorted(list(set(feed_links)))

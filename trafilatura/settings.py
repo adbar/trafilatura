@@ -31,8 +31,6 @@ DEFAULT_CONFIG = use_config()
 
 
 # Safety checks
-MAX_FILE_SIZE = 20000000
-MIN_FILE_SIZE = 10
 DOWNLOAD_THREADS = min(cpu_count(), 16)  # 16 processes at most
 TIMEOUT = 30
 LRU_SIZE = 4096
@@ -43,7 +41,6 @@ FILENAME_LEN = 8
 FILE_PROCESSING_CORES = min(cpu_count(), 16)  # 16 processes at most
 
 # Network
-SLEEP_TIME = 2
 USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
 USER_AGENTS = [USER_AGENT]
 USER_AGENTS_NUM = len(USER_AGENTS)

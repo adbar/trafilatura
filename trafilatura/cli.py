@@ -16,7 +16,7 @@ from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .feeds import find_feed_urls
-from .settings import DOWNLOAD_THREADS, SLEEP_TIME
+from .settings import DOWNLOAD_THREADS
 from .sitemaps import sitemap_search
 
 
@@ -182,7 +182,7 @@ def process_args(args):
     # read url list from input file
     if args.inputfile and args.feed is False and args.sitemap is False:
         inputdict = load_input_dict(args.inputfile, args.blacklist)
-        url_processing_pipeline(args, inputdict, SLEEP_TIME)
+        url_processing_pipeline(args, inputdict)
     # fetch urls from a feed or a sitemap
     elif args.feed or args.sitemap:
         # load input URLs
@@ -203,7 +203,7 @@ def process_args(args):
             for future in as_completed(future_to_url):
                 if future.result() is not None:
                     inputdict = convert_inputlist(args.blacklist, future.result(), args.url_filter, inputdict)
-                    url_processing_pipeline(args, inputdict, SLEEP_TIME)
+                    url_processing_pipeline(args, inputdict)
                     inputdict = None
     # read files from an input directory
     elif args.inputdir:
@@ -213,7 +213,7 @@ def process_args(args):
         # process input URL
         if args.URL:
             inputdict = convert_inputlist(args, [args.URL], None)
-            url_processing_pipeline(args, inputdict, 0)  # process single url
+            url_processing_pipeline(args, inputdict)  # process single url
         # process input on STDIN
         else:
             # file type and unicode check
