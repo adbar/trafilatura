@@ -69,8 +69,8 @@ The output directory can be created on demand, but it must be writable.
 
 .. code-block:: bash
 
-    $ trafilatura -i list.txt -o txtfiles	# output as raw text
-    $ trafilatura --xml -i list.txt -o xmlfiles	# output in XML format
+    $ trafilatura -i list.txt -o txtfiles/		# output as raw text
+    $ trafilatura --xml -i list.txt -o xmlfiles/	# output in XML format
 
 
 Backup of HTML sources can be useful for archival and further processing:
@@ -109,10 +109,11 @@ Sitemaps
 URL inspection prior to download and processing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+
 .. code-block:: bash
 
-    $ trafilatura --sitemap "https://www.sitemaps.org/" --list > mylist.txt
-    $ trafilatura -i mylist.txt -o myfiles/
+    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "https://www.sitemaps.org/de"
+    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "protocol"
 
 For more information see `tutorial on link filtering <tutorial0.html#link-filtering>`_.
 
@@ -130,71 +131,64 @@ For all usage instructions see ``trafilatura -h``:
 
 .. code-block:: bash
 
-    usage:  trafilatura [-h] [-v] [-vv] [-i INPUTFILE] [--inputdir INPUTDIR]
-                   [-o OUTPUTDIR] [-u URL] [--feed [FEED]]
-                   [--sitemap [SITEMAP]] [--list] [-b BLACKLIST]
-                   [--url-filter URL_FILTER [URL_FILTER ...]]
-                   [--backup-dir BACKUP_DIR] [--timeout] [--parallel PARALLEL]
-                   [--keep-dirs] [--hash-as-name] [--archived]
-                   [-out {txt,csv,json,xml,xmltei}] [--csv] [--json] [--xml]
-                   [--xmltei] [--validate] [-f] [--formatting] [--nocomments]
-                   [--notables] [--with-metadata]
-                   [--target-language TARGET_LANGUAGE] [--deduplicate]
-                   [--config-file CONFIG_FILE]
+    trafilatura [-h] [-i INPUTFILE | --inputdir INPUTDIR | -u URL]
+                   [--parallel PARALLEL] [-b BLACKLIST] [--list]
+                   [-o OUTPUTDIR] [--backup-dir BACKUP_DIR] [--keep-dirs]
+                   [--hash-as-name] [--feed [FEED] | --sitemap [SITEMAP]]
+                   [--archived] [--url-filter URL_FILTER [URL_FILTER ...]]
+                   [-f] [--formatting] [--nocomments] [--notables]
+                   [--with-metadata] [--target-language TARGET_LANGUAGE]
+                   [--deduplicate] [--config-file CONFIG_FILE]
+                   [-out {txt,csv,json,xml,xmltei} | --csv | --json | --xml | --xmltei]
+                   [--validate-tei] [-v]
 
 
 Command-line interface for Trafilatura
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v, --verbose         increase output verbosity
-  -vv, --very-verbose   maximum output verbosity
+  -v, --verbose         increase logging verbosity (-v or -vv)
 
-I/O:
-  Input and output options affecting processing
+Input:
+  URLs, files or directories to process
 
-  -i, --inputfile INPUTFILE
+  -i INPUTFILE, --inputfile INPUTFILE
                         name of input file for batch processing
   --inputdir INPUTDIR   read files from a specified directory (relative path)
-  -o, --outputdir OUTPUTDIR
+  -u URL, --URL URL     custom URL download
+  --parallel PARALLEL   specify a number of cores/threads for downloads and/or
+                        processing
+  -b BLACKLIST, --blacklist BLACKLIST
+                        file containing unwanted URLs to discard during
+                        processing
+
+Output:
+  Determines if and how files will be written
+
+  --list                display a list of URLs without downloading them
+  -o OUTPUTDIR, --outputdir OUTPUTDIR
                         write results in a specified directory (relative path)
-  -u, --URL URL         custom URL download
-  --feed FEED           look for feeds and/or pass a feed URL as input
-  --sitemap SITEMAP     look for sitemaps for the given website and/or enter a
-                        sitemap URL
-  --list                return a list of URLs without downloading them
-  -b, --blacklist BLACKLIST
-                        name of file containing already processed or unwanted
-                        URLs to discard during batch processing
-  --url-filter URL_FILTER
-                        only process/output URLs containing these patterns
-                        (space-separated strings)
   --backup-dir BACKUP_DIR
                         preserve a copy of downloaded files in a backup
                         directory
-  --timeout             use timeout for file conversion to prevent bugs
-  --parallel PARALLEL   specify a number of cores/threads for parallel
-                        downloads and/or processing
   --keep-dirs           keep input directory structure and file names
-  --hash-as-name        use file content hash as output file name (for
-                        deduplication) instead of random default
+  --hash-as-name        use hash value as output file name instead of random
+                        default
+
+Navigation:
+  Link discovery and web crawling
+
+  --feed FEED           look for feeds and/or pass a feed URL as input
+  --sitemap SITEMAP     look for sitemaps for the given website and/or enter a
+                        sitemap URL
   --archived            try to fetch URLs from the Internet Archive if
                         downloads fail
-
-Format:
-  Selection of the output format
-
-  -out, --output-format {txt,csv,json,xml,xmltei}
-                        determine output format
-
-  --csv                 CSV output
-  --json                JSON output
-  --xml                 XML output
-  --xmltei              XML TEI output
-  --validate            validate TEI output
+  --url-filter URL_FILTER
+                        only process/output URLs containing these patterns
+                        (space-separated strings)
 
 Extraction:
-  Customization of text and metadata extraction
+  Customization of text and metadata processing
 
   -f, --fast            fast (without fallback detection)
   --formatting          include text formatting (bold, italic, etc.)
@@ -206,5 +200,17 @@ Extraction:
                         select a target language (ISO 639-1 codes)
   --deduplicate         filter out duplicate documents and sections
   --config-file CONFIG_FILE
-                        Override standard extraction parameters with a custom
+                        override standard extraction parameters with a custom
                         config file
+
+Format:
+  Selection of the output format
+
+  -out, --output-format {txt,csv,json,xml,xmltei}
+                        determine output format
+  --csv                 CSV output
+  --json                JSON output
+  --xml                 XML output
+  --xmltei              XML TEI output
+  --validate-tei        validate XML TEI output
+

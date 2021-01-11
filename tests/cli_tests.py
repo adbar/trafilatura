@@ -12,7 +12,7 @@ from datetime import datetime
 from unittest.mock import patch
 
 from trafilatura import cli, cli_utils, utils
-from trafilatura.settings import DEFAULT_CONFIG
+from trafilatura.settings import DEFAULT_CONFIG, use_config
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -243,13 +243,6 @@ def test_cli_pipeline():
     with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
-    # test timeout
-    testargs = ['', '-out', 'xml', '--timeout']
-    with patch.object(sys, 'argv', testargs):
-        args = cli.parse_args(testargs)
-    with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
-        teststring = f.read()
-    assert cli.examine(teststring, args) is not None
     # test JSON output
     testargs = ['', '-out', 'json']
     with patch.object(sys, 'argv', testargs):
@@ -274,11 +267,13 @@ def test_cli_pipeline():
         cli.process_args(args)
     assert len(f.getvalue()) == 0
     # config file
-    testargs = ['', '--inputdir', '/dev/null', '--config-file', 'resources/newsettings.cfg']
+    testargs = ['', '--inputdir', '/dev/null', '--config-file', 'newsettings.cfg']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     with open(os.path.join(resources_dir, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
+    args.config_file = os.path.join(resources_dir, args.config_file)
+    config = use_config(filename=args.config_file)
     assert cli.examine(teststring, args) is None
 
 

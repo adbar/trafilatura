@@ -26,8 +26,7 @@ from courlan import extract_domain, validate_url
 from .core import extract
 from .filters import content_fingerprint
 from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN, FILE_PROCESSING_CORES,
-                       MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY,
-                       PROCESSING_TIMEOUT)
+                       MIN_FILE_SIZE, MAX_FILE_SIZE, MAX_FILES_PER_DIRECTORY)
 from .utils import fetch_url, HOSTINFO
 
 
@@ -369,6 +368,8 @@ def file_processing_pipeline(args):
 def examine(htmlstring, args, url=None, config=None):
     """Generic safeguards and triggers"""
     result = None
+    if config is None:
+        config = use_config(filename=args.config_file)
     # safety check
     if htmlstring is None:
         sys.stderr.write('ERROR: empty document\n')
@@ -379,9 +380,8 @@ def examine(htmlstring, args, url=None, config=None):
     # proceed
     else:
         # put timeout signal in place
-        if args.timeout is True:
-            signal.signal(signal.SIGALRM, handler)
-            signal.alarm(PROCESSING_TIMEOUT)
+        signal.signal(signal.SIGALRM, handler)
+        signal.alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
         try:
             result = extract(htmlstring, url=url, no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,
@@ -389,11 +389,10 @@ def examine(htmlstring, args, url=None, config=None):
                              with_metadata=args.with_metadata,
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
-                             settingsfile=args.config_file, config=config)
+                             config=config) # settingsfile=args.config_file,
         # ugly but efficient
         except Exception as err:
             sys.stderr.write('ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
         # deactivate
-        if args.timeout is True:
-            signal.alarm(0)
+        signal.alarm(0)
     return result

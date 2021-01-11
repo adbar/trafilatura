@@ -83,10 +83,6 @@ def parse_args(args):
                         help="use hash value as output file name instead of random default",
                         action="store_true")
 
-    group2.add_argument('--verbose', '-v', action='count', default=0,
-                        help="increase output verbosity (-v or -vv)",
-                        )
-
     group3_ex.add_argument("--feed",
                         help="look for feeds and/or pass a feed URL as input",
                         nargs='?', const=True, default=False)
@@ -124,9 +120,6 @@ def parse_args(args):
     group4.add_argument("--config-file",
                         help="override standard extraction parameters with a custom config file",
                         type=str)
-    group4.add_argument('--timeout',
-                        help="use timeout for file conversion to prevent bugs",
-                        action="store_true")
 
     # https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_mutually_exclusive_group
     group5_ex.add_argument('-out', '--output-format',
@@ -148,6 +141,10 @@ def parse_args(args):
     group5.add_argument("--validate-tei",
                         help="validate XML TEI output",
                         action="store_true")
+
+    parser.add_argument('-v', '--verbose', action='count', default=0,
+                        help="increase logging verbosity (-v or -vv)",
+                        )
 
     # wrap in mapping to prevent invalid input
     return map_args(parser.parse_args())
