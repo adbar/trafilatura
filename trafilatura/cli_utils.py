@@ -387,7 +387,7 @@ def examine(htmlstring, args, url=None, config=None):
                              include_comments=args.nocomments, include_tables=args.notables,
                              include_formatting=args.formatting,
                              with_metadata=args.with_metadata,
-                             output_format=args.output_format, tei_validation=args.validate,
+                             output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              settingsfile=args.config_file, config=config)
         # ugly but efficient

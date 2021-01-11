@@ -145,8 +145,8 @@ def parse_args(args):
     group5_ex.add_argument("--xmltei",
                         help="XML TEI output",
                         action="store_true")
-    group5.add_argument("--validate",
-                        help="validate TEI output",
+    group5.add_argument("--validate-tei",
+                        help="validate XML TEI output",
                         action="store_true")
 
     # wrap in mapping to prevent invalid input
