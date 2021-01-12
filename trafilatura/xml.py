@@ -159,9 +159,23 @@ def validate_tei(tei):  # , filename=""
     return result
 
 
-def replace_element_text(element):
+def replace_element_text(element, include_formatting=False):
     '''Determine element text based on text and tail'''
     full_text = ''
+    # handle formatting
+    if include_formatting is True and element.text is not None:
+        if element.tag == 'hi':
+            if element.get('rend') == '#b':
+                element.text = ''.join(['**', element.text, '**'])
+            elif element.get('rend') == '#i':
+                element.text = ''.join(['*', element.text, '*'])
+            elif element.get('rend') == '#u':
+                element.text = ''.join(['__', element.text, '__'])
+            elif element.get('rend') == '#t':
+                element.text = ''.join(['`', element.text, '`'])
+        elif element.tag == 'del':
+            element.text = ''.join(['~~', element.text, '~~'])
+    # handle text
     if element.text is not None and element.tail is not None:
         full_text = ' '.join([element.text, element.tail])
     elif element.text is not None and element.tail is None:
@@ -171,12 +185,12 @@ def replace_element_text(element):
     return full_text
 
 
-def merge_with_parent(element):
-    '''Merge element with its parent'''
+def merge_with_parent(element, include_formatting=False):
+    '''Merge element with its parent and convert formatting to markdown.'''
     parent = element.getparent()
     if parent is None:
         return
-    full_text = replace_element_text(element)
+    full_text = replace_element_text(element, include_formatting)
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
@@ -193,13 +207,13 @@ def merge_with_parent(element):
     parent.remove(element)
 
 
-def xmltotxt(xmloutput):
-    '''Convert to plain text format'''
+def xmltotxt(xmloutput, include_formatting=False):
+    '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
     # etree.strip_tags(xmloutput, 'div', 'main', 'span')
     # remove and insert into the previous tag
     for element in xmloutput.xpath('//hi|//link'):
-        merge_with_parent(element)
+        merge_with_parent(element, include_formatting)
         continue
     # iterate and convert to list of strings
     for element in xmloutput.iter():
@@ -212,7 +226,7 @@ def xmltotxt(xmloutput):
                if element.get('title') is not None:
                    returnlist.extend([' ', element.get('title')])
             # newlines for textless elements
-            if element.tag in ('image', 'row', 'table'):
+            if element.tag in ('graphic', 'row', 'table'):
                 returnlist.append('\n')
             continue
         textelement = replace_element_text(element)

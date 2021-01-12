@@ -548,7 +548,7 @@ def baseline(filecontent):
     return postbody, temp_text, len(temp_text)
 
 
-def determine_returnstring(docmeta, output_format, tei_validation):
+def determine_returnstring(docmeta, output_format, include_formatting, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if 'xml' in output_format:
@@ -568,18 +568,18 @@ def determine_returnstring(docmeta, output_format, tei_validation):
     # CSV, JSON and TXT output
     else:
         if output_format == 'csv':
-            posttext = xmltotxt(docmeta['body'])
+            posttext = xmltotxt(docmeta['body'], include_formatting)
             if docmeta['commentsbody'] is not None:
-                commentstext = xmltotxt(docmeta['commentsbody'])
+                commentstext = xmltotxt(docmeta['commentsbody'], include_formatting)
             else:
                 commentstext = ''
             returnstring = txttocsv(posttext, commentstext, docmeta)
         elif output_format == 'json':
             returnstring = build_json_output(docmeta)
         else:  # txt
-            returnstring = xmltotxt(docmeta['body'])
+            returnstring = xmltotxt(docmeta['body'], include_formatting)
             if docmeta['commentsbody'] is not None:
-                returnstring += '\n' + xmltotxt(docmeta['commentsbody'])
+                returnstring += '\n' + xmltotxt(docmeta['commentsbody'], include_formatting)
                 returnstring = returnstring.strip()
     return returnstring
 
@@ -616,7 +616,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account.
         include_formatting: Keep structural elements related to formatting
-            (only valuable if output_format is set to XML).
+            (present in XML format, converted to markdown otherwise).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         with_metadata: Only keep documents featuring all essential metadata
@@ -725,9 +725,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
     # special case: python variables
     if output_format == 'python':
-        docmeta['text'] = xmltotxt(postbody)
+        docmeta['text'] = xmltotxt(postbody, include_formatting)
         if include_comments is True:
-            docmeta['comments'] = xmltotxt(commentsbody)
+            docmeta['comments'] = xmltotxt(commentsbody, include_formatting)
     else:
         docmeta['raw-text'], docmeta['body'], docmeta['commentsbody'] = temp_text, postbody, commentsbody
     return docmeta
@@ -797,7 +797,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         # calculate fingerprint
         docmeta['fingerprint'] = content_fingerprint(docmeta['raw-text'])
     # return
-    return determine_returnstring(docmeta, output_format, tei_validation)
+    return determine_returnstring(docmeta, output_format, include_formatting, tei_validation)
 
 
 # for legacy and backwards compatibility
