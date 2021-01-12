@@ -102,6 +102,9 @@ def parse_args(args):
     group4.add_argument("--formatting",
                         help="include text formatting (bold, italic, etc.)",
                         action="store_true")
+    group4.add_argument("--links",
+                        help="include links along with their targets",
+                        action="store_true")
     group4.add_argument("--nocomments",
                         help="don't output any comments",
                         action="store_false")  # false = no comments

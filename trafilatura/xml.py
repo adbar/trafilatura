@@ -23,8 +23,8 @@ LOGGER = logging.getLogger(__name__)
 # validation
 TEI_SCHEMA = str(Path(__file__).parent / 'data/tei-schema.pickle')
 TEI_VALID_TAGS = {'body', 'cell', 'code', 'del', 'div', 'fw', 'graphic', 'head', 'hi', \
-                  'item', 'lb', 'list', 'p', 'quote', 'row', 'table'}
-TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'type'}
+                  'item', 'lb', 'list', 'p', 'quote', 'ref', 'row', 'table'}
+TEI_VALID_ATTRS = {'rend', 'rendition', 'role', 'target', 'type'}
 TEI_RELAXNG = None # to be downloaded later if necessary
 
 CONTROL_PARSER = etree.XMLParser(remove_blank_text=True)
@@ -49,7 +49,7 @@ def build_json_output(docmeta):
 def clean_attributes(tree):
     '''Remove unnecessary attributes'''
     for elem in tree.iter():
-        if elem.tag not in ('del', 'hi', 'image'):
+        if elem.tag not in ('del', 'graphic', 'hi', 'ref'):
             elem.attrib.clear()
     return tree
 
@@ -159,7 +159,7 @@ def validate_tei(tei):  # , filename=""
     return result
 
 
-def replace_element_text(element, include_formatting=False):
+def replace_element_text(element, include_formatting=False, include_links=False):
     '''Determine element text based on text and tail'''
     full_text = ''
     # handle formatting
@@ -175,6 +175,9 @@ def replace_element_text(element, include_formatting=False):
                 element.text = ''.join(['`', element.text, '`'])
         elif element.tag == 'del':
             element.text = ''.join(['~~', element.text, '~~'])
+    # handle links
+    if include_links is True and element.tag == 'ref':
+        element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ' '.join([element.text, element.tail])
@@ -185,7 +188,7 @@ def replace_element_text(element, include_formatting=False):
     return full_text
 
 
-def merge_with_parent(element, include_formatting=False):
+def merge_with_parent(element, include_formatting=False, include_links=False):
     '''Merge element with its parent and convert formatting to markdown.'''
     parent = element.getparent()
     if parent is None:
@@ -207,13 +210,13 @@ def merge_with_parent(element, include_formatting=False):
     parent.remove(element)
 
 
-def xmltotxt(xmloutput, include_formatting=False):
+def xmltotxt(xmloutput, include_formatting=False, include_links=False):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
     # etree.strip_tags(xmloutput, 'div', 'main', 'span')
     # remove and insert into the previous tag
-    for element in xmloutput.xpath('//hi|//link'):
-        merge_with_parent(element, include_formatting)
+    for element in xmloutput.xpath('//hi|//ref'):
+        merge_with_parent(element, include_formatting, include_links)
         continue
     # iterate and convert to list of strings
     for element in xmloutput.iter():

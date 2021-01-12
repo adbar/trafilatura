@@ -160,14 +160,17 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                 continue
             newsub = etree.Element(child.tag)
             # handle formatting
-            if child.tag == 'hi':
+            if child.tag in ('hi', 'ref'):
                 # check depth and clean
                 if len(child) > 0:
                     for item in child:  # children are lists
                         if text_chars_test(item.text) is True:
                             item.text = ' ' + item.text
                         etree.strip_tags(child, item.tag)
-                newsub.set('rend', child.get('rend'))
+                if child.tag == 'hi':
+                    newsub.set('rend', child.get('rend'))
+                elif child.tag == 'ref':
+                    newsub.set('target', child.get('target'))
             # handle line breaks
             elif child.tag == 'lb':
                 try:
@@ -262,7 +265,7 @@ def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG, dedup
     LOGGER.debug('Taking all p-elements')
     # prune
     search_tree = discard_unwanted(tree)
-    etree.strip_tags(search_tree, 'a', 'link', 'span')
+    etree.strip_tags(search_tree, 'a', 'ref', 'span')
     processed_elems = [handle_paragraphs(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote')] # 'head', 'list'
     result_body.extend(list(filter(None.__ne__, processed_elems)))
     return result_body
@@ -286,7 +289,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
             if element is not None:
                 new_element = etree.Element('p')
                 new_element.text = element.tail
-    elif element.tag == 'hi':
+    elif element.tag in ('hi', 'ref'):
         new_element = handle_formatting(element)
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element)
@@ -328,7 +331,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     return subtree
 
 
-def extract_content(tree, include_tables=False, include_images=False, deduplicate=False, config=None):
+def extract_content(tree, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -362,8 +365,12 @@ def extract_content(tree, include_tables=False, include_images=False, deduplicat
         # no paragraphs containing text
         if not subtree.xpath('//p//text()'):
             potential_tags.add('div')
+        if include_links is True:
+            potential_tags.add('ref')
+            etree.strip_tags(subtree, 'span')
+        else:
+            etree.strip_tags(subtree, 'ref', 'span') # 'a',
         LOGGER.debug(sorted(potential_tags))
-        etree.strip_tags(subtree, 'link', 'span') # 'a',
         # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # extract content
         # list(filter(None.__ne__, processed_elems))
@@ -419,7 +426,7 @@ def extract_comments(tree, dedupbool, config):
         subtree = subtree[0]
         # prune
         subtree = discard_unwanted_comments(subtree)
-        etree.strip_tags(subtree, 'a', 'link', 'span')
+        etree.strip_tags(subtree, 'a', 'ref', 'span')
         # extract content
         #for elem in subtree.xpath('.//*'):
         #    processed_elem = process_comments_node(elem, potential_tags)
@@ -438,7 +445,7 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, include_formatting, include_images, config):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, include_formatting, include_links, include_images, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass
@@ -478,7 +485,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             body, text, len_text = body2, text2, len_text2
         else:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body, include_formatting, include_images)
+            body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
     # try with justext
     elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         LOGGER.error('not enough text %s', url)
@@ -486,10 +493,10 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.debug('justext length %s', len_text)
         if jt_result is False:
             # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body, include_formatting, include_images)
+            body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
     else:
         if algo_flag is True:
-            body, text, len_text = sanitize_tree(body, include_formatting, include_images)
+            body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
     # second backup
     #if len_text < MIN_EXTRACTED_SIZE:
     #     body2, temp_text2, len_text2 = baseline(backup_tree)
@@ -548,7 +555,7 @@ def baseline(filecontent):
     return postbody, temp_text, len(temp_text)
 
 
-def determine_returnstring(docmeta, output_format, include_formatting, tei_validation):
+def determine_returnstring(docmeta, output_format, include_formatting, include_links, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if 'xml' in output_format:
@@ -568,18 +575,18 @@ def determine_returnstring(docmeta, output_format, include_formatting, tei_valid
     # CSV, JSON and TXT output
     else:
         if output_format == 'csv':
-            posttext = xmltotxt(docmeta['body'], include_formatting)
+            posttext = xmltotxt(docmeta['body'], include_formatting, include_links)
             if docmeta['commentsbody'] is not None:
-                commentstext = xmltotxt(docmeta['commentsbody'], include_formatting)
+                commentstext = xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
             else:
                 commentstext = ''
             returnstring = txttocsv(posttext, commentstext, docmeta)
         elif output_format == 'json':
             returnstring = build_json_output(docmeta)
         else:  # txt
-            returnstring = xmltotxt(docmeta['body'], include_formatting)
+            returnstring = xmltotxt(docmeta['body'], include_formatting, include_links)
             if docmeta['commentsbody'] is not None:
-                returnstring += '\n' + xmltotxt(docmeta['commentsbody'], include_formatting)
+                returnstring += '\n' + xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
                 returnstring = returnstring.strip()
     return returnstring
 
@@ -600,7 +607,8 @@ def map_format(output_format, csv_output, json_output, xml_output, tei_output):
 
 def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_comments=True, output_format='python', target_language=None,
-                    include_tables=True, include_images=False, include_formatting=False, deduplicate=False,
+                    include_tables=True, include_images=False, include_formatting=False,
+                    include_links=False, deduplicate=False,
                     date_extraction_params=None, with_metadata=False, max_tree_size=None,
                     url_blacklist=None, config=DEFAULT_CONFIG):
     """Internal function for text extraction returning bare Python variables.
@@ -617,6 +625,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         include_images: Take images into account.
         include_formatting: Keep structural elements related to formatting
             (present in XML format, converted to markdown otherwise).
+        include_links: Keep links along with their targets.
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         with_metadata: Only keep documents featuring all essential metadata
@@ -670,7 +679,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         cleaned_tree = tree_cleaning(tree, include_tables, include_images)
 
         # convert tags, the rest does not work without conversion
-        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images)
+        cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links)
 
         # comments first, then remove
         if include_comments is True:
@@ -679,19 +688,16 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             commentsbody, temp_comments, len_comments = None, '', 0
 
         # extract content
-        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, include_images, deduplicate, config)
+        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, include_images, include_links, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
             #if sure_thing is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting, include_images, config)
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting, include_links, include_images, config)
         else:
             # rescue: try to use original/dirty tree
             if sure_thing is False and len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
                 postbody, temp_text, len_text = baseline(filecontent)
-                #tree = load_html(filecontent)
-                #tree = convert_tags(tree)
-                #postbody, temp_text, len_text, sure_thing = extract_content(tree)
                 LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
@@ -725,9 +731,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
     # special case: python variables
     if output_format == 'python':
-        docmeta['text'] = xmltotxt(postbody, include_formatting)
+        docmeta['text'] = xmltotxt(postbody, include_formatting, include_links)
         if include_comments is True:
-            docmeta['comments'] = xmltotxt(commentsbody, include_formatting)
+            docmeta['comments'] = xmltotxt(commentsbody, include_formatting, include_links)
     else:
         docmeta['raw-text'], docmeta['body'], docmeta['commentsbody'] = temp_text, postbody, commentsbody
     return docmeta
@@ -737,7 +743,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             include_comments=True, output_format='txt',
             csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
-            include_tables=True, include_images=False, include_formatting=False, deduplicate=False,
+            include_tables=True, include_images=False, include_formatting=False,
+            include_links=False, deduplicate=False,
             date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=None,
             settingsfile=None, config=DEFAULT_CONFIG):
     """Main function exposed by the package:
@@ -761,6 +768,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         include_images: Take images into account.
         include_formatting: Keep structural elements related to formatting
             (only valuable if output_format is set to XML).
+        include_links: Keep links along with their targets.
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         with_metadata: Only keep documents featuring all essential metadata
@@ -785,7 +793,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         filecontent, url=url, no_fallback=no_fallback,
         include_comments=include_comments, output_format=output_format,
         target_language=target_language, include_tables=include_tables, include_images=include_images,
-        include_formatting=include_formatting, deduplicate=deduplicate,
+        include_formatting=include_formatting, include_links=include_links,
+        deduplicate=deduplicate,
         date_extraction_params=date_extraction_params, with_metadata=with_metadata,
         max_tree_size=max_tree_size, url_blacklist=url_blacklist, config=config,
         )
@@ -797,7 +806,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         # calculate fingerprint
         docmeta['fingerprint'] = content_fingerprint(docmeta['raw-text'])
     # return
-    return determine_returnstring(docmeta, output_format, include_formatting, tei_validation)
+    return determine_returnstring(docmeta, output_format, include_formatting, include_links, tei_validation)
 
 
 # for legacy and backwards compatibility

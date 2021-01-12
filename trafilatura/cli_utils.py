@@ -12,6 +12,7 @@ import re
 import signal
 import string
 import sys
+import traceback
 
 from collections import defaultdict, OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -387,14 +388,14 @@ def examine(htmlstring, args, url=None, config=None):
         try:
             result = extract(htmlstring, url=url, no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,
-                             include_formatting=args.formatting,
+                             include_formatting=args.formatting, include_links=args.links,
                              with_metadata=args.with_metadata,
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              config=config) # settingsfile=args.config_file,
         # ugly but efficient
         except Exception as err:
-            sys.stderr.write('ERROR: ' + str(err) + '\nDetails: ' + str(sys.exc_info()[0]) + '\n')
+            sys.stderr.write('ERROR: ' + str(err) + '\n' + traceback.format_exc() + '\n')
         # deactivate
         signal.alarm(0)
     return result

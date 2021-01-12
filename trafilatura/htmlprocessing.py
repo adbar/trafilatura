@@ -108,7 +108,7 @@ def collect_link_info(links_xpath):
 
 def link_density_test(element):
     '''Remove sections which are rich in links (probably boilerplate)'''
-    links_xpath, mylist = element.xpath('.//link'), []
+    links_xpath, mylist = element.xpath('.//ref'), []
     if links_xpath:
         elemtext = trim(element.text_content())
         elemlen = len(elemtext)
@@ -138,7 +138,7 @@ def link_density_test_tables(element):
     '''Remove tables which are rich in links (probably boilerplate)'''
     # if element.getnext() is not None:
     #    return False
-    links_xpath = element.xpath('.//link')
+    links_xpath = element.xpath('.//ref')
     if links_xpath:
         elemlen = len(trim(element.text_content()))
         if elemlen > 250:
@@ -156,7 +156,7 @@ def link_density_test_tables(element):
     return False
 
 
-def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False):
+def convert_tags(tree, include_formatting=False, include_tables=False, include_images=False, include_links=False):
     '''Simplify markup and convert relevant HTML tags to an XML standard'''
     # ul/ol → list / li → item
     for elem in tree.iter('ul', 'ol', 'dl'):
@@ -164,20 +164,30 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
         for subelem in elem.iter('dd', 'dt', 'li'):
             subelem.tag = 'item'
         for subelem in elem.iter('a'):
-            subelem.tag = 'link'
+            subelem.tag = 'ref'
     # divs
     for elem in tree.xpath('//div//a'):
-        elem.tag = 'link'
+        elem.tag = 'ref'
     # tables
     if include_tables is True:
         for elem in tree.xpath('//table//a'):
-            elem.tag = 'link'
+            elem.tag = 'ref'
     # images
     if include_images is True:
         for elem in tree.iter('img'):
             elem.tag = 'graphic'
     # delete links for faster processing
-    etree.strip_tags(tree, 'a')
+    if include_links is False:
+        etree.strip_tags(tree, 'a')
+    else:
+        for elem in tree.iter('a', 'ref'):
+            elem.tag = 'ref'
+            # replace href attribute and delete the rest
+            for attribute in elem.attrib:
+                if attribute == 'href':
+                    elem.set('target', elem.get('href'))
+                else:
+                    del elem.attrib[attribute]
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         elem.tag = 'head'
