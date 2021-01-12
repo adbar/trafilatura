@@ -136,7 +136,7 @@ For all usage instructions see ``trafilatura -h``:
                    [-o OUTPUTDIR] [--backup-dir BACKUP_DIR] [--keep-dirs]
                    [--hash-as-name] [--feed [FEED] | --sitemap [SITEMAP]]
                    [--archived] [--url-filter URL_FILTER [URL_FILTER ...]]
-                   [-f] [--formatting] [--nocomments] [--notables]
+                   [-f] [--formatting] [--links] [--nocomments] [--notables]
                    [--with-metadata] [--target-language TARGET_LANGUAGE]
                    [--deduplicate] [--config-file CONFIG_FILE]
                    [-out {txt,csv,json,xml,xmltei} | --csv | --json | --xml | --xmltei]
@@ -192,6 +192,7 @@ Extraction:
 
   -f, --fast            fast (without fallback detection)
   --formatting          include text formatting (bold, italic, etc.)
+  --links               include links along with their targets
   --nocomments          don't output any comments
   --notables            don't output any table elements
   --with-metadata       only output those documents with necessary metadata:

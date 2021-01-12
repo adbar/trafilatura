@@ -150,30 +150,3 @@ Alternatively, you can download a series of web documents with generic command-l
     $ wget --directory-prefix=download/ --wait 5 --input-file=mylist.txt
     $ trafilatura --inputdir download/ --outputdir corpus/ --xmltei --nocomments
 
-
-Work with the data
-------------------
-
-Generic solutions in Python
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- `Part-of-Speech Tagging <https://melaniewalsh.github.io/Intro-Cultural-Analytics/Text-Analysis/POS-Keywords.html>`_
-- `Natural Language Toolkit (NTLK) <https://www.nltk.org/>`_
-- `TF-IDF with Scikit-Learn <https://melaniewalsh.github.io/Intro-Cultural-Analytics/Text-Analysis/TF-IDF-Scikit-Learn.html>`_
-- Topic modeling, including *word2vec* models: `Gensim tutorials <https://radimrehurek.com/gensim/auto_examples/>`_
-
-
-XML and XML-TEI
-~~~~~~~~~~~~~~~
-
-See `A Gentle Introduction to XML <https://tei-c.org/release/doc/tei-p5-doc/en/html/SG.html>`_ or the module `xmltodict <https://github.com/martinblech/xmltodict>`_ which provide ways to directly read the files and work with the data as if it were in JSON format.
-
-
-The textometry platform `TXM <https://txm.gitpages.huma-num.fr/textometrie/en/>`_ can read both XML and TEI-XML files and perform annotation and exploration of corpus data.
-
-
-NLP
-~~~
-
-For natural language processing see this list of open-source/off-the-shelf `NLP tools for German <https://github.com/adbar/German-NLP>`_ and `further lists for other languages <https://github.com/adbar/German-NLP#Comparable-lists>`_.
-

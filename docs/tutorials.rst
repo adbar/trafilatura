@@ -9,6 +9,7 @@ Tutorials
    tutorial0
    tutorial1
    tutorial2
+   tutorial-data
    tutorial-dwds
 
 External resources

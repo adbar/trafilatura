@@ -9,4 +9,5 @@ Usage
    usage-cli
    usage-python
    usage-r
+   usage-gui
 
