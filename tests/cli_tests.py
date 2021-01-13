@@ -275,6 +275,14 @@ def test_cli_pipeline():
     args.config_file = os.path.join(RESOURCES_DIR, args.config_file)
     config = use_config(filename=args.config_file)
     assert cli.examine(teststring, args) is None
+    # CLI options
+    testargs = ['', '--links', '--images']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    #with open(os.path.join(RESOURCES_DIR, 'http_sample.html'), 'r') as f:
+    #    teststring = f.read()
+    #result = cli.examine(teststring, args)
+    #assert '[link](testlink.html)' in result # and 'test.jpg' in result
 
 
 def test_input_filtering():

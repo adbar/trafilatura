@@ -45,6 +45,7 @@ SAMPLE_META = dict.fromkeys(METADATA_LIST)
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
+ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
@@ -315,12 +316,29 @@ def test_images():
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
     assert utils.is_image_file('test.jpg') is True
     assert utils.is_image_file('test.txt') is False
-    assert handle_textelem(etree.Element('image'), [], False, DEFAULT_CONFIG) is None
+    assert handle_textelem(etree.Element('graphic'), [], False, DEFAULT_CONFIG) is None
     resources_dir = os.path.join(TEST_DIR, 'resources')
     with open(os.path.join(resources_dir, 'http_sample.html')) as f:
         teststring = f.read()
     assert 'test.jpg Example image' not in extract(teststring)
     assert 'test.jpg Example image' in extract(teststring, include_images=True, no_fallback=True)
+    assert '<graphic src="test.jpg" title="Example image"/>' in extract(teststring, include_images=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+
+
+def test_links():
+    '''Test link extraction function'''
+    assert handle_textelem(etree.Element('ref'), [], False, DEFAULT_CONFIG) is None
+    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>')) is not None
+    mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
+    assert 'testlink.html' not in extract(mydoc)
+    assert 'testlink.html' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    resources_dir = os.path.join(TEST_DIR, 'resources')
+    with open(os.path.join(resources_dir, 'http_sample.html')) as f:
+        teststring = f.read()
+    assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
+    print(extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG))
+    assert '[link](testlink.html)' in extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '<ref target="testlink.html">link</ref>' in extract(teststring, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
 
 
 def test_tei():
@@ -370,12 +388,13 @@ if __name__ == '__main__':
     test_lrucache()
     test_input()
     test_formatting()
+    test_exotic_tags()
+    test_images()
+    test_links()
     test_htmlprocessing()
     test_filters()
     test_baseline()
     test_txttocsv()
-    test_exotic_tags()
-    test_images()
     test_external()
     test_fetch()
     test_tei()

@@ -265,7 +265,11 @@ def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG, dedup
     LOGGER.debug('Taking all p-elements')
     # prune
     search_tree = discard_unwanted(tree)
-    etree.strip_tags(search_tree, 'a', 'ref', 'span')
+    # decide if links are preserved
+    if 'ref' in potential_tags:
+        etree.strip_tags(search_tree, 'span')
+    else:
+        etree.strip_tags(search_tree, 'a', 'ref', 'span')
     processed_elems = [handle_paragraphs(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote')] # 'head', 'list'
     result_body.extend(list(filter(None.__ne__, processed_elems)))
     return result_body
@@ -337,6 +341,13 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
        convert them'''
     sure_thing = False
     result_body = etree.Element('body')
+    potential_tags = set(TAG_CATALOG)  # + 'span'?
+    if include_tables is True:
+        potential_tags.add('table')
+    if include_images is True:
+        potential_tags.add('graphic')
+    if include_links is True:
+        potential_tags.add('ref')
     # iterate
     for expr in BODY_XPATH:
         # select tree if the expression has been found
@@ -351,22 +362,17 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
         subtree = delete_by_link_density(subtree, 'p', backtracking=False)
         # define iteration strategy
-        potential_tags = set(TAG_CATALOG)  # + 'span'?
-        if include_tables is True:
-            potential_tags.add('table')
+        if 'table' in potential_tags:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
                     elem.getparent().remove(elem)
-        if include_images is True:
-            potential_tags.add('graphic')
         # skip if empty tree
         if len(subtree) == 0:
             continue
         # no paragraphs containing text
         if not subtree.xpath('//p//text()'):
             potential_tags.add('div')
-        if include_links is True:
-            potential_tags.add('ref')
+        if 'ref' in potential_tags:
             etree.strip_tags(subtree, 'span')
         else:
             etree.strip_tags(subtree, 'ref', 'span') # 'a',
@@ -387,7 +393,7 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
     temp_text = trim(' '.join(result_body.itertext()))
     # try parsing wild <p> elements if nothing found or text too short
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-        result_body = recover_wild_paragraphs(tree, result_body, deduplicate=deduplicate, config=config)
+        result_body = recover_wild_paragraphs(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     else:
         sure_thing = True
@@ -622,10 +628,10 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             and the interest of this internal function.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
-        include_images: Take images into account.
+        include_images: Take images into account (experimental).
         include_formatting: Keep structural elements related to formatting
             (present in XML format, converted to markdown otherwise).
-        include_links: Keep links along with their targets.
+        include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         with_metadata: Only keep documents featuring all essential metadata
@@ -765,10 +771,10 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         tei_validation: Validate the XML-TEI output with respect to the TEI standard.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
-        include_images: Take images into account.
+        include_images: Take images into account (experimental).
         include_formatting: Keep structural elements related to formatting
             (only valuable if output_format is set to XML).
-        include_links: Keep links along with their targets.
+        include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         with_metadata: Only keep documents featuring all essential metadata

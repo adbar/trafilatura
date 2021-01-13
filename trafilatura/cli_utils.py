@@ -389,7 +389,7 @@ def examine(htmlstring, args, url=None, config=None):
             result = extract(htmlstring, url=url, no_fallback=args.fast,
                              include_comments=args.nocomments, include_tables=args.notables,
                              include_formatting=args.formatting, include_links=args.links,
-                             with_metadata=args.with_metadata,
+                             include_images=args.images, with_metadata=args.with_metadata,
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              config=config) # settingsfile=args.config_file,

@@ -38,9 +38,9 @@ def build_json_output(docmeta):
     outputdict['excerpt'] = outputdict.pop('description')
     outputdict['categories'] = ';'.join(outputdict['categories'])
     outputdict['tags'] = ';'.join(outputdict['tags'])
-    outputdict['text'] = xmltotxt(outputdict.pop('body'))
+    outputdict['text'] = xmltotxt(outputdict.pop('body'), include_formatting=False, include_links=False)
     if outputdict['commentsbody'] is not None:
-        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'))
+        outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False, include_links=False)
     else:
         del outputdict['commentsbody']
     return json.dumps(outputdict)
@@ -159,7 +159,7 @@ def validate_tei(tei):  # , filename=""
     return result
 
 
-def replace_element_text(element, include_formatting=False, include_links=False):
+def replace_element_text(element, include_formatting, include_links):
     '''Determine element text based on text and tail'''
     full_text = ''
     # handle formatting
@@ -193,7 +193,7 @@ def merge_with_parent(element, include_formatting=False, include_links=False):
     parent = element.getparent()
     if parent is None:
         return
-    full_text = replace_element_text(element, include_formatting)
+    full_text = replace_element_text(element, include_formatting, include_links)
     previous = element.getprevious()
     if previous is not None:
         # There is a previous node, append text to its tail
@@ -210,7 +210,7 @@ def merge_with_parent(element, include_formatting=False, include_links=False):
     parent.remove(element)
 
 
-def xmltotxt(xmloutput, include_formatting=False, include_links=False):
+def xmltotxt(xmloutput, include_formatting, include_links):
     '''Convert to plain text format and optionally preserve formatting as markdown.'''
     returnlist = []
     # etree.strip_tags(xmloutput, 'div', 'main', 'span')
@@ -223,16 +223,16 @@ def xmltotxt(xmloutput, include_formatting=False, include_links=False):
         # process text
         if element.text is None and element.tail is None:
             if element.tag == 'graphic':
-               returnlist.extend(['\n', element.get('src')])
-               if element.get('alt') is not None:
-                   returnlist.extend([' ', element.get('alt')])
-               if element.get('title') is not None:
-                   returnlist.extend([' ', element.get('title')])
+                returnlist.extend(['\n', element.get('src')])
+                if element.get('alt') is not None:
+                    returnlist.extend([' ', element.get('alt')])
+                if element.get('title') is not None:
+                    returnlist.extend([' ', element.get('title')])
             # newlines for textless elements
             if element.tag in ('graphic', 'row', 'table'):
                 returnlist.append('\n')
             continue
-        textelement = replace_element_text(element)
+        textelement = replace_element_text(element, include_formatting, include_links)
         if element.tag in ('code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'):
             returnlist.extend(['\n', textelement, '\n'])
         elif element.tag == 'item':
@@ -242,7 +242,7 @@ def xmltotxt(xmloutput, include_formatting=False, include_links=False):
         elif element.tag == 'comments':
             returnlist.append('\n\n')
         else:
-            # print(element.tag)
+            LOGGER.debug('unexpected element: %s', element.tag)
             returnlist.extend([textelement, ' '])
     return sanitize(''.join(returnlist))
 
