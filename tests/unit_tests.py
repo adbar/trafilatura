@@ -70,11 +70,15 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
                 htmlstring = htmlbinary
         else:
             print('Encoding error')
+    output_format = 'txt'
+    if xml_flag is True:
+        output_format = 'xml'
+    if tei_output is True:
+        output_format = 'tei'
     result = extract(htmlstring, url,
                      record_id='0000',
                      no_fallback=False,
-                     xml_output=xml_flag,
-                     tei_output=tei_output,
+                     output_format=output_format,
                      target_language=langcheck)
     return result
 
@@ -101,9 +105,9 @@ def test_input():
     assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
-    assert extract(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
+    assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
-    assert process_record(None, 'url', '0000', xml_output=False, tei_output=False, target_language=None) is None
+    assert process_record(None, 'url', '0000', target_language=None) is None
 
 
 def test_txttocsv():
@@ -115,10 +119,10 @@ def test_txttocsv():
     mymeta['id'] = '1'
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
-    assert extract(mystring, csv_output=True, config=ZERO_CONFIG) is not None
-    assert extract(mystring, csv_output=True, include_comments=False, config=ZERO_CONFIG).endswith('\t\n')
+    assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
+    assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\t\n')
     # test json
-    assert extract(mystring, json_output=True, config=ZERO_CONFIG).endswith('}')
+    assert extract(mystring, output_format='json', config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG)
     assert isinstance(result, dict) and len(result) == 13
@@ -126,7 +130,7 @@ def test_txttocsv():
 
 def test_exotic_tags(xmloutput=False):
     # cover some edge cases with a specially crafted file
-    result = load_mock_page('http://exotic_tags', xmloutput, tei_output=True)
+    result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
     filepath = os.path.join(TEST_DIR, 'cache', 'exotic_tags_tei.html')
     with open(filepath) as f:
@@ -198,19 +202,19 @@ def test_formatting():
     '''Test HTML formatting conversion and extraction'''
     # simple
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold and italic font.</hi>' in my_result
     # empty
     my_document = html.fromstring('<html><body><p><b><i></i></b></p></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<main/>' in my_result
     # wild div
     my_document = html.fromstring('<html><body><article><div><strong>Wild text</strong></div></article></body></html>')
-    my_result = extract(my_document, xml_output=True, include_formatting=True, config=ZERO_CONFIG)
+    my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<p>' in my_result and '<hi>Wild text</hi>' in my_result  # no rend so far
     my_result = extract(my_document, config=ZERO_CONFIG)
     assert my_result == 'Wild text'
@@ -348,7 +352,7 @@ def test_tei():
     with open(os.path.join(resources_dir, 'httpbin_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
-    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False)
+    result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
     assert result is not None
     assert xml.validate_tei(etree.fromstring(result)) is True
     assert xml.validate_tei(etree.fromstring(teststring)) is False
@@ -356,11 +360,11 @@ def test_tei():
     with open(os.path.join(resources_dir, 'http_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
-    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False)
+    result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
     assert result is not None
     assert xml.validate_tei(etree.fromstring(result)) is True
     # include ID in metadata
-    result = extract(teststring, "mocked", no_fallback=True, tei_output=True, tei_validation=False, record_id='0001')
+    result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False, record_id='0001')
     assert result is not None
     assert xml.validate_tei(etree.fromstring(result)) is True
 

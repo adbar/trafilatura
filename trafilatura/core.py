@@ -597,20 +597,6 @@ def determine_returnstring(docmeta, output_format, include_formatting, include_l
     return returnstring
 
 
-def map_format(output_format, csv_output, json_output, xml_output, tei_output):
-    '''Map existing options to format choice.'''
-    if output_format == 'txt' and any([csv_output, json_output, xml_output, tei_output]):
-        if csv_output is True:
-            output_format = 'csv'
-        elif json_output is True:
-            output_format = 'json'
-        elif xml_output is True:
-            output_format = 'xml'
-        elif tei_output is True:
-            output_format = 'xmltei'
-    return output_format
-
-
 def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_comments=True, output_format='python', target_language=None,
                     include_tables=True, include_images=False, include_formatting=False,
@@ -626,6 +612,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
+            Other values: 'txt', 'csv', 'json', 'xml', or 'xmltei'.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
         include_images: Take images into account (experimental).
@@ -747,7 +734,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
             include_comments=True, output_format='txt',
-            csv_output=False, json_output=False, xml_output=False, tei_output=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_images=False, include_formatting=False,
             include_links=False, deduplicate=False,
@@ -764,10 +750,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
             'txt', 'csv', 'json', 'xml', or 'xmltei'.
-        csv_output: Set output format to CSV (alternative to output_format).
-        json_output: Set output format to JSON (alternative to output_format).
-        xml_output: Set output format to XML (alternative to output_format).
-        tei_output: Set output format to XML-TEI (alternative to output_format).
         tei_validation: Validate the XML-TEI output with respect to the TEI standard.
         target_language: Define a language to discard invalid documents (ISO 639-1 format).
         include_tables: Take into account information within the HTML <table> element.
@@ -790,8 +772,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     """
     # configuration init
     config = use_config(settingsfile, config)
-    # metadata mapping for compatibility
-    output_format = map_format(output_format, csv_output, json_output, xml_output, tei_output)
     if url_blacklist is None:
         url_blacklist = set()
     # extraction

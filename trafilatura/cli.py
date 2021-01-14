@@ -95,6 +95,9 @@ def parse_args(args):
     group3.add_argument('--url-filter',
                         help="only process/output URLs containing these patterns (space-separated strings)",
                         nargs='+', type=str)
+    #group3.add_argument('--no-ssl',
+    #                    help="Disable secure connections (to prevent SSLError)",
+    #                    action="store_true")
 
     group4.add_argument("-f", "--fast",
                         help="fast (without fallback detection)",
@@ -133,16 +136,16 @@ def parse_args(args):
                         choices=['txt', 'csv', 'json', 'xml', 'xmltei'],
                         default='txt')
     group5_ex.add_argument("--csv",
-                        help="CSV output",
+                        help="shorthand for CSV output",
                         action="store_true")
     group5_ex.add_argument("--json",
-                        help="JSON output",
+                        help="shorthand for JSON output",
                         action="store_true")
     group5_ex.add_argument("--xml",
-                        help="XML output",
+                        help="shorthand for XML output",
                         action="store_true")
     group5_ex.add_argument("--xmltei",
-                        help="XML TEI output",
+                        help="shorthand for XML TEI output",
                         action="store_true")
     group5.add_argument("--validate-tei",
                         help="validate XML TEI output",

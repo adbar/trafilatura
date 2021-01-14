@@ -25,6 +25,7 @@ except ImportError:
 
 from trafilatura.core import extract
 
+
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
@@ -142,11 +143,15 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
                 htmlstring = htmlbinary
         else:
             print('Encoding error')
+    output_format = 'txt'
+    if xml_flag is True:
+        output_format = 'xml'
+    if tei_output is True:
+        output_format = 'tei'
     result = extract(htmlstring, url,
                      record_id='0000',
                      no_fallback=False,
-                     xml_output=xml_flag,
-                     tei_output=tei_output,
+                     output_format=output_format,
                      target_language=langcheck)
     return result
 
