@@ -334,6 +334,9 @@ def fix_relative_urls(baseurl, url):
     'Prepend protocol and host information to relative links.'
     if url.startswith('/'):
         urlfix = baseurl + url
+    # imperfect path handling
+    elif url.startswith('.'):
+        urlfix = baseurl + '/' + re.sub(r'(.+/)+', '', url)
     elif not url.startswith('http'):
         urlfix = baseurl + '/' + url
     else:

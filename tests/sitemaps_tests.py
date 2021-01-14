@@ -29,6 +29,7 @@ def test_extraction():
     assert fix_relative_urls('https://example.org', 'https://example.org/test.html') == 'https://example.org/test.html'
     assert fix_relative_urls('https://example.org', '/test.html') == 'https://example.org/test.html'
     assert fix_relative_urls('https://example.org', 'test.html') == 'https://example.org/test.html'
+    assert fix_relative_urls('https://example.org', '../../test.html') == 'https://example.org/test.html'
     # link handling
     assert sitemaps.handle_link(url, url, domain, baseurl, None) == (url, '0')
     assert sitemaps.handle_link('https://mydomain.wordpress.com/1', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org', None) == ('https://mydomain.wordpress.com/1', 'link')
