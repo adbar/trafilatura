@@ -14,7 +14,7 @@ from courlan import clean_url, extract_domain
 from courlan.filters import lang_filter # next courlan version: usable directly
 
 from .settings import MAX_SITEMAPS_SEEN
-from .utils import fetch_url, fix_relative_urls, is_gz_file, HOSTINFO
+from .utils import fetch_url, fix_relative_urls, HOSTINFO
 
 
 LOGGER = logging.getLogger(__name__)
@@ -78,8 +78,10 @@ def check_sitemap(url, contents):
     return contents
 
 
-def download_and_process_sitemap(url, domain, baseurl, target_lang=None, sitemapurls=[], linklist=[]):
+def download_and_process_sitemap(url, domain, baseurl, target_lang, sitemapurls=None, linklist=None):
     'Helper function chaining download and processing of sitemaps.'
+    # variables init
+    sitemapurls, linklist = sitemapurls or [], linklist or []
     # fetch and pre-process
     LOGGER.info('fetching sitemap: %s', url)
     pagecontent = fetch_url(url)
@@ -109,10 +111,10 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
         sitemapurls, linklist = extract_sitemap_langlinks(contents, url, domain, baseurl, target_lang)
         if len(sitemapurls) != 0 or len(linklist) != 0:
             return sitemapurls, linklist
-    return extract_sitemap_links(contents, url, domain, baseurl)
+    return extract_sitemap_links(contents, url, domain, baseurl, target_lang)
 
 
-def handle_link(link, sitemapurl, domainname, baseurl, target_lang=None):
+def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
     '''Examine a link and determine if it's valid and if it leads to
        a sitemap or a web page.'''
     state = '0'
@@ -137,7 +139,7 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang=None):
     return link, state
 
 
-def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, target_lang=None):
+def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, target_lang):
     'Extract links corresponding to a given target language.'
     if not 'hreflang=' in pagecontent:
         return [], []
@@ -156,12 +158,12 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
     return sitemapurls, linklist
 
 
-def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl):
+def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_lang):
     'Extract sitemap links and web page links from a sitemap file.'
     sitemapurls, linklist = [], []
     # extract
     for link in LINK_REGEX.findall(pagecontent):
-        link, state = handle_link(link, sitemapurl, domainname, baseurl)
+        link, state = handle_link(link, sitemapurl, domainname, baseurl, target_lang)
         if state == 'sitemap':
             sitemapurls.append(link)
         elif state == 'link':

@@ -30,8 +30,8 @@ def test_extraction():
     assert fix_relative_urls('https://example.org', '/test.html') == 'https://example.org/test.html'
     assert fix_relative_urls('https://example.org', 'test.html') == 'https://example.org/test.html'
     # link handling
-    assert sitemaps.handle_link(url, url, domain, baseurl) == (url, '0')
-    assert sitemaps.handle_link('https://mydomain.wordpress.com/1', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org') == ('https://mydomain.wordpress.com/1', 'link')
+    assert sitemaps.handle_link(url, url, domain, baseurl, None) == (url, '0')
+    assert sitemaps.handle_link('https://mydomain.wordpress.com/1', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org', None) == ('https://mydomain.wordpress.com/1', 'link')
     # safety belts
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is None
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml', 'ABC') is None
@@ -40,19 +40,19 @@ def test_extraction():
     with open(filepath) as f:
         teststring = f.read()
     contents = sitemaps.check_sitemap('http://example.org/sitemap.xml', teststring)
-    sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl)
+    sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl, None)
     assert len(sitemapurls) == 0 and len(linklist) == 84
     # hreflang
-    assert sitemaps.extract_sitemap_langlinks(teststring, url, domain, baseurl) == ([], [])
+    assert sitemaps.extract_sitemap_langlinks(teststring, url, domain, baseurl, None) == ([], [])
     # nested sitemaps
     url, domain, baseurl = 'http://www.example.com/sitemap.xml', 'example.com', 'http://www.example.com'
     filepath = os.path.join(RESOURCES_DIR, 'sitemap2.xml')
     with open(filepath) as f:
         teststring = f.read()
-    sitemapurls, linklist = sitemaps.extract_sitemap_links(teststring, url, domain, baseurl)
+    sitemapurls, linklist = sitemaps.extract_sitemap_links(teststring, url, domain, baseurl, None)
     assert len(sitemapurls) == 2 and linklist == []
     # invalid
-    assert sitemaps.extract_sitemap_links('<html>\n</html>', url, domain, baseurl) == ([], [])
+    assert sitemaps.extract_sitemap_links('<html>\n</html>', url, domain, baseurl, None) == ([], [])
     # hreflang
     filepath = os.path.join(RESOURCES_DIR, 'sitemap-hreflang.xml')
     with open(filepath) as f:
@@ -67,7 +67,7 @@ def test_extraction():
         teststring = f.read()
     teststring = decode_response(teststring)
     contents = sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', teststring)
-    sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl)
+    sitemapurls, linklist = sitemaps.extract_sitemap_links(contents, url, domain, baseurl, None)
     assert len(sitemapurls) == 0 and len(linklist) == 84
     # check contents
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is not None
