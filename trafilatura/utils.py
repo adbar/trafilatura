@@ -32,14 +32,16 @@ LOGGER = logging.getLogger(__name__)
 
 # customize headers
 RETRY_STRATEGY = urllib3.util.Retry(
-    total=3,
+    total=0,
     redirect=2, # raise_on_redirect=False,
     connect=0,
     backoff_factor=TIMEOUT*2,
     status_forcelist=[429, 500, 502, 503, 504],
 )
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY)
+# cert_reqs='CERT_REQUIRED', ca_certs=certifi.where()
+HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT)
+NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, cert_reqs='CERT_NONE', timeout=TIMEOUT)
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
@@ -143,12 +145,14 @@ def determine_headers():
     return headers
 
 
-def fetch_url(url, decode=True, config=DEFAULT_CONFIG):
+def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     """Fetches page using urllib3 and decodes the response.
 
     Args:
         url: URL of the page to fetch.
         decode: Decode response instead of returning Urllib3 response object (boolean).
+        no_ssl: Don't try to establish a secure connection (to prevent SSLError).
+        config: Pass configuration values for output control.
 
     Returns:
         HTML code as string, or Urllib3 response object (headers + body), or empty string in case
@@ -159,8 +163,11 @@ def fetch_url(url, decode=True, config=DEFAULT_CONFIG):
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
-        response = HTTP_POOL.request('GET', url, headers=determine_headers(),
-                                     timeout=TIMEOUT)
+        if no_ssl is False:
+            response = HTTP_POOL.request('GET', url, headers=determine_headers())
+        else:
+            url = re.sub(r'^https', 'http', url)
+            response = NO_CERT_POOL.request('GET', url, headers=determine_headers())
     except urllib3.exceptions.NewConnectionError as err:
         LOGGER.error('connection refused: %s %s', url, err)
         return ''  # raise error instead?

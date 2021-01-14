@@ -381,6 +381,7 @@ def test_fetch():
     assert utils.fetch_url('1234') == ''
     assert utils.fetch_url('https://httpbin.org/status/404') is None
     assert utils.decode_response(b'\x1f\x8babcdef') is not None
+    assert utils.fetch_url('https://expired.badssl.com/', no_ssl=True) is not None
 
 
 if __name__ == '__main__':
