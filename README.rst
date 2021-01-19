@@ -152,8 +152,8 @@ Going further
 
 **Online documentation:** `trafilatura.readthedocs.io <https://trafilatura.readthedocs.io/>`_.
 
+**Tutorials:** `overview <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_.
+
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
 Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
-
-

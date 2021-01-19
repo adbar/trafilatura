@@ -45,6 +45,8 @@ This project is under active development, please make sure you keep it up-to-dat
     $ pip install -U trafilatura # to make sure you have the latest version
     $ pip install -U git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
 
+On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `document <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
+
 
 Command-line tool
 ~~~~~~~~~~~~~~~~~
@@ -68,3 +70,9 @@ For extended date extraction you can use ``pip install htmldate[all]``.
 You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 
 *For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_
+
+
+Graphical user interface
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+See `this link <https://github.com/adbar/trafilatura_gui>`_ for installation instructions.
