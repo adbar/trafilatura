@@ -48,7 +48,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
                 feed_links.append(mymatch.group(1))
     # could be RSS
     elif '<link>' in feed_string:
-        for item in re.findall(r'<link>(.+?)</link>', feed_string):
+        for item in re.findall(r'<link>(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?</link>', feed_string):
             feed_links.append(item)
     # refine
     output_links = handle_link_list(feed_links, domainname, baseurl, target_lang)

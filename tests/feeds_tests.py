@@ -33,6 +33,7 @@ def test_atom_extraction():
 def test_rss_extraction():
     '''Test link extraction from a RSS feed'''
     assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/article1/</link>', 'example.org', 'http://example.org/', '')) == 1
+    assert feeds.extract_links(XMLDECL + '<link><![CDATA[http://example.org/article1/]]></link>', 'example.org', 'http://example.org/', '') == ['http://example.org/article1']
     assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/</link>', 'example.org', 'http://example.org', 'http://example.org')) == 0
     assert len(feeds.extract_links(XMLDECL + '<link rel="self">http://example.org/article1/</link>', 'example.org', 'http://example.org/', '')) == 0
     assert feeds.extract_links(XMLDECL + '<link>/api/feed/themenglossar/Corona</link>', 'www.dwds.de', 'https://www.dwds.de', 'https://www.dwds.de') == ['https://www.dwds.de/api/feed/themenglossar/Corona']

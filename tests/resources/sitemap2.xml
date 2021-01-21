@@ -12,7 +12,7 @@
 
    <sitemap>
 
-      <loc>http://www.example.com/sitemap2.xml.gz</loc>
+      <loc><![CDATA[http://www.example.com/sitemap2.xml.gz]]></loc>
 
       <lastmod>2005-01-01</lastmod>
 

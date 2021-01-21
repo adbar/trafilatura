@@ -51,7 +51,7 @@ def test_extraction():
     with open(filepath) as f:
         teststring = f.read()
     sitemapurls, linklist = sitemaps.extract_sitemap_links(teststring, url, domain, baseurl, None)
-    assert len(sitemapurls) == 2 and linklist == []
+    assert sitemapurls == ['http://www.example.com/sitemap1.xml.gz', 'http://www.example.com/sitemap2.xml.gz'] and linklist == []
     # invalid
     assert sitemaps.extract_sitemap_links('<html>\n</html>', url, domain, baseurl, None) == ([], [])
     # hreflang
