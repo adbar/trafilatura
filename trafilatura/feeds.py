@@ -37,7 +37,10 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
     feed_links = []
     # check if it's a feed
     if feed_string is None or not feed_string.startswith('<?xml'):
-        return feed_links
+        if feed_string.startswith('<feed') or feed_string.startswith('<rss'):
+            LOGGER.debug('trying to parse non-standard feed string')
+        else:
+            return feed_links
     # could be Atom
     if '<link ' in feed_string:
         for link in re.findall(r'<link .*?href=".+?"', feed_string):
@@ -112,11 +115,13 @@ def find_feed_urls(url, target_lang=None):
     if downloaded is None:
         LOGGER.warning('Could not download web page: %s', url)
         return []
-    # assume it's a web page
-    feed_links = []
-    for feed in determine_feed(downloaded, baseurl, url):
-        feed_string = fetch_url(feed)
-        feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
+    # assume it's a feed
+    feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
+    if len(feed_links) == 0:
+        # assume it's a web page
+        for feed in determine_feed(downloaded, baseurl, url):
+            feed_string = fetch_url(feed)
+            feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
     feed_links = sorted(list(set(feed_links)))
     LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
     return feed_links
