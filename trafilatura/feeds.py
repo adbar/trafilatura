@@ -36,11 +36,11 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
     '''Extract links from Atom and RSS feeds'''
     feed_links = []
     # check if it's a feed
-    if feed_string is None or not feed_string.startswith('<?xml'):
-        if feed_string.startswith('<feed') or feed_string.startswith('<rss'):
-            LOGGER.debug('trying to parse non-standard feed string')
-        else:
-            return feed_links
+    if feed_string is None:
+        return feed_links
+    if not feed_string.startswith('<?xml') or \
+        feed_string.startswith('<feed') or feed_string.startswith('<rss'):
+        return feed_links
     # could be Atom
     if '<link ' in feed_string:
         for link in re.findall(r'<link .*?href=".+?"', feed_string):
