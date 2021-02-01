@@ -205,7 +205,7 @@ def process_args(args):
         inputdict = None
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             if args.feed:
-                future_to_url = {executor.submit(find_feed_urls, url): url for url in input_urls}
+                future_to_url = {executor.submit(find_feed_urls, url, target_lang=args.target_language): url for url in input_urls}
             elif args.sitemap:
                 future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
             # process results one-by-one, i.e. in parallel

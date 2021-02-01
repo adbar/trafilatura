@@ -112,16 +112,28 @@ def find_feed_urls(url, target_lang=None):
         return []
     baseurl = hostmatch.group(0)
     downloaded = fetch_url(url)
-    if downloaded is None:
+    if downloaded is not None:
+        # assume it's a feed
+        feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
+        if len(feed_links) == 0:
+            # assume it's a web page
+            for feed in determine_feed(downloaded, baseurl, url):
+                feed_string = fetch_url(feed)
+                feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
+        # return links found
+        if len(feed_links) > 0:
+            feed_links = sorted(list(set(feed_links)))
+            LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
+            return feed_links
+    else:
         LOGGER.warning('Could not download web page: %s', url)
-        return []
-    # assume it's a feed
-    feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
-    if len(feed_links) == 0:
-        # assume it's a web page
-        for feed in determine_feed(downloaded, baseurl, url):
-            feed_string = fetch_url(feed)
-            feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
-    feed_links = sorted(list(set(feed_links)))
-    LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
-    return feed_links
+    # try alternative: Google News
+    if target_lang is not None:
+        url = 'https://news.google.com/rss/search?q=site:' + baseurl + '&hl=' + target_lang + '&scoring=n&num=100'
+        downloaded = fetch_url(url)
+        if downloaded is not None:
+            feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
+            LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
+            return feed_links
+        LOGGER.warning('Could not download web page: %s', url)
+    return []
