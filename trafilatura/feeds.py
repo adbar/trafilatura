@@ -48,7 +48,10 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
                 continue
             mymatch = re.search(r'<link .*?href="(.+?)"', link)
             if mymatch:
-                feed_links.append(mymatch.group(1))
+                feedlink = mymatch.group(1)
+                if '"' in feedlink:
+                    feedlink = feedlink.split('"')[0]
+                feed_links.append(feedlink)
     # could be RSS
     elif '<link>' in feed_string:
         for item in re.findall(r'<link>(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?</link>', feed_string):
@@ -83,6 +86,8 @@ def determine_feed(htmlstring, baseurl, reference):
     for link in sorted(list(set(feed_urls))):
         link = fix_relative_urls(baseurl, link)
         link = clean_url(link)
+        if '"' in link:
+            link = link.split('"')[0]
         if link == reference or validate_url(link)[0] is False:
             continue
         if 'comments' in link:
