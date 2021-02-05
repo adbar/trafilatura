@@ -10,9 +10,11 @@ import re
 
 from courlan import check_url, clean_url, extract_domain, validate_url
 
-from .utils import fetch_url, fix_relative_urls, HOSTINFO
+from .utils import load_html, fetch_url, fix_relative_urls, HOSTINFO
 
 LOGGER = logging.getLogger(__name__)
+
+FEED_TYPES = set(['application/rss+xml', 'application/atom+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/xml'])
 
 
 def handle_link_list(linklist, domainname, baseurl, target_lang=None):
@@ -38,8 +40,8 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
     # check if it's a feed
     if feed_string is None:
         return feed_links
-    if not feed_string.startswith('<?xml') or \
-        feed_string.startswith('<feed') or feed_string.startswith('<rss'):
+    feed_string = feed_string.strip()
+    if not re.match(r'<\?xml|<feed|<rss', feed_string):
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
@@ -68,22 +70,32 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
 
 
 def determine_feed(htmlstring, baseurl, reference):
-    '''Try to extract the feed URL from the home page'''
+    '''Try to extract the feed URL from the home page.
+       Adapted from http://www.aaronsw.com/2002/feedfinder/'''
     feed_urls = []
-    # try to find RSS URL
-    for feed_url in re.findall(r'<link[^<>]+?type="application/rss\+xml"[^<>]+?href="(.+?)"', htmlstring):
-        feed_urls.append(feed_url)
-    for feed_url in re.findall(r'<link[^<>]+?href="(.+?)"[^<>]+?type="application/rss\+xml"', htmlstring):
-        feed_urls.append(feed_url)
-    # try to find Atom URL
+    # parse the page to look for feeds
+    tree = load_html(htmlstring)
+    if tree is not None:
+        for linkelem in tree.xpath('//link[@rel="alternate"]'):
+            # discard elements without links
+            if not 'href' in linkelem.attrib:
+                continue
+            # most common case
+            if 'type' in linkelem.attrib and linkelem.get('type') in FEED_TYPES:
+                feed_urls.append(linkelem.get('href'))
+            # websites like geo.de
+            elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
+                feed_urls.append(linkelem.get('href'))
+    # backup
     if len(feed_urls) == 0:
-        for feed_url in re.findall(r'<link[^<>]+?type="application/atom\+xml"[^<>]+?href="(.+?)"', htmlstring):
-            feed_urls.append(feed_url)
-        for feed_url in re.findall(r'<link[^<>]+?href="(.+?)"[^<>]+?type="application/atom\+xml"', htmlstring):
-            feed_urls.append(feed_url)
+        for linkelem in tree.xpath('//a[@href]'):
+            if linkelem.get('href')[-4:].lower() in ('.rss', '.rdf', '.xml', '.atom'):
+                feed_urls.append(linkelem.get('href'))
+            elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
+                feed_urls.append(linkelem.get('href'))
     # refine
     output_urls = []
-    for link in sorted(list(set(feed_urls))):
+    for link in sorted(set(feed_urls)):
         link = fix_relative_urls(baseurl, link)
         link = clean_url(link)
         if '"' in link:
