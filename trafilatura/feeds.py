@@ -72,20 +72,22 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
 def determine_feed(htmlstring, baseurl, reference):
     '''Try to extract the feed URL from the home page.
        Adapted from http://www.aaronsw.com/2002/feedfinder/'''
-    feed_urls = []
     # parse the page to look for feeds
     tree = load_html(htmlstring)
-    if tree is not None:
-        for linkelem in tree.xpath('//link[@rel="alternate"]'):
-            # discard elements without links
-            if not 'href' in linkelem.attrib:
-                continue
-            # most common case
-            if 'type' in linkelem.attrib and linkelem.get('type') in FEED_TYPES:
-                feed_urls.append(linkelem.get('href'))
-            # websites like geo.de
-            elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
-                feed_urls.append(linkelem.get('href'))
+    # safeguard
+    if tree is None:
+        return []
+    feed_urls = []
+    for linkelem in tree.xpath('//link[@rel="alternate"]'):
+        # discard elements without links
+        if not 'href' in linkelem.attrib:
+            continue
+        # most common case
+        if 'type' in linkelem.attrib and linkelem.get('type') in FEED_TYPES:
+            feed_urls.append(linkelem.get('href'))
+        # websites like geo.de
+        elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
+            feed_urls.append(linkelem.get('href'))
     # backup
     if len(feed_urls) == 0:
         for linkelem in tree.xpath('//a[@href]'):
