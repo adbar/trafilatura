@@ -60,7 +60,7 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             feed_links.append(item)
     # refine
     output_links = handle_link_list(feed_links, domainname, baseurl, target_lang)
-    output_links = [l for l in output_links if l != reference]
+    output_links = [l for l in output_links if l != reference and l.count('/') > 2]
     # log result
     if feed_links:
         LOGGER.debug('Links found: %s of which %s valid', len(feed_links), len(output_links))
@@ -98,11 +98,9 @@ def determine_feed(htmlstring, baseurl, reference):
     for link in sorted(set(feed_urls)):
         link = fix_relative_urls(baseurl, link)
         link = clean_url(link)
-        if '"' in link:
-            link = link.split('"')[0]
         if link == reference or validate_url(link)[0] is False:
             continue
-        if 'comments' in link:
+        if re.search(r'\bcomments\b', link): # no comment feed
             continue
         output_urls.append(link)
     # log result
