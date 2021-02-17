@@ -32,6 +32,11 @@ JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 URL_COMP_CHECK = re.compile(r'https?://|/')
 
+METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author'} # twitter:creator
+METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title'}
+METANAME_DESCRIPTION = {'description', 'dc.description', 'dcterms.description', 'dc:description', 'sailthru.description', 'twitter:description'}
+METANAME_PUBLISHER = {'copyright', 'dc.publisher', 'dcterms.publisher', 'publisher'}
+
 
 def normalize_json(inputstring):
     'Normalize unicode strings and trim the output'
@@ -134,7 +139,7 @@ def examine_meta(tree):
     if all((title, author, url, description, site_name)):  # if they are all defined
         metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'] = title, author, url, description, site_name
         return metadata
-    tags = []
+    tags, backup_sitename = [], None
     # skim through meta tags
     for elem in tree.iterfind('.//head/meta[@content]'):
         # content
@@ -151,27 +156,24 @@ def examine_meta(tree):
             if elem.get('property') == 'article:tag':
                 tags.append(content_attr)
             elif elem.get('property') in ('author', 'article:author'):
-                if author is None:
-                    author = content_attr
+                author = author or content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
             # author
-            if name_attr in ('author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author'):  # twitter:creator
-                if author is None:
-                    author = content_attr
+            if name_attr in METANAME_AUTHOR:
+                author = author or content_attr
             # title
-            elif name_attr in ('title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title'):
-                if title is None:
-                    title = content_attr
+            elif name_attr in METANAME_TITLE:
+                title = title or content_attr
             # description
-            elif name_attr in ('description', 'dc.description', 'dcterms.description', 'dc:description', 'sailthru.description', 'twitter:description'):
-                if description is None:
-                    description = content_attr
+            elif name_attr in METANAME_DESCRIPTION:
+                description = description or content_attr
             # site name
-            elif name_attr in ('publisher', 'dc.publisher', 'dcterms.publisher', 'twitter:site', 'application-name') or 'twitter:app:name' in elem.get('name'):
-                if site_name is None:
-                    site_name = content_attr
+            elif name_attr in METANAME_PUBLISHER:
+                site_name = site_name or content_attr
+            elif name_attr in ('twitter:site', 'application-name') or 'twitter:app:name' in elem.get('name'):
+                backup_sitename = content_attr
             # url
             elif name_attr == 'twitter:url':
                 if url is None and validate_url(content_attr)[0] is True:
@@ -181,22 +183,23 @@ def examine_meta(tree):
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
-                if author is None:
-                    author = content_attr
+                author = author or content_attr
             elif elem.get('itemprop') == 'description':
-                if description is None:
-                    description = content_attr
+                description = description or content_attr
             elif elem.get('itemprop') == 'headline':
-                if title is None:
-                    title = content_attr
+                title = title or content_attr
             # to verify:
             #elif elem.get('itemprop') == 'name':
             #    if title is None:
             #        title = elem.get('content')
         # other types
         else:
-            if not 'charset' in elem.attrib and not 'http-equiv' in elem.attrib and not 'property' in elem.attrib:
-                LOGGER.debug(html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+            if not any(key in elem.attrib for key in ('charset', 'http-equiv', 'property')):
+                LOGGER.debug('unknown attribute: %s', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+    # backups
+    if site_name is None and backup_sitename is not None:
+        site_name = backup_sitename
+    # copy
     metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'], metadata['tags'] = title, author, url, description, site_name, tags
     return metadata
 

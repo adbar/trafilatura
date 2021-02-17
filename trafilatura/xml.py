@@ -29,6 +29,8 @@ TEI_RELAXNG = None # to be downloaded later if necessary
 
 CONTROL_PARSER = etree.XMLParser(remove_blank_text=True)
 
+TEXTELEMS = {'code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
+
 
 def build_json_output(docmeta):
     '''Build JSON output based on extracted information'''
@@ -233,7 +235,7 @@ def xmltotxt(xmloutput, include_formatting, include_links):
                 returnlist.append('\n')
             continue
         textelement = replace_element_text(element, include_formatting, include_links)
-        if element.tag in ('code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'):
+        if element.tag in TEXTELEMS:
             returnlist.extend(['\n', textelement, '\n'])
         elif element.tag == 'item':
             returnlist.extend(['\n- ', textelement, '\n'])
@@ -291,6 +293,7 @@ def write_fullheader(header, docmeta):
     fingerprint.text = docmeta['fingerprint']
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_bibl = etree.SubElement(sourcedesc, 'bibl')
+    # determination of sigle string
     if docmeta['sitename'] and docmeta['date']:
         sigle = docmeta['sitename'] + ', ' + docmeta['date']
     elif not docmeta['sitename'] and docmeta['date']:
@@ -315,7 +318,7 @@ def write_fullheader(header, docmeta):
     publicationstmt = etree.SubElement(biblfull, 'publicationStmt')
     publication_publisher = etree.SubElement(publicationstmt, 'publisher')
     if docmeta['hostname'] is not None:
-        publisherstring = docmeta['sitename'] + '(' + docmeta['hostname'] + ')'
+        publisherstring = docmeta['sitename'].strip() + ' (' + docmeta['hostname'] + ')'
     else:
         publisherstring = docmeta['sitename']
     publication_publisher.text = publisherstring
