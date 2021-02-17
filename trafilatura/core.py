@@ -259,9 +259,9 @@ def handle_image(element):
     return processed_element
 
 
-def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
-    '''Look for all p-elements, including outside of the determined frame
-       and throughout the document to recover potentially missing text parts'''
+def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
+    '''Look for all previously unconsidered wild elements, including outside of the determined
+       frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Taking all p-elements')
     # prune
     search_tree = discard_unwanted(tree)
@@ -270,7 +270,7 @@ def recover_wild_paragraphs(tree, result_body, potential_tags=TAG_CATALOG, dedup
         etree.strip_tags(search_tree, 'span')
     else:
         etree.strip_tags(search_tree, 'a', 'ref', 'span')
-    processed_elems = [handle_paragraphs(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote')] # 'head', 'list'
+    processed_elems = [handle_textelem(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'div', 'p', 'pre', 'q', 'quote', 'table')]
     result_body.extend(list(filter(None.__ne__, processed_elems)))
     return result_body
 
@@ -281,7 +281,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     # bypass: nested elements
     if element.tag == 'list':
         new_element = handle_lists(element, dedupbool, config)
-    elif element.tag == 'quote':   # + 'code'?
+    elif element.tag == 'quote' or element.tag == 'code':
         new_element = handle_quotes(element)
     elif element.tag == 'head':
         new_element = handle_titles(element)
@@ -297,7 +297,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
         new_element = handle_formatting(element)
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element)
-    elif element.tag == 'graphic':
+    elif element.tag == 'graphic' and 'graphic' in potential_tags:
         new_element = handle_image(element)
     else:
         # other elements (div, ??, ??)
@@ -393,7 +393,7 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
     temp_text = trim(' '.join(result_body.itertext()))
     # try parsing wild <p> elements if nothing found or text too short
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-        result_body = recover_wild_paragraphs(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
+        result_body = recover_wild_text(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     else:
         sure_thing = True
