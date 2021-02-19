@@ -1,6 +1,14 @@
 ## History / Changelog
 
 
+### 0.8.0
+- improved link discovery and handling
+- fixes in metadata extraction, feeds and sitemaps processing
+- breaking change: the `extract` function now reads target format from `output_format` argument only
+- new extraction option: preserve links, CLI options re-ordered
+- more opportunistic backup extraction
+
+
 ### 0.7.0
 - customizable configuration file to parametrize extraction and downloads
 - better handling of feeds and sitemaps

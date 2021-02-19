@@ -32,6 +32,7 @@ extras = {
     'all': [
         'cchardet == 2.1.4; python_version == "3.4"',
         'cchardet >= 2.1.7; python_version > "3.4"',
+        'htmldate[speed]',
         'pycld3 >= 0.20',
     ],
 }
@@ -73,8 +74,7 @@ setup(
     project_urls={
         "Documentation": "https://trafilatura.readthedocs.io",
         "Source": "https://github.com/adbar/trafilatura",
-        "Coverage": "https://codecov.io/github/adbar/trafilatura",
-        "Tracker": "https://github.com/adbar/trafilatura/issues",
+        "Blog": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html",
     },
     author='Adrien Barbaresi',
     author_email='barbaresi@bbaw.de',
@@ -86,8 +86,8 @@ setup(
     install_requires=[
         'chardet == 3.0.4; python_version < "3.6"',
         'chardet >= 3.0.4; python_version >= "3.6"',
-        'courlan >= 0.3.0',
-        'htmldate >= 0.7.3',
+        'courlan >= 0.3.1',
+        'htmldate >= 0.8.0',
         'justext >= 2.2.0',
         'lxml == 4.3.5; python_version == "3.4"',
         'lxml >= 4.6.2; python_version > "3.4"',
