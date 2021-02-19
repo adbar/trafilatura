@@ -8,7 +8,7 @@ Listing a series of settings that are applied module-wide.
 
 import configparser
 
-from multiprocessing import cpu_count
+from os import cpu_count
 from pathlib import Path
 
 from . import __version__
