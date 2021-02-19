@@ -1,6 +1,11 @@
 Tutorial: Gathering a custom web corpus
 =======================================
 
+.. meta::
+    :description lang=en:
+        This how-to explains how to easily build a text collection with Python and the command-line.
+        All steps from web crawling to text extraction are described.
+
 
 Get your system up and running
 ------------------------------
@@ -50,6 +55,10 @@ Most commonly, feeds are made available to provide either summaries or full rend
 Gathering links
 ~~~~~~~~~~~~~~~
 
+
+The following examples use the command-line interface. For more information on the usage with Python please refer to this blog post: `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_.
+
+
 Features
 ^^^^^^^^
 
@@ -57,7 +66,6 @@ Features
 - The ``--list`` option is useful to list URLs prior to processing
 - Links discovery can start from an input file (``-i``) containing a list of sources which will then be processed in parallel
 
-For usage with Python see `core functions documentation <corefunctions.html#link-discovery>`_.
 
 The following examples return lists of links. If ``--list`` is absent the pages that have been found are directly retrieved, processed, and returned in the chosen output format (default: TXT and standard output).
 
@@ -75,6 +83,9 @@ Sitemaps
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list --target-language "de"
 
 
+For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
+
+
 Feeds
 ^^^^^
 
@@ -90,6 +101,10 @@ Feeds
 
 Link filtering
 --------------
+
+
+For more information see also this blog post: `Filtering links to gather texts on the web <https://adrien.barbaresi.eu/blog/link-filtering-courlan-python.html>`_.
+
 
 Filtering with coURLan
 ~~~~~~~~~~~~~~~~~~~~~~

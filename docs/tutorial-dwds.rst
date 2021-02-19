@@ -1,6 +1,11 @@
 Tutorial: DWDS-Korpusdaten reproduzieren
 ========================================
 
+.. meta::
+    :description lang=de:
+        Anhand dieser Anleitung können Sie eine Textsammlung aus Webseiten selbst zusammenstellen.
+        Die benötigten Python-Tools erfordern keine fortgeschrittenen IT-Kenntnisse.
+
 
 Ziel
 ----

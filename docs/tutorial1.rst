@@ -2,6 +2,13 @@ Tutorial: From a list of links to a frequency list
 ==================================================
 
 
+.. meta::
+    :description lang=en:
+        This how-to explains how to easily extract text from HTML web pages and compute
+        a list of the most frequent word forms.
+
+
+
 Get your system up and running
 ------------------------------
 

@@ -36,16 +36,18 @@ Please refer to `this section <usage-cli.html#introduction>`_ for an introductio
 
 .. code-block:: bash
 
-    $ pip install trafilatura # pip3 install on systems where both Python 2 and 3 are installed
+    $ pip install trafilatura # pip3 where applicable
 
 This project is under active development, please make sure you keep it up-to-date to benefit from latest improvements:
 
 .. code-block:: bash
 
-    $ pip install -U trafilatura # to make sure you have the latest version
-    $ pip install -U git+https://github.com/adbar/trafilatura.git # latest available code (see build status above)
+    # to make sure you have the latest version
+    $ pip install -U trafilatura
+    # latest available code base
+    $ pip install -U git+https://github.com/adbar/trafilatura.git
 
-On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `document <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
+On **Mac OS** it can be necessary to install certificates by hand if you get errors like ``[SSL: CERTIFICATE_VERIFY_FAILED]`` while downloading webpages: execute ``pip install certifi`` and perform the post-installation step by clicking on ``/Applications/Python 3.X/Install Certificates.command``. For more information see this `help page on SSL errors <https://stackoverflow.com/questions/27835619/urllib-and-ssl-certificate-verify-failed-error/42334357>`_.
 
 
 Command-line tool
@@ -65,7 +67,7 @@ A few additional libraries can be installed for extended functionality and faste
     $ pip install cchardet # speed-up only
     $ pip install trafilatura[all] # all additional functionality
 
-For extended date extraction you can use ``pip install htmldate[all]``.
+For improved date extraction you can use ``pip install htmldate[speed]``.
 
 You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 

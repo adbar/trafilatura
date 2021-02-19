@@ -1,6 +1,11 @@
 On the command-line
 ===================
 
+.. meta::
+    :description lang=en:
+        This tutorial focuses on text extraction from HTML web pages without writing code.
+        Bulk parallel processing and data mining are also described.
+
 
 Introduction
 ------------
@@ -115,7 +120,8 @@ URL inspection prior to download and processing
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "https://www.sitemaps.org/de"
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "protocol"
 
-For more information see `tutorial on link filtering <tutorial0.html#link-filtering>`_.
+
+For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial0.html#link-filtering>`_.
 
 
 Extraction settings
@@ -207,8 +213,9 @@ Extraction:
 Format:
   Selection of the output format
 
-  -out, --output-format {txt,csv,json,xml,xmltei}
-                        determine output format
+  -out, --output-format
+                        determine output format, possible choices:
+                        txt, csv, json, xml, xmltei
   --csv                 CSV output
   --json                JSON output
   --xml                 XML output

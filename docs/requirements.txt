@@ -1,2 +1,3 @@
 # without version specifier
 trafilatura
+pydata-sphinx-theme

@@ -1,5 +1,10 @@
-Welcome to Trafilatura's documentation!
-=======================================
+trafilatura: Web scraping tool for text discovery and retrieval
+===============================================================
+
+.. meta::
+    :description lang=en:
+        Documentation page for the Web scraping library and command-line tool. Easy text discovery and
+        extraction of main content, metadata, and comments. Output as TXT, CSV, JSON, XML and XML-TEI.
 
 .. image:: https://img.shields.io/pypi/v/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
@@ -78,7 +83,7 @@ For reproducible results see the `evaluation page <evaluation.html>`_ and the `e
 External evaluations:
 ^^^^^^^^^^^^^^^^^^^^^
 
-- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ as well as in `another independant evaluation on the same data <https://github.com/currentsapi/extractnet/tree/ce6df888eda4c96d1ba48d5c4e9d9240a0ed3f7f>`_.
 - Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French).
 
 

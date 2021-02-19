@@ -1,6 +1,12 @@
 Evaluation
 ==========
 
+.. meta::
+    :description lang=en:
+        This benchmark tests how Python tools work on extraction of text from HTML code. Trafilatura
+        performs significantly better than the other comparable libraries in internal and external
+        evaluations.
+
 
 Although text is ubiquitous on the Web, extracting information from web pages can prove to be difficult. Should the tooling be adapted to particular news outlets or blogs that are targeted (which often amounts to the development of web scraping tools) or should the extraction be as generic as possible to provide opportunistic ways of gathering information?
 

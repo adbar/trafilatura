@@ -21,8 +21,10 @@ import trafilatura
 # -- Project information -----------------------------------------------------
 
 project = 'trafilatura'
-copyright = '2021, <a href="https://adrien.barbaresi.eu/">Adrien Barbaresi</a>'
+copyright = '2021, Adrien Barbaresi'
+html_show_sphinx = False
 author = 'Adrien Barbaresi'
+version = trafilatura.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -71,7 +73,7 @@ add_module_names = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'pydata_sphinx_theme' # 'furo' # 'alabaster'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -81,19 +83,38 @@ html_theme = 'alabaster'
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
+
+## pydata options
 html_theme_options = {
-    "description": "Web scraping tool for text discovery and retrieval",
-    "show_powered_by": False,
-    "github_button": False,
+  "github_url": "https://github.com/adbar/trafilatura",
+  "twitter_url": "https://twitter.com/adbarbaresi",
+  "external_links": [
+      {"name": "Blog posts", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
+  ],
+  "google_analytics_id": "G-K3R5QCVDF1",
+#  "show_toc_level": 3,
+}
+
+
+## furo options
+#html_theme_options = {
+#    "announcement": "<em>Important</em> announcement!",
+#}
+
+## alabaster theme
+#html_theme_options = {
+#    "description": "Web scraping tool for text discovery and retrieval",
+#    "show_powered_by": False,
+#    "github_button": False,
 #    "github_user": "adbar",
 #    "github_repo": "trafilatura",
 #    "github_count": True,
-    "github_banner": False,
-    "show_related": False,
-    "sidebar_collapse": True,
+#    "github_banner": False,
+#    "show_related": False,
+#    "sidebar_collapse": True,
 #    "extra_nav_links": {'test': 'https://example.org'},
 #    "note_bg": "#FFF59C",
-}
+#}
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),

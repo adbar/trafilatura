@@ -45,5 +45,4 @@ The following code returns `True` if a document is valid and outputs a message r
     # returns True or an error message
 
 
-For more information see this blog post: `Validating TEI-XML documents with Python <https://adrien.barbaresi.eu/blog/validating-tei-xml-python.html>`_
-
+For more information please refer to this blog post: `Validating TEI-XML documents with Python <https://adrien.barbaresi.eu/blog/validating-tei-xml-python.html>`_

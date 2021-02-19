@@ -39,10 +39,6 @@ Description
 
 *Trafilatura* is a Python package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving parts of the text formatting and page structure. The output can be converted to different formats.
 
-Distinguishing between a whole page and the page's essential parts can help to alleviate many quality problems related to web text processing, by dealing with the noise caused by recurring elements (headers and footers, ads, links/blogroll, etc.).
-
-The extractor aims to be precise enough in order not to  miss texts or to discard valid documents. In addition, it must be robust, but also reasonably fast. With these objectives in mind, Trafilatura is designed to run in production on millions of web documents. It is based on `lxml <http://lxml.de/>`_ as well as `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ as fallback.
-
 
 Features
 ~~~~~~~~
@@ -90,7 +86,7 @@ trafilatura 0.6.0 (+ fallbacks) 0.933      **0.877**  **0.907** **0.904** 8.4x
 
 **External evaluations:**
 
-- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_.
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ as well as in `another independant evaluation on the same data <https://github.com/currentsapi/extractnet/tree/ce6df888eda4c96d1ba48d5c4e9d9240a0ed3f7f>`_.
 - Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French).
 
 
@@ -109,20 +105,9 @@ For further information please refer to the `documentation <https://trafilatura.
 License
 -------
 
-*trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
+*Trafilatura* is distributed under the `GNU General Public License v3.0 <https://github.com/adbar/trafilatura/blob/master/LICENSE>`_. If you wish to redistribute this library but feel bounded by the license conditions please try interacting `at arms length <https://www.gnu.org/licenses/gpl-faq.html#GPLInProprietarySystem>`_, `multi-licensing <https://en.wikipedia.org/wiki/Multi-licensing>`_ with `compatible licenses <https://en.wikipedia.org/wiki/GNU_General_Public_License#Compatibility_and_multi-licensing>`_, or `contacting me <https://github.com/adbar/trafilatura#author>`_.
 
 See also `GPL and free software licensing: What's in it for business? <https://www.techrepublic.com/blog/cio-insights/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
-
-
-Roadmap
-~~~~~~~
-
--  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
--  [-] URL lists and document management
--  [-] Configuration and extraction parameters
--  [-] Graphical user interface
--  [ ] Interaction with web archives (notably WARC format)
--  [ ] Integration of natural language processing tools
 
 
 Contributing

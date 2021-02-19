@@ -1,6 +1,12 @@
 With Python
 ===========
 
+.. meta::
+    :description lang=en:
+        This tutorial focuses on text extraction from web pages with Python code snippets.
+        Data mining with this library encompasses HTML parsing and language identification.
+
+
 
 The Python programming language
 -------------------------------
@@ -122,6 +128,40 @@ The standard `settings file <https://github.com/adbar/trafilatura/blob/master/tr
 For further configuration `clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_, edit ``settings.py`` and reinstall the package locally (``pip install -U .`` in the home directory of the cloned repository).
 
 
+Feeds
+^^^^^
+
+The function ``find_feed_urls`` is a all-in-one utility that attemps to discover the feeds from the homepage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
+
+.. code-block:: python
+
+    >>> from trafilatura import feeds
+    >>> mylist = feeds.find_feed_urls('https://www.theguardian.com/')
+    # https://www.theguardian.com/international/rss has been found
+    >>> mylist
+    ['https://www.theguardian.com/...', '...'] # and so on
+    # use a feed URL directly
+    >>> mylist = feeds.find_feed_urls('https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml')
+    >>> mylist is not []
+    True # it's not empty
+
+An optional argument ``target_lang`` makes it possible to filter links according to their expected target language. A series of heuristics are applied on the link path and parameters to try to discard unwanted URLs, thus saving processing time and download bandwidth.
+
+.. code-block:: python
+
+    >>> from trafilatura import feeds
+    >>> mylist = feeds.find_feed_urls('https://www.un.org/en/rss.xml', target_lang='en')
+    >>> mylist is not []
+    True # links found as expected
+    >>> mylist = feeds.find_feed_urls('https://www.un.org/en/rss.xml', target_lang='ja')
+    >>> mylist
+    [] # target_lang set to Japanese, the English links were discarded this time
+
+
+For more information about feeds and web crawling see this blog post: `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_.
+
+
+
 Extraction settings
 -------------------
 
@@ -157,4 +197,3 @@ Among metadata extraction, dates are handled by an external module: `htmldate <h
     >>> from trafilatura import extract
     # pass the new parameters as dict, with a previously downloaded document
     >>> extract(downloaded, output_format="xml", date_extraction_params={"extensive_search": True, "max_date": "2018-07-01"})
-
