@@ -169,7 +169,8 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                         etree.strip_tags(child, item.tag)
                 if child.tag == 'hi':
                     newsub.set('rend', child.get('rend'))
-                elif child.tag == 'ref':
+                elif child.tag == 'ref' and child.get('target') is not None:
+                    # todo: some missing link attributes
                     newsub.set('target', child.get('target'))
             # handle line breaks
             elif child.tag == 'lb':
