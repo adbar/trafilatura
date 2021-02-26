@@ -35,13 +35,13 @@ from .xpaths import BODY_XPATH, COMMENTS_XPATH
 LOGGER = logging.getLogger(__name__)
 
 
-def handle_titles(element):
+def handle_titles(element, dedupbool, config):
     '''Process head elements (titles)'''
     # maybe needs attention
     if element.tail and re.search(r'\w', element.tail):
         LOGGER.debug('tail in title, stripping: %s', element.tail)
     element.tail = None
-    title = process_node(element)
+    title = process_node(element, dedupbool, config)
     if title is not None and title.text and re.search(r'\w', title.text):
         return title
     return None
@@ -67,7 +67,7 @@ def handle_lists(element, dedupbool, config):
     for child in element.iter('item'):
         newchildelem = etree.Element('item')
         if len(child) == 0:
-            processed_child = process_node(child)
+            processed_child = process_node(child, dedupbool, config)
             if processed_child is not None:
                 newchildelem.text, newchildelem.tail = processed_child.text, processed_child.tail
                 processed_element.append(newchildelem)
@@ -92,11 +92,11 @@ def handle_lists(element, dedupbool, config):
     return None
 
 
-def handle_quotes(element):
+def handle_quotes(element, dedupbool, config):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
     for child in element.iter():
-        processed_child = process_node(child) # handle_textnode(child, comments_fix=True)
+        processed_child = process_node(child, dedupbool, config) # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
             newsub = etree.SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
@@ -138,7 +138,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     #etree.strip_tags(element, 'p')  # change in precision
     # no children
     if len(element) == 0:
-        processed_element = process_node(element)  # handle_textnode(element, comments_fix=False)
+        processed_element = process_node(element, dedupbool, config)  # handle_textnode(element, comments_fix=False)
         if processed_element is not None:
             return processed_element
         return None
@@ -175,7 +175,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             # handle line breaks
             elif child.tag == 'lb':
                 try:
-                    processed_child.tail = process_node(child).tail
+                    processed_child.tail = process_node(child, dedupbool, config).tail
                 except AttributeError:  # no text
                     pass
             # prepare text
@@ -201,7 +201,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     return None
 
 
-def handle_table(table_elem):
+def handle_table(table_elem, dedupbool, config):
     '''Process single table element'''
     newtable = etree.Element('table')
     newrow = etree.Element('row')
@@ -222,7 +222,7 @@ def handle_table(table_elem):
             #    continue
         elif subelement.tag in ('td', 'th'):
             # process
-            processed_cell = process_node(subelement)
+            processed_cell = process_node(subelement, dedupbool, config)
             if processed_cell is None or processed_cell.text is None or not processed_cell.text:
                 continue
             # define tag
@@ -263,14 +263,14 @@ def handle_image(element):
 def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
-    LOGGER.debug('Taking all p-elements')
+    LOGGER.debug('Recovering wild text elements')
     # prune
     search_tree = discard_unwanted(tree)
     # decide if links are preserved
-    if 'ref' in potential_tags:
-        etree.strip_tags(search_tree, 'span')
-    else:
+    if not 'ref' in potential_tags:
         etree.strip_tags(search_tree, 'a', 'ref', 'span')
+    else:
+        etree.strip_tags(search_tree, 'span')
     processed_elems = [handle_textelem(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'div', 'p', 'pre', 'q', 'quote', 'table')]
     result_body.extend(list(filter(None.__ne__, processed_elems)))
     return result_body
@@ -283,21 +283,21 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     if element.tag == 'list':
         new_element = handle_lists(element, dedupbool, config)
     elif element.tag == 'quote' or element.tag == 'code':
-        new_element = handle_quotes(element)
+        new_element = handle_quotes(element, dedupbool, config)
     elif element.tag == 'head':
-        new_element = handle_titles(element)
+        new_element = handle_titles(element, dedupbool, config)
     elif element.tag == 'p':
         new_element = handle_paragraphs(element, potential_tags, dedupbool, config)
     elif element.tag == 'lb':
         if text_chars_test(element.tail) is True:
-            element = process_node(element)
+            element = process_node(element, dedupbool, config)
             if element is not None:
                 new_element = etree.Element('p')
                 new_element.text = element.tail
-    elif element.tag in ('hi', 'ref'):
-        new_element = handle_formatting(element)
+    elif element.tag in ('hi', 'ref', 'span'):
+        new_element = handle_formatting(element) # process_node(element, dedupbool, config)
     elif element.tag == 'table' and 'table' in potential_tags:
-        new_element = handle_table(element)
+        new_element = handle_table(element, dedupbool, config)
     elif element.tag == 'graphic' and 'graphic' in potential_tags:
         new_element = handle_image(element)
     else:
@@ -373,12 +373,13 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
         # no paragraphs containing text
         if not subtree.xpath('//p//text()'):
             potential_tags.add('div')
-        if 'ref' in potential_tags:
+            #potential_tags.add('span')
+        if 'ref' not in potential_tags:
+            etree.strip_tags(subtree, 'ref')
+        if 'span' not in potential_tags:
             etree.strip_tags(subtree, 'span')
-        else:
-            etree.strip_tags(subtree, 'ref', 'span') # 'a',
         LOGGER.debug(sorted(potential_tags))
-        # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
+        #etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # extract content
         # list(filter(None.__ne__, processed_elems))
         result_body.extend([e for e in
