@@ -64,6 +64,10 @@ def handle_formatting(element):
 def handle_lists(element, dedupbool, config):
     '''Process lists elements'''
     processed_element = etree.Element(element.tag)
+    if element.text is not None:
+        processed_element.text = element.text
+    #if element.tail is not None:
+    #    processed_element.tail = element.text
     for child in element.iter('item'):
         newchildelem = etree.Element('item')
         if len(child) == 0:

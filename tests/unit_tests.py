@@ -29,7 +29,7 @@ except ImportError:
 
 import trafilatura.filters
 import trafilatura.htmlprocessing
-from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
+from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
 from trafilatura.lru import LRUCache
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.metadata import METADATA_LIST
@@ -142,8 +142,8 @@ def test_exotic_tags(xmloutput=False):
     # outputs '012"http://www.w3.org/TR/html4/loose.dtd">\nABC'
     assert 'ABC' in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
-    assert handle_quotes(etree.Element('quote')) is None
-    assert handle_table(etree.Element('table')) is None
+    assert handle_quotes(etree.Element('quote'), False, ZERO_CONFIG) is None
+    assert handle_table(etree.Element('table'), False, ZERO_CONFIG) is None
     # p within p
     element, second = etree.Element('p'), etree.Element('p')
     element.text, second.text = '1st part.', '2nd part.'
@@ -154,6 +154,12 @@ def test_exotic_tags(xmloutput=False):
     third = etree.Element('lb')
     element.append(third)
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
+    # malformed lists (common error)
+    result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
+    assert result.count(b'List item') == 3
+    assert b"Description" in result
+    print(result)
+    assert 1 == 0
 
 
 def test_lrucache():
