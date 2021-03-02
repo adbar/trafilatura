@@ -158,8 +158,6 @@ def test_exotic_tags(xmloutput=False):
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
     assert result.count(b'List item') == 3
     assert b"Description" in result
-    print(result)
-    assert 1 == 0
 
 
 def test_lrucache():
