@@ -104,11 +104,16 @@ Feeds
 -  ``trafilatura --feed "https://www.dwds.de/" --list``
 -  ``trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list``
 
+Youtube tutorial: `Extracting links from web feeds <https://www.youtube.com/watch?v=NW2ISdOx08M&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci&index=2&t=398s>`_
+
+
 Sitemaps
 ^^^^^^^^
 
 -  ``trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list``
 -  ``trafilatura --sitemap "https://www.sitemaps.org/" --list``
+
+Youtube tutorial: `Listing all website contents with sitemaps <https://www.youtube.com/watch?v=uWUyhxciTOs&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci&index=3&t=330s>`_
 
 
 URL inspection prior to download and processing
@@ -126,6 +131,13 @@ For more information on sitemap use and filters for lists of links see this blog
 
 Extraction settings
 -------------------
+
+Choice of HTML elements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+include_links=True + XML/XML-TEI format.
+
++ other includes
 
 Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``--config-file`` option, which overrides the standard settings.
 

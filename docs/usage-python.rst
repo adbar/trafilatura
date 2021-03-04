@@ -19,11 +19,9 @@ Python can be easy to pick up whether you're a first time programmer or you're e
 -  `The Best Python Tutorials (freeCodeCamp) <https://www.freecodecamp.org/news/best-python-tutorial/>`_
 
 
-Usage
------
-
 Quickstart
-^^^^^^^^^^
+----------
+
 
 .. code-block:: python
 
@@ -42,7 +40,7 @@ Quickstart
 
 
 Step-by-step
-^^^^^^^^^^^^
+------------
 
 
 .. code-block:: python
@@ -60,7 +58,7 @@ Step-by-step
 
 The only required argument is the input document (here a downloaded HTML file), the rest is optional.
 
-The inclusion of tables and comments can be deactivated at a function call. The use of a fallback algorithm (currently `jusText <https://github.com/miso-belica/jusText>`_) can also be bypassed in *fast* mode:
+The inclusion of tables and comments can be deactivated at a function call. The use of fallback algorithms can also be bypassed in *fast* mode:
 
 .. code-block:: python
 
@@ -78,6 +76,9 @@ This values combined probably provide the fastest execution times:
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
 
 
+Customization
+-------------
+
 LXML objects
 ^^^^^^^^^^^^
 
@@ -91,22 +92,15 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
     'Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n'
 
 
-Language identification
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
-
-.. code-block:: python
-
-    >>> result = extract(downloaded, url, target_language='de')
-
-
 Customization
 ^^^^^^^^^^^^^
 
 All currently available options, along with their default values:
 
 ``trafilatura.extract(downloaded, url=None, record_id=None, no_fallback=False, include_comments=True, output_format='txt', csv_output=False, json_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True, include_images=False, include_formatting=False, deduplicate=False, date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=None, settingsfile=None, config=<configparser.ConfigParser object>)``
+
+For more see the `core functions <corefunctions.html>`_ page.
+
 
 The function ``bare_extraction`` can be used to bypass output conversion, it returns Python variables for  metadata (dictionary) as well as main text and comments (both LXML objects).
 
@@ -115,7 +109,6 @@ The function ``bare_extraction`` can be used to bypass output conversion, it ret
     >>> from trafilatura import bare_extraction
     >>> bare_extraction(downloaded)
 
-For more see the `core functions <corefunctions.html>`_ page.
 
 The standard `settings file <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ can be modified. It currently entails variables related to text extraction.
 
@@ -127,6 +120,22 @@ The standard `settings file <https://github.com/adbar/trafilatura/blob/master/tr
 
 For further configuration `clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_, edit ``settings.py`` and reinstall the package locally (``pip install -U .`` in the home directory of the cloned repository).
 
+
+Choice of HTML elements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Including extra elements works best with conversion to XML (``output_format="xml"``) or the ``bare_extraction`` for proficient users. Both ways allow for direct display and manipulation of the elements.
+
+- ``include_formatting=True``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+- ``include_links=True``: Keep link targets (in ``href="..."``)
+- ``include_images=True``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+- ``include_tables=True``: Extract text from HTML ``<table>`` elements.
+
+Only ``include_tables`` is currently activated by default.
+
+
+Navigation
+----------
 
 Feeds
 ^^^^^
@@ -158,7 +167,16 @@ An optional argument ``target_lang`` makes it possible to filter links according
     [] # target_lang set to Japanese, the English links were discarded this time
 
 
-For more information about feeds and web crawling see this blog post: `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_.
+For more information about feeds and web crawling see:
+
+- This blog post: `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_
+- This Youtube tutorial: `Extracting links from ATOM and RSS feeds <https://www.youtube.com/watch?v=NW2ISdOx08M&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci&index=2&t=136s>`_
+
+
+Sitemaps
+^^^^^^^^
+
+- Youtube tutorial: `Learn how to process XML sitemaps to extract all texts present on a website <https://www.youtube.com/watch?v=uWUyhxciTOs>`_
 
 
 
@@ -180,6 +198,16 @@ Text extraction can be parametrized by providing a custom configuration file (th
     >>> extract(downloaded, config=newconfig)
     # provide a file name directly (can be slower)
     >>> extract(downloaded, settingsfile="myfile.cfg")
+
+
+Language identification
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
+
+.. code-block:: python
+
+    >>> result = extract(downloaded, url, target_language='de')
 
 
 Date extraction

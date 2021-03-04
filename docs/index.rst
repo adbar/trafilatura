@@ -83,24 +83,16 @@ For reproducible results see the `evaluation page <evaluation.html>`_ and the `e
 External evaluations:
 ^^^^^^^^^^^^^^^^^^^^^
 
-- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ as well as in `another independant evaluation on the same data <https://github.com/currentsapi/extractnet/tree/ce6df888eda4c96d1ba48d5c4e9d9240a0ed3f7f>`_.
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ as well as in `another independant evaluation on the same data <https://github.com/currentsapi/extractnet>`_.
 - Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French).
 
 
-Installation
-------------
+In a nutshell
+-------------
 
-Primary method is with Python package manager: ``pip install --upgrade trafilatura``.
+Primary installation method is with a Python package manager: ``pip install trafilatura``. See `installation documentation <installation.html>`_.
 
-For more details please read the `installation documentation <installation.html>`_.
-
-
-Usage
------
-
-With Python or on the command-line.
-
-In a nutshell, with Python:
+With Python:
 
 .. code-block:: python
 
@@ -117,6 +109,11 @@ On the command-line:
     # outputs main content and comments as plain text ...
 
 For more information please refer to `usage documentation <usage.html>`_ and `tutorials <tutorials.html>`_.
+
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8GkiOM17t0Q" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 License

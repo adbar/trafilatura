@@ -86,7 +86,7 @@ trafilatura 0.6.0 (+ fallbacks) 0.933      **0.877**  **0.907** **0.904** 8.4x
 
 **External evaluations:**
 
-- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ as well as in `another independant evaluation on the same data <https://github.com/currentsapi/extractnet/tree/ce6df888eda4c96d1ba48d5c4e9d9240a0ed3f7f>`_.
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ as well as in `another independant evaluation on the same data <https://github.com/currentsapi/extractnet>`_.
 - Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French).
 
 
@@ -100,6 +100,10 @@ For further information please refer to the `documentation <https://trafilatura.
 - `Core Python functions <https://trafilatura.readthedocs.io/en/latest/corefunctions.html>`_
 - `Tutorials <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_
 - `Evaluation <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_
+
+For video tutorials see this Youtube playlist:
+
+- `Web scraping how-tos and tutorials <https://www.youtube.com/watch?v=8GkiOM17t0Q&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci>`_
 
 
 License
