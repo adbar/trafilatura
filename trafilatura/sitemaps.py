@@ -5,6 +5,7 @@ Deriving link info from sitemaps.
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
+
 import logging
 import re
 # import urllib.robotparser # Python >= 3.8
@@ -45,13 +46,17 @@ def sitemap_search(url, target_lang=None):
     if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
         sitemapurl = url
     else:
-        sitemapurl = url.rstrip('/') + '/sitemap.xml'
+        sitemapurl = baseurl + '/sitemap.xml'
     sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang)
     if sitemapurls == [] and len(linklist) > 0:
         return linklist
     # try sitemaps in robots.txt file if nothing has been found
     if sitemapurls == [] and linklist == []:
         sitemapurls = find_robots_sitemaps(url, baseurl)
+    # try additional URLs just in case
+    if sitemapurls == []:
+        recovery = ['sitemap.xml.gz', 'sitemap', 'sitemap_index.xml', 'sitemap_news.xml']
+        sitemapurls = [baseurl + r for r in recovery]
     # iterate through nested sitemaps and results
     i = 1
     while sitemapurls:
