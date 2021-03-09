@@ -374,8 +374,9 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
         # skip if empty tree
         if len(subtree) == 0:
             continue
-        # no paragraphs containing text
-        if not subtree.xpath('//p//text()'):
+        # no paragraphs containing text, or not enough
+        ptest = subtree.xpath('//p//text()')
+        if not ptest or len(''.join(ptest)) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*2:
             potential_tags.add('div')
             #potential_tags.add('span')
         if 'ref' not in potential_tags:
@@ -478,7 +479,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_algo > 2*len_text:
         algo_flag = True
-    elif not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    elif not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*2:
         algo_flag = True  # borderline case
     else:
         LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)

@@ -24,7 +24,8 @@ BODY_XPATH = [
     contains(@class, "article-body") or contains(@id, "article__body") or
     contains(@class, "article__body") or @itemprop="articleBody" or @id="articleContent" or
     contains(@class, "ArticleContent") or contains(@class, "page-content") or
-    contains(@class, "text-content") or contains(@class, "content__body")]''',
+    contains(@class, "text-content") or contains(@class, "content__body") or
+    contains(@id, "body-text") or contains(@class, "body-text")]''',
     './/article',
     """.//*[(self::article or self::div or self::main or self::section)][contains(@class, 'post-bodycopy') or
     contains(@class, 'storycontent') or contains(@class, 'story-content') or
@@ -39,6 +40,7 @@ BODY_XPATH = [
     '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
     contains(@class, "main-content") or contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "page-content")]''',
     './/*[(self::article or self::div or self::section)][starts-with(@class, "main") or starts-with(@id, "main") or starts-with(@role, "main")]|//main',
+
 ]
 # starts-with(@id, "article") or
 # or starts-with(@id, "story") or contains(@class, "story")
@@ -49,6 +51,7 @@ BODY_XPATH = [
 # |//*[(self::article or self::div or self::main or self::section)][contains(@class, "article") or contains(@class, "Article")]
 # or @class="content" or @class="Content"
 # or starts-with(@class, 'post ')
+# './/span[@class=""]', # instagram?
 
 
 COMMENTS_XPATH = [
