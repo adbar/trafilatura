@@ -20,6 +20,7 @@ try:
 except ImportError:
     import chardet
 
+import certifi
 import urllib3
 
 from lxml import etree, html
@@ -36,12 +37,13 @@ RETRY_STRATEGY = urllib3.util.Retry(
     redirect=2, # raise_on_redirect=False,
     connect=0,
     backoff_factor=TIMEOUT*2,
-    status_forcelist=[429, 500, 502, 503, 504],
+    status_forcelist=[429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598],
+    # unofficial: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#Unofficial_codes
 )
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # cert_reqs='CERT_REQUIRED', ca_certs=certifi.where()
-HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT)
-NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, cert_reqs='CERT_NONE', timeout=TIMEOUT)
+HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_certs=certifi.where())
+NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE')
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
@@ -130,6 +132,11 @@ def decode_response(response):
     # force decoding # ascii instead?
     if htmltext is None:
         htmltext = str(resp_content, encoding='utf-8', errors='replace')
+        #try:
+        #    # frequent error
+        #    htmltext = resp_content.decode('cp1252').encode('utf-8')
+        #except UnicodeDecodeError:
+        #    htmltext = str(resp_content, encoding='utf-8', errors='replace')
     return htmltext
 
 
@@ -145,28 +152,14 @@ def determine_headers():
     return headers
 
 
-def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
-    """Fetches page using urllib3 and decodes the response.
-
-    Args:
-        url: URL of the page to fetch.
-        decode: Decode response instead of returning Urllib3 response object (boolean).
-        no_ssl: Don't try to establish a secure connection (to prevent SSLError).
-        config: Pass configuration values for output control.
-
-    Returns:
-        HTML code as string, or Urllib3 response object (headers + body), or empty string in case
-        the result is invalid, or None if there was a problem with the network.
-
-    """
-    # send
+def _send_request(url, no_ssl):
+    'Internal function to send a robustly (SSL) send a request and return its result.'
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         if no_ssl is False:
             response = HTTP_POOL.request('GET', url, headers=determine_headers())
         else:
-            url = re.sub(r'^https', 'http', url)
             response = NO_CERT_POOL.request('GET', url, headers=determine_headers())
     except urllib3.exceptions.NewConnectionError as err:
         LOGGER.error('connection refused: %s %s', url, err)
@@ -176,22 +169,56 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
         return ''  # raise error instead?
     except urllib3.exceptions.TimeoutError as err:
         LOGGER.error('connection timeout: %s %s', url, err)
+    except urllib3.exceptions.SSLError:
+        LOGGER.error('retrying after SSLError: %s', url)
+        return _send_request(url, no_ssl=True)
     except Exception as err:
         logging.error('unknown error: %s %s', url, err) # sys.exc_info()[0]
     else:
-        # safety checks
-        if response.status != 200:
-            LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
-        elif response.data is None or len(response.data) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
-            LOGGER.error('too small/incorrect for URL %s', url)
-            return ''  # raise error instead?
-        elif len(response.data) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
-            LOGGER.error('too large: length %s for URL %s', len(response.data), url)
-            return ''  # raise error instead?
-        else:
-            if decode is True:
-                return decode_response(response.data)
-            return response
+        return response
+    # catchall
+    return None
+
+
+def _handle_response(url, response, decode, config):
+    'Internal function to run safety checks on response result.'
+    if response.status != 200:
+        LOGGER.error('not a 200 response: %s for URL %s', response.status, url)
+    elif response.data is None or len(response.data) < config.getint('DEFAULT', 'MIN_FILE_SIZE'):
+        LOGGER.error('too small/incorrect for URL %s', url)
+        return ''  # raise error instead?
+    elif len(response.data) > config.getint('DEFAULT', 'MAX_FILE_SIZE'):
+        LOGGER.error('too large: length %s for URL %s', len(response.data), url)
+        return ''  # raise error instead?
+    else:
+        if decode is True:
+            return decode_response(response.data)
+        # else: return raw
+        return response
+    # catchall
+    return None
+
+
+def fetch_url(url, no_ssl=False, decode=True, config=DEFAULT_CONFIG):
+    """Fetches page using urllib3 and decodes the response.
+
+    Args:
+        url: URL of the page to fetch.
+        no_ssl: Don't try to establish a secure connection (to prevent SSLError).
+        decode: Decode response instead of returning urllib3 response object (boolean).
+        config: Pass configuration values for output control.
+
+    Returns:
+        HTML code as string, or Urllib3 response object (headers + body), or empty string in case
+        the result is invalid, or None if there was a problem with the network.
+
+    """
+    response = _send_request(url, no_ssl)
+    if response is not None:
+        if response != '':
+            return _handle_response(url, response, decode, config)
+        # return ''
+        return response
     return None
 
 
