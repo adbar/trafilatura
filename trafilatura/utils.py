@@ -26,7 +26,8 @@ import urllib3
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
-from .settings import DEFAULT_CONFIG, TIMEOUT, USER_AGENTS, USER_AGENTS_NUM
+from . import __version__
+from .settings import DEFAULT_CONFIG, TIMEOUT
 
 
 LOGGER = logging.getLogger(__name__)
@@ -44,6 +45,11 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # cert_reqs='CERT_REQUIRED', ca_certs=certifi.where()
 HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_certs=certifi.where())
 NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE')
+
+USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
+DEFAULT_HEADERS = {
+    'User-Agent': USER_AGENT,
+}
 
 # collect_ids=False, default_doctype=False, huge_tree=True,
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
@@ -140,27 +146,38 @@ def decode_response(response):
     return htmltext
 
 
-def determine_headers():
-    'Decide on user-agent string'
-    if USER_AGENTS_NUM == 1:
-        rnumber = 0
-    else:
-        rnumber = randint(0, USER_AGENTS_NUM - 1)
-    headers = {
-    'User-Agent': USER_AGENTS[rnumber],
-    }
+@lru_cache(maxsize=2)
+def _parse_config(config):
+    mystring = config.get('DEFAULT', 'USER_AGENTS')
+    if mystring is not None and mystring != '':
+        return mystring.split(',')
+    return None
+
+
+def _determine_headers(config):
+    'Internal function to decide on user-agent string'
+    headers = DEFAULT_HEADERS
+    if config != DEFAULT_CONFIG:
+        myagents = _parse_config(config)
+        if myagents is not None:
+            rnumber = randint(0, len(myagents) - 1)
+            headers = {
+            'User-Agent': myagents[rnumber],
+            }
+        else:
+            headers = DEFAULT_HEADERS
     return headers
 
 
-def _send_request(url, no_ssl):
+def _send_request(url, no_ssl, config):
     'Internal function to send a robustly (SSL) send a request and return its result.'
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
         # so we can stop downloading as soon as MAX_FILE_SIZE is reached
         if no_ssl is False:
-            response = HTTP_POOL.request('GET', url, headers=determine_headers())
+            response = HTTP_POOL.request('GET', url, headers=_determine_headers(config))
         else:
-            response = NO_CERT_POOL.request('GET', url, headers=determine_headers())
+            response = NO_CERT_POOL.request('GET', url, headers=_determine_headers(config))
     except urllib3.exceptions.NewConnectionError as err:
         LOGGER.error('connection refused: %s %s', url, err)
         return ''  # raise error instead?
@@ -171,7 +188,7 @@ def _send_request(url, no_ssl):
         LOGGER.error('connection timeout: %s %s', url, err)
     except urllib3.exceptions.SSLError:
         LOGGER.error('retrying after SSLError: %s', url)
-        return _send_request(url, no_ssl=True)
+        return _send_request(url, True, config)
     except Exception as err:
         logging.error('unknown error: %s %s', url, err) # sys.exc_info()[0]
     else:
@@ -199,7 +216,7 @@ def _handle_response(url, response, decode, config):
     return None
 
 
-def fetch_url(url, no_ssl=False, decode=True, config=DEFAULT_CONFIG):
+def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     """Fetches page using urllib3 and decodes the response.
 
     Args:
@@ -213,7 +230,7 @@ def fetch_url(url, no_ssl=False, decode=True, config=DEFAULT_CONFIG):
         the result is invalid, or None if there was a problem with the network.
 
     """
-    response = _send_request(url, no_ssl)
+    response = _send_request(url, no_ssl, config)
     if response is not None:
         if response != '':
             return _handle_response(url, response, decode, config)
