@@ -265,8 +265,13 @@ def handle_image(element):
         processed_element.set('alt', element.get('alt'))
     if element.get('title') is not None:
         processed_element.set('title', element.get('title'))
+    # don't return an empty element, just None
     if len(processed_element.attrib) == 0:
         return None
+    # post-processing: URLs
+    if processed_element.get('src') is not None:
+        url = processed_element.get('src')
+        processed_element.set('src', re.sub(r'^//', 'http://', url))
     return processed_element
 
 
