@@ -140,7 +140,8 @@ Navigation
 Feeds
 ^^^^^
 
-The function ``find_feed_urls`` is a all-in-one utility that attemps to discover the feeds from the homepage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
+
+The function ``find_feed_urls`` is a all-in-one utility that attemps to discover the feeds from a webpage if required and/or downloads and parses feeds. It returns the extracted links as list, more precisely as a sorted list of unique links.
 
 .. code-block:: python
 
@@ -154,6 +155,8 @@ The function ``find_feed_urls`` is a all-in-one utility that attemps to discover
     >>> mylist is not []
     True # it's not empty
 
+The links are seamlessly filtered for patterns given by the user, e.g. using ``https://www.un.org/en/`` as argument implies taking all URLs corresponding to this category.
+
 An optional argument ``target_lang`` makes it possible to filter links according to their expected target language. A series of heuristics are applied on the link path and parameters to try to discard unwanted URLs, thus saving processing time and download bandwidth.
 
 .. code-block:: python
@@ -166,7 +169,6 @@ An optional argument ``target_lang`` makes it possible to filter links according
     >>> mylist
     [] # target_lang set to Japanese, the English links were discarded this time
 
-
 For more information about feeds and web crawling see:
 
 - This blog post: `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_
@@ -177,6 +179,15 @@ Sitemaps
 ^^^^^^^^
 
 - Youtube tutorial: `Learn how to process XML sitemaps to extract all texts present on a website <https://www.youtube.com/watch?v=uWUyhxciTOs>`_
+
+.. code-block:: python
+
+    >>> from trafilatura import sitemaps
+    >>> mylinks = sitemaps.sitemap_search('https://www.theguardian.com/')
+    # this function also accepts a target_lang argument
+    >>> mylinks = sitemaps.sitemap_search('https://www.un.org/', target_lang='en')
+
+The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
 
 
 

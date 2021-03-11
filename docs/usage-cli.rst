@@ -125,6 +125,7 @@ URL inspection prior to download and processing
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "https://www.sitemaps.org/de"
     $ trafilatura --sitemap "https://www.sitemaps.org/" --list --url-filter "protocol"
 
+Using a subpart of the site also acts like a filter, for example ``--sitemap "https://www.sitemaps.org/de/"``.
 
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial0.html#link-filtering>`_.
 
@@ -135,9 +136,17 @@ Extraction settings
 Choice of HTML elements
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-include_links=True + XML/XML-TEI format.
+Including extra elements works best with conversion to XML/XML-TEI:
 
-+ other includes
+- ``--formatting``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+- ``--links``: Keep link targets (in ``href="..."``)
+- ``--images``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+
+Only text extracted from HTML ``<table>`` elements is activated by default, ``--notables`` deactivates it.
+
+
+Configuration
+^^^^^^^^^^^^^
 
 Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``--config-file`` option, which overrides the standard settings.
 
@@ -213,8 +222,8 @@ Extraction:
   --links               include links along with their targets
   --nocomments          don't output any comments
   --notables            don't output any table elements
-  --with-metadata       only output those documents with necessary metadata:
-                        title, URL and date (CSV and XML formats)
+  --with-metadata       only output those documents with title, URL and date
+                        (for formats supporting metadata)
   --target-language TARGET_LANGUAGE
                         select a target language (ISO 639-1 codes)
   --deduplicate         filter out duplicate documents and sections
