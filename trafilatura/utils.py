@@ -148,6 +148,7 @@ def decode_response(response):
 
 @lru_cache(maxsize=2)
 def _parse_config(config):
+    'Read and extract user-agent strings from the configuration file.'
     mystring = config.get('DEFAULT', 'USER_AGENTS')
     if mystring is not None and mystring != '':
         return mystring.split(',')
@@ -155,7 +156,7 @@ def _parse_config(config):
 
 
 def _determine_headers(config):
-    'Internal function to decide on user-agent string'
+    'Internal function to decide on user-agent string.'
     headers = DEFAULT_HEADERS
     if config != DEFAULT_CONFIG:
         myagents = _parse_config(config)

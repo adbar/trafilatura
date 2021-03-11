@@ -351,7 +351,6 @@ def test_links():
     with open(os.path.join(resources_dir, 'http_sample.html')) as f:
         teststring = f.read()
     assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
-    print(extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG))
     assert '[link](testlink.html)' in extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '<ref target="testlink.html">link</ref>' in extract(teststring, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
 

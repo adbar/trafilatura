@@ -114,9 +114,9 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
         elem.getparent().remove(elem)
     # handle links
     if include_links is True:
-       stripped_list = MANUALLY_STRIPPED + ['span']
+        stripped_list = MANUALLY_STRIPPED + ['span']
     else:
-       stripped_list = MANUALLY_STRIPPED + ['a', 'span']
+        stripped_list = MANUALLY_STRIPPED + ['a', 'span']
     etree.strip_tags(tree, stripped_list)
     tree = prune_html(tree)
     # convert
