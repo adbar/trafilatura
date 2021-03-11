@@ -30,12 +30,13 @@ def sitemap_search(url, target_lang=None):
     """Look for sitemaps for the given URL and gather links.
 
     Args:
-        url: Homepage or sitemap URL as string.
+        url: Webpage or sitemap URL as string.
+             Triggers URL-based filter if the webpage isn't a homepage.
         target_lang: Define a language to filter URLs based on heuristics
-            (two-letter string, ISO 639-1 format).
+             (two-letter string, ISO 639-1 format).
 
     Returns:
-        The extracted links as list (sorted list of unique links).
+        The extracted links as a list (sorted list of unique links).
 
     """
     domainname, hostmatch = extract_domain(url), HOSTINFO.match(url)
@@ -43,10 +44,15 @@ def sitemap_search(url, target_lang=None):
         LOGGER.warning('Invalid URL: %s', url)
         return []
     baseurl = hostmatch.group(0)
+    urlfilter = None
+    # determine sitemap URL
     if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
         sitemapurl = url
     else:
         sitemapurl = baseurl + '/sitemap.xml'
+        # filter triggered, prepare it
+        if len(url) > len(baseurl) + 2:
+            urlfilter = url
     sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang)
     if sitemapurls == [] and len(linklist) > 0:
         return linklist
@@ -66,6 +72,9 @@ def sitemap_search(url, target_lang=None):
         if i > MAX_SITEMAPS_SEEN:
             break
     linklist = sorted(list(set(linklist)))
+    # filter links
+    if urlfilter is not None:
+        linklist = [l for l in linklist if urlfilter in l]
     LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
     return linklist
 

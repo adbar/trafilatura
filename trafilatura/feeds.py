@@ -114,12 +114,13 @@ def find_feed_urls(url, target_lang=None):
     """Try to find feed URLs.
 
     Args:
-        url: Homepage or feed URL as string.
+        url: Webpage or feed URL as string.
+             Triggers URL-based filter if the webpage isn't a homepage.
         target_lang: Define a language to filter URLs based on heuristics
-            (two-letter string, ISO 639-1 format).
+             (two-letter string, ISO 639-1 format).
 
     Returns:
-        The extracted links as list (sorted list of unique links).
+        The extracted links as a list (sorted list of unique links).
 
     """
     url = url.rstrip('/')
@@ -128,6 +129,7 @@ def find_feed_urls(url, target_lang=None):
         LOGGER.warning('Invalid URL: %s', url)
         return []
     baseurl = hostmatch.group(0)
+    urlfilter = None
     downloaded = fetch_url(url)
     if downloaded is not None:
         # assume it's a feed
@@ -137,9 +139,15 @@ def find_feed_urls(url, target_lang=None):
             for feed in determine_feed(downloaded, baseurl, url):
                 feed_string = fetch_url(feed)
                 feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
+            # filter triggered, prepare it
+            if len(url) > len(baseurl) + 2:
+                urlfilter = url
         # return links found
         if len(feed_links) > 0:
             feed_links = sorted(list(set(feed_links)))
+            # filter links
+            if urlfilter is not None:
+                linklist = [l for l in linklist if urlfilter in l]
             LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
             return feed_links
     else:
@@ -150,6 +158,10 @@ def find_feed_urls(url, target_lang=None):
         downloaded = fetch_url(url)
         if downloaded is not None:
             feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
+            feed_links = sorted(list(set(feed_links)))
+            # filter links
+            if urlfilter is not None:
+                feed_links = [l for l in feed_links if urlfilter in l]
             LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
             return feed_links
         LOGGER.warning('Could not download web page: %s', url)
