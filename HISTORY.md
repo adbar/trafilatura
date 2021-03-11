@@ -1,6 +1,12 @@
 ## History / Changelog
 
 
+### 0.8.1
+- extraction trade-off: slightly better recall
+- code robustness: requests, configuration and navigation
+- bugfixes: image data extraction
+
+
 ### 0.8.0
 - improved link discovery and handling
 - fixes in metadata extraction, feeds and sitemaps processing
