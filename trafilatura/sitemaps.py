@@ -25,6 +25,8 @@ XHTML_REGEX = re.compile(r'(?<=<xhtml:link).+?(?=/>)', re.DOTALL)
 HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
 WHITELISTED_PLATFORMS = re.compile(r'(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.')
 
+GUESSES = ['sitemap.xml.gz', 'sitemap', 'sitemap_index.xml', 'sitemap_news.xml']
+
 
 def sitemap_search(url, target_lang=None):
     """Look for sitemaps for the given URL and gather links.
@@ -59,10 +61,9 @@ def sitemap_search(url, target_lang=None):
     # try sitemaps in robots.txt file if nothing has been found
     if sitemapurls == [] and linklist == []:
         sitemapurls = find_robots_sitemaps(url, baseurl)
-    # try additional URLs just in case
-    if sitemapurls == []:
-        recovery = ['sitemap.xml.gz', 'sitemap', 'sitemap_index.xml', 'sitemap_news.xml']
-        sitemapurls = [baseurl + r for r in recovery]
+        # try additional URLs just in case
+        if sitemapurls == []:
+            sitemapurls = [''.join([baseurl, '/', g]) for g in GUESSES]
     # iterate through nested sitemaps and results
     i = 1
     while sitemapurls:
