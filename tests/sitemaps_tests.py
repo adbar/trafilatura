@@ -7,7 +7,7 @@ import os
 import sys
 
 from trafilatura import sitemaps
-from trafilatura.utils import decode_response, fix_relative_urls
+from trafilatura.utils import decode_response, filter_urls, fix_relative_urls
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -74,6 +74,10 @@ def test_extraction():
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is not None
     # TXT links
     assert sitemaps.process_sitemap('https://test.org/sitemap', 'test.org', 'https://test.org/', 'Tralala\nhttps://test.org/1\nhttps://test.org/2') == ([], ['https://test.org/1', 'https://test.org/2'])
+    # unique and sorted URLs
+    urlfilter = 'category'
+    myurls = ['/category/xyz', '/category/abc', '/cat/test', '/category/abc']
+    assert filter_urls(myurls, urlfilter) == ['/category/abc', '/category/xyz']
 
 
 def test_robotstxt():

@@ -10,7 +10,7 @@ import re
 
 from courlan import check_url, clean_url, extract_domain, validate_url
 
-from .utils import load_html, fetch_url, fix_relative_urls, HOSTINFO
+from .utils import load_html, fetch_url, filter_urls, fix_relative_urls, HOSTINFO
 
 LOGGER = logging.getLogger(__name__)
 
@@ -144,10 +144,7 @@ def find_feed_urls(url, target_lang=None):
                 urlfilter = url
         # return links found
         if len(feed_links) > 0:
-            feed_links = sorted(list(set(feed_links)))
-            # filter links
-            if urlfilter is not None:
-                linklist = [l for l in linklist if urlfilter in l]
+            feed_links = filter_urls(feed_links, urlfilter)
             LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
             return feed_links
     else:
@@ -158,10 +155,7 @@ def find_feed_urls(url, target_lang=None):
         downloaded = fetch_url(url)
         if downloaded is not None:
             feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
-            feed_links = sorted(list(set(feed_links)))
-            # filter links
-            if urlfilter is not None:
-                feed_links = [l for l in feed_links if urlfilter in l]
+            feed_links = filter_urls(feed_links, urlfilter)
             LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
             return feed_links
         LOGGER.warning('Could not download web page: %s', url)

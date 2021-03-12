@@ -387,3 +387,12 @@ def fix_relative_urls(baseurl, url):
     else:
         urlfix = url
     return urlfix
+
+
+def filter_urls(linklist, urlfilter):
+    'Return a list of links corresponding to the given substring pattern.'
+    # filter links
+    if urlfilter is not None:
+        linklist = [l for l in linklist if urlfilter in l]
+    return sorted(set(linklist))
+

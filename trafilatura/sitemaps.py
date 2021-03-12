@@ -14,7 +14,7 @@ import re
 from courlan import clean_url, extract_domain, lang_filter
 
 from .settings import MAX_SITEMAPS_SEEN
-from .utils import fetch_url, fix_relative_urls, HOSTINFO
+from .utils import fetch_url, filter_urls, fix_relative_urls, HOSTINFO
 
 
 LOGGER = logging.getLogger(__name__)
@@ -56,6 +56,8 @@ def sitemap_search(url, target_lang=None):
             urlfilter = url
     sitemapurls, linklist = download_and_process_sitemap(sitemapurl, domainname, baseurl, target_lang)
     if sitemapurls == [] and len(linklist) > 0:
+        linklist = filter_urls(linklist, urlfilter)
+        LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
         return linklist
     # try sitemaps in robots.txt file if nothing has been found
     if sitemapurls == [] and linklist == []:
@@ -71,10 +73,7 @@ def sitemap_search(url, target_lang=None):
         i += 1
         if i > MAX_SITEMAPS_SEEN:
             break
-    linklist = sorted(list(set(linklist)))
-    # filter links
-    if urlfilter is not None:
-        linklist = [l for l in linklist if urlfilter in l]
+    linklist = filter_urls(linklist, urlfilter)
     LOGGER.debug('%s sitemap links found for %s', len(linklist), domainname)
     return linklist
 
