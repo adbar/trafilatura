@@ -11,8 +11,7 @@ import re
 # import urllib.robotparser # Python >= 3.8
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
-from courlan import clean_url, extract_domain
-from courlan.filters import lang_filter # next courlan version: usable directly
+from courlan import clean_url, extract_domain, lang_filter
 
 from .settings import MAX_SITEMAPS_SEEN
 from .utils import fetch_url, fix_relative_urls, HOSTINFO
@@ -20,7 +19,7 @@ from .utils import fetch_url, fix_relative_urls, HOSTINFO
 
 LOGGER = logging.getLogger(__name__)
 
-LINK_REGEX = re.compile(r'(?:<loc><!\[CDATA\[).+?(?=\]\]></loc>)|(?:<loc>).+?(?=</loc>)')
+LINK_REGEX = re.compile(r'<loc>(?:.!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>')
 XHTML_REGEX = re.compile(r'(?<=<xhtml:link).+?(?=/>)', re.DOTALL)
 HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
 WHITELISTED_PLATFORMS = re.compile(r'(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.')
@@ -60,7 +59,7 @@ def sitemap_search(url, target_lang=None):
         return linklist
     # try sitemaps in robots.txt file if nothing has been found
     if sitemapurls == [] and linklist == []:
-        sitemapurls = find_robots_sitemaps(url, baseurl)
+        sitemapurls = find_robots_sitemaps(baseurl)
         # try additional URLs just in case
         if sitemapurls == []:
             sitemapurls = [''.join([baseurl, '/', g]) for g in GUESSES]
@@ -88,7 +87,7 @@ def check_sitemap(url, contents):
         url = re.sub(r'\?.*$|#.*$', '', url)
         if re.search(r'\.xml\b', url) and \
             (not isinstance(contents, str) or not contents.startswith('<?xml')):
-            logging.warning('not a valid XML sitemap: %s', url)
+            logging.info('not a valid XML sitemap: %s', url)
             return None
     return contents
 
@@ -109,7 +108,7 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
     contents = check_sitemap(url, pagecontent)
     # safeguard
     if contents is None:
-        logging.warning('not a sitemap: %s', url) # respheaders
+        logging.debug('not a sitemap: %s', url) # respheaders
         return [], []
     # try to extract links from TXT file
     if not contents.startswith('<?xml'):
@@ -139,18 +138,21 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
     # fix and check
     link = fix_relative_urls(baseurl, link)
     # clean and normalize
-    link = clean_url(link) # next courlan version: clean_url(link, target_lang)
+    link = clean_url(link, target_lang)
     if link is not None:
         if lang_filter(link, target_lang) is True:
             newdomain = extract_domain(link)
-            # don't take links from another domain and make an exception for main platforms
-            if newdomain != domainname and not WHITELISTED_PLATFORMS.search(newdomain):
-                LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
-            else:
-                if re.search(r'\.xml$|\.xml[.?#]', link):
-                    state = 'sitemap'
+            if newdomain is not None:
+                # don't take links from another domain and make an exception for main platforms
+                if newdomain != domainname and not WHITELISTED_PLATFORMS.search(newdomain):
+                    LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
                 else:
-                    state = 'link'
+                    if re.search(r'\.xml$|\.xml[.?#]', link):
+                        state = 'sitemap'
+                    else:
+                        state = 'link'
+            else:
+                LOGGER.error("Couldn't extract domain: %s", link)
     return link, state
 
 
@@ -187,11 +189,10 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
     return sitemapurls, linklist
 
 
-def find_robots_sitemaps(url, baseurl):
+def find_robots_sitemaps(baseurl):
     '''Guess the location of the robots.txt file and try to extract
        sitemap URLs from it'''
-    robotsurl = url.rstrip('/') + '/robots.txt'
-    robotstxt = fetch_url(robotsurl)
+    robotstxt = fetch_url(baseurl + '/robots.txt')
     if robotstxt is None:
         return []
     return extract_robots_sitemaps(robotstxt, baseurl)
