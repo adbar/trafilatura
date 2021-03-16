@@ -179,7 +179,10 @@ def replace_element_text(element, include_formatting, include_links):
             element.text = ''.join(['~~', element.text, '~~'])
     # handle links
     if include_links is True and element.tag == 'ref':
-        element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
+        try:
+            element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
+        except TypeError:
+            LOGGER.error('missing link attribute: %s %s', element.text, element.attrib)
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ' '.join([element.text, element.tail])

@@ -173,9 +173,13 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                         etree.strip_tags(child, item.tag)
                 if child.tag == 'hi':
                     newsub.set('rend', child.get('rend'))
-                elif child.tag == 'ref' and child.get('target') is not None:
-                    # todo: some missing link attributes
-                    newsub.set('target', child.get('target'))
+                elif child.tag == 'ref':
+                    newsub.text, newsub.tail = processed_child.text, processed_child.tail
+                    if child.get('target') is not None:
+                        newsub.set('target', child.get('target'))
+                    # shouldn't be here!
+                    elif child.get('href') is not None:
+                        newsub.set('target', child.get('href'))
             # handle line breaks
             elif child.tag == 'lb':
                 try:
@@ -250,14 +254,14 @@ def handle_image(element):
     '''Process image element'''
     # image source
     processed_element = etree.Element(element.tag)
-    if element.get('data-src') is not None and is_image_file(element.get('data-src')):
+    if is_image_file(element.get('data-src')):
         processed_element.set('src', element.get('data-src'))
-    elif element.get('src') is not None and is_image_file(element.get('src')):
+    elif is_image_file(element.get('src')):
         processed_element.set('src', element.get('src'))
     else:
         # take the first corresponding attribute
         for attr in element.attrib:
-            if attr.startswith('data-src') and element.get(attr) is not None and is_image_file(element.get(attr)):
+            if attr.startswith('data-src') and is_image_file(element.get(attr)):
                 processed_element.set('src', element.get(attr))
                 break
     # additional data
