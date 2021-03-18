@@ -177,8 +177,10 @@ def test_meta():
     assert metadata['description'] == 'This is an Open Graph description'
     metadata = extract_metadata('<html><head><meta itemprop="headline" content="Title"/></head><body></body></html>')
     assert metadata['title'] == 'Title'
-    metadata = extract_metadata('')
-    assert metadata is None
+    # catch errors
+    assert extract_metadata('') is None
+    metadata = extract_metadata('<html><title></title></html>')
+    assert metadata['sitename'] is None
 
 
 def test_catstags():
