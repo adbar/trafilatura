@@ -384,8 +384,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
     date_config['url'] = metadata['url']
     try:
         metadata['date'] = find_date(tree, **date_config)
-    # temporary fix for htmldate bug
-    except UnicodeError:
+    # temporary fixes for htmldate bugs # todo: remove later
+    except (TypeError, UnicodeError):
         pass
     # sitename
     if metadata['sitename'] is None:
