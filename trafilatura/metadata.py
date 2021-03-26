@@ -13,7 +13,7 @@ from htmldate import find_date
 from lxml import html
 
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
-from .utils import load_html, trim
+from .utils import line_processing, load_html, trim
 
 
 LOGGER = logging.getLogger(__name__)
@@ -338,7 +338,8 @@ def extract_catstags(metatype, tree):
         element = tree.find('.//head//meta[@property="article:section"]')
         if element is not None and 'content' in element.attrib:
             results.append(element.attrib['content'])
-    return [trim(x) for x in results if x is not None]
+    results = [line_processing(x) for x in results if x is not None]
+    return [x for x in results if x is not None]
 
 
 def extract_metadata(filecontent, default_url=None, date_config=None):
@@ -417,5 +418,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
     for key, value in metadata.items():
         if value is not None and len(value) > 10000:
             metadata[key] = value[:9999] + '…'
+    # remove spaces and control characters
+    for item in metadata:
+        if metadata[item] is not None and isinstance(metadata[item], str):
+            metadata[item] = line_processing(metadata[item])
     # return
     return metadata
