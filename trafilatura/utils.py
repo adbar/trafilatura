@@ -131,7 +131,7 @@ def decode_response(response):
     if guessed_encoding is not None:
         try:
             htmltext = resp_content.decode(guessed_encoding)
-        except UnicodeDecodeError:
+        except (LookupError, UnicodeDecodeError): # VISCII: lookup
             LOGGER.warning('wrong encoding detected: %s', guessed_encoding)
     else:
         LOGGER.error('no encoding detected: %s', guessed_encoding)
