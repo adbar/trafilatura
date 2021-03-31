@@ -95,6 +95,7 @@ def isutf8(data):
 
 def detect_encoding(bytesobject):
     """Read the first chunk of input and return its encoding"""
+    #https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
     if isutf8(bytesobject):
         return 'UTF-8'
