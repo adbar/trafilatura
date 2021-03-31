@@ -19,7 +19,7 @@ from .utils import fetch_url, filter_urls, fix_relative_urls, HOSTINFO
 
 LOGGER = logging.getLogger(__name__)
 
-LINK_REGEX = re.compile(r'<loc>(?:.!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>')
+LINK_REGEX = re.compile(r'<loc>(<!\[CDATA\[)?(http.+?)(\]\]>)?</loc>')
 XHTML_REGEX = re.compile(r'<xhtml:link.+?>', re.DOTALL)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(r'(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.')
@@ -85,7 +85,7 @@ def check_sitemap(url, contents):
         # strip query and fragments
         url = re.sub(r'\?.*$|#.*$', '', url)
         if re.search(r'\.xml\b', url) and \
-            (not isinstance(contents, str) or not contents.startswith('<?xml')):
+            (not isinstance(contents, str) or not re.match('<\?xml|<sitemap|<urlset', contents)):
             LOGGER.info('not a valid XML sitemap: %s', url)
             return None
     return contents
@@ -110,7 +110,7 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
         LOGGER.debug('not a sitemap: %s', url) # respheaders
         return [], []
     # try to extract links from TXT file
-    if not contents.startswith('<?xml'):
+    if not re.match('<\?xml|<sitemap|<urlset', contents):
         sitemapurls, linklist = [], []
         for result in re.findall(r'https?://[^\s\r\n]+', contents):
             link, state = handle_link(result, url, domain, baseurl, target_lang)
@@ -178,8 +178,9 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
     'Extract sitemap links and web page links from a sitemap file.'
     sitemapurls, linklist = [], []
     # extract
-    for link in LINK_REGEX.findall(pagecontent):
-        link, state = handle_link(link, sitemapurl, domainname, baseurl, target_lang)
+    for match in LINK_REGEX.findall(pagecontent):
+        # process middle part of the match tuple
+        link, state = handle_link(match[1], sitemapurl, domainname, baseurl, target_lang)
         if state == 'sitemap':
             sitemapurls.append(link)
         elif state == 'link':
