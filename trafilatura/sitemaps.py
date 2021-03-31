@@ -20,8 +20,8 @@ from .utils import fetch_url, filter_urls, fix_relative_urls, HOSTINFO
 LOGGER = logging.getLogger(__name__)
 
 LINK_REGEX = re.compile(r'<loc>(?:.!\[CDATA\[)?(http.+?)(?:\]\]>)?</loc>')
-XHTML_REGEX = re.compile(r'(?<=<xhtml:link).+?(?=/>)', re.DOTALL)
-HREFLANG_REGEX = re.compile(r"(?<=href=[\"']).+?(?=[\"'])")
+XHTML_REGEX = re.compile(r'<xhtml:link.+?>', re.DOTALL)
+HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(r'(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.')
 
 GUESSES = ['sitemap.xml.gz', 'sitemap', 'sitemap_index.xml', 'sitemap_news.xml']
@@ -86,7 +86,7 @@ def check_sitemap(url, contents):
         url = re.sub(r'\?.*$|#.*$', '', url)
         if re.search(r'\.xml\b', url) and \
             (not isinstance(contents, str) or not contents.startswith('<?xml')):
-            logging.info('not a valid XML sitemap: %s', url)
+            LOGGER.info('not a valid XML sitemap: %s', url)
             return None
     return contents
 
@@ -107,7 +107,7 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
     contents = check_sitemap(url, pagecontent)
     # safeguard
     if contents is None:
-        logging.debug('not a sitemap: %s', url) # respheaders
+        LOGGER.debug('not a sitemap: %s', url) # respheaders
         return [], []
     # try to extract links from TXT file
     if not contents.startswith('<?xml'):
@@ -165,7 +165,7 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
         if lang_regex.search(attributes):
             match = HREFLANG_REGEX.search(attributes)
             if match:
-                link, state = handle_link(match.group(0), sitemapurl, domainname, baseurl, target_lang)
+                link, state = handle_link(match.group(1), sitemapurl, domainname, baseurl, target_lang)
                 if state == 'sitemap':
                     sitemapurls.append(link)
                 elif state == 'link':
