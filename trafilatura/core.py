@@ -29,7 +29,7 @@ from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
 from .utils import load_html, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
-from .xpaths import BODY_XPATH, COMMENTS_XPATH
+from .xpaths import BODY_XPATH, COMMENTS_XPATH #, REMOVE_COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
@@ -525,11 +525,6 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     else:
         if algo_flag is True:
             body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
-    # second backup
-    #if len_text < MIN_EXTRACTED_SIZE:
-    #     body2, temp_text2, len_text2 = baseline(backup_tree)
-    #     if len_text2 > MIN_EXTRACTED_SIZE:
-    #         body, text, len_text = body2, len_text2, temp_text2
     return body, text, len_text
 
 
@@ -701,14 +696,19 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
+            #for expr in REMOVE_COMMENTS_XPATH:
+            #    for subtree in cleaned_tree.xpath(expr):
+            #        subtree.getparent().remove(subtree)
 
         # extract content
         postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, include_images, include_links, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
-            #if sure_thing is False:
             postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting, include_links, include_images, config)
+            # add baseline as additional fallback
+            if len(postbody) == 0: # or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+                postbody, temp_text, len_text = baseline(filecontent)
         else:
             # rescue: try to use original/dirty tree
             if sure_thing is False and len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
