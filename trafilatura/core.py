@@ -42,7 +42,8 @@ def handle_titles(element, dedupbool, config):
         LOGGER.debug('tail in title, stripping: %s', element.tail)
     element.tail = None
     title = process_node(element, dedupbool, config)
-    if title is not None and title.text and re.search(r'\w', title.text):
+    # and re.search(r'\w', title.text)
+    if title is not None and text_chars_test(title.text) is True:
         return title
     return None
 
@@ -88,11 +89,10 @@ def handle_lists(element, dedupbool, config):
         if newchildelem.text or len(newchildelem) > 0:
             processed_element.append(newchildelem)
         child.tag = 'done'
-    # avoid double tags??
-    if len(processed_element) > 0:  # if it has children
-        # test if it has text
-        if text_chars_test(''.join(processed_element.itertext())) is True:
-            return processed_element
+    # test if it has children and text. Avoid double tags??
+    if len(processed_element) > 0 and \
+        text_chars_test(''.join(processed_element.itertext())) is True:
+        return processed_element
     return None
 
 
@@ -105,12 +105,10 @@ def handle_quotes(element, dedupbool, config):
             newsub = etree.SubElement(processed_element, child.tag)
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
         child.tag = 'done'
-    if len(processed_element) > 0:
+    if len(processed_element) > 0 and \
+        text_chars_test(''.join(processed_element.itertext())) is True:
         # avoid double/nested tags
         etree.strip_tags(processed_element, 'quote')
-        # test if it has text
-        # teststring = ''.join(processed_element.itertext())
-        # if len(teststring) > 0 and re.search(r'[p{L}]', teststring):
         return processed_element
     return None
 
@@ -139,10 +137,10 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
-    #etree.strip_tags(element, 'p')  # change in precision
+    # etree.strip_tags(element, 'p') # change in precision?
     # no children
     if len(element) == 0:
-        processed_element = process_node(element, dedupbool, config)  # handle_textnode(element, comments_fix=False)
+        processed_element = process_node(element, dedupbool, config)
         if processed_element is not None:
             return processed_element
         return None
@@ -231,14 +229,13 @@ def handle_table(table_elem, dedupbool, config):
         elif subelement.tag in ('td', 'th'):
             # process
             processed_cell = process_node(subelement, dedupbool, config)
-            if processed_cell is None or processed_cell.text is None or not processed_cell.text:
+            if processed_cell is None or text_chars_test(processed_cell.text) is False:
                 continue
             # define tag
             newsub = etree.SubElement(newrow, 'cell')
             if subelement.tag == 'th':
                 newsub.set('role', 'head')
             newsub.text = processed_cell.text
-            #newrow.append(newsub)
         # beware of nested tables
         elif subelement.tag == 'table' and i > 1:
             break
@@ -345,9 +342,6 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
             if 0 < len(item) < 100 and len(myelems[item]) >= 3:
                 deletions.extend(myelems[item])
                 #print('backtrack:', item)
-            #elif 20 < len(item) < 100 and len(myelems[item]) >= 3:
-            #    deletions.extend(myelems[item])
-            #    print('backtrack 2:', item)
             #else: # and not re.search(r'[?!.]', text):
                 #print(elem.tag, templist)
     for elem in list(OrderedDict.fromkeys(deletions)):
@@ -399,17 +393,17 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
         if 'span' not in potential_tags:
             etree.strip_tags(subtree, 'span')
         LOGGER.debug(sorted(potential_tags))
-        #etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
+        ##etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # extract content
         # list(filter(None.__ne__, processed_elems))
         result_body.extend([e for e in
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                             if e is not None])
         # remove trailing titles
-        while len(result_body) > 0 and result_body[-1].tag in ('fw', 'head'): # and result_body[-1].tail is None:
+        while len(result_body) > 0 and result_body[-1].tag in ('fw', 'head'):
             result_body[-1].getparent().remove(result_body[-1])
         # exit the loop if the result has children
-        if len(result_body) > 1: # try to change this to 0 or 2
+        if len(result_body) > 1: # for recall put 0
             LOGGER.debug(expr)
             break
     temp_text = trim(' '.join(result_body.itertext()))
@@ -539,7 +533,6 @@ def baseline(filecontent):
         the main text as string, and its length as integer.
 
     """
-
     tree = load_html(filecontent)
     postbody = etree.Element('body')
     if tree is None:

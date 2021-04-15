@@ -17,7 +17,7 @@ except ImportError:
 
 from .lru import LRUCache
 from .settings import LRU_SIZE
-from .utils import trim  #, remove_control_characters
+from .utils import trim
 
 
 LOGGER = logging.getLogger(__name__)
@@ -109,7 +109,8 @@ def textfilter(element):
 
 def text_chars_test(string):
     '''Determine if a string is only composed of spaces and/or control characters'''
-    if string is None or string.isspace():  # or remove_control_characters(string).isspace():
+    # or not re.search(r'\w', string)
+    if string is None or len(string) == 0 or string.isspace():
         return False
     return True
 
