@@ -28,6 +28,8 @@ def test_extraction():
     # fixing partial URLs
     assert fix_relative_urls('https://example.org', 'https://example.org/test.html') == 'https://example.org/test.html'
     assert fix_relative_urls('https://example.org', '/test.html') == 'https://example.org/test.html'
+    assert fix_relative_urls('https://example.org', '//example.org/test.html') == 'https://example.org/test.html'
+    assert fix_relative_urls('http://example.org', '//example.org/test.html') == 'http://example.org/test.html'
     assert fix_relative_urls('https://example.org', 'test.html') == 'https://example.org/test.html'
     assert fix_relative_urls('https://example.org', '../../test.html') == 'https://example.org/test.html'
     # link handling

@@ -378,7 +378,12 @@ def is_image_file(imagesrc):
 
 def fix_relative_urls(baseurl, url):
     'Prepend protocol and host information to relative links.'
-    if url.startswith('/'):
+    if url.startswith('//'):
+        if baseurl.startswith('https'):
+            urlfix = 'https:' + url
+        else:
+            urlfix = 'http:' + url
+    elif url.startswith('/'):
         urlfix = baseurl + url
     # imperfect path handling
     elif url.startswith('.'):
