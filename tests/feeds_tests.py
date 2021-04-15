@@ -54,6 +54,10 @@ def test_feeds_helpers():
     assert len(feeds.determine_feed('<html><meta><link rel="alternate" type="application/rss+xml" title="Feed" href="https://example.org/blog/comments-feed/"/></meta><body/></html>', 'example.org', 'https://example.org')) == 0
     # invalid links
     assert len(feeds.determine_feed('<html><meta><link rel="alternate" href="12345tralala" title="RSS" type="application/rss+xml"></meta><body/></html>', 'example.org', 'https://example.org')) == 0
+    # detecting in <a>-elements
+    assert feeds.determine_feed('<html><body><a href="https://example.org/feed.xml"><body/></html>', 'example.org', 'https://example.org') == ['https://example.org/feed.xml']
+    assert feeds.determine_feed('<html><body><a href="https://example.org/feed.atom"><body/></html>', 'example.org', 'https://example.org') == ['https://example.org/feed.atom']
+    assert feeds.determine_feed('<html><body><a href="https://example.org/rss"><body/></html>', 'example.org', 'https://example.org') == ['https://example.org/rss']
     # feed discovery
     assert feeds.find_feed_urls('http://') == []
     assert feeds.find_feed_urls('https://httpbin.org/status/404') == []

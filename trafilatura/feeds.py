@@ -91,7 +91,9 @@ def determine_feed(htmlstring, baseurl, reference):
     # backup
     if len(feed_urls) == 0:
         for linkelem in tree.xpath('//a[@href]'):
-            if linkelem.get('href')[-4:].lower() in ('.rss', '.rdf', '.xml', '.atom'):
+            if linkelem.get('href')[-4:].lower() in ('.rss', '.rdf', '.xml'):
+                feed_urls.append(linkelem.get('href'))
+            elif linkelem.get('href')[-5:].lower() == '.atom':
                 feed_urls.append(linkelem.get('href'))
             elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
                 feed_urls.append(linkelem.get('href'))
