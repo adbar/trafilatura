@@ -388,6 +388,9 @@ def test_htmlprocessing():
     assert myconverted.xpath('.//ref') and myconverted.xpath('.//graphic') and myconverted.xpath('.//hi[@rend="#t"]') and myconverted.xpath('.//table')
     myconverted = trafilatura.htmlprocessing.tree_cleaning(mydoc, include_tables=False, include_images=True)
     assert myconverted.xpath('.//graphic') and not myconverted.xpath('.//table')
+    mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
+    assert '<head rend="h1">Test headline</head>' in extract(mydoc, output_format='xml', config=ZERO_CONFIG, no_fallback=True)
+    assert '<fw rend="h1" type="header">Test headline</fw>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
 
 
 def test_fetch():

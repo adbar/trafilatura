@@ -192,6 +192,8 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
             #    del elem.attrib['href']
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
+        elem.attrib.clear()
+        elem.set('rend', elem.tag)
         elem.tag = 'head'
     # br → lb
     for elem in tree.iter('br', 'hr'):
