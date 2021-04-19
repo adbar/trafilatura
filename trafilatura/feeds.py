@@ -125,7 +125,6 @@ def find_feed_urls(url, target_lang=None):
         The extracted links as a list (sorted list of unique links).
 
     """
-    url = url.rstrip('/')
     domainname, hostmatch = extract_domain(url), HOSTINFO.match(url)
     if domainname is None or hostmatch is None:
         LOGGER.warning('Invalid URL: %s', url)
