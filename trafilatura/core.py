@@ -121,7 +121,7 @@ def handle_other_elements(element, potential_tags, dedupbool, config):
         return None
     if element.tag == 'div':
         processed_element = handle_textnode(element, comments_fix=False, deduplicate=dedupbool, config=config)
-        if processed_element is not None:
+        if processed_element is not None and text_chars_test(processed_element.text) is True:
             processed_element.attrib.clear()
             # small div-correction # could be moved elsewhere
             if processed_element.tag == 'div':

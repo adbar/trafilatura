@@ -16,6 +16,7 @@ from pathlib import Path
 from lxml import etree
 
 from . import __version__
+from .filters import text_chars_test
 from .utils import sanitize
 
 
@@ -49,10 +50,18 @@ def build_json_output(docmeta):
 
 
 def clean_attributes(tree):
-    '''Remove unnecessary attributes'''
+    '''Remove unnecessary attributes.'''
     for elem in tree.iter():
         if elem.tag not in ('del', 'fw', 'graphic', 'head', 'hi', 'ref'):
             elem.attrib.clear()
+    return tree
+
+
+def remove_empty_elements(tree):
+    '''Remove text elements without text.'''
+    for element in tree.iter('fw', 'head', 'hi', 'item', 'p'):
+        if len(element) == 0 and text_chars_test(element.text) is False and text_chars_test(element.tail) is False:
+            element.getparent().remove(element)
     return tree
 
 
@@ -61,6 +70,8 @@ def build_xml_output(docmeta):
     output = etree.Element('doc')
     output = add_xml_meta(output, docmeta)
     docmeta['body'].tag = 'main'
+    # clean XML tree
+    docmeta['body'] = remove_empty_elements(docmeta['body'])
     output.append(clean_attributes(docmeta['body']))
     if docmeta['commentsbody'] is not None:
         docmeta['commentsbody'].tag = 'comments'
