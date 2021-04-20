@@ -112,15 +112,16 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
     # delete unnecessary elements
     for elem in tree.xpath(sanitized_xpath):
         elem.getparent().remove(elem)
-    # handle links
+    # elements to be stripped
+    stripped_list = MANUALLY_STRIPPED + ['a', 'span']
     if include_links is True:
-        stripped_list = MANUALLY_STRIPPED + ['span']
-    else:
-        stripped_list = MANUALLY_STRIPPED + ['a', 'span']
+        stripped_list.remove('a')
+    if include_images is True:
+        stripped_list.remove('img')
     etree.strip_tags(tree, stripped_list)
     tree = prune_html(tree)
     # convert
-    cleaned_tree = convert_tags(tree, include_formatting, include_links, include_images)
+    cleaned_tree = convert_tags(tree, include_formatting=include_formatting, include_links=include_links, include_images=include_images)
     for elem in cleaned_tree.iter('td', 'th', 'tr'):
         # elem.text, elem.tail = trim(elem.text), trim(elem.tail)
         # finish table conversion
@@ -135,11 +136,6 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
     for tagname in [element.tag for element in set(cleaned_tree.iter())]:
         if tagname not in TEI_VALID_TAGS:
             sanitization_list.append(tagname)
-        #    if tagname in ('article', 'content', 'link', 'main', 'section', 'span'):
-        #        for element in cleaned_tree.iter(tagname):
-        #            merge_with_parent(element)
-        #    else:
-        #    print(tagname)
     etree.strip_tags(cleaned_tree, sanitization_list)
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)

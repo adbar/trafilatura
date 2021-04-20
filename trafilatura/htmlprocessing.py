@@ -183,13 +183,10 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
         for elem in tree.iter('a', 'ref'):
             elem.tag = 'ref'
             # replace href attribute and delete the rest
-            for attribute in elem.attrib:
-                if attribute == 'href':
-                    elem.set('target', elem.get('href'))
-                else:
-                    del elem.attrib[attribute]
-            #if elem.attrib['href']:
-            #    del elem.attrib['href']
+            target = elem.get('href') # defaults to None
+            elem.attrib.clear()
+            if target is not None:
+                elem.set('target', target)
     # head tags + delete attributes
     for elem in tree.iter('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
         elem.attrib.clear()
