@@ -397,8 +397,12 @@ def fix_relative_urls(baseurl, url):
 
 def filter_urls(linklist, urlfilter):
     'Return a list of links corresponding to the given substring pattern.'
+    if urlfilter is None:
+        return sorted(set(linklist))
     # filter links
-    if urlfilter is not None:
-        linklist = [l for l in linklist if urlfilter in l]
-    return sorted(set(linklist))
+    newlist = [l for l in linklist if urlfilter in l]
+    # feedburner option
+    if len(newlist) == 0:
+        newlist = [l for l in linklist if urlfilter in l or 'feedburner' in l or 'feedproxy' in l]
+    return sorted(set(newlist))
 

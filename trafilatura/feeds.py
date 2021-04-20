@@ -31,6 +31,9 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None):
             output_links.append(checked[0])
             if checked[1] != domainname:
                 LOGGER.warning('Diverging domain names: %s %s', domainname, checked[1])
+        # Feedburner/Google feeds
+        elif 'feedburner' in item or 'feedproxy' in item:
+            output_links.append(item)
     return output_links
 
 
