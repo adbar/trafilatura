@@ -1,6 +1,13 @@
 ## History / Changelog
 
 
+### 0.8.2
+- better handling of formatting, links and images, title type as attribute in XML formats
+- more robust sitemaps and feeds processing
+- more accurate extraction
+- further consolidation: code simplified and bugs fixed
+
+
 ### 0.8.1
 - extraction trade-off: slightly better recall
 - code robustness: requests, configuration and navigation
