@@ -114,10 +114,7 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
         sitemapurls, linklist = [], []
         for result in re.findall(r'https?://[^\s\r\n]+', contents):
             link, state = handle_link(result, url, domain, baseurl, target_lang)
-            if state == 'sitemap':
-                sitemapurls.append(link)
-            elif state == 'link':
-                linklist.append(link)
+            sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
         return sitemapurls, linklist
     # process XML sitemap
     if target_lang is not None:
@@ -155,6 +152,16 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
     return link, state
 
 
+def store_sitemap_link(sitemapurls, linklist, link, state):
+    '''Process link according to filtered result: discard it or store it
+       in the appropriate list.'''
+    if state == 'sitemap' and link is not None:
+        sitemapurls.append(link)
+    elif state == 'link' and link is not None:
+        linklist.append(link)
+    return sitemapurls, linklist
+
+
 def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, target_lang):
     'Extract links corresponding to a given target language.'
     if not 'hreflang=' in pagecontent:
@@ -166,10 +173,7 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
             match = HREFLANG_REGEX.search(attributes)
             if match:
                 link, state = handle_link(match.group(1), sitemapurl, domainname, baseurl, target_lang)
-                if state == 'sitemap':
-                    sitemapurls.append(link)
-                elif state == 'link':
-                    linklist.append(link)
+                sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
     LOGGER.debug('%s sitemaps and %s links with hreflang found for %s', len(sitemapurls), len(linklist), sitemapurl)
     return sitemapurls, linklist
 
@@ -181,10 +185,7 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
     for match in LINK_REGEX.findall(pagecontent):
         # process middle part of the match tuple
         link, state = handle_link(match[1], sitemapurl, domainname, baseurl, target_lang)
-        if state == 'sitemap':
-            sitemapurls.append(link)
-        elif state == 'link':
-            linklist.append(link)
+        sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
     LOGGER.debug('%s sitemaps and %s links found for %s', len(sitemapurls), len(linklist), sitemapurl)
     return sitemapurls, linklist
 
@@ -193,15 +194,13 @@ def find_robots_sitemaps(baseurl):
     '''Guess the location of the robots.txt file and try to extract
        sitemap URLs from it'''
     robotstxt = fetch_url(baseurl + '/robots.txt')
-    if robotstxt is None:
-        return []
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 
 def extract_robots_sitemaps(robotstxt, baseurl):
     'Read a robots.txt file and find sitemap links.'
     # sanity check on length (cause: redirections)
-    if len(robotstxt) > 10000:
+    if robotstxt is None or len(robotstxt) > 10000:
         return []
     sitemapurls = []
     # source: https://github.com/python/cpython/blob/3.8/Lib/urllib/robotparser.py
