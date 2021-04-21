@@ -34,6 +34,7 @@ def test_extraction():
     assert fix_relative_urls('https://example.org', '../../test.html') == 'https://example.org/test.html'
     # link handling
     assert sitemaps.handle_link(url, url, domain, baseurl, None) == (url, '0')
+    assert sitemaps.handle_link('https://mydomain', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org', None) == ('https://mydomain', '0')
     assert sitemaps.handle_link('https://mydomain.wordpress.com/1', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org', None) == ('https://mydomain.wordpress.com/1', 'link')
     # safety belts
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is None
@@ -76,6 +77,8 @@ def test_extraction():
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz?value=1', teststring) is not None
     # TXT links
     assert sitemaps.process_sitemap('https://test.org/sitemap', 'test.org', 'https://test.org/', 'Tralala\nhttps://test.org/1\nhttps://test.org/2') == ([], ['https://test.org/1', 'https://test.org/2'])
+    # TXT links + language
+    assert sitemaps.process_sitemap('https://test.org/sitemap', 'test.org', 'https://test.org/', 'Tralala\nhttps://test.org/en/1\nhttps://test.org/en/2\nhttps://test.org/es/3', target_lang='en') == ([], ['https://test.org/en/1', 'https://test.org/en/2'])
     # unique and sorted URLs
     urlfilter = 'category'
     myurls = ['/category/xyz', '/category/abc', '/cat/test', '/category/abc']

@@ -72,11 +72,11 @@ def test_parser():
 def test_climain():
     '''test arguments and main CLI entrypoint'''
     assert os.system('trafilatura --help') == 0  # exit status
+    # piped input
+    assert os.system('echo "<html><body></body></html>" | trafilatura') == 0
     ## doesn't pass remote tests...
     # input directory walking and processing
     # assert os.system('trafilatura --inputdir "tests/resources/"') == 0
-    # piped input
-    # assert os.system('echo "<html><body></body></html>" | trafilatura') == 0
 
 
 def test_input_type():
@@ -124,12 +124,12 @@ def test_sysoutput():
     # test directory counter
     assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir/1'
     # test file writing
-    testargs = ['', '--csv', '-o', '/dev/null/']
+    testargs = ['', '--csv', '-o', '/dev/null/', '-b', '/dev/null/']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     result = 'DADIDA'
     cli_utils.write_result(result, args)
-    # process with no counter
+    # process with backup directory and no counter
     assert cli_utils.process_result('DADIDA', args, None, None, DEFAULT_CONFIG) is None
     # test keeping dir structure
     testargs = ['', '-i', 'myinputdir/', '-o', 'test/', '--keep-dirs']

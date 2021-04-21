@@ -147,7 +147,7 @@ def decode_response(response):
     return htmltext
 
 
-@lru_cache(maxsize=2)
+#@lru_cache(maxsize=2)
 def _parse_config(config):
     'Read and extract user-agent strings from the configuration file.'
     mystring = config.get('DEFAULT', 'USER_AGENTS')
@@ -158,17 +158,14 @@ def _parse_config(config):
 
 def _determine_headers(config):
     'Internal function to decide on user-agent string.'
-    headers = DEFAULT_HEADERS
     if config != DEFAULT_CONFIG:
         myagents = _parse_config(config)
         if myagents is not None:
             rnumber = randint(0, len(myagents) - 1)
-            headers = {
+            return {
             'User-Agent': myagents[rnumber],
             }
-        else:
-            headers = DEFAULT_HEADERS
-    return headers
+    return DEFAULT_HEADERS
 
 
 def _send_request(url, no_ssl, config):

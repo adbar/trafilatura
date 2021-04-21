@@ -33,7 +33,7 @@ from trafilatura.core import baseline, bare_extraction, extract, handle_formatti
 from trafilatura.lru import LRUCache
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.metadata import METADATA_LIST
-from trafilatura.settings import DEFAULT_CONFIG
+from trafilatura.settings import DEFAULT_CONFIG, use_config
 
 from trafilatura import utils, xml
 
@@ -46,6 +46,9 @@ SAMPLE_META = dict.fromkeys(METADATA_LIST)
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
+
+RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
+UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 MOCK_PAGES = {
 'http://exotic_tags': 'exotic_tags.html',
@@ -122,7 +125,8 @@ def test_txttocsv():
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
     assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\t\n')
     # test json
-    assert extract(mystring, output_format='json', config=ZERO_CONFIG).endswith('}')
+    result = extract(mystring, output_format='json', config=ZERO_CONFIG)
+    assert result.endswith('}') and '"fingerprint":' in result
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG)
     assert isinstance(result, dict) and len(result) == 13
@@ -148,11 +152,9 @@ def test_exotic_tags(xmloutput=False):
     element, second = etree.Element('p'), etree.Element('p')
     element.text, second.text = '1st part.', '2nd part.'
     element.append(second)
-    converted = handle_paragraphs(element, ['p'], False, ZERO_CONFIG)
-    assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
     # delete last <lb>
-    third = etree.Element('lb')
-    element.append(third)
+    element.append(etree.Element('lb'))
+    converted = handle_paragraphs(element, ['p'], False, ZERO_CONFIG)
     assert etree.tostring(converted) == b'<p>1st part. 2nd part.</p>'
     # malformed lists (common error)
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
@@ -207,6 +209,7 @@ def test_formatting():
     # simple
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
+    print(my_result)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
@@ -239,6 +242,27 @@ def test_formatting():
     element.tail = 'And a tail.'
     converted = handle_formatting(element)
     assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
+    # empty elements
+    my_document = html.fromstring('<html><body><div>\t\n</div><div>There is text here.</div></body></html>')
+    my_result = extract(my_document, output_format='xml', config=ZERO_CONFIG)
+    assert '<main>\n    <p>There is text here.</p>\n  </main>' in my_result
+    # lists with links
+    my_document = html.fromstring('<html><body><article><ul><li>Number 1</li><li>Number <a href="test.html">2</a></li><li>Number 3</li><p>Test</p></article></body></html>')
+    my_result = extract(my_document, output_format='xml', include_links=True, config=ZERO_CONFIG)
+    assert '<item>Number <ref target="test.html">2</ref></item>' in my_result
+    # (markdown) formatting within <p>-tag
+    my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a>.</p></body></html>')
+    #my_result = extract(my_document, output_format='txt', no_fallback=True, config=ZERO_CONFIG)
+    # todo: handling <del>-element
+    #print(my_result)
+    my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '<hi rend="#t">tt</hi>' in my_result and '<del>deleted</del>' in my_result and '<ref target="test.html">link</ref>.' in my_result
+    # todo: handling spaces
+    #print(my_result)
+    # double <p>-elems
+    #my_document = html.fromstring('<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>')
+    #my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    #print(my_result)
 
 
 def test_baseline():
@@ -263,6 +287,10 @@ def test_filters():
         assert trafilatura.filters.language_filter('Hier ist ein Text auf Deutsch', '', 'en', SAMPLE_META) is True
         # comments
         assert trafilatura.filters.language_filter('Hier ist ein Text.', 'Die Kommentare sind aber etwas länger.', 'de', SAMPLE_META) is False
+        # lang detection on the content
+        doc = html.fromstring('<html><body><article><p>How many ages hence/Shall this our lofty scene be acted over,/In states unborn and accents yet unknown!</p></article></body></html>')
+        assert extract(doc, config=ZERO_CONFIG, target_language='de') is None
+        assert extract(doc, config=ZERO_CONFIG, target_language='en') is not None
     else:
         # no detection
         assert trafilatura.filters.language_filter('Hier ist ein Text.', '', 'en', SAMPLE_META) is False
@@ -287,7 +315,18 @@ def test_filters():
     assert extract(doc, deduplicate=True) is not None
     assert extract(doc, deduplicate=True) is not None
     assert extract(doc, deduplicate=True) is None
+    # paragraph level
+    #lru_test = LRUCache(maxsize=2)
+    #trafilatura.filters.LRU_TEST = lru_test
+    #my_p = etree.fromstring('<p>abc</p>')
+    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    #assert trafilatura.htmlprocessing.process_node(my_p) is not None
+    #assert trafilatura.htmlprocessing.process_node(my_p) is None
     # HTML lang filter
+    # no lang
+    assert check_html_lang(html.fromstring('<html><body></body></html>'), target_language='en') is True
+    # text + lang
     my_p = '<p>In sleep a king, but waking no such matter.</p>'
     assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='en') is not None
     assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='de') is None
@@ -306,10 +345,14 @@ def test_external():
     mydoc = html.fromstring('<html><body><table><th>Test text</th><tr><td>Test</td></tr></table></body></html>')
     _, _, mylen = sanitize_tree(mydoc)
     assert mylen > 0
-    # strip fancy tags
-    mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy></p></body></html>')
-    mytree, _, _ = sanitize_tree(mydoc)
+    # strip fancy tags while including links and images
+    mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>')
+    mytree, _, _ = sanitize_tree(mydoc, include_links=False, include_images=False)
     assert len(mytree) == 1
+    mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>')
+    mytree, _, _ = sanitize_tree(mydoc, include_links=True, include_images=True)
+    myelems = set([element.tag for element in set(mytree.iter())])
+    assert 'graphic' in myelems and 'ref' in myelems
     # test langid
     if LANGID_FLAG is True:
         doc = html.fromstring('<html><body>' + '<p>Non è inglese.</p>'*20 + '</body></html>')
@@ -344,9 +387,13 @@ def test_links():
     '''Test link extraction function'''
     assert handle_textelem(etree.Element('ref'), [], False, DEFAULT_CONFIG) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>')) is not None
+    # link with target
     mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
     assert 'testlink.html' not in extract(mydoc)
-    assert 'testlink.html' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '[Test link text.](testlink.html)' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    # link without target
+    mydoc = html.fromstring('<html><body><p><a>Test link text.</a></p></body></html>')
+    assert '[Test link text.]' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     resources_dir = os.path.join(TEST_DIR, 'resources')
     with open(os.path.join(resources_dir, 'http_sample.html')) as f:
         teststring = f.read()
@@ -362,9 +409,10 @@ def test_tei():
     with open(os.path.join(resources_dir, 'httpbin_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
-    result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
-    assert result is not None
-    assert xml.validate_tei(etree.fromstring(result)) is True
+    result1 = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
+    result2 = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=True)
+    assert result1 is not None and result1 == result2
+    assert xml.validate_tei(etree.fromstring(result1)) is True
     assert xml.validate_tei(etree.fromstring(teststring)) is False
     # test with another file
     with open(os.path.join(resources_dir, 'http_sample.html')) as f:
@@ -399,6 +447,18 @@ def test_fetch():
     assert utils.fetch_url('https://httpbin.org/status/404') is None
     assert utils.decode_response(b'\x1f\x8babcdef') is not None
     assert utils.fetch_url('https://expired.badssl.com/', no_ssl=True) is not None
+    # no decoding
+    response = utils.fetch_url('https://httpbin.org/status/200', decode=False)
+    assert response == ''
+    # response object
+    url = 'https://httpbin.org/encoding/utf8'
+    response = utils._send_request(url, False, DEFAULT_CONFIG)
+    myobject = utils._handle_response(url, response, False, DEFAULT_CONFIG)
+    assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
+    # user-agents rotation
+    assert utils._parse_config(UA_CONFIG) == ['Firefox', 'Chrome']
+    custom = utils._determine_headers(UA_CONFIG)
+    assert custom['User-Agent'] == 'Chrome' or custom['User-Agent'] == 'Firefox'
 
 
 if __name__ == '__main__':

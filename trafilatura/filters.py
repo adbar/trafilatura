@@ -85,11 +85,10 @@ def language_filter(temp_text, temp_comments, target_language, docmeta):
         if LANGID_FLAG is True:
             # comments
             if len(temp_comments) > len(temp_text):
-                langtest = temp_comments
+                result = cld3.get_language(temp_comments)
             # default
             else:
-                langtest = temp_text
-            result = cld3.get_language(langtest)
+                result = cld3.get_language(temp_text)
             if result.language != target_language:
                 LOGGER.warning('wrong language: %s %s %s', result, docmeta['id'], docmeta['url'])
                 return True

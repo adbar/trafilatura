@@ -193,7 +193,8 @@ def replace_element_text(element, include_formatting, include_links):
         try:
             element.text = ''.join(['[', element.text, ']', '(', element.get('target'), ')'])
         except TypeError:
-            LOGGER.error('missing link attribute: %s %s', element.text, element.attrib)
+            LOGGER.warning('missing link attribute: %s %s', element.text, element.attrib)
+            element.text = ''.join(['[', element.text, ']'])
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ' '.join([element.text, element.tail])
