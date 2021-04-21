@@ -137,7 +137,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     '''Process paragraphs (p) elements along with their children,
        trim and clean the content'''
     element.attrib.clear()
-    # etree.strip_tags(element, 'p') # change in precision?
+    # etree.strip_tags(element, 'p') # change in precision due to spaces?
     # no children
     if len(element) == 0:
         processed_element = process_node(element, dedupbool, config)
@@ -152,51 +152,52 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             continue
         processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
         if processed_child is not None:
-            # needing attention!
-            if child.tag == 'p':
-                LOGGER.debug('extra p within p: %s %s %s', child.tag, child.text, child.tail)
+            # todo: needing attention!
+            if processed_child.tag == 'p':
+                LOGGER.debug('extra p within p: %s %s %s', processed_child.tag, processed_child.text, processed_child.tail)
                 if processed_element.text:
-                    processed_element.text += ' ' + trim(child.text)
+                    processed_element.text += ' ' + processed_child.text
                 else:
-                    processed_element.text = trim(child.text)
+                    processed_element.text = processed_child.text
                 continue
             newsub = etree.Element(child.tag)
             # handle formatting
-            if child.tag in ('hi', 'ref'):
+            if processed_child.tag in ('hi', 'ref'):
                 # check depth and clean
-                if len(child) > 0:
-                    for item in child:  # children are lists
+                if len(processed_child) > 0:
+                    for item in processed_child:  # children are lists
                         if text_chars_test(item.text) is True:
                             item.text = ' ' + item.text
-                        etree.strip_tags(child, item.tag)
+                        etree.strip_tags(processed_child, item.tag)
                 if child.tag == 'hi':
                     newsub.set('rend', child.get('rend'))
                 elif child.tag == 'ref':
-                    newsub.text, newsub.tail = processed_child.text, processed_child.tail
                     if child.get('target') is not None:
                         newsub.set('target', child.get('target'))
-                    # shouldn't be here!
+                    # to be removed after thorough testing
                     elif child.get('href') is not None:
                         newsub.set('target', child.get('href'))
+                        #del processed_child.attrib['href']
             # handle line breaks
-            elif child.tag == 'lb':
-                try:
-                    processed_child.tail = process_node(child, dedupbool, config).tail
-                except AttributeError:  # no text
-                    pass
+            #elif processed_child.tag == 'lb':
+            #    try:
+            #        processed_child.tail = process_node(child, dedupbool, config).tail
+            #    except AttributeError:  # no text
+            #        pass
             # prepare text
-            if text_chars_test(processed_child.text) is False:
-                processed_child.text = ''
+            # todo: to be move to handle_textnode()
+            #if text_chars_test(processed_child.text) is False:
+            #    processed_child.text = ''
+            #if text_chars_test(processed_child.tail) is False:
+            #    processed_child.tail = ''
             # if there are already children
-            if len(processed_element) > 0:
-                if text_chars_test(processed_child.tail) is True:
-                    newsub.tail = processed_child.text + processed_child.tail
-                else:
-                    newsub.tail = processed_child.text
-            else:
-                newsub.text, newsub.tail = processed_child.text, processed_child.tail
+            #if len(processed_element) > 0:
+            #    if text_chars_test(processed_child.tail) is True:
+            #        newsub.tail = processed_child.text + processed_child.tail
+            #    else:
+            #        newsub.tail = processed_child.text
+            newsub.text, newsub.tail = processed_child.text, processed_child.tail
             processed_element.append(newsub)
-            child.tag = 'done'
     # finish
     if len(processed_element) > 0 or processed_element.text:
         # clean trailing lb-elements
