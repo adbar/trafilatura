@@ -160,6 +160,13 @@ def test_exotic_tags(xmloutput=False):
     result = etree.tostring(handle_lists(etree.fromstring('<list>Description of the list:<item>List item 1</item><item>List item 2</item><item>List item 3</item></list>'), False, ZERO_CONFIG))
     assert result.count(b'List item') == 3
     assert b"Description" in result
+    # HTML5: <details>
+    htmlstring = '<html><body><article><details><summary>Epcot Center</summary><p>Epcot is a theme park at Walt Disney World Resort featuring exciting attractions, international pavilions, award-winning fireworks and seasonal special events.</p></details></article></body></html>'
+    my_result = extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
+    print(my_result)
+    assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
+    my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
+    assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
 
 
 def test_lrucache():

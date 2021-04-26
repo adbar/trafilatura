@@ -230,6 +230,11 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
     for elem in tree.iter('del', 's', 'strike'):
         elem.tag = 'del'
         elem.set('rend', 'overstrike')
+    # details + summary
+    for elem in tree.iter('details'):
+        elem.tag = 'div'
+        for subelem in elem.iter('summary'):
+            subelem.tag = 'head'
     return tree
 
 
