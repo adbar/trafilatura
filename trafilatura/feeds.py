@@ -8,9 +8,9 @@ Examining feeds and extracting links for further processing.
 import logging
 import re
 
-from courlan import check_url, clean_url, extract_domain, validate_url
+from courlan import check_url, clean_url, validate_url
 
-from .utils import load_html, fetch_url, filter_urls, fix_relative_urls, HOSTINFO
+from .utils import load_html, fetch_url, filter_urls, fix_relative_urls, get_hostinfo
 
 LOGGER = logging.getLogger(__name__)
 
@@ -128,11 +128,10 @@ def find_feed_urls(url, target_lang=None):
         The extracted links as a list (sorted list of unique links).
 
     """
-    domainname, hostmatch = extract_domain(url), HOSTINFO.match(url)
-    if domainname is None or hostmatch is None:
+    domainname, baseurl = get_hostinfo(url)
+    if domainname is None:
         LOGGER.warning('Invalid URL: %s', url)
         return []
-    baseurl = hostmatch.group(0)
     urlfilter = None
     downloaded = fetch_url(url)
     if downloaded is not None:

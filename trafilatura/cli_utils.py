@@ -28,7 +28,7 @@ from .core import extract
 from .filters import content_fingerprint
 from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
-from .utils import fetch_url, HOSTINFO
+from .utils import fetch_url, get_host_and_path
 
 
 LOGGER = logging.getLogger(__name__)
@@ -63,7 +63,7 @@ def load_input_dict(filename, blacklist):
                             continue
                     # segment URL and add to domain dictionary
                     try:
-                        _, hostinfo, urlpath = HOSTINFO.split(url)
+                        hostinfo, urlpath = get_host_and_path(url)
                         inputdict[hostinfo].append(urlpath)
                     except ValueError:
                         LOGGER.warning('Could not parse URL, discarding line: %s', line)
@@ -127,7 +127,7 @@ def convert_inputlist(blacklist, inputlist, url_filter=None, inputdict=None):
     for url in list(OrderedDict.fromkeys(inputlist)):
         # segment URL and add to domain dictionary
         try:
-            _, hostinfo, urlpath = HOSTINFO.split(url)
+            hostinfo, urlpath = get_host_and_path(url)
             inputdict[hostinfo].append(urlpath)
         except ValueError:
             LOGGER.warning('Could not parse URL, discarding: %s', url)

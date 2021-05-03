@@ -14,7 +14,7 @@ import re
 from courlan import clean_url, extract_domain, lang_filter
 
 from .settings import MAX_SITEMAPS_SEEN
-from .utils import fetch_url, filter_urls, fix_relative_urls, HOSTINFO
+from .utils import fetch_url, filter_urls, fix_relative_urls, get_hostinfo
 
 
 LOGGER = logging.getLogger(__name__)
@@ -40,11 +40,10 @@ def sitemap_search(url, target_lang=None):
         The extracted links as a list (sorted list of unique links).
 
     """
-    domainname, hostmatch = extract_domain(url), HOSTINFO.match(url)
-    if domainname is None or hostmatch is None:
+    domainname, baseurl = get_hostinfo(url)
+    if domainname is None:
         LOGGER.warning('Invalid URL: %s', url)
         return []
-    baseurl = hostmatch.group(0)
     urlfilter = None
     # determine sitemap URL
     if url.endswith('.xml') or url.endswith('.gz') or url.endswith('sitemap'):
@@ -85,7 +84,7 @@ def check_sitemap(url, contents):
         # strip query and fragments
         url = re.sub(r'\?.*$|#.*$', '', url)
         if re.search(r'\.xml\b', url) and \
-            (not isinstance(contents, str) or not re.match('<\?xml|<sitemap|<urlset', contents)):
+            (not isinstance(contents, str) or not re.match(r'<\?xml|<sitemap|<urlset', contents)):
             LOGGER.info('not a valid XML sitemap: %s', url)
             return None
     return contents
@@ -110,7 +109,7 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
         LOGGER.debug('not a sitemap: %s', url) # respheaders
         return [], []
     # try to extract links from TXT file
-    if not re.match('<\?xml|<sitemap|<urlset', contents):
+    if not re.match(r'<\?xml|<sitemap|<urlset', contents):
         sitemapurls, linklist = [], []
         for result in re.findall(r'https?://[^\s\r\n]+', contents):
             link, state = handle_link(result, url, domain, baseurl, target_lang)
