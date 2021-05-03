@@ -115,6 +115,8 @@ def add_xml_meta(output, docmeta):
             output.set('categories', ';'.join(docmeta['categories']))
         if docmeta['tags'] is not None:
             output.set('tags', ';'.join(docmeta['tags']))
+        if docmeta['license'] is not None:
+            output.set('license', docmeta['license'])
         if docmeta['id'] is not None:
             output.set('id', docmeta['id'])
         if docmeta['fingerprint'] is not None:
@@ -298,8 +300,14 @@ def write_fullheader(header, docmeta):
         bib_author = etree.SubElement(bib_titlestmt, 'author')
         bib_author.text = docmeta['author']
     publicationstmt_a = etree.SubElement(filedesc, 'publicationStmt')
+    # license, if applicable
+    if docmeta['license'] is not None:
+        availability = etree.SubElement(publicationstmt_a, 'availability')
+        avail_p = etree.SubElement(availability, 'p')
+        avail_p.text = docmeta['license']
     # insert an empty paragraph for conformity
-    publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
+    else:
+        publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
     notesstmt = etree.SubElement(filedesc, 'notesStmt')
     if docmeta['id'] is not None:
         idno = etree.SubElement(notesstmt, 'note', type='id')

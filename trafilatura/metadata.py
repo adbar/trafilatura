@@ -19,7 +19,7 @@ from .utils import line_processing, load_html, trim
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
-METADATA_LIST = ['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id']
+METADATA_LIST = ['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id', 'license']
 
 HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
 
@@ -417,6 +417,11 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
     # tags
     if not metadata['tags']:
         metadata['tags'] = extract_catstags('tags', tree)
+    # license
+    for element in tree.xpath('//a[@rel="license"]',):
+        if element.text is not None:
+            metadata['license'] = trim(element.text)
+            break
     # for safety: length check
     for key, value in metadata.items():
         if value is not None and len(value) > 10000:

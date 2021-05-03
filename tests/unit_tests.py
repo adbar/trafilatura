@@ -115,21 +115,22 @@ def test_input():
 
 def test_txttocsv():
     mymeta = dict.fromkeys(METADATA_LIST)
-    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\n'
+    assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\tNone\n'
     mymeta['title'] = 'Test title'
     mymeta['url'] = 'https://example.org'
     mymeta['hostname'] = 'example.org'
     mymeta['id'] = '1'
-    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\n'
+    mymeta['license'] = 'CC BY-SA'
+    assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\tCC BY-SA\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
-    assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\t\n')
+    assert extract(mystring, output_format='csv', include_comments=False, config=ZERO_CONFIG).endswith('\tNone\n')
     # test json
     result = extract(mystring, output_format='json', config=ZERO_CONFIG)
     assert result.endswith('}') and '"fingerprint":' in result
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG)
-    assert isinstance(result, dict) and len(result) == 13
+    assert isinstance(result, dict) and len(result) == 14
 
 
 def test_exotic_tags(xmloutput=False):
@@ -407,6 +408,9 @@ def test_links():
     assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
     assert '[link](testlink.html)' in extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '<ref target="testlink.html">link</ref>' in extract(teststring, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    # test license link
+    mydoc = html.fromstring('<html><body><p>Test text under <a rel="license" href="">CC BY-SA license</a>.</p></body></html>')
+    assert 'license="CC BY-SA license"' in extract(mydoc, include_links=True, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
 
 
 def test_tei():
@@ -426,7 +430,7 @@ def test_tei():
         teststring = f.read()
     # download, parse and validate simple html file
     result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
-    assert result is not None
+    assert result is not None # and '<p>license</p>' in result
     assert xml.validate_tei(etree.fromstring(result)) is True
     # include ID in metadata
     result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False, record_id='0001')
