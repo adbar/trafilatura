@@ -221,7 +221,7 @@ def process_args(args):
     else:
         # process input URL
         if args.URL:
-            inputdict = convert_inputlist(args, [args.URL], None)
+            inputdict = convert_inputlist(args.blacklist, [args.URL])
             url_processing_pipeline(args, inputdict)  # process single url
         # process input on STDIN
         else:
