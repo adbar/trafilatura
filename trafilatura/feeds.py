@@ -15,6 +15,12 @@ from .utils import load_html, fetch_url, filter_urls, fix_relative_urls, get_hos
 LOGGER = logging.getLogger(__name__)
 
 FEED_TYPES = set(['application/rss+xml', 'application/atom+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/xml'])
+FEED_OPENING = re.compile(r'<(feed|rss|\?xml)')
+LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
+LINK_HREF = re.compile(r'href="(.+?)"')
+LINK_ELEMENTS = re.compile(r'<link>(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?</link>')
+BLACKLIST = re.compile(r'\bcomments\b')  # no comment feed
+
 
 
 def handle_link_list(linklist, domainname, baseurl, target_lang=None):
@@ -44,23 +50,21 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
     if feed_string is None:
         return feed_links
     feed_string = feed_string.strip()
-    if not re.match(r'<\?xml|<feed|<rss', feed_string):
+    if not FEED_OPENING.match(feed_string):
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
-        for link in re.findall(r'<link .*?href=".+?"', feed_string):
+        for link in LINK_ATTRS.findall(feed_string):
             if 'atom+xml' in link or 'rel="self"' in link:
                 continue
-            mymatch = re.search(r'<link .*?href="(.+?)"', link)
-            if mymatch:
-                feedlink = mymatch.group(1)
-                if '"' in feedlink:
-                    feedlink = feedlink.split('"')[0]
-                feed_links.append(feedlink)
+            feedlink = LINK_HREF.search(link).group(1)
+            if '"' in feedlink:
+                feedlink = feedlink.split('"')[0]
+            feed_links.append(feedlink)
     # could be RSS
     elif '<link>' in feed_string:
-        for item in re.findall(r'<link>(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?</link>', feed_string):
-            feed_links.append(item)
+        for item in LINK_ELEMENTS.findall(feed_string, re.DOTALL):
+            feed_links.append(item.strip())
     # refine
     output_links = handle_link_list(feed_links, domainname, baseurl, target_lang)
     output_links = [l for l in output_links if l != reference and l.count('/') > 2]
@@ -107,7 +111,7 @@ def determine_feed(htmlstring, baseurl, reference):
         link = clean_url(link)
         if link == reference or validate_url(link)[0] is False:
             continue
-        if re.search(r'\bcomments\b', link): # no comment feed
+        if BLACKLIST.search(link):
             continue
         output_urls.append(link)
     # log result
