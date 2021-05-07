@@ -78,6 +78,16 @@ def discard_unwanted(tree):
     '''Delete unwanted sections'''
     for expr in DISCARD_XPATH:
         for subtree in tree.xpath(expr):
+            if subtree.tail is not None:
+                previous = subtree.getprevious()
+                if previous is None:
+                    previous = subtree.getparent()
+                if previous is not None:
+                    # There is a previous node, append text to its tail
+                    if previous.tail is not None:
+                        previous.tail = ' '.join([previous.tail, subtree.tail])
+                    else:
+                        previous.tail = subtree.tail
             subtree.getparent().remove(subtree)
     return tree
 
