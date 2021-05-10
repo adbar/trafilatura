@@ -79,6 +79,8 @@ def extract_json(tree, metadata):
                 candidate = normalize_json(mymatch.group(1))
                 if metadata['sitename'] is None or len(metadata['sitename']) < len(candidate):
                     metadata['sitename'] = candidate
+                if metadata['sitename'].startswith('http') and not candidate.startswith('http'):
+                    metadata['sitename'] = candidate
         # category
         if '"articleSection"' in elem.text:
             mymatch = JSON_CATEGORY.search(elem.text)
