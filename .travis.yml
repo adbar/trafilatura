@@ -71,16 +71,16 @@ matrix:
         - pip3 --version
     - name: "Python 3 on macOS with minimal dependencies"
       os: osx
-      osx_image: xcode11
+      osx_image: xcode11.2
       language: shell
       env: MINIMAL=true
       before_install:
         - sw_vers
         - python3 --version
         - pip3 --version
-    - name: "Python 3 on macOS"
+    - name: "Python 3 on recent macOS"
       os: osx
-      osx_image: xcode11
+      osx_image: xcode12.2
       language: shell
       env: MINIMAL=false
       before_install:
@@ -92,7 +92,6 @@ matrix:
       language: shell
       before_install:
         - choco install python --version 3.8.0
-        - python --version
         - python -m pip install --upgrade pip
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       env: MINIMAL=true
@@ -109,12 +108,6 @@ matrix:
     - os: windows
   fast_finish: true
 
-before_install:
-  - python --version
-  - virtualenv --version
-  - pip --version
-  - uname -a
-  - lsb_release -a
 
 install:
   - pip3 install -U pip
