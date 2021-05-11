@@ -20,16 +20,16 @@ from lxml import etree, html
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import (check_html_lang, content_fingerprint, duplicate_test,
                      language_filter, text_chars_test)
-from .htmlprocessing import (convert_tags, discard_unwanted,
-                             discard_unwanted_comments, handle_textnode,
+from .htmlprocessing import (convert_tags, handle_textnode,
                              link_density_test, link_density_test_tables,
-                             process_node, tree_cleaning)
+                             process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
 from .utils import load_html, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
-from .xpaths import BODY_XPATH, COMMENTS_XPATH #, REMOVE_COMMENTS_XPATH
+from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
+#, REMOVE_COMMENTS_XPATH
 
 
 LOGGER = logging.getLogger(__name__)
@@ -282,7 +282,7 @@ def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
     # prune
-    search_tree = discard_unwanted(tree)
+    search_tree = prune_unwanted_nodes(tree, DISCARD_XPATH)
     # decide if links are preserved
     if not 'ref' in potential_tags:
         etree.strip_tags(search_tree, 'a', 'ref', 'span')
@@ -370,17 +370,27 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
         if not subtree:
             continue
         subtree = subtree[0]
+        #for table_elem in subtree.xpath('//table'):
+        #    print('1', table_elem.text_content())
         # prune
-        subtree = discard_unwanted(subtree)
+        subtree = prune_unwanted_nodes(subtree, DISCARD_XPATH)
+        #for table_elem in subtree.xpath('//table'):
+        #    print('2', table_elem.text_content())
         # remove elements by link density
         subtree = delete_by_link_density(subtree, 'div', backtracking=True)
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
         subtree = delete_by_link_density(subtree, 'p', backtracking=False)
+        #subtree = delete_by_link_density(subtree, 'head', backtracking=False)
+        # also filter fw/head and quote elements
+        #for table_elem in subtree.xpath('//table'):
+        #    print('3', table_elem.text_content())
         # define iteration strategy
         if 'table' in potential_tags:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
                     elem.getparent().remove(elem)
+        #for table_elem in subtree.xpath('//table'):
+        #    print('4', table_elem.text_content())
         # skip if empty tree
         if len(subtree) == 0:
             continue
@@ -448,7 +458,7 @@ def extract_comments(tree, dedupbool, config):
             continue
         subtree = subtree[0]
         # prune
-        subtree = discard_unwanted_comments(subtree)
+        subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
         etree.strip_tags(subtree, 'a', 'ref', 'span')
         # extract content
         #for elem in subtree.xpath('.//*'):
@@ -690,9 +700,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
-            #for expr in REMOVE_COMMENTS_XPATH:
-            #    for subtree in cleaned_tree.xpath(expr):
-            #        subtree.getparent().remove(subtree)
+            #cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
         postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, include_images, include_links, deduplicate, config)

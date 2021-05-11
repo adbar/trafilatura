@@ -74,10 +74,11 @@ def prune_html(tree):
     return tree
 
 
-def discard_unwanted(tree):
-    '''Delete unwanted sections'''
-    for expr in DISCARD_XPATH:
+def prune_unwanted_nodes(tree, nodelist):
+    '''Prune the HTML tree by removing unwanted sections.'''
+    for expr in nodelist:
         for subtree in tree.xpath(expr):
+            # preserve tail text from deletion
             if subtree.tail is not None:
                 previous = subtree.getprevious()
                 if previous is None:
@@ -88,14 +89,7 @@ def discard_unwanted(tree):
                         previous.tail = ' '.join([previous.tail, subtree.tail])
                     else:
                         previous.tail = subtree.tail
-            subtree.getparent().remove(subtree)
-    return tree
-
-
-def discard_unwanted_comments(tree):
-    '''delete unwanted comment sections'''
-    for expr in COMMENTS_DISCARD_XPATH:
-        for subtree in tree.xpath(expr):
+            # remove the node
             subtree.getparent().remove(subtree)
     return tree
 
@@ -120,14 +114,22 @@ def link_density_test(element):
     '''Remove sections which are rich in links (probably boilerplate)'''
     links_xpath, mylist = element.xpath('.//ref'), []
     if links_xpath:
-        elemtext = trim(element.text_content())
-        elemlen = len(elemtext)
-        if element.tag == 'p':
-            limitlen, threshold = 25, 0.9
+        elemtext = element.text_content()
+        elemlen = len(trim(elemtext))
+        #elemlen = len(trim(element.text_content()))
+        if element.tag == 'p': #  and not element.getparent().tag == 'item'
+            #if element.getnext() is None:
+            #    limitlen, threshold = 100, 0.8
+            #else:
+            limitlen, threshold = 25, 0.8
+            #if 'hi' in list(element):
+            #    limitlen, threshold = 100, 0.8
+        #elif element.tag == 'head':
+        #    limitlen, threshold = 50, 0.8
         else:
             if element.getnext() is None:
                 limitlen, threshold = 200, 0.66
-            #elif re.search(r'[.?!]', elemtext):
+            #elif re.search(r'[.?!:]', elemtext):
             #    limitlen, threshold = 150, 0.66
             else:
                 limitlen, threshold = 100, 0.66
@@ -135,8 +137,6 @@ def link_density_test(element):
             linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
             if elemnum == 0:
                 return True, mylist
-            #if len(set(mylist))/len(mylist) <= 0.5:
-            #    return True, mylist
             LOGGER.debug('list link text/total: %s/%s – short elems/total: %s/%s', linklen, elemlen, shortelems, elemnum)
             if linklen >= threshold*elemlen or shortelems/elemnum >= threshold:
                 return True, mylist
