@@ -1,14 +1,9 @@
 language: python
 os: linux
 cache: pip
-# dist: xenial
 
 matrix:
   include:
-    - name: "Python 3.4 on Linux with minimal dependencies"
-      python: 3.4
-      env: TOXENV=py
-      env: MINIMAL=true
     - name: "Python 3.5 on Linux with minimal dependencies"
       python: 3.5
       env: TOXENV=py
@@ -92,7 +87,6 @@ matrix:
       language: shell
       before_install:
         - choco install python --version 3.8.0
-        - python -m pip install --upgrade pip
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       env: MINIMAL=true
     - name: "Python 3 on Windows"

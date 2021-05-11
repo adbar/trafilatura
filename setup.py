@@ -30,8 +30,7 @@ def get_long_description():
 # some problems with installation solved this way
 extras = {
     'all': [
-        'cchardet == 2.1.4; python_version == "3.4"',
-        'cchardet >= 2.1.7; python_version > "3.4"',
+        'cchardet >= 2.1.7',
         'htmldate[speed] >= 0.8.1',
         'pycld3 >= 0.22',
     ],
@@ -58,7 +57,6 @@ setup(
         'Operating System :: POSIX :: Linux',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -82,7 +80,7 @@ setup(
     packages=['trafilatura'],
     package_data={'trafilatura': ['data/tei-schema.pickle', 'settings.cfg']},
     include_package_data=True,
-    python_requires='>=3.4',
+    python_requires='>=3.5',
     install_requires=[
         'certifi',
         'chardet == 3.0.4; python_version < "3.6"',
@@ -90,8 +88,7 @@ setup(
         'courlan >= 0.3.1',
         'htmldate >= 0.8.1',
         'justext >= 2.2.0',
-        'lxml == 4.3.5; python_version == "3.4"',
-        'lxml >= 4.6.2; python_version > "3.4"',
+        'lxml >= 4.6.2',
         'readability-lxml >= 0.8.1',
         'urllib3>=1.25,<2',
     ],
