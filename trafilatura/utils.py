@@ -253,6 +253,17 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     return None
 
 
+def is_dubious_html(htmlobject):
+    "Assess if the object is proper HTML (with a corresponding declaration)."
+    if isinstance(htmlobject, bytes):
+        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore').lower():
+            return True
+    elif isinstance(htmlobject, str):
+        if 'html' not in htmlobject[:50].lower():
+            return True
+    return False
+
+
 def load_html(htmlobject):
     """Load object given as input and validate its type
     (accepted: LXML tree, bytestring and string)
@@ -262,11 +273,13 @@ def load_html(htmlobject):
         return htmlobject
     tree = None
     check_flag = False
+    # use urllib3 response directly
+    if isinstance(htmlobject, urllib3.response.HTTPResponse):
+        htmlobject = decode_response(htmlobject.data)
+    # sanity check
+    check_flag = is_dubious_html(htmlobject)
     # try to detect encoding and convert to string
     if isinstance(htmlobject, bytes):
-        # test
-        if 'html' not in htmlobject[:50].decode(encoding='ascii', errors='ignore').lower():
-            check_flag = True
         guessed_encoding = detect_encoding(htmlobject)
         if guessed_encoding is not None:
             if guessed_encoding == 'UTF-8':
@@ -282,9 +295,6 @@ def load_html(htmlobject):
             tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
     # use string if applicable
     elif isinstance(htmlobject, str):
-        # test
-        if 'html' not in htmlobject[:50].lower():
-            check_flag = True
         try:
             tree = html.fromstring(htmlobject, parser=HTML_PARSER)
         except ValueError:
@@ -298,11 +308,10 @@ def load_html(htmlobject):
     # default to None
     else:
         LOGGER.error('this type cannot be processed: %s', type(htmlobject))
-    # further test: is it (well-formed) HTML at all?
-    if tree is not None and check_flag is True:
-        if len(tree) < 2:
-            LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
-            tree = None
+    # rejection test: is it (well-formed) HTML at all?
+    if tree is not None and check_flag is True and len(tree) < 2:
+        LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
+        tree = None
     #if tree is None:
     #    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
     #        # more robust parsing

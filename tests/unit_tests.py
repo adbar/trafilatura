@@ -466,6 +466,10 @@ def test_fetch():
     response = utils._send_request(url, False, DEFAULT_CONFIG)
     myobject = utils._handle_response(url, response, False, DEFAULT_CONFIG)
     assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
+    # straight handling of response object
+    assert utils.load_html(response) is not None
+    # nothing to see here
+    assert extract(response, url=response.geturl(), config=ZERO_CONFIG) is None
     # user-agents rotation
     assert utils._parse_config(UA_CONFIG) == ['Firefox', 'Chrome']
     custom = utils._determine_headers(UA_CONFIG)
