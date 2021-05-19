@@ -6,6 +6,7 @@ Unit tests for the spidering part of the trafilatura library.
 import logging
 import sys
 
+from collections import deque
 
 from trafilatura import spider
 
@@ -19,7 +20,6 @@ def test_redirections():
     _, _, baseurl = spider.probe_alternative_homepage('https://httpbin.org/gzip')
     assert baseurl == 'https://httpbin.org'
     #_, _, baseurl = spider.probe_alternative_homepage('https://httpbin.org/redirect-to?url=https%3A%2F%2Fhttpbin.org%2Fhtml&status_code=302')
-
 
 
 def test_meta_redirections():
@@ -38,7 +38,31 @@ def test_meta_redirections():
     assert htmlstring2 == '' and homepage2 == 'https://httpbin.org/status/200'
 
 
+def test_process_links():
+    "Test link extraction procedures."
+    todo, known_links = deque(), set()
+    base_url = 'https://example.org'
+    htmlstring = '<html><body><a href="https://example.org/page1"/><a href="https://test.org/page1"/></body></html>'
+    # 1 internal link in total 
+    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
+    assert len(todo) == 1 and len(known_links) == 1
+    # same with URL already seen
+    todo = deque()
+    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
+    assert len(todo) == 0 and len(known_links) == 1
+
+
+def test_crawl_page():
+    "Test page-by-page processing."
+    todo, known_links = deque(), set()
+    url, base_url = 'https://httpbin.org/links/2/2', 'https://httpbin.org'
+    todo, known_urls, _ = spider.crawl_page(url, base_url, todo, known_links)
+    assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
+    assert len(known_urls) == 2
+
 
 if __name__ == '__main__':
     test_redirections()
     test_meta_redirections()
+    test_process_links()
+    test_crawl_page()
