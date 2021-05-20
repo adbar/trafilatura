@@ -12,7 +12,7 @@ from courlan import extract_links
 from courlan.filters import is_navigation_page
 from lxml import etree
 
-from .feeds import find_feed_urls
+# from .feeds import find_feed_urls # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
 from .utils import decode_response, fetch_url, fix_relative_urls, get_hostinfo, load_html
 
@@ -89,17 +89,39 @@ def process_links(htmlstring, base_url, known_links, todo, language=None):
     return todo, known_links
 
 
-def crawl_initial_page(homepage, base_url, known_links, language=None):
+def init_crawl(homepage, todo, known_links, language=None):
+    """Start crawl by initializing variable and potentially examining the starting page."""
+    _, base_url = get_hostinfo(homepage)
+    known_links = known_links or set()
+    i = 0
+    # initialize crawl by visiting homepage if necessary
+    if todo is None:
+        todo, known_links = crawl_initial_page(homepage, base_url, known_links, language)
+        i += 1
+    return todo, known_links, base_url, i
+
+
+def crawl_initial_page(homepage, base_url, known_links, language=None): # config=DEFAULT_CONFIG
     """Examine the homepage, extract navigation links, links,
        and feed links (if any on the homepage)."""
+    known_links.add(homepage) # add known homepage
     # probe and process homepage
     htmlstring, homepage, base_url = probe_alternative_homepage(homepage)
+    known_links.add(homepage) # add potentially "new" homepage
     # extract links on homepage
     todo, known_links = process_links(htmlstring, base_url, known_links, None, language)
-    # optional: find feed URLs
-    additional_links = find_feed_urls(homepage, target_lang=language)
-    todo.extend(additional_links)
-    known_links.update(additional_links)
+    # UNTESTED!
+    # add potential URLs extracted from feeds
+    #additional_links = find_feed_urls(homepage, target_lang=language)
+    #todo.extend(additional_links)
+    #known_links.update(additional_links)
+    # TODO: more efficient
+    #for feed in determine_feed(htmlstring, base_url, homepage):
+    #    feed_string = fetch_url(feed)
+    #    if feed_string is not None:
+    #        internal_valid.extend(extract_feed_links(feed_string, domainname, baseurl, homepage, LANG))
+    #    sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
+    # optional: add sitemap URLs?
     return todo, known_links
 
 
@@ -121,18 +143,11 @@ def crawl_page(url, base_url, todo, known_links, language=None):
 
 def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, language=None, config=DEFAULT_CONFIG):
     """Basic crawler targeting pages of interest within a website."""
-    # variables init
-    _, base_url = get_hostinfo(homepage)
-    known_links = known_links or set()
-    i = 0
-    # initialize crawl by visiting homepage if necessary
-    if todo is None:
-        todo, known_links = crawl_initial_page(url, base_url, known_links, language)
-        i += 1
+    todo, known_links, base_url, i = init_crawl(homepage, todo, known_links, language)
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
         url = todo.popleft()
-        todo, known_links, _ = crawl_page(url, base_url, todo, known_links)
+        todo, known_links, _ = crawl_page(url, base_url, todo, known_links, language)
         i += 1
         sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
     # refocus todo-list on URLs without navigation?

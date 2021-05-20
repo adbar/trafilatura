@@ -73,7 +73,12 @@ def test_crawl_page():
     assert len(known_urls) == 3
     # initial page
     todo, known_links = spider.crawl_initial_page('https://httpbin.org/html', 'https://httpbin.org', set())
-    assert len(todo) == 0 and len(known_links) == 0
+    assert len(todo) == 0 and len(known_links) == 1
+
+
+def test_crawl_logic():
+    "Test functions related to crawling sequence and consistency."
+    assert spider.init_crawl('https://httpbin.org/html', None, None) == (deque([]), {'https://httpbin.org/html'}, 'https://httpbin.org', 1)
 
 
 if __name__ == '__main__':
@@ -81,3 +86,4 @@ if __name__ == '__main__':
     test_meta_redirections()
     test_process_links()
     test_crawl_page()
+    test_crawl_logic()
