@@ -12,7 +12,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
-                        convert_inputlist,
+                        convert_inputlist, cli_crawler,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .feeds import find_feed_urls
@@ -88,6 +88,9 @@ def parse_args(args):
                         nargs='?', const=True, default=False)
     group3_ex.add_argument("--sitemap",
                         help="look for sitemaps for the given website and/or enter a sitemap URL",
+                        nargs='?', const=True, default=False)
+    group3_ex.add_argument("--crawl",
+                        help="crawl a fixed number of pages within a website starting from the given URL",
                         nargs='?', const=True, default=False)
     group3.add_argument('--archived',
                         help='try to fetch URLs from the Internet Archive if downloads fail',
@@ -189,7 +192,7 @@ def process_args(args):
         args.blacklist = load_blacklist(args.blacklist)
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.inputfile and args.feed is False and args.sitemap is False:
+    if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False]):
         inputdict = load_input_dict(args.inputfile, args.blacklist)
         url_processing_pipeline(args, inputdict)
     # fetch urls from a feed or a sitemap
@@ -197,10 +200,8 @@ def process_args(args):
         # load input URLs
         if args.inputfile:
             input_urls = load_input_urls(args.inputfile)
-        elif args.feed:
-            input_urls = [args.feed]
-        elif args.sitemap:
-            input_urls = [args.sitemap]
+        else:
+            input_urls = [args.feed] or [args.sitemap]
         # link discovery and storage
         inputdict = None
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
@@ -214,6 +215,9 @@ def process_args(args):
                     inputdict = convert_inputlist(args.blacklist, future.result(), args.url_filter, inputdict)
                     url_processing_pipeline(args, inputdict)
                     inputdict = None
+    # activate crawler/spider
+    elif args.crawl:
+        cli_crawler(args)
     # read files from an input directory
     elif args.inputdir:
         file_processing_pipeline(args)

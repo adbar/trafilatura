@@ -283,6 +283,21 @@ def test_cli_pipeline():
     #    teststring = f.read()
     #result = cli.examine(teststring, args)
     #assert '[link](testlink.html)' in result # and 'test.jpg' in result
+    # Crawling
+    testargs = ['', '--crawl', 'https://httpbin.org/html']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert len(f.getvalue()) == 0
+    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args)
+    assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
 
 
 def test_input_filtering():

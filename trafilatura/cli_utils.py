@@ -14,7 +14,7 @@ import string
 import sys
 import traceback
 
-from collections import defaultdict, OrderedDict
+from collections import defaultdict, OrderedDict, deque
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -28,6 +28,7 @@ from .core import extract
 from .filters import content_fingerprint
 from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
+from .spider import crawl_page, init_crawl
 from .utils import fetch_url, get_host_and_path
 
 
@@ -314,6 +315,32 @@ def download_queue_processing(domain_dict, args, counter, config):
                         errors.append(url)
     return errors, counter
 
+
+def cli_crawler(args):
+    '''Start a focused crawler downloading a fixed number of URLs within a website'''
+    config = use_config(filename=args.config_file)
+    # load input URLs
+    if args.inputfile:
+        # discard if several domains?
+        #sys.exit('Crawling from a series of input URLs not implemented yet, exiting...')
+        todo = deque(load_input_urls(args.inputfile))
+    else:
+        homepage, todo = args.crawl, None
+    todo, known_links, base_url, i = init_crawl(homepage, todo, set(), language=args.target_language)
+    # visit pages until a limit is reached
+    counter = None
+    while todo and i < 10:
+        url = todo.popleft()
+        todo, known_links, htmlstring = crawl_page(url, base_url, todo, known_links, language=args.target_language)
+        if args.list:
+            write_result(url, args)
+        else:
+            counter = process_result(htmlstring, args, url, counter, config)
+        i += 1
+        sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
+    for url in todo:
+        sys.stdout.write(url + '\n')
+    #return todo, known_links
 
 def url_processing_pipeline(args, inputdict):
     '''Aggregated functions to show a list and download and process an input list'''
