@@ -54,6 +54,14 @@ def test_process_links():
     htmlstring = '<html><body><a href="https://example.org/tag/number1"/><a href="https://example.org/page2"/></body></html>'
     todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
     assert todo[0] == 'https://example.org/tag/number1' and len(known_links) == 3
+    # test language
+    htmlstring = '<html><body><a href="https://example.org/en/page1"/></body></html>'
+    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo, language='en')
+    assert 'https://example.org/en/page1' in todo and len(known_links) == 4
+    htmlstring = '<html><body><a href="https://example.org/en/page2"/></body></html>'
+    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo, language='de')
+    # wrong language, doesn't get stored anywhere (?)
+    assert 'https://example.org/en/page2' not in todo and len(known_links) == 4
 
 
 def test_crawl_page():
