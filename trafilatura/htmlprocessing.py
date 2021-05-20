@@ -104,6 +104,7 @@ def collect_link_info(links_xpath):
             continue
         linklen += subelemlen
         elemnum += 1
+        # TODO: unnecessary?
         if subelemlen < 10:
             shortelems += 1
         mylist.append(subelemtext)
@@ -161,8 +162,9 @@ def link_density_test_tables(element):
             if (elemlen < 1000 and linklen > 0.8*elemlen) or (elemlen > 1000 and linklen > 0.5*elemlen):
             #if linklen > 0.5 * elemlen:
                 return True
-            if shortelems > len(links_xpath) * 0.66:
-                return True
+            # does more harm than good (issue #76)
+            #if shortelems > len(links_xpath) * 0.66:
+            #    return True
     return False
 
 
