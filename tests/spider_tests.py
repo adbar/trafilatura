@@ -46,10 +46,14 @@ def test_process_links():
     # 1 internal link in total 
     todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
     assert len(todo) == 1 and len(known_links) == 1
-    # same with URL already seen
-    todo = deque()
+    # same with URL already seen + todo is None
+    todo = None
     todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
     assert len(todo) == 0 and len(known_links) == 1
+    # test navigation links
+    htmlstring = '<html><body><a href="https://example.org/tag/number1"/><a href="https://example.org/page2"/></body></html>'
+    todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
+    assert todo[0] == 'https://example.org/tag/number1' and len(known_links) == 3
 
 
 def test_crawl_page():
@@ -58,7 +62,7 @@ def test_crawl_page():
     url, base_url = 'https://httpbin.org/links/2/2', 'https://httpbin.org'
     todo, known_urls, _ = spider.crawl_page(url, base_url, todo, known_links)
     assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
-    assert len(known_urls) == 2
+    assert len(known_urls) == 3
 
 
 if __name__ == '__main__':

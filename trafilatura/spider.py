@@ -10,6 +10,7 @@ from collections import deque
 from time import sleep
 
 from courlan import extract_links
+from courlan.filters import is_navigation_page
 from lxml import etree
 
 #from .feeds import determine_feed
@@ -18,8 +19,6 @@ from .utils import decode_response, fetch_url, fix_relative_urls, get_hostinfo, 
 
 
 LOGGER = logging.getLogger(__name__)
-# to be used via courlan at a later stage
-NAVIGATION_FILTER = re.compile(r'/(archives|auth?or|cat|category|kat|kategorie|page|schlagwort|seite|tags?|user)/', re.IGNORECASE)
 
 
 def refresh_detection(htmlstring, homepage):
@@ -74,16 +73,17 @@ def process_links(htmlstring, base_url, known_links, todo):
        the links in todo-list while prioritizing the navigation ones."""
     navlinks, links = [], []
     # language=None, reference=None
-    # to add by next courlan version: with_nav=True
-    for link in extract_links(htmlstring, base_url, False):
+    for link in extract_links(htmlstring, base_url, False, with_nav=True):
         if link in known_links:
             continue
-        if NAVIGATION_FILTER.search(link):
+        if is_navigation_page(link):
             navlinks.append(link)
         else:
             links.append(link)
         known_links.add(link)
     # add links to deque
+    if todo is None:
+        todo = deque()
     todo.extend(links)
     # prioritize navigation links
     todo.extendleft(navlinks)
@@ -93,10 +93,12 @@ def process_links(htmlstring, base_url, known_links, todo):
 def crawl_page(url, base_url, todo, known_links): # language
     """Examine the homepage, extract navigation links, links,
        and feed links (if any on the homepage)."""
-    htmlstring = fetch_url(url)
-    # optional: add final document URL to known_links
-    # ...
-    if htmlstring is not None and htmlstring != '':
+    response = fetch_url(url, decode=False)
+    # add final document URL to known_links
+    known_links.add(response.geturl())
+    if response.data is not None and response.data != '':
+        # convert urllib3 response to string
+        htmlstring = decode_response(response.data)
         # optional language check
         # ...
         todo, known_urls = process_links(htmlstring, base_url, known_links, todo)
@@ -107,13 +109,15 @@ def crawl_page(url, base_url, todo, known_links): # language
 
 def focused_crawler(homepage, base_url, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, config=DEFAULT_CONFIG):
     """Basic crawler targeting pages within a website."""
+    # variables init
     known_links = known_links or set()
     if todo is None:
-        todo = deque()
         # probe and process homepage
         htmlstring, homepage, base_url = probe_alternative_homepage(homepage)
         # extract links on homepage
         todo, known_links = process_links(htmlstring, base_url, known_links, todo)
+        # optional: find feed URLs
+        # feeds.find_feed_urls(url, target_lang=None)
     i = 0
     # visit pages
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
@@ -122,5 +126,4 @@ def focused_crawler(homepage, base_url, max_seen_urls=10, max_known_urls=100000,
         i += 1
         sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
     # refocus todo-list on URLs without navigation
-    todo = [u for u in todo if not NAVIGATION_FILTER.search(u)]
-    return todo, known_links
+    return [u for u in todo if not is_navigation_page(u)], known_links
