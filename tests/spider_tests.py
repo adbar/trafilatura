@@ -71,6 +71,9 @@ def test_crawl_page():
     todo, known_urls, _ = spider.crawl_page(url, base_url, todo, known_links)
     assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
     assert len(known_urls) == 3
+    # initial page
+    todo, known_links = spider.crawl_initial_page('https://httpbin.org/html', 'https://httpbin.org', set())
+    assert len(todo) == 0 and len(known_links) == 0
 
 
 if __name__ == '__main__':
