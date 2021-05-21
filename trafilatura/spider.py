@@ -9,7 +9,7 @@ from collections import deque
 from time import sleep
 
 from courlan import extract_links
-from courlan.filters import is_navigation_page
+from courlan.filters import is_navigation_page, is_not_crawlable
 from lxml import etree
 
 # from .feeds import find_feed_urls # extract_links ad extract_feed_links
@@ -67,14 +67,31 @@ def probe_alternative_homepage(homepage):
     return htmlstring, homepage, base_url
 
 
+def is_known_link(link, known_links):
+    "Compare the link to the existing link base."
+    test1, test2 = link.rstrip('/'), link.rstrip('/') + '/'
+    if test1 in known_links or test2 in known_links:
+        return True
+    if link[:5] == 'https':
+        testlink = link[:4] + link[:5]
+        test1, test2 = testlink.rstrip('/'), testlink.rstrip('/') + '/'
+        if testlink in known_links or test1 in known_links or test2 in known_links:
+            return True
+    else:
+        testlink = ''.join([link[:4], 's', link[4:]])
+        test1, test2 = testlink.rstrip('/'), testlink.rstrip('/') + '/'
+        if testlink in known_links or test1 in known_links or test2 in known_links:
+            return True
+    return False
+
+
 def process_links(htmlstring, base_url, known_links, todo, language=None):
     """Examine the HTML code and process the retrieved internal links. Store
        the links in todo-list while prioritizing the navigation ones."""
     navlinks, links = [], []
     # language=None, reference=None
     for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
-        test1, test2 = link.rstrip('/'), link.rstrip('/') + '/'
-        if test1 in known_links or test2 in known_links:
+        if is_known_link(link, known_links) is True or is_not_crawlable(link):
             continue
         if is_navigation_page(link):
             navlinks.append(link)
@@ -86,6 +103,7 @@ def process_links(htmlstring, base_url, known_links, todo, language=None):
         todo = deque()
     todo.extend(links)
     # prioritize navigation links
+    # use most short links if there are no navlinks?
     todo.extendleft(navlinks)
     return todo, known_links
 
@@ -130,15 +148,16 @@ def crawl_page(url, base_url, todo, known_links, language=None):
     """Examine a webpage, extract navigation links and links."""
     response = fetch_url(url, decode=False)
     # add final document URL to known_links
-    known_links.add(response.geturl())
-    if response.data is not None and response.data != '':
-        # convert urllib3 response to string
-        htmlstring = decode_response(response.data)
-        # optional language check
-        # ...
-        todo, known_urls = process_links(htmlstring, base_url, known_links, todo, language)
-        # optional backup of gathered pages without nav-pages
-        # ...
+    if response is not None:
+        known_links.add(response.geturl())
+        if response.data is not None and response.data != '':
+            # convert urllib3 response to string
+            htmlstring = decode_response(response.data)
+            # optional language check:
+            # run baseline extraction + language identifier
+            todo, known_urls = process_links(htmlstring, base_url, known_links, todo, language)
+            # optional backup of gathered pages without nav-pages
+            # ...
     return todo, known_urls, htmlstring
 
 

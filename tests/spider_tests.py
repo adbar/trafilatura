@@ -79,6 +79,11 @@ def test_crawl_page():
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
     assert spider.init_crawl('https://httpbin.org/html', None, None) == (deque([]), {'https://httpbin.org/html'}, 'https://httpbin.org', 1)
+    known_links = 'https://test.org'
+    assert spider.is_known_link('https://test.org', known_links) is True
+    assert spider.is_known_link('http://test.org', known_links) is True
+    assert spider.is_known_link('http://test.org/', known_links) is True
+    assert spider.is_known_link('https://test.org/', known_links) is True
 
 
 if __name__ == '__main__':
