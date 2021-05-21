@@ -12,10 +12,17 @@ from courlan import extract_links
 from courlan.filters import is_navigation_page, is_not_crawlable
 from lxml import etree
 
+from .core import baseline
 # from .feeds import find_feed_urls # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
 from .utils import decode_response, fetch_url, fix_relative_urls, get_hostinfo, load_html
 
+# language detection
+try:
+    import cld3
+    LANGID_FLAG = True
+except ImportError:
+    LANGID_FLAG = False
 
 LOGGER = logging.getLogger(__name__)
 
@@ -88,16 +95,23 @@ def is_known_link(link, known_links):
 def process_links(htmlstring, base_url, known_links, todo, language=None):
     """Examine the HTML code and process the retrieved internal links. Store
        the links in todo-list while prioritizing the navigation ones."""
-    navlinks, links = [], []
-    # language=None, reference=None
-    for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
-        if is_known_link(link, known_links) is True or is_not_crawlable(link):
-            continue
-        if is_navigation_page(link):
-            navlinks.append(link)
-        else:
-            links.append(link)
-        known_links.add(link)
+    navlinks, links, proceed = [], [], True
+    # reference=None
+    # optional language check: run baseline extraction + language identifier
+    if language is not None and LANGID_FLAG is True:
+        _, text, _ = baseline(htmlstring)
+        result = cld3.get_language(text)
+        if result is not None and result.language != language:
+            proceed = False
+    if proceed is True:
+        for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
+            if is_known_link(link, known_links) is True or is_not_crawlable(link):
+                continue
+            if is_navigation_page(link):
+                navlinks.append(link)
+            else:
+                links.append(link)
+            known_links.add(link)
     # add links to deque
     if todo is None:
         todo = deque()
@@ -153,8 +167,7 @@ def crawl_page(url, base_url, todo, known_links, language=None):
         if response.data is not None and response.data != '':
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)
-            # optional language check:
-            # run baseline extraction + language identifier
+            # proceed to link extraction
             todo, known_urls = process_links(htmlstring, base_url, known_links, todo, language)
             # optional backup of gathered pages without nav-pages
             # ...

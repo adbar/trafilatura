@@ -10,6 +10,13 @@ from collections import deque
 
 from trafilatura import spider
 
+# language detection
+try:
+    import cld3
+    LANGID_FLAG = True
+except ImportError:
+    LANGID_FLAG = False
+
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
@@ -74,6 +81,12 @@ def test_crawl_page():
     # initial page
     todo, known_links = spider.crawl_initial_page('https://httpbin.org/html', 'https://httpbin.org', set())
     assert len(todo) == 0 and len(known_links) == 1
+    # test language detection
+    if LANGID_FLAG is True:
+        todo, known_links = deque(), set()
+        ## TODO: find a better page
+        todo, known_links, _ = spider.crawl_page('https://httpbin.org/html', 'https://httpbin.org', todo, known_links, language='de')
+        assert len(todo) == 0 and len(known_links) == 1
 
 
 def test_crawl_logic():
