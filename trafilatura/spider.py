@@ -73,7 +73,8 @@ def process_links(htmlstring, base_url, known_links, todo, language=None):
     navlinks, links = [], []
     # language=None, reference=None
     for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
-        if link in known_links:
+        test1, test2 = link.rstrip('/'), link.rstrip('/') + '/'
+        if test1 in known_links or test2 in known_links:
             continue
         if is_navigation_page(link):
             navlinks.append(link)
