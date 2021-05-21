@@ -323,6 +323,7 @@ def cli_crawler(args):
     if args.inputfile:
         # discard if several domains?
         #sys.exit('Crawling from a series of input URLs not implemented yet, exiting...')
+        # Todo: CLI check number of domains == number of lines in input file
         todo = deque(load_input_urls(args.inputfile))
     else:
         homepage, todo = args.crawl, None
@@ -338,9 +339,10 @@ def cli_crawler(args):
             counter = process_result(htmlstring, args, url, counter, config)
         i += 1
         sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
-    for url in todo:
+    for url in sorted(todo):
         sys.stdout.write(url + '\n')
     #return todo, known_links
+
 
 def url_processing_pipeline(args, inputdict):
     '''Aggregated functions to show a list and download and process an input list'''

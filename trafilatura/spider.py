@@ -160,6 +160,7 @@ def crawl_initial_page(homepage, base_url, known_links, language=None): # config
 
 def crawl_page(url, base_url, todo, known_links, language=None):
     """Examine a webpage, extract navigation links and links."""
+    htmlstring = ''
     response = fetch_url(url, decode=False)
     # add final document URL to known_links
     if response is not None:
@@ -168,10 +169,10 @@ def crawl_page(url, base_url, todo, known_links, language=None):
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)
             # proceed to link extraction
-            todo, known_urls = process_links(htmlstring, base_url, known_links, todo, language)
+            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language)
             # optional backup of gathered pages without nav-pages
             # ...
-    return todo, known_urls, htmlstring
+    return todo, known_links, htmlstring
 
 
 def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, language=None, config=DEFAULT_CONFIG):
