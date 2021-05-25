@@ -11,10 +11,10 @@ import re
 # import urllib.robotparser # Python >= 3.8
 # ROBOT_PARSER = urllib.robotparser.RobotFileParser()
 
-from courlan import clean_url, extract_domain, lang_filter
+from courlan import clean_url, extract_domain, fix_relative_urls, get_hostinfo, lang_filter
 
 from .settings import MAX_SITEMAPS_SEEN
-from .utils import fetch_url, filter_urls, fix_relative_urls, get_hostinfo
+from .utils import fetch_url, filter_urls
 
 
 LOGGER = logging.getLogger(__name__)

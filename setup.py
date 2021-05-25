@@ -85,7 +85,7 @@ setup(
         'certifi',
         'chardet == 3.0.4; python_version < "3.6"',
         'chardet >= 3.0.4; python_version >= "3.6"',
-        'courlan @ git+https://git@github.com/adbar/courlan', # >= 0.3.1
+        'courlan >= 0.4.0',
         'htmldate >= 0.8.1',
         'justext >= 2.2.0',
         'lxml >= 4.6.2',

@@ -8,14 +8,14 @@ import logging
 from collections import deque
 from time import sleep
 
-from courlan import extract_links
+from courlan import extract_links, fix_relative_urls, get_hostinfo
 from courlan.filters import is_navigation_page, is_not_crawlable
 from lxml import etree
 
 from .core import baseline
 # from .feeds import find_feed_urls # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
-from .utils import decode_response, fetch_url, fix_relative_urls, get_hostinfo, load_html
+from .utils import decode_response, fetch_url, load_html
 
 # language detection
 try:
@@ -76,7 +76,10 @@ def probe_alternative_homepage(homepage):
 
 def is_known_link(link, known_links):
     "Compare the link to the existing link base."
-    test1, test2 = link.rstrip('/'), link.rstrip('/') + '/'
+    #if link in known_links:
+    #    return True
+    test1 = link.rstrip('/')
+    test2 = test1 + '/'
     if test1 in known_links or test2 in known_links:
         return True
     if link[:5] == 'https':
@@ -161,6 +164,7 @@ def crawl_initial_page(homepage, base_url, known_links, language=None): # config
 def crawl_page(url, base_url, todo, known_links, language=None):
     """Examine a webpage, extract navigation links and links."""
     htmlstring = ''
+    known_links.add(url)
     response = fetch_url(url, decode=False)
     # add final document URL to known_links
     if response is not None:

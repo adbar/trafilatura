@@ -8,9 +8,9 @@ Examining feeds and extracting links for further processing.
 import logging
 import re
 
-from courlan import check_url, clean_url, validate_url
+from courlan import check_url, clean_url, fix_relative_urls, get_hostinfo, validate_url
 
-from .utils import load_html, fetch_url, filter_urls, fix_relative_urls, get_hostinfo
+from .utils import load_html, fetch_url, filter_urls
 
 LOGGER = logging.getLogger(__name__)
 

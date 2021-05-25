@@ -7,7 +7,7 @@ import os
 import sys
 
 from trafilatura import sitemaps
-from trafilatura.utils import decode_response, filter_urls, fix_relative_urls
+from trafilatura.utils import decode_response, filter_urls
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -25,13 +25,6 @@ def test_search():
 def test_extraction():
     '''Test simple link extraction'''
     url, domain, baseurl = 'https://www.sitemaps.org/sitemap.xml', 'sitemaps.org', 'https://www.sitemaps.org'
-    # fixing partial URLs
-    assert fix_relative_urls('https://example.org', 'https://example.org/test.html') == 'https://example.org/test.html'
-    assert fix_relative_urls('https://example.org', '/test.html') == 'https://example.org/test.html'
-    assert fix_relative_urls('https://example.org', '//example.org/test.html') == 'https://example.org/test.html'
-    assert fix_relative_urls('http://example.org', '//example.org/test.html') == 'http://example.org/test.html'
-    assert fix_relative_urls('https://example.org', 'test.html') == 'https://example.org/test.html'
-    assert fix_relative_urls('https://example.org', '../../test.html') == 'https://example.org/test.html'
     # link handling
     assert sitemaps.handle_link(url, url, domain, baseurl, None) == (url, '0')
     assert sitemaps.handle_link('https://mydomain', 'https://example.org/sitemap.xml', 'example.org', 'https://example.org', None) == ('https://mydomain', '0')

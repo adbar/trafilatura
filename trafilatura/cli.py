@@ -200,8 +200,10 @@ def process_args(args):
         # load input URLs
         if args.inputfile:
             input_urls = load_input_urls(args.inputfile)
-        else:
-            input_urls = [args.feed] or [args.sitemap]
+        elif args.feed:
+            input_urls = [args.feed]
+        elif args.sitemap:
+            input_urls = [args.sitemap]
         # link discovery and storage
         inputdict = None
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:

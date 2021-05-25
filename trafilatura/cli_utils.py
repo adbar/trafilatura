@@ -22,14 +22,14 @@ from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan import extract_domain, validate_url
+from courlan import extract_domain, get_host_and_path, validate_url
 
 from .core import extract
 from .filters import content_fingerprint
 from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
 from .spider import crawl_page, init_crawl
-from .utils import fetch_url, get_host_and_path
+from .utils import fetch_url
 
 
 LOGGER = logging.getLogger(__name__)

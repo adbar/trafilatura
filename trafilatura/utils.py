@@ -13,7 +13,6 @@ import sys
 
 from functools import lru_cache
 from random import randint
-from urllib.parse import urlparse
 
 # CChardet is faster and can be more accurate
 try:
@@ -24,7 +23,6 @@ except ImportError:
 import certifi
 import urllib3
 
-from courlan import extract_domain
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
@@ -74,22 +72,6 @@ NOPRINT_TRANS_TABLE = {
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'([^\s]+(\.(jpe?g|png|gif|bmp)))')
-
-
-def get_host_and_path(url):
-    """Decompose URL in two parts: protocol + host/domain and path."""
-    parsed_url = urlparse(url)
-    host = parsed_url._replace(path='', params='', query='', fragment='')
-    path = parsed_url._replace(scheme='', netloc='',)
-    return host.geturl(), path.geturl()
-
-
-def get_hostinfo(url):
-    """Extract domain and host info (protocol + host/domain) from a URL."""
-    domainname = extract_domain(url)
-    parsed_url = urlparse(url)
-    host = parsed_url._replace(path='', params='', query='', fragment='')
-    return domainname, host.geturl()
 
 
 def is_gz_file(contents):
@@ -396,25 +378,6 @@ def is_image_file(imagesrc):
     if imagesrc is not None and IMAGE_EXTENSION.search(imagesrc):
         return True
     return False
-
-
-def fix_relative_urls(baseurl, url):
-    'Prepend protocol and host information to relative links.'
-    if url.startswith('//'):
-        if baseurl.startswith('https'):
-            urlfix = 'https:' + url
-        else:
-            urlfix = 'http:' + url
-    elif url.startswith('/'):
-        urlfix = baseurl + url
-    # imperfect path handling
-    elif url.startswith('.'):
-        urlfix = baseurl + '/' + re.sub(r'(.+/)+', '', url)
-    elif not url.startswith('http'):
-        urlfix = baseurl + '/' + url
-    else:
-        urlfix = url
-    return urlfix
 
 
 def filter_urls(linklist, urlfilter):
