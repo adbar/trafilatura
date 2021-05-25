@@ -69,24 +69,31 @@ def test_process_links():
     todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo, language='de')
     # wrong language, doesn't get stored anywhere (?)
     assert 'https://example.org/en/page2' not in todo and len(known_links) == 4
+    # test queue evaluation
+    todo = deque()
+    assert spider.is_still_navigation(todo) is False
+    todo.append('https://example.org/en/page1')
+    assert spider.is_still_navigation(todo) is False
+    todo.append('https://example.org/tag/1')
+    assert spider.is_still_navigation(todo) is True
 
 
 def test_crawl_page():
     "Test page-by-page processing."
-    todo, known_links = deque(), set()
-    url, base_url = 'https://httpbin.org/links/2/2', 'https://httpbin.org'
-    todo, known_urls, _ = spider.crawl_page(url, base_url, todo, known_links)
+    todo, known_links = deque(['https://httpbin.org/links/2/2']), set()
+    base_url, i = 'https://httpbin.org', 0
+    todo, known_urls, i, _ = spider.crawl_page(i, base_url, todo, known_links)
     assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
-    assert len(known_urls) == 3
+    assert len(known_urls) == 3 and i == 1
     # initial page
     todo, known_links = spider.crawl_initial_page('https://httpbin.org/html', 'https://httpbin.org', set())
     assert len(todo) == 0 and len(known_links) == 1
     # test language detection
     if LANGID_FLAG is True:
-        todo, known_links = deque(), set()
+        todo, known_links = deque(['https://httpbin.org/html']), set()
         ## TODO: find a better page
-        todo, known_links, _ = spider.crawl_page('https://httpbin.org/html', 'https://httpbin.org', todo, known_links, language='de')
-        assert len(todo) == 0 and len(known_links) == 1
+        todo, known_links, i, _ = spider.crawl_page(i, 'https://httpbin.org', todo, known_links, lang='de')
+        assert len(todo) == 0 and len(known_links) == 1 and i == 2
 
 
 def test_crawl_logic():

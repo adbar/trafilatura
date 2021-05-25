@@ -28,7 +28,7 @@ from .core import extract
 from .filters import content_fingerprint
 from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
-from .spider import crawl_page, init_crawl
+from .spider import crawl_page, init_crawl, is_still_navigation
 from .utils import fetch_url
 
 
@@ -330,15 +330,13 @@ def cli_crawler(args):
     todo, known_links, base_url, i = init_crawl(homepage, todo, set(), language=args.target_language)
     # visit pages until a limit is reached
     counter = None
-    while todo and i < 10:
-        url = todo.popleft()
-        todo, known_links, htmlstring = crawl_page(url, base_url, todo, known_links, language=args.target_language)
+    while todo and (i < 10 or is_still_navigation(todo)):
+        url = todo[0]
+        todo, known_links, i, htmlstring = crawl_page(i, base_url, todo, known_links, lang=args.target_language, config=config)
         if args.list:
             write_result(url, args)
         else:
             counter = process_result(htmlstring, args, url, counter, config)
-        i += 1
-        sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
     for url in sorted(todo):
         sys.stdout.write(url + '\n')
     #return todo, known_links

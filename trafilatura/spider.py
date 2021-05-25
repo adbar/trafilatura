@@ -161,11 +161,12 @@ def crawl_initial_page(homepage, base_url, known_links, language=None): # config
     return todo, known_links
 
 
-def crawl_page(url, base_url, todo, known_links, language=None):
+def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG):
     """Examine a webpage, extract navigation links and links."""
-    htmlstring = ''
+    url = todo.popleft()
     known_links.add(url)
     response = fetch_url(url, decode=False)
+    htmlstring = ''
     # add final document URL to known_links
     if response is not None:
         known_links.add(response.geturl())
@@ -173,21 +174,25 @@ def crawl_page(url, base_url, todo, known_links, language=None):
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)
             # proceed to link extraction
-            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language)
+            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language=lang)
             # optional backup of gathered pages without nav-pages
             # ...
-    return todo, known_links, htmlstring
+    sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
+    i += 1
+    return todo, known_links, i, htmlstring
 
 
-def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, language=None, config=DEFAULT_CONFIG):
+def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, lang=None, config=DEFAULT_CONFIG):
     """Basic crawler targeting pages of interest within a website."""
     todo, known_links, base_url, i = init_crawl(homepage, todo, known_links, language)
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
-        url = todo.popleft()
-        todo, known_links, _ = crawl_page(url, base_url, todo, known_links, language)
-        i += 1
-        sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
+        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config)
     # refocus todo-list on URLs without navigation?
     # [u for u in todo if not is_navigation_page(u)]
     return todo, known_links
+
+
+def is_still_navigation(todo):
+    """Probe if there are still navigation URLs in the queue."""
+    return bool([u for u in todo if is_navigation_page(u)])
