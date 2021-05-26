@@ -22,7 +22,7 @@ from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan import extract_domain, get_host_and_path, validate_url
+from courlan import extract_domain, get_host_and_path, is_navigation_page, validate_url
 
 from .core import extract
 from .filters import content_fingerprint
@@ -318,25 +318,25 @@ def download_queue_processing(domain_dict, args, counter, config):
 
 def cli_crawler(args):
     '''Start a focused crawler downloading a fixed number of URLs within a website'''
-    config = use_config(filename=args.config_file)
+    config, counter = use_config(filename=args.config_file), None
     # load input URLs
     if args.inputfile:
-        # discard if several domains?
-        #sys.exit('Crawling from a series of input URLs not implemented yet, exiting...')
-        # Todo: CLI check number of domains == number of lines in input file
+        inputdict = convert_inputlist(args.blacklist, [args.URL])
+        # TODO: check that the number of different domains before parallel downloads
         todo = deque(load_input_urls(args.inputfile))
     else:
         homepage, todo = args.crawl, None
     todo, known_links, base_url, i = init_crawl(homepage, todo, set(), language=args.target_language)
     # visit pages until a limit is reached
-    counter = None
-    while todo and (i < 10 or is_still_navigation(todo)):
+    while todo and i < 10:
         url = todo[0]
         todo, known_links, i, htmlstring = crawl_page(i, base_url, todo, known_links, lang=args.target_language, config=config)
-        if args.list:
-            write_result(url, args)
-        else:
-            counter = process_result(htmlstring, args, url, counter, config)
+        # only store content pages, not navigation
+        if not is_navigation_page(url):
+            if args.list:
+                write_result(url, args)
+            else:
+                counter = process_result(htmlstring, args, url, counter, config)
     for url in sorted(todo):
         sys.stdout.write(url + '\n')
     #return todo, known_links

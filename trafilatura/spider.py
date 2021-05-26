@@ -8,8 +8,7 @@ import logging
 from collections import deque
 from time import sleep
 
-from courlan import extract_links, fix_relative_urls, get_hostinfo
-from courlan.filters import is_navigation_page, is_not_crawlable
+from courlan import extract_links, fix_relative_urls, get_hostinfo, is_navigation_page, is_not_crawlable
 from lxml import etree
 
 from .core import baseline
