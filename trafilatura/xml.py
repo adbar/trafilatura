@@ -46,7 +46,7 @@ def build_json_output(docmeta):
         outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False, include_links=False)
     else:
         del outputdict['commentsbody']
-    return json.dumps(outputdict)
+    return json.dumps(outputdict, ensure_ascii=False)
 
 
 def clean_attributes(tree):
