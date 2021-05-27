@@ -28,7 +28,7 @@ from .core import extract
 from .filters import content_fingerprint
 from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
-from .spider import crawl_page, init_crawl, is_still_navigation
+from .spider import init_crawl, process_response
 from .utils import fetch_url
 
 
@@ -72,9 +72,9 @@ def load_input_dict(filename, blacklist):
                     LOGGER.warning('Not an URL, discarding line: %s', line)
     except UnicodeDecodeError:
         sys.exit('ERROR: system, file type or buffer encoding')
-    # deduplicate
+    # deduplicate and convert to deque
     for hostname in inputdict:
-        inputdict[hostname] = list(OrderedDict.fromkeys(inputdict[hostname]))
+        inputdict[hostname] = deque(OrderedDict.fromkeys(inputdict[hostname]))
     return inputdict
 
 
@@ -109,7 +109,7 @@ def convert_inputlist(blacklist, inputlist, url_filter=None, inputdict=None):
     '''Add input URls to domain-aware processing dictionary'''
     # control
     if inputdict is None:
-        inputdict = defaultdict(list)
+        inputdict = defaultdict(deque)
     # filter
     if blacklist:
         inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]
@@ -270,7 +270,7 @@ def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
             LOGGER.debug('spacing request for domain name %s', domain)
             sleep(sleeptime)
             i = 0
-    # draw URL
+    # draw URL # TODO: popleft() ?
     url = host + domain_dict[host].pop()
     # clean registries
     if not domain_dict[host]:
@@ -285,22 +285,28 @@ def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
     return url, domain_dict, backoff_dict, i
 
 
+def load_download_buffer(args, domain_dict, backoff_dict, config):
+    '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
+    download_threads = args.parallel or DOWNLOAD_THREADS
+    # the remaining list is too small, process it differently
+    if len(domain_dict) < download_threads or \
+       len({x for v in domain_dict.values() for x in v}) < download_threads:
+        download_threads, i = 1, 3
+    # populate buffer
+    bufferlist = []
+    while len(bufferlist) < download_threads:
+        url, domain_dict, backoff_dict, i = draw_backoff_url(
+            domain_dict, backoff_dict, config.getfloat('DEFAULT', 'SLEEP_TIME'), i
+            )
+        bufferlist.append(url)
+    return bufferlist, download_threads, backoff_dict
+
+
 def download_queue_processing(domain_dict, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
     i, backoff_dict, errors = 0, dict(), []
     while domain_dict:
-        download_threads = args.parallel or DOWNLOAD_THREADS
-        # the remaining list is too small, process it differently
-        if len(domain_dict) < download_threads or \
-           len({x for v in domain_dict.values() for x in v}) < download_threads:
-            download_threads, i = 1, 3
-        # populate buffer
-        bufferlist = []
-        while len(bufferlist) < download_threads:
-            url, domain_dict, backoff_dict, i = draw_backoff_url(
-                domain_dict, backoff_dict, config.getfloat('DEFAULT', 'SLEEP_TIME'), i
-                )
-            bufferlist.append(url)
+        bufferlist, download_threads, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, config)
         # start several threads
         with ThreadPoolExecutor(max_workers=download_threads) as executor:
             future_to_url = {executor.submit(fetch_url, url): url for url in bufferlist}
@@ -316,29 +322,69 @@ def download_queue_processing(domain_dict, args, counter, config):
     return errors, counter
 
 
-def cli_crawler(args):
+def cli_crawler(args, n=3):
     '''Start a focused crawler downloading a fixed number of URLs within a website'''
-    config, counter = use_config(filename=args.config_file), None
+    config = use_config(filename=args.config_file)
+    counter, crawlinfo, backoff_dict = None, dict(), dict()
     # load input URLs
     if args.inputfile:
-        inputdict = convert_inputlist(args.blacklist, [args.URL])
-        # TODO: check that the number of different domains before parallel downloads
-        todo = deque(load_input_urls(args.inputfile))
+        domain_dict = load_input_dict(args.inputfile, args.blacklist)
     else:
-        homepage, todo = args.crawl, None
-    todo, known_links, base_url, i = init_crawl(homepage, todo, set(), language=args.target_language)
-    # visit pages until a limit is reached
-    while todo and i < 10:
-        url = todo[0]
-        todo, known_links, i, htmlstring = crawl_page(i, base_url, todo, known_links, lang=args.target_language, config=config)
-        # only store content pages, not navigation
-        if not is_navigation_page(url):
-            if args.list:
-                write_result(url, args)
+        domain_dict = convert_inputlist(args.blacklist, [args.crawl])
+    # load crawl data
+    # TODO: shorten code!
+    for website in domain_dict:
+        homepage = website + domain_dict[website].popleft()
+        todo, known_links, base_url, i = init_crawl(homepage, None, set(), language=args.target_language)
+        # convert links
+        for found_url in todo:
+            _, urlpath = get_host_and_path(found_url)
+            if is_navigation_page(urlpath):
+                domain_dict[website].appendleft(urlpath)
             else:
-                counter = process_result(htmlstring, args, url, counter, config)
-    for url in sorted(todo):
-        sys.stdout.write(url + '\n')
+                domain_dict[website].append(urlpath)
+        # TODO: register changes
+        # if base_url != website:
+        # ...
+        crawlinfo[website] = [base_url, known_links, i]
+    # iterate until the threshold is reached
+    while domain_dict:
+        try:
+            bufferlist, download_threads, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, config)
+        except IndexError:
+            break
+        # start several threads
+        # TODO: shorten code!
+        with ThreadPoolExecutor(max_workers=download_threads) as executor:
+            future_to_url = {executor.submit(fetch_url, url, decode=False): url for url in bufferlist}
+            for future in as_completed(future_to_url):
+                url = future_to_url[future]
+                website, urlpath = get_host_and_path(url)
+                crawlinfo[website][2] += 1
+                # handle result
+                if future.result() is not None:
+                    response = future.result()
+                    navlinks, links, crawlinfo[website][1], htmlstring = process_response(response, crawlinfo[website][1], crawlinfo[website][0], args.target_language)
+                    # convert and add links
+                    domain_dict[website].extend([get_host_and_path(u)[1] for u in links])
+                    domain_dict[website].extendleft([get_host_and_path(u)[1] for u in navlinks])
+                    # only store content pages, not navigation
+                    if not is_navigation_page(url): # + response.geturl()
+                        if args.list:
+                            write_result(url, args)
+                        else:
+                            counter = process_result(htmlstring, args, url, counter, config)
+                #else:
+                #    LOGGER.debug('No result for URL: %s', url)
+                #    if args.archived is True:
+                #        errors.append(url)
+        # early exit if maximum count is reached
+        if any(i >= n for i in [crawlinfo[site][2] for site in crawlinfo]):
+            break
+    # print results
+    for website in sorted(domain_dict):
+        for urlpath in sorted(domain_dict[website]):
+            sys.stdout.write(website + urlpath +'\n')
     #return todo, known_links
 
 

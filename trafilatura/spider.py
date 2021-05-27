@@ -94,9 +94,8 @@ def is_known_link(link, known_links):
     return False
 
 
-def process_links(htmlstring, base_url, known_links, todo, language=None):
-    """Examine the HTML code and process the retrieved internal links. Store
-       the links in todo-list while prioritizing the navigation ones."""
+def find_new_links(htmlstring, base_url, known_links, language=None):
+    """Extract and filter new internal links after an optional language check."""
     navlinks, links, proceed = [], [], True
     # reference=None
     # optional language check: run baseline extraction + language identifier
@@ -114,6 +113,12 @@ def process_links(htmlstring, base_url, known_links, todo, language=None):
             else:
                 links.append(link)
             known_links.add(link)
+    return navlinks, links, known_links
+
+
+def store_todo_links(todo, links, navlinks):
+    """Store the retrieved internal links in todo-list while prioritizing
+       the navigation ones."""
     # add links to deque
     if todo is None:
         todo = deque()
@@ -121,7 +126,29 @@ def process_links(htmlstring, base_url, known_links, todo, language=None):
     # prioritize navigation links
     # use most short links if there are no navlinks?
     todo.extendleft(navlinks)
+    return todo
+
+
+def process_links(htmlstring, base_url, known_links, todo, language=None):
+    """Examine the HTML code and process the retrieved internal links. Store
+       the links in todo-list while prioritizing the navigation ones."""
+    navlinks, links, known_links = find_new_links(htmlstring, base_url, known_links, language)
+    todo = store_todo_links(todo, links, navlinks)
     return todo, known_links
+
+
+def process_response(response, known_links, base_url, language):
+    """Convert urllib3 response object and extract links."""
+    htmlstring = None
+    # add final document URL to known_links
+    if response is not None:
+        known_links.add(response.geturl())
+        if response.data is not None and response.data != '':
+            # convert urllib3 response to string
+            htmlstring = decode_response(response.data)
+            # proceed to link extraction
+            navlinks, links, known_links = find_new_links(htmlstring, base_url, known_links, language)
+    return navlinks, links, known_links, htmlstring
 
 
 def init_crawl(homepage, todo, known_links, language=None):
@@ -165,17 +192,10 @@ def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG)
     url = todo.popleft()
     known_links.add(url)
     response = fetch_url(url, decode=False)
-    htmlstring = ''
-    # add final document URL to known_links
-    if response is not None:
-        known_links.add(response.geturl())
-        if response.data is not None and response.data != '':
-            # convert urllib3 response to string
-            htmlstring = decode_response(response.data)
-            # proceed to link extraction
-            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language=lang)
-            # optional backup of gathered pages without nav-pages
-            # ...
+    navlinks, links, known_links, htmlstring = process_response(response, known_links, base_url, lang)
+    todo = store_todo_links(todo, links, navlinks)
+    # optional backup of gathered pages without nav-pages
+    # ...
     sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
     i += 1
     return todo, known_links, i, htmlstring
@@ -183,7 +203,7 @@ def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG)
 
 def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, lang=None, config=DEFAULT_CONFIG):
     """Basic crawler targeting pages of interest within a website."""
-    todo, known_links, base_url, i = init_crawl(homepage, todo, known_links, language)
+    todo, known_links, base_url, i = init_crawl(homepage, todo, known_links, lang)
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
         todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config)

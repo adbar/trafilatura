@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 
+from collections import deque
 from contextlib import redirect_stdout
 from datetime import datetime
 from unittest.mock import patch
@@ -304,14 +305,14 @@ def test_input_filtering():
     '''test internal functions to filter urls'''
     # load dictionary
     inputdict = cli.load_input_dict(os.path.join(RESOURCES_DIR, 'list-process.txt'), set())
-    assert inputdict['https://httpbin.org'] == ['/status/200', '/status/404']
+    assert inputdict['https://httpbin.org'] == deque(['/status/200', '/status/404'])
     inputdict = cli.load_input_dict(os.path.join(RESOURCES_DIR, 'list-process.txt'), {'httpbin.org/status/404'})
-    assert inputdict['https://httpbin.org'] == ['/status/200']
+    assert inputdict['https://httpbin.org'] == deque(['/status/200'])
     # deduplication and filtering
     myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
     myblacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
     inputdict = cli_utils.convert_inputlist(myblacklist, myinput, None, None)
-    assert inputdict['https://example.org'] == ['/2', '/4', '/6']
+    assert inputdict['https://example.org'] == deque(['/2', '/4', '/6'])
     # URL in blacklist
     my_urls = cli_utils.load_input_urls(os.path.join(RESOURCES_DIR, 'list-process.txt'))
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
