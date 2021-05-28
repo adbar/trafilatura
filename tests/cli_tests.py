@@ -298,6 +298,7 @@ def test_cli_pipeline():
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
+    print(f.getvalue())
     assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
 
 

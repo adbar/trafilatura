@@ -1,11 +1,11 @@
-# pylint:disable-msg=E0611,I1101
+# pylint:disable-msg=E0611,E1101,I1101
 """
 Functions dedicated to website navigation and crawling/spidering.
 """
 
 import logging
 
-from collections import deque
+from collections import deque, OrderedDict
 from time import sleep
 
 from courlan import extract_links, fix_relative_urls, get_hostinfo, is_navigation_page, is_not_crawlable
@@ -96,48 +96,48 @@ def is_known_link(link, known_links):
 
 def find_new_links(htmlstring, base_url, known_links, language=None):
     """Extract and filter new internal links after an optional language check."""
-    navlinks, links, proceed = [], [], True
+    new_links = []
     # reference=None
     # optional language check: run baseline extraction + language identifier
     if language is not None and LANGID_FLAG is True:
         _, text, _ = baseline(htmlstring)
         result = cld3.get_language(text)
         if result is not None and result.language != language:
-            proceed = False
-    if proceed is True:
-        for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
-            if is_known_link(link, known_links) is True or is_not_crawlable(link):
-                continue
-            if is_navigation_page(link):
-                navlinks.append(link)
-            else:
-                links.append(link)
-            known_links.add(link)
-    return navlinks, links, known_links
+            return new_links, known_links
+    # iterate through the links and filter them
+    for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
+        if is_known_link(link, known_links) is True or is_not_crawlable(link):
+            continue
+        new_links.append(link)
+        known_links.add(link)
+    return new_links, known_links
 
 
-def store_todo_links(todo, links, navlinks):
+def store_todo_links(todo, new_links):
     """Store the retrieved internal links in todo-list while prioritizing
        the navigation ones."""
     # add links to deque
     if todo is None:
         todo = deque()
-    todo.extend(links)
     # prioritize navigation links
     # use most short links if there are no navlinks?
-    todo.extendleft(navlinks)
+    for link in new_links:
+        if is_navigation_page(link):
+            todo.appendleft(link)
+        else:
+            todo.append(link)
     return todo
 
 
 def process_links(htmlstring, base_url, known_links, todo, language=None):
     """Examine the HTML code and process the retrieved internal links. Store
        the links in todo-list while prioritizing the navigation ones."""
-    navlinks, links, known_links = find_new_links(htmlstring, base_url, known_links, language)
-    todo = store_todo_links(todo, links, navlinks)
+    new_links, known_links = find_new_links(htmlstring, base_url, known_links, language)
+    todo = store_todo_links(todo, new_links)
     return todo, known_links
 
 
-def process_response(response, known_links, base_url, language):
+def process_response(response, todo, known_links, base_url, language):
     """Convert urllib3 response object and extract links."""
     htmlstring = None
     # add final document URL to known_links
@@ -147,8 +147,8 @@ def process_response(response, known_links, base_url, language):
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)
             # proceed to link extraction
-            navlinks, links, known_links = find_new_links(htmlstring, base_url, known_links, language)
-    return navlinks, links, known_links, htmlstring
+            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language)
+    return todo, known_links, htmlstring
 
 
 def init_crawl(homepage, todo, known_links, language=None):
@@ -192,8 +192,7 @@ def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG)
     url = todo.popleft()
     known_links.add(url)
     response = fetch_url(url, decode=False)
-    navlinks, links, known_links, htmlstring = process_response(response, known_links, base_url, lang)
-    todo = store_todo_links(todo, links, navlinks)
+    todo, known_links, htmlstring = process_response(response, todo, known_links, base_url, lang)
     # optional backup of gathered pages without nav-pages
     # ...
     sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))

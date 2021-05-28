@@ -14,7 +14,7 @@ import string
 import sys
 import traceback
 
-from collections import defaultdict, OrderedDict, deque
+from collections import defaultdict, deque, OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from functools import partial
@@ -311,21 +311,18 @@ def cli_crawler(args, n=10):
         domain_dict = add_to_compressed_dict([args.crawl])
         # args.blacklist, url_filter=None
     # load crawl data
-    # TODO: shorten code!
     for website in domain_dict:
         homepage = website + domain_dict[website].popleft()
-        todo, known_links, base_url, i = init_crawl(homepage, None, set(), language=args.target_language)
-        # convert links
-        for found_url in todo:
-            _, urlpath = get_host_and_path(found_url)
-            if is_navigation_page(urlpath):
-                domain_dict[website].appendleft(urlpath)
-            else:
-                domain_dict[website].append(urlpath)
-        # TODO: register changes
+        infodict = dict()
+        todo, infodict['known'], infodict['base'], infodict['count'] = init_crawl(homepage, None, set(), language=args.target_language)
+        # update info
+        crawlinfo[website] = infodict
+        # convert and add links
+        domain_dict[website].extend([get_host_and_path(u)[1] for u in todo if not is_navigation_page(u)])
+        domain_dict[website].extendleft([get_host_and_path(u)[1] for u in todo if is_navigation_page(u)])
+        # TODO: register changes?
         # if base_url != website:
         # ...
-        crawlinfo[website] = [base_url, known_links, i]
     # iterate until the threshold is reached
     while domain_dict:
         try:
@@ -338,15 +335,12 @@ def cli_crawler(args, n=10):
             future_to_url = {executor.submit(fetch_url, url, decode=False): url for url in bufferlist}
             for future in as_completed(future_to_url):
                 url = future_to_url[future]
-                website, urlpath = get_host_and_path(url)
-                crawlinfo[website][2] += 1
+                website, _ = get_host_and_path(url)
+                crawlinfo[website]['count'] += 1
+                #crawlinfo[website]['known'].add(url)
                 # handle result
                 if future.result() is not None:
-                    response = future.result()
-                    navlinks, links, crawlinfo[website][1], htmlstring = process_response(response, crawlinfo[website][1], crawlinfo[website][0], args.target_language)
-                    # convert and add links
-                    domain_dict[website].extend([get_host_and_path(u)[1] for u in links])
-                    domain_dict[website].extendleft([get_host_and_path(u)[1] for u in navlinks])
+                    domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(future.result(), domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language)
                     # only store content pages, not navigation
                     if not is_navigation_page(url): # + response.geturl()
                         if args.list:
@@ -358,7 +352,7 @@ def cli_crawler(args, n=10):
                 #    if args.archived is True:
                 #        errors.append(url)
         # early exit if maximum count is reached
-        if any(i >= n for i in [crawlinfo[site][2] for site in crawlinfo]):
+        if any(i >= n for i in [crawlinfo[site]['count'] for site in crawlinfo]):
             break
     # print results
     for website in sorted(domain_dict):
