@@ -5,10 +5,10 @@ Functions dedicated to website navigation and crawling/spidering.
 
 import logging
 
-from collections import deque, OrderedDict
+from collections import deque
 from time import sleep
 
-from courlan import extract_links, fix_relative_urls, get_hostinfo, is_navigation_page, is_not_crawlable
+from courlan import extract_links, fix_relative_urls, get_hostinfo, get_host_and_path, is_navigation_page, is_not_crawlable
 from lxml import etree
 
 from .core import baseline
@@ -113,7 +113,7 @@ def find_new_links(htmlstring, base_url, known_links, language=None):
     return new_links, known_links
 
 
-def store_todo_links(todo, new_links):
+def store_todo_links(todo, new_links, shortform=False):
     """Store the retrieved internal links in todo-list while prioritizing
        the navigation ones."""
     # add links to deque
@@ -122,6 +122,8 @@ def store_todo_links(todo, new_links):
     # prioritize navigation links
     # use most short links if there are no navlinks?
     for link in new_links:
+        if shortform is True:
+            link = get_host_and_path(link)[1]
         if is_navigation_page(link):
             todo.appendleft(link)
         else:
@@ -129,15 +131,15 @@ def store_todo_links(todo, new_links):
     return todo
 
 
-def process_links(htmlstring, base_url, known_links, todo, language=None):
+def process_links(htmlstring, base_url, known_links, todo, language=None, shortform=False):
     """Examine the HTML code and process the retrieved internal links. Store
        the links in todo-list while prioritizing the navigation ones."""
     new_links, known_links = find_new_links(htmlstring, base_url, known_links, language)
-    todo = store_todo_links(todo, new_links)
+    todo = store_todo_links(todo, new_links, shortform)
     return todo, known_links
 
 
-def process_response(response, todo, known_links, base_url, language):
+def process_response(response, todo, known_links, base_url, language, shortform=False):
     """Convert urllib3 response object and extract links."""
     htmlstring = None
     # add final document URL to known_links
@@ -151,19 +153,19 @@ def process_response(response, todo, known_links, base_url, language):
     return todo, known_links, htmlstring
 
 
-def init_crawl(homepage, todo, known_links, language=None):
+def init_crawl(homepage, todo, known_links, language=None, shortform=False):
     """Start crawl by initializing variable and potentially examining the starting page."""
     _, base_url = get_hostinfo(homepage)
     known_links = known_links or set()
     i = 0
     # initialize crawl by visiting homepage if necessary
     if todo is None:
-        todo, known_links = crawl_initial_page(homepage, base_url, known_links, language)
+        todo, known_links = crawl_initial_page(homepage, base_url, known_links, language, shortform)
         i += 1
     return todo, known_links, base_url, i
 
 
-def crawl_initial_page(homepage, base_url, known_links, language=None): # config=DEFAULT_CONFIG
+def crawl_initial_page(homepage, base_url, known_links, language=None, shortform=False): # config=DEFAULT_CONFIG
     """Examine the homepage, extract navigation links, links,
        and feed links (if any on the homepage)."""
     known_links.add(homepage) # add known homepage
@@ -171,7 +173,7 @@ def crawl_initial_page(homepage, base_url, known_links, language=None): # config
     htmlstring, homepage, base_url = probe_alternative_homepage(homepage)
     known_links.add(homepage) # add potentially "new" homepage
     # extract links on homepage
-    todo, known_links = process_links(htmlstring, base_url, known_links, None, language)
+    todo, known_links = process_links(htmlstring, base_url, known_links, None, language, shortform)
     # UNTESTED!
     # add potential URLs extracted from feeds
     #additional_links = find_feed_urls(homepage, target_lang=language)

@@ -313,13 +313,9 @@ def cli_crawler(args, n=10):
     # load crawl data
     for website in domain_dict:
         homepage = website + domain_dict[website].popleft()
-        infodict = dict()
-        todo, infodict['known'], infodict['base'], infodict['count'] = init_crawl(homepage, None, set(), language=args.target_language)
+        crawlinfo[website] = dict()
+        domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], crawlinfo[website]['count'] = init_crawl(homepage, None, set(), language=args.target_language, shortform=True)
         # update info
-        crawlinfo[website] = infodict
-        # convert and add links
-        domain_dict[website].extend([get_host_and_path(u)[1] for u in todo if not is_navigation_page(u)])
-        domain_dict[website].extendleft([get_host_and_path(u)[1] for u in todo if is_navigation_page(u)])
         # TODO: register changes?
         # if base_url != website:
         # ...
@@ -340,7 +336,7 @@ def cli_crawler(args, n=10):
                 #crawlinfo[website]['known'].add(url)
                 # handle result
                 if future.result() is not None:
-                    domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(future.result(), domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language)
+                    domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(future.result(), None, crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True)
                     # only store content pages, not navigation
                     if not is_navigation_page(url): # + response.geturl()
                         if args.list:
