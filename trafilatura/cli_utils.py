@@ -43,45 +43,11 @@ def handler(signum, frame):
     raise Exception('unusual file processing time, aborting')
 
 
-def load_input_dict(filename, blacklist):
-    '''Read input list of URLs to process and build domain-aware processing dictionary'''
-    inputdict = defaultdict(list)
-    try:
-        # optional: errors='strict', buffering=1
-        with open(filename, mode='r', encoding='utf-8') as inputfile:
-            for line in inputfile:
-                # control input validity
-                url_match = re.match(r'https?://[^\s]+', line)
-                if url_match:
-                    url = url_match.group(0)
-                    # validation
-                    if validate_url(url)[0] is False:
-                        LOGGER.warning('Invalid URL, discarding line: %s', line)
-                        continue
-                    # control blacklist
-                    if blacklist:
-                        if re.sub(r'^https?://', '', url) in blacklist:
-                            continue
-                    # segment URL and add to domain dictionary
-                    try:
-                        hostinfo, urlpath = get_host_and_path(url)
-                        inputdict[hostinfo].append(urlpath)
-                    except ValueError:
-                        LOGGER.warning('Could not parse URL, discarding line: %s', line)
-                else:
-                    LOGGER.warning('Not an URL, discarding line: %s', line)
-    except UnicodeDecodeError:
-        sys.exit('ERROR: system, file type or buffer encoding')
-    # deduplicate and convert to deque
-    for hostname in inputdict:
-        inputdict[hostname] = deque(OrderedDict.fromkeys(inputdict[hostname]))
-    return inputdict
-
-
 def load_input_urls(filename):
     '''Read list of URLs to process'''
     input_urls = []
     try:
+        # optional: errors='strict', buffering=1
         with open(filename, mode='r', encoding='utf-8') as inputfile:
             for line in inputfile:
                 url_match = re.match(r'https?://[^\s]+', line)
@@ -105,11 +71,21 @@ def load_blacklist(filename):
     return blacklist
 
 
-def convert_inputlist(blacklist, inputlist, url_filter=None, inputdict=None):
-    '''Add input URls to domain-aware processing dictionary'''
-    # control
+def load_input_dict(filename, blacklist):
+    '''Read input list of URLs to process from a file and
+       build a domain-aware dictionary'''
+    inputlist = load_input_urls(filename)
+    # deduplicate, filter and and convert to dict
+    return add_to_compressed_dict(inputlist, blacklist) # args.filter
+
+
+def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict=None):
+    '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
+    # init
     if inputdict is None:
         inputdict = defaultdict(deque)
+    # deduplicate while keeping order
+    inputlist = list(OrderedDict.fromkeys(inputlist))
     # filter
     if blacklist:
         inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]
@@ -122,10 +98,11 @@ def convert_inputlist(blacklist, inputlist, url_filter=None, inputdict=None):
                     filtered_list.append(u)
                     break
         inputlist = filtered_list
-    # validate
-    inputlist = [u for u in inputlist if validate_url(u)[0] is True]
-    # deduplicate
-    for url in list(OrderedDict.fromkeys(inputlist)):
+    # validate and store in dict
+    for url in inputlist:
+        # validate URL
+        if validate_url(url)[0] is False:
+            continue
         # segment URL and add to domain dictionary
         try:
             hostinfo, urlpath = get_host_and_path(url)
@@ -304,7 +281,7 @@ def load_download_buffer(args, domain_dict, backoff_dict, config):
 
 def download_queue_processing(domain_dict, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
-    i, backoff_dict, errors = 0, dict(), []
+    backoff_dict, errors = dict(), []
     while domain_dict:
         bufferlist, download_threads, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, config)
         # start several threads
@@ -322,15 +299,17 @@ def download_queue_processing(domain_dict, args, counter, config):
     return errors, counter
 
 
-def cli_crawler(args, n=3):
-    '''Start a focused crawler downloading a fixed number of URLs within a website'''
+def cli_crawler(args, n=10):
+    '''Start a focused crawler which downloads a fixed number of URLs within a website
+       and prints the links found in the process'''
     config = use_config(filename=args.config_file)
     counter, crawlinfo, backoff_dict = None, dict(), dict()
     # load input URLs
     if args.inputfile:
         domain_dict = load_input_dict(args.inputfile, args.blacklist)
     else:
-        domain_dict = convert_inputlist(args.blacklist, [args.crawl])
+        domain_dict = add_to_compressed_dict([args.crawl])
+        # args.blacklist, url_filter=None
     # load crawl data
     # TODO: shorten code!
     for website in domain_dict:

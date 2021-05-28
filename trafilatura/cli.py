@@ -12,7 +12,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
-                        convert_inputlist, cli_crawler,
+                        add_to_compressed_dict, cli_crawler,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
 from .feeds import find_feed_urls
@@ -214,7 +214,7 @@ def process_args(args):
             # process results one-by-one, i.e. in parallel
             for future in as_completed(future_to_url):
                 if future.result() is not None:
-                    inputdict = convert_inputlist(args.blacklist, future.result(), args.url_filter, inputdict)
+                    inputdict = add_to_compressed_dict(future.result(), args.blacklist, args.url_filter, inputdict)
                     url_processing_pipeline(args, inputdict)
                     inputdict = None
     # activate crawler/spider
@@ -227,7 +227,7 @@ def process_args(args):
     else:
         # process input URL
         if args.URL:
-            inputdict = convert_inputlist(args.blacklist, [args.URL])
+            inputdict = add_to_compressed_dict([args.URL], args.blacklist)
             url_processing_pipeline(args, inputdict)  # process single url
         # process input on STDIN
         else:
