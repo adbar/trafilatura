@@ -52,7 +52,7 @@ def test_parser():
     assert args.output_format == 'json'
     # process_args
     args.inputdir = '/dev/null'
-    args.verbose == 1
+    args.verbose = 1
     args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     cli.process_args(args)
     assert len(args.blacklist) == 2
@@ -63,7 +63,7 @@ def test_parser():
     assert args.inputfile == 'resources/list-discard.txt'
     assert args.url_filter == ['test1', 'test2']
     args.inputfile = os.path.join(RESOURCES_DIR, 'list-discard.txt')
-    args.blacklist == os.path.join(RESOURCES_DIR, 'list-discard.txt')
+    args.blacklist = os.path.join(RESOURCES_DIR, 'list-discard.txt')
     f = io.StringIO()
     with redirect_stdout(f):
         cli.process_args(args)
@@ -145,7 +145,7 @@ def test_sysoutput():
     args.keep_dirs = False
     filepath, destdir = cli_utils.determine_output_path(args, 'testfile.txt', '')
     assert filepath == 'test/2jmj7l5rSw0yVb-vlWAYkK-YBwk.txt'
-    
+
 
 def test_download():
     '''test page download and command-line interface'''
@@ -200,7 +200,7 @@ def test_cli_pipeline():
     #f = io.StringIO()
     #with redirect_stdout(f):
     #    cli.process_args(args)
-    #assert len(f.getvalue()) == 0 
+    #assert len(f.getvalue()) == 0
     # test URL listing
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
@@ -215,7 +215,7 @@ def test_cli_pipeline():
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
-    my_urls = cli_utils.load_input_urls(args.inputfile)
+    my_urls = cli_utils.load_input_urls(args)
     assert my_urls is not None and len(my_urls) == 2
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt'), '--blacklist', os.path.join(RESOURCES_DIR, 'list-discard.txt'), '--archived']
     with patch.object(sys, 'argv', testargs):
@@ -274,7 +274,7 @@ def test_cli_pipeline():
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     args.config_file = os.path.join(RESOURCES_DIR, args.config_file)
-    config = use_config(filename=args.config_file)
+    # config = use_config(filename=args.config_file)
     assert cli.examine(teststring, args) is None
     # CLI options
     testargs = ['', '--links', '--images']
@@ -304,10 +304,16 @@ def test_cli_pipeline():
 
 def test_input_filtering():
     '''test internal functions to filter urls'''
+    testargs = ['']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
     # load dictionary
-    inputdict = cli.load_input_dict(os.path.join(RESOURCES_DIR, 'list-process.txt'), set())
+    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    inputdict = cli.load_input_dict(args)
     assert inputdict['https://httpbin.org'] == deque(['/status/200', '/status/404'])
-    inputdict = cli.load_input_dict(os.path.join(RESOURCES_DIR, 'list-process.txt'), {'httpbin.org/status/404'})
+    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    args.blacklist = {'httpbin.org/status/404'}
+    inputdict = cli.load_input_dict(args)
     assert inputdict['https://httpbin.org'] == deque(['/status/200'])
     # deduplication and filtering
     myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
@@ -315,16 +321,16 @@ def test_input_filtering():
     inputdict = cli_utils.add_to_compressed_dict(myinput, myblacklist)
     assert inputdict['https://example.org'] == deque(['/2', '/4', '/6'])
     # URL in blacklist
-    my_urls = cli_utils.load_input_urls(os.path.join(RESOURCES_DIR, 'list-process.txt'))
+    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
     inputdict = cli_utils.add_to_compressed_dict(my_urls, my_blacklist)
     assert len(inputdict) == 0
     # URL filter
-    my_urls = cli_utils.load_input_urls(os.path.join(RESOURCES_DIR, 'list-process.txt'))
+    args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
+    my_urls = cli_utils.load_input_urls(args)
     assert len(cli.add_to_compressed_dict(my_urls, None, ['status'], None)) == 1
-    my_urls = cli_utils.load_input_urls(os.path.join(RESOURCES_DIR, 'list-process.txt'))
     assert len(cli.add_to_compressed_dict(my_urls, None, ['teststring'], None)) == 0
-    my_urls = cli_utils.load_input_urls(os.path.join(RESOURCES_DIR, 'list-process.txt'))
     assert len(cli.add_to_compressed_dict(my_urls, None, ['status', 'teststring'], None)) == 1
     # malformed URLs
     inputdict = cli_utils.add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)

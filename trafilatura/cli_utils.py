@@ -43,20 +43,25 @@ def handler(signum, frame):
     raise Exception('unusual file processing time, aborting')
 
 
-def load_input_urls(filename):
-    '''Read list of URLs to process'''
-    input_urls = []
-    try:
-        # optional: errors='strict', buffering=1
-        with open(filename, mode='r', encoding='utf-8') as inputfile:
-            for line in inputfile:
-                url_match = re.match(r'https?://[^\s]+', line)
-                try:
-                    input_urls.append(url_match.group(0))
-                except AttributeError:
-                    LOGGER.warning('Not an URL, discarding line: %s', line)
-    except UnicodeDecodeError:
-        sys.exit('ERROR: system, file type or buffer encoding')
+def load_input_urls(args):
+    '''Read list of URLs to process or derive one from command-line arguments'''
+    if args.inputfile:
+        input_urls = []
+        try:
+            # optional: errors='strict', buffering=1
+            with open(args.inputfile, mode='r', encoding='utf-8') as inputfile:
+                for line in inputfile:
+                    url_match = re.match(r'https?://[^\s]+', line)
+                    if url_match:
+                        input_urls.append(url_match.group(0))
+        except UnicodeDecodeError:
+            sys.exit('ERROR: system, file type or buffer encoding')
+    elif args.crawl:
+        input_urls = [args.crawl]
+    elif args.feed:
+        input_urls = [args.feed]
+    elif args.sitemap:
+        input_urls = [args.sitemap]
     return input_urls
 
 
@@ -71,12 +76,12 @@ def load_blacklist(filename):
     return blacklist
 
 
-def load_input_dict(filename, blacklist):
-    '''Read input list of URLs to process from a file and
+def load_input_dict(args):
+    '''Read input list of URLs to process and
        build a domain-aware dictionary'''
-    inputlist = load_input_urls(filename)
+    inputlist = load_input_urls(args)
     # deduplicate, filter and and convert to dict
-    return add_to_compressed_dict(inputlist, blacklist) # args.filter
+    return add_to_compressed_dict(inputlist, args.blacklist) # args.filter
 
 
 def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict=None):
@@ -305,11 +310,7 @@ def cli_crawler(args, n=10):
     config = use_config(filename=args.config_file)
     counter, crawlinfo, backoff_dict = None, dict(), dict()
     # load input URLs
-    if args.inputfile:
-        domain_dict = load_input_dict(args.inputfile, args.blacklist)
-    else:
-        domain_dict = add_to_compressed_dict([args.crawl])
-        # args.blacklist, url_filter=None
+    domain_dict = load_input_dict(args)
     # load crawl data
     for website in domain_dict:
         homepage = website + domain_dict[website].popleft()

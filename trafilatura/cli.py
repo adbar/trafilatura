@@ -193,19 +193,12 @@ def process_args(args):
     # processing according to mutually exclusive options
     # read url list from input file
     if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False]):
-        inputdict = load_input_dict(args.inputfile, args.blacklist)
+        inputdict = load_input_dict(args)
         url_processing_pipeline(args, inputdict)
     # fetch urls from a feed or a sitemap
     elif args.feed or args.sitemap:
-        # load input URLs
-        if args.inputfile:
-            input_urls = load_input_urls(args.inputfile)
-        elif args.feed:
-            input_urls = [args.feed]
-        elif args.sitemap:
-            input_urls = [args.sitemap]
+        input_urls = load_input_urls(args)
         # link discovery and storage
-        inputdict = None
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             if args.feed:
                 future_to_url = {executor.submit(find_feed_urls, url, target_lang=args.target_language): url for url in input_urls}
@@ -214,9 +207,8 @@ def process_args(args):
             # process results one-by-one, i.e. in parallel
             for future in as_completed(future_to_url):
                 if future.result() is not None:
-                    inputdict = add_to_compressed_dict(future.result(), args.blacklist, args.url_filter, inputdict)
+                    inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter)
                     url_processing_pipeline(args, inputdict)
-                    inputdict = None
     # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
