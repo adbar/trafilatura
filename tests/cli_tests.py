@@ -169,7 +169,7 @@ def test_download():
     assert cli.examine(teststring, args, url) is not None
     # single/multiprocessing
     domain_dict = dict()
-    domain_dict['https://httpbin.org'] = ['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505']
+    domain_dict['https://httpbin.org'] = deque(['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505'])
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
     config = use_config(filename=args.config_file)
@@ -178,16 +178,16 @@ def test_download():
     # test backoff algorithm
     testdict = dict()
     backoffdict = dict()
-    testdict['http://test.org'] = ['/1']
+    testdict['http://test.org'] = deque(['/1'])
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
-    testdict['http://test.org'] = ['/1']
-    backoffdict['test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
+    testdict['http://test.org'] = deque(['/1'])
+    backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
-    testdict['http://test.org'] = ['/1']
-    backoffdict['test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
+    testdict['http://test.org'] = deque(['/1'])
+    backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 3)
-    testdict['http://test.org'] = ['/1']
-    backoffdict['test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
+    testdict['http://test.org'] = deque(['/1'])
+    backoffdict['http://test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
     assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 0)
 
 

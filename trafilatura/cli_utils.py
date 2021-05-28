@@ -243,27 +243,24 @@ def process_result(htmlstring, args, url, counter, config):
 def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
     '''Select a random URL from the domains pool and apply backoff rule'''
     host = random.choice(list(domain_dict))
-    domain = extract_domain(host)
-    # safeguard
-    if domain in backoff_dict and \
-        (datetime.now() - backoff_dict[domain]).total_seconds() < sleeptime:
-        i += 1
-        if i >= len(domain_dict)*3:
-            LOGGER.debug('spacing request for domain name %s', domain)
-            sleep(sleeptime)
-            i = 0
-    # draw URL # TODO: popleft() ?
-    url = host + domain_dict[host].pop()
+    url = None
+    if domain_dict[host]:
+        # safeguard
+        if host in backoff_dict and \
+            (datetime.now() - backoff_dict[host]).total_seconds() < sleeptime:
+            i += 1
+            if i >= len(domain_dict)*3:
+                LOGGER.debug('spacing request for host %s', host)
+                sleep(sleeptime)
+                i = 0
+        # draw URL
+        url = host + domain_dict[host].popleft()
+        backoff_dict[host] = datetime.now()
     # clean registries
     if not domain_dict[host]:
         del domain_dict[host]
-        try:
-            del backoff_dict[domain]
-        except KeyError:
-            pass
-    # register backoff
-    else:
-        backoff_dict[domain] = datetime.now()
+        if host in backoff_dict:
+            del backoff_dict[host]
     return url, domain_dict, backoff_dict, i
 
 
@@ -276,11 +273,12 @@ def load_download_buffer(args, domain_dict, backoff_dict, config):
         download_threads, i = 1, 3
     # populate buffer
     bufferlist = []
-    while len(bufferlist) < download_threads:
+    while len(bufferlist) < download_threads and domain_dict:
         url, domain_dict, backoff_dict, i = draw_backoff_url(
             domain_dict, backoff_dict, config.getfloat('DEFAULT', 'SLEEP_TIME'), i
             )
-        bufferlist.append(url)
+        if url is not None:
+            bufferlist.append(url)
     return bufferlist, download_threads, backoff_dict
 
 
@@ -322,10 +320,7 @@ def cli_crawler(args, n=10):
         # ...
     # iterate until the threshold is reached
     while domain_dict:
-        try:
-            bufferlist, download_threads, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, config)
-        except IndexError:
-            break
+        bufferlist, download_threads, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, config)
         # start several threads
         # TODO: shorten code!
         with ThreadPoolExecutor(max_workers=download_threads) as executor:
@@ -337,7 +332,7 @@ def cli_crawler(args, n=10):
                 #crawlinfo[website]['known'].add(url)
                 # handle result
                 if future.result() is not None:
-                    domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(future.result(), None, crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True)
+                    domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(future.result(), domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True)
                     # only store content pages, not navigation
                     if not is_navigation_page(url): # + response.geturl()
                         if args.list:
@@ -381,7 +376,7 @@ def url_processing_pipeline(args, inputdict):
     # option to retry
     if args.archived is True:
         inputdict = dict()
-        inputdict['https://web.archive.org'] = ['/web/20/' + e for e in errors]
+        inputdict['https://web.archive.org'] = deque(['/web/20/' + e for e in errors])
         if len(inputdict['https://web.archive.org']) > 0:
             archived_errors, _ = download_queue_processing(inputdict, args, counter, config)
             LOGGER.debug('%s archived URLs out of %s could not be found', len(archived_errors), len(errors))
