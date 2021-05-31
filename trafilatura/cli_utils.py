@@ -28,7 +28,7 @@ from .core import extract
 from .filters import content_fingerprint
 from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
-from .spider import init_crawl, process_response
+from .spider import get_crawl_delay, init_crawl, process_response
 from .utils import fetch_url
 
 
@@ -339,6 +339,8 @@ def cli_crawler(args, n=10):
                             write_result(url, args)
                         else:
                             counter = process_result(htmlstring, args, url, counter, config)
+                    # just in case a crawl delay is specified in robots.txt
+                    sleep(get_crawl_delay(crawlinfo[website]['rules']))
                 #else:
                 #    LOGGER.debug('No result for URL: %s', url)
                 #    if args.archived is True:

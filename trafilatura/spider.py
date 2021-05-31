@@ -208,8 +208,6 @@ def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG,
         todo, known_links, htmlstring = process_response(response, todo, known_links, base_url, lang, shortform=shortform, rules=rules)
     # optional backup of gathered pages without nav-pages
     # ...
-    # TODO: move somewhere else + robots crawl_delay rule
-    sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
     i += 1
     return todo, known_links, i, htmlstring
 
@@ -220,9 +218,19 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
         todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config, rules=rules)
+        sleep(get_crawl_delay(rules, config))
     # refocus todo-list on URLs without navigation?
     # [u for u in todo if not is_navigation_page(u)]
     return todo, known_links
+
+
+def get_crawl_delay(rules, config=None):
+    """Define sleeping time between requests (in seconds)."""
+    delay = rules.crawl_delay("*") or 0
+    # backup
+    if delay == 0 and config is not None:
+        delay = config.getfloat('DEFAULT', 'SLEEP_TIME')
+    return delay
 
 
 def is_still_navigation(todo):

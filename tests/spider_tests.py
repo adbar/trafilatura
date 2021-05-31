@@ -9,6 +9,7 @@ import sys
 from collections import deque
 
 from trafilatura import spider
+from trafilatura.settings import DEFAULT_CONFIG
 
 # language detection
 try:
@@ -86,8 +87,8 @@ def test_crawl_page():
     assert sorted(todo) == ['https://httpbin.org/links/2/0', 'https://httpbin.org/links/2/1']
     assert len(known_urls) == 3 and i == 1
     # initial page
-    todo, known_links = spider.crawl_initial_page('https://httpbin.org/html', 'https://httpbin.org', set())
-    assert len(todo) == 0 and len(known_links) == 1
+    todo, known_links, i, _ = spider.crawl_page(0, 'https://httpbin.org', deque(['https://httpbin.org/html']),  set(), initial=True)
+    assert len(todo) == 0 and len(known_links) == 1 and i == 1
     # test language detection
     if LANGID_FLAG is True:
         todo, known_links = deque(['https://httpbin.org/html']), set()
@@ -98,12 +99,16 @@ def test_crawl_page():
 
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
-    assert spider.init_crawl('https://httpbin.org/html', None, None) == (deque([]), {'https://httpbin.org/html'}, 'https://httpbin.org', 1)
+    todo, known_links, base_url, i, rules = spider.init_crawl('https://httpbin.org/html', None, None)
+    assert todo == deque([]) and known_links == {'https://httpbin.org/html'} and base_url == 'https://httpbin.org' and i == 1
     known_links = 'https://test.org'
     assert spider.is_known_link('https://test.org', known_links) is True
     assert spider.is_known_link('http://test.org', known_links) is True
     assert spider.is_known_link('http://test.org/', known_links) is True
     assert spider.is_known_link('https://test.org/', known_links) is True
+    # delay between requests
+    assert spider.get_crawl_delay(rules, None) == 0
+    assert spider.get_crawl_delay(rules, DEFAULT_CONFIG) == 2.0
 
 
 if __name__ == '__main__':
