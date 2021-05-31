@@ -226,7 +226,11 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
 
 def get_crawl_delay(rules, config=None):
     """Define sleeping time between requests (in seconds)."""
-    delay = rules.crawl_delay("*") or 0
+    try:
+        delay = rules.crawl_delay("*") or 0
+    # Python < 3.6
+    except AttributeError:
+        delay = 0
     # backup
     if delay == 0 and config is not None:
         delay = config.getfloat('DEFAULT', 'SLEEP_TIME')
