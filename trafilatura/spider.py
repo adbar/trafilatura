@@ -5,7 +5,7 @@ Functions dedicated to website navigation and crawling/spidering.
 
 import logging
 
-from collections import deque
+from collections import deque, OrderedDict
 from time import sleep
 
 from courlan import extract_links, fix_relative_urls, get_hostinfo, get_host_and_path, is_navigation_page, is_not_crawlable
@@ -128,7 +128,8 @@ def store_todo_links(todo, new_links, shortform=False):
             todo.appendleft(link)
         else:
             todo.append(link)
-    return todo
+    # unique list while preserving order
+    return deque(OrderedDict.fromkeys(todo))
 
 
 def process_links(htmlstring, base_url, known_links, todo, language=None, shortform=False):
@@ -149,7 +150,7 @@ def process_response(response, todo, known_links, base_url, language, shortform=
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)
             # proceed to link extraction
-            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language)
+            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language, shortform)
     return todo, known_links, htmlstring
 
 

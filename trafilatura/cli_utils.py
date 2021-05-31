@@ -22,7 +22,7 @@ from multiprocessing import Pool
 from os import makedirs, path, walk
 from time import sleep
 
-from courlan import extract_domain, get_host_and_path, is_navigation_page, validate_url
+from courlan import get_host_and_path, is_navigation_page, validate_url
 
 from .core import extract
 from .filters import content_fingerprint
