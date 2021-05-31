@@ -240,18 +240,18 @@ def process_result(htmlstring, args, url, counter, config):
     return counter
 
 
-def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
+def draw_backoff_url(domain_dict, backoff_dict, sleep_time, i):
     '''Select a random URL from the domains pool and apply backoff rule'''
     host = random.choice(list(domain_dict))
     url = None
     if domain_dict[host]:
         # safeguard
         if host in backoff_dict and \
-            (datetime.now() - backoff_dict[host]).total_seconds() < sleeptime:
+            (datetime.now() - backoff_dict[host]).total_seconds() < sleep_time:
             i += 1
             if i >= len(domain_dict)*3:
                 LOGGER.debug('spacing request for host %s', host)
-                sleep(sleeptime)
+                sleep(sleep_time)
                 i = 0
         # draw URL
         url = host + domain_dict[host].popleft()
@@ -264,41 +264,49 @@ def draw_backoff_url(domain_dict, backoff_dict, sleeptime, i):
     return url, domain_dict, backoff_dict, i
 
 
-def load_download_buffer(args, domain_dict, backoff_dict, config):
+def load_download_buffer(args, domain_dict, backoff_dict, sleep_time):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
-    download_threads = args.parallel or DOWNLOAD_THREADS
+    bufferlist = []
+    download_threads, i = args.parallel or DOWNLOAD_THREADS, 0
     # the remaining list is too small, process it differently
     if len(domain_dict) < download_threads or \
        len({x for v in domain_dict.values() for x in v}) < download_threads:
         download_threads, i = 1, 3
-    # populate buffer
-    bufferlist = []
-    while len(bufferlist) < download_threads and domain_dict:
+    # populate buffer until a condition is reached
+    while domain_dict and (i == 0 or len(bufferlist) <= download_threads):
         url, domain_dict, backoff_dict, i = draw_backoff_url(
-            domain_dict, backoff_dict, config.getfloat('DEFAULT', 'SLEEP_TIME'), i
+            domain_dict, backoff_dict, sleep_time, i
             )
         if url is not None:
             bufferlist.append(url)
-    return bufferlist, download_threads, backoff_dict
+    return bufferlist, download_threads, domain_dict, backoff_dict
+
+
+def buffered_downloads(bufferlist, download_threads, decode=True):
+    '''Download queue consumer, single- or multi-threaded.'''
+    # start several threads
+    with ThreadPoolExecutor(max_workers=download_threads) as executor:
+        future_to_url = {executor.submit(fetch_url, url, decode): url for url in bufferlist}
+        for future in as_completed(future_to_url):
+            # url and download result
+            yield future_to_url[future], future.result()
 
 
 def download_queue_processing(domain_dict, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
+    sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
     backoff_dict, errors = dict(), []
     while domain_dict:
-        bufferlist, download_threads, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, config)
-        # start several threads
-        with ThreadPoolExecutor(max_workers=download_threads) as executor:
-            future_to_url = {executor.submit(fetch_url, url): url for url in bufferlist}
-            for future in as_completed(future_to_url):
-                url = future_to_url[future]
-                # handle result
-                if future.result() is not None:
-                    counter = process_result(future.result(), args, url, counter, config)
-                else:
-                    LOGGER.debug('No result for URL: %s', url)
-                    if args.archived is True:
-                        errors.append(url)
+        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, sleep_time)
+        # process downloads
+        for url, result in buffered_downloads(bufferlist, download_threads):
+            # handle result
+            if result is not None:
+                counter = process_result(result, args, url, counter, config)
+            else:
+                LOGGER.debug('No result for URL: %s', url)
+                if args.archived is True:
+                    errors.append(url)
     return errors, counter
 
 
@@ -306,6 +314,7 @@ def cli_crawler(args, n=10):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
     config = use_config(filename=args.config_file)
+    sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
     counter, crawlinfo, backoff_dict = None, dict(), dict()
     # load input URLs
     domain_dict = load_input_dict(args)
@@ -320,27 +329,22 @@ def cli_crawler(args, n=10):
         # ...
     # iterate until the threshold is reached
     while domain_dict:
-        bufferlist, download_threads, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, config)
+        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, sleep_time)
         # start several threads
-        # TODO: shorten code!
-        with ThreadPoolExecutor(max_workers=download_threads) as executor:
-            future_to_url = {executor.submit(fetch_url, url, decode=False): url for url in bufferlist}
-            for future in as_completed(future_to_url):
-                url = future_to_url[future]
-                website, _ = get_host_and_path(url)
-                crawlinfo[website]['count'] += 1
-                #crawlinfo[website]['known'].add(url)
-                # handle result
-                if future.result() is not None:
-                    domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(future.result(), domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True, rules=crawlinfo[website]['rules'])
-                    # only store content pages, not navigation
-                    if not is_navigation_page(url): # + response.geturl()
-                        if args.list:
-                            write_result(url, args)
-                        else:
-                            counter = process_result(htmlstring, args, url, counter, config)
-                    # just in case a crawl delay is specified in robots.txt
-                    sleep(get_crawl_delay(crawlinfo[website]['rules']))
+        for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
+            website, _ = get_host_and_path(url)
+            crawlinfo[website]['count'] += 1
+            # handle result
+            if result is not None:
+                domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(result, domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True, rules=crawlinfo[website]['rules'])
+                # only store content pages, not navigation
+                if not is_navigation_page(url): # + response.geturl()
+                    if args.list:
+                        write_result(url, args)
+                    else:
+                        counter = process_result(htmlstring, args, url, counter, config)
+                # just in case a crawl delay is specified in robots.txt
+                sleep(get_crawl_delay(crawlinfo[website]['rules']))
                 #else:
                 #    LOGGER.debug('No result for URL: %s', url)
                 #    if args.archived is True:
