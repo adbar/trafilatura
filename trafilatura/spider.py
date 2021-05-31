@@ -4,6 +4,7 @@ Functions dedicated to website navigation and crawling/spidering.
 """
 
 import logging
+import urllib.robotparser
 
 from collections import deque, OrderedDict
 from time import sleep
@@ -94,7 +95,7 @@ def is_known_link(link, known_links):
     return False
 
 
-def find_new_links(htmlstring, base_url, known_links, language=None):
+def find_new_links(htmlstring, base_url, known_links, language=None, rules=None):
     """Extract and filter new internal links after an optional language check."""
     new_links = []
     # reference=None
@@ -106,6 +107,10 @@ def find_new_links(htmlstring, base_url, known_links, language=None):
             return new_links, known_links
     # iterate through the links and filter them
     for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
+        # check robots.txt rules
+        if rules is not None and not rules.can_fetch("*", link):
+            continue
+        # sanity check
         if is_known_link(link, known_links) is True or is_not_crawlable(link):
             continue
         new_links.append(link)
@@ -132,15 +137,15 @@ def store_todo_links(todo, new_links, shortform=False):
     return deque(OrderedDict.fromkeys(todo))
 
 
-def process_links(htmlstring, base_url, known_links, todo, language=None, shortform=False):
+def process_links(htmlstring, base_url, known_links, todo, language=None, shortform=False, rules=None):
     """Examine the HTML code and process the retrieved internal links. Store
        the links in todo-list while prioritizing the navigation ones."""
-    new_links, known_links = find_new_links(htmlstring, base_url, known_links, language)
+    new_links, known_links = find_new_links(htmlstring, base_url, known_links, language, rules)
     todo = store_todo_links(todo, new_links, shortform)
     return todo, known_links
 
 
-def process_response(response, todo, known_links, base_url, language, shortform=False):
+def process_response(response, todo, known_links, base_url, language, shortform=False, rules=None):
     """Convert urllib3 response object and extract links."""
     htmlstring = None
     # add final document URL to known_links
@@ -150,31 +155,29 @@ def process_response(response, todo, known_links, base_url, language, shortform=
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)
             # proceed to link extraction
-            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language, shortform)
+            todo, known_links = process_links(htmlstring, base_url, known_links, todo, language=language, shortform=shortform, rules=rules)
     return todo, known_links, htmlstring
 
 
-def init_crawl(homepage, todo, known_links, language=None, shortform=False):
-    """Start crawl by initializing variable and potentially examining the starting page."""
+def init_crawl(homepage, todo, known_links, language=None, shortform=False, config=DEFAULT_CONFIG):
+    """Start crawl by initializing variables and potentially examining the starting page."""
     _, base_url = get_hostinfo(homepage)
     known_links = known_links or set()
     i = 0
+    # try to read robots.txt file
+    rules = urllib.robotparser.RobotFileParser()
+    rules.set_url(base_url + '/robots.txt')
+    rules.read()
     # initialize crawl by visiting homepage if necessary
     if todo is None:
-        todo, known_links = crawl_initial_page(homepage, base_url, known_links, language, shortform)
-        i += 1
-    return todo, known_links, base_url, i
+        todo = deque([homepage])
+        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=language, shortform=shortform, rules=rules, initial=True, config=config)
+    return todo, known_links, base_url, i, rules
 
 
-def crawl_initial_page(homepage, base_url, known_links, language=None, shortform=False): # config=DEFAULT_CONFIG
-    """Examine the homepage, extract navigation links, links,
-       and feed links (if any on the homepage)."""
-    known_links.add(homepage) # add known homepage
-    # probe and process homepage
-    htmlstring, homepage, base_url = probe_alternative_homepage(homepage)
-    known_links.add(homepage) # add potentially "new" homepage
-    # extract links on homepage
-    todo, known_links = process_links(htmlstring, base_url, known_links, None, language, shortform)
+#def crawl_initial_page(homepage, base_url, known_links, language=None, shortform=False): # config=DEFAULT_CONFIG
+#    """Examine the homepage, extract navigation links, links,
+#       and feed links (if any on the homepage)."""
     # UNTESTED!
     # add potential URLs extracted from feeds
     #additional_links = find_feed_urls(homepage, target_lang=language)
@@ -187,17 +190,25 @@ def crawl_initial_page(homepage, base_url, known_links, language=None, shortform
     #        internal_valid.extend(extract_feed_links(feed_string, domainname, baseurl, homepage, LANG))
     #    sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
     # optional: add sitemap URLs?
-    return todo, known_links
+#    return todo, known_links
 
 
-def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG):
+def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG, rules=None, initial=False, shortform=False):
     """Examine a webpage, extract navigation links and links."""
     url = todo.popleft()
     known_links.add(url)
-    response = fetch_url(url, decode=False)
-    todo, known_links, htmlstring = process_response(response, todo, known_links, base_url, lang)
+    if initial is True:
+        # probe and process homepage
+        htmlstring, homepage, base_url = probe_alternative_homepage(url)
+        known_links.add(homepage) # add potentially "new" homepage
+        # extract links on homepage
+        todo, known_links = process_links(htmlstring, base_url, known_links, None, language=lang, shortform=shortform, rules=rules)
+    else:
+        response = fetch_url(url, decode=False)
+        todo, known_links, htmlstring = process_response(response, todo, known_links, base_url, lang, shortform=shortform, rules=rules)
     # optional backup of gathered pages without nav-pages
     # ...
+    # TODO: move somewhere else + robots crawl_delay rule
     sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
     i += 1
     return todo, known_links, i, htmlstring
@@ -205,10 +216,10 @@ def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG)
 
 def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, lang=None, config=DEFAULT_CONFIG):
     """Basic crawler targeting pages of interest within a website."""
-    todo, known_links, base_url, i = init_crawl(homepage, todo, known_links, lang)
+    todo, known_links, base_url, i, rules = init_crawl(homepage, todo, known_links, language=lang, config=config)
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
-        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config)
+        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config, rules=rules)
     # refocus todo-list on URLs without navigation?
     # [u for u in todo if not is_navigation_page(u)]
     return todo, known_links
