@@ -24,6 +24,12 @@ XHTML_REGEX = re.compile(r'<xhtml:link.+?>', re.DOTALL)
 HREFLANG_REGEX = re.compile(r'href=["\'](.+?)["\']')
 WHITELISTED_PLATFORMS = re.compile(r'(?:blogger|blogpost|ghost|hubspot|livejournal|medium|typepad|squarespace|tumblr|weebly|wix|wordpress)\.')
 
+SITEMAP_FORMAT = re.compile(r'<\?xml|<sitemap|<urlset')
+DETECT_SITEMAP_LINK = re.compile(r'\.xml(\..{2,4})?$|\.xml[?#]')
+DETECT_LINKS = re.compile(r'https?://[^\s\r\n]+')
+SCRUB_REGEX = re.compile(r'\?.*$|#.*$')
+POTENTIAL_SITEMAP = re.compile(r'\.xml\b')
+
 GUESSES = ['sitemap.xml.gz', 'sitemap', 'sitemap_index.xml', 'sitemap_news.xml']
 
 
@@ -82,9 +88,9 @@ def check_sitemap(url, contents):
        i.e. TXT or XML.'''
     if contents is not None:
         # strip query and fragments
-        url = re.sub(r'\?.*$|#.*$', '', url)
-        if re.search(r'\.xml\b', url) and \
-            (not isinstance(contents, str) or not re.match(r'<\?xml|<sitemap|<urlset', contents)):
+        url = SCRUB_REGEX.sub('', url)
+        if POTENTIAL_SITEMAP.search(url) and \
+            (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents)):
             LOGGER.info('not a valid XML sitemap: %s', url)
             return None
     return contents
@@ -109,9 +115,9 @@ def process_sitemap(url, domain, baseurl, pagecontent, target_lang=None):
         LOGGER.debug('not a sitemap: %s', url) # respheaders
         return [], []
     # try to extract links from TXT file
-    if not re.match(r'<\?xml|<sitemap|<urlset', contents):
+    if not SITEMAP_FORMAT.match(contents):
         sitemapurls, linklist = [], []
-        for result in re.findall(r'https?://[^\s\r\n]+', contents):
+        for result in DETECT_LINKS.findall(contents):
             link, state = handle_link(result, url, domain, baseurl, target_lang)
             sitemapurls, linklist = store_sitemap_link(sitemapurls, linklist, link, state)
         return sitemapurls, linklist
@@ -142,7 +148,7 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
                 if newdomain != domainname and not WHITELISTED_PLATFORMS.search(newdomain):
                     LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
                 else:
-                    if re.search(r'\.xml$|\.xml[.?#]', link):
+                    if DETECT_SITEMAP_LINK.search(link):
                         state = 'sitemap'
                     else:
                         state = 'link'
@@ -166,6 +172,7 @@ def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, targ
     if not 'hreflang=' in pagecontent:
         return [], []
     sitemapurls, linklist = [], []
+    # compile regex here for modularity and efficiency
     lang_regex = re.compile(r"hreflang=[\"']({}.*?|x-default)[\"']".format(target_lang), re.DOTALL)
     for attributes in XHTML_REGEX.findall(pagecontent):
         if lang_regex.search(attributes):
