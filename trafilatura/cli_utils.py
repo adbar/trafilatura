@@ -240,43 +240,48 @@ def process_result(htmlstring, args, url, counter, config):
     return counter
 
 
-def draw_backoff_url(domain_dict, backoff_dict, sleep_time, i):
+def draw_backoff_url(domain_dict, backoff_dict, sleep_time, hosts):
     '''Select a random URL from the domains pool and apply backoff rule'''
-    host = random.choice(list(domain_dict))
-    url = None
-    if domain_dict[host]:
+    green_light = False
+    while green_light is False:
+        # choose among a fresh pool of hosts
+        host = random.choice([d for d in domain_dict if d not in hosts])
         # safeguard
         if host in backoff_dict and \
             (datetime.now() - backoff_dict[host]).total_seconds() < sleep_time:
-            i += 1
-            if i >= len(domain_dict)*3:
-                LOGGER.debug('spacing request for host %s', host)
-                sleep(sleep_time)
-                i = 0
-        # draw URL
-        url = host + domain_dict[host].popleft()
-        backoff_dict[host] = datetime.now()
+            LOGGER.debug('spacing request for host %s', host)
+            sleep(sleep_time)
+        else:
+            if domain_dict[host]:
+                # draw URL
+                url = host + domain_dict[host].popleft()
+                backoff_dict[host] = datetime.now()
+            else:
+                url = None
+            # release the chosen URL
+            green_light = True
     # clean registries
     if not domain_dict[host]:
         del domain_dict[host]
         if host in backoff_dict:
             del backoff_dict[host]
-    return url, domain_dict, backoff_dict, i
+    return url, domain_dict, backoff_dict, host
 
 
 def load_download_buffer(args, domain_dict, backoff_dict, sleep_time):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
-    bufferlist = []
-    download_threads, i = args.parallel or DOWNLOAD_THREADS, 0
+    bufferlist, hosts = [], set()
+    download_threads = args.parallel or DOWNLOAD_THREADS
     # the remaining list is too small, process it differently
     if len(domain_dict) < download_threads or \
        len({x for v in domain_dict.values() for x in v}) < download_threads:
-        download_threads, i = 1, 3
+        download_threads = 1
     # populate buffer until a condition is reached
-    while domain_dict and (i == 0 or len(bufferlist) <= download_threads):
-        url, domain_dict, backoff_dict, i = draw_backoff_url(
-            domain_dict, backoff_dict, sleep_time, i
+    while domain_dict and len(bufferlist) < download_threads:
+        url, domain_dict, backoff_dict, host = draw_backoff_url(
+            domain_dict, backoff_dict, sleep_time, hosts
             )
+        hosts.add(host)
         if url is not None:
             bufferlist.append(url)
     return bufferlist, download_threads, domain_dict, backoff_dict
@@ -301,7 +306,7 @@ def download_queue_processing(domain_dict, args, counter, config):
         # process downloads
         for url, result in buffered_downloads(bufferlist, download_threads):
             # handle result
-            if result is not None:
+            if result is not None and result != '':
                 counter = process_result(result, args, url, counter, config)
             else:
                 LOGGER.debug('No result for URL: %s', url)
@@ -310,7 +315,7 @@ def download_queue_processing(domain_dict, args, counter, config):
     return errors, counter
 
 
-def cli_crawler(args, n=10):
+def cli_crawler(args, n=30):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
     config = use_config(filename=args.config_file)
@@ -335,7 +340,7 @@ def cli_crawler(args, n=10):
             website, _ = get_host_and_path(url)
             crawlinfo[website]['count'] += 1
             # handle result
-            if result is not None:
+            if result is not None and result != '':
                 domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(result, domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True, rules=crawlinfo[website]['rules'])
                 # only store content pages, not navigation
                 if not is_navigation_page(url): # + response.geturl()

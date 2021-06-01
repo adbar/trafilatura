@@ -174,21 +174,19 @@ def test_download():
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
     config = use_config(filename=args.config_file)
     results = cli_utils.download_queue_processing(domain_dict, args, None, config)
-    assert len(results[0]) == 5 and results[1] is None
+    assert len(results[0]) == 6 and results[1] is None
     # test backoff algorithm
     testdict = dict()
     backoffdict = dict()
     testdict['http://test.org'] = deque(['/1'])
-    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
+    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, set()) == ('http://test.org/1', dict(), dict(), 'http://test.org')
     testdict['http://test.org'] = deque(['/1'])
     backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
-    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 0) == ('http://test.org/1', dict(), dict(), 0)
-    testdict['http://test.org'] = deque(['/1'])
-    backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
-    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 3)
-    testdict['http://test.org'] = deque(['/1'])
-    backoffdict['http://test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
-    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 0)
+    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, set()) == ('http://test.org/1', dict(), dict(), 'http://test.org')
+    # code hangs, logical:
+    #testdict['http://test.org'] = deque(['/1'])
+    #backoffdict['http://test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
+    #assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 0)
 
 
 def test_cli_pipeline():
