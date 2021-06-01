@@ -208,7 +208,8 @@ def process_args(args):
             for future in as_completed(future_to_url):
                 if future.result() is not None:
                     inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter)
-                    url_processing_pipeline(args, inputdict)
+        # process the links found
+        url_processing_pipeline(args, inputdict)
     # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
