@@ -12,8 +12,9 @@ from contextlib import redirect_stdout
 from datetime import datetime
 from unittest.mock import patch
 
-from trafilatura import cli, cli_utils, utils
-from trafilatura.settings import DEFAULT_CONFIG, use_config
+from trafilatura import cli, cli_utils
+from trafilatura.downloads import fetch_url
+from trafilatura.settings import DEFAULT_CONFIG
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -156,37 +157,17 @@ def test_download():
     assert cli.examine(' ', args) is None
     assert cli.examine('0'*int(10e7), args) is None
     #url = 'https://httpbin.org/status/200'
-    #teststring = utils.fetch_url(url)
+    #teststring = fetch_url(url)
     #assert teststring is None  # too small
     #assert cli.examine(teststring, args, url) is None
     #url = 'https://httpbin.org/links/2/2'
-    #teststring = utils.fetch_url(url)
+    #teststring = fetch_url(url)
     #assert teststring is not None
     #assert cli.examine(teststring, args, url) is None
     url = 'https://httpbin.org/html'
-    teststring = utils.fetch_url(url)
+    teststring = fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
-    # single/multiprocessing
-    domain_dict = dict()
-    domain_dict['https://httpbin.org'] = deque(['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505'])
-    args.archived = True
-    args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
-    config = use_config(filename=args.config_file)
-    results = cli_utils.download_queue_processing(domain_dict, args, None, config)
-    assert len(results[0]) == 6 and results[1] is None
-    # test backoff algorithm
-    testdict = dict()
-    backoffdict = dict()
-    testdict['http://test.org'] = deque(['/1'])
-    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, set()) == ('http://test.org/1', dict(), dict(), 'http://test.org')
-    testdict['http://test.org'] = deque(['/1'])
-    backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
-    assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, set()) == ('http://test.org/1', dict(), dict(), 'http://test.org')
-    # code hangs, logical:
-    #testdict['http://test.org'] = deque(['/1'])
-    #backoffdict['http://test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
-    #assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 0)
 
 
 def test_cli_pipeline():

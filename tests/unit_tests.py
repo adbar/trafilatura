@@ -7,12 +7,6 @@ import logging
 import os
 import sys
 
-from unittest.mock import patch
-
-# import pytest
-# https://docs.pytest.org/en/latest/
-
-
 from lxml import etree, html
 
 try:
@@ -452,29 +446,6 @@ def test_htmlprocessing():
     assert '<fw rend="h1" type="header">Test headline</fw>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
 
 
-def test_fetch():
-    '''test URL fetching'''
-    assert utils.fetch_url('1234') == ''
-    assert utils.fetch_url('https://httpbin.org/status/404') is None
-    assert utils.decode_response(b'\x1f\x8babcdef') is not None
-    assert utils.fetch_url('https://expired.badssl.com/', no_ssl=True) is not None
-    # no decoding
-    response = utils.fetch_url('https://httpbin.org/status/200', decode=False)
-    assert response == ''
-    # response object
-    url = 'https://httpbin.org/encoding/utf8'
-    response = utils._send_request(url, False, DEFAULT_CONFIG)
-    myobject = utils._handle_response(url, response, False, DEFAULT_CONFIG)
-    assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
-    # straight handling of response object
-    assert utils.load_html(response) is not None
-    # nothing to see here
-    assert extract(response, url=response.geturl(), config=ZERO_CONFIG) is None
-    # user-agents rotation
-    assert utils._parse_config(UA_CONFIG) == ['Firefox', 'Chrome']
-    custom = utils._determine_headers(UA_CONFIG)
-    assert custom['User-Agent'] == 'Chrome' or custom['User-Agent'] == 'Firefox'
-
 
 if __name__ == '__main__':
     test_trim()
@@ -489,5 +460,4 @@ if __name__ == '__main__':
     test_baseline()
     test_txttocsv()
     test_external()
-    test_fetch()
     test_tei()

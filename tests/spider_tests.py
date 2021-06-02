@@ -51,7 +51,7 @@ def test_process_links():
     todo, known_links = deque(), set()
     base_url = 'https://example.org'
     htmlstring = '<html><body><a href="https://example.org/page1"/><a href="https://example.org/page1/"/><a href="https://test.org/page1"/></body></html>'
-    # 1 internal link in total 
+    # 1 internal link in total
     todo, known_links = spider.process_links(htmlstring, base_url, known_links, todo)
     assert len(todo) == 1 and len(known_links) == 1
     # same with URL already seen + todo is None

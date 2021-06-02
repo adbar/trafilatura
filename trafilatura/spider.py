@@ -13,9 +13,10 @@ from courlan import extract_links, fix_relative_urls, get_hostinfo, get_host_and
 from lxml import etree
 
 from .core import baseline
+from .downloads import fetch_url
 # from .feeds import find_feed_urls # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
-from .utils import decode_response, fetch_url, load_html
+from .utils import decode_response, load_html
 
 # language detection
 try:

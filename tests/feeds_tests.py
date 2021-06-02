@@ -80,7 +80,7 @@ def test_cli_behavior():
 
 
 if __name__ == '__main__':
-   test_atom_extraction()
-   test_rss_extraction()
-   test_feeds_helpers()
-   test_cli_behavior()
+    test_atom_extraction()
+    test_rss_extraction()
+    test_feeds_helpers()
+    test_cli_behavior()

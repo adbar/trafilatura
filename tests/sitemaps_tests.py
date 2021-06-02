@@ -20,7 +20,7 @@ def test_search():
     assert sitemaps.sitemap_search('12345') == []
     assert sitemaps.sitemap_search('12345.xml.gz') == []
     assert sitemaps.sitemap_search('https://1.net/sitemap.xml.gz') == []
-    
+
 
 def test_extraction():
     '''Test simple link extraction'''

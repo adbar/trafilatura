@@ -16,13 +16,6 @@ try:
 except ImportError:
     import chardet
 
-# language detection
-try:
-    import cld3
-    LANGID_FLAG = True
-except ImportError:
-    LANGID_FLAG = False
-
 from trafilatura.core import extract
 
 

@@ -10,7 +10,8 @@ import re
 
 from courlan import check_url, clean_url, fix_relative_urls, get_hostinfo, validate_url
 
-from .utils import load_html, fetch_url, filter_urls
+from .downloads import fetch_url
+from .utils import filter_urls, load_html
 
 LOGGER = logging.getLogger(__name__)
 

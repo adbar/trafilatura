@@ -15,8 +15,7 @@ import sys
 import traceback
 
 from collections import defaultdict, deque, OrderedDict
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
@@ -25,11 +24,11 @@ from time import sleep
 from courlan import get_host_and_path, is_navigation_page, validate_url
 
 from .core import extract
+from .downloads import buffered_downloads, load_download_buffer
 from .filters import content_fingerprint
-from .settings import (use_config, DOWNLOAD_THREADS, FILENAME_LEN,
+from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
 from .spider import get_crawl_delay, init_crawl, process_response
-from .utils import fetch_url
 
 
 LOGGER = logging.getLogger(__name__)
@@ -240,69 +239,12 @@ def process_result(htmlstring, args, url, counter, config):
     return counter
 
 
-def draw_backoff_url(domain_dict, backoff_dict, sleep_time, hosts):
-    '''Select a random URL from the domains pool and apply backoff rule'''
-    green_light = False
-    while green_light is False:
-        # choose among a fresh pool of hosts
-        host = random.choice([d for d in domain_dict if d not in hosts])
-        # safeguard
-        if host in backoff_dict and \
-            (datetime.now() - backoff_dict[host]).total_seconds() < sleep_time:
-            LOGGER.debug('spacing request for host %s', host)
-            sleep(sleep_time)
-        else:
-            if domain_dict[host]:
-                # draw URL
-                url = host + domain_dict[host].popleft()
-                backoff_dict[host] = datetime.now()
-            else:
-                url = None
-            # release the chosen URL
-            green_light = True
-    # clean registries
-    if not domain_dict[host]:
-        del domain_dict[host]
-        if host in backoff_dict:
-            del backoff_dict[host]
-    return url, domain_dict, backoff_dict, host
-
-
-def load_download_buffer(args, domain_dict, backoff_dict, sleep_time):
-    '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
-    bufferlist, hosts = [], set()
-    download_threads = args.parallel or DOWNLOAD_THREADS
-    # the remaining list is too small, process it differently
-    if len(domain_dict) < download_threads or \
-       len({x for v in domain_dict.values() for x in v}) < download_threads:
-        download_threads = 1
-    # populate buffer until a condition is reached
-    while domain_dict and len(bufferlist) < download_threads:
-        url, domain_dict, backoff_dict, host = draw_backoff_url(
-            domain_dict, backoff_dict, sleep_time, hosts
-            )
-        hosts.add(host)
-        if url is not None:
-            bufferlist.append(url)
-    return bufferlist, download_threads, domain_dict, backoff_dict
-
-
-def buffered_downloads(bufferlist, download_threads, decode=True):
-    '''Download queue consumer, single- or multi-threaded.'''
-    # start several threads
-    with ThreadPoolExecutor(max_workers=download_threads) as executor:
-        future_to_url = {executor.submit(fetch_url, url, decode): url for url in bufferlist}
-        for future in as_completed(future_to_url):
-            # url and download result
-            yield future_to_url[future], future.result()
-
-
 def download_queue_processing(domain_dict, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
     backoff_dict, errors = dict(), []
     while domain_dict:
-        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, sleep_time)
+        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
         # process downloads
         for url, result in buffered_downloads(bufferlist, download_threads):
             # handle result
@@ -334,7 +276,7 @@ def cli_crawler(args, n=30):
         # ...
     # iterate until the threshold is reached
     while domain_dict:
-        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(args, domain_dict, backoff_dict, sleep_time)
+        bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
         # start several threads
         for url, result in buffered_downloads(bufferlist, download_threads, decode=False):
             website, _ = get_host_and_path(url)

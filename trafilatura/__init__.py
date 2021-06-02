@@ -8,13 +8,15 @@ __title__ = 'trafilatura'
 __author__ = 'Adrien Barbaresi and contributors'
 __license__ = 'GNU GPL v3+'
 __copyright__ = 'Copyright 2019-2021, Adrien Barbaresi'
-__version__ = '0.8.2'
+__version__ = '0.9.0'
 
 # imports
 import logging
 
-from .core import bare_extraction, extract, process_record
-from .utils import fetch_url, load_html
+from .core import bare_extraction, baseline, extract, process_record
+from .downloads import fetch_url
+from .metadata import extract_metadata
+from .utils import load_html
 
 # logging best practices
 # http://docs.python-guide.org/en/latest/writing/logging/

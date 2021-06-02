@@ -5,13 +5,13 @@ Core functions
 Extraction
 ----------
 
-.. autofunction:: trafilatura.core.extract
+.. autofunction:: trafilatura.extract
 
-.. autofunction:: trafilatura.core.bare_extraction
+.. autofunction:: trafilatura.bare_extraction
 
-.. autofunction:: trafilatura.core.baseline
+.. autofunction:: trafilatura.baseline
 
-.. autofunction:: trafilatura.metadata.extract_metadata
+.. autofunction:: trafilatura.extract_metadata
 
 
 Link discovery
@@ -25,11 +25,11 @@ Link discovery
 Helpers
 -------
 
-.. autofunction:: trafilatura.utils.fetch_url
+.. autofunction:: trafilatura.fetch_url
 
 .. autofunction:: trafilatura.utils.decode_response
 
-.. autofunction:: trafilatura.utils.load_html
+.. autofunction:: trafilatura.load_html
 
 .. autofunction:: trafilatura.utils.sanitize
 

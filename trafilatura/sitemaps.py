@@ -13,8 +13,9 @@ import re
 
 from courlan import clean_url, extract_domain, fix_relative_urls, get_hostinfo, lang_filter
 
+from .downloads import fetch_url
 from .settings import MAX_SITEMAPS_SEEN
-from .utils import fetch_url, filter_urls
+from .utils import filter_urls
 
 
 LOGGER = logging.getLogger(__name__)

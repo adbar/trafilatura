@@ -25,6 +25,8 @@ docs/_template/
 *.tmp
 *.lprof
 
+# pipenv
+Pipfile*
 
-### appvevor removed
-appveyor.yml
+# older stuff
+old/
