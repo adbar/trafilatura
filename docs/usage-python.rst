@@ -19,25 +19,6 @@ Python can be easy to pick up whether you're a first time programmer or you're e
 -  `The Best Python Tutorials (freeCodeCamp) <https://www.freecodecamp.org/news/best-python-tutorial/>`_
 
 
-Quickstart
-----------
-
-
-.. code-block:: python
-
-    >>> import trafilatura
-    >>> downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
-    >>> trafilatura.extract(downloaded)
-    # outputs main content and comments as plain text ...
-    >>> trafilatura.extract(downloaded, xml_output=True, include_comments=False)
-    # outputs main content without comments as XML ...
-
-.. code-block:: python
-
-    # shorter alternative to import and use the functions
-    >>> from trafilatura import fetch_url, extract
-    >>> extract(fetch_url('...'))
-
 
 Step-by-step
 ------------
@@ -76,8 +57,112 @@ This values combined probably provide the fastest execution times:
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
 
 
+Extraction settings
+-------------------
+
+Text extraction
+^^^^^^^^^^^^^^^
+
+Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``config`` parameter in ``bare_extraction`` or ``extract``, which overrides the standard settings:
+
+.. code-block:: python
+
+    >>> from trafilatura import extract
+    >>> from trafilatura.settings import use_config
+    # load the new settings by providing a file name
+    >>> newconfig = use_config("myfile.cfg")
+    # use with a previously downloaded document
+    >>> extract(downloaded, config=newconfig)
+    # provide a file name directly (can be slower)
+    >>> extract(downloaded, settingsfile="myfile.cfg")
+
+
+Output Python objects
+^^^^^^^^^^^^^^^^^^^^^
+
+The extraction can be customized using a series of parameters, for more see the `core functions <corefunctions.html>`_ page.
+
+The function ``bare_extraction`` can be used to bypass output conversion, it returns Python variables for  metadata (dictionary) as well as main text and comments (both LXML objects).
+
+.. code-block:: python
+
+    >>> from trafilatura import bare_extraction
+    >>> bare_extraction(downloaded)
+
+
+Choice of HTML elements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements.
+
+- ``include_formatting=True``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+- ``include_links=True``: Keep link targets (in ``href="..."``)
+- ``include_images=True``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+- ``include_tables=True``: Extract text from HTML ``<table>`` elements.
+
+Only ``include_tables`` is activated by default.
+
+
+Language identification
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
+
+.. code-block:: python
+
+    >>> result = extract(downloaded, url, target_language='de')
+
+
+Date extraction
+^^^^^^^^^^^^^^^
+
+Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
+
+-  ``extensive_search`` (boolean), to activate pattern-based opportunistic text search,
+-  ``original_date`` (boolean) to look for the original publication date,
+-  ``outputformat`` (string), to provide a custom datetime format,
+-  ``max_date`` (string), to set the latest acceptable date manually (YYYY-MM-DD format).
+
+.. code-block:: python
+
+    >>> from trafilatura import extract
+    # pass the new parameters as dict, with a previously downloaded document
+    >>> extract(downloaded, output_format="xml", date_extraction_params={"extensive_search": True, "max_date": "2018-07-01"})
+
+
 Customization
 -------------
+
+
+Settings file
+^^^^^^^^^^^^^
+
+
+The standard `settings file <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ can be modified. It currently entails variables related to text extraction.
+
+.. code-block:: python
+
+    >>> from trafilatura.settings import use_config
+    >>> myconfig = use_config('path/to/myfile')
+    >>> extract(downloaded, config=myconfig)
+
+
+User agent settings can also be specified in a custom ``settings.cfg`` file. Then you can apply the changes by parsing it beforehand and using the config argument.
+
+
+Raw HTTP response objects
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``fetch_url()`` function can pass a urllib3 response object straight to the extraction by setting the optional ``decode`` argument to ``False``.
+
+This can be useful to get the final redirection URL with ``response.geturl()`` and then pass is directly as a URL argument to the extraction function:
+
+.. code-block:: python
+
+    >>> from trafilatura import fetch_url, bare_extraction
+    >>> response = fetch_url(url, decode=False)
+    >>> bare_extraction(response, url=response.geturl()) # here is the redirection URL
+
 
 LXML objects
 ^^^^^^^^^^^^
@@ -92,46 +177,16 @@ The input can consist of a previously parsed tree (i.e. a *lxml.html* object), w
     'Here is the main text. It has to be long enough in order to bypass the safety checks. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.\n'
 
 
-Customization
-^^^^^^^^^^^^^
+Package settings
+^^^^^^^^^^^^^^^^
 
-All currently available options, along with their default values:
+For further configuration (if the ``settings.cfg`` file is not enough) you can edit package-wide variables contained in the `settings.py <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.py>`_ file:
 
-``trafilatura.extract(downloaded, url=None, record_id=None, no_fallback=False, include_comments=True, output_format='txt', csv_output=False, json_output=False, xml_output=False, tei_output=False, tei_validation=False, target_language=None, include_tables=True, include_images=False, include_formatting=False, deduplicate=False, date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=None, settingsfile=None, config=<configparser.ConfigParser object>)``
+1. `Clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_
+2. Edit ``settings.py``
+3. Reinstall the package locally: ``pip install --no-deps -U .`` in the home directory of the cloned repository
 
-For more see the `core functions <corefunctions.html>`_ page.
-
-
-The function ``bare_extraction`` can be used to bypass output conversion, it returns Python variables for  metadata (dictionary) as well as main text and comments (both LXML objects).
-
-.. code-block:: python
-
-    >>> from trafilatura import bare_extraction
-    >>> bare_extraction(downloaded)
-
-
-The standard `settings file <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_ can be modified. It currently entails variables related to text extraction.
-
-.. code-block:: python
-
-    >>> from trafilatura.settings import use_config
-    >>> myconfig = use_config('path/to/myfile')
-    >>> extract(downloaded, config=myconfig)
-
-For further configuration `clone the repository <https://docs.github.com/en/free-pro-team@latest/github/using-git/which-remote-url-should-i-use>`_, edit ``settings.py`` and reinstall the package locally (``pip install -U .`` in the home directory of the cloned repository).
-
-
-Choice of HTML elements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Including extra elements works best with conversion to XML (``output_format="xml"``) or the ``bare_extraction`` for proficient users. Both ways allow for direct display and manipulation of the elements.
-
-- ``include_formatting=True``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
-- ``include_links=True``: Keep link targets (in ``href="..."``)
-- ``include_images=True``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
-- ``include_tables=True``: Extract text from HTML ``<table>`` elements.
-
-Only ``include_tables`` is currently activated by default.
+These remaining variables greatly alter the functioning of the package!
 
 
 Navigation
@@ -190,49 +245,3 @@ Sitemaps
 The links are also seamlessly filtered for patterns given by the user, e.g. using ``https://www.theguardian.com/society`` as argument implies taking all URLs corresponding to the society category.
 
 
-
-Extraction settings
--------------------
-
-Text extraction
-^^^^^^^^^^^^^^^
-
-Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``config`` parameter in ``bare_extraction`` or ``extract``, which overrides the standard settings:
-
-.. code-block:: python
-
-    >>> from trafilatura import extract
-    >>> from trafilatura.settings import use_config
-    # load the new settings by providing a file name
-    >>> newconfig = use_config("myfile.cfg")
-    # use with a previously downloaded document
-    >>> extract(downloaded, config=newconfig)
-    # provide a file name directly (can be slower)
-    >>> extract(downloaded, settingsfile="myfile.cfg")
-
-
-Language identification
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
-
-.. code-block:: python
-
-    >>> result = extract(downloaded, url, target_language='de')
-
-
-Date extraction
-^^^^^^^^^^^^^^^
-
-Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
-
--  ``extensive_search`` (boolean), to activate pattern-based opportunistic text search,
--  ``original_date`` (boolean) to look for the original publication date,
--  ``outputformat`` (string), to provide a custom datetime format,
--  ``max_date`` (string), to set the latest acceptable date manually (YYYY-MM-DD format).
-
-.. code-block:: python
-
-    >>> from trafilatura import extract
-    # pass the new parameters as dict, with a previously downloaded document
-    >>> extract(downloaded, output_format="xml", date_extraction_params={"extensive_search": True, "max_date": "2018-07-01"})

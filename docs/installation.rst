@@ -7,12 +7,23 @@ Python
 
 Trafilatura runs using `Python <https://en.wikipedia.org/wiki/Python_%28programming_language%29>`_, currently one of the most frequently used programming languages.
 
-This software library/package is tested on Linux, macOS and Windows systems. It is compatible with Python 3 (3.4 upwards):
+This software library/package is tested on Linux, macOS and Windows systems. It is compatible with Python 3 (3.5 upwards):
 
 -  `Installing Python 3 on Mac OS X <https://docs.python-guide.org/starting/install3/osx/>`_ (& `official documentation for Mac <https://docs.python.org/3/using/mac.html>`_)
 -  `Installing Python 3 on Windows <https://docs.python-guide.org/starting/install3/win/>`_ (& `official documentation for Windows <https://docs.python.org/3/using/windows.html>`_)
 -  `Installing Python 3 on Linux <https://docs.python-guide.org/starting/install3/linux/>`_ (& `official documentation for Unix <https://docs.python.org/3/using/unix.html>`_)
 -  Beginners guide: `downloading Python <https://wiki.python.org/moin/BeginnersGuide/Download>`_
+
+
+Then you need a version of Python to interact with as well as the Python packages needed for the task. A recent version of Python 3 is necessary. Some systems already have such an environment installed, to check it just run the following command in a terminal window:
+
+.. code-block:: bash
+
+    $ python3 --version
+    Python 3.8.6 # version 3.6 or higher is fine
+
+In case Python is not installed, please refer to the excellent `Djangogirls tutorial: Python installation <https://tutorial.djangogirls.org/en/python_installation/>`_.
+
 
 
 Trafilatura package
@@ -56,6 +67,12 @@ Command-line tool
 For local or user installations where trafilatura cannot be used from the command-line, please refer to `the official Python documentation <https://docs.python.org/3/library/site.html#cmdoption-site-user-base>`_ and this page on `finding executables from the command-line <https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line>`_.
 
 
+Graphical user interface
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+See `this link <https://github.com/adbar/trafilatura_gui>`_ for installation instructions.
+
+
 
 Additional functionality
 ------------------------
@@ -73,8 +90,3 @@ You can also install or update relevant packages separately, *trafilatura* will 
 
 *For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_
 
-
-Graphical user interface
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-See `this link <https://github.com/adbar/trafilatura_gui>`_ for installation instructions.

@@ -92,7 +92,17 @@ html_theme_options = {
       {"name": "Blog posts", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
   ],
   "google_analytics_id": "G-K3R5QCVDF1",
+#  "use_edit_page_button": True,
+#  "navigation_depth": 3,
 #  "show_toc_level": 3,
+}
+
+html_context = {
+    # "github_url": "https://github.com", # or your GitHub Enterprise interprise
+    "github_user": "adbar",
+    "github_repo": "trafilatura",
+    "github_version": "master",
+    "doc_path": "docs",
 }
 
 

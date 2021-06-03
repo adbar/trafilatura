@@ -3,11 +3,11 @@ Usage
 
 
 .. toctree::
-   :caption: Contents
    :maxdepth: 2
 
-   usage-cli
+   quickstart
    usage-python
+   usage-cli
    usage-r
    usage-gui
 

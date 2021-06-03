@@ -19,6 +19,9 @@ The following consists of `command-line instructions <https://en.wikipedia.org/w
 Content discovery
 -----------------
 
+..
+   https://www.sketchengine.eu/guide/create-a-corpus-from-the-web/
+
 Sources used by Trafilatura can consist of previously known or listed web pages. Currently, functions to discover content within a website are available. Other methods include sifting through Wikipedia, social networks, or using lists of links gathered by other projects.
 
 

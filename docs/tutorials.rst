@@ -3,9 +3,9 @@ Tutorials
 
 
 .. toctree::
-   :caption: Contents
    :maxdepth: 2
 
+   sources
    tutorial0
    tutorial1
    tutorial2

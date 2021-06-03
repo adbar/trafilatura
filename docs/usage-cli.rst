@@ -46,7 +46,9 @@ You can also pipe a HTML document (and response body) to trafilatura:
 .. code-block:: bash
 
     $ cat myfile.html | trafilatura # use the contents of an already existing file
-    $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura # use a custom download
+    $ < myfile.html trafilatura # same here
+    # use a custom download
+    $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura
 
 
 Output format
