@@ -185,7 +185,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             #    except AttributeError:  # no text
             #        pass
             # prepare text
-            # todo: to be move to handle_textnode()
+            # todo: to be moved to handle_textnode()
             #if text_chars_test(processed_child.text) is False:
             #    processed_child.text = ''
             #if text_chars_test(processed_child.tail) is False:
@@ -198,6 +198,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             #        newsub.tail = processed_child.text
             newsub.text, newsub.tail = processed_child.text, processed_child.tail
             processed_element.append(newsub)
+            child.tag = 'done'
     # finish
     if len(processed_element) > 0 or processed_element.text:
         # clean trailing lb-elements
@@ -237,6 +238,7 @@ def handle_table(table_elem, dedupbool, config):
             if subelement.tag == 'th':
                 newsub.set('role', 'head')
             newsub.text = processed_cell.text
+            #subelement.tag = 'done' ??
         # beware of nested tables
         elif subelement.tag == 'table' and i > 1:
             break

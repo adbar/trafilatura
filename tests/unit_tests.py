@@ -265,6 +265,10 @@ def test_formatting():
     #my_document = html.fromstring('<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>')
     #my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     #print(my_result)
+    # line-break following formatting
+    my_document = html.fromstring('<html><body><article><p><strong>Staff Review of the Financial Situation</strong><br>Domestic financial conditions remained accommodative over the intermeeting period.</p></article></body></html>')
+    my_result = extract(my_document, output_format='txt', no_fallback=True, config=ZERO_CONFIG)
+    assert my_result == 'Staff Review of the Financial Situation\nDomestic financial conditions remained accommodative over the intermeeting period.'
 
 
 def test_baseline():
