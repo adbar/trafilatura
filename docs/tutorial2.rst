@@ -16,7 +16,7 @@ In Python:
     import trafilatura
     # open a file and parse it
     downloaded = trafilatura.fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
-    result = trafilatura.extract(downloaded, tei_output=True, tei_validation=True)
+    result = trafilatura.extract(downloaded, output_format='xmltei', tei_validation=True)
 
 
 From the command line:
