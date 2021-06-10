@@ -30,13 +30,13 @@ def test_atom_extraction():
     assert len(feeds.extract_links(XMLDECL + '<link type="application/atom+xml" rel="self" href="https://www.dwds.de/api/feed/themenglossar/Corona"/>', 'dwds.de', 'https://www.dwds.de', '')) == 0
     assert len(feeds.extract_links(XMLDECL + '<link rel="self" href="http://example.org/article1/"/>', 'example.org', 'http://example.org/', 'http://example.org')) == 0
     assert len(feeds.extract_links(XMLDECL + '<link type="application/atom+xml" rel="self" href="123://api.exe"/>', 'example.org', 'https://example.org', '')) == 0
-    assert feeds.extract_links(XMLDECL + '<link href="http://example.org/article1/"rest"/>', 'example.org', 'http://example.org/', 'http://example.org') == ['http://example.org/article1']
+    assert feeds.extract_links(XMLDECL + '<link href="http://example.org/article1/"rest"/>', 'example.org', 'http://example.org/', 'http://example.org') == ['http://example.org/article1/']
 
 
 def test_rss_extraction():
     '''Test link extraction from a RSS feed'''
     assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/article1/</link>', 'example.org', 'http://example.org/', '')) == 1
-    assert feeds.extract_links(XMLDECL + '<link><![CDATA[http://example.org/article1/]]></link>', 'example.org', 'http://example.org/', '') == ['http://example.org/article1']
+    assert feeds.extract_links(XMLDECL + '<link><![CDATA[http://example.org/article1/]]></link>', 'example.org', 'http://example.org/', '') == ['http://example.org/article1/']
     assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/</link>', 'example.org', 'http://example.org', 'http://example.org')) == 0
     assert len(feeds.extract_links(XMLDECL + '<link>https://example.org</link>', 'example.org', 'http://example.org/', '')) == 0
     assert feeds.extract_links(XMLDECL + '<link>/api/feed/themenglossar/Corona</link>', 'www.dwds.de', 'https://www.dwds.de', 'https://www.dwds.de') == ['https://www.dwds.de/api/feed/themenglossar/Corona']

@@ -31,8 +31,9 @@ def get_long_description():
 extras = {
     'all': [
         'cchardet >= 2.1.7',
-        'htmldate[speed] >= 0.8.1',
-        'pycld3 >= 0.22',
+        'htmldate[speed] >= 0.9.0',
+        'pycld3 == 0.21; python_version < "3.6"',
+        'pycld3 >= 0.22; python_version >= "3.6"',
     ],
 }
 
@@ -84,11 +85,11 @@ setup(
     install_requires=[
         'certifi',
         'chardet == 3.0.4; python_version < "3.6"',
-        'chardet >= 3.0.4; python_version >= "3.6"',
-        'courlan >= 0.4.0',
-        'htmldate >= 0.8.1',
+        'chardet >= 4.0.0; python_version >= "3.6"',
+        'courlan >= 0.4.1',
+        'htmldate >= 0.9.0',
         'justext >= 2.2.0',
-        'lxml >= 4.6.2',
+        'lxml >= 4.6.3',
         'readability-lxml >= 0.8.1',
         'urllib3>=1.25,<2',
     ],
