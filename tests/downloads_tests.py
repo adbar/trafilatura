@@ -11,9 +11,9 @@ from datetime import datetime
 from unittest.mock import patch
 
 from trafilatura.cli import parse_args
-from trafilatura.cli_utils import download_queue_processing
+from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import extract
-from trafilatura.downloads import fetch_url, decode_response, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request
+from trafilatura.downloads import add_to_compressed_dict, fetch_url, decode_response, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import load_html
 
@@ -51,11 +51,20 @@ def test_fetch():
 
 
 def test_queue():
-    'Test population and download queue.'
+    'Test creation, modification and download of URL queues.'
+    # test conversion and storage
+    inputdict = add_to_compressed_dict(['ftps://www.example.org/'])
+    assert inputdict == dict()
+    inputdict = add_to_compressed_dict(['https://www.example.org/'])
+    # CLI args
+    testargs = ['', '--list']
+    with patch.object(sys, 'argv', testargs):
+        args = parse_args(testargs)
+    assert url_processing_pipeline(args, inputdict) is None
+    # single/multiprocessing
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
         args = parse_args(testargs)
-    # single/multiprocessing
     domain_dict = dict()
     domain_dict['https://httpbin.org'] = deque(['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505'])
     args.archived = True

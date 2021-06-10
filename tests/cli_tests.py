@@ -13,7 +13,7 @@ from datetime import datetime
 from unittest.mock import patch
 
 from trafilatura import cli, cli_utils
-from trafilatura.downloads import fetch_url
+from trafilatura.downloads import add_to_compressed_dict, fetch_url
 from trafilatura.settings import DEFAULT_CONFIG
 
 
@@ -185,11 +185,6 @@ def test_cli_pipeline():
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert cli_utils.url_processing_pipeline(args, dict()) is None
-    # test conversion and storage
-    inputdict = cli.add_to_compressed_dict(['ftps://www.example.org/'])
-    assert inputdict == dict()
-    inputdict = cli.add_to_compressed_dict(['https://www.example.org/'])
-    assert cli_utils.url_processing_pipeline(args, inputdict) is None
     # test inputlist + blacklist
     testargs = ['', '-i', os.path.join(RESOURCES_DIR, 'list-process.txt')]
     with patch.object(sys, 'argv', testargs):
@@ -201,7 +196,7 @@ def test_cli_pipeline():
         args = cli.parse_args(testargs)
     assert args.blacklist is not None
     # test backoff between domain requests
-    inputdict = cli_utils.add_to_compressed_dict(my_urls, args.blacklist, None, None)
+    inputdict = add_to_compressed_dict(my_urls, args.blacklist, None, None)
     reftime = datetime.now()
     cli_utils.url_processing_pipeline(args, inputdict)
     delta = (datetime.now() - reftime).total_seconds()
@@ -209,7 +204,7 @@ def test_cli_pipeline():
     # test blacklist and empty dict
     args.blacklist = cli_utils.load_blacklist(args.blacklist)
     assert len(args.blacklist) == 2
-    inputdict = cli_utils.add_to_compressed_dict(my_urls, args.blacklist, None, None)
+    inputdict = add_to_compressed_dict(my_urls, args.blacklist, None, None)
     cli_utils.url_processing_pipeline(args, inputdict)
     # test backup
     testargs = ['', '--backup-dir', '/tmp/']
@@ -297,22 +292,22 @@ def test_input_filtering():
     # deduplication and filtering
     myinput = ['https://example.org/1', 'https://example.org/2', 'https://example.org/2', 'https://example.org/3', 'https://example.org/4', 'https://example.org/5', 'https://example.org/6']
     myblacklist = {'example.org/1', 'example.org/3', 'example.org/5'}
-    inputdict = cli_utils.add_to_compressed_dict(myinput, myblacklist)
+    inputdict = add_to_compressed_dict(myinput, myblacklist)
     assert inputdict['https://example.org'] == deque(['/2', '/4', '/6'])
     # URL in blacklist
     args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
     my_blacklist = cli_utils.load_blacklist(os.path.join(RESOURCES_DIR, 'list-discard.txt'))
-    inputdict = cli_utils.add_to_compressed_dict(my_urls, my_blacklist)
+    inputdict = add_to_compressed_dict(my_urls, my_blacklist)
     assert len(inputdict) == 0
     # URL filter
     args.inputfile = os.path.join(RESOURCES_DIR, 'list-process.txt')
     my_urls = cli_utils.load_input_urls(args)
-    assert len(cli.add_to_compressed_dict(my_urls, None, ['status'], None)) == 1
-    assert len(cli.add_to_compressed_dict(my_urls, None, ['teststring'], None)) == 0
-    assert len(cli.add_to_compressed_dict(my_urls, None, ['status', 'teststring'], None)) == 1
+    assert len(add_to_compressed_dict(my_urls, None, ['status'], None)) == 1
+    assert len(add_to_compressed_dict(my_urls, None, ['teststring'], None)) == 0
+    assert len(add_to_compressed_dict(my_urls, None, ['status', 'teststring'], None)) == 1
     # malformed URLs
-    inputdict = cli_utils.add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
+    inputdict = add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
     assert len(inputdict) == 1
 
 

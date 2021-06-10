@@ -14,8 +14,7 @@ import string
 import sys
 import traceback
 
-from collections import defaultdict, deque, OrderedDict
-
+from collections import deque
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
@@ -24,7 +23,7 @@ from time import sleep
 from courlan import get_host_and_path, is_navigation_page, validate_url
 
 from .core import extract
-from .downloads import buffered_downloads, load_download_buffer
+from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
 from .filters import content_fingerprint
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
@@ -81,39 +80,6 @@ def load_input_dict(args):
     inputlist = load_input_urls(args)
     # deduplicate, filter and and convert to dict
     return add_to_compressed_dict(inputlist, args.blacklist) # args.filter
-
-
-def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict=None):
-    '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
-    # init
-    if inputdict is None:
-        inputdict = defaultdict(deque)
-    # deduplicate while keeping order
-    inputlist = list(OrderedDict.fromkeys(inputlist))
-    # filter
-    if blacklist:
-        inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]
-    if url_filter:
-        filtered_list = []
-        while inputlist:
-            u = inputlist.pop()
-            for f in url_filter:
-                if f in u:
-                    filtered_list.append(u)
-                    break
-        inputlist = filtered_list
-    # validate and store in dict
-    for url in inputlist:
-        # validate URL
-        if validate_url(url)[0] is False:
-            continue
-        # segment URL and add to domain dictionary
-        try:
-            hostinfo, urlpath = get_host_and_path(url)
-            inputdict[hostinfo].append(urlpath)
-        except ValueError:
-            LOGGER.warning('Could not parse URL, discarding: %s', url)
-    return inputdict
 
 
 def check_outputdir_status(directory):

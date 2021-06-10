@@ -6,13 +6,17 @@ All functions needed to steer and execute downloads of web documents.
 
 import logging
 import random
+import re
 
+from collections import defaultdict, deque, OrderedDict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from time import sleep
 
 import certifi
 import urllib3
+
+from courlan import get_host_and_path, validate_url
 
 from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
@@ -131,6 +135,39 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     return None
 
 
+def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict=None):
+    '''Filter, convert input URLs and add them to domain-aware processing dictionary'''
+    # init
+    if inputdict is None:
+        inputdict = defaultdict(deque)
+    # deduplicate while keeping order
+    inputlist = list(OrderedDict.fromkeys(inputlist))
+    # filter
+    if blacklist:
+        inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]
+    if url_filter:
+        filtered_list = []
+        while inputlist:
+            u = inputlist.pop()
+            for f in url_filter:
+                if f in u:
+                    filtered_list.append(u)
+                    break
+        inputlist = filtered_list
+    # validate and store in dict
+    for url in inputlist:
+        # validate URL
+        if validate_url(url)[0] is False:
+            continue
+        # segment URL and add to domain dictionary
+        try:
+            hostinfo, urlpath = get_host_and_path(url)
+            inputdict[hostinfo].append(urlpath)
+        except ValueError:
+            LOGGER.warning('Could not parse URL, discarding: %s', url)
+    return inputdict
+
+
 def draw_backoff_url(domain_dict, backoff_dict, sleep_time, hosts):
     '''Select a random URL from the domains pool and apply backoff rule'''
     green_light = False
@@ -188,4 +225,3 @@ def buffered_downloads(bufferlist, download_threads, decode=True):
         for future in as_completed(future_to_url):
             # url and download result
             yield future_to_url[future], future.result()
-
