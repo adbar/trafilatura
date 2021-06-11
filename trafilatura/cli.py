@@ -198,6 +198,7 @@ def process_args(args):
     # fetch urls from a feed or a sitemap
     elif args.feed or args.sitemap:
         input_urls = load_input_urls(args)
+        inputdict = None
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             if args.feed:
@@ -207,7 +208,7 @@ def process_args(args):
             # process results one-by-one, i.e. in parallel
             for future in as_completed(future_to_url):
                 if future.result() is not None:
-                    inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter)
+                    inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=inputdict)
         # process the links found
         url_processing_pipeline(args, inputdict)
     # activate crawler/spider
