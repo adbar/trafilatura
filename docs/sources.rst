@@ -22,6 +22,7 @@ DMOZ (at the time of experiments) and Wikipedia work quite well as primary sourc
 
 - `Challenges in web corpus construction for low-resource languages in a post-BootCaT world <https://halshs.archives-ouvertes.fr/halshs-00919410/file/Barbaresi_LTC13_Challenges-LRL_paper_v2.pdf>`_ (2013 paper)
 - `Qualification of URLs extracted from DMOZ and Wikipedia <https://tel.archives-ouvertes.fr/tel-01167309/document#page=189>`_ (PhD thesis section)
+- `Overview of the Web archiving community <https://github.com/pirate/ArchiveBox/wiki/Web-Archiving-Community>`_
 
 
 
@@ -35,6 +36,38 @@ The Common Crawl is a good place to start looking for already known URLs, and po
 - `Python example <https://github.com/cocrawler/cdx_toolkit/blob/master/examples/iter-and-warc.py>`_ using cdx_toolkit
 
 Related info: before retrieving them storing web documents in Internet archives can be fruitful, see for instance the tool `archivenow <https://github.com/oduwsdl/archivenow>`_.
+
+
+
+.. code-block:: bash
+
+    #!/bin/bash
+    set -e
+    url="https://aws-publicdatasets.s3.amazonaws.com/$1"
+    dir="$(dirname "$1")"
+    name="$(basename "$1")"
+    fpath="$dir/${name}.urls.gz"
+
+    mkdir -p "$dir"
+    if [ ! -r "$fpath" ]; then
+      curl -s --retry 5 "$url" \
+        | zcat \
+        | grep -i 'WARC-TARGET-URI:' \
+        | awk '{print $2}' \
+        | gzip > "$fpath"
+    fi
+
+
+If saved as dl-wat, one could then run it as follows:
+
+``$ zcat wat.paths.gz | xargs -P32 -n1 dl-wat``
+
+*source:* `https://blog.burntsushi.net/transducers/ <https://blog.burntsushi.net/transducers/>`_
+
+..
+    To look ooking for feeds:
+    (<link[^>]*(?:\s(?:type=[\"']?(application\/rss\+xml|application\/atom\+xml|application\/rss|application\/atom|application\/rdf\+xml|application\/rdf|text\/rss\+xml|text\/atom\+xml|text\/rss|text\/atom|text\/rdf\+xml|text\/rdf|text\/xml|application\/xml)[\"']?|rel=[\"']?(?:alternate)[\"']?))[^>]*>)"
+    source: https://draft.li/blog/2016/03/21/rss-usage-on-the-web/
 
 
 

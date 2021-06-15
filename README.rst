@@ -43,22 +43,23 @@ Description
 Features
 ~~~~~~~~
 
-- Seamless parallelized online and offline processing:
+- Seamless and parallel online/offline processing:
    - Download and conversion utilities included
    - URLs, HTML files or parsed HTML trees as input
 - Robust and efficient extraction:
-    - Main text and/or comments
-    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
-    - Extraction of metadata (title, author, date, site name, categories and tags)
+   - Main text and/or comments
+   - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
+   - Extraction of metadata (title, author, date, site name, categories and tags)
 - Several output formats supported:
    - Plain text (minimal formatting)
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
    - XML (for metadata and structure) and `TEI-XML <https://tei-c.org/>`_
 - Link discovery and URL lists:
-    - Support for sitemaps and ATOM/RSS feeds
-    - Efficient and polite processing of URL queues
-    - Blacklisting
+   - Focused crawling and politeness rules
+   - Support for sitemaps and ATOM/RSS feeds
+   - Efficient and polite processing of URL queues
+   - Blacklisting
 - Optional language detection on extracted content
 
 
@@ -130,6 +131,7 @@ This effort is part of methods to derive information from web documents in order
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
 
+- Barbaresi, A. *Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction*, Proceedings of the Annual Meeting of the ACL, System Demonstrations, 2021, to appear.
 -  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 

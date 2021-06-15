@@ -39,7 +39,8 @@ Step-by-step
 
 The only required argument is the input document (here a downloaded HTML file), the rest is optional.
 
-The inclusion of tables and comments can be deactivated at a function call. The use of fallback algorithms can also be bypassed in *fast* mode:
+..hint:
+    The inclusion of tables and comments can be deactivated at a function call. The use of fallback algorithms can also be bypassed in *fast* mode:
 
 .. code-block:: python
 
@@ -55,6 +56,7 @@ This values combined probably provide the fastest execution times:
 .. code-block:: python
 
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
+
 
 
 Extraction settings
@@ -128,6 +130,22 @@ Among metadata extraction, dates are handled by an external module: `htmldate <h
     >>> from trafilatura import extract
     # pass the new parameters as dict, with a previously downloaded document
     >>> extract(downloaded, output_format="xml", date_extraction_params={"extensive_search": True, "max_date": "2018-07-01"})
+
+
+Passing URLs
+^^^^^^^^^^^^
+
+Even if the page to process has already been downloaded it can still be useful to pass the URL as an argument. See this `previous bug <https://github.com/adbar/trafilatura/issues/75>`_ for an example:
+
+.. code-block:: python
+
+    >>> url = "https://www.thecanary.co/feature/2021/05/19/another-by-election-headache-is-incoming-for-keir-starmer"
+    >>> downloaded = fetch_url(url)
+    >>> bare_extraction(downloaded, with_metadata=True)
+    # content discarded since necessary metadata couldn't be extracted
+    >>> url = "https://www.thecanary.co/feature/2021/05/19/another-by-election-headache-is-incoming-for-keir-starmer"
+    >>> bare_extraction(downloaded, with_metadata=True, url=url)
+    # date found in URL, extraction successful
 
 
 Customization
@@ -210,9 +228,13 @@ The function ``find_feed_urls`` is a all-in-one utility that attemps to discover
     >>> mylist is not []
     True # it's not empty
 
-The links are seamlessly filtered for patterns given by the user, e.g. using ``https://www.un.org/en/`` as argument implies taking all URLs corresponding to this category.
+
+.. note::
+    The links are seamlessly filtered for patterns given by the user, e.g. using ``https://www.un.org/en/`` as argument implies taking all URLs corresponding to this category.
+
 
 An optional argument ``target_lang`` makes it possible to filter links according to their expected target language. A series of heuristics are applied on the link path and parameters to try to discard unwanted URLs, thus saving processing time and download bandwidth.
+
 
 .. code-block:: python
 

@@ -64,6 +64,10 @@ On **Mac OS** it can be necessary to install certificates by hand if you get err
 Command-line tool
 ~~~~~~~~~~~~~~~~~
 
+
+If you installed the library successfully but cannot start the command-line tool, try adding the user-level ``bin`` directory to your ``PATH`` environment variable.
+If you are using a Unix derivative (e.g. Linux, OS X), you can achieve this by running the following command: ``export PATH="$HOME/.local/bin:$PATH"``.
+
 For local or user installations where trafilatura cannot be used from the command-line, please refer to `the official Python documentation <https://docs.python.org/3/library/site.html#cmdoption-site-user-base>`_ and this page on `finding executables from the command-line <https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line>`_.
 
 

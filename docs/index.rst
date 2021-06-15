@@ -54,22 +54,23 @@ The extractor aims to be precise enough in order not to  miss texts or to discar
 Features
 ~~~~~~~~
 
-- Seamless parallelized online and offline processing:
+- Seamless and parallel online/offline processing:
    - Download and conversion utilities included
    - URLs, HTML files or parsed HTML trees as input
 - Robust and efficient extraction:
-    - Main text and/or comments
-    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
-    - Extraction of metadata (title, author, date, site name, categories and tags)
+   - Main text and/or comments
+   - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
+   - Extraction of metadata (title, author, date, site name, categories and tags)
 - Several output formats supported:
    - Plain text (minimal formatting)
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
    - XML (for metadata and structure) and `TEI-XML <https://tei-c.org/>`_
 - Link discovery and URL lists:
-    - Support for sitemaps and ATOM/RSS feeds
-    - Efficient and polite processing of URL queues
-    - Blacklisting
+   - Focused crawling and politeness rules
+   - Support for sitemaps and ATOM/RSS feeds
+   - Efficient and polite processing of URL queues
+   - Blacklisting
 - Optional language detection on extracted content
 
 
@@ -176,6 +177,7 @@ Further documentation
    tutorials
    evaluation
    corefunctions
+   used-by
 
 
 Indices and tables
