@@ -176,24 +176,6 @@ def init_crawl(homepage, todo, known_links, language=None, shortform=False, conf
     return todo, known_links, base_url, i, rules
 
 
-#def crawl_initial_page(homepage, base_url, known_links, language=None, shortform=False): # config=DEFAULT_CONFIG
-#    """Examine the homepage, extract navigation links, links,
-#       and feed links (if any on the homepage)."""
-    # UNTESTED!
-    # add potential URLs extracted from feeds
-    #additional_links = find_feed_urls(homepage, target_lang=language)
-    #todo.extend(additional_links)
-    #known_links.update(additional_links)
-    # TODO: more efficient
-    #for feed in determine_feed(htmlstring, base_url, homepage):
-    #    feed_string = fetch_url(feed)
-    #    if feed_string is not None:
-    #        internal_valid.extend(extract_feed_links(feed_string, domainname, baseurl, homepage, LANG))
-    #    sleep(config.getfloat('DEFAULT', 'SLEEP_TIME'))
-    # optional: add sitemap URLs?
-#    return todo, known_links
-
-
 def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG, rules=None, initial=False, shortform=False):
     """Examine a webpage, extract navigation links and links."""
     url = todo.popleft()
@@ -219,13 +201,13 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
         todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config, rules=rules)
-        sleep(get_crawl_delay(rules, config))
+        sleep(get_crawl_delay(rules, default=config.getfloat('DEFAULT', 'SLEEP_TIME')))
     # refocus todo-list on URLs without navigation?
     # [u for u in todo if not is_navigation_page(u)]
     return todo, known_links
 
 
-def get_crawl_delay(rules, config=None):
+def get_crawl_delay(rules, default=5):
     """Define sleeping time between requests (in seconds)."""
     try:
         delay = rules.crawl_delay("*") or 0
@@ -233,8 +215,8 @@ def get_crawl_delay(rules, config=None):
     except AttributeError:
         delay = 0
     # backup
-    if delay == 0 and config is not None:
-        delay = config.getfloat('DEFAULT', 'SLEEP_TIME')
+    if delay == 0:
+        delay = default
     return delay
 
 

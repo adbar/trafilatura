@@ -196,7 +196,7 @@ def draw_backoff_url(domain_dict, backoff_dict, sleep_time, hosts):
     return url, domain_dict, backoff_dict, host
 
 
-def load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=DOWNLOAD_THREADS):
+def load_download_buffer(domain_dict, backoff_dict, sleep_time=5, threads=DOWNLOAD_THREADS):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
     bufferlist, hosts = [], set()
     # the remaining list is too small, process it differently
