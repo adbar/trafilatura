@@ -15,13 +15,12 @@ from .utils import filter_urls, load_html
 
 LOGGER = logging.getLogger(__name__)
 
-FEED_TYPES = set(['application/rss+xml', 'application/atom+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/xml'])
+FEED_TYPES = set(['application/atom+xml', 'application/rdf+xml', 'application/rss+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/atom+xml', 'text/rdf+xml', 'text/rss+xml', 'text/xml'])
 FEED_OPENING = re.compile(r'<(feed|rss|\?xml)')
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
 LINK_ELEMENTS = re.compile(r'<link>(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?</link>')
 BLACKLIST = re.compile(r'\bcomments\b')  # no comment feed
-
 
 
 def handle_link_list(linklist, domainname, baseurl, target_lang=None):
