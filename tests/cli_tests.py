@@ -218,6 +218,12 @@ def test_cli_pipeline():
     with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
         teststring = f.read()
     assert cli.examine(teststring, args) is None
+    testargs = ['', '-out', 'xml', '--only-with-metadata']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html'), 'r') as f:
+        teststring = f.read()
+    assert cli.examine(teststring, args) is None
     # test JSON output
     testargs = ['', '-out', 'json']
     with patch.object(sys, 'argv', testargs):

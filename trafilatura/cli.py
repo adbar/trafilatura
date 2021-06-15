@@ -120,8 +120,11 @@ def parse_args(args):
     group4.add_argument("--notables",
                         help="don't output any table elements",
                         action="store_false")  # false = no tables
-    group4.add_argument("--with-metadata",
+    group4.add_argument("--only-with-metadata",
                         help="only output those documents with title, URL and date (for formats supporting metadata)",
+                        action="store_true")
+    group4.add_argument("--with-metadata",
+                        help="similar (will be deprecated)",
                         action="store_true")
     group4.add_argument("--target-language",
                         help="select a target language (ISO 639-1 codes)",

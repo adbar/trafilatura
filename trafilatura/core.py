@@ -10,6 +10,7 @@ Module bundling all functions needed to extract the text in a webpage.
 # standard
 import logging
 import re # import regex as re
+import warnings
 
 from collections import OrderedDict
 from copy import deepcopy
@@ -624,8 +625,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_comments=True, output_format='python', target_language=None,
                     include_tables=True, include_images=False, include_formatting=False,
                     include_links=False, deduplicate=False,
-                    date_extraction_params=None, with_metadata=False, max_tree_size=None,
-                    url_blacklist=None, config=DEFAULT_CONFIG):
+                    date_extraction_params=None,
+                    only_with_metadata=False, with_metadata=False,
+                    max_tree_size=None, url_blacklist=None, config=DEFAULT_CONFIG):
     """Internal function for text extraction returning bare Python variables.
 
     Args:
@@ -644,8 +646,9 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
-        with_metadata: Only keep documents featuring all essential metadata
+        only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
+        with_metadata: similar (will be deprecated).
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         config: Directly provide a configparser configuration.
@@ -659,6 +662,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
     # init
     if url_blacklist is None:
         url_blacklist = set()
+
+    # deprecation warning
+    if with_metadata is True:
+        warnings.warn(
+            "with_metadata will be deprecated in a future version, use only_with_metadata instead",
+             PendingDeprecationWarning
+        )
 
     # load data
     try:
@@ -683,7 +693,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             if docmeta['url'] in url_blacklist:
                 raise ValueError
             # cut short if core elements are missing
-            if with_metadata is True and any(
+            if only_with_metadata is True or with_metadata is True and any(
                     x is None for x in
                     [docmeta['date'], docmeta['title'], docmeta['url']]
                 ):
@@ -763,7 +773,9 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
             tei_validation=False, target_language=None,
             include_tables=True, include_images=False, include_formatting=False,
             include_links=False, deduplicate=False,
-            date_extraction_params=None, with_metadata=False, max_tree_size=None, url_blacklist=None,
+            date_extraction_params=None,
+            only_with_metadata=False, with_metadata=False,
+            max_tree_size=None, url_blacklist=None,
             settingsfile=None, config=DEFAULT_CONFIG):
     """Main function exposed by the package:
        Wrapper for text extraction and conversion to chosen output format.
@@ -785,8 +797,9 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         include_links: Keep links along with their targets (experimental).
         deduplicate: Remove duplicate segments and documents.
         date_extraction_params: Provide extraction parameters to htmldate as dict().
-        with_metadata: Only keep documents featuring all essential metadata
+        only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
+        with_metadata: similar (will be deprecated).
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         settingsfile: Use a configuration file to override the standard settings.
@@ -807,7 +820,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         target_language=target_language, include_tables=include_tables, include_images=include_images,
         include_formatting=include_formatting, include_links=include_links,
         deduplicate=deduplicate,
-        date_extraction_params=date_extraction_params, with_metadata=with_metadata,
+        date_extraction_params=date_extraction_params,
+        only_with_metadata=only_with_metadata, with_metadata=with_metadata,
         max_tree_size=max_tree_size, url_blacklist=url_blacklist, config=config,
         )
     if docmeta is None:
