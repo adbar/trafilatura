@@ -1,6 +1,14 @@
 ## History / Changelog
 
 
+### 0.9.0
+- focused crawling functions including politeness rules
+- more efficient multi-threaded downloads + use as Python functions
+- documentation extended
+- bugs fixed: extraction and URL handling
+- removed support for Python 3.4
+
+
 ### 0.8.2
 - better handling of formatting, links and images, title type as attribute in XML formats
 - more robust sitemaps and feeds processing

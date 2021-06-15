@@ -55,15 +55,15 @@ matrix:
       python: pypy3
       env: MINIMAL=false
       env: TOXENV=pypy3
-    - name: "Python 3 on older macOS with minimal dependencies"
-      os: osx
-      osx_image: xcode9.4
-      language: shell
-      env: MINIMAL=true
-      before_install:
-        - sw_vers
-        - python3 --version
-        - pip3 --version
+#    - name: "Python 3 on older macOS with minimal dependencies"
+#      os: osx
+#      osx_image: xcode9.4
+#      language: shell
+#      env: MINIMAL=true
+#      before_install:
+#        - sw_vers
+#        - python3 --version
+#        - pip3 --version
     - name: "Python 3 on macOS with minimal dependencies"
       os: osx
       osx_image: xcode11.2
@@ -89,13 +89,13 @@ matrix:
         - choco install python --version 3.8.0
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       env: MINIMAL=true
-    - name: "Python 3 on Windows"
-      os: windows # Windows 10.0.17134 N/A Build 17134
-      language: shell
-      before_install:
-        - choco install python --version 3.8.0
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      env: MINIMAL=false
+#    - name: "Python 3 on Windows"
+#      os: windows # Windows 10.0.17134 N/A Build 17134
+#      language: shell
+#      before_install:
+#        - choco install python --version 3.8.0
+#      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+#      env: MINIMAL=false
   allow_failures:
     - python: nightly
     - python: pypy3
