@@ -8,6 +8,8 @@ Web crawling
 Concept
 -------
 
+Intra vs. inter
+~~~~~~~~~~~~~~~
 
 A necessary distinction has to be made between intra- and inter-domains crawling:
 
@@ -20,13 +22,24 @@ See `information on finding sources <sources.html>`_ for more details.
 
 
 Operation
----------
+~~~~~~~~~
+
+The focused crawler aims at the discovery of texts within a websites by exploration and retrieval of links.
+
+This tool is commonly known as (web) `crawler or spider <https://en.wikipedia.org/wiki/Web_crawler>`_. A Web crawler starts with a list of URLs to visit, called the seeds. As the crawler visits these URLs, it identifies all the hyperlinks in the pages and adds them to the list of URLs to visit, called the crawl frontier.
+
+The spider module implements politeness rules as defined by the `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_standard>`_ where applicable.
+
+It prioritizes navigation pages (archives, categories, etc.) over the rest in order to gather as many links as possible in few iterations.
 
 
 With Python
-~~~~~~~~~~~
+-----------
 
-The ``focused_crawler`` function implements politeness rules as defined by the `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_standard>`_ (where applicable). 
+Focused crawler
+~~~~~~~~~~~~~~~
+
+The ``focused_crawler`` function integrates all necessary components. It can be adjusted by a series of arguments:
 
 .. code-block:: python
 
@@ -37,17 +50,39 @@ The ``focused_crawler`` function implements politeness rules as defined by the `
     # resuming a crawl
     >>> to_visit, known_urls = focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=to_visit, known_links=known_urls)
 
-The collected links can then be downloaded and processed.
+The collected links can then be downloaded and processed. The links to visit (crawl frontier) are stored as a `deque <https://docs.python.org/3/library/collections.html#collections.deque>`_ (a double-ended queue) which mostly works like a list. The known URLs are stored as a set. Both can also be converted to a list if necessary:
+
+.. code-block:: python
+
+    to_visit, known_urls = list(to_visit), sorted(known_urls)
+
+
+Navigation
+~~~~~~~~~~
+
+.. hint::
+    You may decide on the course of a crawl by determining if there are still navigation pages to visit:
+
+.. code-block:: python
+
+    from trafilatura.spider import is_still_navigation
+
+    is_still_navigation(to_visit)
+    # returns True or False
 
 For more info please refer to the `core functions page <corefunctions.html>`_.
 
 
 On the command-line
-~~~~~~~~~~~~~~~~~~~
+-------------------
+
+On the CLI the crawler automatically works its way through a website, stopping at a maximum of 30 page visits or exhaustion of the total number of pages on the website, whichever comes first.
 
 .. code-block:: bash
 
     $ trafilatura --crawl "https://www.example.org" > links.txt
+
+It can also explore websites in parallel by reading a list of target sites from a list (``-i``/``--inputfile`` option).
 
 
 References

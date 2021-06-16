@@ -2,7 +2,7 @@ Download web pages
 ==================
 
 
-*New in version 0.9.*
+*New in version 0.9: Functions exposed and made usable for convenience.*
 
 
 With Python
@@ -12,12 +12,14 @@ Simple downloads
 ~~~~~~~~~~~~~~~~
 
 
-Running simple downloads is straightforward:
+Running simple downloads is straightforward. For efficiency reasons the ``fetch_url()`` fonction makes use of a connection pool where connections are kept open (unless too many websites are taken at once).
 
 .. code-block:: python
 
     from trafilatura.downloads import fetch_url
     downloaded = fetch_url('https://www.example.org')
+
+The decoding of pages to unicode string is optional, setting ``decode=False`` will return a urllib3 request object.
 
 
 Using threads
@@ -88,10 +90,10 @@ To prevent the execution of too many requests within too little time, the option
 
 .. code-block:: python
 
-    >>> from trafilatura.downloads import load_download_buffer
+    from trafilatura.downloads import load_download_buffer
 
     # 30 seconds is a safe choice
-    >>> mybuffer = load_download_buffer(dl_dict, backoff_dict, sleep_time=30)
+    mybuffer = load_download_buffer(dl_dict, backoff_dict, sleep_time=30)
 
 
 The `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_standard>`_ is used by some websites to define a series of crawling rules. One of them is the delay, i.e. the time between two download requests for a given website. This delay (in seconds) can be retrieved as follows:
@@ -99,22 +101,39 @@ The `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_s
 
 .. code-block:: python
 
-    >>> import urllib.robotparser
-    >>> from trafilatura import get_crawl_delay
+    import urllib.robotparser
+    from trafilatura import get_crawl_delay
     
     # define a website to look for rules
-    >>> base_url = 'https://www.example.org'
+    base_url = 'https://www.example.org'
     
     # load the necessary components, fetch and parse the file
-    >>> rules = urllib.robotparser.RobotFileParser()
-    >>> rules.set_url(base_url + '/robots.txt')
-    >>> rules.read()
+    rules = urllib.robotparser.RobotFileParser()
+    rules.set_url(base_url + '/robots.txt')
+    rules.read()
 
     # get the desired information
-    >>> seconds = get_crawl_delay(rules)
+    seconds = get_crawl_delay(rules)
     # provide a backup value in case no rule exists (happens quite often)
-    >>> seconds = get_crawl_delay(rules, default=30)
+    seconds = get_crawl_delay(rules, default=30)
 
 
-Trafilatura's focused crawler implements this delay where applicable. For further info and rules see the `documentation page on crawling <crawls.html>`_.
+.. info::
+    Trafilatura's focused crawler implements this delay where applicable. For further info and rules see the `documentation page on crawling <crawls.html>`_.
+
+
+.. hint::
+    You can also decide to store the rules in a domain-based dictionary for convenience and later use:
+
+
+.. code-block:: python
+
+    from courlan import extract_domain
+
+    rules_dict = dict()
+    # storing information
+    domain = extract_domain(base_url)
+    rules_dict[domain] = rules
+    # retrieving rules info
+    seconds = get_crawl_delay(rules_dict[domain])
 

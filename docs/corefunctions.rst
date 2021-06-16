@@ -21,6 +21,7 @@ Link discovery
 
 .. autofunction:: trafilatura.feeds.find_feed_urls
 
+.. autofunction:: trafilatura.spider.focused_crawler
 
 Helpers
 -------

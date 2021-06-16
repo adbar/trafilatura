@@ -1,5 +1,5 @@
-Uses and citations
-==================
+Uses & citations
+================
 
 
 
@@ -36,8 +36,8 @@ To reference this software in a publication please cite the following paper:
     }
 
 
-Research using Trafilatura:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Research using Trafilatura
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 - Bozarth, L., & Budak, C. (2021). `An Analysis of the Partnership between Retailers and Low-credibility News Publishers <https://journalqd.org/article/download/2579/1818>`_. Journal of Quantitative Description: Digital Media, 1.
