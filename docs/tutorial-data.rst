@@ -7,8 +7,8 @@ Generic solutions in Python
 - `Part-of-Speech Tagging <https://melaniewalsh.github.io/Intro-Cultural-Analytics/Text-Analysis/POS-Keywords.html>`_
 - `Natural Language Toolkit (NTLK) <https://www.nltk.org/>`_
 - `TF-IDF with Scikit-Learn <https://melaniewalsh.github.io/Intro-Cultural-Analytics/Text-Analysis/TF-IDF-Scikit-Learn.html>`_
-- Topic modeling, including *word2vec* models: `Gensim tutorials <https://radimrehurek.com/gensim/auto_examples/>`_
-- Load the input into the data analysis library *Pandas*:
+- Topic modeling, including word2vec models: `Gensim tutorials <https://radimrehurek.com/gensim/auto_examples/>`_
+- Load the input into the data analysis library Pandas:
    - `read_csv <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html>`_
    - `read_json <https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_json.html>`_
 

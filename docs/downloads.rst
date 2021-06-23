@@ -38,6 +38,9 @@ Multi-threaded downloads are a good option in order to make a more efficient use
     from concurrent.futures import ThreadPoolExecutor, as_completed
     from trafilatura import fetch_url
 
+    # buffer list of URLs
+    bufferlist = [] # [url1, url2, ...]
+
     # download pool: 4 threads
     with ThreadPoolExecutor(max_workers=4) as executor:
         future_to_url = {executor.submit(fetch_url, url): url for url in bufferlist}
@@ -60,9 +63,15 @@ The following variant of multi-threaded downloads with throttling is implemented
 
     from trafilatura.downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
 
+    # list of URLs
     mylist = ['https://www.example.org', 'https://www.httpbin.org/html']
-    backoff_dict = dict()
+    # number of threads to use
+    threads = 4
+
+    backoff_dict = dict() # has to be defined first
+    # converted the input list to an internal format
     dl_dict = add_to_compressed_dict(mylist)
+    # processing loop
     while dl_dict:
         buffer, threads, dl_dict, backoff_dict = load_download_buffer(dl_dict, backoff_dict)
         for url, result in buffered_downloads(buffer, threads):
@@ -119,7 +128,7 @@ The `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_s
 
 
 .. info::
-    Trafilatura's focused crawler implements this delay where applicable. For further info and rules see the `documentation page on crawling <crawls.html>`_.
+    Trafilatura's focused crawler implements the delay where applicable. For further info and rules see the `documentation page on crawling <crawls.html>`_.
 
 
 .. hint::
