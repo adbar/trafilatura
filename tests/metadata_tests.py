@@ -164,6 +164,12 @@ def test_dates():
     assert metadata['date'] == '2017-09-01'
 
 
+def test_sitename():
+    '''Test extraction of site name'''
+    metadata = extract_metadata('<html><head><title>sitemaps.org - Home</title></head><body/></html>')
+    assert metadata['sitename'] == 'sitemaps.org'
+
+
 def test_meta():
     '''Test extraction out of meta-elements'''
     metadata = extract_metadata('<html><head><meta property="og:title" content="Open Graph Title"/><meta property="og:author" content="Jenny Smith"/><meta property="og:description" content="This is an Open Graph description"/><meta property="og:site_name" content="My first site"/><meta property="og:url" content="https://example.org/test"/></head><body><a rel="license" href="https://creativecommons.org/">Creative Commons</a></body></html>')
@@ -425,4 +431,5 @@ if __name__ == '__main__':
     test_url()
     test_description()
     test_catstags()
+    test_sitename()
     test_pages()

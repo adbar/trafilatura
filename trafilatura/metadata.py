@@ -23,7 +23,7 @@ METADATA_LIST = ['title', 'author', 'url', 'hostname', 'description', 'sitename'
 
 HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
 
-TITLE_REGEX = re.compile(r'(.+)?\s+[-|]\s+.*$')
+HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$') # part without dots?
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
@@ -240,10 +240,13 @@ def extract_title(tree):
     try:
         title = tree.xpath('//head/title')[0].text_content()
         # refine
-        mymatch = TITLE_REGEX.match(title)
+        mymatch = HTMLTITLE_REGEX.match(title)
         if mymatch:
-            title = mymatch.group(1)
-        return title
+            if '.' not in mymatch.group(1):
+                title = mymatch.group(1)
+            elif '.' not in mymatch.group(2):
+                title = mymatch.group(2)
+            return title
     except IndexError:
         LOGGER.warning('no main title found')
     # take first h1-title
@@ -314,12 +317,12 @@ def extract_sitename(tree):
     '''Extract the name of a site from the main title (if it exists)'''
     title_elem = tree.find('.//head/title')
     if title_elem is not None and title_elem.text is not None:
-        try:
-            mymatch = re.search(r'^.*?[-|]\s+(.*)$', title_elem.text)
-            if mymatch:
+        mymatch = HTMLTITLE_REGEX.match(title_elem.text)
+        if mymatch:
+            if '.' in mymatch.group(1):
                 return mymatch.group(1)
-        except AttributeError:
-            pass
+            if '.' in mymatch.group(2):
+                return mymatch.group(2)
     return None
 
 
