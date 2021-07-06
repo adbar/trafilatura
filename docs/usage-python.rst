@@ -27,13 +27,15 @@ Step-by-step
 .. code-block:: python
 
     >>> from trafilatura import fetch_url, extract
-    >>> downloaded = fetch_url('https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/')
+    >>> url = 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/'
+    >>> downloaded = fetch_url(url)
     >>> downloaded is None # assuming the download was successful
     False
     >>> result = extract(downloaded)
     >>> print(result)
     # newlines preserved, TXT output ...
-    >>> result = extract(downloaded, xml_output=True)
+    # source URL provided for metadata
+    >>> result = extract(downloaded, xml_output=True, url=url)
     >>> print(result)
     # some formatting preserved in basic XML structure ...
 
@@ -57,6 +59,8 @@ This values combined probably provide the fastest execution times:
 
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
 
+
+See also Python Notebook `Trafilatura Overview <Trafilatura_Overview.ipynb>`_.
 
 
 Extraction settings

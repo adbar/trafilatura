@@ -3,6 +3,13 @@ Uses & citations
 
 
 
+Ports
+-----
+
+- Go port: `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
+
+
+
 Notable projects using this software
 ------------------------------------
 
