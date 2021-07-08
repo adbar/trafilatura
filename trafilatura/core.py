@@ -97,6 +97,8 @@ def handle_lists(element, dedupbool, config):
                 if processed_subchild is not None:
                     subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
                     subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
+                    if subelem.tag == 'ref' and subelem.get('target') is not None:
+                        subchildelem.set('target', subelem.get('target'))
                 subelem.tag = 'done'
             etree.strip_tags(newchildelem, 'item')
         if newchildelem.text or len(newchildelem) > 0:
