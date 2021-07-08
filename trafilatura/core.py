@@ -29,7 +29,8 @@ from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
 from .utils import load_html, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
-from .xpaths import BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH
+from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH,
+                     DISCARD_IMAGE_ELEMENTS)
 #, REMOVE_COMMENTS_XPATH
 
 
@@ -121,6 +122,8 @@ def handle_other_elements(element, potential_tags, dedupbool, config):
         # LOGGER.debug('discarding: %s %s', element.tag, element.text)
         return None
     if element.tag == 'div':
+        # make a copy and prune it in case it contains sub-elements handled on their own?
+        # divcopy = deepcopy(element)
         processed_element = handle_textnode(element, comments_fix=False, deduplicate=dedupbool, config=config)
         if processed_element is not None and text_chars_test(processed_element.text) is True:
             processed_element.attrib.clear()
@@ -270,13 +273,12 @@ def handle_image(element):
         processed_element.set('alt', element.get('alt'))
     if element.get('title') is not None:
         processed_element.set('title', element.get('title'))
-    # don't return an empty element, just None
-    if len(processed_element.attrib) == 0:
+    # don't return empty elements or elements without source, just None
+    if len(processed_element.attrib) == 0 or not processed_element.get('src'):
         return None
     # post-processing: URLs
-    if processed_element.get('src') is not None:
-        url = processed_element.get('src')
-        processed_element.set('src', re.sub(r'^//', 'http://', url))
+    url = processed_element.get('src')
+    processed_element.set('src', re.sub(r'^//', 'http://', url))
     return processed_element
 
 
@@ -286,6 +288,8 @@ def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate
     LOGGER.debug('Recovering wild text elements')
     # prune
     search_tree = prune_unwanted_nodes(tree, DISCARD_XPATH)
+    if 'graphic' not in potential_tags:
+        search_tree = prune_unwanted_nodes(search_tree, DISCARD_IMAGE_ELEMENTS)
     # decide if links are preserved
     if not 'ref' in potential_tags:
         etree.strip_tags(search_tree, 'a', 'ref', 'span')
@@ -377,6 +381,8 @@ def extract_content(tree, include_tables=False, include_images=False, include_li
         #    print('1', table_elem.text_content())
         # prune
         subtree = prune_unwanted_nodes(subtree, DISCARD_XPATH)
+        if include_images is False:
+            subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
         #for table_elem in subtree.xpath('//table'):
         #    print('2', table_elem.text_content())
         # remove elements by link density

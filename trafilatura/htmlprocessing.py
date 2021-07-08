@@ -15,11 +15,12 @@ from lxml.html.clean import Cleaner
 from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, DEFAULT_CONFIG, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import trim
-from .xpaths import COMMENTS_DISCARD_XPATH, DISCARD_XPATH
 
 LOGGER = logging.getLogger(__name__)
 
-# HTML_CLEANER config # http://lxml.de/api/lxml.html.clean.Cleaner-class.html
+# HTML_CLEANER config
+# http://lxml.de/api/lxml.html.clean.Cleaner-class.html
+# https://lxml.de/apidoc/lxml.html.clean.html
 HTML_CLEANER = Cleaner()
 HTML_CLEANER.annoying_tags = False  # True
 HTML_CLEANER.comments = True

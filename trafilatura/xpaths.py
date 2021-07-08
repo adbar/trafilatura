@@ -118,8 +118,7 @@ DISCARD_XPATH = [
     contains(@id, "bread-crumb") or contains(@class, "bread-crumb") or
     contains(@id, "author") or contains(@class, "author") or
     contains(@id, "button") or contains(@class, "button")
-    or contains(@id, "caption") or contains(@class, "caption") or
-    contains(translate(@class, "B","b"), "byline")
+    or contains(translate(@class, "B","b"), "byline")
     or contains(@class, "rating") or starts-with(@class, "widget") or
     contains(@class, "attachment") or contains(@class, "timestamp") or
     contains(@class, "user-info") or contains(@class, "user-profile") or
@@ -133,6 +132,14 @@ DISCARD_XPATH = [
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden")]''',
+]
+
+DISCARD_IMAGE_ELEMENTS = [
+    '''.//*[(self::div or self::item or self::list
+             or self::p or self::section or self::span)][
+             contains(@id, "caption") or contains(@class, "caption")
+            ]
+    '''
 ]
 # conflicts:
 # .//header # contains(@id, "header") or contains(@class, "header") or

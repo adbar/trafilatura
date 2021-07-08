@@ -30,7 +30,7 @@ from lxml import etree, html
 LOGGER = logging.getLogger(__name__)
 
 
-# collect_ids=False, default_doctype=False, huge_tree=True,
+# collect_ids=False, default_doctype=False, huge_tree=True, remove_blank_text=True
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
 RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
@@ -50,7 +50,7 @@ NOPRINT_TRANS_TABLE = {
 }
 
 # Regex to check image file extensions
-IMAGE_EXTENSION = re.compile(r'([^\s]+(\.(jpe?g|png|gif|bmp)))')
+IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
 
 
 def is_gz_file(contents):
@@ -193,6 +193,7 @@ def txttocsv(text, comments, docmeta):
     '''Output the result in CSV format (tab-separated values)'''
     # outputwriter = csv.writer(sys.stdout, delimiter='\t', quoting=csv.QUOTE_NONE)
     # outputwriter.writerow()
+    # with newlines: '\\n'.join()
     text = trim(' '.join(text.splitlines()))
     if comments is not None:
         comments = trim(' '.join(comments.splitlines()))
