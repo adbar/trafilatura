@@ -39,12 +39,23 @@ LOGGER = logging.getLogger(__name__)
 
 def handle_titles(element, dedupbool, config):
     '''Process head elements (titles)'''
-    # maybe needs attention
-    if element.tail and re.search(r'\w', element.tail):
-        LOGGER.debug('tail in title, stripping: %s', element.tail)
-    element.tail = None
-    title = process_node(element, dedupbool, config)
-    # and re.search(r'\w', title.text)
+    if len(element) == 0:
+        # maybe needs attention?
+        #if element.tail and re.search(r'\w', element.tail):
+        #    LOGGER.debug('tail in title, stripping: %s', element.tail)
+        #    element.tail = None
+        title = process_node(element, dedupbool, config)
+    # children
+    else:
+        title = deepcopy(element)
+        for child in element.iter():
+            #if child.tag not in potential_tags:
+            #    LOGGER.warning('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
+            #    continue
+            processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
+            if processed_child is not None:
+                title.append(processed_child)
+            child.tag = 'done'
     if title is not None and text_chars_test(title.text) is True:
         return title
     return None
