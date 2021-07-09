@@ -160,15 +160,16 @@ def process_response(response, todo, known_links, base_url, language, shortform=
     return todo, known_links, htmlstring
 
 
-def init_crawl(homepage, todo, known_links, language=None, shortform=False, config=DEFAULT_CONFIG):
+def init_crawl(homepage, todo, known_links, language=None, shortform=False, config=DEFAULT_CONFIG, rules=None):
     """Start crawl by initializing variables and potentially examining the starting page."""
     _, base_url = get_hostinfo(homepage)
     known_links = known_links or set()
     i = 0
-    # try to read robots.txt file
-    rules = urllib.robotparser.RobotFileParser()
-    rules.set_url(base_url + '/robots.txt')
-    rules.read()
+    # fetch and parse robots.txt file if necessary
+    if rules is None:
+        rules = urllib.robotparser.RobotFileParser()
+        rules.set_url(base_url + '/robots.txt')
+        rules.read()
     # initialize crawl by visiting homepage if necessary
     if todo is None:
         todo = deque([homepage])
@@ -195,7 +196,7 @@ def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG,
     return todo, known_links, i, htmlstring
 
 
-def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, lang=None, config=DEFAULT_CONFIG):
+def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None, known_links=None, lang=None, config=DEFAULT_CONFIG, rules=None):
     """Basic crawler targeting pages of interest within a website.
 
     Args:
@@ -206,13 +207,14 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
         known_links: provide a previously generated set of links.
         lang: try to target links according to language heuristics.
         config: use a different configuration (configparser format).
+        rules: provide politeness rules (urllib.robotparser.RobotFileParser() format). New in version 0.9.1.
 
     Returns:
         List of pages to visit, deque format, possibly empty if there are no further pages to visit.
         Set of known links.
 
     """
-    todo, known_links, base_url, i, rules = init_crawl(homepage, todo, known_links, language=lang, config=config)
+    todo, known_links, base_url, i, rules = init_crawl(homepage, todo, known_links, language=lang, config=config, rules=rules)
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
         todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config, rules=rules)
