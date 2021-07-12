@@ -194,7 +194,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     # children
     processed_element = etree.Element(element.tag)
     for child in element.iter():
-        if child.tag not in potential_tags:
+        if child.tag not in potential_tags and child.tag != 'done':
             LOGGER.warning('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
         processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
@@ -723,10 +723,12 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
     try:
         tree = load_html(filecontent)
         if tree is None:
+            LOGGER.error('empty HTML tree for URL %s', url)
             raise ValueError
 
         # HTML lang check
         if target_language is not None and check_html_lang(tree, target_language) is False:
+            LOGGER.error('wrong HTML meta language for URL %s', url)
             raise ValueError
 
         # backup (or not) for further processing
@@ -740,12 +742,14 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             docmeta = extract_metadata(tree, url, date_extraction_params)
             # cut short if extracted URL in blacklist
             if docmeta['url'] in url_blacklist:
+                LOGGER.info('blacklisted URL: %s', url)
                 raise ValueError
             # cut short if core elements are missing
             if only_with_metadata is True or with_metadata is True and any(
                     x is None for x in
                     [docmeta['date'], docmeta['title'], docmeta['url']]
                 ):
+                LOGGER.error('no metadata for URL %s', url)
                 raise ValueError
         else:
             docmeta = dict.fromkeys(METADATA_LIST)
@@ -796,11 +800,13 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # check duplicates at body level
         if deduplicate is True and duplicate_test(postbody, config) is True:
+            LOGGER.error('duplicate document for URL %s', url)
             raise ValueError
 
         # sanity check on language
         if target_language is not None and \
             language_filter(temp_text, temp_comments, target_language, docmeta) is True:
+            LOGGER.error('wrong language for URL %s', url)
             raise ValueError
 
     except ValueError:
