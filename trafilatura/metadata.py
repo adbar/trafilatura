@@ -267,7 +267,7 @@ def extract_author(tree):
         # simple filters for German and English
         author = re.sub(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', '', author, flags=re.IGNORECASE)
         author = re.sub(r'\d.+?$', '', author)
-        author = re.sub(r'[^\w]+$|( am| on)', '', trim(author))
+        author = re.sub(r'[^\w]+$|\b( [A|a]m| [O|o]n| [F|f]or)\b\s+(.*)', '', trim(author))
         author = author.title()
     return author
 
