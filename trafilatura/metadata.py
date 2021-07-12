@@ -31,6 +31,7 @@ JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 URL_COMP_CHECK = re.compile(r'https?://|/')
+HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author'} # twitter:creator
 METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title'}
@@ -166,7 +167,7 @@ def examine_meta(tree):
             name_attr = elem.get('name').lower()
             # author
             if name_attr in METANAME_AUTHOR:
-                author = author or content_attr
+                author = author or HTML_STRIP_TAG.sub('', content_attr)
             # title
             elif name_attr in METANAME_TITLE:
                 title = title or content_attr
