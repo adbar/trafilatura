@@ -94,6 +94,9 @@ def test_trim():
     assert textfilter(my_elem) is True
     # sanitize logic
     assert utils.sanitize(None) is None
+    # non-breaking spaces
+    #print(utils.sanitize('Test&nbsp;Text'))
+    #assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
 
 
 def test_input():
@@ -224,7 +227,7 @@ def test_formatting():
     # wild div
     my_document = html.fromstring('<html><body><article><div><strong>Wild text</strong></div></article></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    assert '<p>' in my_result and '<hi>Wild text</hi>' in my_result  # no rend so far
+    assert '<p>' in my_result and '<hi rend="#b">Wild text</hi>' in my_result  # no rend so far
     my_result = extract(my_document, config=ZERO_CONFIG)
     assert my_result == 'Wild text'
     # links
@@ -242,7 +245,7 @@ def test_formatting():
     element = etree.Element("hi")
     element.text = 'Here is the text.'
     element.tail = 'And a tail.'
-    converted = handle_formatting(element)
+    converted = handle_formatting(element, dedupbool=False, config=ZERO_CONFIG)
     assert etree.tostring(converted) == b'<p><hi>Here is the text.</hi>And a tail.</p>'
     # empty elements
     my_document = html.fromstring('<html><body><div>\t\n</div><div>There is text here.</div></body></html>')
@@ -254,17 +257,19 @@ def test_formatting():
     assert '<item>Number <ref target="test.html">2</ref></item>' in my_result
     # (markdown) formatting within <p>-tag
     my_document = html.fromstring('<html><body><p><b>bold</b>, <i>italics</i>, <tt>tt</tt>, <strike>deleted</strike>, <u>underlined</u>, <a href="test.html">link</a>.</p></body></html>')
-    #my_result = extract(my_document, output_format='txt', no_fallback=True, config=ZERO_CONFIG)
-    # todo: handling <del>-element
-    #print(my_result)
+    my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    assert 'rend="#b"' in my_result and 'rend="#i"' in my_result and 'rend="#t"' in my_result and 'rend="#u"' in my_result and '<del>' in my_result
+    my_result = extract(my_document, output_format='txt', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    assert '**bold**' in my_result and '*italics*' in my_result and '`tt`' in my_result and '~~deleted~~' in my_result and '__underlined__' in my_result
+    ## todo: handle spaces!
+    # assert 1 == 0
     my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     assert '<hi rend="#t">tt</hi>' in my_result and '<del>deleted</del>' in my_result and '<ref target="test.html">link</ref>.' in my_result
-    # todo: handling spaces
-    #print(my_result)
     # double <p>-elems
     #my_document = html.fromstring('<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>')
     #my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
     #print(my_result)
+    #assert 1 == 0 
     # line-break following formatting
     my_document = html.fromstring('<html><body><article><p><strong>Staff Review of the Financial Situation</strong><br>Domestic financial conditions remained accommodative over the intermeeting period.</p></article></body></html>')
     my_result = extract(my_document, output_format='txt', no_fallback=True, config=ZERO_CONFIG)
@@ -392,7 +397,7 @@ def test_images():
 def test_links():
     '''Test link extraction function'''
     assert handle_textelem(etree.Element('ref'), [], False, DEFAULT_CONFIG) is None
-    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>')) is not None
+    assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), dedupbool=False, config=ZERO_CONFIG) is not None
     # link with target
     mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
     assert 'testlink.html' not in extract(mydoc)

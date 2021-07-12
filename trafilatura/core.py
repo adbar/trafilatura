@@ -61,17 +61,47 @@ def handle_titles(element, dedupbool, config):
     return None
 
 
-def handle_formatting(element):
+def handle_formatting(element, dedupbool, config):
     '''Process formatting elements (b, i, etc. converted to hi) found
        outside of paragraphs'''
-    processed_element = None
-    if element.text is not None or element.tail is not None:
+    formatting = process_node(element, dedupbool, config)
+    if len(element) == 0 and formatting is None:
+        return None
+    # repair orphan elements
+    #if formatting is None:
+    #    formatting = etree.Element(element.tag)
+        # return None
+    #if len(element) > 0:
+    #    for child in element.iter():
+            #if child.tag not in potential_tags:
+            #    LOGGER.warning('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
+            #    continue
+    #        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
+    #        if processed_child is not None:
+    #            formatting.append(processed_child)
+    #        child.tag = 'done'
+    #if text_chars_test(element.text) is True:
+    #    processed_child.text = trim(element.text)
+    #if text_chars_test(element.tail) is True:
+    #    processed_child.tail = trim(element.tail)
+    #if len(element) == 0:
+    #    processed_element = process_node(element, dedupbool, config)
+    # children
+    #else:
+    #    processed_element = etree.Element(element.tag)
+        #processed_element.text, processed_element.tail = element.text, element.tail
+    #    for child in element.iter():
+    #        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
+    #        if processed_child is not None:
+    #            processed_element.append(processed_child)
+    #        child.tag = 'done'
+    # repair orphan elements
+    parent = element.getparent() or element.getprevious()
+    if parent is None or parent.tag not in ('cell', 'head', 'hi', 'item', 'p', 'quote', 'td'):
         processed_element = etree.Element('p')
-        processed_child = etree.SubElement(processed_element, element.tag)
-        if text_chars_test(element.text) is True:
-            processed_child.text = trim(element.text)
-        if text_chars_test(element.tail) is True:
-            processed_child.tail = trim(element.tail)
+        processed_element.insert(0, formatting)
+    else:
+        processed_element = formatting
     return processed_element
 
 
@@ -332,7 +362,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
                 new_element = etree.Element('p')
                 new_element.text = element.tail
     elif element.tag in ('hi', 'ref', 'span'):
-        new_element = handle_formatting(element) # process_node(element, dedupbool, config)
+        new_element = handle_formatting(element, dedupbool, config) # process_node(element, dedupbool, config)
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element, dedupbool, config)
     elif element.tag == 'graphic' and 'graphic' in potential_tags:
