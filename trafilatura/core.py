@@ -72,7 +72,7 @@ def handle_formatting(element, dedupbool, config):
     #    formatting = etree.Element(element.tag)
         # return None
     #if len(element) > 0:
-    #    for child in element.iter():
+    #    for child in element.getchildren():
             #if child.tag not in potential_tags:
             #    LOGGER.warning('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
             #    continue
@@ -90,7 +90,7 @@ def handle_formatting(element, dedupbool, config):
     #else:
     #    processed_element = etree.Element(element.tag)
         #processed_element.text, processed_element.tail = element.text, element.tail
-    #    for child in element.iter():
+    #    for child in element.getchildren():
     #        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
     #        if processed_child is not None:
     #            processed_element.append(processed_child)
@@ -121,7 +121,7 @@ def handle_lists(element, dedupbool, config):
                 processed_element.append(newchildelem)
         else:
             # proceed with iteration, fix for nested elements
-            for subelem in child.iter():
+            for subelem in child.getchildren():
                 processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool, config=config)
                 # add child element to processed_element
                 if processed_subchild is not None:
@@ -144,7 +144,7 @@ def handle_lists(element, dedupbool, config):
 def handle_quotes(element, dedupbool, config):
     '''Process quotes elements'''
     processed_element = etree.Element(element.tag)
-    for child in element.iter():
+    for child in element.getchildren():
         processed_child = process_node(child, dedupbool, config) # handle_textnode(child, comments_fix=True)
         if processed_child is not None:
             newsub = etree.SubElement(processed_element, child.tag)
@@ -193,7 +193,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         return None
     # children
     processed_element = etree.Element(element.tag)
-    for child in element.iter():
+    for child in element.getchildren():
         if child.tag not in potential_tags and child.tag != 'done':
             LOGGER.warning('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
@@ -264,7 +264,7 @@ def handle_table(table_elem, dedupbool, config):
     # strip these structural elements
     etree.strip_tags(table_elem, 'thead', 'tbody', 'tfoot')
     # explore sub-elements
-    for subelement in table_elem.iter():
+    for subelement in table_elem.getchildren():
         i += 1
         if subelement.tag == 'tr':
             # process existing row
@@ -639,7 +639,7 @@ def determine_returnstring(docmeta, output_format, include_formatting, include_l
     # XML (TEI) steps
     if 'xml' in output_format:
         # last cleaning
-        for element in docmeta['body'].iter():
+        for element in docmeta['body'].getchildren():
             if element.tag != 'graphic' and len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
                 if parent is not None:

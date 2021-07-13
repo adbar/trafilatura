@@ -161,13 +161,19 @@ def examine_meta(tree):
             if elem.get('property') == 'article:tag':
                 tags.append(content_attr)
             elif elem.get('property') in ('author', 'article:author'):
-                author = content_attr if author is None else author + '; ' + content_attr if author not in content_attr and not content_attr.startswith('http') else author
+                if author is None:
+                    author = content_attr
+                elif author not in content_attr and not content_attr.startswith('http'):
+                    author = author + '; ' + content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
             # author
             if name_attr in METANAME_AUTHOR:
-                author = content_attr if author is None else author + '; ' + content_attr if author not in content_attr and not content_attr.startswith('http') else author
+                if author is None:
+                    author = content_attr
+                elif author not in content_attr and not content_attr.startswith('http'):
+                    author = author + '; ' + content_attr
             # title
             elif name_attr in METANAME_TITLE:
                 title = title or content_attr
@@ -188,7 +194,10 @@ def examine_meta(tree):
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
-                author = content_attr if author is None else author + '; ' + content_attr if author not in content_attr and not content_attr.startswith('http') else author
+                if author is None:
+                    author = content_attr
+                elif author not in content_attr and not content_attr.startswith('http'):
+                    author = author + '; ' + content_attr
             elif elem.get('itemprop') == 'description':
                 description = description or content_attr
             elif elem.get('itemprop') == 'headline':
