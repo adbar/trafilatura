@@ -31,6 +31,7 @@ JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 URL_COMP_CHECK = re.compile(r'https?://|/')
+HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
 METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author'} # twitter:creator
 METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title'}
@@ -149,7 +150,7 @@ def examine_meta(tree):
         # content
         if not elem.get('content'):
             continue
-        content_attr = elem.get('content')
+        content_attr = HTML_STRIP_TAG.sub('', elem.get('content'))
         # image info
         # ...
         # property
@@ -160,13 +161,19 @@ def examine_meta(tree):
             if elem.get('property') == 'article:tag':
                 tags.append(content_attr)
             elif elem.get('property') in ('author', 'article:author'):
-                author = author or content_attr
+                if author is None:
+                    author = content_attr
+                elif author not in content_attr and not content_attr.startswith('http'):
+                    author = author + '; ' + content_attr
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
             # author
             if name_attr in METANAME_AUTHOR:
-                author = author or content_attr
+                if author is None:
+                    author = content_attr
+                elif author not in content_attr and not content_attr.startswith('http'):
+                    author = author + '; ' + content_attr
             # title
             elif name_attr in METANAME_TITLE:
                 title = title or content_attr
@@ -187,7 +194,10 @@ def examine_meta(tree):
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
-                author = author or content_attr
+                if author is None:
+                    author = content_attr
+                elif author not in content_attr and not content_attr.startswith('http'):
+                    author = author + '; ' + content_attr
             elif elem.get('itemprop') == 'description':
                 description = description or content_attr
             elif elem.get('itemprop') == 'headline':
@@ -267,7 +277,7 @@ def extract_author(tree):
         # simple filters for German and English
         author = re.sub(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', '', author, flags=re.IGNORECASE)
         author = re.sub(r'\d.+?$', '', author)
-        author = re.sub(r'[^\w]+$|( am| on)', '', trim(author))
+        author = re.sub(r'[^\w]+$|\b( [A|a]m| [O|o]n| [F|f]or)\b\s+(.*)', '', trim(author))
         author = author.title()
     return author
 
