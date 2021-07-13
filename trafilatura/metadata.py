@@ -26,6 +26,7 @@ HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$') # part without dots?
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
+JSON_AUTHOR_3 = re.compile(r'"author":"([^"\\]+)"', re.DOTALL)
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
@@ -73,6 +74,8 @@ def extract_json(tree, metadata):
             metadata['author'] = extract_json_author(elem.text, JSON_AUTHOR_1)
             if metadata['author'] is None:
                 metadata['author'] = extract_json_author(elem.text, JSON_AUTHOR_2)
+                if metadata['author'] is None:
+                    metadata['author'] = extract_json_author(elem.text, JSON_AUTHOR_3)
         # try to extract publisher
         if '"publisher"' in elem.text:
             mymatch = JSON_PUBLISHER.search(elem.text)
