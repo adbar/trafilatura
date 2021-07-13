@@ -150,7 +150,7 @@ def examine_meta(tree):
         # content
         if not elem.get('content'):
             continue
-        content_attr = elem.get('content')
+        content_attr = HTML_STRIP_TAG.sub('', elem.get('content'))
         # image info
         # ...
         # property
@@ -161,13 +161,13 @@ def examine_meta(tree):
             if elem.get('property') == 'article:tag':
                 tags.append(content_attr)
             elif elem.get('property') in ('author', 'article:author'):
-                author = author or content_attr
+                author = content_attr if author is None else author + '; ' + content_attr if author not in content_attr and not content_attr.startswith('http') else author
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
             # author
             if name_attr in METANAME_AUTHOR:
-                author = author or HTML_STRIP_TAG.sub('', content_attr)
+                author = content_attr if author is None else author + '; ' + content_attr if author not in content_attr and not content_attr.startswith('http') else author
             # title
             elif name_attr in METANAME_TITLE:
                 title = title or content_attr
@@ -188,7 +188,7 @@ def examine_meta(tree):
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
-                author = author or content_attr
+                author = content_attr if author is None else author + '; ' + content_attr if author not in content_attr and not content_attr.startswith('http') else author
             elif elem.get('itemprop') == 'description':
                 description = description or content_attr
             elif elem.get('itemprop') == 'headline':
