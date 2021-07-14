@@ -48,6 +48,8 @@ def handle_titles(element, dedupbool, config):
     # children
     else:
         title = deepcopy(element)
+        # list instead of element.iter()
+        # TODO: write tests for it and check
         for child in list(element):
             #if child.tag not in potential_tags:
             #    LOGGER.warning('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
