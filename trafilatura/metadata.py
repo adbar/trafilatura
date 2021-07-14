@@ -53,6 +53,7 @@ def normalize_authors(author):
     # simple filters for German and English
     author = re.sub(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', '', author, flags=re.IGNORECASE)
     author = re.sub(r'\d.+?$', '', author)
+    author = re.sub(r'[:()?*$#!]', '', author)
     author = re.sub(r'[^\w]+$|\b( am| on| for)\b\s+(.*)', '', trim(author), flags=re.IGNORECASE)
     author = re.split(';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', author, flags=re.IGNORECASE)
     return '; '.join(author).strip('; ').title()
