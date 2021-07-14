@@ -47,7 +47,7 @@ def normalize_json(inputstring):
 
 
 def normalize_authors(inputstring):
-    author = re.split(';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', inputstring.strip(), flags=re.IGNORECASE)
+    author = re.split(';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', trim(inputstring), flags=re.IGNORECASE)
     return '; '.join(author).strip('; ')
 
 
@@ -236,10 +236,10 @@ def extract_metainfo(tree, expressions, len_limit=200):
         # examine all results
         i = 0
         for elem in tree.xpath(expression):
-            content = elem.text_content()
+            content = trim(elem.text_content())
             if content and len(content) < len_limit:
                 #LOGGER.debug('metadata found in: %s', expression)
-                return trim(content)
+                return content
             i += 1
         if i > 1:
             LOGGER.debug('more than one invalid result: %s %s', expression, i)
