@@ -274,6 +274,10 @@ def test_formatting():
     my_document = html.fromstring('<html><body><article><p><strong>Staff Review of the Financial Situation</strong><br>Domestic financial conditions remained accommodative over the intermeeting period.</p></article></body></html>')
     my_result = extract(my_document, output_format='txt', no_fallback=True, config=ZERO_CONFIG)
     assert my_result == 'Staff Review of the Financial Situation\nDomestic financial conditions remained accommodative over the intermeeting period.'
+    # title with formatting
+    my_document = html.fromstring('<html><body><article><h4 id="1theinoperator">1) The <code>in</code> Operator</h4><p>The easiest way to check if a Python string contains a substring is to use the <code>in</code> operator. The <code>in</code> operator is used to check data structures for membership in Python. It returns a Boolean (either <code>True</code> or <code>False</code>) and can be used as follows:</p></article></body></html>')
+    my_result = extract(my_document, output_format='xml', no_fallback=True, include_formatting=True, config=ZERO_CONFIG)
+    assert '<head rend="h4">1) The <code>in</code> Operator</head>' in my_result and '<p>The easiest way to check if a Python string contains a substring is to use the<code>in</code>operator. The<code>in</code>operator is used to check data structures for membership in Python. It returns a Boolean (either<code>True</code>or<code>False</code>) and can be used as follows:</p>' in my_result
 
 
 def test_baseline():
@@ -345,6 +349,7 @@ def test_filters():
     assert check_html_lang(html.fromstring('<html lang="en"><body></body></html>'), target_language='it') is False
     assert check_html_lang(html.fromstring('<html><head><meta http-equiv="content-language" content="en"></head><body></body></html>'), target_language='en') is True
     assert check_html_lang(html.fromstring('<html><head><meta http-equiv="content-language" content="en"></head><body></body></html>'), target_language='de') is False
+    assert check_html_lang(html.fromstring('<html><head><meta http-equiv="content-language" content="DE"></head><body></body></html>'), target_language='de') is True
 
 
 def test_external():

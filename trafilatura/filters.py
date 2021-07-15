@@ -70,7 +70,7 @@ def check_html_lang(tree, target_language):
     target_elements = tree.xpath('//meta[@http-equiv="content-language"]')
     if len(target_elements) > 0:
         for elem in target_elements:
-            if target_language in RE_HTML_LANG.split(elem.get('content')):
+            if target_language in RE_HTML_LANG.split(elem.get('content').lower()):
                 return True
         LOGGER.warning('HTML lang detection failed')
         return False
