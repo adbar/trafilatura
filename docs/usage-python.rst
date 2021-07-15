@@ -122,7 +122,9 @@ Experimental feature: the target language can also be set using 2-letter codes (
 Date extraction
 ^^^^^^^^^^^^^^^
 
-Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. `Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
+Among metadata extraction, dates are handled by an external module: `htmldate <https://github.com/adbar/htmldate>`_. By default, focus is on original dates and the extraction replicates the *fast/no_fallback* option.
+
+`Custom parameters <https://htmldate.readthedocs.io/en/latest/corefunctions.html#handling-date-extraction>`_ can be passed through the extraction function or through the ``extract_metadata`` function in ``trafilatura.metadata``, most notably:
 
 -  ``extensive_search`` (boolean), to activate pattern-based opportunistic text search,
 -  ``original_date`` (boolean) to look for the original publication date,

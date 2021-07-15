@@ -741,7 +741,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # extract metadata if necessary
         if output_format != 'txt':
-            docmeta = extract_metadata(tree, url, date_extraction_params)
+            docmeta = extract_metadata(tree, url, date_extraction_params, no_fallback)
             # cut short if extracted URL in blacklist
             if docmeta['url'] in url_blacklist:
                 LOGGER.info('blacklisted URL: %s', url)

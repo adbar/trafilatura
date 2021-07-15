@@ -172,6 +172,13 @@ def test_dates():
     assert metadata['date'] == '2017-09-01'
     metadata = extract_metadata('<html><head><meta property="og:url" content="https://example.org/2017/09/01/content.html"/></head><body></body></html>')
     assert metadata['date'] == '2017-09-01'
+    metadata = extract_metadata('<html><head><meta property="og:url" content="https://example.org/2017/09/01/content.html"/></head><body></body></html>')
+    assert metadata['date'] == '2017-09-01'
+    mystring = '<html><body><p>Veröffentlicht am 1.9.17</p></body></html>'
+    metadata = extract_metadata(mystring, fastmode=False)
+    assert metadata['date'] == '2017-09-01'
+    metadata = extract_metadata(mystring, fastmode=True)
+    assert metadata['date'] is None
 
 
 def test_sitename():

@@ -21,7 +21,8 @@ logging.getLogger('htmldate').setLevel(logging.WARNING)
 
 METADATA_LIST = ['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id', 'license']
 
-HTMLDATE_CONFIG = {'extensive_search': False, 'original_date': True}
+HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
+HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$') # part without dots?
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
@@ -360,7 +361,7 @@ def extract_catstags(metatype, tree):
     return [x for x in results if x is not None]
 
 
-def extract_metadata(filecontent, default_url=None, date_config=None):
+def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False):
     """Main process for metadata extraction.
 
     Args:
@@ -399,7 +400,11 @@ def extract_metadata(filecontent, default_url=None, date_config=None):
         metadata['hostname'] = extract_domain(metadata['url'])
     # extract date with external module htmldate
     if date_config is None:
-        date_config = HTMLDATE_CONFIG
+        # decide on fast mode
+        if fastmode is False:
+            date_config = HTMLDATE_CONFIG_EXTENSIVE
+        else:
+            date_config = HTMLDATE_CONFIG_FAST
     date_config['url'] = metadata['url']
     try:
         metadata['date'] = find_date(tree, **date_config)
