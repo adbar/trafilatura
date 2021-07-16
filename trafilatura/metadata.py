@@ -51,29 +51,28 @@ def normalize_json(inputstring):
     return trim(inputstring)
 
 
-def normalize_authors(authors, author):
-    # fix to code with unicode
-    if '\\u' in author:
-        author = author.encode().decode('unicode_escape')
-    # simple filters for German and English
+def normalize_authors(current_authors, author):
+    new_authors = []
+    if current_authors is not None:
+        new_authors = current_authors.split('; ')
 
-    author = AUTHOR_PREFIX.sub('', author)
-    author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-    author = AUTHOR_REMOVE_SPECIAL.sub('', author)
-    author = AUTHOR_REMOVE_PREPOSITION.sub('', trim(author))
-    author = AUTHOR_SPLIT.split(author)
-
-    if authors is None:
-        authors = []
-    else:
-        authors = authors.split('; ')
-
-    for a in author:
+    authors = AUTHOR_SPLIT.split(author)
+    for a in authors:
         a = trim(a)
-        if a not in authors and not a.lower().startswith('http'):
-            authors.append(a.title())
+        # fix to code with unicode
+        if '\\u' in a:
+            a = a.encode().decode('unicode_escape')
+        # simple filters for German and English
 
-    return '; '.join(authors).strip('; ')
+        a = AUTHOR_PREFIX.sub('', a)
+        a = AUTHOR_REMOVE_NUMBERS.sub('', a)
+        a = AUTHOR_REMOVE_SPECIAL.sub('', a)
+        a = AUTHOR_REMOVE_PREPOSITION.sub('', trim(a))
+
+        if len(a) > 0 and a not in new_authors and not a.lower().startswith('http'):
+            new_authors.append(a.title())
+
+    return '; '.join(new_authors).strip('; ')
 
 
 def extract_json_author(elemtext, regular_expression):
