@@ -32,6 +32,11 @@ JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
+AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b( am| on| for| at| in| to)\b\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 
 METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author'} # twitter:creator
 METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title', 'citation_title'}
@@ -46,33 +51,44 @@ def normalize_json(inputstring):
     return trim(inputstring)
 
 
-def normalize_authors(author):
+def normalize_authors(authors, author):
     # fix to code with unicode
     if '\\u' in author:
         author = author.encode().decode('unicode_escape')
     # simple filters for German and English
-    author = re.sub(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', '', author, flags=re.IGNORECASE)
-    author = re.sub(r'\d.+?$', '', author)
-    author = re.sub(r'[:()?*$#!]', '', author)
-    author = re.sub(r'[^\w]+$|\b( am| on| for)\b\s+(.*)', '', trim(author), flags=re.IGNORECASE)
-    author = re.split(';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', author, flags=re.IGNORECASE)
-    return '; '.join(author).strip('; ').title()
+
+    author = AUTHOR_PREFIX.sub('', author)
+    author = AUTHOR_REMOVE_NUMBERS.sub('', author)
+    author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+    author = AUTHOR_REMOVE_PREPOSITION.sub('', trim(author))
+    author = AUTHOR_SPLIT.split(author)
+
+    if authors is None:
+        authors = []
+    else:
+        authors = authors.split('; ')
+
+    for a in author:
+        a = trim(a)
+        if a not in authors and not a.lower().startswith('http'):
+            authors.append(a.title())
+
+    return '; '.join(authors).strip('; ')
 
 
 def extract_json_author(elemtext, regular_expression):
     '''Crudely extract author names from JSON-LD data'''
-    json_authors = list()
+    authors = ''
     mymatch = regular_expression.search(elemtext)
     while mymatch is not None:
         if mymatch.group(1) and ' ' in mymatch.group(1):
-            json_authors.append(normalize_authors(mymatch.group(1)))
+            authors = normalize_authors(authors, mymatch.group(1))
             elemtext = regular_expression.sub(r'', elemtext, count=1)
             mymatch = regular_expression.search(elemtext)
         else:
             break
-    if json_authors:
-        # prevent unicode strings and final trimming
-        return normalize_json('; '.join(json_authors).strip('; '))
+    if len(authors) > 0:
+        return authors
     return None
 
 
@@ -174,23 +190,13 @@ def examine_meta(tree):
             if elem.get('property') == 'article:tag':
                 tags.append(content_attr)
             elif elem.get('property') in ('author', 'article:author'):
-                authors = normalize_authors(content_attr).split(';')
-                for a in authors:
-                    if author is None:
-                        author = a
-                    elif a not in author and not a.lower().startswith('http'):
-                        author = author + '; ' + a
+                author = normalize_authors(author, content_attr)
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
             # author
             if name_attr in METANAME_AUTHOR:
-                authors = normalize_authors(content_attr).split(';')
-                for a in authors:
-                    if author is None:
-                        author = a
-                    elif a not in author and not a.lower().startswith('http'):
-                        author = author + '; ' + a
+                author = normalize_authors(author, content_attr)
             # title
             elif name_attr in METANAME_TITLE:
                 title = title or content_attr
@@ -211,12 +217,7 @@ def examine_meta(tree):
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
-                authors = normalize_authors(content_attr).split(';')
-                for a in authors:
-                    if author is None:
-                        author = a
-                    elif a not in author and not a.lower().startswith('http'):
-                        author = author + '; ' + a
+                author = normalize_authors(author, content_attr)
             elif elem.get('itemprop') == 'description':
                 description = description or content_attr
             elif elem.get('itemprop') == 'headline':
@@ -293,7 +294,7 @@ def extract_author(tree):
     '''Extract the document author(s)'''
     author = extract_metainfo(tree, author_xpaths, len_limit=75)
     if author:
-        author = normalize_authors(author)
+        author = normalize_authors(None, author)
     return author
 
 
