@@ -31,13 +31,19 @@ JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
 JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
+JSON_MATCH = re.compile(r'"author":|"person":', flags=re.IGNORECASE)
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
+AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b( am| on| for| at| in| to)\b\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 
-METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author'} # twitter:creator
-METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title'}
+METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author'} # twitter:creator
+METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title', 'citation_title'}
 METANAME_DESCRIPTION = {'description', 'dc.description', 'dcterms.description', 'dc:description', 'sailthru.description', 'twitter:description'}
-METANAME_PUBLISHER = {'copyright', 'dc.publisher', 'dcterms.publisher', 'publisher'}
+METANAME_PUBLISHER = {'copyright', 'dc.publisher', 'dcterms.publisher', 'publisher', 'citation_journal_title'}
 
 
 def normalize_json(inputstring):
@@ -47,20 +53,43 @@ def normalize_json(inputstring):
     return trim(inputstring)
 
 
+def normalize_authors(current_authors, author):
+    new_authors = []
+    if current_authors is not None:
+        new_authors = current_authors.split('; ')
+
+    authors = AUTHOR_SPLIT.split(author)
+    for a in authors:
+        a = trim(a)
+        # fix to code with unicode
+        if '\\u' in a:
+            a = a.encode().decode('unicode_escape')
+        # simple filters for German and English
+
+        a = AUTHOR_PREFIX.sub('', a)
+        a = AUTHOR_REMOVE_NUMBERS.sub('', a)
+        a = AUTHOR_REMOVE_SPECIAL.sub('', a)
+        a = AUTHOR_REMOVE_PREPOSITION.sub('', trim(a))
+
+        if len(a) > 0 and a not in new_authors and not a.lower().startswith('http'):
+            new_authors.append(a.title())
+
+    return '; '.join(new_authors).strip('; ')
+
+
 def extract_json_author(elemtext, regular_expression):
     '''Crudely extract author names from JSON-LD data'''
-    json_authors = list()
+    authors = ''
     mymatch = regular_expression.search(elemtext)
     while mymatch is not None:
         if mymatch.group(1) and ' ' in mymatch.group(1):
-            json_authors.append(trim(mymatch.group(1)))
+            authors = normalize_authors(authors, mymatch.group(1))
             elemtext = regular_expression.sub(r'', elemtext, count=1)
             mymatch = regular_expression.search(elemtext)
         else:
             break
-    if json_authors:
-        # prevent unicode strings and final trimming
-        return normalize_json('; '.join(json_authors).strip('; '))
+    if len(authors) > 0:
+        return authors
     return None
 
 
@@ -70,7 +99,7 @@ def extract_json(tree, metadata):
         if not elem.text:
             continue
         # author info
-        if '"author":' in elem.text:
+        if any(JSON_MATCH.findall(elem.text)):
             metadata['author'] = extract_json_author(elem.text, JSON_AUTHOR_1)
             if metadata['author'] is None:
                 metadata['author'] = extract_json_author(elem.text, JSON_AUTHOR_2)
@@ -162,19 +191,13 @@ def examine_meta(tree):
             if elem.get('property') == 'article:tag':
                 tags.append(content_attr)
             elif elem.get('property') in ('author', 'article:author'):
-                if author is None:
-                    author = content_attr
-                elif author not in content_attr and not content_attr.startswith('http'):
-                    author = author + '; ' + content_attr
+                author = normalize_authors(author, content_attr)
         # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
             # author
             if name_attr in METANAME_AUTHOR:
-                if author is None:
-                    author = content_attr
-                elif author not in content_attr and not content_attr.startswith('http'):
-                    author = author + '; ' + content_attr
+                author = normalize_authors(author, content_attr)
             # title
             elif name_attr in METANAME_TITLE:
                 title = title or content_attr
@@ -195,10 +218,7 @@ def examine_meta(tree):
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
-                if author is None:
-                    author = content_attr
-                elif author not in content_attr and not content_attr.startswith('http'):
-                    author = author + '; ' + content_attr
+                author = normalize_authors(author, content_attr)
             elif elem.get('itemprop') == 'description':
                 description = description or content_attr
             elif elem.get('itemprop') == 'headline':
@@ -226,10 +246,10 @@ def extract_metainfo(tree, expressions, len_limit=200):
         # examine all results
         i = 0
         for elem in tree.xpath(expression):
-            content = elem.text_content()
+            content = trim(elem.text_content())
             if content and len(content) < len_limit:
                 #LOGGER.debug('metadata found in: %s', expression)
-                return trim(content)
+                return content
             i += 1
         if i > 1:
             LOGGER.debug('more than one invalid result: %s %s', expression, i)
@@ -275,11 +295,7 @@ def extract_author(tree):
     '''Extract the document author(s)'''
     author = extract_metainfo(tree, author_xpaths, len_limit=75)
     if author:
-        # simple filters for German and English
-        author = re.sub(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', '', author, flags=re.IGNORECASE)
-        author = re.sub(r'\d.+?$', '', author)
-        author = re.sub(r'[^\w]+$|\b( [A|a]m| [O|o]n| [F|f]or)\b\s+(.*)', '', trim(author))
-        author = author.title()
+        author = normalize_authors(None, author)
     return author
 
 
