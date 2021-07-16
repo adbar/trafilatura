@@ -54,26 +54,31 @@ def normalize_json(inputstring):
 
 
 def normalize_authors(current_authors, author):
+    '''Normalize author info to focus on author names only'''
     new_authors = []
     if current_authors is not None:
         new_authors = current_authors.split('; ')
-
-    authors = AUTHOR_SPLIT.split(author)
-    for a in authors:
-        a = trim(a)
+    # examine names
+    for author in AUTHOR_SPLIT.split(author):
+        author = trim(author)
         # fix to code with unicode
-        if '\\u' in a:
-            a = a.encode().decode('unicode_escape')
+        if '\\u' in author:
+            author = author.encode().decode('unicode_escape')
         # simple filters for German and English
-
-        a = AUTHOR_PREFIX.sub('', a)
-        a = AUTHOR_REMOVE_NUMBERS.sub('', a)
-        a = AUTHOR_REMOVE_SPECIAL.sub('', a)
-        a = AUTHOR_REMOVE_PREPOSITION.sub('', trim(a))
-
-        if len(a) > 0 and a not in new_authors and not a.lower().startswith('http'):
-            new_authors.append(a.title())
-
+        author = AUTHOR_PREFIX.sub('', author)
+        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
+        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+        # why trim here and not before/after?
+        author = AUTHOR_REMOVE_PREPOSITION.sub('', trim(author))
+        # skip empty strings
+        if len(author) == 0:
+            continue
+        # title case
+        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
+            author = author.title()
+        # safety checks
+        if author not in new_authors and not author.lower().startswith('http'):
+            new_authors.append(author)
     return '; '.join(new_authors).strip('; ')
 
 

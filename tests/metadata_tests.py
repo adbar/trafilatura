@@ -15,7 +15,7 @@ except ImportError:
 
 from lxml import html
 
-from trafilatura.metadata import extract_metadata, extract_json, METADATA_LIST
+from trafilatura.metadata import extract_metadata, extract_json, normalize_authors, METADATA_LIST
 
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -119,6 +119,11 @@ def test_titles():
 
 def test_authors():
     '''Test the extraction of author names'''
+    # normalization
+    assert normalize_authors(None, 'abc') == 'Abc'
+    assert normalize_authors(None, 'Steve Steve 123') == 'Steve Steve'
+    assert normalize_authors(None, 'By Steve Steve') == 'Steve Steve'
+    # extraction
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/><meta itemprop="author" content="John Smith"/></head><body></body></html>')
