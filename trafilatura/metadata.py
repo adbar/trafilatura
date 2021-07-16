@@ -246,8 +246,8 @@ def extract_metainfo(tree, expressions, len_limit=200):
         # examine all results
         i = 0
         for elem in tree.xpath(expression):
-            content = trim(elem.text_content())
-            if content and len(content) < len_limit:
+            content = trim(' '.join(elem.itertext()))
+            if content and 2 < len(content) < len_limit:
                 #LOGGER.debug('metadata found in: %s', expression)
                 return content
             i += 1
