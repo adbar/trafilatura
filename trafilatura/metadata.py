@@ -28,6 +28,7 @@ HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$') # part without dots?
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_REMOVE = re.compile(r'(?:"\w+":?[:|,|\[])?{"@type":"(?:[Ii]mageObject|[Oo]rganization)",[^}[]+}[\]|}]?')
+JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
@@ -104,15 +105,16 @@ def extract_json(tree, metadata):
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
+        element_text = JSON_MINIFY.sub(r'\1', elem.text)
         # author info
-        if any(JSON_MATCH.findall(elem.text)):
-            element_text = JSON_AUTHOR_REMOVE.sub('', elem.text)
-            metadata['author'] = extract_json_author(element_text, JSON_AUTHOR_1)
+        if any(JSON_MATCH.findall(element_text)):
+            element_text_author = JSON_AUTHOR_REMOVE.sub('', element_text)
+            metadata['author'] = extract_json_author(element_text_author, JSON_AUTHOR_1)
             if metadata['author'] is None:
-                metadata['author'] = extract_json_author(element_text, JSON_AUTHOR_2)
+                metadata['author'] = extract_json_author(element_text_author, JSON_AUTHOR_2)
         # try to extract publisher
-        if '"publisher"' in elem.text:
-            mymatch = JSON_PUBLISHER.search(elem.text)
+        if '"publisher"' in element_text:
+            mymatch = JSON_PUBLISHER.search(element_text)
             if mymatch and not ',' in mymatch.group(1):
                 candidate = normalize_json(mymatch.group(1))
                 if metadata['sitename'] is None or len(metadata['sitename']) < len(candidate):
@@ -120,17 +122,17 @@ def extract_json(tree, metadata):
                 if metadata['sitename'].startswith('http') and not candidate.startswith('http'):
                     metadata['sitename'] = candidate
         # category
-        if '"articleSection"' in elem.text:
-            mymatch = JSON_CATEGORY.search(elem.text)
+        if '"articleSection"' in element_text:
+            mymatch = JSON_CATEGORY.search(element_text)
             if mymatch:
                 metadata['categories'] = [normalize_json(mymatch.group(1))]
         # try to extract title
-        if '"name"' in elem.text and metadata['title'] is None:
-            mymatch = JSON_NAME.search(elem.text)
+        if '"name"' in element_text and metadata['title'] is None:
+            mymatch = JSON_NAME.search(element_text)
             if mymatch:
                 metadata['title'] = normalize_json(mymatch.group(1))
-        if '"headline"' in elem.text and metadata['title'] is None:
-            mymatch = JSON_HEADLINE.search(elem.text)
+        if '"headline"' in element_text and metadata['title'] is None:
+            mymatch = JSON_HEADLINE.search(element_text)
             if mymatch:
                 metadata['title'] = normalize_json(mymatch.group(1))
         # exit if found
@@ -246,7 +248,7 @@ def examine_meta(tree):
     return metadata
 
 
-def extract_metainfo(tree, expressions, len_limit=200):
+def extract_metainfo(tree, expressions, len_limit=200, with_normalize_authors=False):
     '''Extract meta information'''
     # try all XPath expressions
     for expression in expressions:
@@ -254,6 +256,8 @@ def extract_metainfo(tree, expressions, len_limit=200):
         i = 0
         for elem in tree.xpath(expression):
             content = trim(' '.join(elem.itertext()))
+            if with_normalize_authors is True:
+                content = normalize_authors(None, content)
             if content and 2 < len(content) < len_limit:
                 #LOGGER.debug('metadata found in: %s', expression)
                 return content
@@ -300,10 +304,7 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    author = extract_metainfo(tree, author_xpaths, len_limit=75)
-    if author:
-        author = normalize_authors(None, author)
-    return author
+    return extract_metainfo(tree, author_xpaths, len_limit=75, with_normalize_authors=True)
 
 
 def extract_url(tree, default_url=None):
