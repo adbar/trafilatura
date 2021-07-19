@@ -315,6 +315,7 @@ def extract_author(tree):
         author = normalize_authors(None, author)
     return author
 
+
 def extract_url(tree, default_url=None):
     '''Extract the URL from the canonical link'''
     # https://www.tutorialrepublic.com/html-reference/html-base-tag.php
