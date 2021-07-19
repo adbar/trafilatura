@@ -38,7 +38,7 @@ URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
-AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~.]')
 AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b( am| on| for| at| in| to)\b\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 
@@ -67,9 +67,9 @@ def normalize_authors(current_authors, author):
         if '\\u' in author:
             author = author.encode().decode('unicode_escape')
         # simple filters for German and English
+        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
         author = AUTHOR_PREFIX.sub('', author)
         author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
         # why trim here and not before/after?
         author = AUTHOR_REMOVE_PREPOSITION.sub('', trim(author))
         # skip empty strings
@@ -248,7 +248,7 @@ def examine_meta(tree):
     return metadata
 
 
-def extract_metainfo(tree, expressions, len_limit=200, with_normalize_authors=False):
+def extract_metainfo(tree, expressions, len_limit=200):
     '''Extract meta information'''
     # try all XPath expressions
     for expression in expressions:
@@ -256,8 +256,6 @@ def extract_metainfo(tree, expressions, len_limit=200, with_normalize_authors=Fa
         i = 0
         for elem in tree.xpath(expression):
             content = trim(' '.join(elem.itertext()))
-            if with_normalize_authors is True:
-                content = normalize_authors(None, content)
             if content and 2 < len(content) < len_limit:
                 #LOGGER.debug('metadata found in: %s', expression)
                 return content
@@ -304,8 +302,10 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    return extract_metainfo(tree, author_xpaths, len_limit=75, with_normalize_authors=True)
-
+    author = extract_metainfo(tree, author_xpaths, len_limit=75)
+    if author:
+        author = normalize_authors(None, author)
+    return author
 
 def extract_url(tree, default_url=None):
     '''Extract the URL from the canonical link'''
