@@ -153,8 +153,14 @@ def test_authors():
     assert metadata['author'] == 'Jenny Smith; John Smith'
     metadata = extract_metadata('<html><body><a class="author">Jenny Smith</a></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><a class="username">Jenny Smith</a></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><div class="submitted-by"><a>Jenny Smith</a></div></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author">Jenny Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><span itemprop="author name">Shannon Deery, Mitch Clarke, Susie O’Brien, Laura Placella, Kara Irving, Jordy Atkinson, Suzan Delibasic</span></body></html>')
+    assert metadata['author'] == 'Shannon Deery; Mitch Clarke; Susie O’Brien; Laura Placella; Kara Irving; Jordy Atkinson; Suzan Delibasic'
     metadata = extract_metadata('<html><body><address class="author">Jenny Smith</address></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><author>Jenny Smith</author></body></html>')
@@ -162,7 +168,7 @@ def test_authors():
     metadata = extract_metadata('<html><body><p class="author-section byline-plain">By <a class="author" rel="nofollow">Jenny Smith For Daily Mail Australia</a></p></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><div class="o-Attribution__a-Author"><span class="o-Attribution__a-Author--Label">By:</span><span class="o-Attribution__a-Author--Prefix"><span class="o-Attribution__a-Name"><a href="//web.archive.org/web/20210707074846/https://www.discovery.com/profiles/ian-shive">Ian Shive</a></span></span></div></body></html>')
-    assert metadata['author'] == 'By Ian Shive' # problem here: By has to be removed
+    assert metadata['author'] == 'Ian Shive'
     metadata = extract_metadata('<html><body><div class="ArticlePage-authors"><div class="ArticlePage-authorName" itemprop="name"><span class="ArticlePage-authorBy">By&nbsp;</span><a aria-label="Ben Coxworth" href="https://newatlas.com/author/ben-coxworth/"><span>Ben Coxworth</span></a></div></div></body></html>')
     assert metadata['author'] == 'Ben Coxworth'
     
