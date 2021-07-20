@@ -275,11 +275,12 @@ def extract_metainfo(tree, expressions, len_limit=200):
 
 def extract_title(tree):
     '''Extract the document title'''
-    title = None
     # only one h1-element: take it
     h1_results = tree.xpath('//h1')
     if len(h1_results) == 1:
-        return h1_results[0].text_content()
+        title = trim(h1_results[0].text_content())
+        if len(title) > 0:
+            return title
     # extract using x-paths
     title = extract_metainfo(tree, title_xpaths)
     if title is not None:

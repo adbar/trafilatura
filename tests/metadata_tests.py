@@ -106,6 +106,8 @@ def test_titles():
     assert metadata['title'] == 'Test Title'
     metadata = extract_metadata('<html><body><h1>First</h1><h1>Second</h1></body></html>')
     assert metadata['title'] == 'First'
+    metadata = extract_metadata('<html><body><h1>   </h1><div class="post-title">Test Title</div></body></html>')
+    assert metadata['title'] == 'Test Title'
     metadata = extract_metadata('<html><body><h2>First</h2><h1>Second</h1></body></html>')
     assert metadata['title'] == 'Second'
     metadata = extract_metadata('<html><body><h2>First</h2><h2>Second</h2></body></html>')
