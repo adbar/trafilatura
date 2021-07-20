@@ -162,6 +162,10 @@ def test_authors():
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><div class="submitted-by"><a>Jenny Smith</a></div></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><h3 itemprop="author">Jenny Smith</h3></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><div data-component="Byline">Jenny Smith</div></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author">Jenny Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span itemprop="author name">Shannon Deery, Mitch Clarke, Susie O’Brien, Laura Placella, Kara Irving, Jordy Atkinson, Suzan Delibasic</span></body></html>')
