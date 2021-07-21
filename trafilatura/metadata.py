@@ -39,6 +39,7 @@ HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
+AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
 AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
 AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from)\b\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
@@ -71,16 +72,16 @@ def normalize_authors(current_authors, author):
         # fix to code with unicode
         if '\\u' in author:
             author = author.encode().decode('unicode_escape')
-        # remove emoji from author names
         author = AUTHOR_EMOJI_REMOVE.sub('', author)
-        # simple filters for German and English
+        # remove @username
+        author = AUTHOR_TWITTER.sub('', author)
+        # remove special characters
         author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+        # replace special characters with space
+        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
         author = AUTHOR_PREFIX.sub('', author)
         author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        # remove username that start with @
-        author = AUTHOR_TWITTER.sub('', author)
-        # why trim here and not before/after?
-        author = AUTHOR_REMOVE_PREPOSITION.sub('', trim(author))
+        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
         # skip empty strings
         if len(author) == 0:
             continue
