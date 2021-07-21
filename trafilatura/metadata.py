@@ -39,7 +39,7 @@ HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
-AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b( am| on| for| at| in| to| from)\b\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from)\b\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile("["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
                           u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
@@ -287,7 +287,7 @@ def extract_title(tree):
         return title
     # extract using title tag
     try:
-        title = tree.xpath('//head/title')[0].text_content()
+        title = trim(tree.xpath('//head/title')[0].text_content())
         # refine
         mymatch = HTMLTITLE_REGEX.match(title)
         if mymatch:
