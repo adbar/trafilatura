@@ -176,6 +176,8 @@ def test_authors():
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><author>Jenny Smith</author></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><div class="author"><span class="profile__name"> Jenny Smith </span> <a href="https://twitter.com/jenny_smith" class="profile__social" target="_blank"> @jenny_smith </a> <span class="profile__extra lg:hidden"> 11:57AM </span> </div></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><p class="author-section byline-plain">By <a class="author" rel="nofollow">Jenny Smith For Daily Mail Australia</a></p></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><div class="o-Attribution__a-Author"><span class="o-Attribution__a-Author--Label">By:</span><span class="o-Attribution__a-Author--Prefix"><span class="o-Attribution__a-Name"><a href="//web.archive.org/web/20210707074846/https://www.discovery.com/profiles/ian-shive">Ian Shive</a></span></span></div></body></html>')

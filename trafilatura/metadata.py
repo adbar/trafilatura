@@ -38,6 +38,7 @@ URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
+AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
 AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from)\b\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
@@ -76,6 +77,8 @@ def normalize_authors(current_authors, author):
         author = AUTHOR_REMOVE_SPECIAL.sub('', author)
         author = AUTHOR_PREFIX.sub('', author)
         author = AUTHOR_REMOVE_NUMBERS.sub('', author)
+        # remove username that start with @
+        author = AUTHOR_TWITTER.sub('', author)
         # why trim here and not before/after?
         author = AUTHOR_REMOVE_PREPOSITION.sub('', trim(author))
         # skip empty strings
