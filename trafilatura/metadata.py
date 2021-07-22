@@ -27,6 +27,8 @@ HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$') # part without dots?
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
+JSON_AUTHOR_REMOVE = re.compile(r'(?:"\w+":?[:|,|\[])?{"@type":"(?:[Ii]mageObject|[Oo]rganization)",[^}[]+}[\]|}]?')
+JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
 JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
 JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
@@ -36,9 +38,15 @@ URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
+AUTHOR_TWITTER = re.compile(r'@[\w]+')
+AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
 AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
-AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b( am| on| for| at| in| to)\b\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from|of|via|with)\b\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
+AUTHOR_EMOJI_REMOVE = re.compile("["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
+                          u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
+                          u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d" 
+                          u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
 
 METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author'} # twitter:creator
 METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title', 'citation_title'}
@@ -64,12 +72,16 @@ def normalize_authors(current_authors, author):
         # fix to code with unicode
         if '\\u' in author:
             author = author.encode().decode('unicode_escape')
-        # simple filters for German and English
+        author = AUTHOR_EMOJI_REMOVE.sub('', author)
+        # remove @username
+        author = AUTHOR_TWITTER.sub('', author)
+        # remove special characters
+        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+        # replace special characters with space
+        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
         author = AUTHOR_PREFIX.sub('', author)
         author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
-        # why trim here and not before/after?
-        author = AUTHOR_REMOVE_PREPOSITION.sub('', trim(author))
+        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
         # skip empty strings
         if len(author) == 0:
             continue
@@ -103,14 +115,18 @@ def extract_json(tree, metadata):
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
+        element_text = JSON_MINIFY.sub(r'\1', elem.text)
         # author info
-        if any(JSON_MATCH.findall(elem.text)):
-            metadata['author'] = extract_json_author(elem.text, JSON_AUTHOR_1)
-            if metadata['author'] is None:
-                metadata['author'] = extract_json_author(elem.text, JSON_AUTHOR_2)
+        element_text_author = JSON_AUTHOR_REMOVE.sub('', element_text)
+        if any(JSON_MATCH.findall(element_text_author)):
+            author = extract_json_author(element_text_author, JSON_AUTHOR_1)
+            if author is None:
+                author = extract_json_author(element_text_author, JSON_AUTHOR_2)
+            if author is not None:
+                metadata['author'] = author
         # try to extract publisher
-        if '"publisher"' in elem.text:
-            mymatch = JSON_PUBLISHER.search(elem.text)
+        if '"publisher"' in element_text:
+            mymatch = JSON_PUBLISHER.search(element_text)
             if mymatch and not ',' in mymatch.group(1):
                 candidate = normalize_json(mymatch.group(1))
                 if metadata['sitename'] is None or len(metadata['sitename']) < len(candidate):
@@ -118,17 +134,17 @@ def extract_json(tree, metadata):
                 if metadata['sitename'].startswith('http') and not candidate.startswith('http'):
                     metadata['sitename'] = candidate
         # category
-        if '"articleSection"' in elem.text:
-            mymatch = JSON_CATEGORY.search(elem.text)
+        if '"articleSection"' in element_text:
+            mymatch = JSON_CATEGORY.search(element_text)
             if mymatch:
                 metadata['categories'] = [normalize_json(mymatch.group(1))]
         # try to extract title
-        if '"name"' in elem.text and metadata['title'] is None:
-            mymatch = JSON_NAME.search(elem.text)
+        if '"name"' in element_text and metadata['title'] is None:
+            mymatch = JSON_NAME.search(element_text)
             if mymatch:
                 metadata['title'] = normalize_json(mymatch.group(1))
-        if '"headline"' in elem.text and metadata['title'] is None:
-            mymatch = JSON_HEADLINE.search(elem.text)
+        if '"headline"' in element_text and metadata['title'] is None:
+            mymatch = JSON_HEADLINE.search(element_text)
             if mymatch:
                 metadata['title'] = normalize_json(mymatch.group(1))
         # exit if found
@@ -263,18 +279,19 @@ def extract_metainfo(tree, expressions, len_limit=200):
 
 def extract_title(tree):
     '''Extract the document title'''
-    title = None
     # only one h1-element: take it
     h1_results = tree.xpath('//h1')
     if len(h1_results) == 1:
-        return h1_results[0].text_content()
+        title = trim(h1_results[0].text_content())
+        if len(title) > 0:
+            return title
     # extract using x-paths
     title = extract_metainfo(tree, title_xpaths)
     if title is not None:
         return title
     # extract using title tag
     try:
-        title = tree.xpath('//head/title')[0].text_content()
+        title = trim(tree.xpath('//head/title')[0].text_content())
         # refine
         mymatch = HTMLTITLE_REGEX.match(title)
         if mymatch:
@@ -298,7 +315,7 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    author = extract_metainfo(tree, author_xpaths, len_limit=75)
+    author = extract_metainfo(tree, author_xpaths, len_limit=120)
     if author:
         author = normalize_authors(None, author)
     return author

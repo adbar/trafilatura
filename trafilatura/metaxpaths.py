@@ -8,10 +8,12 @@ File containing XPath expressions to extract metadata.
 
 # the order or depth of XPaths could be changed after exhaustive testing
 author_xpaths = [
-    '//*[(self::a or self::address or self::link or self::p or self::span)][@rel="author" or @id="author" or @class="author" or @itemprop="author name" or rel="me"]|//author',
-    '//*[(self::a or self::div or self::span)][contains(@class, "authors") or contains(@class, "authorName") or contains(@class, "author name") or contains(@class, "author") or contains(@class, "posted-by") or contains(@itemprop, "author")]',
-    '//*[(self::a or self::div or self::p or self::span)][contains(@class, "byline") or contains(@id, "author")]',
-    '//*[contains(@class, "author") or contains(@class, "Author") or contains(@class, "screenname")]',
+    '//*[(self::a or self::address or self::link or self::p or self::span)][@rel="author" or @id="author" or @class="author" or @itemprop="author name" or rel="me"]|//author', # specific
+    '//*[(self::a or self::div or self::span or self::p)][contains(@class, "author-name") or contains(@class, "authorName") or contains(@class, "author name")]', # almost specific
+    '//*[(self::a or self::div or self::span or self::p)][contains(@class, "author") or contains(@id, "author") or contains(@itemprop, "author") or @class="byline"]', # almost generic
+    '//*[(self::a or self::div or self::span or self::p)][contains(@class, "authors") or contains(@class, "byline") or contains(@class, "submitted-by") or contains(@class, "posted-by")]', # generic
+    '//*[contains(@class, "author") or contains(@class, "Author") or contains(@id, "Author") or contains(@class, "screenname") or contains(@data-component, "Byline") or contains(@itemprop, "author") or contains(@class, "writer")]', # any element
+    '//*[(self::a or self::span)][@class="username" or @class="BBL"]', # not common
 ]
 
 
