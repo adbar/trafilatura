@@ -136,6 +136,8 @@ Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/t
 Roadmap
 ~~~~~~~
 
+For a comprehensive list see `issues page <https://github.com/adbar/trafilatura/issues>`_.
+
 -  [-] Duplicate detection at sentence, paragraph and document level using a least recently used (LRU) cache
 -  [-] URL lists and document management
 -  [-] Configuration and extraction parameters
@@ -147,9 +149,9 @@ Roadmap
 Contributing
 ~~~~~~~~~~~~
 
-`Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome!
+`Contributions <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ are welcome! Please also feel free to file issues on the `dedicated page <https://github.com/adbar/trafilatura/issues>`_.
 
-Feel free to file issues on the `dedicated page <https://github.com/adbar/trafilatura/issues>`_. Thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
+Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
 
 
 Author
@@ -160,6 +162,7 @@ This effort is part of methods to derive information from web documents in order
 .. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.3460969.svg
    :target: https://doi.org/10.5281/zenodo.3460969
 
+- Barbaresi, A. *Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction*, Proceedings of the Annual Meeting of the ACL, System Demonstrations, 2021, to appear.
 -  Barbaresi, A. "`Generic Web Content Extraction with Open-Source Software <https://hal.archives-ouvertes.fr/hal-02447264/document>`_", Proceedings of KONVENS 2019, Kaleidoscope Abstracts, 2019.
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
