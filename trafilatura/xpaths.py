@@ -11,6 +11,7 @@ BODY_XPATH = [
     contains(@id, "content-body") or contains(@class, "content-body") or
     contains(@class, "story-body") or
     @id="article" or @class="post" or @class="entry"]''',
+    # contains(@class, "main-content") or
     '''.//*[(self::article or self::div or self::main or self::section)][
     contains(@class, "post-text") or contains(@class, "post_text") or
     contains(@class, "post-body") or contains(@class, "post-entry") or contains(@class, "postentry") or
@@ -125,7 +126,9 @@ DISCARD_XPATH = [
     contains(@class, "-ad-") or contains(@class, "-icon")
     or contains(@class, "article-infos") or
     contains(translate(@class, "I","i"), "infoline")
-    or contains(@class, "options")]''',
+    or contains(@class, "options")
+    or contains(@class, "consent") or contains(@class, "modal-content")
+    or contains(@class, "paid-content") or contains(@class, "paidcontent")]''',
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
