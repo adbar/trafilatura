@@ -12,9 +12,10 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
-                        add_to_compressed_dict, cli_crawler,
+                        cli_crawler,
                         file_processing_pipeline, url_processing_pipeline,
                         examine, write_result)
+from .downloads import add_to_compressed_dict
 from .feeds import find_feed_urls
 from .settings import DOWNLOAD_THREADS
 from .sitemaps import sitemap_search
@@ -91,6 +92,9 @@ def parse_args(args):
                         nargs='?', const=True, default=False)
     group3_ex.add_argument("--crawl",
                         help="crawl a fixed number of pages within a website starting from the given URL",
+                        nargs='?', const=True, default=False)
+    group3_ex.add_argument("--explore",
+                        help="explore the given websites (combination of sitemap and crawl)",
                         nargs='?', const=True, default=False)
     group3.add_argument('--archived',
                         help='try to fetch URLs from the Internet Archive if downloads fail',
@@ -195,7 +199,7 @@ def process_args(args):
         args.blacklist = load_blacklist(args.blacklist)
     # processing according to mutually exclusive options
     # read url list from input file
-    if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False]):
+    if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
         inputdict = load_input_dict(args)
         url_processing_pipeline(args, inputdict)
     # fetch urls from a feed or a sitemap
@@ -217,6 +221,27 @@ def process_args(args):
     # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
+    # activate site explorer
+    elif args.explore:
+        input_urls = load_input_urls(args)
+        inputdict = None
+        # link discovery and storage
+        with ThreadPoolExecutor(max_workers=args.parallel) as executor:
+            future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
+            # process results one-by-one, i.e. in parallel
+            for future in as_completed(future_to_url):
+                if future.result() is not None:
+                    inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=inputdict)
+        # process the links found
+        url_processing_pipeline(args, inputdict)
+        # find domains for which nothing has been found and crawl
+        control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
+        still_to_crawl = dict()
+        for key in control_dict:
+            if key not in inputdict:
+                still_to_crawl[key] = control_dict[key]
+        # add to compressed dict and crawl the remaining websites
+        cli_crawler(args, n=100, domain_dict=still_to_crawl)
     # read files from an input directory
     elif args.inputdir:
         file_processing_pipeline(args)

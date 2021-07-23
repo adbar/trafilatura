@@ -280,6 +280,14 @@ def test_cli_pipeline():
         cli_utils.cli_crawler(args)
     print(f.getvalue())
     assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
+    # Exploration (Sitemap + Crawl)
+    testargs = ['', '--explore', 'https://httpbin.org/html']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli.process_args(args)
+    assert len(f.getvalue()) == 0
 
 
 def test_input_filtering():

@@ -56,6 +56,8 @@ def load_input_urls(args):
             sys.exit('ERROR: system, file type or buffer encoding')
     elif args.crawl:
         input_urls = [args.crawl]
+    elif args.explore:
+        input_urls = [args.explore]
     elif args.feed:
         input_urls = [args.feed]
     elif args.sitemap:
@@ -223,14 +225,15 @@ def download_queue_processing(domain_dict, args, counter, config):
     return errors, counter
 
 
-def cli_crawler(args, n=30):
+def cli_crawler(args, n=30, domain_dict=None):
     '''Start a focused crawler which downloads a fixed number of URLs within a website
        and prints the links found in the process'''
     config = use_config(filename=args.config_file)
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
     counter, crawlinfo, backoff_dict = None, dict(), dict()
     # load input URLs
-    domain_dict = load_input_dict(args)
+    if domain_dict is None:
+        domain_dict = load_input_dict(args)
     # load crawl data
     for website in domain_dict:
         homepage = website + domain_dict[website].popleft()
