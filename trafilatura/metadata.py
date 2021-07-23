@@ -64,7 +64,7 @@ def normalize_json(inputstring):
 def normalize_authors(current_authors, author):
     '''Normalize author info to focus on author names only'''
     new_authors = []
-    if author.startswith('http'):
+    if author.lower().startswith('http'):
         return current_authors
     if current_authors is not None:
         new_authors = current_authors.split('; ')
@@ -91,7 +91,7 @@ def normalize_authors(current_authors, author):
         if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
             author = author.title()
         # safety checks
-        if author not in new_authors and not author.lower().startswith('http'):
+        if author not in new_authors:
             new_authors.append(author)
     return '; '.join(new_authors).strip('; ')
 
