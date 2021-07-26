@@ -6,8 +6,6 @@ import logging
 import re
 import json
 
-from html import unescape
-
 from courlan.clean import normalize_url
 from courlan.core import extract_domain
 from courlan.filters import validate_url
@@ -16,7 +14,7 @@ from lxml import html
 
 from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
-from .utils import line_processing, load_html, trim
+from .utils import line_processing, load_html, normalize_authors, trim
 
 
 LOGGER = logging.getLogger(__name__)
