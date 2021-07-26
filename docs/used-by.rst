@@ -29,17 +29,19 @@ Citations in papers
 
 To reference this software in a publication please cite the following paper:
 
-- Barbaresi, A. (2021). *Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction*, Proceedings of the Annual Meeting of the ACL, System Demonstrations, to appear.
+- Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, in *Proceedings of ACL/IJCNLP 2021: System Demonstrations*, 2021, p. 122-131.
 
 
 .. code-block:: shell
 
-    @inproceedings{Barbaresi:2021,
+    @inproceedings{barbaresi-2021-trafilatura,
       title = {{Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction}},
-      author = {Barbaresi, Adrien},
-      booktitle = {{Proceedings of the Annual Meeting of the ACL, System Demonstrations}},
+      author = "Barbaresi, Adrien",
+      booktitle = "Proceedings of the Joint Conference of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing: System Demonstrations",
+      pages = "122--131",
+      publisher = "Association for Computational Linguistics",
+      url = "https://aclanthology.org/2021.acl-demo.15",
       year = 2021,
-      note = {to appear}
     }
 
 
