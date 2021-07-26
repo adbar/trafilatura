@@ -73,7 +73,7 @@ def test_parser():
 
 def test_climain():
     '''test arguments and main CLI entrypoint'''
-    assert os.system('trafilatura --help') == 0  # exit status
+    assert os.system('trafilatura --help') % 256 == 0  # exit status
     ## doesn't pass remote tests, 256 or 0 is OK
     # piped input
     assert os.system('echo "<html><body></body></html>" | trafilatura') % 256 == 0

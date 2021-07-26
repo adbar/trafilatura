@@ -173,7 +173,7 @@ def init_crawl(homepage, todo, known_links, language=None, shortform=False, conf
         try:
             rules.read()
         except Exception as exc:
-            LOGGER.error('cannot read robots.txt for %', homepage)
+            LOGGER.error('cannot read robots.txt')
             rules = None
     # initialize crawl by visiting homepage if necessary
     if todo is None:
