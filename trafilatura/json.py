@@ -5,10 +5,10 @@ Module bundling all functions needed to scrape metadata from json.
 import re
 
 import trafilatura.metadata
-from trafilatura.utils import trim
+from trafilatura.utils import trim, is_domain
 
 JSON_ARTICLE_SCHEMA = ["ReportageNewsArticle", "NewsArticle", "BlogPosting", "SocialMediaPosting", "MedicalScholarlyArticle", "BackgroundNewsArticle", "ScholarlyArticle", "Article", "OpinionNewsArticle"]
-JSON_PUBLISHER_SCHEMA = ["Organization", "WebPage", "Website"]
+JSON_PUBLISHER_SCHEMA = ["Organization", "WebPage", "Website", "NewsMediaOrganization"]
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_REMOVE = re.compile(r',?(?:"\w+":?[:|,|\[])?{?"@type":"(?:[Ii]mageObject|[Oo]rganization|[Ww]eb[Pp]age)",[^}[]+}[\]|}]?')
@@ -40,17 +40,17 @@ def extract_json(schema, metadata):
                 if 'name' in content['publisher']:
                     metadata['sitename'] = content['publisher']['name']
 
-            if metadata['sitename'] is None and content["@type"] in JSON_PUBLISHER_SCHEMA:
-                for canditate in ("name", "alternateName"):
-                    if canditate in content:
-                        if len(metadata['sitename']) < len(content[canditate]) and content["@type"] != "WebPage":
-                            metadata['sitename'] = content[canditate]
-                        if metadata['sitename'].startswith('http') and not content[canditate].startswith(
-                                'http'):
-                            metadata['sitename'] = content[canditate]
+            if content["@type"] in JSON_PUBLISHER_SCHEMA:
+                for candidate in ("name", "alternateName"):
+                    if candidate in content:
+                        if content[candidate] is not None:
+                            if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content["@type"] != "WebPage"):
+                                metadata['sitename'] = content[candidate]
+                            if metadata['sitename'] is None and is_domain(metadata['sitename']) is True and is_domain(content[candidate]) is False:
+                                metadata['sitename'] = content[candidate]
 
             if content["@type"] == "Person":
-                if 'name' in content and not content['name'].startswith('http'):
+                if 'name' in content and is_domain(content['name']) is False:
                     metadata['author'] = trafilatura.metadata.normalize_authors(metadata['author'], content['name'])
 
             if content["@type"] in JSON_ARTICLE_SCHEMA:
@@ -60,7 +60,7 @@ def extract_json(schema, metadata):
                         content['author'] = [content['author']]
                     for author in content['author']:
                         if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
-                            if 'name' in author and not author['name'].startswith('http'):
+                            if 'name' in author and is_domain(author['name']) is False:
                                 metadata['author'] = trafilatura.metadata.normalize_authors(metadata['author'], author['name'])
                             elif 'givenName' in author is not None and 'familyName' in author:
                                 name = [author['givenName'], author['additionalName'], author['familyName']]
@@ -115,7 +115,7 @@ def extract_json_parse_error(elem, metadata):
             candidate = normalize_json(mymatch.group(1))
             if metadata['sitename'] is None or len(metadata['sitename']) < len(candidate):
                 metadata['sitename'] = candidate
-            if metadata['sitename'].startswith('http') and not candidate.startswith('http'):
+            if is_domain(metadata['sitename']) is True and is_domain(candidate) is False:
                 metadata['sitename'] = candidate
     # category
     if '"articleSection"' in elem:

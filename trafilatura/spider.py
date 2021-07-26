@@ -16,7 +16,7 @@ from .core import baseline
 from .downloads import fetch_url
 # from .feeds import find_feed_urls # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
-from .utils import decode_response, load_html
+from .utils import decode_response, load_html, is_domain
 
 # language detection
 try:
@@ -40,7 +40,7 @@ def refresh_detection(htmlstring, homepage):
             text = text.strip().lower()
             if text.startswith('url=') or text.startswith('URL='):
                 url2 = text[4:]
-                if not url2.startswith('http'):
+                if is_domain(url2) is False:
                     # Relative URL, adapt
                     _, base_url = get_hostinfo(url2)
                     url2 = fix_relative_urls(base_url, url2)
