@@ -24,7 +24,7 @@ def extract_json(schema, metadata):
     if isinstance(schema, dict):
         schema = [schema]
 
-    for parent in schema:
+    for parent in filter(None, schema):
         if "@context" not in parent or parent["@context"][-10:].lower() != "schema.org":
             continue
         elif '@graph' in parent:
@@ -34,7 +34,7 @@ def extract_json(schema, metadata):
         else:
             parent = schema
 
-        for content in parent:
+        for content in filter(None, parent):
             # try to extract publisher
             if 'publisher' in content:
                 if 'name' in content['publisher']:
