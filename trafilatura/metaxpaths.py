@@ -39,7 +39,7 @@ tags_xpaths = [
     '''//div[@class="row" or @class="jp-relatedposts" or
     @class="entry-utility" or starts-with(@class, 'tag') or
     starts-with(@class, 'postmeta') or starts-with(@class, 'meta')]//a''',
-    '//*[@class="entry-meta" or contains(@class, "topics")]//a',
+    '//*[@class="entry-meta" or contains(@class, "topics") or contains(@class, "tags-links")]//a',
 ]
 # span class tag-links
 # "related-topics"
