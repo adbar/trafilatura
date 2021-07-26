@@ -99,8 +99,13 @@ def test_crawl_page():
 
 def test_crawl_logic():
     "Test functions related to crawling sequence and consistency."
+    # erroneous webpage
+    todo, known_links, base_url, i, rules = spider.init_crawl('https://h', None, None)
+    assert todo == deque([]) and rules is None
+    # normal webpage
     todo, known_links, base_url, i, rules = spider.init_crawl('https://httpbin.org/html', None, None)
     assert todo == deque([]) and known_links == {'https://httpbin.org/html'} and base_url == 'https://httpbin.org' and i == 1
+    # keeping track of known URLs
     known_links = 'https://test.org'
     assert spider.is_known_link('https://test.org', known_links) is True
     assert spider.is_known_link('http://test.org', known_links) is True

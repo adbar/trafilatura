@@ -169,7 +169,12 @@ def init_crawl(homepage, todo, known_links, language=None, shortform=False, conf
     if rules is None:
         rules = urllib.robotparser.RobotFileParser()
         rules.set_url(base_url + '/robots.txt')
-        rules.read()
+        # exceptions happening here
+        try:
+            rules.read()
+        except Exception as exc:
+            LOGGER.error('cannot read robots.txt for %', homepage)
+            rules = None
     # initialize crawl by visiting homepage if necessary
     if todo is None:
         todo = deque([homepage])
