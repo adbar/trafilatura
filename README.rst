@@ -13,10 +13,6 @@ trafilatura: Web scraping tool for text discovery and retrieval
     :target: http://trafilatura.readthedocs.org/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. image:: https://img.shields.io/travis/adbar/trafilatura.svg
-    :target: https://travis-ci.org/adbar/trafilatura
-    :alt: Travis build status
-
 .. image:: https://img.shields.io/codecov/c/github/adbar/trafilatura.svg
     :target: https://codecov.io/gh/adbar/trafilatura
     :alt: Code Coverage

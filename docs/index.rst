@@ -14,10 +14,6 @@ trafilatura: Web scraping tool for text discovery and retrieval
     :target: https://pypi.python.org/pypi/trafilatura
     :alt: Python versions
 
-.. image:: https://img.shields.io/travis/adbar/trafilatura.svg
-    :target: https://travis-ci.org/adbar/trafilatura
-    :alt: Travis build status
-
 .. image:: https://img.shields.io/codecov/c/github/adbar/trafilatura.svg
     :target: https://codecov.io/gh/adbar/trafilatura
     :alt: Code Coverage
