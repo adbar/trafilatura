@@ -12,6 +12,7 @@ from courlan.core import extract_domain
 from courlan.filters import validate_url
 from htmldate import find_date
 from lxml import html
+from html import unescape
 from json import JSONDecodeError
 
 from .json import extract_json, extract_json_parse_error
@@ -58,12 +59,15 @@ def normalize_authors(current_authors, author):
         return current_authors
     if current_authors is not None:
         new_authors = current_authors.split('; ')
+    # fix to code with unicode
+    if '\\u' in author:
+        author = author.encode().decode('unicode_escape')
+    # fix html entities
+    if '&#' in author:
+        author = unescape(author)
     # examine names
     for author in AUTHOR_SPLIT.split(author):
         author = trim(author)
-        # fix to code with unicode
-        if '\\u' in author:
-            author = author.encode().decode('unicode_escape')
         author = AUTHOR_EMOJI_REMOVE.sub('', author)
         # remove @username
         author = AUTHOR_TWITTER.sub('', author)
