@@ -40,7 +40,7 @@ def extract_json(schema, metadata):
                 if 'name' in content['publisher']:
                     metadata['sitename'] = content['publisher']['name']
 
-            if content["@type"] in JSON_PUBLISHER_SCHEMA:
+            if '@type' in content and content["@type"] in JSON_PUBLISHER_SCHEMA:
                 for candidate in ("name", "alternateName"):
                     if candidate in content:
                         if content[candidate] is not None:
@@ -49,11 +49,11 @@ def extract_json(schema, metadata):
                             if metadata['sitename'] is None and metadata['sitename'].startswith('http') and not content[candidate].startswith('http'):
                                 metadata['sitename'] = content[candidate]
 
-            if content["@type"] == "Person":
+            if '@type' in content and content["@type"] == "Person":
                 if 'name' in content and not content['name'].startswith('http'):
                     metadata['author'] = trafilatura.metadata.normalize_authors(metadata['author'], content['name'])
 
-            if content["@type"] in JSON_ARTICLE_SCHEMA:
+            if '@type' in content and content["@type"] in JSON_ARTICLE_SCHEMA:
                 # author and person
                 if 'author' in content:
                     if not isinstance(content['author'], list):
