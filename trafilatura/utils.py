@@ -43,7 +43,6 @@ UNICODE_WHITESPACE = re.compile(
 
 NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
 SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
-DOMAIN_PARSER = re.compile(r'((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#])*', flags=re.IGNORECASE)
 
 NOPRINT_TRANS_TABLE = {
     i: None for i in range(0, sys.maxunicode + 1)
@@ -280,10 +279,3 @@ def filter_urls(linklist, urlfilter):
     if len(newlist) == 0:
         newlist = [l for l in linklist if urlfilter in l or 'feedburner' in l or 'feedproxy' in l]
     return sorted(set(newlist))
-
-
-def is_domain(value):
-    try:
-        return bool(DOMAIN_PARSER.match(value))
-    except (UnicodeError, AttributeError):
-        return False

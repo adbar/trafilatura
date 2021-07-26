@@ -6,6 +6,7 @@ import logging
 import re
 import json
 
+
 from courlan.clean import normalize_url
 from courlan.core import extract_domain
 from courlan.filters import validate_url
@@ -15,7 +16,7 @@ from json import JSONDecodeError
 
 from .json import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
-from .utils import line_processing, load_html, trim, is_domain
+from .utils import line_processing, load_html, trim
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -53,7 +54,7 @@ METANAME_PUBLISHER = {'copyright', 'dc.publisher', 'dcterms.publisher', 'publish
 def normalize_authors(current_authors, author):
     '''Normalize author info to focus on author names only'''
     new_authors = []
-    if is_domain(author) is True:
+    if author.lower().startswith('http'):
         return current_authors
     if current_authors is not None:
         new_authors = current_authors.split('; ')
@@ -371,7 +372,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     metadata = examine_meta(tree)
     # correction: author not a name
     if metadata['author'] is not None:
-        if ' ' not in metadata['author'] or is_domain(metadata['author']) is True:
+        if ' ' not in metadata['author'] or metadata['author'].startswith('http'):
             metadata['author'] = None
     # fix: try json-ld metadata and override
     metadata = extract_meta_json(tree, metadata)

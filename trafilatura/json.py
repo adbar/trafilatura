@@ -5,7 +5,7 @@ Module bundling all functions needed to scrape metadata from json.
 import re
 
 import trafilatura.metadata
-from trafilatura.utils import trim, is_domain
+from trafilatura.utils import trim
 
 JSON_ARTICLE_SCHEMA = ["ReportageNewsArticle", "NewsArticle", "BlogPosting", "SocialMediaPosting", "MedicalScholarlyArticle", "BackgroundNewsArticle", "ScholarlyArticle", "Article", "OpinionNewsArticle"]
 JSON_PUBLISHER_SCHEMA = ["Organization", "WebPage", "Website", "NewsMediaOrganization"]
@@ -46,11 +46,11 @@ def extract_json(schema, metadata):
                         if content[candidate] is not None:
                             if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content["@type"] != "WebPage"):
                                 metadata['sitename'] = content[candidate]
-                            if metadata['sitename'] is None and is_domain(metadata['sitename']) is True and is_domain(content[candidate]) is False:
+                            if metadata['sitename'] is None and metadata['sitename'].startswith('http') and not content[candidate].startswith('http'):
                                 metadata['sitename'] = content[candidate]
 
             if content["@type"] == "Person":
-                if 'name' in content and is_domain(content['name']) is False:
+                if 'name' in content and not content['name'].startswith('http'):
                     metadata['author'] = trafilatura.metadata.normalize_authors(metadata['author'], content['name'])
 
             if content["@type"] in JSON_ARTICLE_SCHEMA:
@@ -60,7 +60,7 @@ def extract_json(schema, metadata):
                         content['author'] = [content['author']]
                     for author in content['author']:
                         if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
-                            if 'name' in author and is_domain(author['name']) is False:
+                            if 'name' in author and not author['name'].startswith('http'):
                                 metadata['author'] = trafilatura.metadata.normalize_authors(metadata['author'], author['name'])
                             elif 'givenName' in author is not None and 'familyName' in author:
                                 name = [author['givenName'], author['additionalName'], author['familyName']]
@@ -115,7 +115,7 @@ def extract_json_parse_error(elem, metadata):
             candidate = normalize_json(mymatch.group(1))
             if metadata['sitename'] is None or len(metadata['sitename']) < len(candidate):
                 metadata['sitename'] = candidate
-            if is_domain(metadata['sitename']) is True and is_domain(candidate) is False:
+            if metadata['sitename'].startswith('http') and not candidate.startswith('http'):
                 metadata['sitename'] = candidate
     # category
     if '"articleSection"' in elem:
