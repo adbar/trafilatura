@@ -1,4 +1,0 @@
-cchardet >= 2.1.7
-htmldate[speed] >= 0.9.0
-pycld3 == 0.21; python_version < "3.6"
-pycld3 >= 0.22; python_version >= "3.6"
