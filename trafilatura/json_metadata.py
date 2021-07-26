@@ -40,23 +40,28 @@ def extract_json(schema, metadata):
                 if 'name' in content['publisher']:
                     metadata['sitename'] = content['publisher']['name']
 
-            elif not '@type' in content:
+            if '@type' not in content:
                 continue
+            elif type(content["@type"]) is list:
+                # some websites are using ['Person'] as type
+                content_type = content["@type"][0]
+            else:
+                content_type = content["@type"]
 
-            elif content["@type"] in JSON_PUBLISHER_SCHEMA:
+            if content_type in JSON_PUBLISHER_SCHEMA:
                 for candidate in ("name", "alternateName"):
                     if candidate in content:
                         if content[candidate] is not None:
-                            if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content["@type"] != "WebPage"):
+                            if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content_type != "WebPage"):
                                 metadata['sitename'] = content[candidate]
                             if metadata['sitename'] is None and metadata['sitename'].startswith('http') and not content[candidate].startswith('http'):
                                 metadata['sitename'] = content[candidate]
 
-            elif content["@type"] == "Person":
+            elif content_type == "Person":
                 if 'name' in content and not content['name'].startswith('http'):
                     metadata['author'] = normalize_authors(metadata['author'], content['name'])
 
-            elif content["@type"] in JSON_ARTICLE_SCHEMA:
+            elif content_type in JSON_ARTICLE_SCHEMA:
                 # author and person
                 if 'author' in content:
                     if not isinstance(content['author'], list):
@@ -78,7 +83,7 @@ def extract_json(schema, metadata):
 
                 # try to extract title
                 if metadata['title'] is None:
-                    if 'name' in content and content["@type"] == 'Article':
+                    if 'name' in content and content_type == 'Article':
                         metadata['title'] = content['name']
                     elif 'headline' in content:
                         metadata['title'] = content['headline']
