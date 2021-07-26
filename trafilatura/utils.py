@@ -279,3 +279,41 @@ def filter_urls(linklist, urlfilter):
     if len(newlist) == 0:
         newlist = [l for l in linklist if urlfilter in l or 'feedburner' in l or 'feedproxy' in l]
     return sorted(set(newlist))
+
+
+def normalize_authors(current_authors, author_string):
+    '''Normalize author info to focus on author names only'''
+    new_authors = []
+    if author_string.lower().startswith('http'):
+        return current_authors
+    if current_authors is not None:
+        new_authors = current_authors.split('; ')
+    # fix to code with unicode
+    if '\\u' in author_string:
+        author_string = author_string.encode().decode('unicode_escape')
+    # fix html entities
+    if '&#' in author_string:
+        author_string = unescape(author_string)
+    # examine names
+    for author in AUTHOR_SPLIT.split(author_string):
+        author = trim(author)
+        author = AUTHOR_EMOJI_REMOVE.sub('', author)
+        # remove @username
+        author = AUTHOR_TWITTER.sub('', author)
+        # remove special characters
+        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+        # replace special characters with space
+        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
+        author = AUTHOR_PREFIX.sub('', author)
+        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
+        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
+        # skip empty strings
+        if len(author) == 0:
+            continue
+        # title case
+        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
+            author = author.title()
+        # safety checks
+        if author not in new_authors:
+            new_authors.append(author)
+    return '; '.join(new_authors).strip('; ')

@@ -6,18 +6,18 @@ import logging
 import re
 import json
 
+from html import unescape
 
 from courlan.clean import normalize_url
 from courlan.core import extract_domain
 from courlan.filters import validate_url
 from htmldate import find_date
 from lxml import html
-from html import unescape
-from json import JSONDecodeError
 
-from .json import extract_json, extract_json_parse_error
+from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
 from .utils import line_processing, load_html, trim
+
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -52,44 +52,6 @@ METANAME_DESCRIPTION = {'description', 'dc.description', 'dcterms.description', 
 METANAME_PUBLISHER = {'copyright', 'dc.publisher', 'dcterms.publisher', 'publisher', 'citation_journal_title'}
 
 
-def normalize_authors(current_authors, author):
-    '''Normalize author info to focus on author names only'''
-    new_authors = []
-    if author.lower().startswith('http'):
-        return current_authors
-    if current_authors is not None:
-        new_authors = current_authors.split('; ')
-    # fix to code with unicode
-    if '\\u' in author:
-        author = author.encode().decode('unicode_escape')
-    # fix html entities
-    if '&#' in author:
-        author = unescape(author)
-    # examine names
-    for author in AUTHOR_SPLIT.split(author):
-        author = trim(author)
-        author = AUTHOR_EMOJI_REMOVE.sub('', author)
-        # remove @username
-        author = AUTHOR_TWITTER.sub('', author)
-        # remove special characters
-        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
-        # replace special characters with space
-        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
-        author = AUTHOR_PREFIX.sub('', author)
-        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
-        # skip empty strings
-        if len(author) == 0:
-            continue
-        # title case
-        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
-            author = author.title()
-        # safety checks
-        if author not in new_authors:
-            new_authors.append(author)
-    return '; '.join(new_authors).strip('; ')
-
-
 def extract_meta_json(tree, metadata):
     '''Parse and extract metadata from JSON-LD data'''
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
@@ -100,7 +62,7 @@ def extract_meta_json(tree, metadata):
             schema = json.loads(element_text)
 
             metadata = extract_json(schema, metadata)
-        except JSONDecodeError:
+        except json.JSONDecodeError:
             metadata = extract_json_parse_error(element_text, metadata)
 
     return metadata
