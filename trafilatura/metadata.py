@@ -32,7 +32,7 @@ JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
-AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
