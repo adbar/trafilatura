@@ -2,9 +2,9 @@
 Module bundling all functions needed to scrape metadata from webpages.
 """
 
+import json
 import logging
 import re
-import json
 
 from courlan.clean import normalize_url
 from courlan.core import extract_domain
@@ -31,18 +31,6 @@ JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
 HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
-AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|by|von) ', flags=re.IGNORECASE)
-AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
-AUTHOR_TWITTER = re.compile(r'@[\w]+')
-AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
-AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
-AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from|of|via|with)\b\s+(.*)', flags=re.IGNORECASE)
-AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
-AUTHOR_EMOJI_REMOVE = re.compile(
-    "["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
-    u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
-    u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
-    u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
 
 METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author'}  # twitter:creator
 METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title', 'citation_title'}
@@ -58,11 +46,9 @@ def extract_meta_json(tree, metadata):
         element_text = JSON_MINIFY.sub(r'\1', elem.text)
         try:
             schema = json.loads(element_text)
-
             metadata = extract_json(schema, metadata)
         except json.JSONDecodeError:
             metadata = extract_json_parse_error(element_text, metadata)
-
     return metadata
 
 

@@ -42,7 +42,7 @@ def extract_json(schema, metadata):
 
             if '@type' not in content:
                 continue
-            elif type(content["@type"]) is list:
+            if isinstance(content["@type"], list):
                 # some websites are using ['Person'] as type
                 content_type = content["@type"][0]
             else:
@@ -65,14 +65,14 @@ def extract_json(schema, metadata):
                 # author and person
                 if 'author' in content:
                     list_authors = content['author']
-                    if type(list_authors) is str:
+                    if isinstance(list_authors, str):
                         # try to convert to json object
                         try:
                             list_authors = json.loads(list_authors)
                         except json.JSONDecodeError:
                             pass
 
-                    if type(list_authors) is not list:
+                    if isinstance(list_authors, list):
                         list_authors = [list_authors]
 
                     for author in list_authors:
