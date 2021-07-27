@@ -72,9 +72,8 @@ def extract_json(schema, metadata):
                         except json.JSONDecodeError:
                             pass
 
-                    if isinstance(list_authors, list):
+                    if not isinstance(list_authors, list):
                         list_authors = [list_authors]
-
                     for author in list_authors:
                         if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
                             if 'name' in author and author['name'] is not None and not author['name'].startswith('http'):
