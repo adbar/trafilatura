@@ -12,6 +12,7 @@ import re
 import sys
 
 from functools import lru_cache
+from html import unescape
 
 
 # CChardet is faster and can be more accurate
@@ -51,6 +52,19 @@ NOPRINT_TRANS_TABLE = {
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
+
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|by|von) ', flags=re.IGNORECASE)
+AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
+AUTHOR_TWITTER = re.compile(r'@[\w]+')
+AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from|of|via|with)\b\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
+AUTHOR_EMOJI_REMOVE = re.compile(
+    "["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
+    u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
+    u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
+    u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
 
 
 def is_gz_file(contents):
@@ -280,3 +294,40 @@ def filter_urls(linklist, urlfilter):
         newlist = [l for l in linklist if urlfilter in l or 'feedburner' in l or 'feedproxy' in l]
     return sorted(set(newlist))
 
+
+def normalize_authors(current_authors, author_string):
+    '''Normalize author info to focus on author names only'''
+    new_authors = []
+    if author_string.lower().startswith('http'):
+        return current_authors
+    if current_authors is not None:
+        new_authors = current_authors.split('; ')
+    # fix to code with unicode
+    if '\\u' in author_string:
+        author_string = author_string.encode().decode('unicode_escape')
+    # fix html entities
+    if '&#' in author_string:
+        author_string = unescape(author_string)
+    # examine names
+    for author in AUTHOR_SPLIT.split(author_string):
+        author = trim(author)
+        author = AUTHOR_EMOJI_REMOVE.sub('', author)
+        # remove @username
+        author = AUTHOR_TWITTER.sub('', author)
+        # remove special characters
+        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+        # replace special characters with space
+        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
+        author = AUTHOR_PREFIX.sub('', author)
+        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
+        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
+        # skip empty strings
+        if len(author) == 0:
+            continue
+        # title case
+        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
+            author = author.title()
+        # safety checks
+        if author not in new_authors:
+            new_authors.append(author)
+    return '; '.join(new_authors).strip('; ')

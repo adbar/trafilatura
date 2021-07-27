@@ -2,9 +2,9 @@
 Module bundling all functions needed to scrape metadata from webpages.
 """
 
-
 import logging
 import re
+import json
 
 from courlan.clean import normalize_url
 from courlan.core import extract_domain
@@ -12,146 +12,57 @@ from courlan.filters import validate_url
 from htmldate import find_date
 from lxml import html
 
+from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
-from .utils import line_processing, load_html, trim
+from .utils import line_processing, load_html, normalize_authors, trim
 
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
-METADATA_LIST = ['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags', 'fingerprint', 'id', 'license']
+METADATA_LIST = ['title', 'author', 'url', 'hostname', 'description', 'sitename', 'date', 'categories', 'tags',
+                 'fingerprint', 'id', 'license']
 
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
 HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
 
-HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$') # part without dots?
-JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
-JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
-JSON_AUTHOR_REMOVE = re.compile(r'(?:"\w+":?[:|,|\[])?{"@type":"(?:[Ii]mageObject|[Oo]rganization)",[^}[]+}[\]|}]?')
 JSON_MINIFY = re.compile(r'("(?:\\"|[^"])*")|\s')
-JSON_PUBLISHER = re.compile(r'"publisher":[^}]+?"name?\\?": ?\\?"([^"\\]+)', re.DOTALL)
-JSON_CATEGORY = re.compile(r'"articleSection": ?"([^"\\]+)', re.DOTALL)
-JSON_NAME = re.compile(r'"@type":"[Aa]rticle", ?"name": ?"([^"\\]+)', re.DOTALL)
-JSON_HEADLINE = re.compile(r'"headline": ?"([^"\\]+)', re.DOTALL)
-JSON_MATCH = re.compile(r'"author":|"person":', flags=re.IGNORECASE)
+
+HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
-AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(by|von) ', flags=re.IGNORECASE)
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
 AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
 AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from|of|via|with)\b\s+(.*)', flags=re.IGNORECASE)
-AUTHOR_SPLIT = re.compile(r';|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
-AUTHOR_EMOJI_REMOVE = re.compile("["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
-                          u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
-                          u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d" 
-                          u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
+AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
+AUTHOR_EMOJI_REMOVE = re.compile(
+    "["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
+    u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
+    u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
+    u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
 
-METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author'} # twitter:creator
+METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author'}  # twitter:creator
 METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title', 'citation_title'}
 METANAME_DESCRIPTION = {'description', 'dc.description', 'dcterms.description', 'dc:description', 'sailthru.description', 'twitter:description'}
 METANAME_PUBLISHER = {'copyright', 'dc.publisher', 'dcterms.publisher', 'publisher', 'citation_journal_title'}
 
 
-def normalize_json(inputstring):
-    'Normalize unicode strings and trim the output'
-    if '\\' in inputstring:
-        return trim(inputstring.encode().decode('unicode-escape'))
-    return trim(inputstring)
-
-
-def normalize_authors(current_authors, author):
-    '''Normalize author info to focus on author names only'''
-    new_authors = []
-    if author.lower().startswith('http'):
-        return current_authors
-    if current_authors is not None:
-        new_authors = current_authors.split('; ')
-    # examine names
-    for author in AUTHOR_SPLIT.split(author):
-        author = trim(author)
-        # fix to code with unicode
-        if '\\u' in author:
-            author = author.encode().decode('unicode_escape')
-        author = AUTHOR_EMOJI_REMOVE.sub('', author)
-        # remove @username
-        author = AUTHOR_TWITTER.sub('', author)
-        # remove special characters
-        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
-        # replace special characters with space
-        author = AUTHOR_REPLACE_JOIN.sub(' ', author)
-        author = AUTHOR_PREFIX.sub('', author)
-        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
-        # skip empty strings
-        if len(author) == 0:
-            continue
-        # title case
-        if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
-            author = author.title()
-        # safety checks
-        if author not in new_authors:
-            new_authors.append(author)
-    return '; '.join(new_authors).strip('; ')
-
-
-def extract_json_author(elemtext, regular_expression):
-    '''Crudely extract author names from JSON-LD data'''
-    authors = ''
-    mymatch = regular_expression.search(elemtext)
-    while mymatch is not None:
-        if mymatch.group(1) and ' ' in mymatch.group(1):
-            authors = normalize_authors(authors, mymatch.group(1))
-            elemtext = regular_expression.sub(r'', elemtext, count=1)
-            mymatch = regular_expression.search(elemtext)
-        else:
-            break
-    if len(authors) > 0:
-        return authors
-    return None
-
-
-def extract_json(tree, metadata):
-    '''Crudely extract metadata from JSON-LD data'''
+def extract_meta_json(tree, metadata):
+    '''Parse and extract metadata from JSON-LD data'''
     for elem in tree.xpath('.//script[@type="application/ld+json" or @type="application/settings+json"]'):
         if not elem.text:
             continue
         element_text = JSON_MINIFY.sub(r'\1', elem.text)
-        # author info
-        element_text_author = JSON_AUTHOR_REMOVE.sub('', element_text)
-        if any(JSON_MATCH.findall(element_text_author)):
-            author = extract_json_author(element_text_author, JSON_AUTHOR_1)
-            if author is None:
-                author = extract_json_author(element_text_author, JSON_AUTHOR_2)
-            if author is not None:
-                metadata['author'] = author
-        # try to extract publisher
-        if '"publisher"' in element_text:
-            mymatch = JSON_PUBLISHER.search(element_text)
-            if mymatch and not ',' in mymatch.group(1):
-                candidate = normalize_json(mymatch.group(1))
-                if metadata['sitename'] is None or len(metadata['sitename']) < len(candidate):
-                    metadata['sitename'] = candidate
-                if metadata['sitename'].startswith('http') and not candidate.startswith('http'):
-                    metadata['sitename'] = candidate
-        # category
-        if '"articleSection"' in element_text:
-            mymatch = JSON_CATEGORY.search(element_text)
-            if mymatch:
-                metadata['categories'] = [normalize_json(mymatch.group(1))]
-        # try to extract title
-        if '"name"' in element_text and metadata['title'] is None:
-            mymatch = JSON_NAME.search(element_text)
-            if mymatch:
-                metadata['title'] = normalize_json(mymatch.group(1))
-        if '"headline"' in element_text and metadata['title'] is None:
-            mymatch = JSON_HEADLINE.search(element_text)
-            if mymatch:
-                metadata['title'] = normalize_json(mymatch.group(1))
-        # exit if found
-        if all([metadata['author'], metadata['sitename'], metadata['categories'], metadata['title']]):
-            break
+        try:
+            schema = json.loads(element_text)
+
+            metadata = extract_json(schema, metadata)
+        except json.JSONDecodeError:
+            metadata = extract_json_parse_error(element_text, metadata)
+
     return metadata
 
 
@@ -180,10 +91,10 @@ def extract_opengraph(tree):
         elif elem.get('property') in ('og:author', 'og:article:author'):
             author = elem.get('content')
         # og:type
-        #elif elem.get('property') == 'og:type':
+        # elif elem.get('property') == 'og:type':
         #    pagetype = elem.get('content')
         # og:locale
-        #elif elem.get('property') == 'og:locale':
+        # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')
     return trim(title), trim(author), trim(url), trim(description), trim(site_name)
 
@@ -195,7 +106,8 @@ def examine_meta(tree):
     title, author, url, description, site_name = extract_opengraph(tree)
     # test if all return values have been assigned
     if all((title, author, url, description, site_name)):  # if they are all defined
-        metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'] = title, author, url, description, site_name
+        metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata[
+            'sitename'] = title, author, url, description, site_name
         return metadata
     tags, backup_sitename = [], None
     # skim through meta tags
@@ -237,7 +149,7 @@ def examine_meta(tree):
                 if url is None and validate_url(content_attr)[0] is True:
                     url = content_attr
             # keywords
-            elif name_attr == 'keywords': # 'page-topic'
+            elif name_attr == 'keywords':  # 'page-topic'
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
@@ -247,18 +159,20 @@ def examine_meta(tree):
             elif elem.get('itemprop') == 'headline':
                 title = title or content_attr
             # to verify:
-            #elif elem.get('itemprop') == 'name':
+            # elif elem.get('itemprop') == 'name':
             #    if title is None:
             #        title = elem.get('content')
         # other types
         else:
             if not any(key in elem.attrib for key in ('charset', 'http-equiv', 'property')):
-                LOGGER.debug('unknown attribute: %s', html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+                LOGGER.debug('unknown attribute: %s',
+                             html.tostring(elem, pretty_print=False, encoding='unicode').strip())
     # backups
     if site_name is None and backup_sitename is not None:
         site_name = backup_sitename
     # copy
-    metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'], metadata['tags'] = title, author, url, description, site_name, tags
+    metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'], metadata[
+        'tags'] = title, author, url, description, site_name, tags
     return metadata
 
 
@@ -271,7 +185,7 @@ def extract_metainfo(tree, expressions, len_limit=200):
         for elem in tree.xpath(expression):
             content = trim(' '.join(elem.itertext()))
             if content and 2 < len(content) < len_limit:
-                #LOGGER.debug('metadata found in: %s', expression)
+                # LOGGER.debug('metadata found in: %s', expression)
                 return content
             i += 1
         if i > 1:
@@ -335,7 +249,8 @@ def extract_url(tree, default_url=None):
     # try default language link
     else:
         for element in tree.iterfind('.//head//link[@rel="alternate"]'):
-            if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib['hreflang'] == 'x-default':
+            if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib[
+                'hreflang'] == 'x-default':
                 if URL_COMP_CHECK.match(element.attrib['href']):
                     LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
                     url = element.attrib['href']
@@ -380,7 +295,7 @@ def extract_sitename(tree):
 def extract_catstags(metatype, tree):
     '''Find category and tag information'''
     results = []
-    regexpr = '/' + metatype + '/'
+    regexpr = '/' + metatype + '[s|ies]?/'
     if metatype == 'category':
         xpath_expression = categories_xpaths
     else:
@@ -424,7 +339,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         if ' ' not in metadata['author'] or metadata['author'].startswith('http'):
             metadata['author'] = None
     # fix: try json-ld metadata and override
-    metadata = extract_json(tree, metadata)
+    metadata = extract_meta_json(tree, metadata)
     # try with x-paths
     # title
     if metadata['title'] is None:
@@ -476,9 +391,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         metadata['categories'] = extract_catstags('category', tree)
     # tags
     if not metadata['tags']:
-        metadata['tags'] = extract_catstags('tags', tree)
+        metadata['tags'] = extract_catstags('tag', tree)
     # license
-    for element in tree.xpath('//a[@rel="license"]',):
+    for element in tree.xpath('//a[@rel="license"]', ):
         if element.text is not None:
             metadata['license'] = trim(element.text)
             break
