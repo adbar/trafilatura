@@ -3,9 +3,9 @@ Functions needed to scrape metadata from JSON-LD format.
 """
 
 import re
+import json
 
 from .utils import normalize_authors, trim
-
 
 JSON_ARTICLE_SCHEMA = {"Article", "BackgroundNewsArticle", "BlogPosting", "MedicalScholarlyArticle", "NewsArticle", "OpinionNewsArticle", "ReportageNewsArticle",  "ScholarlyArticle", "SocialMediaPosting"}
 JSON_PUBLISHER_SCHEMA = {"NewsMediaOrganization", "Organization", "WebPage", "Website"}
@@ -64,9 +64,18 @@ def extract_json(schema, metadata):
             elif content_type in JSON_ARTICLE_SCHEMA:
                 # author and person
                 if 'author' in content:
-                    if not isinstance(content['author'], list):
-                        content['author'] = [content['author']]
-                    for author in content['author']:
+                    list_authors = content['author']
+                    if type(list_authors) is str:
+                        # try to convert to json object
+                        try:
+                            list_authors = json.loads(list_authors)
+                        except json.JSONDecodeError:
+                            pass
+
+                    if type(list_authors) is not list:
+                        list_authors = [list_authors]
+
+                    for author in list_authors:
                         if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
                             if 'name' in author and not author['name'].startswith('http'):
                                 metadata['author'] = normalize_authors(metadata['author'], author['name'])
