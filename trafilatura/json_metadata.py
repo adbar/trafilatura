@@ -100,7 +100,7 @@ def extract_json(schema, metadata):
 
 def extract_json_author(elemtext, regular_expression):
     '''Crudely extract author names from JSON-LD data'''
-    authors = ''
+    authors = None
     mymatch = regular_expression.search(elemtext)
     while mymatch is not None:
         if mymatch.group(1) and ' ' in mymatch.group(1):
@@ -109,7 +109,7 @@ def extract_json_author(elemtext, regular_expression):
             mymatch = regular_expression.search(elemtext)
         else:
             break
-    if len(authors) > 0:
+    if authors is not None:
         return authors
     return None
 
