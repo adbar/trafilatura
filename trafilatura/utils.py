@@ -328,6 +328,6 @@ def normalize_authors(current_authors, author_string):
         if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
             author = author.title()
         # safety checks
-        if author not in new_authors:
+        if author not in new_authors and not any(new_author in author for new_author in new_authors):
             new_authors.append(author)
     return '; '.join(new_authors).strip('; ')
