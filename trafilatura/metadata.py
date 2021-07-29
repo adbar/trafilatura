@@ -16,7 +16,6 @@ from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
 from .utils import line_processing, load_html, normalize_authors, trim
 
-
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
@@ -321,10 +320,6 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         return None
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
-    # correction: author not a name
-    if metadata['author'] is not None:
-        if ' ' not in metadata['author'] or metadata['author'].startswith('http'):
-            metadata['author'] = None
     # fix: try json-ld metadata and override
     metadata = extract_meta_json(tree, metadata)
     # try with x-paths
