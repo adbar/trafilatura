@@ -7,7 +7,7 @@ import os
 import re
 import time
 
-from lxml import etree, html
+from lxml import html #  etree
 #from lxml.html.clean import Cleaner
 #HTML_CLEANER = Cleaner()
 
@@ -183,6 +183,18 @@ def run_trafilatura_fallback(htmlstring):
     return result
 
 
+def run_trafilatura_precision(htmlstring):
+    '''run trafilatura with preference for precision'''
+    result = extract(htmlstring, no_fallback=False, favor_precision=True, include_comments=False, include_tables=True, include_formatting=False)
+    return result
+
+
+def run_trafilatura_recall(htmlstring):
+    '''run trafilatura with preference for recall'''
+    result = extract(htmlstring, no_fallback=False, favor_recall=True, include_comments=False, include_tables=True, include_formatting=False)
+    return result
+
+
 def run_goose(htmlstring):
     '''try with the goose algorithm'''
     try:
@@ -349,13 +361,15 @@ def calculate_scores(mydict):
 
 
 template_dict = {'true positives': 0, 'false positives': 0, 'true negatives': 0, 'false negatives': 0, 'time': 0}
-nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
+nothing, everything, baseline_result, trafilatura_result, justext_result, trafilatura_fallback_result, trafilatura_precision, trafilatura_recall, goose_result, readability_result, inscriptis_result, newspaper_result, html2text_result, html_text_result, dragnet_result, boilerpipe_result, newsplease_result, jparser_result, readabilipy_result = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 nothing.update(template_dict)
 everything.update(template_dict)
 baseline_result.update(template_dict)
 trafilatura_result.update(template_dict)
 justext_result.update(template_dict)
 trafilatura_fallback_result.update(template_dict)
+trafilatura_precision.update(template_dict)
+trafilatura_recall.update(template_dict)
 goose_result.update(template_dict)
 readability_result.update(template_dict)
 inscriptis_result.update(template_dict)
@@ -453,6 +467,24 @@ for item in EVAL_PAGES:
     trafilatura_fallback_result['false positives'] += fp
     trafilatura_fallback_result['true negatives'] += tn
     trafilatura_fallback_result['false negatives'] += fn
+    # trafilatura + precision
+    start = time.time()
+    result = run_trafilatura_precision(htmlstring)
+    trafilatura_precision['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    trafilatura_precision['true positives'] += tp
+    trafilatura_precision['false positives'] += fp
+    trafilatura_precision['true negatives'] += tn
+    trafilatura_precision['false negatives'] += fn
+    # trafilatura + recall
+    start = time.time()
+    result = run_trafilatura_recall(htmlstring)
+    trafilatura_recall['time'] += time.time() - start
+    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    trafilatura_recall['true positives'] += tp
+    trafilatura_recall['false positives'] += fp
+    trafilatura_recall['true negatives'] += tn
+    trafilatura_recall['false negatives'] += fn
     # readability
     start = time.time()
     result = run_readability(htmlstring)
@@ -613,3 +645,13 @@ print('trafilatura + X')
 print(trafilatura_fallback_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_fallback_result)))
 print("time diff.: %.2f" % (trafilatura_fallback_result['time'] / baseline_result['time']))
+
+print('trafilatura precision')
+print(trafilatura_precision)
+print("time diff.: %.2f" % (trafilatura_precision['time'] / baseline_result['time']))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_precision)))
+
+print('trafilatura recall')
+print(trafilatura_recall)
+print("time diff.: %.2f" % (trafilatura_recall['time'] / baseline_result['time']))
+print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(trafilatura_recall)))
