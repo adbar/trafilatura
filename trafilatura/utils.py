@@ -322,7 +322,7 @@ def normalize_authors(current_authors, author_string):
         author = AUTHOR_REMOVE_NUMBERS.sub('', author)
         author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
         # skip empty strings
-        if len(author) == 0:
+        if len(author) == 0 or ' ' not in author:
             continue
         # title case
         if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
@@ -330,4 +330,6 @@ def normalize_authors(current_authors, author_string):
         # safety checks
         if author not in new_authors and (len(new_authors) == 0 or any(new_author not in author for new_author in new_authors)):
             new_authors.append(author)
+    if len(new_authors) == 0:
+        return current_authors
     return '; '.join(new_authors).strip('; ')
