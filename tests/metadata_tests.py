@@ -82,7 +82,7 @@ MOCK_PAGES = {
 def load_mock_page(url):
     '''Load mock page from samples'''
     try:
-        with open(path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
+        with open(path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r', encoding='utf-8') as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:

@@ -402,7 +402,7 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     return subtree
 
 
-def extract_content(tree, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
+def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
@@ -532,7 +532,7 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, include_formatting, include_links, include_images, config):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass
@@ -673,6 +673,7 @@ def determine_returnstring(docmeta, output_format, include_formatting, include_l
 
 
 def bare_extraction(filecontent, url=None, no_fallback=False,
+                    favor_precision=False, favor_recall=False,
                     include_comments=True, output_format='python', target_language=None,
                     include_tables=True, include_images=False, include_formatting=False,
                     include_links=False, deduplicate=False,
@@ -685,6 +686,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         filecontent: HTML code as string.
         url: URL of the webpage.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
+        favor_precision: prefer less text but correct extraction (inactive).
+        favor_recall: prefer more text even when unsure (inactive).
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
@@ -771,11 +774,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             #cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, include_tables, include_images, include_links, deduplicate, config)
+        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, include_formatting, include_links, include_images, config)
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, config)
             # add baseline as additional fallback
             if len(postbody) == 0: # or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
                 postbody, temp_text, len_text = baseline(filecontent)
@@ -827,6 +830,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
+            favor_precision=False, favor_recall=False,
             include_comments=True, output_format='txt',
             tei_validation=False, target_language=None,
             include_tables=True, include_images=False, include_formatting=False,
@@ -843,6 +847,8 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         url: URL of the webpage.
         record_id: Add an ID to the metadata.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
+        favor_precision: prefer less text but correct extraction (inactive).
+        favor_recall: when unsure, prefer more text (inactive).
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
             'txt', 'csv', 'json', 'xml', or 'xmltei'.
@@ -874,6 +880,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     # extraction
     docmeta = bare_extraction(
         filecontent, url=url, no_fallback=no_fallback,
+        favor_precision=favor_precision, favor_recall=favor_recall,
         include_comments=include_comments, output_format=output_format,
         target_language=target_language, include_tables=include_tables, include_images=include_images,
         include_formatting=include_formatting, include_links=include_links,

@@ -115,7 +115,11 @@ def test_sysoutput():
     filepath, destdir = cli_utils.determine_output_path(args, args.outputdir, '')
     assert len(filepath) >= 10 and filepath.endswith('.csv')
     assert destdir == '/root/forbidden/'
-    assert cli_utils.check_outputdir_status(args.outputdir) is False
+    # doesn't work the same on Windows
+    if os.name != 'nt':
+        assert cli_utils.check_outputdir_status(args.outputdir) is False
+    else:
+        assert cli_utils.check_outputdir_status(args.outputdir) is True
     testargs = ['', '--xml', '-o', '/tmp/you-touch-my-tralala']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
