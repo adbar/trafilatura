@@ -122,7 +122,7 @@ def test_titles():
 def test_authors():
     '''Test the extraction of author names'''
     # normalization
-    assert normalize_authors(None, 'abc') is None
+    assert normalize_authors(None, 'abc') == 'Abc'
     assert normalize_authors(None, 'Steve Steve 123') == 'Steve Steve'
     assert normalize_authors(None, 'By Steve Steve') == 'Steve Steve'
     # extraction

@@ -320,6 +320,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         return None
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
+    if metadata['author'] is not None:
+        if ' ' not in metadata['author']:
+            metadata['author'] = None
     # fix: try json-ld metadata and override
     metadata = extract_meta_json(tree, metadata)
     # try with x-paths
