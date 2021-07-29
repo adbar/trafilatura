@@ -716,6 +716,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
     # deprecation warning
     if with_metadata is True:
+        only_with_metadata = with_metadata
         warnings.warn(
             "with_metadata will be deprecated in a future version, use only_with_metadata instead",
              PendingDeprecationWarning
