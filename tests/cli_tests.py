@@ -28,29 +28,35 @@ def test_parser():
         args = cli.parse_args(testargs)
     assert args.fast is True
     assert args.verbose == 2
-    assert args.notables is False
+    assert args.notables is False and args.no_tables is False
     assert args.xmltei is True
     assert args.URL == 'https://www.example.org'
     args = cli.map_args(args)
     assert args.output_format == 'xmltei'
-    testargs = ['', '-out', 'csv', '-u', 'https://www.example.org']
+    testargs = ['', '-out', 'csv', '--no-tables', '-u', 'https://www.example.org']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     assert args.fast is False
     assert args.verbose == 0
     assert args.output_format == 'csv'
+    assert args.no_tables is False
     # test args mapping
-    testargs = ['', '--xml']
+    testargs = ['', '--xml', '--nocomments']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     args = cli.map_args(args)
-    assert args.output_format == 'xml'
+    assert args.output_format == 'xml' and args.no_comments is False
     args.xml, args.csv = False, True
     args = cli.map_args(args)
     assert args.output_format == 'csv'
     args.csv, args.json = False, True
     args = cli.map_args(args)
     assert args.output_format == 'json'
+    testargs = ['', '--with-metadata']
+    with patch.object(sys, 'argv', testargs):
+        args = cli.parse_args(testargs)
+    args = cli.map_args(args)
+    assert args.only_with_metadata is True
     # process_args
     args.inputdir = '/dev/null'
     args.verbose = 1

@@ -8,6 +8,7 @@ Implementing a basic command-line interface.
 import argparse
 import logging
 import sys
+import warnings
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -119,17 +120,17 @@ def parse_args(args):
                         help="include image sources in output (experimental)",
                         action="store_true")
     group4.add_argument("--nocomments",
-                        help="don't output any comments",
+                        help=argparse.SUPPRESS,
                         action="store_false")  # will be deprecated
     group4.add_argument("--notables",
-                        help="don't output any table elements",
+                        help=argparse.SUPPRESS,
                         action="store_false")  # will be deprecated
-    #group4.add_argument("--no-comments",
-    #                    help="don't output any comments",
-    #                    action="store_false")  # false = no comments
-    #group4.add_argument("--no-tables",
-    #                    help="don't output any table elements",
-    #                    action="store_false")  # false = no tables
+    group4.add_argument("--no-comments",
+                        help="don't output any comments",
+                        action="store_false")  # false = no comments
+    group4.add_argument("--no-tables",
+                        help="don't output any table elements",
+                        action="store_false")  # false = no tables
     group4.add_argument("--only-with-metadata",
                         help="only output those documents with title, URL and date (for formats supporting metadata)",
                         action="store_true")
@@ -176,7 +177,8 @@ def parse_args(args):
 
 
 def map_args(args):
-    '''Map existing options to format choice.'''
+    '''Map existing options to format and output choices.'''
+    # formats
     if args.csv:
         args.output_format = 'csv'
     elif args.json:
@@ -185,6 +187,28 @@ def map_args(args):
         args.output_format = 'xml'
     elif args.xmltei:
         args.output_format = 'xmltei'
+    # output configuration
+    if args.nocomments is False:
+        args.no_comments = False
+        warnings.warn(
+            """--nocomments will be deprecated in a future version,
+               use --no-comments instead""",
+             PendingDeprecationWarning
+        )
+    if args.notables is False:
+        args.no_tables = False
+        warnings.warn(
+            """--notables will be deprecated in a future version,
+               use --no-tables instead""",
+             PendingDeprecationWarning
+        )
+    if args.with_metadata is True:
+        args.only_with_metadata = True
+        warnings.warn(
+            """--with-metadata will be deprecated in a future version,
+               use --only-with-metadata instead""",
+             PendingDeprecationWarning
+        )
     return args
 
 

@@ -347,10 +347,9 @@ def examine(htmlstring, args, url=None, config=None):
         signal.alarm(config.getint('DEFAULT', 'EXTRACTION_TIMEOUT'))
         try:
             result = extract(htmlstring, url=url, no_fallback=args.fast,
-                             include_comments=args.nocomments, include_tables=args.notables,
+                             include_comments=args.no_comments, include_tables=args.no_tables,
                              include_formatting=args.formatting, include_links=args.links,
                              include_images=args.images, only_with_metadata=args.only_with_metadata,
-                             with_metadata=args.with_metadata,
                              output_format=args.output_format, tei_validation=args.validate_tei,
                              target_language=args.target_language, deduplicate=args.deduplicate,
                              config=config) # settingsfile=args.config_file,
