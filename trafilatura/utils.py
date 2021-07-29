@@ -321,8 +321,11 @@ def normalize_authors(current_authors, author_string):
         author = AUTHOR_PREFIX.sub('', author)
         author = AUTHOR_REMOVE_NUMBERS.sub('', author)
         author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
-        # skip empty strings
-        if len(author) == 0 or (' ' not in author and len(author) >= 23):
+        # skip empty or improbably long strings
+        if len(author) == 0 or (
+            # simple heuristics, regex or vowel tests also possible
+            ' ' not in author and '-' not in author and len(author) >= 50
+            ):
             continue
         # title case
         if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
