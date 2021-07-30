@@ -719,6 +719,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
     # deprecation warning
     if with_metadata is True:
+        only_with_metadata = with_metadata
         warnings.warn(
             "with_metadata will be deprecated in a future version, use only_with_metadata instead",
              PendingDeprecationWarning
@@ -750,7 +751,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                 LOGGER.info('blacklisted URL: %s', url)
                 raise ValueError
             # cut short if core elements are missing
-            if only_with_metadata is True or with_metadata is True and any(
+            if only_with_metadata is True and any(
                     x is None for x in
                     [docmeta['date'], docmeta['title'], docmeta['url']]
                 ):

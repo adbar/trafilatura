@@ -16,7 +16,6 @@ from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
 from .utils import line_processing, load_html, normalize_authors, trim
 
-
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
@@ -32,10 +31,11 @@ HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
-METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author'}  # twitter:creator
-METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title', 'citation_title'}
+METANAME_AUTHOR = {'author', 'byl', 'dc.creator', 'dcterms.creator', 'sailthru.author', 'citation_author', 'parsely-author'}  # twitter:creator
+METANAME_TITLE = {'title', 'dc.title', 'dcterms.title', 'fb_title', 'sailthru.title', 'twitter:title', 'citation_title', 'parsely-title'}
 METANAME_DESCRIPTION = {'description', 'dc.description', 'dcterms.description', 'dc:description', 'sailthru.description', 'twitter:description'}
 METANAME_PUBLISHER = {'copyright', 'dc.publisher', 'dcterms.publisher', 'publisher', 'citation_journal_title'}
+METANAME_TAG = {'keywords', 'parsely-tags'}
 
 
 def extract_meta_json(tree, metadata):
@@ -135,7 +135,7 @@ def examine_meta(tree):
                 if url is None and validate_url(content_attr)[0] is True:
                     url = content_attr
             # keywords
-            elif name_attr == 'keywords':  # 'page-topic'
+            elif name_attr in METANAME_TAG:  # 'page-topic'
                 tags.append(content_attr)
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
@@ -320,9 +320,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         return None
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
-    # correction: author not a name
     if metadata['author'] is not None:
-        if ' ' not in metadata['author'] or metadata['author'].startswith('http'):
+        if ' ' not in metadata['author']:
             metadata['author'] = None
     # fix: try json-ld metadata and override
     metadata = extract_meta_json(tree, metadata)
