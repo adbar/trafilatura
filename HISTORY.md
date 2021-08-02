@@ -1,6 +1,13 @@
 ## History / Changelog
 
 
+### 0.9.1
+- improved author extraction (thanks @felipehertzer!)
+- bugs fixed: HTML element handling, HTML meta attributes, spider, CLI, ...
+- docs updated and extended
+- CLI: option names normalized (heed deprecation warnings), new option `explore`
+
+
 ### 0.9.0
 - focused crawling functions including politeness rules
 - more efficient multi-threaded downloads + use as Python functions
