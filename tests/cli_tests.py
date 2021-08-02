@@ -134,7 +134,11 @@ def test_sysoutput():
     filepath2, destdir2 = cli_utils.determine_output_path(args, args.outputdir, '', new_filename='AAZZ')
     assert filepath2.endswith('AAZZ.json')
     # test directory counter
-    assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir/1'
+    # doesn't work the same on Windows
+    if os.name != 'nt':
+        assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir/1'
+    else:
+        assert cli_utils.determine_counter_dir('testdir', 0) == 'testdir\\1'
     # test file writing
     testargs = ['', '--csv', '-o', '/dev/null/', '-b', '/dev/null/']
     with patch.object(sys, 'argv', testargs):
