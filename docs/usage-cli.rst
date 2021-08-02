@@ -106,7 +106,7 @@ This option can be combined with an input file (``-i``) containing a list of sou
 For more information please refer to the `tutorial on content discovery <tutorial0.html#content-discovery>`_.
 
 Feeds
-^^^^^
+~~~~~
 
 -  ``trafilatura --feed "https://www.dwds.de/" --list``
 -  ``trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list``
@@ -115,7 +115,7 @@ Youtube tutorial: `Extracting links from web feeds <https://www.youtube.com/watc
 
 
 Sitemaps
-^^^^^^^^
+~~~~~~~~
 
 -  ``trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list``
 -  ``trafilatura --sitemap "https://www.sitemaps.org/" --list``
@@ -124,7 +124,7 @@ Youtube tutorial: `Listing all website contents with sitemaps <https://www.youtu
 
 
 URL inspection prior to download and processing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 .. code-block:: bash
@@ -141,7 +141,7 @@ Extraction settings
 -------------------
 
 Choice of HTML elements
-^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Including extra elements works best with conversion to XML/XML-TEI:
 
@@ -153,7 +153,7 @@ Only text extracted from HTML ``<table>`` elements is activated by default, ``--
 
 
 Configuration
-^^^^^^^^^^^^^
+~~~~~~~~~~~~~
 
 Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``--config-file`` option, which overrides the standard settings.
 
@@ -168,11 +168,13 @@ For all usage instructions see ``trafilatura -h``:
     trafilatura [-h] [-i INPUTFILE | --inputdir INPUTDIR | -u URL]
                    [--parallel PARALLEL] [-b BLACKLIST] [--list]
                    [-o OUTPUTDIR] [--backup-dir BACKUP_DIR] [--keep-dirs]
-                   [--hash-as-name] [--feed [FEED] | --sitemap [SITEMAP]]
-                   [--archived] [--url-filter URL_FILTER [URL_FILTER ...]]
-                   [-f] [--formatting] [--links] [--nocomments] [--notables]
-                   [--with-metadata] [--target-language TARGET_LANGUAGE]
-                   [--deduplicate] [--config-file CONFIG_FILE]
+                   [--hash-as-name] [--feed [FEED] | --sitemap [SITEMAP] |
+                   --crawl [CRAWL] | --explore [EXPLORE]] [--archived]
+                   [--url-filter URL_FILTER [URL_FILTER ...]] [-f]
+                   [--formatting] [--links] [--images] [--no-comments]
+                   [--no-tables] [--only-with-metadata]
+                   [--target-language TARGET_LANGUAGE] [--deduplicate]
+                   [--config-file CONFIG_FILE]
                    [-out {txt,csv,json,xml,xmltei} | --csv | --json | --xml | --xmltei]
                    [--validate-tei] [-v]
 
@@ -212,9 +214,13 @@ Output:
 Navigation:
   Link discovery and web crawling
 
-  --feed FEED           look for feeds and/or pass a feed URL as input
-  --sitemap SITEMAP     look for sitemaps for the given website and/or enter a
+  --feed URL            look for feeds and/or pass a feed URL as input
+  --sitemap URL         look for sitemaps for the given website and/or enter a
                         sitemap URL
+  --crawl URL           crawl a fixed number of pages within a website
+                        starting from the given URL
+  --explore URL         explore the given websites (combination of sitemap and
+                        crawl)
   --archived            try to fetch URLs from the Internet Archive if
                         downloads fail
   --url-filter URL_FILTER
@@ -227,9 +233,9 @@ Extraction:
   -f, --fast            fast (without fallback detection)
   --formatting          include text formatting (bold, italic, etc.)
   --links               include links along with their targets
-  --nocomments          don't output any comments
-  --notables            don't output any table elements
-  --with-metadata       only output those documents with title, URL and date
+  --no-comments         don't output any comments
+  --no-tables           don't output any table elements
+  --only-with-metadata  only output those documents with title, URL and date
                         (for formats supporting metadata)
   --target-language TARGET_LANGUAGE
                         select a target language (ISO 639-1 codes)
