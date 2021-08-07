@@ -46,22 +46,24 @@ LOGGER = logging.getLogger(__name__)
 
 #@lru_cache(maxsize=2)
 def _parse_config(config):
-    'Read and extract user-agent strings from the configuration file.'
-    mystring = config.get('DEFAULT', 'USER_AGENTS')
-    if mystring is not None and mystring != '':
-        return mystring.split(',')
-    return None
+    'Read and extract HTTP header strings from the configuration file.'
+    myagents = config.get('DEFAULT', 'USER_AGENTS') or None
+    mycookies = config.get('DEFAULT', 'COOKIES') or None
+    return (myagents.split(',') if myagents else None, mycookies)
 
 
 def _determine_headers(config):
     'Internal function to decide on user-agent string.'
     if config != DEFAULT_CONFIG:
-        myagents = _parse_config(config)
+        myagents, mycookies = _parse_config(config)
+        headers = {}
         if myagents is not None:
             rnumber = random.randint(0, len(myagents) - 1)
-            return {
-            'User-Agent': myagents[rnumber],
-            }
+            headers['User-Agent'] = myagents[rnumber]
+        if mycookies is not None:
+            headers['Cookie'] = mycookies
+        if headers:
+            return headers
     return DEFAULT_HEADERS
 
 
