@@ -49,10 +49,12 @@ def test_fetch():
     # default user-agent
     default = _determine_headers(DEFAULT_CONFIG)
     assert default['User-Agent'] == USER_AGENT
+    assert 'Cookie' not in default
     # user-agents rotation
-    assert _parse_config(UA_CONFIG) == (['Firefox', 'Chrome'], None)
+    assert _parse_config(UA_CONFIG) == (['Firefox', 'Chrome'], 'yummy_cookie=choco; tasty_cookie=strawberry')
     custom = _determine_headers(UA_CONFIG)
     assert custom['User-Agent'] == 'Chrome' or custom['User-Agent'] == 'Firefox'
+    assert custom['Cookie'] == 'yummy_cookie=choco; tasty_cookie=strawberry'
 
 
 def test_queue():
