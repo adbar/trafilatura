@@ -44,25 +44,31 @@ DEFAULT_HEADERS = {
 LOGGER = logging.getLogger(__name__)
 
 
-#@lru_cache(maxsize=2)
+# caching throws an error
+# @lru_cache(maxsize=2)
 def _parse_config(config):
-    'Read and extract user-agent strings from the configuration file.'
-    mystring = config.get('DEFAULT', 'USER_AGENTS')
-    if mystring is not None and mystring != '':
-        return mystring.split(',')
-    return None
+    'Read and extract HTTP header strings from the configuration file.'
+    # load a series of user-agents
+    myagents = config.get('DEFAULT', 'USER_AGENTS') or None
+    if myagents is not None and myagents != '':
+        myagents = myagents.split(',')
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
+    # todo: support for several cookies?
+    mycookie = config.get('DEFAULT', 'COOKIE') or None
+    return myagents, mycookie
 
 
-def _determine_headers(config):
+def _determine_headers(config, headers=None):
     'Internal function to decide on user-agent string.'
     if config != DEFAULT_CONFIG:
-        myagents = _parse_config(config)
+        myagents, mycookie = _parse_config(config)
+        headers = dict()
         if myagents is not None:
             rnumber = random.randint(0, len(myagents) - 1)
-            return {
-            'User-Agent': myagents[rnumber],
-            }
-    return DEFAULT_HEADERS
+            headers['User-Agent'] = myagents[rnumber]
+        if mycookie is not None:
+            headers['Cookie'] = mycookie
+    return headers or DEFAULT_HEADERS
 
 
 def _send_request(url, no_ssl, config):
