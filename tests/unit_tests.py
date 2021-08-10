@@ -453,6 +453,17 @@ def test_tei():
     result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False, record_id='0001')
     assert result is not None
     assert xml.validate_tei(etree.fromstring(result)) is True
+    # test header + metadata
+    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    header = etree.SubElement(tei, 'teiHeader')
+    docmeta = dict.fromkeys(METADATA_LIST)
+    docmeta['categories'], docmeta['tags'] = [], []
+    docmeta['title'] = 'Title'
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['sitename'] = 'Site Name'
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['hostname'], docmeta['sitename'] = 'hostname', None
+    assert xml.write_fullheader(header, docmeta) is not None
 
 
 def test_htmlprocessing():
