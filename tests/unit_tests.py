@@ -214,8 +214,11 @@ def test_formatting():
     # simple
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    print(my_result)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
+    # titles as markdown
+    my_document = html.fromstring('<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>')
+    my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == '=== Title ===\n**This here is in bold font.**'
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)

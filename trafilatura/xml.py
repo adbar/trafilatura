@@ -177,9 +177,15 @@ def validate_tei(tei):  # , filename=""
 def replace_element_text(element, include_formatting, include_links):
     '''Determine element text based on text and tail'''
     full_text = ''
-    # handle formatting
+    # handle formatting: convert to markdown
     if include_formatting is True and element.text is not None:
-        if element.tag == 'hi':
+        if element.tag == 'head':
+            try:
+                number = int(element.get('rend')[1])
+            except (TypeError, ValueError):
+                number = 2
+            element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+        elif element.tag == 'hi':
             if element.get('rend') == '#b':
                 element.text = ''.join(['**', element.text, '**'])
             elif element.get('rend') == '#i':
