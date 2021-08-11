@@ -76,7 +76,8 @@ def extract_json(schema, metadata):
                         list_authors = [list_authors]
                     for author in list_authors:
                         if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
-                            if 'name' in author and author['name'] is not None and not author['name'].startswith('http'):
+                            # error thrown: author['name'] can be a list (?)
+                            if 'name' in author and author['name'] is not None and not isinstance(author['name'], list) and not author['name'].startswith('http'):
                                 metadata['author'] = normalize_authors(metadata['author'], author['name'])
                             elif 'givenName' in author is not None and 'familyName' in author:
                                 name = [author['givenName'], author['additionalName'], author['familyName']]
