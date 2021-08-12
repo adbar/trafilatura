@@ -13,7 +13,7 @@ from unittest.mock import patch
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import extract
-from trafilatura.downloads import add_to_compressed_dict, fetch_url, decode_response, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request
+from trafilatura.downloads import USER_AGENT, add_to_compressed_dict, fetch_url, decode_response, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import load_html
 
@@ -44,10 +44,17 @@ def test_fetch():
     assert load_html(response) is not None
     # nothing to see here
     assert extract(response, url=response.geturl(), config=ZERO_CONFIG) is None
+    # default config is none
+    assert _parse_config(DEFAULT_CONFIG) == (None, None)
+    # default user-agent
+    default = _determine_headers(DEFAULT_CONFIG)
+    assert default['User-Agent'] == USER_AGENT
+    assert 'Cookie' not in default
     # user-agents rotation
-    assert _parse_config(UA_CONFIG) == ['Firefox', 'Chrome']
+    assert _parse_config(UA_CONFIG) == (['Firefox', 'Chrome'], 'yummy_cookie=choco; tasty_cookie=strawberry')
     custom = _determine_headers(UA_CONFIG)
     assert custom['User-Agent'] == 'Chrome' or custom['User-Agent'] == 'Firefox'
+    assert custom['Cookie'] == 'yummy_cookie=choco; tasty_cookie=strawberry'
 
 
 def test_queue():

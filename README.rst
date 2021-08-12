@@ -62,7 +62,7 @@ Features
 Evaluation and alternatives
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For more detailed results see the `evaluation page <https://github.com/adbar/trafilatura/blob/master/docs/evaluation.rst>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
+For more detailed results see the `benchmark <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ and `evaluation script <https://github.com/adbar/trafilatura/blob/master/tests/comparison.py>`_. To reproduce the tests just clone the repository, install all necessary packages and run the evaluation script with the data provided in the *tests* directory.
 
 =============================== =========  ========== ========= ========= ======
 500 documents, 1487 text and 1496 boilerplate segments (2021-06-07)
@@ -90,7 +90,7 @@ trafilatura 0.8.2               0.934      **0.890**  **0.914** **0.912** 8.4x
 Usage and documentation
 -----------------------
 
-For more information please refer to the docs:
+For more information please refer to `the documentation <https://trafilatura.readthedocs.io/>`_:
 
 - `Installation <https://trafilatura.readthedocs.io/en/latest/installation.html>`_
 - Usage: `On the command-line <https://trafilatura.readthedocs.io/en/latest/usage-cli.html>`_, `With Python <https://trafilatura.readthedocs.io/en/latest/usage-python.html>`_, `With R <https://trafilatura.readthedocs.io/en/latest/usage-r.html>`_
@@ -119,8 +119,11 @@ Contributing
 Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
 
 
+Context
+-------
+
 Author
-------
+~~~~~~
 
 This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research. Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
 
@@ -148,13 +151,16 @@ This effort is part of methods to derive information from web documents in order
 You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or `GitHub <https://github.com/adbar>`_.
 
 
-Going further
--------------
+Software
+~~~~~~~~
 
-**Online documentation:** `trafilatura.readthedocs.io <https://trafilatura.readthedocs.io/>`_.
 
-**Tutorials:** `overview <https://trafilatura.readthedocs.io/en/latest/tutorials.html>`_.
+.. image:: docs/software-ecosystem.png
+    :alt: Software ecosystem 
+    :align: center
+    :width: 65%
+
 
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
-Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
+`Known uses of the software <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.

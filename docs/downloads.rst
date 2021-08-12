@@ -127,7 +127,7 @@ The `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_s
     seconds = get_crawl_delay(rules, default=30)
 
 
-.. info::
+.. note::
     Trafilatura's focused crawler implements the delay where applicable. For further info and rules see the `documentation page on crawling <crawls.html>`_.
 
 

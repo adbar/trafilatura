@@ -150,8 +150,11 @@ Contributing
 Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
 
 
+Context
+-------
+
 Author
-------
+~~~~~~
 
 This effort is part of methods to derive information from web documents in order to build `text databases for research <https://www.dwds.de/d/k-web>`_ (chiefly linguistic analysis and natural language processing). Extracting and pre-processing web texts to the exacting standards of scientific research presents a substantial challenge for those who conduct such research. Web corpus construction involves numerous design decisions, and this software package can help facilitate text data collection and enhance corpus quality.
 
@@ -163,6 +166,22 @@ This effort is part of methods to derive information from web documents in order
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
 You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or `GitHub <https://github.com/adbar>`_.
+
+
+Software
+~~~~~~~~
+
+
+.. image:: software-ecosystem.png
+    :alt: Software ecosystem 
+    :align: center
+    :width: 65%
+
+
+*Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
+
+`Known uses of the software <used-by.html>`_.
+
 
 
 Further documentation
