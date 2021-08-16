@@ -59,6 +59,7 @@ AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
 AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
 AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from|of|via|with)\b\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile(
     "["u"\U0001F600-\U0001F64F" u"\U0001F300-\U0001F5FF" u"\U0001F680-\U0001F6FF" u"\U0001F1E0-\U0001F1FF"
@@ -298,7 +299,7 @@ def filter_urls(linklist, urlfilter):
 def normalize_authors(current_authors, author_string):
     '''Normalize author info to focus on author names only'''
     new_authors = []
-    if author_string.lower().startswith('http'):
+    if author_string.lower().startswith('http') or AUTHOR_EMAIL.match(author_string):
         return current_authors
     if current_authors is not None:
         new_authors = current_authors.split('; ')
@@ -331,7 +332,7 @@ def normalize_authors(current_authors, author_string):
         if not author[0].isupper() or sum(1 for c in author if c.isupper()) < 1:
             author = author.title()
         # safety checks
-        if author not in new_authors and (len(new_authors) == 0 or any(new_author not in author for new_author in new_authors)):
+        if author not in new_authors and (len(new_authors) == 0 or all(new_author not in author for new_author in new_authors)):
             new_authors.append(author)
     if len(new_authors) == 0:
         return current_authors
