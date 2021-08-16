@@ -214,8 +214,11 @@ def test_formatting():
     # simple
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
-    print(my_result)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
+    # titles as markdown
+    my_document = html.fromstring('<html><body><article><h3>Title</h3><p><b>This here is in bold font.</b></p></article></body></html>')
+    my_result = extract(my_document, output_format='txt', include_formatting=True, config=ZERO_CONFIG)
+    assert my_result == '=== Title ===\n**This here is in bold font.**'
     # nested
     my_document = html.fromstring('<html><body><p><b>This here is in bold and <i>italic</i> font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
@@ -453,6 +456,17 @@ def test_tei():
     result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False, record_id='0001')
     assert result is not None
     assert xml.validate_tei(etree.fromstring(result)) is True
+    # test header + metadata
+    tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
+    header = etree.SubElement(tei, 'teiHeader')
+    docmeta = dict.fromkeys(METADATA_LIST)
+    docmeta['categories'], docmeta['tags'] = [], []
+    docmeta['title'] = 'Title'
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['sitename'] = 'Site Name'
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['hostname'], docmeta['sitename'] = 'hostname', None
+    assert xml.write_fullheader(header, docmeta) is not None
 
 
 def test_htmlprocessing():

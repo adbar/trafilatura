@@ -3578,7 +3578,6 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-
 'https://www.welt.de/regionales/hamburg/article202159566/Verhaertete-Fronten-nach-Tumulten-bei-Luckes-Vorlesung.html': {
     'file': 'd90b19386e2b48559082547016cbe5ec.html',
     'author': 'dpa/lno',
@@ -4083,7 +4082,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-   'https://www.mz-web.de/dessau-rosslau/hingucker-beim-flugplatzfest-zweite-f13-kurz-vor-der-zulassung-33328852': {
+'https://www.mz-web.de/dessau-rosslau/hingucker-beim-flugplatzfest-zweite-f13-kurz-vor-der-zulassung-33328852': {
     'file': '0af99c85f22b451a93a75bbf99ac412e.html',
     'author': 'Thomas Steinberg',
     'title': 'Hingucker beim Flugplatzfest in Dessau: Zweite F13 kurz vor der Zulassung',
@@ -4097,7 +4096,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-   'https://www.rundschau-online.de/region/rhein-berg/bergischgladbach/pflaster-desaster-gladbacher-fussgaengerzone-in-schlechtem-zustand-33335514': {
+'https://www.rundschau-online.de/region/rhein-berg/bergischgladbach/pflaster-desaster-gladbacher-fussgaengerzone-in-schlechtem-zustand-33335514': {
     'file': '0b5db24739704283849ca3ed20ce09d4.html',
     'author': 'Claus Boelen-Theile',
     'title': 'Bergisch Gladbach: die Stadt verklagt die Baufirma wegen schlechter Pflastersteine',
@@ -4111,7 +4110,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://www.finanztip.de/betriebliche-altersvorsorge/': {
+'https://www.finanztip.de/betriebliche-altersvorsorge/': {
     'file': 'finanztip.de.altersvorsorge.html',
     'author': 'Sara Zinnecker ',
     'title': 'Mit Hilfe des Chefs für die Rente sparen',
@@ -4125,7 +4124,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://www.smava.de/privatkredit/privatkredit-zinsen/': {
+'https://www.smava.de/privatkredit/privatkredit-zinsen/': {
     'file': 'smava.de.privatkredit.html',
     'author': '',
     'title': 'Wie hoch sind die Zinsen für einen Privatkredit? ',
@@ -4139,7 +4138,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://www.finanzcheck.de/autokredit/leasing-oder-finanzierung/': {
+'https://www.finanzcheck.de/autokredit/leasing-oder-finanzierung/': {
     'file': 'finanzcheck.de.finanzierung.html',
     'author': '',
     'title': 'Leasing oder Finanzierung – was lohnt sich mehr?',
@@ -4153,7 +4152,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://www.vergleich.de/auto-leasen-finanzieren-oder-kaufen.html': {
+'https://www.vergleich.de/auto-leasen-finanzieren-oder-kaufen.html': {
     'file': 'vergleich.de.leasen.html',
     'author': '',
     'title': 'Auto leasen, finanzieren oder kaufen – was ist günstiger?',
@@ -4167,7 +4166,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://www.focus.de/auto/experten/auto-leasen-oder-kaufen-fuer-wen-lohnt-sich-was_id_9209161.html': {
+'https://www.focus.de/auto/experten/auto-leasen-oder-kaufen-fuer-wen-lohnt-sich-was_id_9209161.html': {
     'file': 'focus.de.leasen.html',
     'author': 'Robin Tschöpe',
     'title': 'Auto leasen oder kaufen: Für wen lohnt sich was?',
@@ -4181,7 +4180,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://www.comparis.ch/leasing/info/autofinanzierung': {
+'https://www.comparis.ch/leasing/info/autofinanzierung': {
     'file': 'comparis.ch.autofinanzierung.html',
     'author': '',
     'title': 'Finanzierung Ihres Autos',
@@ -4195,7 +4194,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'CH',
 },
-    'https://www.verivox.de/kredit/leasing-oder-finanzierung/': {
+'https://www.verivox.de/kredit/leasing-oder-finanzierung/': {
     'file': 'verivox.de.finanzierung.html',
     'author': '',
     'title': 'Leasing oder Finanzierung? Jetzt Angebote berechnen!',
@@ -4209,7 +4208,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://fincompare.de/firmenwagen-leasing-oder-finanzierung': {
+'https://fincompare.de/firmenwagen-leasing-oder-finanzierung': {
     'file': 'fincompare.de.firmenwagen.html',
     'author': 'Martin Junker',
     'title': 'Firmenwagen: Leasing oder Finanzierung?',
@@ -4223,7 +4222,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://www.giromatch.com/online-kredit/1000-euro-kredit': {
+'https://www.giromatch.com/online-kredit/1000-euro-kredit': {
     'file': 'giromatch.com.kredit.html',
     'author': '',
     'title': '1000 Euro Kredit',
@@ -4237,7 +4236,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://www.financescout24.de/kredit/autokredit': {
+'https://www.financescout24.de/kredit/autokredit': {
     'file': 'financescout24.de.autokredit.html',
     'author': '',
     'title': 'Jetzt günstigen Autokredit finden',
@@ -4251,7 +4250,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://web.archive.org/web/20140226054445/http://www.time4talks.com/2013/08/07/weitere-digitalisierung-der-schweizer-kinos/': {
+'https://web.archive.org/web/20140226054445/http://www.time4talks.com/2013/08/07/weitere-digitalisierung-der-schweizer-kinos/': {
     'file': 'archive.org.time4talks.com.kinos.html',
     'author': 'R. R.',
     'title': 'Weitere Digitalisierung der Schweizer Kinos',
@@ -4265,7 +4264,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://web.archive.org/web/20181206101316/https://swap-stop.org/de/filmswap/zusammenarbeit-shuji-walter-april-2018-i/': {
+'https://web.archive.org/web/20181206101316/https://swap-stop.org/de/filmswap/zusammenarbeit-shuji-walter-april-2018-i/': {
     'file': 'archive.org.swap-stop.org.shuji.html',
     'author': ' Walter von Aachen',
     'title': 'Zusammenarbeit Shuji ./. Walter April 2018 I',
@@ -4279,7 +4278,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://web.archive.org/web/20160401095740/http://www.welpenkaufen24.de/': {
+'https://web.archive.org/web/20160401095740/http://www.welpenkaufen24.de/': {
     'file': 'archive.org.welpenkaufen24.de.html',
     'author': '',
     'title': 'Welpen kaufen – Tipps zu jeder Hunderasse',
@@ -4293,7 +4292,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://web.archive.org/web/20160330101229/http://muffinrezept.net/muffin-grundrezept': {
+'https://web.archive.org/web/20160330101229/http://muffinrezept.net/muffin-grundrezept': {
     'file': 'archive.org.muffinrezept.net.grundrezept.html',
     'author': '',
     'title': 'Muffin Grundrezept',
@@ -4307,7 +4306,7 @@ EVAL_PAGES = {
     'license': 'CC-BY-SA',
     'region': '',
 },
-    'https://web.archive.org/web/20160218174457/http://bewegliche-lettern.de/2010/05/literatur-und-animated-typography/': {
+'https://web.archive.org/web/20160218174457/http://bewegliche-lettern.de/2010/05/literatur-und-animated-typography/': {
     'file': 'archive.org.bewegliche-lettern.de.typography.html',
     'author': '',
     'title': 'Literatur und Animated Typography',
@@ -4321,7 +4320,7 @@ EVAL_PAGES = {
     'license': 'CC BY-NC-SA 3.0 DE',
     'region': '',
 },
-    'https://web.archive.org/web/20150721045344/http://rent-a-pastor.com/2015/05/18/neue-hochzeitslokation-in-roedermark-hessen-geheimtipp/': {
+'https://web.archive.org/web/20150721045344/http://rent-a-pastor.com/2015/05/18/neue-hochzeitslokation-in-roedermark-hessen-geheimtipp/': {
     'file': 'archive.org.rent-a-pastor.com.hochzeitslokation.html',
     'author': 'Samuel Diekmann',
     'title': ' Neue Hochzeitslokation in Rödermark/ Hessen – Geheimtipp',
@@ -4335,7 +4334,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://web.archive.org/web/20171008220355/http://juergenheitmann.com/essays/2017/01/aggression-fotografie/': {
+'https://web.archive.org/web/20171008220355/http://juergenheitmann.com/essays/2017/01/aggression-fotografie/': {
     'file': 'archive.org.juergenheitmann.com.aggression.html',
     'author': 'Jürgen Heitmann',
     'title': 'Aggression Fotografie',
@@ -4349,7 +4348,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://web.archive.org/web/20080731095558/http://www.dimido.de/2008/07/29/was-ist-virales-marketing/': {
+'https://web.archive.org/web/20080731095558/http://www.dimido.de/2008/07/29/was-ist-virales-marketing/': {
     'file': 'archive.org.dimido.de.marketing.html',
     'author': 'Martin Weber',
     'title': 'Was ist Virales Marketing?',
@@ -4363,7 +4362,7 @@ EVAL_PAGES = {
     'license': 'CC BY-NC-SA 2.0 DE',
     'region': 'DE',
 },
-    'https://web.archive.org/web/20140109030403/http://nesselsetzer.wordpress.com/2013/12/09/rebloggt-von-gnaddrig-ad-libitum-antipoden-die-wahrheit/': {
+'https://web.archive.org/web/20140109030403/http://nesselsetzer.wordpress.com/2013/12/09/rebloggt-von-gnaddrig-ad-libitum-antipoden-die-wahrheit/': {
     'file': 'archive.org.nesselsetzer.wordpress.com.antipoden.html',
     'author': 'Nesselsetzer',
     'title': 'Rebloggt von gnaddrig ad libitum: Antipoden: Die Wahrheit',
@@ -4377,7 +4376,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://web.archive.org/web/20150206075900/http://www.steinzeitwissen.de/artefakttypen/werkzeuge-des-neandertalers-und-des-modernen-menschen': {
+'https://web.archive.org/web/20150206075900/http://www.steinzeitwissen.de/artefakttypen/werkzeuge-des-neandertalers-und-des-modernen-menschen': {
     'file': 'archive.org.steinzeitwissen.de.werkzeuge.html',
     'author': '',
     'title': 'Werkzeuge des Neandertalers und des Modernen Menschen',
@@ -4391,7 +4390,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://web.archive.org/web/20160820205919/http://www.medialepfade.de/2016/01/medienpaedagogin-in-muenchen-gesucht/': {
+'https://web.archive.org/web/20160820205919/http://www.medialepfade.de/2016/01/medienpaedagogin-in-muenchen-gesucht/': {
     'file': 'archive.org.medialepfade.de.medienpaedagogin.html',
     'author': 'Danilo Dietsch',
     'title': 'MedienpädagogIn in München gesucht',
@@ -4405,21 +4404,7 @@ EVAL_PAGES = {
     'license': 'CC BY-SA 3.0 DE',
     'region': 'DE',
 },
-    'http://www.modabot.de/paris-haute-couture-ss14-serkan-cura': {
-    'file': 'modabot.de.serkan.html',
-    'author': 'Barbara Russ',
-    'title': 'Paris Haute Couture SS14: Serkan Cura',
-    'date': '2014-01-27',
-    'description': '',
-    'categories': ['Event', 'Fashion'],
-    'tags': ['Haute Couture', 'Paris', 'Serkan Cura', 'SS14'],
-    'with': ['Herpen, die diesmal leider keine Präsentation zur Pariser Couture Woche gab', 'Eben so wie Haute Couture eigentlich sein soll: Die Krone der Mode-Schöpfu'],
-    'without': ['t ist nicht verantwortlich für de', 'Weiterlesen', 'na Wintour Ausstel'],
-    'comments': [],
-    'license': '',
-    'region': '',
-},
-    'https://www.piratenpartei-hessen.de/blog/2020/03/31/solidaritaet-nachbarschaftshilfe/': {
+'https://www.piratenpartei-hessen.de/blog/2020/03/31/solidaritaet-nachbarschaftshilfe/': {
     'file': 'piratenpartei-hessen.de.nachbarschaftshilfe.html',
     'author': 'Martina Scharmann',
     'title': 'Solidarität = Nachbarschaftshilfe',
@@ -4433,7 +4418,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'https://gormulus.wordpress.com/2012/12/11/das-wird-man-ja-wohl-noch-sagen-durfen/': {
+'https://gormulus.wordpress.com/2012/12/11/das-wird-man-ja-wohl-noch-sagen-durfen/': {
     'file': 'gormulus.wordpress.com.durfen.html',
     'author': '',
     'title': '„Das wird man ja wohl noch sagen dürfen!“',
@@ -4447,7 +4432,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'CC BY-NC-SA 3.0 DE',
 },
-    'http://diy-expeditions.com/expeditionen-planen/expeditionen-in-uebersee/': {
+'http://diy-expeditions.com/expeditionen-planen/expeditionen-in-uebersee/': {
     'file': 'diy-expeditions.com.uebersee.html',
     'author': '',
     'title': 'Expeditionen in Übersee',
@@ -4461,7 +4446,7 @@ EVAL_PAGES = {
     'license': '',
     'region': '',
 },
-    'https://kleinegruenemonster.wordpress.com/2016/01/01/ein-entspannter-start-ins-neue-jahr-2016-be-happy/': {
+'https://kleinegruenemonster.wordpress.com/2016/01/01/ein-entspannter-start-ins-neue-jahr-2016-be-happy/': {
     'file': 'kleinegruenemonster.wordpress.com.start.html',
     'author': 'KleineGrüneMonster',
     'title': 'Ein entspannter Start ins neue Jahr 2016 – be happy! Alles andere kann warten…',
@@ -4475,7 +4460,7 @@ EVAL_PAGES = {
     'license': 'CC BY-NC 3.0 DE',
     'region': '',
 },
-    'https://www.markeich.de/kontakt/impressum-werbeagentur-soltau/': {
+'https://www.markeich.de/kontakt/impressum-werbeagentur-soltau/': {
     'file': 'markeich.de.impressum.html',
     'author': '',
     'title': 'Impressum',
@@ -4489,7 +4474,7 @@ EVAL_PAGES = {
     'license': '',
     'region': 'DE',
 },
-    'http://www.schlosswirtjuval.it/hof-geschichte/': {
+'http://www.schlosswirtjuval.it/hof-geschichte/': {
     'file': 'schlosswirtjuval.it.geschichte.html',
     'author': '',
     'title': 'Zur Geschichte des „Oberortlhofs“',
@@ -5543,7 +5528,7 @@ EVAL_PAGES = {
     'file': 'royalroad.com.melas.html',  # stays empty until download
     'author': 'delta201',
     'title': 'Chapter 1: Prologue - Murdered',
-    'date': '2',
+    'date': '2020-08-06',
     'description': ' &#xA;When I woke up, there was nothing.&#xA;A pure white empty space that seemed to stretch for all eternity was all that I saw; an expansive blank canvas filled (...)',  # in HTML source
     'categories': [''],
     'tags': [''],
@@ -5655,7 +5640,7 @@ EVAL_PAGES = {
     'file': 'nhk.or.jp.k100.html',  # stays empty until download
     'author': '',
     'title': '子どもへの体罰を禁止する法律ができる ',
-    'date': '06-24',
+    'date': '2019-06-24',
     'description': '子どもへの虐待をなくすための法律ができて、親が子どもを教育するために、たたいたり蹴ったりする体罰を禁止することになりました。最近、親に虐待...',  # in HTML source
     'categories': [''],
     'tags': [''],

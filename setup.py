@@ -86,7 +86,7 @@ setup(
         'certifi',
         'chardet == 3.0.4; python_version < "3.6"',
         'chardet >= 4.0.0; python_version >= "3.6"',
-        'courlan >= 0.4.1',
+        'courlan >= 0.4.2',
         'htmldate >= 0.9.0',
         'justext >= 2.2.0',
         'lxml >= 4.6.3',

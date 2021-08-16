@@ -177,9 +177,15 @@ def validate_tei(tei):  # , filename=""
 def replace_element_text(element, include_formatting, include_links):
     '''Determine element text based on text and tail'''
     full_text = ''
-    # handle formatting
+    # handle formatting: convert to markdown
     if include_formatting is True and element.text is not None:
-        if element.tag == 'hi':
+        if element.tag == 'head':
+            try:
+                number = int(element.get('rend')[1])
+            except (TypeError, ValueError):
+                number = 2
+            element.text = ''.join(['='*number, ' ', element.text, ' ', '='*number])
+        elif element.tag == 'hi':
             if element.get('rend') == '#b':
                 element.text = ''.join(['**', element.text, '**'])
             elif element.get('rend') == '#i':
@@ -301,7 +307,7 @@ def write_fullheader(header, docmeta):
         bib_author.text = docmeta['author']
     publicationstmt_a = etree.SubElement(filedesc, 'publicationStmt')
     # license, if applicable
-    if docmeta['license'] is not None:
+    if docmeta['license']:
         availability = etree.SubElement(publicationstmt_a, 'availability')
         avail_p = etree.SubElement(availability, 'p')
         avail_p.text = docmeta['license']
@@ -309,7 +315,7 @@ def write_fullheader(header, docmeta):
     else:
         publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
     notesstmt = etree.SubElement(filedesc, 'notesStmt')
-    if docmeta['id'] is not None:
+    if docmeta['id']:
         idno = etree.SubElement(notesstmt, 'note', type='id')
         idno.text = docmeta['id']
     fingerprint = etree.SubElement(notesstmt, 'note', type='fingerprint')
@@ -324,6 +330,7 @@ def write_fullheader(header, docmeta):
     elif docmeta['sitename'] and not docmeta['date']:
         sigle = docmeta['sitename']
     else:
+        LOGGER.warning('no sigle for URL %s', docmeta['url'])
         sigle = ''
     if docmeta['title']:
         source_bibl.text = docmeta['title'] + '. ' + sigle
@@ -340,12 +347,17 @@ def write_fullheader(header, docmeta):
         bib_author.text = docmeta['author']
     publicationstmt = etree.SubElement(biblfull, 'publicationStmt')
     publication_publisher = etree.SubElement(publicationstmt, 'publisher')
-    if docmeta['hostname'] is not None:
+    if docmeta['hostname'] and docmeta['sitename']:
         publisherstring = docmeta['sitename'].strip() + ' (' + docmeta['hostname'] + ')'
-    else:
+    elif docmeta['hostname']:
+        publisherstring = docmeta['hostname']
+    elif docmeta['sitename']:
         publisherstring = docmeta['sitename']
+    else:
+        LOGGER.warning('no publisher for URL %s', docmeta['url'])
+        publisherstring = 'N/A'
     publication_publisher.text = publisherstring
-    if docmeta['url'] is not None:
+    if docmeta['url']:
         publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL', target=docmeta['url'])
     publication_date = etree.SubElement(publicationstmt, 'date')
     publication_date.text = docmeta['date']
