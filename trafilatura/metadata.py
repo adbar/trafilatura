@@ -15,7 +15,7 @@ from lxml import html
 
 from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
-from .utils import line_processing, load_html, normalize_authors, trim
+from .utils import line_processing, load_html, normalize_authors, trim, check_authors
 from .htmlprocessing import prune_unwanted_nodes
 
 LOGGER = logging.getLogger(__name__)
@@ -305,18 +305,22 @@ def extract_catstags(metatype, tree):
     return [x for x in results if x is not None]
 
 
-def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False):
+def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
     """Main process for metadata extraction.
 
     Args:
         filecontent: HTML code as string.
         default_url: Previously known URL of the downloaded document.
         date_config: Provide extraction parameters to htmldate as dict().
+        author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
 
     Returns:
         A dict() containing the extracted metadata information or None.
 
     """
+    # init
+    if author_blacklist is None:
+        author_blacklist = set()
     # load contents
     tree = load_html(filecontent)
     if tree is None:
@@ -324,6 +328,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
     if metadata['author'] is not None:
+        # check to remove it and replace with author_blacklist on test case
         if ' ' not in metadata['author']:
             metadata['author'] = None
     # fix: try json-ld metadata and override
@@ -332,9 +337,15 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # title
     if metadata['title'] is None:
         metadata['title'] = extract_title(tree)
+    # check author in blacklist
+    if metadata['author'] is not None and len(author_blacklist) > 0:
+        metadata['author'] = check_authors(metadata['author'], author_blacklist)
     # author
     if metadata['author'] is None:
         metadata['author'] = extract_author(tree)
+    # recheck author in blacklist
+    if metadata['author'] is not None and len(author_blacklist) > 0:
+        metadata['author'] = check_authors(metadata['author'], author_blacklist)
     # url
     if metadata['url'] is None:
         metadata['url'] = extract_url(tree, default_url)

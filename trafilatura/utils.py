@@ -53,7 +53,7 @@ NOPRINT_TRANS_TABLE = {
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
 
-AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|by|von) ', flags=re.IGNORECASE)
+AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|words|by|von) ', flags=re.IGNORECASE)
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
@@ -307,7 +307,7 @@ def normalize_authors(current_authors, author_string):
     if '\\u' in author_string:
         author_string = author_string.encode().decode('unicode_escape')
     # fix html entities
-    if '&#' in author_string:
+    if '&#' in author_string or '&amp;' in author_string:
         author_string = unescape(author_string)
     # examine names
     for author in AUTHOR_SPLIT.split(author_string):
@@ -337,3 +337,14 @@ def normalize_authors(current_authors, author_string):
     if len(new_authors) == 0:
         return current_authors
     return '; '.join(new_authors).strip('; ')
+
+
+def check_authors(authors, author_blacklist):
+    new_authors = []
+    for author in authors.split('; '):
+        if author.lower() not in [a.lower() for a in author_blacklist]:
+            new_authors.append(author)
+    if len(new_authors) > 0:
+        return '; '.join(new_authors).strip('; ')
+    else:
+        return None
