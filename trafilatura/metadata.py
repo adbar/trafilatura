@@ -13,8 +13,9 @@ from htmldate import find_date
 from lxml import html
 
 from .json_metadata import extract_json, extract_json_parse_error
-from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths
+from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
 from .utils import line_processing, load_html, normalize_authors, trim
+from .htmlprocessing import prune_unwanted_nodes
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
@@ -331,7 +332,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         metadata['title'] = extract_title(tree)
     # author
     if metadata['author'] is None:
-        metadata['author'] = extract_author(tree)
+        subtree = prune_unwanted_nodes(tree, author_discard_xpaths)
+        metadata['author'] = extract_author(subtree)
     # url
     if metadata['url'] is None:
         metadata['url'] = extract_url(tree, default_url)

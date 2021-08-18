@@ -158,9 +158,15 @@ def test_authors():
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author-name">Jenny Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><figure data-component="Figure"><div class="author">Jenny Smith</div></figure></body></html>')
+    assert metadata['author'] is None
+    metadata = extract_metadata('<html><body><div class="sidebar"><div class="author">Jenny Smith</div></figure></body></html>')
+    assert metadata['author'] is None
     metadata = extract_metadata('<html><body><span class="author">Jenny Smith and John Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith; John Smith'
     metadata = extract_metadata('<html><body><a class="author">Jenny Smith</a></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><a class="author">Jenny Smith <div class="title">Editor</div></a></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><a class="author">Jenny Smith from Trafilatura</a></body></html>')
     assert metadata['author'] == 'Jenny Smith'
