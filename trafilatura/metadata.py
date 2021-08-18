@@ -5,6 +5,7 @@ Module bundling all functions needed to scrape metadata from webpages.
 import json
 import logging
 import re
+from copy import deepcopy
 
 from courlan.clean import normalize_url
 from courlan.core import extract_domain
@@ -218,7 +219,8 @@ def extract_title(tree):
 
 def extract_author(tree):
     '''Extract the document author(s)'''
-    author = extract_metainfo(tree, author_xpaths, len_limit=120)
+    subtree = prune_unwanted_nodes(deepcopy(tree), author_discard_xpaths)
+    author = extract_metainfo(subtree, author_xpaths, len_limit=120)
     if author:
         author = normalize_authors(None, author)
     return author
@@ -332,8 +334,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         metadata['title'] = extract_title(tree)
     # author
     if metadata['author'] is None:
-        subtree = prune_unwanted_nodes(tree, author_discard_xpaths)
-        metadata['author'] = extract_author(subtree)
+        metadata['author'] = extract_author(tree)
     # url
     if metadata['url'] is None:
         metadata['url'] = extract_url(tree, default_url)
