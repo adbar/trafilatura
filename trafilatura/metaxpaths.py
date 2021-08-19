@@ -19,7 +19,7 @@ author_xpaths = [
 
 author_discard_xpaths = [
     """.//*[(self::div or self::section or self::figure)][@id='comments' or @class='comments' or @class='title' or
-    contains(@id, 'commentlist') or contains(@class, 'commentlist') or contains(@class, 'sidebar') or contains(@class, 'is-hidden')
+    contains(@id, 'commentlist') or contains(@class, 'commentlist') or contains(@class, 'sidebar') or contains(@class, 'embedly-instagram') or contains(@class, 'is-hidden')
     or contains(@id, 'comment-list') or contains(@class, 'comments-list') or contains(@id, 'ProductReviews') or
     starts-with(@id, 'comments') or contains(@data-component, "Figure")
     or starts-with(@class, 'comments') or starts-with(@class, 'Comments')
