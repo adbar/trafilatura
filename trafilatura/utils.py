@@ -57,7 +57,7 @@ AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|word
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
-AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~—-]')
 AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from|of|via|with)\b\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
