@@ -318,12 +318,12 @@ def normalize_authors(current_authors, author_string):
         author = AUTHOR_TWITTER.sub('', author)
         # replace special characters with space
         author = AUTHOR_REPLACE_JOIN.sub(' ', author)
-        author = AUTHOR_PREFIX.sub('', author)
-        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
-        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
         author = AUTHOR_REMOVE_NICKNAME.sub('', author)
         # remove special characters
         author = AUTHOR_REMOVE_SPECIAL.sub('', author)
+        author = AUTHOR_PREFIX.sub('', author)
+        author = AUTHOR_REMOVE_NUMBERS.sub('', author)
+        author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
         # skip empty or improbably long strings
         if len(author) == 0 or (
             # simple heuristics, regex or vowel tests also possible
