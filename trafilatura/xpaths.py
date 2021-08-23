@@ -15,7 +15,7 @@ BODY_XPATH = [
     '''.//*[(self::article or self::div or self::main or self::section)][
     contains(@class, "post-text") or contains(@class, "post_text") or
     contains(@class, "post-body") or contains(@class, "post-entry") or contains(@class, "postentry") or
-    contains(@class, "post-content") or contains(@class, "post_content") or
+    contains(@class, "post-content") or contains(@class, "post_content") or contains(@class, "article__container") or
     contains(@class, "postcontent") or contains(@class, "postContent") or
     contains(@class, "article-text") or contains(@class, "articletext") or contains(@class, "articleText") or contains(@class, "field-body")]''',
     '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "entry-content") or
