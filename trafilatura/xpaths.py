@@ -105,7 +105,7 @@ DISCARD_XPATH = [
     contains(@class, "embedded") or contains(@class, "embed")
     or contains(@id, "teaser") or contains(@class, "teaser") or
     contains(translate(@class, "T","t"), "teaser")
-    or contains(@id, "newsletter") or contains(@class, "newsletter") or
+    or contains(@id, "newsletter") or contains(@class, "newsletter") or contains(@class, "subnav") or
     contains(@id, "cookie") or contains(@class, "cookie") or contains(@id, "tags")
     or contains(@class, "tags")  or contains(@id, "sidebar") or
     contains(@class, "sidebar") or contains(@id, "banner") or contains(@class, "banner")
