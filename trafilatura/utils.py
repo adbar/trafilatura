@@ -57,9 +57,9 @@ AUTHOR_PREFIX = re.compile(r'^([a-zäöüß]+(ed|t))? ?(written by|words by|word
 AUTHOR_REMOVE_NUMBERS = re.compile(r'\d.+?$')
 AUTHOR_TWITTER = re.compile(r'@[\w]+')
 AUTHOR_REPLACE_JOIN = re.compile(r'[._+]')
-AUTHOR_REMOVE_NICKNAME = re.compile(r'["‘’\'][^"]+?[‘’"\']')
-AUTHOR_REMOVE_SPECIAL = re.compile(r'[:()?*$#!%/<>{}~]')
-AUTHOR_REMOVE_PREPOSITION = re.compile(r'[^\w]+$|\b\s+(am|on|for|at|in|to|from|of|via|with|—|-)\s+(.*)', flags=re.IGNORECASE)
+AUTHOR_REMOVE_NICKNAME = re.compile(r'["‘({\[’\'][^"]+?[‘’"\')\]}]')
+AUTHOR_REMOVE_SPECIAL = re.compile(r'[^\w]+$|[:()?*$#!%/<>{}~]')
+AUTHOR_REMOVE_PREPOSITION = re.compile(r'\b\s+(am|on|for|at|in|to|from|of|via|with|—|-)\s+(.*)', flags=re.IGNORECASE)
 AUTHOR_EMAIL = re.compile(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
 AUTHOR_SPLIT = re.compile(r'/|;|,|\||&|(?:^|\W)[u|a]nd(?:$|\W)', flags=re.IGNORECASE)
 AUTHOR_EMOJI_REMOVE = re.compile(
@@ -316,14 +316,14 @@ def normalize_authors(current_authors, author_string):
         author = AUTHOR_EMOJI_REMOVE.sub('', author)
         # remove @username
         author = AUTHOR_TWITTER.sub('', author)
-        # remove special characters
-        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
         # replace special characters with space
         author = AUTHOR_REPLACE_JOIN.sub(' ', author)
         author = AUTHOR_PREFIX.sub('', author)
         author = AUTHOR_REMOVE_NUMBERS.sub('', author)
         author = AUTHOR_REMOVE_PREPOSITION.sub('', author)
         author = AUTHOR_REMOVE_NICKNAME.sub('', author)
+        # remove special characters
+        author = AUTHOR_REMOVE_SPECIAL.sub('', author)
         # skip empty or improbably long strings
         if len(author) == 0 or (
             # simple heuristics, regex or vowel tests also possible
