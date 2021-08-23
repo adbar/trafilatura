@@ -29,7 +29,7 @@ def extract_json(schema, metadata):
             continue
         if '@graph' in parent:
             parent = parent['@graph']
-        elif '@type' in parent and 'liveblogposting' in parent['@type'].lower():
+        elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower():
             parent = parent['liveBlogUpdate']
         else:
             parent = schema
