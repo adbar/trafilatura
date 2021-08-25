@@ -25,7 +25,7 @@ def extract_json(schema, metadata):
         schema = [schema]
 
     for parent in filter(None, schema):
-        if '@context' not in parent or parent['@context'][-10:].lower() != 'schema.org':
+        if '@context' not in parent or not isinstance(parent['@context'], str) or parent['@context'][-10:].lower() != 'schema.org':
             continue
         if '@graph' in parent:
             parent = parent['@graph']
@@ -77,8 +77,11 @@ def extract_json(schema, metadata):
                     for author in list_authors:
                         if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
                             # error thrown: author['name'] can be a list (?)
-                            if 'name' in author and author['name'] is not None and not isinstance(author['name'], list) and not author['name'].startswith('http'):
-                                metadata['author'] = normalize_authors(metadata['author'], author['name'])
+                            if 'name' in author and author['name'] is not None:
+                                author_name = author['name']
+                                if isinstance(author_name, list):
+                                    author_name = '; '.join(author_name).strip('; ')
+                                metadata['author'] = normalize_authors(metadata['author'], author_name)
                             elif 'givenName' in author is not None and 'familyName' in author:
                                 name = [author['givenName'], author['additionalName'], author['familyName']]
                                 metadata['author'] = normalize_authors(metadata['author'], ' '.join(
