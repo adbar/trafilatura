@@ -36,7 +36,7 @@ BODY_XPATH = [
     contains(@class, 'single-post') or
     contains(@class, 'main-column') or contains(@class, 'wpb_text_column') or
     starts-with(@id, 'primary') or starts-with(@class, 'article ') or @class="text" or
-    @class="cell" or @id="story" or @class="story" or
+    @class="cell" or @id="story" or @class="story" or contains(@class, "body-description") or
     contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]""",
     '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
     contains(@class, "main-content") or contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "page-content")]''',
