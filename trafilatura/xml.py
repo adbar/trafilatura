@@ -205,7 +205,7 @@ def replace_element_text(element, include_formatting, include_links):
             element.text = ''.join(['[', element.text, ']'])
     # handle text
     if element.text is not None and element.tail is not None:
-        full_text = ' '.join([element.text, element.tail])
+        full_text = ''.join([element.text, element.tail])
     elif element.text is not None and element.tail is None:
         full_text = element.text
     elif element.text is None and element.tail is not None:

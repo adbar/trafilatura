@@ -199,7 +199,11 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         if child.tag not in potential_tags and child.tag != 'done':
             LOGGER.warning('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
-        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
+        if child.tag in ('code', 'hi', 'ref'): # todo: outputformat.startswith('xml')?
+            spacing = True
+        else:
+            spacing = False
+        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True, config=config)
         if processed_child is not None:
             # todo: needing attention!
             if processed_child.tag == 'p':
@@ -218,6 +222,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                         if text_chars_test(item.text) is True:
                             item.text = ' ' + item.text
                         etree.strip_tags(processed_child, item.tag)
+                # correct attributes
                 if child.tag == 'hi':
                     newsub.set('rend', child.get('rend'))
                 elif child.tag == 'ref':
