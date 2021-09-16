@@ -23,6 +23,8 @@ Python can be easy to pick up whether you're a first time programmer or you're e
 Step-by-step
 ------------
 
+Quickstart
+^^^^^^^^^^
 
 .. code-block:: python
 
@@ -34,15 +36,53 @@ Step-by-step
     >>> result = extract(downloaded)
     >>> print(result)
     # newlines preserved, TXT output ...
-    # source URL provided for metadata
-    >>> result = extract(downloaded, xml_output=True, url=url)
-    >>> print(result)
-    # some formatting preserved in basic XML structure ...
 
 The only required argument is the input document (here a downloaded HTML file), the rest is optional.
 
-..hint:
-    The inclusion of tables and comments can be deactivated at a function call. The use of fallback algorithms can also be bypassed in *fast* mode:
+.. note::
+    For a hands-on tutorial see also the Python Notebook `Trafilatura Overview <https://github.com/adbar/trafilatura/blob/master/docs/Trafilatura_Overview.ipynb>`_.
+
+
+
+Formats
+^^^^^^^
+
+Default output is set to TXT (bare text) without metadata.
+
+The following formats are available: bare text, text with Markdown formatting, CSV, JSON, XML, and XML following the guidelines of the Text Encoding Initiative (TEI).
+
+
+.. hint::
+    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format.
+
+The variables from the example above can be used further:
+
+
+.. code-block:: python
+
+    # newlines preserved, TXT output
+    >>> extract(downloaded)
+    # TXT/Markdown output
+    >>> extract(downloaded, include_links=True)
+    # some formatting preserved in basic XML structure
+    >>> extract(downloaded, output_format='xml')
+    # source URL provided for inclusion in metadata
+    >>> extract(downloaded, output_format='xml', url=url)
+    # links preserved in XML
+    >>> extract(downloaded, output_format='xml', include_links=True)
+
+
+
+Choice of HTML elements
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Several elements can be included or discarded:
+
+* Text elements: comments, tables
+* Structural elements: formatting, images, links
+
+Their inclusion can be activated or deactivated using paramaters passed to the ``extract()`` function:
+
 
 .. code-block:: python
 
@@ -50,17 +90,58 @@ The only required argument is the input document (here a downloaded HTML file), 
     >>> result = extract(downloaded, include_comments=False)
     # skip tables examination
     >>> result = extract(downloaded, include_tables=False)
-    # skip justext algorithm used as fallback
+    # output with links
+    >>> result = extract(downloaded, include_links=True)
+    # and so on...
+
+
+.. note::
+    Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
+
+
+Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements.
+
+- ``include_formatting=True``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+- ``include_links=True``: Keep link targets (in ``href="..."``)
+- ``include_images=True``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+- ``include_tables=True``: Extract text from HTML ``<table>`` elements.
+
+Only ``include_tables`` is activated by default.
+
+
+
+
+Language identification
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
+
+.. code-block:: python
+
+    >>> result = extract(downloaded, url, target_language='de')
+
+.. note::
+    Additional components are required: ``pip install trafilatura[all]``
+
+
+Speed
+^^^^^
+
+Execution speed not only depends on the platform but also on the extraction strategy.
+
+.. hint::
+    The available fallbacks make extraction more precise but also slower. The use of fallback algorithms can also be bypassed in *fast* mode:
+
+.. code-block:: python
+
+    # skip algorithms used as fallback
     >>> result = extract(downloaded, no_fallback=True)
 
-This values combined probably provide the fastest execution times:
+The following combination can lead to shorter processing times:
 
 .. code-block:: python
 
     >>> result = extract(downloaded, include_comments=False, include_tables=False, no_fallback=True)
-
-
-See also Python Notebook `Trafilatura Overview <Trafilatura_Overview.ipynb>`_.
 
 
 Extraction settings
@@ -73,6 +154,7 @@ Text extraction can be parametrized by providing a custom configuration file (th
 
 .. code-block:: python
 
+    # load the required functions
     >>> from trafilatura import extract
     >>> from trafilatura.settings import use_config
     # load the new settings by providing a file name
@@ -94,29 +176,6 @@ The function ``bare_extraction`` can be used to bypass output conversion, it ret
 
     >>> from trafilatura import bare_extraction
     >>> bare_extraction(downloaded)
-
-
-Choice of HTML elements
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements.
-
-- ``include_formatting=True``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
-- ``include_links=True``: Keep link targets (in ``href="..."``)
-- ``include_images=True``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
-- ``include_tables=True``: Extract text from HTML ``<table>`` elements.
-
-Only ``include_tables`` is activated by default.
-
-
-Language identification
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
-
-.. code-block:: python
-
-    >>> result = extract(downloaded, url, target_language='de')
 
 
 Date extraction

@@ -1,12 +1,15 @@
 Uses & citations
 ================
 
+.. meta::
+    :description lang=en:
+        Trafilatura is used by other software packages and cited in research publications.
+        This page lists projects mentioning the library.
 
 
-Ports
------
+Trafilatura is used by other software packages and cited in research publications. This page lists projects mentioning the library.
 
-- Go port: `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
+To add further projects, please `edit this page <https://github.com/adbar/trafilatura/edit/master/docs/used-by.rst>`_ and `suggest changes <https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github>`_.
 
 
 
@@ -20,6 +23,12 @@ Notable projects using this software
 - `SciencesPo's médialab <https://medialab.sciencespo.fr/>`_ through its `Minet <https://github.com/medialab/minet>`_ webmining
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
 
+
+
+Ports
+-----
+
+- Go port: `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
 
 
 
@@ -50,6 +59,7 @@ Research using Trafilatura
 
 
 - Bozarth, L., & Budak, C. (2021). `An Analysis of the Partnership between Retailers and Low-credibility News Publishers <https://journalqd.org/article/download/2579/1818>`_. Journal of Quantitative Description: Digital Media, 1.
+- Braun, D. (2021). `Automated Semantic Analysis, Legal Assessment, and Summarization of Standard Form Contracts <https://mediatum.ub.tum.de/doc/1581193/h6380wz6h5srahb6llt2d1jd7.Dissertation-Daniel_Braun.pdf>`_ (Doctoral dissertation, Universität München).
 - Gao, L., Biderman, S., Black, S., Golding, L., Hoppe, T., Foster, C., ... & Leahy, C. (2020). `The Pile: An 800GB Dataset of Diverse Text for Language Modeling <https://arxiv.org/pdf/2101.00027>`_. arXiv preprint arXiv:2101.00027.
 - Karabulut, M., & Mayda, İ. (2020). `Development of Browser Extension for HTML Web Page Content Extraction <https://www.researchgate.net/profile/Islam_Mayda/publication/343338712_Development_of_Browser_Extension_for_HTML_Web_Page_Content_Extraction/links/5f331778a6fdcccc43c1f88a/Development-of-Browser-Extension-for-HTML-Web-Page-Content-Extraction.pdf>`_. In 2020 International Congress on Human-Computer Interaction, Optimization and Robotic Applications (HORA) (pp. 1-6). IEEE.
 - Khusainov, A., Suleymanov, D., Gilmullin, R., Minsafina, A., Kubedinova, L., & Abdurakhmonova, N. `First Results of the “TurkLang-7” Project: Creating Russian-Turkic Parallel Corpora and MT Systems <http://ceur-ws.org/Vol-2780/paper8.pdf>`_.

@@ -2,7 +2,21 @@ Download web pages
 ==================
 
 
+.. meta::
+    :description lang=en:
+        This Python documentation page shows how to run simple downloads and how to configure and execute
+        parallel downloads with threads. The use of politeness rules is also described.
+
+
+This documentation page shows how to run simple downloads and how to configure and execute parallel downloads with threads. The use of politeness rules is also described.
+
 *New in version 0.9: Functions exposed and made usable for convenience.*
+
+.. note::
+    Beware that there should be a tacit scraping etiquette and that a server may block you after the download of a certain number of pages from the same website/domain in a short period of time.
+
+    In addition, some websites may block the ``requests`` `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
+
 
 
 With Python
@@ -95,6 +109,11 @@ Downloads on the command-line are automatically run with threads and domain-awar
 Enforcing politeness rules
 --------------------------
 
+
+Sleep between requests
+~~~~~~~~~~~~~~~~~~~~~~
+
+
 To prevent the execution of too many requests within too little time, the optional argument ``sleep_time`` can be passed to the ``load_download_buffer()``. It is the time in seconds between two requests for the same domain/website.
 
 .. code-block:: python
@@ -104,6 +123,9 @@ To prevent the execution of too many requests within too little time, the option
     # 30 seconds is a safe choice
     mybuffer = load_download_buffer(dl_dict, backoff_dict, sleep_time=30)
 
+
+Robots exclusion_standard
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_standard>`_ is used by some websites to define a series of crawling rules. One of them is the delay, i.e. the time between two download requests for a given website. This delay (in seconds) can be retrieved as follows:
 
@@ -131,8 +153,10 @@ The `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_s
     Trafilatura's focused crawler implements the delay where applicable. For further info and rules see the `documentation page on crawling <crawls.html>`_.
 
 
-.. hint::
-    You can also decide to store the rules in a domain-based dictionary for convenience and later use:
+Storing rules
+~~~~~~~~~~~~~
+
+You can also decide to store the rules in a domain-based dictionary for convenience and later use:
 
 
 .. code-block:: python

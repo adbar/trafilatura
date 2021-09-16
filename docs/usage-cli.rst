@@ -45,39 +45,88 @@ You can also pipe a HTML document (and response body) to trafilatura:
 
 .. code-block:: bash
 
-    $ cat myfile.html | trafilatura # use the contents of an already existing file
-    $ < myfile.html trafilatura # same here
-    # use a custom download
+    # use the contents of an already existing file
+    $ cat myfile.html | trafilatura
+    # alternative syntax
+    $ < myfile.html trafilatura
+    # use a custom download utility and pipe it to trafilatura
     $ wget -qO- "https://de.creativecommons.org/index.php/was-ist-cc/" | trafilatura
 
 
+Extraction parameters
+---------------------
+
+
+Choice of HTML elements
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Several elements can be included or discarded (see list of options below):
+
+* Text elements: comments, tables
+* Structural elements: formatting, images, links
+
+Only comments and text extracted from HTML ``<table>`` elements are extracted by default, ``--no-comments`` and ``--no-tables`` deactivate this setting.
+
+Further options:
+
+- ``--formatting``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+- ``--links``: Keep link targets (in ``href="..."``)
+- ``--images``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+
+.. note::
+    Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
+    
+    Including extra elements works best with conversion to XML/XML-TEI.
+
+
 Output format
--------------
+~~~~~~~~~~~~~
 
 Output as TXT without metadata is the default, another format can be selected in two different ways:
 
 -  ``--csv``, ``--json``, ``--xml`` or ``--xmltei``
 -  ``-out`` or ``--output-format`` {txt,csv,json,xml,xmltei}
 
+.. hint::
+    Combining TXT, CSV and JSON formats with certain structural elements (e.g. formatting or links) triggers output in TXT+Markdown format.
+
+
+
+Process files locally
+---------------------
+
+In case web pages have already been downloaded and stored, it's possible to process single files or directories as a whole.
+
+Two major command line arguments are necessary here:
+
+-  ``--inputdir`` to select a directory to read files from
+-  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
+
+
+.. note::
+    In case no directory is selected, results are printed to standard output (*STDOUT*, e.g. in the terminal window).
+
+
 
 Process a list of links
 -----------------------
 
-The ``-i/--inputfile`` option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
-
 .. note::
-    Beware that there should be a tacit scraping etiquette and that a server may block you after the download of a certain number of pages from the same website/domain in a short period of time. In addition, some websites may block the ``requests`` `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
+    Beware that there should be a tacit scraping etiquette and that a server may block you after the download of a certain number of pages from the same website/domain in a short period of time.
 
+    In addition, some websites may block the ``requests`` `user-agent <https://en.wikipedia.org/wiki/User_agent>`_. Thus, *trafilatura* waits a few seconds per default between requests.
 
-Requirements
-~~~~~~~~~~~~
 
 Two major command line arguments are necessary here:
 
--  ``-i`` or ``--inputfile`` to select an input list to read links from
--  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
+-  ``-i`` or ``--inputfile`` to select an input list to read links from.
 
-The output directory can be created on demand, but it must be writable.
+   This option allows for bulk download and processing of a list of URLs from a file listing one link per line. The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
+
+-  ``-o`` or ``--outputdir`` to define a directory to eventually store the results.
+
+   The output directory can be created on demand, but it must be writable.
+
 
 .. code-block:: bash
 
@@ -85,11 +134,10 @@ The output directory can be created on demand, but it must be writable.
     $ trafilatura --xml -i list.txt -o xmlfiles/	# output in XML format
 
 
-Backup of HTML sources can be useful for archival and further processing:
-
-.. code-block:: bash
-
-    $ trafilatura --inputfile links.txt --outputdir converted/ --backup-dir html-sources/ --xml
+.. hint::
+    Backup of HTML sources can be useful for archival and further processing:
+    
+    ``$ trafilatura --inputfile links.txt --outputdir converted/ --backup-dir html-sources/ --xml``
 
 
 Link discovery
@@ -99,9 +147,7 @@ Link discovery can be performed over `web feeds <https://en.wikipedia.org/wiki/W
 
 Both homepages and particular sitemaps or feed URLs can be used as input.
 
-The ``--list`` option is useful to list URLs prior to processing.
-
-This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
+The ``--list`` option is useful to list URLs prior to processing. This option can be combined with an input file (``-i``) containing a list of sources which will then be processed in parallel.
 
 For more information please refer to the `tutorial on content discovery <tutorial0.html#content-discovery>`_.
 
@@ -137,23 +183,9 @@ Using a subpart of the site also acts like a filter, for example ``--sitemap "ht
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_ and this `tutorial on link filtering <tutorial0.html#link-filtering>`_.
 
 
-Extraction settings
--------------------
-
-Choice of HTML elements
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Including extra elements works best with conversion to XML/XML-TEI:
-
-- ``--formatting``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
-- ``--links``: Keep link targets (in ``href="..."``)
-- ``--images``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
-
-Only text extracted from HTML ``<table>`` elements is activated by default, ``--notables`` deactivates it.
-
-
 Configuration
-~~~~~~~~~~~~~
+-------------
+
 
 Text extraction can be parametrized by providing a custom configuration file (that is a variant of `settings.cfg <https://github.com/adbar/trafilatura/blob/master/trafilatura/settings.cfg>`_) with the ``--config-file`` option, which overrides the standard settings.
 
@@ -232,7 +264,8 @@ Extraction:
 
   -f, --fast            fast (without fallback detection)
   --formatting          include text formatting (bold, italic, etc.)
-  --links               include links along with their targets
+  --links               include links along with their targets (experimental)
+  --images              include image sources in output (experimental)
   --no-comments         don't output any comments
   --no-tables           don't output any table elements
   --only-with-metadata  only output those documents with title, URL and date

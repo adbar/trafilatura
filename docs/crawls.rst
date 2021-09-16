@@ -1,6 +1,13 @@
 Web crawling
 ============
 
+.. meta::
+    :description lang=en:
+        This tutorial shows how to perform web crawling tasks with Python and on the command-line.
+        The Trafilatura package allows for easy focused crawling.
+
+This tutorial shows how to perform web crawling tasks with Python and on the command-line. The package allows for easy focused crawling.
+
 
 *New in version 0.9. Still experimental.*
 
@@ -28,7 +35,7 @@ The focused crawler aims at the discovery of texts within a websites by explorat
 
 This tool is commonly known as (web) `crawler or spider <https://en.wikipedia.org/wiki/Web_crawler>`_. A Web crawler starts with a list of URLs to visit, called the seeds. As the crawler visits these URLs, it identifies all the hyperlinks in the pages and adds them to the list of URLs to visit, called the crawl frontier.
 
-The spider module implements politeness rules as defined by the `Robots exclusion_standard <https://en.wikipedia.org/wiki/Robots_exclusion_standard>`_ where applicable.
+The spider module implements politeness rules as defined by the `Robots exclusion standard <https://en.wikipedia.org/wiki/Robots_exclusion_standard>`_ where applicable.
 
 It prioritizes navigation pages (archives, categories, etc.) over the rest in order to gather as many links as possible in few iterations.
 
@@ -76,17 +83,24 @@ For more info please refer to the `core functions page <corefunctions.html>`_.
 On the command-line
 -------------------
 
+Three different options are available on the command-line:
+
+* ``--sitemap`` : try to find and use sitemaps
+* ``--crawl`` : crawl a fixed number of pages within the website
+* ``--explore`` : combination of sitemap and crawl
+
 On the CLI the crawler automatically works its way through a website, stopping at a maximum of 30 page visits or exhaustion of the total number of pages on the website, whichever comes first.
 
 .. code-block:: bash
 
     $ trafilatura --crawl "https://www.example.org" > links.txt
 
-It can also explore websites in parallel by reading a list of target sites from a list (``-i``/``--inputfile`` option).
+It can also crawl websites in parallel by reading a list of target sites from a list (``-i``/``--inputfile`` option).
 
 
-References
-----------
+Useful references
+-----------------
 
-Cho, J., Garcia-Molina, H., & Page, L. (1998). Efficient crawling through URL ordering. Computer networks and ISDN systems, 30(1-7), 161-172.
+Cho, J., Garcia-Molina, H., & Page, L. (1998). `Efficient crawling through URL ordering <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.1540&rep=rep1&type=pdf>`_. Computer networks and ISDN systems, 30(1-7), 161-172.
 
+Olston, C., & Najork, M. (2010). `Web crawling <https://dl.acm.org/doi/abs/10.1561/1500000017>`_. Now Publishers Inc.
