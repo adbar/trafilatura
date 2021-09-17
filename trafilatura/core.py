@@ -715,8 +715,6 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
     # init
     if url_blacklist is None:
         url_blacklist = set()
-    if author_blacklist is None:
-        author_blacklist = set()
 
     # deprecation warning
     if with_metadata is True:
@@ -875,10 +873,6 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     """
     # configuration init
     config = use_config(settingsfile, config)
-    if url_blacklist is None:
-        url_blacklist = set()
-    if author_blacklist is None:
-        author_blacklist = set()
 
     # extraction
     docmeta = bare_extraction(
