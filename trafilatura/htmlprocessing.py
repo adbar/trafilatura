@@ -251,7 +251,7 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
     return tree
 
 
-def handle_textnode(element, comments_fix=True, deduplicate=True, config=DEFAULT_CONFIG):
+def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_spaces=False, config=DEFAULT_CONFIG):
     '''Convert, format, and probe potential text elements'''
     if element.text is None and element.tail is None:
         return None
@@ -271,9 +271,11 @@ def handle_textnode(element, comments_fix=True, deduplicate=True, config=DEFAULT
         if comments_fix is True and element.tag == 'lb':
             element.tag = 'p'
     # trim
-    element.text = trim(element.text)
-    if element.tail:
-        element.tail = trim(element.tail)
+    if preserve_spaces is False:
+        element.text = trim(element.text)
+        if element.tail:
+            element.tail = trim(element.tail)
+    # filter content
     if element.text and re.search(r'\w', element.text):  # text_content()?
         if textfilter(element) is True:
             return None

@@ -58,7 +58,7 @@ Features
    - Structural elements preserved: paragraphs, titles, lists, quotes, code, line breaks, in-line text formatting
    - Extraction of metadata (title, author, date, site name, categories and tags)
 - Several output formats supported:
-   - Plain text (minimal formatting)
+   - Text (minimal formatting or Markdown)
    - CSV (with metadata, `tab-separated values <https://en.wikipedia.org/wiki/Tab-separated_values>`_)
    - JSON (with metadata)
    - XML (for metadata and structure) and `TEI-XML <https://tei-c.org/>`_
@@ -166,6 +166,8 @@ This effort is part of methods to derive information from web documents in order
 -  Barbaresi, A. "`Efficient construction of metadata-enhanced web corpora <https://hal.archives-ouvertes.fr/hal-01371704v2/document>`_", Proceedings of the `10th Web as Corpus Workshop (WAC-X) <https://www.sigwac.org.uk/wiki/WAC-X>`_, 2016.
 
 You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or `GitHub <https://github.com/adbar>`_.
+
+To have a chat about the software feel free to `book a 15 min slot <https://calendly.com/adbarba/15min>`_ for video-conferencing.
 
 
 Software

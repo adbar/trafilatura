@@ -51,7 +51,7 @@ def build_json_output(docmeta):
 
 def clean_attributes(tree):
     '''Remove unnecessary attributes.'''
-    for elem in tree.iter():
+    for elem in tree.iter('*'):
         if elem.tag not in ('del', 'fw', 'graphic', 'head', 'hi', 'ref'):
             elem.attrib.clear()
     return tree
@@ -205,7 +205,7 @@ def replace_element_text(element, include_formatting, include_links):
             element.text = ''.join(['[', element.text, ']'])
     # handle text
     if element.text is not None and element.tail is not None:
-        full_text = ' '.join([element.text, element.tail])
+        full_text = ''.join([element.text, element.tail])
     elif element.text is not None and element.tail is None:
         full_text = element.text
     elif element.text is None and element.tail is not None:
@@ -244,7 +244,7 @@ def xmltotxt(xmloutput, include_formatting, include_links):
         merge_with_parent(element, include_formatting, include_links)
         continue
     # iterate and convert to list of strings
-    for element in xmloutput.iter():
+    for element in xmloutput.iter('*'):
         # process text
         if element.text is None and element.tail is None:
             if element.tag == 'graphic':
