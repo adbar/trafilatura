@@ -15,7 +15,7 @@ BODY_XPATH = [
     '''.//*[(self::article or self::div or self::main or self::section)][
     contains(@class, "post-text") or contains(@class, "post_text") or
     contains(@class, "post-body") or contains(@class, "post-entry") or contains(@class, "postentry") or
-    contains(@class, "post-content") or contains(@class, "post_content") or contains(@class, "article__container") or
+    contains(@class, "post-content") or contains(@class, "post_content") or
     contains(@class, "postcontent") or contains(@class, "postContent") or
     contains(@class, "article-text") or contains(@class, "articletext") or contains(@class, "articleText") or contains(@class, "field-body")]''',
     '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "entry-content") or
@@ -36,7 +36,7 @@ BODY_XPATH = [
     contains(@class, 'single-post') or
     contains(@class, 'main-column') or contains(@class, 'wpb_text_column') or
     starts-with(@id, 'primary') or starts-with(@class, 'article ') or @class="text" or
-    @class="cell" or @id="story" or @class="story" or contains(@class, "body-description") or
+    @class="cell" or @id="story" or @class="story" or
     contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "fulltext")]""",
     '''.//*[(self::article or self::div or self::main or self::section)][contains(@id, "main-content") or
     contains(@class, "main-content") or contains(translate(@class, "ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"), "page-content")]''',
@@ -105,7 +105,7 @@ DISCARD_XPATH = [
     contains(@class, "embedded") or contains(@class, "embed")
     or contains(@id, "teaser") or contains(@class, "teaser") or
     contains(translate(@class, "T","t"), "teaser")
-    or contains(@id, "newsletter") or contains(@class, "newsletter") or contains(@class, "subnav") or
+    or contains(@id, "newsletter") or contains(@class, "newsletter") or
     contains(@id, "cookie") or contains(@class, "cookie") or contains(@id, "tags")
     or contains(@class, "tags")  or contains(@id, "sidebar") or
     contains(@class, "sidebar") or contains(@id, "banner") or contains(@class, "banner")
@@ -156,6 +156,6 @@ COMMENTS_DISCARD_XPATH = [
     './/*[(self::div or self::section)][starts-with(@id, "respond")]',
     './/cite|.//quote',
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
-    contains(@class, "-reply-") or contains(@class, "message") or contains(@class, "signin") or
+    contains(@class, "-reply-") or contains(@class, "message") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
 ]
