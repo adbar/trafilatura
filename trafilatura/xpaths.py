@@ -26,7 +26,9 @@ BODY_XPATH = [
     contains(@class, "article__body") or @itemprop="articleBody" or @id="articleContent" or
     contains(@class, "ArticleContent") or contains(@class, "page-content") or
     contains(@class, "text-content") or contains(@class, "content__body") or
-    contains(@id, "body-text") or contains(@class, "body-text")]''',
+    contains(@id, "body-text") or contains(@class, "body-text") or
+    contains(@class, "article__container") or contains(@id, "art-content") or contains(@class, "art-content")
+    or contains(@id, "contentBody")]''',
     './/article',
     """.//*[(self::article or self::div or self::main or self::section)][contains(@class, 'post-bodycopy') or
     contains(@class, 'storycontent') or contains(@class, 'story-content') or
@@ -129,7 +131,8 @@ DISCARD_XPATH = [
     or contains(@data-component, "MostPopularStories")
     or contains(@class, "options")
     or contains(@class, "consent") or contains(@class, "modal-content")
-    or contains(@class, "paid-content") or contains(@class, "paidcontent")]''',
+    or contains(@class, "paid-content") or contains(@class, "paidcontent")
+    or contains(@class, " ad ")]''',
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
