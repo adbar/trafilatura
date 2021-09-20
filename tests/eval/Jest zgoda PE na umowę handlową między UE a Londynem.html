@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge"><script type="text/javascript">(window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:false}};(window.NREUM||(NREUM={})).loader_config={xpid:"UgIOVVBWGwAGVlRXBwA=",licenseKey:"130b0776b5",applicationID:"3625501"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(t){try{c.console&&console.log(t)}catch(e){}}var i,o=t("ee"),a=t(24),c={};try{i=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(c.console=!0,i.indexOf("dev")!==-1&&(c.dev=!0),i.indexOf("nr_dev")!==-1&&(c.nrDev=!0))}catch(s){}c.nrDev&&o.on("internal-error",function(t){r(t.stack)}),c.dev&&o.on("fn-err",function(t,e,n){r(n.stack)}),c.dev&&(r("NR AGENT IN DEVELOPMENT MODE"),r("flags: "+a(c,function(t,e){return t}).join(", ")))},{}],2:[function(t,e,n){function r(t,e,n,r,c){try{p?p-=1:i(c||new UncaughtException(t,e,n),!0)}catch(f){try{o("ierr",[f,s.now(),!0])}catch(d){}}return"function"==typeof u&&u.apply(this,a(arguments))}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function i(t,e){var n=e?null:s.now();o("err",[t,n])}var o=t("handle"),a=t(25),c=t("ee"),s=t("loader"),f=t("gos"),u=window.onerror,d=!1,l="nr@seenError",p=0;s.features.err=!0,t(1),window.onerror=r;try{throw new Error}catch(h){"stack"in h&&(t(9),t(8),"addEventListener"in window&&t(5),s.xhrWrappable&&t(10),d=!0)}c.on("fn-start",function(t,e,n){d&&(p+=1)}),c.on("fn-err",function(t,e,n){d&&!n[l]&&(f(n,l,function(){return!0}),this.thrown=!0,i(n))}),c.on("fn-end",function(){d&&!this.thrown&&p>0&&(p-=1)}),c.on("internal-error",function(t){o("ierr",[t,s.now(),!0])})},{}],3:[function(t,e,n){t("loader").features.ins=!0},{}],4:[function(t,e,n){function r(t){}if(window.performance&&window.performance.timing&&window.performance.getEntriesByType){var i=t("ee"),o=t("handle"),a=t(9),c=t(8),s="learResourceTimings",f="addEventListener",u="resourcetimingbufferfull",d="bstResource",l="resource",p="-start",h="-end",m="fn"+p,w="fn"+h,v="bstTimer",g="pushState",y=t("loader");y.features.stn=!0,t(7),"addEventListener"in window&&t(5);var x=NREUM.o.EV;i.on(m,function(t,e){var n=t[0];n instanceof x&&(this.bstStart=y.now())}),i.on(w,function(t,e){var n=t[0];n instanceof x&&o("bst",[n,e,this.bstStart,y.now()])}),a.on(m,function(t,e,n){this.bstStart=y.now(),this.bstType=n}),a.on(w,function(t,e){o(v,[e,this.bstStart,y.now(),this.bstType])}),c.on(m,function(){this.bstStart=y.now()}),c.on(w,function(t,e){o(v,[e,this.bstStart,y.now(),"requestAnimationFrame"])}),i.on(g+p,function(t){this.time=y.now(),this.startPath=location.pathname+location.hash}),i.on(g+h,function(t){o("bstHist",[location.pathname+location.hash,this.startPath,this.time])}),f in window.performance&&(window.performance["c"+s]?window.performance[f](u,function(t){o(d,[window.performance.getEntriesByType(l)]),window.performance["c"+s]()},!1):window.performance[f]("webkit"+u,function(t){o(d,[window.performance.getEntriesByType(l)]),window.performance["webkitC"+s]()},!1)),document[f]("scroll",r,{passive:!0}),document[f]("keypress",r,!1),document[f]("click",r,!1)}},{}],5:[function(t,e,n){function r(t){for(var e=t;e&&!e.hasOwnProperty(u);)e=Object.getPrototypeOf(e);e&&i(e)}function i(t){c.inPlace(t,[u,d],"-",o)}function o(t,e){return t[1]}var a=t("ee").get("events"),c=t("wrap-function")(a,!0),s=t("gos"),f=XMLHttpRequest,u="addEventListener",d="removeEventListener";e.exports=a,"getPrototypeOf"in Object?(r(document),r(window),r(f.prototype)):f.prototype.hasOwnProperty(u)&&(i(window),i(f.prototype)),a.on(u+"-start",function(t,e){var n=t[1],r=s(n,"nr@wrapped",function(){function t(){if("function"==typeof n.handleEvent)return n.handleEvent.apply(n,arguments)}var e={object:t,"function":n}[typeof n];return e?c(e,"fn-",null,e.name||"anonymous"):n});this.wrapped=t[1]=r}),a.on(d+"-start",function(t){t[1]=this.wrapped||t[1]})},{}],6:[function(t,e,n){function r(t,e,n){var r=t[e];"function"==typeof r&&(t[e]=function(){var t=o(arguments),e={};i.emit(n+"before-start",[t],e);var a;e[m]&&e[m].dt&&(a=e[m].dt);var c=r.apply(this,t);return i.emit(n+"start",[t,a],c),c.then(function(t){return i.emit(n+"end",[null,t],c),t},function(t){throw i.emit(n+"end",[t],c),t})})}var i=t("ee").get("fetch"),o=t(25),a=t(24);e.exports=i;var c=window,s="fetch-",f=s+"body-",u=["arrayBuffer","blob","json","text","formData"],d=c.Request,l=c.Response,p=c.fetch,h="prototype",m="nr@context";d&&l&&p&&(a(u,function(t,e){r(d[h],e,f),r(l[h],e,f)}),r(c,"fetch",s),i.on(s+"end",function(t,e){var n=this;if(e){var r=e.headers.get("content-length");null!==r&&(n.rxSize=r),i.emit(s+"done",[null,e],n)}else i.emit(s+"done",[t],n)}))},{}],7:[function(t,e,n){var r=t("ee").get("history"),i=t("wrap-function")(r);e.exports=r;var o=window.history&&window.history.constructor&&window.history.constructor.prototype,a=window.history;o&&o.pushState&&o.replaceState&&(a=o),i.inPlace(a,["pushState","replaceState"],"-")},{}],8:[function(t,e,n){var r=t("ee").get("raf"),i=t("wrap-function")(r),o="equestAnimationFrame";e.exports=r,i.inPlace(window,["r"+o,"mozR"+o,"webkitR"+o,"msR"+o],"raf-"),r.on("raf-start",function(t){t[0]=i(t[0],"fn-")})},{}],9:[function(t,e,n){function r(t,e,n){t[0]=a(t[0],"fn-",null,n)}function i(t,e,n){this.method=n,this.timerDuration=isNaN(t[1])?0:+t[1],t[0]=a(t[0],"fn-",this,n)}var o=t("ee").get("timer"),a=t("wrap-function")(o),c="setTimeout",s="setInterval",f="clearTimeout",u="-start",d="-";e.exports=o,a.inPlace(window,[c,"setImmediate"],c+d),a.inPlace(window,[s],s+d),a.inPlace(window,[f,"clearImmediate"],f+d),o.on(s+u,r),o.on(c+u,i)},{}],10:[function(t,e,n){function r(t,e){d.inPlace(e,["onreadystatechange"],"fn-",c)}function i(){var t=this,e=u.context(t);t.readyState>3&&!e.resolved&&(e.resolved=!0,u.emit("xhr-resolved",[],t)),d.inPlace(t,g,"fn-",c)}function o(t){y.push(t),h&&(b?b.then(a):w?w(a):(E=-E,R.data=E))}function a(){for(var t=0;t<y.length;t++)r([],y[t]);y.length&&(y=[])}function c(t,e){return e}function s(t,e){for(var n in t)e[n]=t[n];return e}t(5);var f=t("ee"),u=f.get("xhr"),d=t("wrap-function")(u),l=NREUM.o,p=l.XHR,h=l.MO,m=l.PR,w=l.SI,v="readystatechange",g=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"],y=[];e.exports=u;var x=window.XMLHttpRequest=function(t){var e=new p(t);try{u.emit("new-xhr",[e],e),e.addEventListener(v,i,!1)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}return e};if(s(p,x),x.prototype=p.prototype,d.inPlace(x.prototype,["open","send"],"-xhr-",c),u.on("send-xhr-start",function(t,e){r(t,e),o(e)}),u.on("open-xhr-start",r),h){var b=m&&m.resolve();if(!w&&!m){var E=1,R=document.createTextNode(E);new h(a).observe(R,{characterData:!0})}}else f.on("fn-end",function(t){t[0]&&t[0].type===v||a()})},{}],11:[function(t,e,n){function r(t){if(!c(t))return null;var e=window.NREUM;if(!e.loader_config)return null;var n=(e.loader_config.accountID||"").toString()||null,r=(e.loader_config.agentID||"").toString()||null,f=(e.loader_config.trustKey||"").toString()||null;if(!n||!r)return null;var h=p.generateSpanId(),m=p.generateTraceId(),w=Date.now(),v={spanId:h,traceId:m,timestamp:w};return(t.sameOrigin||s(t)&&l())&&(v.traceContextParentHeader=i(h,m),v.traceContextStateHeader=o(h,w,n,r,f)),(t.sameOrigin&&!u()||!t.sameOrigin&&s(t)&&d())&&(v.newrelicHeader=a(h,m,w,n,r,f)),v}function i(t,e){return"00-"+e+"-"+t+"-01"}function o(t,e,n,r,i){var o=0,a="",c=1,s="",f="";return i+"@nr="+o+"-"+c+"-"+n+"-"+r+"-"+t+"-"+a+"-"+s+"-"+f+"-"+e}function a(t,e,n,r,i,o){var a="btoa"in window&&"function"==typeof window.btoa;if(!a)return null;var c={v:[0,1],d:{ty:"Browser",ac:r,ap:i,id:t,tr:e,ti:n}};return o&&r!==o&&(c.d.tk=o),btoa(JSON.stringify(c))}function c(t){return f()&&s(t)}function s(t){var e=!1,n={};if("init"in NREUM&&"distributed_tracing"in NREUM.init&&(n=NREUM.init.distributed_tracing),t.sameOrigin)e=!0;else if(n.allowed_origins instanceof Array)for(var r=0;r<n.allowed_origins.length;r++){var i=h(n.allowed_origins[r]);if(t.hostname===i.hostname&&t.protocol===i.protocol&&t.port===i.port){e=!0;break}}return e}function f(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.enabled}function u(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.exclude_newrelic_header}function d(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&NREUM.init.distributed_tracing.cors_use_newrelic_header!==!1}function l(){return"init"in NREUM&&"distributed_tracing"in NREUM.init&&!!NREUM.init.distributed_tracing.cors_use_tracecontext_headers}var p=t(21),h=t(13);e.exports={generateTracePayload:r,shouldGenerateTrace:c}},{}],12:[function(t,e,n){function r(t){var e=this.params,n=this.metrics;if(!this.ended){this.ended=!0;for(var r=0;r<l;r++)t.removeEventListener(d[r],this.listener,!1);e.aborted||(n.duration=a.now()-this.startTime,this.loadCaptureCalled||4!==t.readyState?null==e.status&&(e.status=0):o(this,t),n.cbTime=this.cbTime,u.emit("xhr-done",[t],t),c("xhr",[e,n,this.startTime]))}}function i(t,e){var n=s(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.parsedOrigin=s(e),t.sameOrigin=t.parsedOrigin.sameOrigin}function o(t,e){t.params.status=e.status;var n=w(e,t.lastSize);if(n&&(t.metrics.rxSize=n),t.sameOrigin){var r=e.getResponseHeader("X-NewRelic-App-Data");r&&(t.params.cat=r.split(", ").pop())}t.loadCaptureCalled=!0}var a=t("loader");if(a.xhrWrappable){var c=t("handle"),s=t(13),f=t(11).generateTracePayload,u=t("ee"),d=["load","error","abort","timeout"],l=d.length,p=t("id"),h=t(17),m=t(16),w=t(14),v=window.XMLHttpRequest;a.features.xhr=!0,t(10),t(6),u.on("new-xhr",function(t){var e=this;e.totalCbs=0,e.called=0,e.cbTime=0,e.end=r,e.ended=!1,e.xhrGuids={},e.lastSize=null,e.loadCaptureCalled=!1,t.addEventListener("load",function(n){o(e,t)},!1),h&&(h>34||h<10)||window.opera||t.addEventListener("progress",function(t){e.lastSize=t.loaded},!1)}),u.on("open-xhr-start",function(t){this.params={method:t[0]},i(this,t[1]),this.metrics={}}),u.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid);var n=f(this.parsedOrigin);if(n){var r=!1;n.newrelicHeader&&(e.setRequestHeader("newrelic",n.newrelicHeader),r=!0),n.traceContextParentHeader&&(e.setRequestHeader("traceparent",n.traceContextParentHeader),n.traceContextStateHeader&&e.setRequestHeader("tracestate",n.traceContextStateHeader),r=!0),r&&(this.dt=n)}}),u.on("send-xhr-start",function(t,e){var n=this.metrics,r=t[0],i=this;if(n&&r){var o=m(r);o&&(n.txSize=o)}this.startTime=a.now(),this.listener=function(t){try{"abort"!==t.type||i.loadCaptureCalled||(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{u.emit("internal-error",[n])}catch(r){}}};for(var c=0;c<l;c++)e.addEventListener(d[c],this.listener,!1)}),u.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),u.on("xhr-load-added",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),u.on("xhr-load-removed",function(t,e){var n=""+p(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),u.on("addEventListener-end",function(t,e){e instanceof v&&"load"===t[0]&&u.emit("xhr-load-added",[t[1],t[2]],e)}),u.on("removeEventListener-end",function(t,e){e instanceof v&&"load"===t[0]&&u.emit("xhr-load-removed",[t[1],t[2]],e)}),u.on("fn-start",function(t,e,n){e instanceof v&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=a.now()))}),u.on("fn-end",function(t,e){this.xhrCbStart&&u.emit("xhr-cb-time",[a.now()-this.xhrCbStart,this.onload,e],e)}),u.on("fetch-before-start",function(t){function e(t,e){var n=!1;return e.newrelicHeader&&(t.set("newrelic",e.newrelicHeader),n=!0),e.traceContextParentHeader&&(t.set("traceparent",e.traceContextParentHeader),e.traceContextStateHeader&&t.set("tracestate",e.traceContextStateHeader),n=!0),n}var n,r=t[1]||{};"string"==typeof t[0]?n=t[0]:t[0]&&t[0].url?n=t[0].url:window.URL&&t[0]&&t[0]instanceof URL&&(n=t[0].href),n&&(this.parsedOrigin=s(n),this.sameOrigin=this.parsedOrigin.sameOrigin);var i=f(this.parsedOrigin);if(i&&(i.newrelicHeader||i.traceContextParentHeader))if("string"==typeof t[0]||window.URL&&t[0]&&t[0]instanceof URL){var o={};for(var a in r)o[a]=r[a];o.headers=new Headers(r.headers||{}),e(o.headers,i)&&(this.dt=i),t.length>1?t[1]=o:t.push(o)}else t[0]&&t[0].headers&&e(t[0].headers,i)&&(this.dt=i)})}},{}],13:[function(t,e,n){var r={};e.exports=function(t){if(t in r)return r[t];var e=document.createElement("a"),n=window.location,i={};e.href=t,i.port=e.port;var o=e.href.split("://");!i.port&&o[1]&&(i.port=o[1].split("/")[0].split("@").pop().split(":")[1]),i.port&&"0"!==i.port||(i.port="https"===o[0]?"443":"80"),i.hostname=e.hostname||n.hostname,i.pathname=e.pathname,i.protocol=o[0],"/"!==i.pathname.charAt(0)&&(i.pathname="/"+i.pathname);var a=!e.protocol||":"===e.protocol||e.protocol===n.protocol,c=e.hostname===document.domain&&e.port===n.port;return i.sameOrigin=a&&(!e.hostname||c),"/"===i.pathname&&(r[t]=i),i}},{}],14:[function(t,e,n){function r(t,e){var n=t.responseType;return"json"===n&&null!==e?e:"arraybuffer"===n||"blob"===n||"json"===n?i(t.response):"text"===n||""===n||void 0===n?i(t.responseText):void 0}var i=t(16);e.exports=r},{}],15:[function(t,e,n){function r(){}function i(t,e,n){return function(){return o(t,[f.now()].concat(c(arguments)),e?null:this,n),e?void 0:this}}var o=t("handle"),a=t(24),c=t(25),s=t("ee").get("tracer"),f=t("loader"),u=NREUM;"undefined"==typeof window.newrelic&&(newrelic=u);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",p=l+"ixn-";a(d,function(t,e){u[e]=i(l+e,!0,"api")}),u.addPageAction=i(l+"addPageAction",!0),u.setCurrentRouteName=i(l+"routeName",!0),e.exports=newrelic,u.interaction=function(){return(new r).get()};var h=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(p+"tracer",[f.now(),t,n],r),function(){if(s.emit((i?"":"no-")+"fn-start",[f.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw s.emit("fn-err",[arguments,this,t],n),t}finally{s.emit("fn-end",[f.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){h[e]=i(p+e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),o("err",[t,f.now(),!1,e])}},{}],16:[function(t,e,n){e.exports=function(t){if("string"==typeof t&&t.length)return t.length;if("object"==typeof t){if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if(!("undefined"!=typeof FormData&&t instanceof FormData))try{return JSON.stringify(t).length}catch(e){return}}}},{}],17:[function(t,e,n){var r=0,i=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);i&&(r=+i[1]),e.exports=r},{}],18:[function(t,e,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=t(26);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],19:[function(t,e,n){function r(t){return!(!t||!t.protocol||"file:"===t.protocol)}e.exports=r},{}],20:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?d("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&d("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();n.length>0&&d("lcp",[n[n.length-1]])}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||d("cls",[t])})}function a(t){if(t instanceof h&&!w){var e=Math.round(t.timeStamp),n={type:t.type};e<=l.now()?n.fid=l.now()-e:e>l.offset&&e<=Date.now()?(e-=l.offset,n.fid=l.now()-e):e=l.now(),w=!0,d("timing",["fi",e,n])}}function c(t){d("pageHide",[l.now(),t])}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var s,f,u,d=t("handle"),l=t("loader"),p=t(23),h=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){s=new PerformanceObserver(r);try{s.observe({entryTypes:["paint"]})}catch(m){}f=new PerformanceObserver(i);try{f.observe({entryTypes:["largest-contentful-paint"]})}catch(m){}u=new PerformanceObserver(o);try{u.observe({type:"layout-shift",buffered:!0})}catch(m){}}if("addEventListener"in document){var w=!1,v=["click","keydown","mousedown","pointerdown","touchstart"];v.forEach(function(t){document.addEventListener(t,a,!1)})}p(c)}},{}],21:[function(t,e,n){function r(){function t(){return e?15&e[n++]:16*Math.random()|0}var e=null,n=0,r=window.crypto||window.msCrypto;r&&r.getRandomValues&&(e=r.getRandomValues(new Uint8Array(31)));for(var i,o="xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx",a="",c=0;c<o.length;c++)i=o[c],"x"===i?a+=t().toString(16):"y"===i?(i=3&t()|8,a+=i.toString(16)):a+=i;return a}function i(){return a(16)}function o(){return a(32)}function a(t){function e(){return n?15&n[r++]:16*Math.random()|0}var n=null,r=0,i=window.crypto||window.msCrypto;i&&i.getRandomValues&&Uint8Array&&(n=i.getRandomValues(new Uint8Array(31)));for(var o=[],a=0;a<t;a++)o.push(e().toString(16));return o.join("")}e.exports={generateUuid:r,generateSpanId:i,generateTraceId:o}},{}],22:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,s=c.match(a);s&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=s[1])}e.exports={agent:i,version:o,match:r}},{}],23:[function(t,e,n){function r(t){function e(){t(a&&document[a]?document[a]:document[i]?"hidden":"visible")}"addEventListener"in document&&o&&document.addEventListener(o,e,!1)}e.exports=r;var i,o,a;"undefined"!=typeof document.hidden?(i="hidden",o="visibilitychange",a="visibilityState"):"undefined"!=typeof document.msHidden?(i="msHidden",o="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(i="webkitHidden",o="webkitvisibilitychange",a="webkitVisibilityState")},{}],24:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],25:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],26:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?f(t,s,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!p.aborted||o){t&&a&&t(n,r,i);for(var c=e(i),s=m(n),f=s.length,u=0;u<f;u++)s[u].apply(c,r);var l=d[y[n]];return l&&l.push([x,n,r,c]),c}}function o(t,e){g[t]=m(t).concat(e)}function h(t,e){var n=g[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return g[t]||[]}function w(t){return l[t]=l[t]||i(n)}function v(t,e){u(t,function(t,n){e=e||"feature",y[n]=e,e in d||(d[e]=[])})}var g={},y={},x={on:o,addEventListener:o,removeEventListener:h,emit:n,get:w,listeners:m,context:e,buffer:v,abort:c,aborted:!1};return x}function o(t){return f(t,s,a)}function a(){return new r}function c(){(d.api||d.feature)&&(p.aborted=!0,d=p.backlog={})}var s="nr@context",f=t("gos"),u=t(24),d={},l={},p=e.exports=i();e.exports.getOrSetContext=o,p.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!E++){var t=b.info=NREUM.info,e=p.getElementsByTagName("script")[0];if(setTimeout(f.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return f.abort();s(y,function(e,n){t[e]||(t[e]=n)});var n=a();c("mark",["onload",n+b.offset],null,"api"),c("timing",["load",n]);var r=p.createElement("script");r.src="https://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===p.readyState&&o()}function o(){c("mark",["domContent",a()+b.offset],null,"api")}var a=t(18),c=t("handle"),s=t(24),f=t("ee"),u=t(22),d=t(19),l=window,p=l.document,h="addEventListener",m="attachEvent",w=l.XMLHttpRequest,v=w&&w.prototype;if(d(l.location)){NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:w,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var g=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1208.min.js"},x=w&&v&&v[h]&&!/CriOS/.test(navigator.userAgent),b=e.exports={offset:a.getLastTimestamp(),now:a,origin:g,features:{},xhrWrappable:x,userAgent:u};t(15),t(20),p[h]?(p[h]("DOMContentLoaded",o,!1),l[h]("load",r,!1)):(p[m]("onreadystatechange",i),l[m]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var E=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,s,f){function nrWrapper(){var o,a,u,l;try{a=this,o=d(arguments),u="function"==typeof r?r(o,a):r||{}}catch(p){i([p,"",[o,a,s],u],t)}c(n+"start",[o,a,s],u,f);try{return l=e.apply(a,o)}catch(h){throw c(n+"err",[o,a,h],u,f),h}finally{c(n+"end",[o,a,l],u,f)}}return a(e)?e:(n||(n=""),nrWrapper[l]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var c,s,f,u="-"===r.charAt(0);for(f=0;f<e.length;f++)s=e[f],c=t[s],a(c)||(t[s]=n(c,u?s+r:r,i,s,o))}function c(n,r,o,a){if(!h||e){var c=h;h=!0;try{t.emit(n,r,o,e,a)}catch(s){i([s,n,r,o],t)}h=c}}return t||(t=u),n.inPlace=r,n.flag=l,n}function i(t,e){e||(e=u);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)p.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[l])}function c(t,e){var n=e(t);return n[l]=t,o(t,n,u),n}function s(t,e,n){var r=t[e];t[e]=c(r,n)}function f(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var u=t("ee"),d=t(25),l="nr@original",p=Object.prototype.hasOwnProperty,h=!1;e.exports=r,e.exports.wrapFunction=c,e.exports.wrapInPlace=s,e.exports.argsToArray=f},{}]},{},["loader",2,12,4,3]);</script><script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","errorBeacon":"bam-cell.nr-data.net","licenseKey":"130b0776b5","applicationID":"3625501","transactionName":"MQEDYUNZWUUDUBAMDQhLJ0BfW0NfDV1LBBIWShJAU1lHRhEdFxEQEwcVQENdGUALVhMWTAAWDltFXVlSWGMRBw4PBwBBWFdZYAtWE0sFAxA=","queueTime":0,"applicationTime":22,"agent":""}</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>
+	Jest zgoda PE na umowę handlową między UE a Londynem
+</title>
+	<meta name="description" content="
+	
+		Umowa handlowa między Wielką Brytanią a UE została zaakceptowana przez PE. To zwieńczenie trudnych negocjacji brexitowych.
+	
+">
+	<link rel="canonical" href="https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem">
+	<link rel="shortcut icon" href="//static.wpolityce.pl/img/favicon.ico" type="image/x-icon">
+	<meta class="breakpoints">
+
+	
+	<script type="application/ld+json">
+		
+			{
+				"@context": "http://schema.org",
+				"@type": "Article",
+				"name" : "Jest zgoda PE na umow\u0119 handlow\u0105 mi\u0119dzy UE a Londynem",
+				"description": "Umowa handlowa mi\u0119dzy Wielk\u0105 Brytani\u0105 a UE zosta\u0142a zaakceptowana przez PE. To zwie\u0144czenie trudnych negocjacji brexitowych.",
+				"url" : "https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem",
+				"isAccessibleForFree": true
+			}
+		
+	</script>
+
+
+	<script type="text/javascript">(function(){function t(t,e,n,i,s,c,p,o,r){this.name=e,this.src=n,this.type_=i,this.isAsync=s,this.isInline=c,this.require=p,this.consistsOf=o,this.extra=r,this.snippy=t,this.state="pending",this.preload()}function e(){this.snippets={},this.executed={},this.protocol=document.location.protocol,this.documentHead=document.getElementsByTagName("head")[0],this.isExecutingAsyncSnippets=!1,this.asyncSnippetsExecutionQueue=[],this.executionFunctions={"text/javascript":n,"text/javascript2":n,"text/css":i}}function n(t,e){script=document.createElement("script"),e.isInline?(noRun=document.getElementById("snippy-"+e.name),script.innerHTML=noRun.innerHTML,script.type=e.type_,e.markExecuted(),e.snippy.documentHead.appendChild(script)):e.isAsync?(script.onload=function(t){return function(){e.markExecuted(),t.snippy.queueAsyncSnippetExecution()}}(e),script.onerror=function(t){return function(n,i,s,c,p){return msg="Fial to load snippet "+e.name+":\t",console.error(msg+n+"\nMoving on"),e.markExecuted(),t.snippy.queueAsyncSnippetExecution(),!0}}(e),e.state="loading",script.src=e.src,script.async=!1,e.snippy.documentHead.appendChild(script)):(document.write("<scr"+("ipt src='"+e.src+"'></scr")+"ipt>"),e.markExecuted())}function i(t,e){e.isInline?(noRun=document.getElementById("snippy-"+e.name),tag=document.createElement("style"),tag.innerHTML=noRun.innerHTML):(tag=document.createElement("link"),tag.rel="stylesheet",tag.href=e.src),tag.type=e.type_,tag.charset="utf-8",tag.media=e.extra.media||"screen",e.snippy.documentHead.appendChild(tag),e.markExecuted()}function s(){window.snippy.queueAsyncSnippetExecution(),document.write=function(t){msg="document.write was called after document loaded:\n",console.warn(msg+t)}}t.prototype.preload=function(){if(this.src&&!this.isInline){var t=document.createElement("object");t.data=this.getUrl(),this.snippy.documentHead.appendChild(t)}},t.prototype.getUrl=function(){return this.src},t.prototype.executeSync=function(){for(idx=0;idx<this.require.lenght;idx++)req=this.snippy.snippets[this.require[idx]],req.isAsync=!1,"executed"!=req.state&&req.executeSync();this.triggerExecution()},t.prototype.executeAsync=function(){for(var t=0;t<this.require.length;t++)if(!this.snippy.executed[this.require[t]])return null;this.triggerExecution()},t.prototype.triggerExecution=function(){f=this.snippy.executionFunctions[this.type_],f(this.snippy,this)},t.prototype.markExecuted=function(){this.state="executed";for(var t=0;t<this.consistsOf.length;t++)this.snippy.executed[this.consistsOf[t]]=!0},e.prototype.register=function(e,n,i,s,c,p,o,r){0===o.length&&(o=[e]),this.snippets[e]=new t(this,e,n,i,s,c,p,o,r)},e.prototype.executeSyncScripts=function(){for(name in this.snippets){var t=this.snippets[name];t.isAsync||"pending"!==t.state||t.executeSync()}},e.prototype.queueAsyncSnippetExecution=function(){this.asyncSnippetsExecutionQueue.push(!0),this.executeAsyncScripts()},e.prototype.executeAsyncScripts=function(){this.isExecutingAsyncSnippets||this.asyncSnippetsExecutionQueue.splice(0,1)[0]&&(this.isExecutingAsyncSnippets=!0,this._executeAsyncScripts(),this.isExecutingAsyncSnippets=!1,this.executeAsyncScripts())},e.prototype._executeAsyncScripts=function(){for(name in this.snippets){var t=this.snippets[name];"pending"===t.state&&this.snippets[name].executeAsync()}},window.snippy=new e,document.addEventListener?document.addEventListener("DOMContentLoaded",s):document.attachEvent("onreadystatechange",function(){"interactive"===document.readyState&&s()})}).call(this);</script>
+
+	<script type="snippy/no-run" id="snippy-consent-for-ads">
+		window.tosInfoExceptions = ["/m/ustawienia-prywatnosci"]
+
+		var w2g = w2g || {};
+		w2g.cmd = w2g.cmd || [];
+		if (true){
+			w2g.cmd.push(function(){w2g.run(true);});
+		} else {
+			w2g.cmd.push(function(){w2g.run(false);})
+			// TODO: add callback
+		}
+	</script>
+
+	<script type="snippy/no-run" id="snippy-report-to-ga">
+		reportDimensionsToGTM(
+			false,
+			'Anonimowy'
+		);
+	</script>
+
+	
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@wPolityce_pl">
+	<meta property="fb:app_id" content="286165648231957">
+	<meta property="og:title" content="Jest zgoda PE na umowę handlową między UE a Londynem">
+	<meta property="og:url" content="https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem">
+	<meta property="og:description" content="Umowa handlowa między Wielką Brytanią a UE została zaakceptowana przez PE. To zwieńczenie trudnych negocjacji brexitowych.">
+	<meta property="og:image" content="https://media.wplm.pl/pictures/2021/04/29/1200/596/c4a23b3a553b49048f941f7360180c43.jpeg">
+	<meta property="og:type" content="article">
+	<meta property="article:content_tier" content="free">
+	<meta name="robots" content="max-image-preview:large">
+
+	
+	<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+			"@type": "BreadcrumbList",
+			"itemListElement": [{
+				"@type": "ListItem",
+				"position": 1,
+				"item": {
+					"@id": "http://wpolityce.pl/Gospodarka",
+					"name": "Gospodarka"
+				}
+			}]
+		}
+	</script>
+
+	<script type="snippy/no-run" id="snippy-show-delayed-ads">
+		var showDelayedAdsInPosts = function(){
+			
+			if (true) {
+				var adContainer = document.createElement('div');
+				adContainer.classList.add('adunit', 'adunit-desktop-publication-comments-between-posts');
+				var tag = document.createElement('div');
+				tag.id = 'wPolityce_desktop_artykul_bill_komentarze';
+				adContainer.appendChild(tag);
+				var postsContainer = document.querySelector('.js-load-posts');
+				// if posts are blocked for this publication, post container is null
+				if (postsContainer) {
+					var children = postsContainer.children;
+					if (children.length < 5 ){
+						postsContainer.insertBefore(adContainer, children[children.length - 1]);
+					} else {
+						postsContainer.insertBefore(adContainer, children[3]);
+					}
+				}
+			}
+		}
+	</script>
+
+	<script type="snippy/no-run" id="snippy-init-tcf-vendors">
+		if (!window.gdprManager) {
+			window.gdprManager = new GdprManager();
+			window.gdprManager.setVendors([
+				new FacebookVendor('publicationPage'),
+				new TwitterVendor('publicationPage'),
+				new YouTubeVendor('publicationPage'),
+				new VimeoVendor('publicationPage'),
+				new PoplerVendor('publicationPage'),
+				new SejmVendor('publicationPage'),
+				new InstagramVendor('publicationPage'),
+				new TvpVendor('publicationPage'),
+			]);
+			window.gdprManager.init();
+		}
+	</script>
+
+	<script type="snippy/no-run" id="snippy-sorry-markiewicz">
+		
+	</script>
+
+	<script type="snippy/no-run" id="snippy-plista-widget">
+		 // not just a switch - think before you touch
+			(function(c){var g,s='script',w=window,n=c.name||'PLISTA';if(!w[n]){w[n]=c;g=w.document.getElementsByTagName(s)[0];s=w.document.createElement(s);s.async=true;s.type='text/javascript';s.src=(w.location.protocol==='https:'?'https:':'http:')+'//static'+(c.origin?'-'+c.origin:'')+'.plista.com/async'+(c.name?'/'+c.name:'')+'.js';g.parentNode.insertBefore(s,g);}
+			}({
+				"publickey": "2d089184ba4f4eb4da71ff48",
+				"item": {
+				   "objectid": "549052",
+					"title": "Jest zgoda PE na umow\u0119 handlow\u0105 mi\u0119dzy UE a Londynem",
+					"text": "Umowa handlowa mi\u0119dzy Wielk\u0105 Brytani\u0105 a UE zosta\u0142a zaakceptowana przez PE. To zwie\u0144czenie trudnych negocjacji brexitowych.",
+					"url": "http://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem",
+					"img": "https://media.wplm.pl/pictures/2021/04/29/1200/596/c4a23b3a553b49048f941f7360180c43.jpeg",
+					"category": "Gospodarka",
+					"published_at": 1619709184,
+					"updated_at": 1619709184
+				},
+				"origin": "pl"
+			}));
+		
+	</script>
+
+	
+	
+	
+	<script type="snippy/no-run" id="snippy-show-posts">
+		
+
+			var loginWithPopupActive = true;
+			var userId = null;
+			var isAuthenticated = false;
+			if (loginWithPopupActive) {
+				window.loginConfig.userId = userId;
+				window.loginConfig.isAuthenticated = isAuthenticated;
+				window.loginConfig.refreshedContentType = 'elmContent';
+				window.loginConfig.reloadPage = false
+			}
+
+			
+				$('.js-forum-container').waypoint({
+					handler: function() {
+						this.destroy();
+
+						$('.js-loader-info').text('Trwa ładowanie komentarzy...');
+						// get forum related stuff
+						var config = {
+							'forumDomain': 'https://gwarka.pl/',
+							'postsCountUnderThread': 20,
+							'postsCountUnderPublication': 12,
+							'identifier': 'wpolityce:zbiornik.Publication:549052',
+							'showMaxVotedPosts': true,
+							'hotTopicsEnabled': false,
+							'showVoteForButtons': true,
+							'showModerationButtons': true,
+							'loadPostsAgain': true,
+							'switchWesprzyjArticleImg': true,
+							'staticUrl': '//static.wpolityce.pl/',
+							// login settings
+							'loginUrl': "/czytelnicy/logowanie?login_with_popup=1",
+							'checkAuthenticationUrl': "/czytelnicy/api/check-authentication",
+							// RODO
+							'tosAccepted': true,
+							// others
+							'selfPromotion': [
+								{
+									'size': 'medium',
+									'url': '//media.wplm.pl/pictures/2021/05/10/940/200/36a4fbb4f7e84c01b5b430bdafc41e87.jpeg',
+									'alt': 'Zamów książkę &amp;amp;quot;Operacja DUDA 2020. Tajemnice kampanii&amp;amp;quot;',
+									'link': 'https://siec.wpolityce.pl/oferta'
+								},
+								{
+									'size': 'smedium',
+									'url': '//media.wplm.pl/pictures/2021/05/10/620/200/496fd1aab9a2467da41ee1d1f0607d5a.jpeg',
+									'alt': 'Zamów książkę &amp;amp;quot;Operacja DUDA 2020. Tajemnice kampanii&amp;amp;quot;',
+									'link': 'https://siec.wpolityce.pl/oferta'
+								},
+								{
+									'size': 'small',
+									'url': '//media.wplm.pl/pictures/2021/05/10/300/200/fa87affa7a41488ab0592b187024eca7.jpeg',
+									'alt': 'Zamów książkę &amp;amp;quot;Operacja DUDA 2020. Tajemnice kampanii&amp;amp;quot;',
+									'link': 'https://siec.wpolityce.pl/oferta'
+								}
+							]
+						};
+						if (loginWithPopupActive) {
+							config['userId'] = window.loginConfig.userId;
+							config['isAuthenticated'] = window.loginConfig.isAuthenticated;
+						} else {
+							config['userId'] = userId;
+							config['isAuthenticated'] = isAuthenticated;
+						}
+						var elmPage = new PostsUnderPublicationPage(config);
+						elmPage.addCallback('renderComplete', window.bindFocusForm);
+
+						if (elmPage.tosAccepted && typeof showDelayedAdsInPosts !== 'undefined') {
+							elmPage.addCallback('renderComplete', showDelayedAdsInPosts);
+						}
+
+						if (loginWithPopupActive) {
+							window.loginConfig.elmPage = elmPage;
+							window.loginConfig.elmPage.addCallback('bindLogin', window.loginConfig.bindLogin);
+						}
+					},
+					offset: 'bottom-in-view'
+				});
+			
+		
+	</script>
+
+	<script type="snippy/no-run" id="snippy-set-product-12months-with-book-is-active">
+		window.PRODUCT_12MONTHS_WITH_BOOK_IS_ACTIVE = true;
+	</script>
+
+	<script type="text/javascript">
+			snippy.register("945bf007e32658b375ab2ddc15808621", "//static.wpolityce.pl/snippy/945bf007e32658b375ab2ddc15808621.js", "text/javascript", true, false, [], ["cookie.js", "doT.js", "gdpr_tcf", "report_dimensions_to_gtm", "moment.js"], {})
+				snippy.register("jquery", "//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js", "text/javascript", true, false, [], [], {})
+				snippy.register("lib.wtg-ads", "https://lib.wtg-ads.com/lib.min.js", "text/javascript", true, false, [], [], {})
+				snippy.register("show_ads", "//static.wpolityce.pl/structure/js/ads.js", "text/javascript", true, false, ["report_dimensions_to_gtm"], [], {})
+				snippy.register("consent-for-ads", "", "text/javascript", true, true, [], [], {})
+				snippy.register("show-delayed-ads", "", "text/javascript", true, true, [], [], {})
+				snippy.register("plista-widget", "", "text/javascript", true, true, [], [], {})
+				snippy.register("set-product-12months-with-book-is-active", "", "text/javascript", true, true, [], [], {})
+				snippy.register("sorry-markiewicz", "", "text/javascript", true, true, ["jquery"], [], {})
+				snippy.register("report-to-ga", "", "text/javascript", true, true, ["show_ads", "report_dimensions_to_gtm"], [], {})
+			snippy.register("223cb119d47ce57329f6c45f504bf618", "//static.wpolityce.pl/snippy/223cb119d47ce57329f6c45f504bf618.js", "text/javascript", true, false, ["doT.js", "gdpr_tcf", "jquery", "report-to-ga", "moment.js"], ["lightbox.js", "markdown_lazyload_images", "set-jquery-our-own", "doT.js_wrapper", "tcf_vendors", "header", "csrf.js", "moment-pl.js", "show_rgdp_under_comments", "social_media_buttons", "waypoints.js", "cas_helpers", "polls", "set-moment-locale.js", "tcf_facebook_vendor", "tcf_twitter_vendor", "tcf_youtube_vendor", "tcf_vimeo_vendor", "tcf_popler_vendor", "tcf_sejm_vendor", "tcf_instagram_vendor", "tcf_tvp_vendor", "posts_templates", "googletagmanager.js", "time_manipulation"], {})
+				snippy.register("send_data_through_client", "https://static.gwarka.pl//js/forum/send_data_through_client.js?d=2020-07-22T21%3A12%3A41.021635%2B00%3A00", "text/javascript", true, false, ["jquery"], [], {})
+				snippy.register("vanilla-products.js", "//static.siec.wpolityce.pl/js/products.js?d=2021-05-10T06%3A43%3A04.941801", "text/javascript", true, false, ["doT.js_wrapper", "set-product-12months-with-book-is-active", "jquery"], [], {})
+				snippy.register("login.js", "https://static.konto.wpolityce.pl/scripts/accounts/login.js?d=2020-10-19T07%3A16%3A19.156561%2B00%3A00", "text/javascript", true, false, ["cas_helpers", "jquery"], [], {})
+				snippy.register("posts", "https://static.gwarka.pl//js/forum/posts.js?d=2020-07-22T21%3A12%3A41.021635%2B00%3A00", "text/javascript", true, false, ["send_data_through_client", "jquery", "time_manipulation", "posts_templates", "cookie.js"], [], {})
+			snippy.register("2120423d9884b208bf7c27098ac5986a", "//static.wpolityce.pl/snippy/2120423d9884b208bf7c27098ac5986a.js", "text/javascript", true, false, ["vanilla-products.js", "jquery", "waypoints.js", "googletagmanager.js", "set-jquery-our-own"], ["load_widget_playlist", "related_publications", "load_live_player", "render_products", "ga_events_tracking", "print_publication"], {})
+				snippy.register("init-tcf-vendors", "", "text/javascript", true, true, ["tcf_instagram_vendor", "tcf_vendors", "tcf_tvp_vendor", "tcf_popler_vendor", "gdpr_tcf", "tcf_vimeo_vendor", "tcf_facebook_vendor", "tcf_twitter_vendor", "tcf_youtube_vendor", "tcf_sejm_vendor"], [], {})
+				snippy.register("show-posts", "", "text/javascript", true, true, ["posts", "show_rgdp_under_comments", "jquery", "waypoints.js", "cas_helpers", "show-delayed-ads"], [], {})
+</script><link href="//static.wpolityce.pl/snippy/aa53aa5be4f4253374243ffe5b413fba.css" rel="stylesheet" type="text/css" charset="utf-8" media="screen"><link href="//static.wpolityce.pl/snippy/047d42855e5131a2fa5131d1fcf87a67.css" rel="stylesheet" type="text/css" charset="utf-8" media="print">
+
+
+	
+		
+	<!-- (C)2000-2013 Gemius SA - gemiusAudience / pp.wpolityce.pl / podstrony -->
+	<script type="text/javascript">
+		<!--//--><![CDATA[//><!--
+		var pp_gemius_identifier = 'bQBLosrFvMm8SBOWpPGb_ZQ5DtXG05tyHfzrz8gzki..g7';
+		var pp_gemius_use_cmp = true;
+		// lines below shouldn't be edited
+		function gemius_pending(i) { window[i] = window[i] || function() {var x = window[i+'_pdata'] = window[i+'_pdata'] || []; x[x.length]=arguments;};};
+		gemius_pending('gemius_hit'); gemius_pending('gemius_event'); gemius_pending('pp_gemius_hit'); gemius_pending('pp_gemius_event');
+		(function(d,t) {try {var gt=d.createElement(t),s=d.getElementsByTagName(t)[0],l='http'+((location.protocol=='https:')?'s':''); gt.setAttribute('async','async');
+		gt.setAttribute('defer','defer'); gt.src=l+'://gapl.hit.gemius.pl/xgemius.js'; s.parentNode.insertBefore(gt,s);} catch (e) {}})(document,'script');
+		//--><!]]>
+	</script>
+
+	
+
+</head>
+
+
+
+
+
+
+<body class=" js-url-scroller" data-static-url="//static.wpolityce.pl/">
+
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NVXD2CQ"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+
+	<div id="fb-root"></div>
+
+	
+	
+		<div class="header-with-boost js-header-boost">
+	
+		<section class="header-boost header-boost--promo">
+			<a href="https://siec.wpolityce.pl/oferta?utm_source=wpolityce&utm_campaign=siecprzyjaciol50proc2021&utm_medium=header" class="row header-boost__link" target="_blank">
+				<picture>
+					<source media="(max-width: 659px)" srcset="//static.wpolityce.pl/img/top-belt-xs.jpg?d=2021-03-11">
+					<source media="(min-width: 660px) and (max-width: 979px)" srcset="//static.wpolityce.pl/img/top-belt-s.jpg?d=2021-03-11">
+					<source media="(min-width: 980px) and (max-width: 1299px)" srcset="//static.wpolityce.pl/img/top-belt-m.jpg?d=2021-03-11">
+					<source media="(min-width: 1300px)" srcset="//static.wpolityce.pl/img/top-belt-l.jpg?d=2021-03-11">
+					<img src="//static.wpolityce.pl/img/top-belt-l.jpg?d=2021-03-11" alt="Nawet 50% taniej">
+				</picture>
+			</a>
+		</section>
+	
+	<header class="page-header js-page-header">
+		<div class="row">
+			<h1 class="logo">
+				<a href="/" class="logo__link">
+					<img src="//static.wpolityce.pl/img/wpolityce-logo.svg?d=2020-06-19" alt="">
+					
+				</a>
+			</h1>
+			
+			
+	<nav class="main-nav main-nav--header js-main-nav">
+		<div class="main-nav__list-container">
+			<ul class="main-nav__list">
+				
+					<li class="main-nav__item main-nav__item--eng">
+						<a href="/facts-from-poland" class="main-nav__link">
+							
+								<span class="icon">
+									<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" width="36" height="36" viewBox="0 0 640 640"><defs><path d="M567.3 332.6c24.6-30.9 37-64.6 37-101.1 0-36.4-12.3-70.1-37-101-24.6-30.9-58.2-55.4-100.8-73.3-42.6-17.9-88.9-26.9-139-26.9-50.1 0-96.4 9-139 26.9-42.6 18-76.2 42.4-100.8 73.3-24.7 30.9-36.9 64.6-36.9 101 0 31.2 9.3 60.6 27.9 88.1 18.6 27.5 44.2 50.7 76.7 69.6l-8.1 17.3-9.8 15.1-8.8 11.4c-2.1 2.8-5.5 6.6-10.2 11.6l-9 9.9c0-.3-.5.3-1.6 1.8-1.1 1.5-1.7 2.1-1.8 2-.1-.1-.6.5-1.6 1.9l-2.4 4.1c-.4.8-.6 1.6-.8 2.4-.1.8-.2 1.7-.2 2.5 0 .9.1 1.8.4 2.6.5 3.4 2 6.2 4.5 8.3 2.5 2.1 5.2 3.2 8.1 3.2h1.2c13.1-1.8 24.4-3.9 33.8-6.3 40.4-10.5 76.8-27.3 109.3-50.3 23.6 4.2 46.7 6.3 69.2 6.3 50.1 0 96.4-9 139-26.9 42.6-17.9 76.2-42.4 100.8-73.3z" id="a19YWIYksM"/><clipPath id="clipf3stHwnY25"><use xlink:href="#a19YWIYksM"/></clipPath><path d="M145.1 305.3l97.9-.2v-26.2h-63.6v-34l53.6-.3v-25h-53.6v-30h63.9v-26.4h-98.1v142.1z" id="a1D1FrzMyu"/><path d="M267.6 305.3h34.2v-88.4l50.3 88.4h34.1V163.1h-34.1v88.6l-50.3-88.6h-34.2v142.2z" id="d1XOeDXtAh"/><path d="M469.2 280.8c-23.2-.4-26.5-27.9-26.5-51.3 0-23.4 9.4-41.8 26.5-41.9.8 0-17.7-.5 2.3.1 13.4.4 20.9 7.7 22.7 22h32.9c-3.7-32.3-23-48.6-58-48.7-52.4-.2-60.9 47.9-60.9 68.6 0 20.6 2.3 77.2 60.9 77.9a87 87 0 0 0 56.4-17.2l1.7-2.2v-58.4l-58.1-.1v23.6H493V275c-.3 1.3-.6 6.2-23.8 5.8z" id="ao85eyjQd"/></defs><g><g><g><g clip-path="url(#clipf3stHwnY25)"><use xlink:href="#a19YWIYksM" fill-opacity="0" stroke-width="60" stroke-opacity="1"/></g></g><g><use xlink:href="#a1D1FrzMyu"/><g><use xlink:href="#a1D1FrzMyu" fill-opacity="0" stroke-opacity="0"/></g></g><g><use xlink:href="#d1XOeDXtAh"/><g><use xlink:href="#d1XOeDXtAh" fill-opacity="0" stroke-opacity="0"/></g></g><g><use xlink:href="#ao85eyjQd"/><g><use xlink:href="#ao85eyjQd" fill-opacity="0" stroke-opacity="0"/></g></g></g></g></svg>
+								</span>
+							
+							<span class="text">English version</span>
+						</a>
+					</li>
+				
+				<li class="main-nav__item main-nav__item--forum">
+					<a href="/forum?utm_source=header&utm_campaign=icon&utm_medium=forum" class="main-nav__link">
+						
+							<span class="icon">
+								<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="29.7px" height="24px" viewBox="0 0 26 21" preserveAspectRatio="none" enable-background="new 0 0 26 21"
+	 xml:space="preserve">
+<defs>
+</defs>
+<g id="ICON_x5F_FORUM_2_">
+	<g>
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M14.805,13.377c1.517-0.639,2.714-1.509,3.591-2.61
+			s1.316-2.301,1.316-3.599c0-1.297-0.439-2.497-1.316-3.598c-0.877-1.102-2.074-1.972-3.591-2.611C13.289,0.32,11.639,0,9.856,0
+			S6.424,0.32,4.907,0.959C3.39,1.599,2.193,2.469,1.316,3.57C0.438,4.671,0,5.871,0,7.168c0,1.111,0.332,2.157,0.994,3.138
+			c0.663,0.979,1.573,1.806,2.73,2.477c-0.093,0.225-0.189,0.429-0.287,0.616c-0.098,0.187-0.215,0.367-0.35,0.539
+			c-0.135,0.173-0.24,0.309-0.315,0.406c-0.075,0.099-0.196,0.235-0.364,0.412c-0.168,0.178-0.275,0.295-0.322,0.351
+			c0-0.01-0.019,0.012-0.056,0.063c-0.038,0.052-0.059,0.075-0.063,0.07c-0.005-0.005-0.023,0.019-0.056,0.069
+			c-0.033,0.052-0.049,0.077-0.049,0.077l-0.035,0.07c-0.014,0.027-0.023,0.057-0.028,0.084c-0.005,0.028-0.007,0.059-0.007,0.091
+			c0,0.033,0.005,0.063,0.014,0.091c0.019,0.122,0.072,0.219,0.161,0.294c0.088,0.074,0.184,0.112,0.287,0.112h0.042
+			c0.467-0.065,0.868-0.14,1.204-0.225c1.438-0.373,2.735-0.971,3.892-1.791c0.84,0.148,1.662,0.224,2.464,0.224
+			C11.639,14.336,13.289,14.017,14.805,13.377z M24.094,13.896c0.663-0.976,0.994-2.022,0.994-3.143c0-1.148-0.351-2.222-1.05-3.222
+			c-0.701-0.997-1.652-1.829-2.856-2.492c0.214,0.7,0.321,1.41,0.321,2.129c0,1.25-0.313,2.436-0.938,3.556
+			c-0.625,1.119-1.521,2.109-2.688,2.968c-1.084,0.784-2.315,1.387-3.697,1.807c-1.38,0.42-2.823,0.63-4.326,0.63
+			c-0.28,0-0.69-0.019-1.231-0.056c1.876,1.231,4.079,1.847,6.608,1.847c0.803,0,1.624-0.074,2.464-0.223
+			c1.157,0.821,2.454,1.419,3.892,1.792c0.336,0.084,0.738,0.158,1.205,0.224c0.111,0.01,0.215-0.023,0.308-0.098
+			c0.093-0.075,0.153-0.178,0.183-0.309c-0.006-0.056,0-0.086,0.014-0.091c0.014-0.004,0.012-0.035-0.008-0.091
+			c-0.018-0.056-0.027-0.084-0.027-0.084l-0.035-0.069c-0.01-0.019-0.025-0.045-0.049-0.077s-0.042-0.056-0.057-0.07
+			c-0.014-0.014-0.034-0.037-0.063-0.069c-0.027-0.032-0.047-0.055-0.056-0.063c-0.047-0.056-0.153-0.172-0.321-0.35
+			c-0.169-0.177-0.29-0.314-0.365-0.412c-0.074-0.099-0.18-0.234-0.314-0.407c-0.135-0.172-0.252-0.352-0.35-0.538
+			s-0.193-0.393-0.287-0.616C22.522,15.694,23.431,14.871,24.094,13.896z"/>
+	</g>
+</g>
+</svg>
+							</span>
+						
+						<span class="text">Forum</span>
+					</a>
+				</li>
+				<li class="main-nav__item main-nav__item--wsklepiku">
+					<a href="http://wsklepiku.pl" class="main-nav__link" target="_blank">
+						
+							<span class="icon">
+								<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="25px" height="24px" viewBox="0 0 23 22" preserveAspectRatio="none" enable-background="new 0 0 23 22"
+	 xml:space="preserve">
+<defs>
+</defs>
+<g id="ICON_x5F_SHOP_2_">
+	<g>
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M6.482,17.286c-1.188,0-2.161,0.974-2.161,2.162
+			c0,1.188,0.973,2.16,2.161,2.16s2.161-0.973,2.161-2.16C8.643,18.26,7.671,17.286,6.482,17.286z M7.671,11.885h7.995
+			c0.865,0,1.514-0.433,1.838-1.081l3.889-7.022c0.217-0.216,0.217-0.324,0.217-0.54c0-0.648-0.433-1.081-1.081-1.081H4.538L3.565,0
+			H0v2.16h2.161l3.89,8.212l-1.513,2.593c-0.108,0.324-0.216,0.757-0.216,1.08c0,1.189,0.973,2.161,2.161,2.161h12.965v-2.161H6.915
+			c-0.108,0-0.216-0.107-0.216-0.216v-0.107L7.671,11.885z M17.287,17.286c-1.188,0-2.16,0.974-2.16,2.162
+			c0,1.188,0.972,2.16,2.16,2.16s2.161-0.973,2.161-2.16C19.448,18.26,18.475,17.286,17.287,17.286z"/>
+	</g>
+</g>
+</svg>
+							</span>
+						
+						<span class="text">wSklepiku</span>
+					</a>
+				</li>
+				<li class="main-nav__item main-nav__item--wpolsce">
+					<a href="http://wpolsce.pl?utm_source=wpolityce&utm_campaign=icon&utm_medium=wpolsce" class="main-nav__link" target="_blank">
+						
+							<span class="icon">
+								<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="23px" height="24px" viewBox="0 0 20 21" preserveAspectRatio="none" enable-background="new 0 0 20 21"
+	 xml:space="preserve">
+<defs>
+</defs>
+<g id="ICON_x5F_PLAY_2_">
+	<g>
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M18.494,9.96L0.748,0.099C0.543-0.018,0.367-0.031,0.22,0.058
+			C0.073,0.147,0,0.308,0,0.54v19.669c0,0.231,0.073,0.393,0.22,0.481s0.323,0.075,0.528-0.04l17.746-9.861
+			c0.204-0.116,0.308-0.255,0.308-0.415S18.698,10.076,18.494,9.96z"/>
+	</g>
+</g>
+</svg>
+							</span>
+						
+						<span class="text">wPolsce</span>
+					</a>
+				</li>
+				<li class="main-nav__item main-nav__item--premium">
+					<a href="https://siec.wpolityce.pl/oferta?utm_source=wpolityce&utm_campaign=siecprzyjaciol&utm_medium=icon" class="main-nav__link" target="_blank">
+						
+							<span class="icon">
+								<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="24px" height="24px" viewBox="0 0 23 23" preserveAspectRatio="none" enable-background="new 0 0 23 23"
+	 xml:space="preserve">
+<defs>
+</defs>
+<g id="ICON_x5F_READ_2_">
+	<g>
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M16.823,5.396C16.823,2.417,14.231,0,11.041,0
+			C7.85,0,5.259,2.417,5.259,5.396v0.212l5.782,1.262l5.782-1.262V5.396z M21.015,10.604c-0.59,0-1.068,1.013-1.068,2.263
+			s0.479,2.264,1.068,2.264s1.068-1.014,1.068-2.264S21.604,10.604,21.015,10.604z M2.136,12.866c0-1.25-0.478-2.263-1.068-2.263
+			S0,11.616,0,12.866s0.478,2.264,1.068,2.264S2.136,14.116,2.136,12.866z M1.068,9.711c1.14,0,1.965,1.335,1.965,3.155
+			c0,1.821-0.825,3.156-1.965,3.156v3.891L10.586,22V7.696L1.068,5.608V9.711z M19.05,12.866c0-1.82,0.824-3.155,1.965-3.155V5.608
+			l-9.519,2.088v14.291l9.519-2.088v-3.896C19.874,16.004,19.05,14.692,19.05,12.866z"/>
+	</g>
+</g>
+</svg>
+							</span>
+						
+						<span class="text">Sieć Przyjaciół</span>
+					</a>
+				</li>
+				<li class="main-nav__item main-nav__item--zbierzmy">
+					<a href="https://zbierzmy.pl/" class="main-nav__link" target="_blank">
+						
+							<span class="icon">
+								<svg xmlns="http://www.w3.org/2000/svg" width="120px" height="24px" viewBox="0 0 120 24" class="zbierzmy-icon-svg"><defs><style>.dot{fill:#161817;}</style></defs><title>icon-zbierzmypl</title>
+    <path d="M23,15.39a2.89,2.89,0,0,0,.45,0,2.13,2.13,0,0,0,1-.25,2.44,2.44,0,0,0,.83-.72,3.76,3.76,0,0,0,.56-1.19,6,6,0,0,0,.21-1.68,3.66,3.66,0,0,0-.08-.8,1.47,1.47,0,0,0-.23-.55.92.92,0,0,0-.37-.32,1.21,1.21,0,0,0-.48-.1,1.23,1.23,0,0,0-.39.06,2,2,0,0,0-.36.17,1.83,1.83,0,0,0-.31.24,3.38,3.38,0,0,0-.27.26,4,4,0,0,0-.54.72l-.62,3.88a1.05,1.05,0,0,0,.26.13,1.82,1.82,0,0,0,.33.11"/>
+    <path d="M97.21,16.48a4.06,4.06,0,0,0,.75.06,3.36,3.36,0,0,0,2.67-1.27,4.9,4.9,0,0,0,.81-1.58,7.5,7.5,0,0,0,.29-2.17,5,5,0,0,0-.13-1.24,2.51,2.51,0,0,0-.37-.84,1.54,1.54,0,0,0-.59-.49,1.83,1.83,0,0,0-.75-.15,2,2,0,0,0-.6.09,2.58,2.58,0,0,0-.54.23,2.49,2.49,0,0,0-.47.33,3.64,3.64,0,0,0-.4.38,4.8,4.8,0,0,0-.75,1l-.86,5.26a2.08,2.08,0,0,0,.42.23c.14.05.32.09.52.14"/>
+    <path d="M119.58,9.51c-.18-5.44-4.4-9.69-9.42-9.5l-86,3.27a1.66,1.66,0,0,1,0,.78l-.38,2.41c-.06.31-.11.6-.18.88l-.23.9h0a3.07,3.07,0,0,1,.64-.6,2.87,2.87,0,0,1,.36-.21,3.62,3.62,0,0,1,.44-.2,3.39,3.39,0,0,1,.53-.14,4,4,0,0,1,.61,0,3.57,3.57,0,0,1,1.38.26,2.76,2.76,0,0,1,1.06.79,3.73,3.73,0,0,1,.68,1.3,6,6,0,0,1,.24,1.78,9,9,0,0,1-.44,2.9,5.78,5.78,0,0,1-1.27,2.16,5.4,5.4,0,0,1-2,1.35,7.16,7.16,0,0,1-2.69.47A9.68,9.68,0,0,1,21.51,18a6.52,6.52,0,0,1-1-.23,3.5,3.5,0,0,1-.68-.28,2,2,0,0,1-.38-.28,2.29,2.29,0,0,1-.17-.23,1,1,0,0,1-.12-.3,1.58,1.58,0,0,1-.05-.41,3.71,3.71,0,0,1,0-.54L21,4.06a2.19,2.19,0,0,1,.19-.67L8.79,3.86c-5,.19-9,4.76-8.78,10.2s4.39,9.69,9.42,9.5l71.05-2.7.2-.14a6.42,6.42,0,0,0,.93-.86,15.56,15.56,0,0,0,1.07-1.35c-.16-1.1-.32-2.12-.47-3.05s-.3-1.79-.45-2.59-.3-1.56-.44-2.26-.3-1.37-.44-2a2,2,0,0,0,0-.24.88.88,0,0,1,0-.21.68.68,0,0,1,.09-.35.75.75,0,0,1,.22-.25,1.17,1.17,0,0,1,.31-.17,1.26,1.26,0,0,1,.33-.05.77.77,0,0,1,.34.07.63.63,0,0,1,.25.16.58.58,0,0,1,.13.23,2.86,2.86,0,0,1,.1.36c.27,1.28.52,2.61.76,4s.45,2.91.65,4.5h0c.29-.52.58-1.06.87-1.63s.57-1.2.85-1.88.57-1.43.85-2.24.57-1.72.85-2.71l.12-.39a.63.63,0,0,1,.16-.27A.67.67,0,0,1,88,7.37a.83.83,0,0,1,.32-.06,1,1,0,0,1,.3.05.92.92,0,0,1,.28.14.72.72,0,0,1,.19.24.71.71,0,0,1,.07.32,1.41,1.41,0,0,1,0,.2c0,.08,0,.21-.1.38-.28,1-.6,2-1,3s-.74,1.87-1.16,2.77S86,16.13,85.54,17s-1,1.58-1.52,2.3a15.2,15.2,0,0,1-1.24,1.52l11.11-.42,2-12.29a.8.8,0,0,1,.24-.54.69.69,0,0,1,.51-.18.63.63,0,0,1,.51.22,1,1,0,0,1,.18.67,2.11,2.11,0,0,1,0,.26c0,.08,0,.16,0,.22a1.78,1.78,0,0,1,0,.26h0A4.59,4.59,0,0,1,98,8.1l.44-.32A3.76,3.76,0,0,1,99,7.51a5.8,5.8,0,0,1,.63-.2,3.26,3.26,0,0,1,.72-.07,3.19,3.19,0,0,1,1.29.25,2.77,2.77,0,0,1,1,.77,3.58,3.58,0,0,1,.65,1.26,6,6,0,0,1,.23,1.73,8.73,8.73,0,0,1-.43,2.86,6.2,6.2,0,0,1-1.2,2.13,5.15,5.15,0,0,1-1.85,1.34,6,6,0,0,1-2.39.46A4.73,4.73,0,0,1,97,18l-.51-.08L96,17.8h0c0,.2-.07.42-.09.64l-.09.68-.19,1.15,15.18-.58c5-.19,9-4.75,8.78-10.19M18.12,9.42A1.92,1.92,0,0,1,18,9.9a2.85,2.85,0,0,1-.29.49,5.33,5.33,0,0,1-.42.52L13.33,15.4l.37-.05.47,0,.51,0h.52a8,8,0,0,1,1.23.08,1.74,1.74,0,0,1,.69.26.88.88,0,0,1,.3.41,1.59,1.59,0,0,1,.09.55,1.5,1.5,0,0,1-.09.52,1.36,1.36,0,0,1-.25.44,1.24,1.24,0,0,1-.39.29,1.32,1.32,0,0,1-.53.1l-.42,0-.49,0-.6,0H14c-.51,0-1,0-1.49,0s-1,.05-1.46.05a2,2,0,0,1-.73-.12,1.45,1.45,0,0,1-.52-.33A1.46,1.46,0,0,1,9.44,17a1.73,1.73,0,0,1-.11-.66,3,3,0,0,1,0-.52,3,3,0,0,1,.16-.48,3.49,3.49,0,0,1,.28-.48,4.72,4.72,0,0,1,.43-.52l3.93-4.5H11.54a.84.84,0,0,1-.67-.26,1.21,1.21,0,0,1-.22-.81,2,2,0,0,1,.09-.62A1.37,1.37,0,0,1,11,7.64a1.06,1.06,0,0,1,.37-.29,1.28,1.28,0,0,1,.48-.09h4.63a2.09,2.09,0,0,1,.72.12,1.38,1.38,0,0,1,.87.85,2,2,0,0,1,.11.67,2.78,2.78,0,0,1-.05.52M35,8.71l-1.24,7.68a1.91,1.91,0,0,1-.54,1.14,1.79,1.79,0,0,1-1.24.39,1.49,1.49,0,0,1-1.16-.39,1.33,1.33,0,0,1-.24-1.14l1.24-7.68a1.86,1.86,0,0,1,.54-1.14,1.74,1.74,0,0,1,1.24-.39,1.44,1.44,0,0,1,1.16.39A1.3,1.3,0,0,1,35,8.71M45.2,11.63a3,3,0,0,1-1.12,1.2,5.84,5.84,0,0,1-1.95.73,12.49,12.49,0,0,1-2.83.23,1.9,1.9,0,0,0,.18.72,1.54,1.54,0,0,0,.4.51,1.83,1.83,0,0,0,.61.3,2.78,2.78,0,0,0,.81.11,4.73,4.73,0,0,0,.82-.07,5,5,0,0,0,.58-.14c.17-.05.32-.09.44-.14a1.34,1.34,0,0,1,.4-.06.79.79,0,0,1,.65.27,1,1,0,0,1,.23.69,1.66,1.66,0,0,1-.1.61,1.35,1.35,0,0,1-.31.49,1.89,1.89,0,0,1-.5.39,4.11,4.11,0,0,1-.72.3,6.38,6.38,0,0,1-.93.22,8.16,8.16,0,0,1-1.15.07,5.74,5.74,0,0,1-2-.31,3.76,3.76,0,0,1-1.44-.9,3.71,3.71,0,0,1-.88-1.39,5.25,5.25,0,0,1-.3-1.81,8,8,0,0,1,.43-2.72,6.14,6.14,0,0,1,1.21-2.09A5.24,5.24,0,0,1,39.59,7.5,5.85,5.85,0,0,1,42,7a4.74,4.74,0,0,1,1.58.23,3.08,3.08,0,0,1,1.13.63,2.61,2.61,0,0,1,.68.94A3.3,3.3,0,0,1,45.56,10a3.54,3.54,0,0,1-.36,1.62m8.07-1.17a.76.76,0,0,1-.51.21.93.93,0,0,1-.26,0l-.2-.07-.17-.06a.66.66,0,0,0-.21,0,1,1,0,0,0-.44.13,2.8,2.8,0,0,0-.77.71,3.54,3.54,0,0,0-.25.34l-.76,4.73a1.87,1.87,0,0,1-.55,1.14,1.77,1.77,0,0,1-1.24.39,1.61,1.61,0,0,1-1.07-.3,1.09,1.09,0,0,1-.34-.87,2.72,2.72,0,0,1,0-.28c0-.1,0-.23.05-.37l1.23-7.63a1.67,1.67,0,0,1,.45-1,1.33,1.33,0,0,1,1-.33,1.24,1.24,0,0,1,.94.35,1.34,1.34,0,0,1,.33.95.86.86,0,0,1,0,.15.77.77,0,0,1,0,.15s0,.11,0,.17h0A4.67,4.67,0,0,1,51,8.14a3.38,3.38,0,0,1,.61-.59,3,3,0,0,1,.67-.38A1.66,1.66,0,0,1,53,7a1,1,0,0,1,.83.32,1.51,1.51,0,0,1,.28,1A3.88,3.88,0,0,1,54,9.2a2.78,2.78,0,0,1-.29.73,2.07,2.07,0,0,1-.41.53m9.28-1a1.92,1.92,0,0,1-.15.48,2.76,2.76,0,0,1-.28.49c-.12.16-.26.33-.43.52L57.76,15.4l.37-.05.47,0,.52,0h.52a8,8,0,0,1,1.23.08,1.75,1.75,0,0,1,.68.26.76.76,0,0,1,.3.41,1.59,1.59,0,0,1,.09.55,1.5,1.5,0,0,1-.09.52,1.34,1.34,0,0,1-.24.44,1.18,1.18,0,0,1-.93.39l-.42,0-.48,0-.61,0h-.78c-.51,0-1,0-1.49,0s-1,.05-1.46.05a2,2,0,0,1-.72-.12,1.41,1.41,0,0,1-.53-.33,1.46,1.46,0,0,1-.32-.52,1.94,1.94,0,0,1-.11-.66,2.24,2.24,0,0,1,.05-.52,2.21,2.21,0,0,1,.15-.48,3.61,3.61,0,0,1,.29-.48,3.19,3.19,0,0,1,.43-.52l3.93-4.5H56a.81.81,0,0,1-.67-.26,1.15,1.15,0,0,1-.23-.81,2,2,0,0,1,.09-.62,1.37,1.37,0,0,1,.25-.48,1.16,1.16,0,0,1,.37-.29,1.28,1.28,0,0,1,.48-.09H60.9a2,2,0,0,1,.72.12,1.63,1.63,0,0,1,.54.33,1.36,1.36,0,0,1,.33.52,2,2,0,0,1,.11.67,2.78,2.78,0,0,1-.05.52m16.07,1.92c-.05.35-.1.71-.16,1.09s-.14.78-.21,1.18-.15.8-.21,1.17-.12.73-.16,1.05a7.17,7.17,0,0,0-.06.85,2.35,2.35,0,0,0,0,.28c0,.07,0,.16,0,.26a.69.69,0,0,1-.2.5.81.81,0,0,1-.58.19.91.91,0,0,1-.71-.28,1.2,1.2,0,0,1-.26-.83,5.31,5.31,0,0,1,.07-.81c0-.32.09-.66.15-1s.13-.75.2-1.15.14-.78.21-1.16.11-.73.15-1.08a6.05,6.05,0,0,0,.07-.88,2,2,0,0,0-.43-1.43,1.6,1.6,0,0,0-1.23-.46,2.11,2.11,0,0,0-.62.09,3.28,3.28,0,0,0-.54.24,4.14,4.14,0,0,0-.48.34l-.41.39a4.81,4.81,0,0,0-.75,1.06.93.93,0,0,0,0,.21c0,.12,0,.29-.06.5l-.87,5.43a1,1,0,0,1-.3.63,1,1,0,0,1-.67.22.77.77,0,0,1-.62-.22.79.79,0,0,1-.12-.63l.84-5.29c0-.2.06-.39.08-.57a4.63,4.63,0,0,0,0-.51,2.09,2.09,0,0,0-.43-1.43,1.63,1.63,0,0,0-1.25-.46,2.33,2.33,0,0,0-.59.08,3,3,0,0,0-1,.57,2.82,2.82,0,0,0-.39.38,5.52,5.52,0,0,0-.76,1l-1,6.21a1,1,0,0,1-.29.63.89.89,0,0,1-.66.22.77.77,0,0,1-.62-.22.7.7,0,0,1-.14-.63l1.44-9a.91.91,0,0,1,.24-.54.72.72,0,0,1,.51-.18.61.61,0,0,1,.51.22,1,1,0,0,1,.18.67,2.17,2.17,0,0,1,0,.26c0,.08,0,.16,0,.22l0,.26h0a4.59,4.59,0,0,1,.78-.87c.13-.11.28-.21.44-.32a3.89,3.89,0,0,1,.54-.27,4.67,4.67,0,0,1,.63-.2,3.77,3.77,0,0,1,1.74.07,2.86,2.86,0,0,1,.8.4A2.63,2.63,0,0,1,72,8.4a2.45,2.45,0,0,1,.35.79,5.24,5.24,0,0,1,.91-1,3.64,3.64,0,0,1,.49-.36,4.71,4.71,0,0,1,.59-.32A3.61,3.61,0,0,1,75,7.32a3.16,3.16,0,0,1,.76-.08A3.37,3.37,0,0,1,77,7.45a2.45,2.45,0,0,1,.92.62,2.8,2.8,0,0,1,.58,1,4.24,4.24,0,0,1,.2,1.34,8.3,8.3,0,0,1-.06.93m30.5-8-.06.32L107.27,15a3.6,3.6,0,0,0-.07.73,1,1,0,0,0,.09.43.38.38,0,0,0,.2.21.68.68,0,0,0,.29.06,1.15,1.15,0,0,0,.3,0l.24,0a.39.39,0,0,1,.34.16.63.63,0,0,1,.12.4.9.9,0,0,1-.06.34.84.84,0,0,1-.18.28l-.18.15a1.46,1.46,0,0,1-.28.13,1.58,1.58,0,0,1-.36.09,2.39,2.39,0,0,1-.48,0,1.71,1.71,0,0,1-1.34-.49,2.07,2.07,0,0,1-.45-1.44c0-.17,0-.33,0-.49s0-.33.08-.53L107.4,3.36a1.09,1.09,0,0,1,.29-.63.93.93,0,0,1,.67-.22.86.86,0,0,1,.57.17.62.62,0,0,1,.2.49c0,.06,0,.11,0,.17"/><path class="a" d="M41.57,9.44a1.69,1.69,0,0,0-.66.13,1.88,1.88,0,0,0-.62.43,2.88,2.88,0,0,0-.51.72,4.94,4.94,0,0,0-.37,1,7.62,7.62,0,0,0,1.41-.06,3.16,3.16,0,0,0,1-.26,1.28,1.28,0,0,0,.55-.46,1.26,1.26,0,0,0,.18-.66.9.9,0,0,0-.23-.64,1,1,0,0,0-.71-.23"/>
+    <path class="dot" d="M89.22,22.08a2.53,2.53,0,1,0-2.33-2.53,2.44,2.44,0,0,0,2.33,2.53"/>
+</svg>
+							</span>
+						
+						<span class="text">Gra w gazetę</span>
+					</a>
+				</li>
+			</ul>
+			
+				<div class="main-nav__item main-nav__item--search js-search">
+					<a href="/szukaj" class="main-nav__link search-button js-search-button">
+						<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="24px" height="24px" viewBox="0 0 25 25" preserveAspectRatio="none" enable-background="new 0 0 25 25"
+	 xml:space="preserve">
+<defs>
+</defs>
+<g id="ICON_x5F_SEARCH_2_">
+	<g>
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M23.618,20.757l-5.26-5.259c-0.027-0.028-0.061-0.049-0.09-0.075
+			c1.035-1.569,1.639-3.448,1.639-5.47C19.907,4.456,15.451,0,9.954,0C4.457,0,0,4.456,0,9.953c0,5.498,4.456,9.954,9.954,9.954
+			c2.021,0,3.901-0.604,5.47-1.639c0.026,0.029,0.046,0.062,0.073,0.089l5.26,5.261c0.791,0.789,2.071,0.789,2.861,0
+			C24.409,22.827,24.409,21.547,23.618,20.757z M9.954,16.457c-3.592,0-6.503-2.913-6.503-6.504c0-3.592,2.912-6.503,6.503-6.503
+			c3.592,0,6.503,2.912,6.503,6.503S13.546,16.457,9.954,16.457z"/>
+	</g>
+</g>
+</svg>
+						<span class="text">Szukaj</span>
+					</a>
+
+					<form method="get" action="/szukaj" class="search">
+						<input type="search" placeholder="Szukaj" class="search__input js-search-input" name="q">
+						<label class="search__label">
+							<input type="submit" class="search__button search-button js-search-submit" title="Wyszukaj">
+							<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="24px" height="24px" viewBox="0 0 25 25" preserveAspectRatio="none" enable-background="new 0 0 25 25"
+	 xml:space="preserve">
+<defs>
+</defs>
+<g id="ICON_x5F_SEARCH_2_">
+	<g>
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M23.618,20.757l-5.26-5.259c-0.027-0.028-0.061-0.049-0.09-0.075
+			c1.035-1.569,1.639-3.448,1.639-5.47C19.907,4.456,15.451,0,9.954,0C4.457,0,0,4.456,0,9.953c0,5.498,4.456,9.954,9.954,9.954
+			c2.021,0,3.901-0.604,5.47-1.639c0.026,0.029,0.046,0.062,0.073,0.089l5.26,5.261c0.791,0.789,2.071,0.789,2.861,0
+			C24.409,22.827,24.409,21.547,23.618,20.757z M9.954,16.457c-3.592,0-6.503-2.913-6.503-6.504c0-3.592,2.912-6.503,6.503-6.503
+			c3.592,0,6.503,2.912,6.503,6.503S13.546,16.457,9.954,16.457z"/>
+	</g>
+</g>
+</svg>
+						</label>
+					</form>
+				</div>
+
+				
+				<div class="main-nav__item main-nav__item--user js-user-widget"
+					
+					data-user-account-url="https://konto.wpolityce.pl"
+					
+					data-login-url="/czytelnicy/logowanie?login_with_popup=1" data-check-authentication-url="/czytelnicy/api/check-authentication"
+					
+					data-logout-url="/czytelnicy/wyloguj?login_with_popup=1"
+					
+					data-login-with-popup="true"
+				>
+					<ul class="is-not-logged-in">
+						
+							<li class="log-in">
+								<a href="/czytelnicy/logowanie?next=/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem" title="Zaloguj się" rel="nofollow" class="js-cas-login" data-login-url="/czytelnicy/logowanie?login_with_popup=1" data-check-authentication-url="/czytelnicy/api/check-authentication">
+									<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/"
+	 x="0px" y="0px" width="24px" height="24px" viewBox="0 0 30 30" preserveAspectRatio="none" enable-background="new 0 0 30 30"
+	 xml:space="preserve">
+<defs>
+</defs>
+<g id="ICON_x5F_LOGIN_2_">
+	<g>
+		<path fill-rule="evenodd" clip-rule="evenodd" d="M14.499,15.191C18.09,15.191,21,11.79,21,7.596
+			C21,1.778,18.09,0,14.499,0S7.998,1.778,7.998,7.596C7.998,11.79,10.908,15.191,14.499,15.191z M28.855,26.37l-3.279-7.375
+			c-0.15-0.337-0.414-0.617-0.742-0.788l-5.09-2.645c-0.113-0.059-0.249-0.047-0.35,0.029c-1.439,1.087-3.133,1.661-4.896,1.661
+			c-1.763,0-3.456-0.574-4.896-1.661c-0.102-0.076-0.237-0.088-0.35-0.029l-5.09,2.645c-0.328,0.171-0.591,0.451-0.742,0.788
+			l-3.28,7.375c-0.227,0.509-0.18,1.091,0.124,1.557c0.304,0.467,0.817,0.745,1.375,0.745h25.717c0.557,0,1.07-0.279,1.375-0.745
+			C29.035,27.461,29.082,26.879,28.855,26.37z"/>
+	</g>
+</g>
+</svg>
+									<span class="text">Zaloguj się</span>
+								</a>
+							</li>
+						
+					</ul>
+				</div>
+				<div class="main-nav__item main-nav__item--submenu submenu-container">
+					<ul class="submenu">
+	
+		<li class="submenu__item">
+			<a href="/premium" class="submenu__link submenu__link--premium">
+				Premium <img src="//static.wpolityce.pl/img/premium-article.svg?d=14-07-2020" class="premium-icon--submenu" alt="">
+			</a>
+		</li>
+	
+	<li class="submenu__item"><a href="/polityka" class="submenu__link">Polityka</a></li>
+	<li class="submenu__item"><a href="/swiat" class="submenu__link">Świat</a></li>
+	<li class="submenu__item"><a href="/smolensk" class="submenu__link">Smoleńsk</a></li>
+	<li class="submenu__item"><a href="/media" class="submenu__link">Media</a></li>
+	<li class="submenu__item"><a href="/spoleczenstwo" class="submenu__link">Społeczeństwo</a></li>
+	<li class="submenu__item"><a href="/gospodarka" class="submenu__link">Gospodarka</a></li>
+	<li class="submenu__item"><a href="/sport" class="submenu__link">Sport</a></li>
+	<li class="submenu__item"><a href="/historia" class="submenu__link">Historia</a></li>
+	<li class="submenu__item"><a href="/kultura" class="submenu__link">Kultura</a></li>
+	<li class="submenu__item"><a href="/kosciol" class="submenu__link">Kościół</a></li>
+	<li class="submenu__item"><a href="/kryminal" class="submenu__link">Kryminał</a></li>
+	<li class="submenu__item"><a href="/tag/zdrowie" class="submenu__link">Zdrowie</a></li>
+</ul>
+				</div>
+			
+		</div>
+		
+			<div class="main-nav__item main-nav__item--menu-button">
+				<a href="#menu" class="main-nav__link js-menu-button">
+					<span class="text">Menu</span>
+				</a>
+			</div>
+		
+	</nav>
+
+		</div>
+	</header>
+</div>
+	
+
+	
+
+	
+	
+		<div class="row adunit adunit-constant-height">
+			<div id="wPolityce/art_bill_top"></div>
+		</div>
+	
+
+
+	
+<main class="main-content publication">
+	<article class="row publication__article-full article js-publication-container" data-publication-id="549052">
+
+		
+
+		<section class="article__header">
+			
+			<section class="print is-hidden">
+				<div class="print-header">
+					<p class="print-date">
+						Wydrukowano:
+						<strong><time class="js-print-date">2021-05-11 22:22:17.242000+02:00</time></strong>
+					</p>
+					<div class="logo-container">
+						<strong>wPolityce<small>.pl</small></strong>
+						<p>wiadomości z Polski i ze świata</p>
+					</div>
+				</div>
+
+				<p class="print-article-meta">
+					Opublikowano: <strong><time class="js-relative-date" title="2021-04-29 17:13:04.031886+02:00">2021-04-29 17:13:04.031886+02:00</time></strong>
+					
+				</p>
+				<h3 class="print-article-meta">Dział: <a href="/gospodarka">Gospodarka</a></h3>
+			</section>
+			
+
+			<header class="article__header-main-info">
+				<div class="ticker ellipsis">
+	<div class="js-ellipsis">
+		<span class="ticker__text">BREXIT I CO DALEJ?</span>
+	</div>
+</div>
+				<h1 class="article__title">Jest zgoda PE na umowę handlową między UE a Londynem. Michel: Wielka Brytania pozostanie przyjacielem i partnerem UE"</h1>
+				<ul class="article__meta">
+					<li class="article__division-name"><a href="/gospodarka" title="Zobacz najnowsze artykuły z działu Gospodarka">Gospodarka</a></li>
+					<li class="article__meta-item">opublikowano: <time class="js-relative-date" title="2021-04-29 17:13:04.031886+02:00">2021-04-29 17:13:04.031886+02:00</time></li>
+					
+					<li class="article__facebook-like js-facebook-like" hidden>
+						<div class="fb-like" data-href="//wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem" data-width="120" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div>
+					</li>
+				</ul>
+				
+				<figure
+					class="article__main-img-container article-img"
+					>
+					
+					
+						<img src="//static.wpolityce.pl/img/wpolityce-logo.svg?d=2020-06-19" class="article-img__watermark-wpolityce" alt="">
+						<img src="//media.wplm.pl/thumbs/95b/OTYwL3VfMS9jY182Mjg0My9wLzIwMjEvMDQvMjkvMTIwMC81OTYvYzRhMjNiM2E1NTNiNDkwNDhmOTQxZjczNjAxODBjNDMuanBlZw==.jpeg" alt="Londyn / autor: Pixabay, Twitter" width="960" height="477" class="article-img__img">
+						
+							<div class="article-img__meta">
+								<figcaption>Londyn / autor: Pixabay, Twitter</figcaption>
+							</div>
+						
+					
+					
+				</figure>
+			</header>
+			<aside class="publication__ad-scrolled-container">
+				
+					<div id="wPolityce/art_half_0" class="publication__ad-scrolled"></div>
+				
+			</aside>
+		</section>
+		<section class="article__body">
+			
+			<section class="article__content js-truncate-related-to-my-size">
+				<aside class="article__social-media">
+					<ul class="article-sm">
+	<li class="article-sm__item--title">Podziel się</li>
+	<li>
+		<button type="button" class="article-sm__item--fb js-facebook-share" data-link="https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem" data-app-id="286165648231957" title="Podziel się na Facebooku"></button>
+	</li>
+	<li>
+		<button type="button" class="article-sm__item--twitter js-twitter" data-site="@wPolityce_pl" data-text="Jest zgoda PE na umowę handlową między UE a Londynem" data-card="summary" data-link="https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem" title="Poleć na Twitterze"></button>
+	</li>
+	<li>
+		<a href="http://www.wykop.pl/dodaj/link/?url=https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem&amp;title=Jest zgoda PE na umowę handlową między UE a Londynem&amp;desc=Umowa handlowa między Wielką Brytanią a UE została zaakceptowana przez PE. To zwieńczenie trudnych negocjacji brexitowych." class="article-sm__item--wykop" title="Wykop" target="_blank"></a>
+	</li>
+	<li>
+		<a href="#comments_container" class="article-sm__item--comments js-comments" title="Liczba komentarzy">
+		</a>
+		<span class="article-sm__item--comments-count">1</span>
+	</li>
+	<li>
+		<button class="article-sm__item--print js-print-publication-button" title="Wydrukuj: 'Jest zgoda PE na umowę handlową między UE a Londynem'"></button>
+	</li>
+</ul>
+				</aside>
+				<section class="article__main">
+					
+					
+						<div class="article__markdown publication-markdown article-body-print js-article-body js-article-body-print" data-multi-page="false">
+							
+								<div class="intext-links"><p><strong>Parlament Europejski poparł umowę handlową między Wielką Brytanią a&nbsp;Unią Europejską po&nbsp;brexicie, usuwając ostatnią przeszkodę na&nbsp;drodze do&nbsp;pełnej ratyfikacji porozumienia. W&nbsp;głosowaniu 660 europosłów było &bdquo;za&#8221;, 5&nbsp;- &bdquo;przeciwko&#8221;, a&nbsp;32&nbsp;wstrzymało się&nbsp;od&nbsp;głosu.</strong></p> <p>Zgoda PE&nbsp;jest uwieńczeniem ponad czterech lat trudnych negocjacji w&nbsp;sprawie wyjścia Wielkiej Brytanii z&nbsp;UE. Gdyby umowa nie została poparta przez eurodeputowanych, relacje UE-W. Brytania musiałby opierać się na&nbsp;warunkach Światowej Organizacji Handlu (WTO), co&nbsp;oznaczałoby m.in. kontyngenty&nbsp;i&nbsp;cła.</p> <h2><span class=dquo>&bdquo;</span>Wielka Brytania - ważny przyjaciel i&nbsp;partner&nbsp;UE&#8221;</h2> <p>Przewodniczący Rady Europejskiej Charles Michel napisał na&nbsp;Twitterze, że&nbsp;W. Brytania pozostaje „ważnym przyjacielem i&nbsp;partnerem Unii&nbsp;Europejskiej”.</p> <blockquote> <p>Cieszę się z&nbsp;wyniku głosowania w&nbsp;Parlamencie Europejskim nad umową o&nbsp;handlu i&nbsp;współpracy między UE&nbsp;a&nbsp;Wielką Brytanią. Stanowi to&nbsp;duży krok naprzód w&nbsp;stosunkach UE-Wielka Brytania i&nbsp;otwiera nową&nbsp;erę</p> </blockquote> <p>&#8212;&nbsp;zaznaczył.</p> <p></div> <div class=js-tweet data-tweetid=1387304686957498370> <a class=js-alt href=https://twitter.com/eucopresident/status/1387304686957498370 target=_blank></a> </div> <a class=twitter-link href=https://twitter.com/eucopresident/status/1387304686957498370 style="display: none"></a> <div class=intext-links></p> <p>Zadowolenie z&nbsp;wyniku głosowania wyraziła też przewodnicząca KE&nbsp;Ursula von der Leyen. Jak podkreśliła, porozumienie stanowi podstawę silnej i&nbsp;bliskiej współpracy z&nbsp;W.&nbsp;Brytanią.</p> <p></div> <div class=js-tweet data-tweetid=1387303591342399488> <a class=js-alt href=https://twitter.com/vonderleyen/status/1387303591342399488 target=_blank></a> </div> <a class=twitter-link href=https://twitter.com/vonderleyen/status/1387303591342399488 style="display: none"></a> <div class=intext-links></p> <h2>PE: Brexit &bdquo;historycznym&nbsp;błędem&#8221;</h2> <p>PE&nbsp;w&nbsp;odrębnym głosowaniu poparł także polityczną rezolucję, która określa brexit jako „historyczny błąd”. Parlament wyraził w&nbsp;niej także ubolewanie z&nbsp;powodu ograniczonego zakresu umowy, w&nbsp;której brakuje współpracy w&nbsp;polityce zagranicznej lub wymian studenckich. Została ona przyjęta przy 578 głosach &bdquo;za&#8221;, 51&nbsp;- &bdquo;przeciw&#8221; i&nbsp;68&nbsp;wstrzymujących&nbsp;się.</p> <p>Negocjatorzy UE&nbsp;i&nbsp;Zjednoczonego Królestwa uzgodnili 24&nbsp;grudnia 2020 r. umowę o&nbsp;handlu i&nbsp;współpracy, ustanawiającą zasady regulujące stosunki dwustronne. Umowa jest stosowana tymczasowo (od&nbsp;1&nbsp;stycznia 2021 do&nbsp;30&nbsp;kwietnia 2021 r) w&nbsp;celu ograniczenia komplikacji wynikających z&nbsp;brexitu. Aby weszła w&nbsp;życie, konieczna była zgoda Parlamentu&nbsp;Europejskiego.</p> <p>Wielka Brytania wystąpiła z&nbsp;UE&nbsp;31&nbsp;stycznia 2020 roku. Okres przejściowy, podczas którego pozostawała częścią jednolitego rynku i&nbsp;unii celnej, pozwolił na&nbsp;przeprowadzenie negocjacji w&nbsp;sprawie jej przyszłych stosunków z&nbsp;Unią. Po&nbsp;intensywnych negocjacjach, porozumienie w&nbsp;tej sprawie osiągnięto pod koniec grudnia 2020&nbsp;roku.</p> <p>aja/PAP</p>
+        
+    </div>
+							
+							
+						</div>
+					
+					<p class="print-page-link is-hidden">Publikacja dostępna na stronie: <a href="https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem">https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem</a></p>
+
+					
+						<div class="adunit adunit-desktop-publication-intext publication__ad-bill">
+							<div id="wPolityce/art_intxt_wide_end"></div>
+						</div>
+					
+					<footer class="article__footer">
+						<header class="section__header">
+							<h2 class="section__title">Autor</h2>
+						</header>
+						
+							<div class="article__author">
+								
+									
+									<img src="//media.wplm.pl/thumbs/80e/MTIweDEyMC9jX2MvdV8xL2NjX2I5ZjJjL3AvMjAyMC8wNi8yNS8zODA4LzMyMDcvODc1ZGIyYmIyZGI5NGRkM2E2ODgxZDE5NTcxZDI5MzkuanBlZw==.jpeg" alt="Zdjęcie Zespół wPolityce.pl" height="120" width="120" class="article__author-img">
+								
+								<div class="article__author-descr">
+									<h3 class="article__author-name">
+										
+											<a href="/autorzy/100-zespol-wpolitycepl">Zespół wPolityce.pl</a>
+										
+									</h3>
+									<p>Czekamy na Wasze maile z uwagami i komentarzami: redakcja@wpolityce.pl. Dołącz do naszej społeczności, wykup dostęp do STREFY PREMIUM:  siec.wpolityce.pl/oferta. 
+To najlepsza forma wsparcia naszych mediów.</p>
+								</div>
+							</div>
+						
+						<section class="article__social-media article__social-media--footer">
+							<ul class="article-sm">
+	<li class="article-sm__item--title">Podziel się</li>
+	<li>
+		<button type="button" class="article-sm__item--fb js-facebook-share" data-link="https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem" data-app-id="286165648231957" title="Podziel się na Facebooku"></button>
+	</li>
+	<li>
+		<button type="button" class="article-sm__item--twitter js-twitter" data-site="@wPolityce_pl" data-text="Jest zgoda PE na umowę handlową między UE a Londynem" data-card="summary" data-link="https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem" title="Poleć na Twitterze"></button>
+	</li>
+	<li>
+		<a href="http://www.wykop.pl/dodaj/link/?url=https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem&amp;title=Jest zgoda PE na umowę handlową między UE a Londynem&amp;desc=Umowa handlowa między Wielką Brytanią a UE została zaakceptowana przez PE. To zwieńczenie trudnych negocjacji brexitowych." class="article-sm__item--wykop" title="Wykop" target="_blank"></a>
+	</li>
+	<li>
+		<a href="#comments_container" class="article-sm__item--comments js-comments" title="Liczba komentarzy">
+		</a>
+		<span class="article-sm__item--comments-count">1</span>
+	</li>
+	<li>
+		<button class="article-sm__item--print js-print-publication-button" title="Wydrukuj: 'Jest zgoda PE na umowę handlową między UE a Londynem'"></button>
+	</li>
+</ul>
+						</section>
+						
+						
+							<section class="related-tags">
+								<h3 class="related-tags__header">Powiązane tematy</h3>
+								<ul class="related-tags__list">
+									
+										<li><a href="/tag/brexit" class="related-tags__link">brexit</a></li>
+									
+										<li><a href="/tag/bruksela" class="related-tags__link">bruksela</a></li>
+									
+										<li><a href="/tag/handel" class="related-tags__link">handel</a></li>
+									
+										<li><a href="/tag/londyn" class="related-tags__link">londyn</a></li>
+									
+										<li><a href="/tag/ue" class="related-tags__link">ue</a></li>
+									
+										<li><a href="/tag/umowa" class="related-tags__link">umowa</a></li>
+									
+										<li><a href="/tag/umowa-handlowa" class="related-tags__link">umowa handlowa</a></li>
+									
+										<li><a href="/tag/unia" class="related-tags__link">unia</a></li>
+									
+										<li><a href="/tag/wielka-brytania" class="related-tags__link">wielka brytania</a></li>
+									
+										<li><a href="/tag/wspolpraca" class="related-tags__link">współpraca</a></li>
+									
+										<li><a href="/tag/zgoda" class="related-tags__link">zgoda</a></li>
+									
+								</ul>
+							</section>
+						
+						
+							<div class="article__live-player">
+								<div id="live_player">
+									<div id="on_network_player_preview"></div>
+								</div>
+							</div>
+						
+					</footer>
+				</section>
+			</section>
+			
+			<aside class="publication__related-col article__related-col js-related-publications-container premium-off">
+				
+					<div id="related-publications" data-publication-id="549052">
+						<div class="loading">
+							<img src="//static.wpolityce.pl/img/loading.svg">
+						</div>
+					</div>
+				
+			</aside>
+		</section>
+	</article>
+
+	
+		
+		
+	
+
+	<aside id="article-related-from-division" class="row publication__related-in-division">
+		  
+			<div class="adunit adunit-desktop-publication-under-article-1st-plista">
+				<div data-widget="plista_widget_belowArticle" class="placement-publication-recommendations"></div>
+			</div>
+		
+
+		
+			<div class="adunit adunit-desktop-publication-intext publication__ad-bill js-wPolityce_desktop_artykul_bill_intekst">
+				<div id="wPolityce/art_intxt_wide_1">
+					<script>  
+						(function() {
+							var tag = document.querySelector('.js-wPolityce_desktop_artykul_bill_intekst');
+							var parentNode = document.querySelector(".intext-links") || document.querySelector('.js-article-body');
+							parentNode.insertBefore(tag, parentNode.children[0].nextSibling);
+						})();
+					</script>
+				</div>
+			</div>
+		
+		
+			<div class="adunit">
+				<header class="section__header">
+					<h2 class="section__title">Czytaj także</h2>
+				</header>
+				<div data-ns-type="simplePlacementCustom" data-ns-hash="d1aedb2f053d0c9ce24a180543eb2e70" class="kd_ns_placement">
+					<script src="//emisja.contentstream.pl/aldente/kd_process_function.js?TYPE=simplePlacementCustom" async="async" ></script>
+				</div>
+			</div>
+		
+	</aside>
+
+	
+		
+			<section class="row publication__studio-tv">
+				<header class="section__header">
+					<h2 class="section__title">Studio TV</h2>
+				</header>
+				<div class="adunit adunit-desktop-publication-under-article-Studio-tv" id="widget_playlist"></div>
+			</section>
+		
+	
+	
+		<section id="comments_container" class="row publication__forum-container">
+			<section class="publication__forum forum-comments">
+				
+					<div class="forum-posts-loading js-forum-container js-post-form-visitable" data-csrf="WhVLV9zgvWZqE1yN2PSF43QzfOT35iYs6YiiSbs54GbWdmkBWaUnXQvuIu1sKtFD">
+						<img src="//static.wpolityce.pl/img/loading.svg" class="img-loader">
+						<span class="forum-posts-loading-msg-text js-loader-info">W tym miejscu za chwilę pojawią się komentarze...</span>
+					</div>
+				
+			</section>
+			<div class="publication__ad-scrolled-container publication__forum-ads-container">
+				
+					<aside class="publication__forum-ad-scrolled">
+						<div id="wPolityce/art_half_comm_1" class="publication__ad-scrolled"></div>
+					</aside>
+					
+						<aside class="publication__forum-ad-scrolled">
+							<div id="wPolityce/art_half_comm_2" class="publication__ad-scrolled"></div>
+						</aside>
+					
+				
+			</div>
+		</section>
+	
+</main>
+
+
+	
+	
+		<div class="adunit">
+			<div id="wPolityce/art_interstitial"></div>
+		</div>
+	
+
+
+	
+	<div class="row forum-autopromo-container">
+	
+		
+			
+			
+				
+					<a class="footer-banner forum-autopromo forum-autopromo--footer forum-autopromo--footer-large" href="https://siec.wpolityce.pl/oferta" target="_blank">
+						<img src="//media.wplm.pl/pictures/2021/05/10/1260/300/97afa1e2075a421dbc031dbaea27fe65.jpeg" alt="Zamów książkę &amp;amp;quot;Operacja DUDA 2020. Tajemnice kampanii&amp;amp;quot;">
+					</a>
+				
+			
+		
+			
+			
+				
+					<a class="footer-banner forum-autopromo forum-autopromo--footer forum-autopromo--footer-medium" href="https://siec.wpolityce.pl/oferta" target="_blank">
+						<img src="//media.wplm.pl/pictures/2021/05/10/940/300/fd9ca6f4ac634772a13cac58ce89e438.jpeg" alt="Zamów książkę &amp;amp;quot;Operacja DUDA 2020. Tajemnice kampanii&amp;amp;quot;">
+					</a>
+				
+			
+		
+			
+			
+				
+					<a class="footer-banner forum-autopromo forum-autopromo--footer forum-autopromo--footer-smedium" href="https://siec.wpolityce.pl/oferta" target="_blank">
+						<img src="//media.wplm.pl/pictures/2021/05/10/620/300/80fe95f2e0a04b99854f42c6cb09c74d.jpeg" alt="Zamów książkę &amp;amp;quot;Operacja DUDA 2020. Tajemnice kampanii&amp;amp;quot;">
+					</a>
+				
+			
+		
+			
+			
+				
+					<a class="footer-banner forum-autopromo forum-autopromo--footer forum-autopromo--footer-small" href="https://siec.wpolityce.pl/oferta" target="_blank">
+						<img src="//media.wplm.pl/pictures/2021/05/10/300/300/e106e7e3b8704e8fbe03c052c0dda16a.jpeg" alt="Zamów książkę &amp;amp;quot;Operacja DUDA 2020. Tajemnice kampanii&amp;amp;quot;">
+					</a>
+				
+			
+		
+	
+</div>
+
+
+	
+	
+		
+		<footer class="page-footer">
+			<div class="row">
+				<footer class="page-footer-col">
+    <p><a href="/facts-from-poland"><strong>English version</strong></a></p>
+    <p><a href="/forum"><strong>Forum dyskusyjne</strong></a></p>
+    <p><a href="http://wsklepiku.pl"><strong>wSklepiku</strong></a></p>
+    <p><a href="http://wpolsce.pl"><strong>wPolsce.pl</strong></a></p>
+    <p><a href="https://siec.wpolityce.pl"><strong>Sieć Przyjaciół</strong></a></p>
+
+    <div style="margin-bottom: 8px;">
+        <a href="https://www.facebook.com/wPolityce/" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-bottom: -7px;"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-3 7h-1.924c-.615 0-1.076.252-1.076.889v1.111h3l-.238 3h-2.762v8h-3v-8h-2v-3h2v-1.923c0-2.022 1.064-3.077 3.461-3.077h2.539v3z" fill="#3b5998"/></svg> Facebook</a>
+    </div>
+    <div style="margin-bottom: 8px;">
+        <a href="https://twitter.com/wpolityce_pl" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="margin-bottom: -7px;"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-.139 9.237c.209 4.617-3.234 9.765-9.33 9.765-1.854 0-3.579-.543-5.032-1.475 1.742.205 3.48-.278 4.86-1.359-1.437-.027-2.649-.976-3.066-2.28.515.098 1.021.069 1.482-.056-1.579-.317-2.668-1.739-2.633-3.26.442.246.949.394 1.486.411-1.461-.977-1.875-2.907-1.016-4.383 1.619 1.986 4.038 3.293 6.766 3.43-.479-2.053 1.08-4.03 3.199-4.03.943 0 1.797.398 2.395 1.037.748-.147 1.451-.42 2.086-.796-.246.767-.766 1.41-1.443 1.816.664-.08 1.297-.256 1.885-.517-.439.656-.996 1.234-1.639 1.697z" fill="#1da1f2"/></svg> Twitter</a>
+    </div>
+</footer>
+
+<footer class="page-footer-col">
+    <p>Redaktor Naczelna: <strong>Marzena Nykiel</strong></p>
+    <p>Zespół: <strong>Wojciech Biedroń, Adam Kacprzak, Jacek Karnowski, Michał Karnowski, Tomasz Karpowicz, Kamil Kwiatek,  Aleksander Majewski, Adam Stankiewicz, Weronika Tomaszewska, Anna Wiejak.</strong></p>
+    <p>Autorzy: <strong>Łukasz Adamski, Piotr Cywiński, Krzysztof Feusette, Grzegorz Górny, Edyta Hołdyńska, Jerzy Jachowicz, Aleksandra Jakubowska, Stanisław Janecki, Dorota Łosiewicz, Maja Narbutt, Maciej Pawlicki, Andrzej Potocki, Marek Pyza, Aleksandra Rybińska, Marcin Wikło.</strong></p>
+</footer>
+
+<footer class="page-footer-col">
+    <p>Kontakt: <strong>redakcja@wpolityce.pl</strong></p>
+    <p>Wydawca: <strong>Fratria Sp. z o.o.</strong></p>
+    <p>Adres do korespondencji: <strong>ul. Finlandzka 10, 03-903 Warszawa</strong></p>
+    <p>Kontakt do biura reklamy: <strong>reklama@fratria.pl</strong></p>
+    <p>
+<a href="/kontakt">Kontakt</a>
+<a href="http://feeds.feedburner.com/wPolitycepl" target="_blank">RSS</a>
+<a href="/regulamin">Regulaminy</a>
+<a href="/polityka-prywatnosci">Polityka prywatności</a>
+<a href="/ustawienia-prywatnosci">Ustawienia prywatności</a>
+</p>
+</footer>
+			</div>
+		</footer>
+	
+
+	
+	<!-- Facebook Conversion Code for Piksel główny - serwisy -->
+	<script type="text/javascript">
+		(function() {
+			var _fbq = window._fbq || (window._fbq = []);
+			if (!_fbq.loaded) {
+				var fbds = document.createElement('script');
+				fbds.async = true;
+				fbds.src = '//connect.facebook.net/en_US/fbds.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(fbds, s);
+				_fbq.loaded = true;
+			}
+		})();
+		window._fbq = window._fbq || [];
+		window._fbq.push(['track', '6020249374411', {'value':'0.00','currency':'PLN'}]);
+	</script>
+	<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6020249374411&amp;cd[value]=0.00&amp;cd[currency]=PLN&amp;noscript=1" /></noscript>
+
+
+	<div id="old-ie-info" class="js-old-ie-info box-information">
+		<div class="inner-box-info">
+			<span class="close"><i class="fa fa-close"></i></span>
+			<p><strong>Używasz przestarzałej wersji przeglądarki</strong> Internet Explorer posiadającej ograniczoną funkcjonalność i luki bezpieczeństwa. Tracisz możliwość skorzystania z pełnych możliwości serwisu.</p>
+			<p>Zaktualizuj przeglądarkę lub skorzystaj z alternatywnej.</p>
+		</div>
+	</div>
+
+	<div style="display:none;">
+		<img src="//pixel.quantserve.com/pixel/p-DJ0mbtRcRwRwg.gif" border="0" height="1" width="1" alt="Quantcast"/>
+	</div>
+</body>
+<script type="text/javascript">snippy.executeSyncScripts()</script>
+</html>

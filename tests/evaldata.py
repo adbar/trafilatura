@@ -6294,4 +6294,99 @@ EVAL_PAGES = {
     'license': '',  # if CC-...
     'region': 'UK',  # if obvious: DE, CH, AT
 },
+'https://klubjagiellonski.pl/2021/04/22/nowa-zelandia-platny-urlop-dla-rodzicow-poronionego-dziecka-jak-to-wyglada-w-polsce/': {
+    'file': 'Nowa Zelandia_ płatny urlop dla rodziców poronionego dziecka. Jak to wygląda w Polsce_ — Klub Jagielloński.html',
+    'with': ['Trzy dni', 'w życie w kwietniu.', 'Ustawa Holidays'],
+    'without': ['korzystamy z cookies.', 'Czytasz właśnie nowy', 'Twój email'],
+},
+'https://liberte.pl/koncesjonowana-opozycja/': {
+    'file': 'Koncesjonowana opozycja -Leszek Jażdżewski - Liberté!.html',
+    'with': ['Pakt lewicy z PiS', 'Podsumujmy. Lewica', 'na salonach władzy.'],
+    'without': ['Fundusz Odbudowy, lewica, PiS', 'Inne artykuły autora', 'Polityka prywatności'],
+},
+'https://www.dwutygodnik.com/artykul/9491-winda-w-chmurach.html': {
+    'file': 'Winda w chmurach _ Obyczaje _ Dwutygodnik _ Dwutygodnik.html',
+    'with': ['Ludzie ci', 'Aleksandra Zbroja przedstawia się', 'Mireczka, i bez niego.'],
+    'without': ['11 minut czytania', 'Historyczka nowoczesnej kultury polskiej', 'IWONA KURZ'],
+},
+'https://publica.pl/teksty/rafalska-finowie-odkrywaja-wino-68379.html': {
+    'file': 'Finowie odkrywają wino _ Res Publica Nowa.html',
+    'with': ['Nie mogąc konkurować', 'W Finlandii obowiązuje', 'koncepcję „zero waste”'],
+    'without': ['marca 2021', 'Rozmowa z dr nauk', 'Wino lepsze od'],
+},
+'https://spidersweb.pl/2021/05/windows-10-flash.html': {
+    'file': 'Windows 10 od lipca przestanie obsługiwać Adobe Flash.html',
+    'with': ['W październiku na', 'wspomniane cyberbezpieczeństwo.', 'nigdy go nie obsługiwały.'],
+    'without': ['do dyskusji', 'Używamy informacji zapisanych', 'UDOSTĘPNIJ'],
+},
+'https://www.polityka.pl/tygodnikpolityka/swiat/2116825,1,krolowa-elzbieta-wyplywa-w-swiat-sygnal-dla-chin-i-rosji.read': {
+    'file': '„Królowa Elżbieta” wypływa w świat. Sygnał dla Chin i Rosji - Polityka.pl.html',
+    'with': ['Pierwszy rejs HMS', 'Bandera podąża za handlem', 'zaważyła na jego trasie.'],
+    'without': ['Czytaj też', 'Były dowódca wojsk USA', 'starszy analityk'],
+},
+'https://www.rp.pl/Polityka/305049888-Unijne-fundusze-coraz-blizej-Sejm-zaglosowal-za.html': {
+    'file': 'Unijne fundusze coraz bliżej. Sejm zagłosował _za_ - Polityka - rp.pl.html',
+    'with': ['To jest moment fundamentalny', 'Ciężar dyskusji przeniesie', 'Na lepszą konkurencyjność gospodarki'],
+    'without': ['Licencja na publikację', 'Reklama', 'Dowiedz się więcej', 'Rafał Guz', 'Publikacja:'],
+},
+'https://forsal.pl/gospodarka/pkb/artykuly/8150873,ile-jest-warta-godzina-pracy.html': {
+    'file': 'Ile jest warta godzina pracy_ W tych krajach praca popłaca - Forsal.pl.html',
+    'with': ['Portal Statista powołuje', '54,4 dolara.', 'Oto kraje, w'],
+    'without': ['ShutterStock', 'Ten tekst przeczytasz', 'Źródło:'],
+},
+'https://wiadomosci.dziennik.pl/polityka/artykuly/8156148,dezubekizacja-trybunal-konstytucyjny-wyrok-termin.html': {
+    'file': 'Dezubekizacja – reaktywacja. Czyli daty mają znaczenie - Dziennik.pl.html',
+    'with': ['Historia dezubekizacji przed', '12 maja. Tego', 'Skarżący powołali się'],
+    'without': ['Trybunał Konstytucyjny', 'CZYTAJ WIĘCEJ W', 'Materiał chroniony prawem'],
+},
+'https://dorzeczy.pl/ekonomia/183131/eurostat-polska-z-najnizszym-bezrobociem-w-calej-ue.html': {
+    'file': 'Eurostat_ Polska z najniższym bezrobociem w całej UE.html',
+    'with': ['Wyrównana sezonowo stopa', 'Holandia (3,5 proc.).', 'najniższa w UE – podał Eurostat.'],
+    'without': ['Praca w magazynie', 'Źródło:', 'NAJNOWSZE'],
+},
+'https://www.portalspozywczy.pl/handel/wiadomosci/eurocash-rusza-z-innowacyjna-platforma-handlu,198264.html': {
+    'file': 'Eurocash rusza z Innowacyjną Platformą Handlu - Handel dystrybucja.html',
+    'with': ['Jest to zintegrowany system', 'kasowy IPH POS.', 'dostęp do IPH za 1 zł.'],
+    'without': ['Szukasz lokalu handlowego', 'Materiał chroniony prawem', 'więcej informacji:'],
+},
+'https://wiadomosci.gazeta.pl/wiadomosci/7,114883,27025667,ziemniaki-na-szostej-surowka-na-dziesiatej-jak-pomoc-zeby.html#s=BoxMMt2': {
+    'file': '_Ziemniaki na szóstej, surówka na dziesiątej_. Jak pomagać, żeby nie zaszkodzić_ [PORADNIK W PIGUŁCE].html',
+    'with': ['pomóc osobie niewidomej', 'Osoby niewidome, słabowidzące:', 'może wypaść z wózka.'],
+    'without': ['Agencja Gazeta', 'cocopanda.pl', 'Komentarze'],
+},
+'https://www.radiomaryja.pl/informacje/sprzeciw-wobec-atakow-na-fundacje-lux-veritatis/': {
+    'file': 'Sprzeciw wobec ataków na Fundację Lux Veritatis – RadioMaryja.pl.html',
+    'with': ['Watchdog wytoczył', 'Nie możemy pozwolić na', 'nękania Fundacji Lux Veritatis'],
+    'without': ['więcej]', 'drukuj', 'RIRM'],
+},
+'https://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html': {
+    'file': '„Sieci”_ IPN, czyli element infrastruktury krytycznej Tygodnik Sieci.html',
+    'with': ['Zadania Instytutu Pamięci', 'co zechcą - czytamy.', 'łamach nowego wydania'],
+    'without': ['opublikowano:', 'Zobacz także', 'Zapraszamy też do subskrypcji'],
+},
+'https://wpolityce.pl/gospodarka/549052-jest-zgoda-pe-na-umowe-handlowa-miedzy-ue-a-londynem': {
+    'file': 'Jest zgoda PE na umowę handlową między UE a Londynem.html',
+    'with': ['Zgoda PE jest', 'i otwiera nową erę', '„historycznym błędem”'],
+    'without': ['opublikowano', 'aja/PAP', 'Czekamy na Wasze'],
+},
+'https://www.osw.waw.pl/pl/publikacje/analizy/2021-04-20/rosyjskie-zamachy-w-czechach-kontekst-krajowy-implikacje-perspektywy': {
+    'file': 'Rosyjskie zamachy w Czechach – kontekst krajowy, implikacje, perspektywy.html',
+    'with': ['17 kwietnia na konferencji', 'Informacja o noszącym', 'Media czeskie i brytyjskie'],
+    'without': ['DO WYSŁUCHANIA W SERWISIE', 'Mateusz Seroka', 'Publikacje'],
+},
+'https://www.wirtualnemedia.pl/artykul/maciej-krzysztoszek-rzecznik-prasowy-amica-menedzer-komunikacji-zewnetrznej': {
+    'file': 'Maciej Krzysztoszek rzecznik prasowy Amica menedżer komunikacji zewnętrznej.html',
+    'with': ['w dziale marketingu.', 'Mickiewicza w Poznaniu.', 'i komunikacją wewnętrzną.'],
+    'without': ['Zmiany personalne', 'polecamy', 'Podziel się'],
+},
+'https://menway.interia.pl/historia/news-angus-barbieri-nie-jadl-przez-382-dni,nId,5222535': {
+    'file': 'Angus Barbieri. Nie jadł przez 382 dni - Menway w INTERIA.PL.html',
+    'with': ['Angus pochodził ze', 'nie dłuższy niż 40 dni.', 'Początkowo Barbieri znajdował', 'cukru oraz mleka.'],
+    'without': ['domena publiczna', 'Opuszczony Dom', ' Poniedziałek'],
+},
+'https://energetyka24.com/rosjanie-sugeruja-natychmiastowe-odciecie-polski-od-gazu': {
+    'file': 'Rosjanie sugerują natychmiastowe odcięcie Polski od gazu - Energetyka24.html',
+    'with': ['Rosjanie twierdzą, że z', 'Danię do Polski.', 'konkluduje finobzor.ru.'],
+    'without': ['ZOBACZ TAKŻE', 'Reklama', 'Prosimy o zaznaczenie', 'Czyżewski'],
+},
 }
