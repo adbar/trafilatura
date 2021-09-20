@@ -47,7 +47,7 @@ SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
 
 NOPRINT_TRANS_TABLE = {
     i: None for i in range(0, sys.maxunicode + 1)
-    if not chr(i).isprintable() and not chr(i) in (' ', '\t', '\n')
+    if not chr(i).isprintable() and not chr(i).isspace()
 }
 
 # Regex to check image file extensions
@@ -241,12 +241,10 @@ def line_processing(line):
     '''Discard incompatible unicode and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
     line = line.replace('&#13;', '\r').replace('&#10;', '\n')
-    # spaces
-    # https://stackoverflow.com/questions/16467479/normalizing-unicode
-    # remove non-printable chars
-    line = remove_control_characters(UNICODE_WHITESPACE.sub(' ', line))
-    line = trim(line)
-    if re.match(r'[\s\t]*$', line):
+    # remove non-printable chars and normalize space characters
+    line = trim(remove_control_characters(UNICODE_WHITESPACE.sub(' ', line)))
+    # prune empty lines
+    if re.match(r'\s*$', line):
         line = None
     return line
 
