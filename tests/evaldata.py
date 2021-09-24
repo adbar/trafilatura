@@ -401,6 +401,9 @@ EVAL_PAGES = {
 },
 'https://lemire.me/blog/2019/08/02/json-parsing-simdjson-vs-json-for-modern-c/': {
     'file': 'lemire.me.json.html',
+    'author': 'Daniel Lemire',
+    'title': 'JSON parsing: simdjson vs. JSON for Modern C++',
+    'date': '2019-08-02',
     'with': ['I use a Skylake processor with GNU GCC 8.3.', 'gsoc-2018', '0.091 GB/s', 'version 0.2 on vcpkg.'],
     'without': ['Leave a Reply', 'Science and Technology links', 'Proudly powered by WordPress'],
 },
@@ -4881,67 +4884,67 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.ok-magazin.de/people/real-life/horror-fund-instagram-star-24-einbetoniert-62276.html': {
-    'file': 'ok-magazin.de.einbetoniert.html',  # stays empty until download
+    'file': 'ok-magazin.de.einbetoniert.html',
     'author': 'Ulrike',
     'title': 'Horror-Fund! Instagram-Star (†24) einbetoniert',
     'date': '2019-10-18',
-    'description': 'https://www.ok-magazin.de/sites/default/files/styles/facebook/public/media/gallery/2019/10/18/esmeralda-1.jpg?itok=ufNX8thk',  # in HTML source
+    'description': 'https://www.ok-magazin.de/sites/default/files/styles/facebook/public/media/gallery/2019/10/18/esmeralda-1.jpg?itok=ufNX8thk',
     'categories': ['Tod'],
     'tags': [''],
     'with': ['Die Ermittler gehen davon aus, dass der drogensüchtige Mann', 'das alles wäre nur ein Traum, es tut mir so leid.', 'Kaum zu fassen, dass diese Story wirklich passiert ist:'],  # 3 segments
     'without': ['TikTok-Star begeht', 'Real Life', 'Themen'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.zdf.de/sport/us-sport-corona-100.html': {
-    'file': 'zdf.de.corona.html',  # stays empty until download
+    'file': 'zdf.de.corona.html',
     'author': 'Andreas Kürten',
     'title': 'US-Sport in Zeiten von Corona',
     'date': '2020-04-04',
-    'description': 'US-Sport in Zeiten von Corona - ZDFmediathek',  # in HTML source
+    'description': 'US-Sport in Zeiten von Corona - ZDFmediathek',
     'categories': ['Sport'],
     'tags': [''],
     'with': ['New York ist das Epizentrum der Corona-Pandemie', ' Auch der Sport ist zum Stillstand', 'Die Anteilnahme in den Top-Ligen ist groß. Wie es '],  # 3 segments
     'without': ['Video verfügbar bis 28.02.2021', 'Auch interessant', 'ZDF Unternehmen'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.fluter.de/corona-big-data-suedkorea-vorbild-fuer-deutschland': {
-    'file': 'fluter.de.vorbild.html',  # stays empty until download
+    'file': 'fluter.de.vorbild.html',
     'author': 'Julia Lauter',
     'title': '„Es bricht eine andere Zeit der Datennutzung an“',
     'date': '2020-03-31',
-    'description': 'Mit Big Data Corona bekämpfen: zu schön, um wahr zu sein? Medienwissenschaftler Felix Stalder schätzt ein, ob Deutschland dem Beispiel Südkorea folgen soll',  # in HTML source
+    'description': 'Mit Big Data Corona bekämpfen: zu schön, um wahr zu sein? Medienwissenschaftler Felix Stalder schätzt ein, ob Deutschland dem Beispiel Südkorea folgen soll',
     'categories': ['Corona'],
     'tags': ['Corona', 'Datenschutz', 'Internet', 'Daten'],
     'with': ['Felix Stalder: Zu wissen, mit wem Corona-Patienten', 'gleichzeitig Dutzende, vielleicht sogar Hunderte Nutzer eingewählt.', 'möglich zu machen. In jedem Fall bricht eine ander'],  # 3 segments
     'without': ['Titelbild:', 'Auch interessant', 'Dieser Text wurde veröffentlicht'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': 'CC-BY-NC-ND-4.0-DE',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://geschichtedergegenwart.ch/mit-foucault-die-pandemie-verstehen/': {
-    'file': 'geschichtedergegenwart.ch.foucault.html',  # stays empty until download
+    'file': 'geschichtedergegenwart.ch.foucault.html',
     'author': 'Philipp Sarasin',
     'title': 'Mit Foucault die Pandemie verstehen?',
     'date': '2020-03-25',
-    'description': 'Geschichte der Gegenwart',  # in HTML source
+    'description': 'Geschichte der Gegenwart',
     'categories': ['Geschichten der Gegenwart'],
     'tags': ['Biopolitik', 'Corona', 'Foucault', 'Gesellschaft', 'Gouvernementalität', 'Infektion', 'Lepra', 'Pest'],
     'with': ['„Über­le­bens“ aller demo­kra­ti­schen Hinder­nisse und können endlich', 'Daher sei das „Verhältnis zu sich selbst“, wie Foucault', 'einge­führt, um das Auftau­chen neuer poli­ti­scher Ziele und Stra­te­gien in'],  # 3 segments
     'without': ['Die Versu­chungen des Abso­lu­tismus.', 'Sinn ohne Wort. Vom „Volks­thum“ und anderen „Thum­heiten“', 'lehrt Geschichte der Neu­zeit'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.giga.de/downloads/google-chrome/tipps/google-chrome-exportieren-alle-daten-sichern-und-nichts-mehr-verlieren/': {
-    'file': 'giga.de.chrome.html',  # stays empty until download
+    'file': 'giga.de.chrome.html',
     'author': 'Marco Kratzenberg',
     'title': 'Google Chrome exportieren und alles sichern',
     'date': '2017-12-01',
-    'description': 'Wenn ihr alle Daten und Einstellungen aus Google Chrome exportieren wollt, müsst ihr nicht auf Hilfsprogramme zurückgreifen. Der Browser bringt..',  # in HTML source
+    'description': 'Wenn ihr alle Daten und Einstellungen aus Google Chrome exportieren wollt, müsst ihr nicht auf Hilfsprogramme zurückgreifen. Der Browser bringt..',
     'categories': ['Software & Apps'],
     'tags': [''],
     'with': ['Es gibt zwei Methoden, mit denen ihr Google Chrome', 'Google Chrome speichert alle benutzerrelevanten Daten,', 'funktioniert - in eingeschränktem Maße - natürlich auch auf'],  # 3 segments
@@ -4951,11 +4954,11 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.antary.de/2017/06/29/wireshark-besuchte-urls-anzeigen-http-und-https/': {
-    'file': 'antary.de.wireshark.html',  # stays empty until download
+    'file': 'antary.de.wireshark.html',
     'author': 'Tobi',
     'title': 'Wireshark: Besuchte URLs anzeigen (HTTP und HTTPS)',
     'date': '2017-06-29',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': ['Internet', 'Software & Apps', 'Tutorials'],
     'tags': [''],
     'with': ['Wireshark möglich ist, alle aufgerufenen', 'Paketmitschnitt und eine aktuelle Version von Wireshark voraus. Beim', 'angezeigt werden, was meiner Meinung nach komfortabler ist.'],  # 3 segments
@@ -4965,11 +4968,11 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.dalloz-actualite.fr/node/libre-cours-raoult-nazis-et-moi': {
-    'file': 'dalloz-actualite.fr.raoult.html',  # stays empty until download
+    'file': 'dalloz-actualite.fr.raoult.html',
     'author': 'Matthieu Hy',
     'title': 'Libre cours : Raoult, les nazis et moi',
     'date': '2020-05-07',
-    'description': 'Le contenu de ce champ sera maintenu privé et ne sera pas affiché publiquement.',  # in HTML source
+    'description': 'Le contenu de ce champ sera maintenu privé et ne sera pas affiché publiquement.',
     'categories': ['Avocat'],
     'tags': [''],
     'with': ['C’est la guerre. Et pourtant', 'Vive le professeur Raoult !', 'Que les magistrats sachent qu’ils peuvent com'],  # 3 segments
@@ -4979,53 +4982,53 @@ EVAL_PAGES = {
     'region': 'FR',  # if obvious: DE, CH, AT
 },
 'https://www.pocketpc.ch/windows-phone-7-allgemein/122760-microsoft-beginnt-auslieferung-vorbereitungsupdate-34.html': {
-    'file': 'pocketpc.ch.auslieferung.html',  # stays empty until download
+    'file': 'pocketpc.ch.auslieferung.html',
     'author': '',
     'title': 'Microsoft beginnt mit der Auslieferung des Vorbereitungsupdate!',
     'date': '2011-03-03',
-    'description': 'Soeben wurde auf dem Windows Phone Blog bekannt gegeben, dass Microsoft mit der auslieferung des Updates beginnt. Ihr solltet in den nächsten Stunden Automatisch per Pop-up darüber Informiert werden.',  # in HTML source
+    'description': 'Soeben wurde auf dem Windows Phone Blog bekannt gegeben, dass Microsoft mit der auslieferung des Updates beginnt. Ihr solltet in den nächsten Stunden Automatisch per Pop-up darüber Informiert werden.',
     'categories': [''],
     'tags': [''],
     'with': ['as war noch nicht das Update, sondern nur', 's auf Gerät, Telefon oder Ha', 'hat keine 5 Minuten gedauert, warum denn bei einigen'],  # 3 segments
     'without': ['Gewinnspiel: Das neue Quizdue', '[Apple Pay] und eure Erfahrun', 'Review: InLine BT-POCKET falt'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'CH',  # if obvious: DE, CH, AT
 },
 'https://strangemachines.io/articles/performant-python': {
-    'file': 'strangemachines.io.performant.html',  # stays empty until download
+    'file': 'strangemachines.io.performant.html',
     'author': 'Jacopo Cascioli',
     'title': 'Performant Python',
     'date': '2019-12-03',
-    'description': 'A look at how to write performant Python code in simple ways and how much each improvement is effective.',  # in HTML source
+    'description': 'A look at how to write performant Python code in simple ways and how much each improvement is effective.',
     'categories': ['articles'],
     'tags': [''],
     'with': ['There are many ways to improve Python', 'complicated, there are a number of ways ', 'Map and filter are sometimes faster'],  # 3 segments
     'without': ['Challenges', 'hello@strangemachines.io', '06 December 2019'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://wordsmith.org/words/maudlin.html': {
-    'file': 'wordsmith.org.maudlin.html',  # stays empty until download
+    'file': 'wordsmith.org.maudlin.html',
     'author': 'Anu Garg',
     'title': 'maudlin ',
     'date': '2009-04-07',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': ['words'],
     'tags': [''],
     'with': ['adjective: Overly sentimental', 'derived after a town on the Sea ', 'Jeannette Layne-Clark; Minister on Stage; Daily Nation '],  # 3 segments
     'without': ['spread the magic of words to readers everywhere', '“A word in the head is worth two in the book.”', '“A trawl through the site’s archive yields all kinds of delights.”'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://businessjargons.com/leadership-styles.html': {
-    'file': 'businessjargons.com.leadership.html',  # stays empty until download
+    'file': 'businessjargons.com.leadership.html',
     'author': '',
     'title': 'Leadership Styles',
     'date': '2016-02-08',
-    'description': 'Definition: The Leadership Styles are the behavioral patterns that a leader adopt to influence the behavior of his followers, i.e. the way he gives directions to his subordinates and motivates them to',  # in HTML source
+    'description': 'Definition: The Leadership Styles are the behavioral patterns that a leader adopt to influence the behavior of his followers, i.e. the way he gives directions to his subordinates and motivates them to',
     'categories': ['Business'],
     'tags': [''],
     'with': ['the way he gives directions to his subordinates and ', 'The leadership styles can either be classified on', 'adopts to influence the behavior of his subordinates.'],  # 3 segments
@@ -5035,11 +5038,11 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.mesopinions.com/petition/art-culture/mutilation-choeur-radio-france-unique-choeur/76519': {
-    'file': 'mesopinions.com.mutilation.html',  # stays empty until download
+    'file': 'mesopinions.com.mutilation.html',
     'author': 'Les Membres du Choeur de Radio France',
     'title': 'Non à la mutilation du choeur de Radio France, Unique Choeur professionnel à vocation Symphonique en France',
     'date': '',
-    'description': 'Arts et culture - Signez la pétition : Non à la mutilation du choeur de Radio France, Unique Choeur professionnel à vocation Symphonique en France',  # in HTML source
+    'description': 'Arts et culture - Signez la pétition : Non à la mutilation du choeur de Radio France, Unique Choeur professionnel à vocation Symphonique en France',
     'categories': [''],
     'tags': [''],
     'with': ['National de France et du Philharmonique de Radio France.', 'bien des promesses non tenues par des directions successives', 'vide de toute ambition artistique et culturelle.'],  # 3 segments
@@ -5049,11 +5052,11 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.linkedin.com/pulse/ich-war-am-wochenende-auf-einer-hochzeit-im-wendland-inga-hoeltmann': {
-    'file': 'linkedin.com.hoeltmann.html',  # stays empty until download
+    'file': 'linkedin.com.hoeltmann.html',
     'author': 'Inga Hoeltmann',
     'title': 'Ich war am Wochenende auf einer Hochzeit im Wendland.',
     'date': '2019-08-19',
-    'description': 'Das Wendland ist eine schöne, aber sehr ländliche Region in einem (nord)östlichen Zipfel von Niedersachsen, der nach Sachsen-Anhalt reinragt, etwa eine Zugstunde von Hamburg. Ich bin von Berlin mit dem Zug durch Brandenburg nach Salzwedel in Sachsen-Anhalt gefahren und habe mich dort abholen lassen.',  # in HTML source
+    'description': 'Das Wendland ist eine schöne, aber sehr ländliche Region in einem (nord)östlichen Zipfel von Niedersachsen, der nach Sachsen-Anhalt reinragt, etwa eine Zugstunde von Hamburg. Ich bin von Berlin mit dem Zug durch Brandenburg nach Salzwedel in Sachsen-Anhalt gefahren und habe mich dort abholen lassen.',
     'categories': [''],
     'tags': ['NeueArbeit', 'Digitalisierung '],
     'with': ['Das Wendland ist eine schöne, aber sehr ländliche', 'hinnehmen als sei es nicht zu ändern. Beschämend.', 'Konzepte abseits der urbanen Räume in'],  # 3 segments
@@ -5063,11 +5066,11 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.wolfgangmichal.de/2017/06/07/publizistische-sorgfaltspflicht-statt-netzwerkdurchsetzungsgesetz/': {
-    'file': 'wolfgangmichal.de.sorgfaltspflicht.html',  # stays empty until download
+    'file': 'wolfgangmichal.de.sorgfaltspflicht.html',
     'author': 'Wolfgang Michal',
     'title': 'Publizistische Sorgfaltspflicht statt Netzwerkdurchsetzungsgesetz',
     'date': '2017-06-07',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['Die Repräsentanten der Republik sind nervös. ', 'verkaufen, muss jedes Unternehmen in die Bredouille bringen.', 'EU-Urheberrechts-Richtlinie sogar bindend vorgeschrieben werden.'],  # 3 segments
@@ -5077,11 +5080,11 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.zooroyal.de/trixie-natura-kleintierstall-mit-freilaufgehege': {
-    'file': 'zooroyal.de.trixie.html',  # stays empty until download
+    'file': 'zooroyal.de.trixie.html',
     'author': '',
     'title': 'Trixie Natura Kleintierstall mit Freilaufgehege',
     'date': '',
-    'description': 'Kaninchenstall mit integriertem Freigehege im Unterbau. Aus stabilem Kiefernholz gefertigt mit herausziehbarem, kunststoffbeschichtetem Boden.',  # in HTML source
+    'description': 'Kaninchenstall mit integriertem Freigehege im Unterbau. Aus stabilem Kiefernholz gefertigt mit herausziehbarem, kunststoffbeschichtetem Boden.',
     'categories': ['kleintier'],
     'tags': [''],
     'with': ['stabilem Kiefernholz gefertigt mit herausziehbarem, kunststoffbeschichtetem Boden.', 'Der Natura Stall lässt sich von oben sowie von vorne öffnen ', 'verschließbare Bodenluke mit Kunststoffbeschichtung'],  # 3 segments
@@ -5091,11 +5094,11 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.lopinion.fr/edition/economie/glyphosate-radiographie-d-intoxication-collective-186859': {
-    'file': 'lopinion.fr.glyphosate.html',  # stays empty until download
+    'file': 'lopinion.fr.glyphosate.html',
     'author': 'Emmanuelle Ducros',
     'title': 'Glyphosate: radiographie d’une intoxication collective',
     'date': '2019-05-15',
-    'description': 'A chaque civilisation, ses d\u00e9mons. La n\u00f4tre a le sien&thinsp;: le glyphosate. Comment cet herbicide en est-il venu \u00e0 incarner le mal aux yeux de...',  # in HTML source
+    'description': 'A chaque civilisation, ses d\u00e9mons. La n\u00f4tre a le sien&thinsp;: le glyphosate. Comment cet herbicide en est-il venu \u00e0 incarner le mal aux yeux de...',
     'categories': ['Economie'],
     'tags': [''],
     'with': ['La firme Bayer, propriétaire', 'Jackpot pour Monsanto qui vend à la fois les semences', 'puisque le champ des recherches est infini...'],  # 3 segments
@@ -5105,11 +5108,11 @@ EVAL_PAGES = {
     'region': 'FR',  # if obvious: DE, CH, AT
 },
 'https://www.tagesanzeiger.ch/wie-umweltzerstoerung-neue-epidemien-beguenstigt-633956751547': {
-    'file': 'tagesanzeiger.ch.umweltzerstoerung.html',  # stays empty until download
+    'file': 'tagesanzeiger.ch.umweltzerstoerung.html',
     'author': 'Christoph von Eichhorn',
     'title': 'Wie Umweltzerstörung neue Epidemien begünstigt',
     'date': '2020-04-11',
-    'description': 'Sars-CoV-2 stammt von einem Tier. Allein in Fledermäusen und Flughunden existieren mehr als 3000 Coronaviren. Ist ihr Lebensraum zerstört, rücken sie näher an den Menschen - und eine Übertragung wird wahrscheinlicher.',  # in HTML source
+    'description': 'Sars-CoV-2 stammt von einem Tier. Allein in Fledermäusen und Flughunden existieren mehr als 3000 Coronaviren. Ist ihr Lebensraum zerstört, rücken sie näher an den Menschen - und eine Übertragung wird wahrscheinlicher.',
     'categories': ['Wissen'],
     'tags': [''],
     'with': ['Dichter Rauch hing im Herbst des Jahres 1997', 'es kann auch von Mensch zu Mensch weitergegeben werden.', 'Im Wesentlichen geht es da aber um Fragen der Wirtschaft und'],  # 3 segments
@@ -5119,11 +5122,11 @@ EVAL_PAGES = {
     'region': 'CH',  # if obvious: DE, CH, AT
 },
 'https://www.freitag.de/autoren/benjamin-immanuel-hoff/heute-schon-an-morgen-denken': {
-    'file': 'freitag.de.morgen.html',  # stays empty until download
+    'file': 'freitag.de.morgen.html',
     'author': 'Benjamin-Immanuel Hoff',
     'title': 'Heute schon an morgen denken ',
     'date': '2020-04-17',
-    'description': 'Die Thüringer Kultur kommt schrittweise aus der Corona-Zwangspause. Notwendig sind wirksame Hilfen, neues Denken und verlässliche Politik, die aufbaut statt zu kürzen.',  # in HTML source
+    'description': 'Die Thüringer Kultur kommt schrittweise aus der Corona-Zwangspause. Notwendig sind wirksame Hilfen, neues Denken und verlässliche Politik, die aufbaut statt zu kürzen.',
     'categories': [''],
     'tags': ['solo-selbständige', 'künstlersozialkasse', 'theater', 'freie szene', 'krise', 'kulturwirtschaft', 'gewerkschaft', 'archive', 'medien','bibliotheken', 'museen', 'rundfunkbeitrag', 'kreativwirtschaft', 'städte und gemeinden', 'orchester', 'kunst', 'kultur'],
     'with': ['Kommunen, die Länder und der Bund einschneidende', 'Durch die Beschränkungen des öffentlichen Lebens wurde erreicht', 'Kultur mit dem gemeinwirtschaftlichen Gedanken des Genossenschaftswesens verbinden'],  # 3 segments
@@ -5133,11 +5136,11 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.stylegart.de/naturkosmetik-doch-gesuender/': {
-    'file': 'stylegart.de.naturkosmetik.html',  # stays empty until download
+    'file': 'stylegart.de.naturkosmetik.html',
     'author': 'Ramona',
     'title': 'Naturkosmetik – die gesündere Alternative?',
     'date': '2019-04-10',
-    'description': 'Naturkosmetik- Auflistung Pro und Kontra- was verbirgt sich wirklich hinter den Produkten und welche Inhaltsstoffe sind hier nicht vorhanden!',  # in HTML source
+    'description': 'Naturkosmetik- Auflistung Pro und Kontra- was verbirgt sich wirklich hinter den Produkten und welche Inhaltsstoffe sind hier nicht vorhanden!',
     'categories': ['Fashion Trends 2019'],
     'tags': ['Kosmetika', 'Natur', 'Naturkosmetik', 'Produkktttest' 'Naturkosmetik'],
     'with': ['Wer meine Instastorys fleißig verfolgt, der weiß, dass ich', 'Tuben und Tiegel mit natürlichen Verpackungen, meist mit Blütenprints umrankt versprechen ', 'Dr. Scheller und Lavera, die natürliche Kosmetika zu fairen Preisen anbieten!'],  # 3 segments
@@ -5147,53 +5150,53 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'http://fouryears.eu/2019/10/21/interning-of-small-integers-in-python/': {
-    'file': 'fouryears.eu.interning.html',  # stays empty until download
+    'file': 'fouryears.eu.interning.html',
     'author': 'Konstantin',
     'title': 'Interning of Small Integers in Python',
     'date': '2019-10-21',
-    'description': 'Preparing the consequences',  # in HTML source
+    'description': 'Preparing the consequences',
     'categories': [''],
     'tags': ['Computer science', 'Fun', 'Hacks', 'Programming', 'Python'],
     'with': ['Note that depending on the version of Python the value of the integer', 'lovely example, illustrating the way Python', '(addr, ctypes.'],  # 3 segments
     'without': ['Best western clearfield pa on Skype "removed" messages', '6 Regularization Techniques for Deep Learning', 'Konstantin on ROC Area-Under-the-Curve Explained'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'EU',  # if obvious: DE, CH, AT
 },
 'https://www.axios.com/newsletters/axios-future-7120a6cf-cf67-4e01-9f15-f73f114e8d27.html': {
-    'file': 'axios.com.future.html',  # stays empty until download
+    'file': 'axios.com.future.html',
     'author': 'Bryan Walsh',
     'title': 'Axios Future',
     'date': '2019-01-18',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': ['newsletters'],
     'tags': [''],
     'with': ['A new breed of intelligent video surveillance is being installed', 'good kid, m.A.A.d city," the 5th song starts 19 ', 'to school districts and universities, in addition to banks'],  # 3 segments
     'without': ['Axios newsletters', 'Online tracking choices', 'Axios podcasts'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.nytimes.com/2020/08/16/business/california-blackouts.html': {
-    'file': 'nytimes.com.blackouts.html',  # stays empty until download
+    'file': 'nytimes.com.blackouts.html',
     'author': 'Ivan Penn',
     'title': 'Rolling Blackouts in California Have Power Experts Stumped',
     'date': '2020-08-16',
-    'description': 'Managers of the electric system argue that a lack of power prompted the decision to enact blackouts, though demand this weekend fell short of the state’s peak years.',  # in HTML source
+    'description': 'Managers of the electric system argue that a lack of power prompted the decision to enact blackouts, though demand this weekend fell short of the state’s peak years.',
     'categories': ['Business'],
     'tags': [''],
     'with': ['As temperatures began to rise in California on', '“If there’s really a problem and not just the ISO', 'In particular, California ISO said two natural gas power'],  # 3 segments
     'without': ['Her Husband Abused Her. But Getting a Divorce Was', 'Chris Rock Tried to Warn Us', 'Opinion: Which Party Represents the Racial Future?'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://californiaglobe.com/section-2/amazon-liable-for-defective-third-party-products-rules-ca-appelate-court/': {
-    'file': 'californiaglobe.com.amazon.html',  # stays empty until download
+    'file': 'californiaglobe.com.amazon.html',
     'author': 'Evan Symon',
     'title': 'Amazon Liable for Defective Third-Party Products Rules CA Appellate Court',
     'date': '2020-08-14',
-    'description': 'On Thursday, California’s 4th District Court of Appeal in Santa Ana found that Amazon.com can now be held liable for injury for selling defective products',  # in HTML source
+    'description': 'On Thursday, California’s 4th District Court of Appeal in Santa Ana found that Amazon.com can now be held liable for injury for selling defective products',
     'categories': ['COM'],
     'tags': ['Amazon', 'Amazon Bolger case', 'Amazon liability lawsuit', 'Amazon retailer', 'Amazon service provider', 'Amazon third party seller liability lawsuit', 'Amazon third-party sellers', 'Amazon.com', 'Angela Bolger', 'California Amazon liability appeal', 'California superior court amazon ruling, California’s 4th District Court of Appeal', 'Lenoge Technology', 'Superior Court'],
     'with': ['The ruling has grouped Amazon with other retailers who', 'provided by Lenoge for its product listing.', 'case to a higher court in the near future.'],  # 3 segments
@@ -5203,67 +5206,67 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.sciencesetavenir.fr/sante/covid-19-et-infox-comment-une-rumeur-devient-realite_147359': {
-    'file': 'sciencesetavenir.fr.rumeur.html',  # stays empty until download
+    'file': 'sciencesetavenir.fr.rumeur.html',
     'author': 'Nicolas Gutierrez C.',
     'title': 'Covid-19 et infox : comment une rumeur devient réalité',
     'date': '2020-09-14',
-    'description': 'oici ce que l’on peut apprendre du voyage de l’une d’entre elles : la dangerosité de l’ibuprofène chez les patients de Covid-19.',  # in HTML source
+    'description': 'oici ce que l’on peut apprendre du voyage de l’une d’entre elles : la dangerosité de l’ibuprofène chez les patients de Covid-19.',
     'categories': ['Santé'],
     'tags': ['COVID-19', 'Coronavirus', 'Ibuprofène', 'Fake news', 'Coronavirus en France', 'Espagne'],
     'with': ['Aussi contagieuses que le virus ?', 'contagieux (et potentiellement dangereux) que le SARS-CoV-2.', 'popularité du sujet a explosé suite à ce'],  # 3 segments
     'without': ['L’essentiel santé', 'A découvrir sur Challenges', 'En images'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'FR',  # if obvious: DE, CH, AT
 },
 'https://www.siegfried-marcus-berufsschule.at/kraftfahrzeugtechnik/lehrberufe-kft-2/': {
-    'file': 'siegfried-marcus-berufsschule.at.kft.html',  # stays empty until download
+    'file': 'siegfried-marcus-berufsschule.at.kft.html',
     'author': '',
     'title': 'Lehrberufe KFT',
     'date': '',
-    'description': 'Hier finden Sie unsere Lehrberufe zum Lehrgang Kraftfahrzeugtechnik (KFT) - Siegfried Marcus Berufsschule',  # in HTML source
+    'description': 'Hier finden Sie unsere Lehrberufe zum Lehrgang Kraftfahrzeugtechnik (KFT) - Siegfried Marcus Berufsschule',
     'categories': ['kraftfahrzeugtechnik'],
     'tags': [''],
     'with': ['Lehrstoffinhalte', '3. Klasse', 'Module'],  # 3 segments
     'without': ['Direktor: OSR Dipl.-Päd. Markus Fuchs', 'Verein der Freunde für berufsbegleitende Aus- und ', 'Obmann: OSR Markus Fuchs'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'AT',  # if obvious: DE, CH, AT
 },
 'https://www.minusl.de/produkt_kategorien/joghurt/': {
-    'file': 'minusl.de.joghurt.html',  # stays empty until download
+    'file': 'minusl.de.joghurt.html',
     'author': '',
     'title': 'Unsere MinusL Joghurts',
     'date': '',
-    'description': 'Sie lieben Joghurt mit frischen Früchten, einen leckeren Fruchtjoghurt oder Joghurt nach griechischer Art? Dann entdecken Sie unsere Joghurtvielfalt!',  # in HTML source
+    'description': 'Sie lieben Joghurt mit frischen Früchten, einen leckeren Fruchtjoghurt oder Joghurt nach griechischer Art? Dann entdecken Sie unsere Joghurtvielfalt!',
     'categories': [''],
     'tags': [''],
     'with': ['wohl, denn MinusL bringt Genuss in mein Leben.', 'generell die Zutatenliste einer Verpackung beachten. Allergene Zutaten ', 'Sie lieben Joghurt mit frischen Früchten un'],  # 3 segments
     'without': ['Senden', 'ZURÜCK', 'MinusL Athentikos'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://sass-ag.de': {
-    'file': 'sass-ag.de.index.html',  # stays empty until download
+    'file': 'sass-ag.de.index.html',
     'author': '',
     'title': 'Drucker und Druckausgabe-Lösungen vom Experten!',
     'date': '',
-    'description': 'Drucker, Etiketten, TTF-Folien, Auto-ID, Zubehör &amp; mehr vom Experten ✓Top Service ✓große Auswahl ✓langjährige Erfahrung ▶ Jetzt anfragen!',  # in HTML source
+    'description': 'Drucker, Etiketten, TTF-Folien, Auto-ID, Zubehör &amp; mehr vom Experten ✓Top Service ✓große Auswahl ✓langjährige Erfahrung ▶ Jetzt anfragen!',
     'categories': [''],
     'tags': [''],
     'with': ['Wir beraten herstellerunabhängig und planen immer objektiv', 'Kaufen Sie bei uns preiswerte Etiketten in Ihrem', 'Wir bieten professionelle Drucksysteme für alle Anwendungsbereiche; ganz'],  # 3 segments
     'without': ['Produkte & Leistungen', 'Zentrale Gilching', 'Störungen:'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://web.archive.org/web/20130217080612/http://tv-orange.de/2012/08/future-of-hope-island-befreit-sich-von-den-bankstern-der-film/': {
-    'file': 'archive.org.tv-orange.de.future.html',  # stays empty until download
+    'file': 'archive.org.tv-orange.de.future.html',
     'author': 'oradmin',
     'title': 'FUTURE of HOPE – Island befreit sich von den Bankstern – der Film',
     'date': '2012-08-02',
-    'description': 'ISLAND befreit sich von der Macht der Finanzoligarchie und geht seinen eigenen Weg. Dieser Film wird bislang von den Kontinental-Europäischen Medien so gu...',  # in HTML source
+    'description': 'ISLAND befreit sich von der Macht der Finanzoligarchie und geht seinen eigenen Weg. Dieser Film wird bislang von den Kontinental-Europäischen Medien so gu...',
     'categories': [''],
     'tags': ['Banken', 'Bankster', 'Bilderberger', 'demokratie', 'direkte Demokratie', 'Eurokrise', 'Fianzoligarchie', 'finanzadel', 'Finanzkrise', 'Free Iceland', 'FUTUREofHOPE', 'Island', 'Selbstbestimmt', 'Volksentscheid'],
     'with': ['Dieser Film wird bislang von den Kontinental-Europäischen Medien', 'Ein Beispiel von Selbstzensur, symptomatisch für die Haltung gefälliger', 'Außerdem verbreitet sich über Facebook die Information über'],  # 3 segments
@@ -5273,109 +5276,109 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://web.archive.org/web/20120216182711/http://www.stol.it/Artikel/Politik-im-Ueberblick/Politik/Verfassungsgericht-Berlusconis-Sex-Prozess-geht-weiter': {
-    'file': 'archive.org.stol.it.berlusconi.html',  # stays empty until download
+    'file': 'archive.org.stol.it.berlusconi.html',
     'author': 'APA/AP',
     'title': 'Verfassungsgericht: Berlusconis Sex-Prozess geht weiter',
     'date': '2012-02-14',
-    'description': 'taeglich aktuelle Suedtirol-Nachrichten aus Chronik, Politik, Sport, Wirtschaft, Kultur, Events. Lokale Wetter- und Service-Meldungen sowie Dolomiten-Online.',  # in HTML source
+    'description': 'taeglich aktuelle Suedtirol-Nachrichten aus Chronik, Politik, Sport, Wirtschaft, Kultur, Events. Lokale Wetter- und Service-Meldungen sowie Dolomiten-Online.',
     'categories': ['Politik'],
     'tags': [''],
     'with': ['Das Verfassungsgericht in Rom verwarf am Dienstag einen Antrag', 'Das Argument hatten die Mailänder Staatsanwälte „lächerlich“ genannt.', 'Das laufende Verfahren gegen den im November als'],  # 3 segments
     'without': ['IT 00853870210', 'Hier können Sie den Artikel bewerten', 'On-Tour Fotos'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://blog.leichtathletik-ostalbkreis.de/2007/05/20/ergebnisse-rm-schuelerinnen-a-aalen-unterkochen-1952007/': {
-    'file': 'leichtathletik-ostalbkreis.de.1952007.html',  # stays empty until download
+    'file': 'leichtathletik-ostalbkreis.de.1952007.html',
     'author': 'Marc Scheloske',
     'title': 'Ergebnisse: RM Schülerinnen A, Aalen-Unterkochen, 19.5.2007',
     'date': '2007-05-20',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['1. und Regionalmeister 2007', 'Schlumberger, Lea 1993;', 'LG Staufen'],  # 3 segments
     'without': ['LA-Kreis Ulm/Alb-Donau', 'LA-Kreis Göppingen', 'LAC Essingen'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://next2games.de/previews,id1085,0,anno_1800_beta.html': {
-    'file': 'next2games.de.anno.html',  # stays empty until download
+    'file': 'next2games.de.anno.html',
     'author': 'Lars',
     'title': 'Anno 1800 Beta ',
     'date': '',
-    'description': 'Mit Anno 1800 veröffentlichen Blue Byte und Ubisoft im April den mittlerweile siebten (Haupt-)Ableger der beliebten Aufbaustrategie-Reihe. Im Zuge des ...',  # in HTML source
+    'description': 'Mit Anno 1800 veröffentlichen Blue Byte und Ubisoft im April den mittlerweile siebten (Haupt-)Ableger der beliebten Aufbaustrategie-Reihe. Im Zuge des ...',
     'categories': [''],
     'tags': [''],
     'with': ['zu entdecken, was Anno 1800 noch in petto hält.', 'Neben dem Startgebiet in einer klimatisch eher gemäßigten', 'Wie in jedem Titel der mittlerweile über 20 Jahre'],  # 3 segments
     'without': ['n2g media network', 'CMS: Apexx by Stylemotion', 'Diese Website nutzt Cookies'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'http://www.exlibris-deg.de/2019/10/24/balsamo-stella-guido/': {
-    'file': 'exlibris-deg.de.balsamo.html',  # stays empty until download
+    'file': 'exlibris-deg.de.balsamo.html',
     'author': '',
     'title': 'Balsamo Stella, Guido (I)',
     'date': '',
-    'description': 'Werkliste Guido Balsamo Stella',  # in HTML source
+    'description': 'Werkliste Guido Balsamo Stella',
     'categories': [''],
     'tags': [''],
     'with': ['M. Akt mit Axt einen Baum fällend; Rem', 'Adler nach Klippe, nach links blickend, Schooner im', 'Exlibrissammlung PALMIRANI, Remo: Guido Balsamo Stella'],  # 3 segments
     'without': ['Winkler, Eduard', 'Rechtliches', 'German'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://foren.myoos.de/viewtopic.php?f=4&t=167&sid=58428beaa14598c2e02d93ad5c773e4d': {
-    'file': 'foren.myoos.de.html',  # stays empty until download
+    'file': 'foren.myoos.de.html',
     'author': 'r23',
     'title': 'Was ist Freie Software',
     'date': '2009-01-21',
-    'description': 'Was ist Freie Software und warum ist sie wichtig? von Georg C. F. Greve Freie Software ist Software, die ohne Ansicht der Person vier Freiheiten garantiert: Die Freiheit der unbegrenzten Nutzung zu jedem Zweck, die Freiheit des Studiums und der Modif..',  # in HTML source
+    'description': 'Was ist Freie Software und warum ist sie wichtig? von Georg C. F. Greve Freie Software ist Software, die ohne Ansicht der Person vier Freiheiten garantiert: Die Freiheit der unbegrenzten Nutzung zu jedem Zweck, die Freiheit des Studiums und der Modif..',
     'categories': [''],
     'tags': [''],
     'with': ['Freie Software ist Software, die ohne Ansicht der Person', 'http://www.gnu.org/philosophy/free-sw.de.html', 'Software (OSS) ein und entwickeln einen Praxisleitfaden.'],  # 3 segments
     'without': ['Forum Software', 'Alle Zeiten sind UTC+02:00', 'Mitglieder in diesem Forum:'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'http://www.mueritzurlauber.de/blockhaus-typ-3/': {
-    'file': 'mueritzurlauber.de.blockhaus.html',  # stays empty until download
+    'file': 'mueritzurlauber.de.blockhaus.html',
     'author': '',
     'title': 'Blockhaus 3',
     'date': '',
-    'description': 'Günstiges Blockhaus in Ludorf an der Müritz für bis zu 6 Personen',  # in HTML source
+    'description': 'Günstiges Blockhaus in Ludorf an der Müritz für bis zu 6 Personen',
     'categories': [''],
     'tags': [''],
     'with': ['Das helle und liebevoll eingerichtete Blockhaus 1 hat', 'Buchung ab 3 Nächte oder nach Absprache.', 'über die freien Termine oder nehmen einfach Kontakt zu uns auf.'],  # 3 segments
     'without': ['info@mueritzurlauber.de', '039931 51438', 'Datenschutzerklärung'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'http://harddecor.at/work/denkmaler-neuem-licht/': {
-    'file': 'harddecor.at.denkmaler.html',  # stays empty until download
+    'file': 'harddecor.at.denkmaler.html',
     'author': '',
     'title': 'Denkmäler in neuem Licht.',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['CONDITIONING. of Atmospheres in Architecture', 'Denkmalpflegerinnen, Politikerinnen und der interessierten Öffentlichkeit fördern.', 'Thema Planen und Bauen in historisch wertvoller Umgebung'],  # 3 segments
     'without': ['Best of 2016.', 'Gegen Leerstand und Wertminderung.', 'Mission Statement'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'AT',  # if obvious: DE, CH, AT
 },
 'https://web.archive.org/web/20130307194448/the-pain.net/2008/05/silkroad-roc-mountain-quests-und-npcs.html': {
-    'file': 'archive.org.the-pain.net.silkroad.html',  # stays empty until download
+    'file': 'archive.org.the-pain.net.silkroad.html',
     'author': 'ThE_PaiN',
     'title': 'Silkroad Roc Mountain Quests und NPC’s',
     'date': '2008-05-26',
-    'description': 'Hier findet ihr alle Informationen zu den Quests des Roc Mountain in Silkroad Online. Selbstverständlich ist auch eine NPC Map vorhanden!',  # in HTML source
+    'description': 'Hier findet ihr alle Informationen zu den Quests des Roc Mountain in Silkroad Online. Selbstverständlich ist auch eine NPC Map vorhanden!',
     'categories': ['Guides', 'Silkroad', 'Tipps & Tricks', 'Tutorials'],
     'tags': ['infos', 'legend 3', 'Silkroad'],
     'with': ['Ich wurde von vielen Leuten darum gebeten zum neuen', 'man kann ja nicht alles wissen', 'Bringe eine Nachricht über den vermissten Sohn zu'],  # 3 segments
@@ -5385,11 +5388,11 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://mywakenews.wordpress.com/2016/07/09/nwo-psyop-unitedwestrike-radio-marathon/': {
-    'file': 'mywakenews.wordpress.com.psyop.html',  # stays empty until download
+    'file': 'mywakenews.wordpress.com.psyop.html',
     'author': 'mywakenews',
     'title': 'NWO – PSYOP UNITEDWESTRIKE Radio-Marathon',
     'date': '2016-06-09',
-    'description': 'Abb.: Collage aus Internetbild und Wake News Die Aufzeichnung dieser Veranstaltung als Video: Den meisten Menschen auf dieser Erde ist nicht bewusst, dass wir in einer grossen Simulation leben, gen…',  # in HTML source
+    'description': 'Abb.: Collage aus Internetbild und Wake News Die Aufzeichnung dieser Veranstaltung als Video: Den meisten Menschen auf dieser Erde ist nicht bewusst, dass wir in einer grossen Simulation leben, gen…',
     'categories': ['Uncategorized'],
     'tags': ['Abzocke', 'Bankster', 'Bürgerkrieg', 'Bilderberger', 'Dallas', 'Detlev', 'Deutschland', 'DIMs', 'EU-Faschismus', 'EURO-CRASH', 'falsche Flagge Terror', 'Freiheit', 'Geheimgesellschaften', 'Globalisten', 'Grossfinanz', 'Illuminati', 'International Strike', 'Internationaler Streik', 'Korruption', 'Matrix', 'Menschenrechte', 'Neue Welt Ordnung', 'NWO', 'Obama', 'PSYOP', 'Regierung', 'Schweiz', 'Terror', 'Tyrannei', 'unitedwestrike', 'USA', 'Wake News Radio', 'Wake News TV', 'Weltelite', 'Weltkrieg III', 'ziviles Ungehorsam'],
     'with': ['diesen Bastarden diese Worte einvernehmlicher Verkehr in den Mund???', 'Kritische Betrachter haben bereits sehr viele Indizien zusammengetragen', 'und unsere Wahrnehmung gefangen gehalten, manipuliert und gesteuert'],  # 3 segments
@@ -5399,25 +5402,25 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://uniqz.de/produkte/katzendecke-zweilagig-mit-namen-und-main-coon/': {
-    'file': 'uniqz.de.katzendecke.html',  # stays empty until download
+    'file': 'uniqz.de.katzendecke.html',
     'author': 'Petra Ruland',
     'title': 'Katzendecke, zweilagig mit Namen und Main Coon',
     'date': '',
-    'description': 'Mit Namen bestickte Geschenkideen zur Taufe, Geburt, Hochzeit, Abitur | Ringkissen, Babykissen, Babydecken, Hundedecken, fotorealistisch gestickte Rassehunde,',  # in HTML source
+    'description': 'Mit Namen bestickte Geschenkideen zur Taufe, Geburt, Hochzeit, Abitur | Ringkissen, Babykissen, Babydecken, Hundedecken, fotorealistisch gestickte Rassehunde,',
     'categories': [''],
     'tags': [''],
     'with': ['Lieferzeit: 15 - 21 Tag(e)', 'Hochwertige Hunde- oder Katzendecke in besonders kuscheliger', 'Main Coon-Stickerei'],  # 3 segments
     'without': ['Das Kleingedruckte', 'Informationen', 'Copyright / Rechte'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.oekonomenstimme.org/artikel/2015/01/eine-realistische-interpretation-des-keynes-hicks-multiplikators/': {
-    'file': 'oekonomenstimme.org.keynes.html',  # stays empty until download
+    'file': 'oekonomenstimme.org.keynes.html',
     'author': 'Georg Quaas',
     'title': 'Eine realistische Interpretation des Keynes-Hicks-Multiplikators',
     'date': '2015-01-21',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': ['Multiplikator', 'Selbstfinanzierung'],
     'with': ['In seinem Beitrag von 5. Januar 2015 erörtert Wolfgang', 'Wirtschaftsdienst, 92. Jahrgang, Heft 10, Oktober 2012', 'Erfasst werden. Dabei steht T für den technologischen Fortschritt'],  # 3 segments
@@ -5427,53 +5430,53 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://leukefeld-handball.de/dago-leukefeld-wird-botschafter-des-sports-der-ifzw-impulsstiftung/': {
-    'file': 'leukefeld-handball.de.leukefeld.html',  # stays empty until download
+    'file': 'leukefeld-handball.de.leukefeld.html',
     'author': '',
     'title': 'Dago Leukefeld wird „Botschafter des Sports“ der ifzw impulsstiftung',
     'date': '',
-    'description': 'Die ifzw impulsstiftung und Dago Leukefeld besiegeln ihre gute Zusammenarbeit und richten sich für die Zukunft aus: Dago Leukefeld wird „Botschafter des Sports“ der ifzw impulsstiftung. 2012 hat sich die ifzw impulsstiftung zur Unterstützung im Bereich Sport den ehemaligen Frauen National? und langjähriger Bundesligatrainer, Dago Leukefeld, nach Zwickau geholt. Als einer der besten Trainer Deutschlands,Weiterlesen',  # in HTML source
+    'description': 'Die ifzw impulsstiftung und Dago Leukefeld besiegeln ihre gute Zusammenarbeit und richten sich für die Zukunft aus: Dago Leukefeld wird „Botschafter des Sports“ der ifzw impulsstiftung. 2012 hat sich die ifzw impulsstiftung zur Unterstützung im Bereich Sport den ehemaligen Frauen National? und langjähriger Bundesligatrainer, Dago Leukefeld, nach Zwickau geholt. Als einer der besten Trainer Deutschlands,Weiterlesen',
     'categories': [''],
     'tags': [''],
     'with': ['Die ifzw impulsstiftung und Dago Leukefeld besiegeln ihre gute', 'mit Ihm und auf spannende Projekte im Vereinssport“, so Mechthild Aßmann.', 'in die beteiligten Vereine beigetreten sind. Für uns ein tolles Ergebnis.'],  # 3 segments
     'without': ['© 2017 Dago Leukefeld Handball', 'Lieferzeit: 9-12 Tage', 'Hier geht es zu den'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.propellets.at/soziale-energie': {
-    'file': 'propellets.at.energie.html',  # stays empty until download
+    'file': 'propellets.at.energie.html',
     'author': '',
     'title': 'Soziale Energie',
     'date': '',
-    'description': 'Besonders f&uuml;r Haushalte mit geringem Einkommen stellen steigende Energiekosten ein gro&szlig;es Problem dar. G&uuml;nstige und regionale Brennstoffe k&ouml;nnen im Kampf gegen Energiearmut helfen.',  # in HTML source
+    'description': 'Besonders f&uuml;r Haushalte mit geringem Einkommen stellen steigende Energiekosten ein gro&szlig;es Problem dar. G&uuml;nstige und regionale Brennstoffe k&ouml;nnen im Kampf gegen Energiearmut helfen.',
     'categories': [''],
     'tags': [''],
     'with': ['Besonders für Haushalte mit geringem Einkommen stellen steigende', 'Ziel der vorliegenden Studie war es, zu klären ob', 'hohen Anfangsinvestition von rund 2700 € schwer erschwinglich.'],  # 3 segments
     'without': ['Newsletter', 'teilen', 'Alles über den Verein'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'AT',  # if obvious: DE, CH, AT
 },
 'https://chabermu.wordpress.com/2015/09/02/windows-expertenwissen-per-update-spioniert-microsoft-nun-auch-windows-7-8-und-8-1-aus-microsoft-privacy-windows10-chabermu/': {
-    'file': 'chabermu.wordpress.com.expertenwissen.html',  # stays empty until download
+    'file': 'chabermu.wordpress.com.expertenwissen.html',
     'author': 'C.Habermueller',
     'title': '[Windows Expertenwissen] Per Update spioniert Microsoft nun auch Windows 7, 8 und 8.1 aus // #Microsoft #Privacy #Windows10 @chabermu',
     'date': '2015-09-02',
-    'description': 'Die Sammelwut der Benutzerdaten von Windows 10 reicht Microsoft (Börsenwert an Nasdaq: 334,48 Milliarden US-Dollar, Stand: 1. Sep 2015) immer noch nicht – Nun hat es der Softwarekonzern auch auf di…',  # in HTML source
+    'description': 'Die Sammelwut der Benutzerdaten von Windows 10 reicht Microsoft (Börsenwert an Nasdaq: 334,48 Milliarden US-Dollar, Stand: 1. Sep 2015) immer noch nicht – Nun hat es der Softwarekonzern auch auf di…',
     'categories': [''],
     'tags': ['Microsoft', 'Privacy', 'Windows10', '@chabermu'],
     'with': ['Nun hat es der Softwarekonzern auch auf die Nutzerdaten', 'Klicken Sie die betroffenen, optionalen Windows-Updates', 'Wann jedoch Microsoft diese Abhilfe gegen seine Abhör-Updates blockiert'],  # 3 segments
     'without': ['© since 2010', 'News vom Computerarchiv München', 'Gib deine E-Mail-Adresse ein'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://web.archive.org/web/20110106023242/http://dzs-clan.de/index.php?site=news_comments&newsID=111': {
-    'file': 'archive.org.dzs-clan.de.html',  # stays empty until download
+    'file': 'archive.org.dzs-clan.de.html',
     'author': 'Bo2man',
     'title': 'Die Events der letzten Zeit',
     'date': '2010-12-29',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['In dieser News möchten wir euch über das Geschehen', 'Diese Nachrichten könnt ihr auch auf unserer Homepage in unserer Twitter-Box lesen.', 'Aller Voraussicht nach wird dieses auf der kommenden'],  # 3 segments
@@ -5483,53 +5486,53 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'http://sibenlab.blogspot.com/2018/06/sibenlab-privacy-policy.html': {
-    'file': 'sibenlab.blogspot.com.privacy.html',  # stays empty until download
+    'file': 'sibenlab.blogspot.com.privacy.html',
     'author': 'Unknown',
     'title': 'SibenLab privacy policy ',
     'date': '2018-06-05',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['This privacy policy has been compiled to', 'If at any time you would like to', 'visiting the Google Ad and Content Network privacy'],  # 3 segments
     'without': ['Thème Simple. Fourni par', 'Inscription à', 'Publier un commentaire'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://hellogiggles.com/beauty/dead-skin-cells-build-up/': {
-    'file': 'hellogiggles.com.skin.html',  # stays empty until download
+    'file': 'hellogiggles.com.skin.html',
     'author': 'Jessica DeFino ',
     'title': 'Wait, are dead skin cells actually a good thing?',
     'date': '2020-03-12',
-    'description': 'Put down the exfoliating acid. According to dermatologists, dead skin cells actually do *so* much more than we give them credit for.',  # in HTML source
+    'description': 'Put down the exfoliating acid. According to dermatologists, dead skin cells actually do *so* much more than we give them credit for.',
     'categories': ['Beauty'],
     'tags': [''],
     'with': ['Admit it: Ever since the first rough, grainy glob', 'exfoliating acids, you kind of owe them an apology.', 'Desquamation can only take place when the skin is functioning'],  # 3 segments
     'without': ['adhere to in the morning and at night.', 'two makeup artists to get their top tips on how to extend', 'spots caused by melasma, sun damage, or pigmentation'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://link.springer.com/article/10.1007/s11926-017-0626-z': {
-    'file': 'link.springer.com.1007.html',  # stays empty until download
+    'file': 'link.springer.com.1007.html',
     'author': 'Marwan H. Adwan',
     'title': 'Drug Reaction with Eosinophilia and Systemic Symptoms (DRESS) Syndrome and the Rheumatologist',
     'date': '2017-01-30',
-    'description': 'The purpose of the review is to summarise the various drugs used in rheumatology practice implicated in the causation of DRESS syndrome. The most commonly reported drugs are allopurinol, sulfasalazine and minocycline, which pose a very high risk for DRESS syndrome development, followed by strontium ranelate and dapsone. Other, less commonly reported, drugs include leflunomide, hydroxychloroquine, non-steroidal anti-inflammatory drugs, febuxostat, bosentan and solcitinib. Reaction to some drugs is strongly associated with certain HLA alleles, which may be used to screen patients at risk of serious toxicity. DRESS syndrome is a serious reaction to many drugs used in rheumatic diseases, with a potentially fatal outcome and needs to be considered in any patient started on these medications who presents with a rash, fever and eosinophilia, sometimes with internal organ involvement.',  # in HTML source
+    'description': 'The purpose of the review is to summarise the various drugs used in rheumatology practice implicated in the causation of DRESS syndrome. The most commonly reported drugs are allopurinol, sulfasalazine and minocycline, which pose a very high risk for DRESS syndrome development, followed by strontium ranelate and dapsone. Other, less commonly reported, drugs include leflunomide, hydroxychloroquine, non-steroidal anti-inflammatory drugs, febuxostat, bosentan and solcitinib. Reaction to some drugs is strongly associated with certain HLA alleles, which may be used to screen patients at risk of serious toxicity. DRESS syndrome is a serious reaction to many drugs used in rheumatic diseases, with a potentially fatal outcome and needs to be considered in any patient started on these medications who presents with a rash, fever and eosinophilia, sometimes with internal organ involvement.',
     'categories': [''],
     'tags': ['DRESS syndrome', 'Eosinophilia', 'Hypersensitivity', 'Toxicity', 'Idiosynchratic', 'Allopurinol', 'Minocycline', 'Sulfasalazine'],
     'with': ['The purpose of the review is to summarise', 'The most commonly reported drugs are allopurinol', 'Kirchhof MG, Wong A, Dutz JP. Cyclosporine treatment'],  # 3 segments
     'without': ['Immediate online access to all issues from 2019.', '© 2020 Springer Nature Switzerland AG', 'Instant access to the full article PDF.'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.royalroad.com/fiction/34798/melas/chapter/535107/chapter-1-prologue-murdered': {
-    'file': 'royalroad.com.melas.html',  # stays empty until download
+    'file': 'royalroad.com.melas.html',
     'author': 'delta201',
     'title': 'Chapter 1: Prologue - Murdered',
     'date': '2020-08-06',
-    'description': ' &#xA;When I woke up, there was nothing.&#xA;A pure white empty space that seemed to stretch for all eternity was all that I saw; an expansive blank canvas filled (...)',  # in HTML source
+    'description': ' &#xA;When I woke up, there was nothing.&#xA;A pure white empty space that seemed to stretch for all eternity was all that I saw; an expansive blank canvas filled (...)',
     'categories': [''],
     'tags': [''],
     'with': ['When I woke up, there was nothing.', 'If it was limited to my birth, I', 'Make me the most powerful spellcaster, or whatever'],  # 3 segments
@@ -5539,25 +5542,25 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://harpers.org/a-letter-on-justice-and-open-debate/': {
-    'file': 'harpers.org.justice.html',  # stays empty until download
+    'file': 'harpers.org.justice.html',
     'author': '',
     'title': 'A Letter on Justice and Open Debate',
     'date': '2020-07-07',
-    'description': 'July 7, 2020 The below letter will be appearing in the Letters section of the magazine’s October issue. We welcome responses at letters@harpers.org Our cultural institutions are facing a moment of trial. Powerful protests for racial and social justice are leading to overdue demands for police reform, along with wider calls for greater equality and [&hellip;]',  # in HTML source
+    'description': 'July 7, 2020 The below letter will be appearing in the Letters section of the magazine’s October issue. We welcome responses at letters@harpers.org Our cultural institutions are facing a moment of trial. Powerful protests for racial and social justice are leading to overdue demands for police reform, along with wider calls for greater equality and [&hellip;]',
     'categories': [''],
     'tags': [''],
     'with': ['Our cultural institutions are facing a moment of trial', 'expect the public or the state to defend it for us.', 'The free exchange of information and ideas, the'],  # 3 segments
     'without': ['Do Not Sell My Personal Information', 'Privacy Policy ', 'Customer Care'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://nymag.com/intelligencer/2020/05/polarization-republicans-democracy-ezra-klein-book-review.html': {
-    'file': 'nymag.com.polarization.html',  # stays empty until download
+    'file': 'nymag.com.polarization.html',
     'author': 'Eric Levitz',
     'title': 'The GOP Is the Problem. Is ‘Human Identity Politics’ the Solution?',
     'date': '2020-05-16',
-    'description': 'Ezra Klein’s new book on polarization alerts liberals and conservatives to their species’ unifying affinity for identity-based divisiveness.',  # in HTML source
+    'description': 'Ezra Klein’s new book on polarization alerts liberals and conservatives to their species’ unifying affinity for identity-based divisiveness.',
     'categories': ['Intelligencer'],
     'tags': ['partisan polarization', 'political science', 'books', 'politics', 'conservatism', 'the republican party', 'ezra klein'],
     'with': ['Which is to say, why was a solipsistic reality', 'of its contradictions. As African-Americans migrated North in', 'truth that our own identities are preventing'],  # 3 segments
@@ -5567,67 +5570,67 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'http://www.netbits.us/docs/stunnel_rsync.html': {
-    'file': 'netbits.us.stunnel_rsync.html',  # stays empty until download
+    'file': 'netbits.us.stunnel_rsync.html',
     'author': '',
     'title': 'Rsync + Stunnel 4.x',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['documentation examples rely heavily on tcp-wrappers and Stunnel', 'cd to the directory containing the tarball', 'cert = /etc/stunnel/langly_stunnel_cert.pem'],  # 3 segments
     'without': ['Last Modified:'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'US',  # if obvious: DE, CH, AT
 },
 'https://emacspeak.blogspot.com/2019/10/meta-programming-in-emacs-using.html': {
-    'file': 'emacspeak.blogspot.com.meta.html',  # stays empty until download
+    'file': 'emacspeak.blogspot.com.meta.html',
     'author': 'T. V. Raman ',
     'title': 'Meta-Programming In Emacs Using Defadvice',
     'date': '2019-10-16',
-    'description': 'Here is where I plan to Blog Emacspeak tricks and introduce new features as I implement them.',  # in HTML source
+    'description': 'Here is where I plan to Blog Emacspeak tricks and introduce new features as I implement them.',
     'categories': [''],
     'tags': [''],
     'with': ['Decorators in Python enable you to modify', 'entitled Beautiful Code, OReilly.', 'Speak line moved to after next-line and'],  # 3 segments
     'without': ['Followers (7) ', 'View my complete profile', 'Simple theme. Powered by'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.politico.com/news/2019/12/30/mark-meadows-retirement-elect-wife-friend-090838': {
-    'file': 'politico.com.retirement.html',  # stays empty until download
+    'file': 'politico.com.retirement.html',
     'author': 'ALLY MUTNICK',
     'title': 'Mark Meadows accused of timing retirement to help elect wife’s friend',
     'date': '2019-12-30',
-    'description': 'Republicans in Western North Carolina are grumbling about his last-minute announcement, which boxed out a number of elected officials.',  # in HTML source
+    'description': 'Republicans in Western North Carolina are grumbling about his last-minute announcement, which boxed out a number of elected officials.',
     'categories': [''],
     'tags': [''],
     'with': ['shock retirement — revealed just 30 hours before the', 'though he faces another stiff primary challenge next year.', '“I don’t expect anyone to hand me anything.'],  # 3 segments
     'without': ['Credit Card Payments', 'Notice to California Residents', 'Terms of Service'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://security.googleblog.com/2020/05/enhanced-safe-browsing-protection-now.html': {
-    'file': 'security.googleblog.com.protection.html',  # stays empty until download
+    'file': 'security.googleblog.com.protection.html',
     'author': ['Nathan Parker', 'Varun Khaneja', 'Eric Mill', 'Kiran C Nair'],
     'title': 'Enhanced Safe Browsing Protection now available in Chrome ',
     'date': '2020-05-19',
-    'description': 'Posted by Nathan Parker, Varun Khaneja, Eric Mill and Kiran C Nair - Chrome Safe Browsing team   Over the past few years we’ve seen threats ...',  # in HTML source
+    'description': 'Posted by Nathan Parker, Varun Khaneja, Eric Mill and Kiran C Nair - Chrome Safe Browsing team   Over the past few years we’ve seen threats ...',
     'categories': [''],
     'tags': ['android', 'android security', 'android tr', 'app security' 'big data', 'biometrics', 'blackhat' 'chrome', 'chrome security', 'federated learning', 'Gboard', 'google play', 'google play protect',' pha family highlights', 'privacy', 'Security', 'spyware', 'targeted spyware', 'vulnerabilities'],
     'with': ['ve seen threats on the web becoming increasingly sophisticated', 'This protocol is designed so that Google cannot', 'billions of users are incredibly diverse, with'],  # 3 segments
     'without': ['Give us feedback in our', 'Google Privacy Terms ', 'insights from Google on security and safety on the Internet'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.wevolver.com/article/2020.autonomous.vehicle.technology.report': {
-    'file': 'wevolver.com.vehicle.html',  # stays empty until download
+    'file': 'wevolver.com.vehicle.html',
     'author': 'Wevolver Staff',
     'title': '2020 Autonomous Vehicle Technology Report',
     'date': '2020-02-20',
-    'description': 'Stay cutting edge and find information on Robotics, Automotive, Aerospace, Manufacturing, AI, Energy, and more engineering topics.',  # in HTML source
+    'description': 'Stay cutting edge and find information on Robotics, Automotive, Aerospace, Manufacturing, AI, Energy, and more engineering topics.',
     'categories': [''],
     'tags': ['autonomous vehicles'],
     'with': ['Following the Autonomous Vehicle Hype.', 'At the same time, technology developers have', 'most important market, and the company supplies'],  # 3 segments
@@ -5637,81 +5640,81 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www3.nhk.or.jp/news/easy/k10011959621000/k10011959621000.html': {
-    'file': 'nhk.or.jp.k100.html',  # stays empty until download
+    'file': 'nhk.or.jp.k100.html',
     'author': '',
     'title': '子どもへの体罰を禁止する法律ができる ',
     'date': '2019-06-24',
-    'description': '子どもへの虐待をなくすための法律ができて、親が子どもを教育するために、たたいたり蹴ったりする体罰を禁止することになりました。最近、親に虐待...',  # in HTML source
+    'description': '子どもへの虐待をなくすための法律ができて、親が子どもを教育するために、たたいたり蹴ったりする体罰を禁止することになりました。最近、親に虐待...',
     'categories': [''],
     'tags': [''],
     'with': ['子どもへの虐待をなくすための法律ができて、親が子どもを教育するために、', '法律では虐待をした親に専門家が子どもの育て方を', '虐待したときに叱っていただけだと言う親がいます。新しい法律では'],  # 3 segments
     'without': ['※下に線があることばは辞書の説明を見ることができます。 ', 'く転載することを禁じます。このページは受信料で制作しています。', 'Copyright NHK (Japan Broadcasting Corporation).'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.unocero.com/smartphones/marcas-mala-gestion-apps-segundo-plano-android/': {
-    'file': 'unocero.com.marcas.html',  # stays empty until download
+    'file': 'unocero.com.marcas.html',
     'author': 'Alberto Ávila',
     'title': 'Estas son las marcas que más dificultan el trabajo de tus aplicaciones en Android',
     'date': '2019-08-27',
-    'description': 'Aunque muchas veces crees que el problema de tus aplicaciones es culpa del desarrollador, en realidad podría ser culpa del fabricante.',  # in HTML source
+    'description': 'Aunque muchas veces crees que el problema de tus aplicaciones es culpa del desarrollador, en realidad podría ser culpa del fabricante.',
     'categories': ['Smartphones'],
     'tags': [''],
     'with': ['pues al hacer esto se gastaba mucha', 'El problema es que a pesar de que', 'convierten en una desventaja para la experiencia de uso.'],  # 3 segments
     'without': ['y te enviaremos un correo diario con lo', 'Derechos Reservados. unocero es una', 'Modo Nocturno'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://thepointsguy.com/news/alaska-airlines-oneworld-membership-new-date/': {
-    'file': 'thepointsguy.com.alaska.html',  # stays empty until download
+    'file': 'thepointsguy.com.alaska.html',
     'author': 'Edward Russell',
     'title': 'Alaska Airlines sets new date for full Oneworld membership',
     'date': '2020-10-13',
-    'description': 'Alaska Airlines has a new date for when it will be a full fledged member of the Oneworld alliance: March 31, 2021.',  # in HTML source
+    'description': 'Alaska Airlines has a new date for when it will be a full fledged member of the Oneworld alliance: March 31, 2021.',
     'categories': [''],
     'tags': [''],
     'with': ['has a new date for when it will be a full fledged member of the Oneworld', 'at its Seattle/Tacoma International Airport (SEA) base in 2019.', 'hat it launched in 2020, according to Cirium'],  # 3 segments
     'without': ['This post contains references to products from one or more', 'Bonus value is an estimated value calculated by', 'responsibility to ensure all posts and/or questions are answered.'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.medicalnewstoday.com/articles/318674': {
-    'file': 'medicalnewstoday.com.318674.html',  # stays empty until download
+    'file': 'medicalnewstoday.com.318674.html',
     'author': 'Ana Sandoiu',
     'title': 'How does the brain turn unconscious information into conscious thought?',
     'date': '2017-07-27',
-    'description': 'New research investigates the neurobiological timing of the so-called a-ha! moment that occurs we have come up with the solution to a complex problem.',  # in HTML source
+    'description': 'New research investigates the neurobiological timing of the so-called a-ha! moment that occurs we have come up with the solution to a complex problem.',
     'categories': [''],
     'tags': ['Biology / Biochemistry', 'Neurology / Neuroscience', 'Psychology / Psychiatry'],
     'with': ['Many of us have noticed that we seem to get our', 'But the exact moment at which information becomes', ' that the brain goes through to complete a'],  # 3 segments
     'without': ['myths, and reveal tips for improving brain functioning.', 'to such placement, do not provide the information.', '© 2004-2020 Healthline Media UK Ltd, Brighton'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.mdavis.xyz/supermarket/': {
-    'file': 'mdavis.xyz.supermarket.html',  # stays empty until download
+    'file': 'mdavis.xyz.supermarket.html',
     'author': 'Matthew Davis',
     'title': 'A Stallman-esque short story about the future of offline tracking and the right to buy',
     'date': '2019-01-11',
-    'description': 'A Stallman-esque short story about the future of offline tracking and the right to buy',  # in HTML source
+    'description': 'A Stallman-esque short story about the future of offline tracking and the right to buy',
     'categories': [''],
     'tags': [''],
     'with': ['The cameras recognise me as soon as I', 'afternoon snack on way home from work', ' FoodCorp to feed ourselves, FoodCorp feeds on us'],  # 3 segments
     'without': ['11 Jan 2019', 'Photo by ev on Unsplash', 'find more by Matthew Davis'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://medium.com/@pimterry/host-your-node-app-on-dokku-digitalocean-1cb97e3ab041': {
-    'file': 'medium.com.dokku.html',  # stays empty until download
+    'file': 'medium.com.dokku.html',
     'author': 'Tim Perry',
     'title': 'Host your Node app on Dokku & DigitalOcean',
     'date': '2016-03-28',
-    'description': 'DigitalOcean are a superbly cheap and remarkably frictionless platform to run your servers (a cut-down and honed AWS competitor) in the cloud. If you want quick easy hosting, they’re fantastic. The…',  # in HTML source
+    'description': 'DigitalOcean are a superbly cheap and remarkably frictionless platform to run your servers (a cut-down and honed AWS competitor) in the cloud. If you want quick easy hosting, they’re fantastic. The…',
     'categories': [''],
     'tags': ['Nodejs', 'Web Hosting' 'Docker'],
     'with': ['are a superbly cheap and remarkably frictionless platform to run', 'Node project, started, and have the given port exposed.', 'You start Dokku, tell it what services you need'],  # 3 segments
@@ -5721,53 +5724,53 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.economist.com/open-future/2018/06/18/why-collaborative-thinking-beats-individual-smarts': {
-    'file': 'economist.com.thinking.html',  # stays empty until download
+    'file': 'economist.com.thinking.html',
     'author': '',
     'title': 'Why collaborative thinking beats individual smarts',
     'date': '2018-06-18',
-    'description': 'An interview with Thomas Malone, author of “Superminds”, together with an extract from the book"',  # in HTML source
+    'description': 'An interview with Thomas Malone, author of “Superminds”, together with an extract from the book"',
     'categories': ['Open Future'],
     'tags': [''],
     'with': ['about the role that the proportion of men and women in', 'You might call this a measure of a person', 'Can groups be intelligent in the same way individuals'],  # 3 segments
     'without': ['Sign up to our free daily newsletter', 'Published since September 1843 to take part in', 'Jun 18th 2018'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://diem25.org/the-eus-green-deal-isnt-enough-save-from-climate-catastrophe/': {
-    'file': 'diem25.org.climate.html',  # stays empty until download
+    'file': 'diem25.org.climate.html',
     'author': 'Giovanni Gaggero',
     'title': 'The EU’s Green Deal isn’t enough to save us from climate catastrophe',
     'date': '2020-12-12',
-    'description': 'The substantial inertia of governments on the climate crisis clearly showcases the political crisis of the European Union.',  # in HTML source
+    'description': 'The substantial inertia of governments on the climate crisis clearly showcases the political crisis of the European Union.',
     'categories': [''],
     'tags': ['eu', 'european commission', 'European Union', 'Green New Deal', 'Green New Deal for Europe', 'Ursula von der Leyen'],
     'with': ['Due to the rise of movements dedicated to addressing', 'The Green New Deal for Europe is the most', 'To answer this question, the starting point should'],  # 3 segments
     'without': ['Democracy in Europe Movement 2025', 'Do you want to be informed of DiEM25', 'empower workers on an unprecedented scale.'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.theatlantic.com/ideas/archive/2020/08/californias-disasters-are-a-warning-climate-change-is-here/615610/': {
-    'file': 'theatlantic.com.disasters.html',  # stays empty until download
+    'file': 'theatlantic.com.disasters.html',
     'author': 'Leah C. Stokes',
     'title': 'How Can We Plan for the Future in California?',
     'date': '2020-08-23',
-    'description': 'The state’s heat waves, blackouts, and fires—amid a pandemic—offer a warning of our fossil-fuel future.',  # in HTML source
+    'description': 'The state’s heat waves, blackouts, and fires—amid a pandemic—offer a warning of our fossil-fuel future.',
     'categories': ['Ideas'],
     'tags': [''],
     'with': ['When I moved to California five years ago', 'Yet some people refuse to acknowledge that climate change', 'happening in California has a name: climate change'],  # 3 segments
     'without': ['We want to hear what you think about this article.', 'Some were blasted by critics, some flopped at the', 'Subscribe and support 162 years of independent journalism'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.bettycrocker.com/recipes/easy-pineapple-upside-down-cake/c4d3321d-fad9-41cb-8f29-8d91a4279b07': {
-    'file': 'bettycrocker.com.pineapple.html',  # stays empty until download
+    'file': 'bettycrocker.com.pineapple.html',
     'author': '',
     'title': 'Easy Pineapple Upside-Down Cake',
     'date': '2019-06-13',
-    'description': 'This classic cake boasts all the fruity, gooey, caramel-y goodness that’s made it a favorite for generations—plus a secret shortcut so you can make it in a snap. With Betty Crocker™ Super Moist™ yellow cake mix, you can have this impressive dessert prepped for the oven in just 15 minutes. Bake, flip and bring it to the table to add a sweet and colorful flourish to any party!&quot;',  # in HTML source
+    'description': 'This classic cake boasts all the fruity, gooey, caramel-y goodness that’s made it a favorite for generations—plus a secret shortcut so you can make it in a snap. With Betty Crocker™ Super Moist™ yellow cake mix, you can have this impressive dessert prepped for the oven in just 15 minutes. Bake, flip and bring it to the table to add a sweet and colorful flourish to any party!&quot;',
     'categories': ['recipes'],
     'tags': [''],
     'with': ['pineapple slices in juice, drained, juice reserved', 'Serve with sweetened whipped cream or an 8-oz', 'warm or cool. Store covered in refrigerator.'],  # 3 segments
@@ -5777,81 +5780,81 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://cybercook.com.br/receitas/doces/biscoitos-doces/receita-de-sequilho-com-chocolate-amargo-124300': {
-    'file': 'cybercook.com.br.sequilho.html',  # stays empty until download
+    'file': 'cybercook.com.br.sequilho.html',
     'author': '',
     'title': 'Sequilho com Chocolate Amargo',
     'date': '',
-    'description': 'Já experimentou essa deliciosa receita de Sequilho com Chocolate Amargo? Na CyberCook você encontra essa e outras receitas. Saiba mais!',  # in HTML source
+    'description': 'Já experimentou essa deliciosa receita de Sequilho com Chocolate Amargo? Na CyberCook você encontra essa e outras receitas. Saiba mais!',
     'categories': ['Biscoitos doces', 'Amido de milho', 'Chocolate', 'Farinha de trigo', 'Manteiga', 'Ovo', 'Açúcar', 'Fermento químico em pó'],
     'tags': [''],
     'with': ['Todos os ingredientes', 'Composição nutricional da receita', 'Deixe secar em uma folha de papel'],  # 3 segments
     'without': ['Geladinho de Leite em Pó e', 'Siga o CyberCook', 'Conheça os iogurtes proteicos e inclua-os na sua alimentação!'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'BR',  # if obvious: DE, CH, AT
 },
 'https://eatsmarter.de/rezepte/vanille-hafer-porridge-mit-leinsamen-und-apfel': {
-    'file': 'eatsmarter.de.porridge.html',  # stays empty until download
+    'file': 'eatsmarter.de.porridge.html',
     'author': 'Iris Lange-Fricke',
     'title': 'Vanille-Hafer-Porridge mit Leinsamen und Apfel',
     'date': '',
-    'description': 'Das Vanille-Hafer-Porridge mit Leinsamen und Apfel von EAT SMARTER sorgt für einen guten Start in den Tag.',  # in HTML source
+    'description': 'Das Vanille-Hafer-Porridge mit Leinsamen und Apfel von EAT SMARTER sorgt für einen guten Start in den Tag.',
     'categories': [''],
     'tags': ['Frühstück', 'Ballaststoffreich', 'Clean Eating', 'Clean Eating Frühstück',  'Porridge', 'Süßes Frühstück', 'Vegan', 'Vegetarisch'],
     'with': ['Haferdrink mit Haferflocken, Vanille und Zimt, Leinsamen', 'Nüsse trocken in einer Pfanne anrösten. Äpfel waschen', 'Hafer ist reich an Ballaststoffen und Calcium. Insbesondere der Quellstoff'],  # 3 segments
     'without': ['und Beauty. Erfahren Sie hier alles über die Kooperation.', 'Eine runde Sache also, wie Sie in dieser Warenkunde erfahren! ', 'Diätrezepte unter 400 Kcal'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://eatwhattonight.com/2020/09/vegan-styled-char-kway-teow-stir-fry-flat-rice-noodles/': {
-    'file': 'eatwhattonight.com.stir.html',  # stays empty until download
+    'file': 'eatwhattonight.com.stir.html',
     'author': '',
     'title': 'Vegan Styled Char Kway Teow (Stir Fry Flat Rice Noodles)',
     'date': '2020-09-28',
-    'description': 'Once in a while, I liked to go vegan ! And making it a point to do it once or twice in a month if I can. And this time with a vegan styled char kway teow. It was quite delicious though even without the eggs, meat or pork lard. [&hellip;]',  # in HTML source
+    'description': 'Once in a while, I liked to go vegan ! And making it a point to do it once or twice in a month if I can. And this time with a vegan styled char kway teow. It was quite delicious though even without the eggs, meat or pork lard. [&hellip;]',
     'categories': [''],
     'tags': [''],
     'with': ['Once in a while, I liked to go vegan', 'With 2 tbsp oil left in the wok', '120g kway teow (flat rice noodles)⁣'],  # 3 segments
     'without': ['I am Joyce from Sunny Singapore', 'Enter your keywords', 'Print Recipe'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://uk.trustpilot.com/reviews/581cf1892ae760087cadbf17': {
-    'file': 'uk.trustpilot.com.reviews.html',  # stays empty until download
+    'file': 'uk.trustpilot.com.reviews.html',
     'author': 'Mrs H Pyke',
     'title': 'Gousto has changed my life....',
     'date': '2016-11-04',
-    'description': 'Gousto has changed my life....',  # in HTML source
+    'description': 'Gousto has changed my life....',
     'categories': [''],
     'tags': [''],
     'with': ['Gousto has changed my life', 'What a fantastic idea!'],  # 3 segments
     'without': ['4 Nov 2016', 'Useful', 'reviews'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.hassanchef.com/2020/09/bhindi-masala-okra-stir-fry.html': {
-    'file': 'hassanchef.com.bhindi.html',  # stays empty until download
+    'file': 'hassanchef.com.bhindi.html',
     'author': 'Mobasir hassan',
     'title': 'Bhindi masala (okra stir fry)',
     'date': '2020-09-15',
-    'description': 'Bhindi masala is a popular north Indian main course veg recipe made with bhindi (okra), tomato, onion and some spices. It can be made as dhaba style.',  # in HTML source
+    'description': 'Bhindi masala is a popular north Indian main course veg recipe made with bhindi (okra), tomato, onion and some spices. It can be made as dhaba style.',
     'categories': [''],
     'tags': ['Veg recipes'],
     'with': ['Tandoori roti, Naan and paratha are also served with this masala.', 'You can many popular dishes with bhindi like', 'My wife only use red chilli powder'],  # 3 segments
     'without': ['Copyright © Hassanchef 2020', 'Post a Comment', 'You might like'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.kochbar.de/tipp/1918/Tomaten-richtig-schneiden.html': {
-    'file': 'kochbar.de.schneiden.html',  # stays empty until download
+    'file': 'kochbar.de.schneiden.html',
     'author': 'Marianne1',
     'title': 'Tomaten richtig schneiden',
     'date': '2020-09-20',
-    'description': 'Der perfekte Tomaten richtig schneiden-Tipp mit Bild und einfacher Schritt-für-Schritt-Anleitung',  # in HTML source
+    'description': 'Der perfekte Tomaten richtig schneiden-Tipp mit Bild und einfacher Schritt-für-Schritt-Anleitung',
     'categories': [''],
     'tags': [''],
     'with': ['Ihr kennt es sicher auch!', 'aber ohne Strunk sieht es auch schöner aus.', 'haften am Fruchtfleisch und und können nicht'],  # 3 segments
@@ -5861,95 +5864,95 @@ EVAL_PAGES = {
     'region': 'DE',  # if obvious: DE, CH, AT
 },
 'https://www.mindmegette.hu/levagott-ujj-vajas-kekszek-halloweenra-59841/': {
-    'file': 'mindmegette.hu.levagott.html',  # stays empty until download
+    'file': 'mindmegette.hu.levagott.html',
     'author': '',
     'title': 'Ettől kitör a frász! Így készíts levágott ujj kekszeket Halloweenra',
     'date': '',
-    'description': 'Léteznek olyan ünnepek, melyeknek nem igazán vannak magyar érdekeltségű hagyományai, ám mégis beszivárogtak a köztudatba. Én például kimondottan utálom például a Valentin napot, aminek szerintem semmi értelme nincs, de az ellenkezőjére is van példa. Ilyen az angolszász gyökerekkel bíró Halloween, amit minden évben várok, és persze készülök is rá. ',  # in HTML source
+    'description': 'Léteznek olyan ünnepek, melyeknek nem igazán vannak magyar érdekeltségű hagyományai, ám mégis beszivárogtak a köztudatba. Én például kimondottan utálom például a Valentin napot, aminek szerintem semmi értelme nincs, de az ellenkezőjére is van példa. Ilyen az angolszász gyökerekkel bíró Halloween, amit minden évben várok, és persze készülök is rá. ',
     'categories': [''],
     'tags': ['házisáfrány', 'halloween', 'Levágott ujj', 'desszert', 'süti', 'halloweeni süti', 'Déri Szilvi', 'recept'],
     'with': ['Szeretem, hogy a közelgő téli hónapokat', 'Ezen az éjszakán nagy bulikat szerveznek, ahol', 'azonnal, vagy tároljuk őket jól záródó dobozban'],  # 3 segments
     'without': ['Ezek is érdekelhetnek', 'Receptek karfiollal', 'Friss receptjeink'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'HU',  # if obvious: DE, CH, AT
 },
 'https://apply.workable.com/gousto/j/8F4D8D5904/': {
-    'file': 'workable.com.gousto.html',  # stays empty until download
+    'file': 'workable.com.gousto.html',
     'author': '',
     'title': 'Health and Safety Manager',
     'date': '',
-    'description': 'Gousto are on a mission to become the UK&#39;s favourite way to eat dinner!Delicious recipes, precise ingredients &amp;amp; a dollop of adventure, delivered to your door. We have invested into our technology, data capability and our product to ensure t...',  # in HTML source
+    'description': 'Gousto are on a mission to become the UK&#39;s favourite way to eat dinner!Delicious recipes, precise ingredients &amp;amp; a dollop of adventure, delivered to your door. We have invested into our technology, data capability and our product to ensure t...',
     'categories': [''],
     'tags': [''],
     'with': ['Gousto are on a mission to become the UK', 'Liaise with External Agencies as required.', 'consistently go the extra mile to apply and'],  # 3 segments
     'without': ['This site is protected by reCAPTCHA and the Google', 'Gousto collects and processes personal data in accordance with', 'Spalding, England, United Kingdom'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.tine.no/presserom/nyhetsarkiv/nff-tine-fotballskole-viktig-for-barneidretten-gjennom-pandemien': {
-    'file': 'tine.no.fotballskole.html',  # stays empty until download
+    'file': 'tine.no.fotballskole.html',
     'author': '',
     'title': 'NFF: TINE Fotballskole viktig for barneidretten gjennom pandemien',
     'date': '2020-10-07',
-    'description': 'En annerledes sesong med TINE Fotballskole nærmer seg slutten. Norges Fotballforbund (NFF) har vært bekymret for et stort frafall i barnefotballen i løpet av koronaperioden, og derfor er det ekstra gledelig å se at nærmere 55 000 fotballglade barn har deltatt på over 350 fotballskoler rundt om i hele Norge, ifølge ferske tall.',  # in HTML source
+    'description': 'En annerledes sesong med TINE Fotballskole nærmer seg slutten. Norges Fotballforbund (NFF) har vært bekymret for et stort frafall i barnefotballen i løpet av koronaperioden, og derfor er det ekstra gledelig å se at nærmere 55 000 fotballglade barn har deltatt på over 350 fotballskoler rundt om i hele Norge, ifølge ferske tall.',
     'categories': [''],
     'tags': [''],
     'with': ['En annerledes sesong med TINE Fotballskole nærmer seg', 'TINE Fotballskole er en fantastisk og veldig', 'TINE være med å bidra, avslutter Syversen.'],  # 3 segments
     'without': ['113 Kalbakken, 0902 Oslo', 'dine og tar i mot kommentarer og forslag.', '7. oktober 2020'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'NO',  # if obvious: DE, CH, AT
 },
 'https://www.vegolosi.it/news/climate-clock/': {
-    'file': 'vegolosi.it.climate.html',  # stays empty until download
+    'file': 'vegolosi.it.climate.html',
     'author': '',
     'title': 'll Climate Clock ha iniziato a scorrere: sette anni è il tempo che ci rimane per agire ',
     'date': '2020-09-30',
-    'description': 'A New York il Metronome si trasforma in un gigantesco orologio che fa il countdown dell&#039;emergenza climatica e ricorda al mondo l&#039;urgenza di agire per ridurre rapidamente le emissioni',  # in HTML source
+    'description': 'A New York il Metronome si trasforma in un gigantesco orologio che fa il countdown dell&#039;emergenza climatica e ricorda al mondo l&#039;urgenza di agire per ridurre rapidamente le emissioni',
     'categories': [''],
     'tags': [''],
     'with': ['Ce lo ripetono continuamente gli esperti che', 'Ma se la nostra specie vuole sopravvivere', 'A New York il Metronome si trasforma in un'],  # 3 segments
     'without': ['Per saperne di più', 'Guide di base', 'Frutta e verdura di stagione'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'IT',  # if obvious: DE, CH, AT
 },
 'https://web.archive.org/web/20200808063632/https://www.przepisy.pl/przepis/pierogi-z-dynia-w-sosie-szalwiowym': {
-    'file': 'archive.org.przepisy.pl.pierogi.html',  # stays empty until download
+    'file': 'archive.org.przepisy.pl.pierogi.html',
     'author': 'przepisy.pl ',
     'title': 'Pierogi z dynią w sosie szałwiowym',
     'date': '',
-    'description': 'Zobacz, jak przygotować sprawdzony przepis na Pierogi z dynią w sosie szałwiowym. Wydrukuj lub pobierz PDF z przepisem.',  # in HTML source
+    'description': 'Zobacz, jak przygotować sprawdzony przepis na Pierogi z dynią w sosie szałwiowym. Wydrukuj lub pobierz PDF z przepisem.',
     'categories': [''],
     'tags': ['ciasto na pierogi', 'Kuchnia Polska', 'cebula', 'JAJKA', 'DYNIA', 'PIEROGI', 'FRISCO', 'orzechy włoskie', 'z orzechami'],
     'with': ['ugotowane pierogi, chwilę wymieszaj i natychmiast podawaj.', 'Przyprawa w Mini kostkach Smażona cebula', 'Przygotowanie krok po kroku'],  # 3 segments
     'without': ['Słodkie i soczyste owoce, które mogą być', 'się do niego warzywa, sery, mięso, zioła. Skorzystaj z', 'To naprawdę pyszne danie – przekonaj się?'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'PL',  # if obvious: DE, CH, AT
 },
 'https://journals.univie.ac.at/index.php/wdr/about/submissions': {
-    'file': 'journals.univie.ac.at.submissions.html',  # stays empty until download
+    'file': 'journals.univie.ac.at.submissions.html',
     'author': '',
     'title': 'Checkliste für Beitragseinreichungen ',
     'date': '',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['müssen Sie registriert und eingeloggt sein.', 'Soweit möglich, wurden den Literaturangaben', 'Betonungen kursiv', 'Internetquellen', 'wird in Kürze bereitgestellt.'],  # 3 segments
     'without': ['Beitragseinreichung', 'Aktuelle Ausgabe', 'Suchen'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'AT',  # if obvious: DE, CH, AT
 },
 'https://flawlessfood.co.uk/olive-herb-focaccia-bread/': {
-    'file': 'flawlessfood.co.uk.olive.html',  # stays empty until download
+    'file': 'flawlessfood.co.uk.olive.html',
     'author': 'Kay',
     'title': 'Olive & Herb Focaccia Bread',
     'date': '2020-04-12',
-    'description': 'Oven-baked Italian Olive &amp; Herb Focaccia Bread with fantastic flavours of olive oil, garlic, sundried tomato, olives and herbs a great side or starter',  # in HTML source
+    'description': 'Oven-baked Italian Olive &amp; Herb Focaccia Bread with fantastic flavours of olive oil, garlic, sundried tomato, olives and herbs a great side or starter',
     'categories': [''],
     'tags': ['Focaccia', 'Focaccia Bread', 'Garlic Focaccia', 'Italian Focaccia Bread', 'Olive Bread', 'Sundried tomato and garlic Focaccia bread'],
     'with': ['Oven-baked Italian Olive & Herb Focaccia', 'oil mixture for dipping the focaccia bread into.', 'Carbohydrates: 31g'],  # 3 segments
@@ -5959,11 +5962,11 @@ EVAL_PAGES = {
     'region': 'UK',  # if obvious: DE, CH, AT
 },
 'https://sportowefakty.wp.pl/zuzel/relacja/110331/fogo-unia-leszno-rm-solar-falubaz-zielona-gora': {
-    'file': 'sportowefakty.wp.pl.falubaz.html',  # stays empty until download
+    'file': 'sportowefakty.wp.pl.falubaz.html',
     'author': '',
     'title': 'RM Solar Falubaz Zielona Góra',
     'date': '',
-    'description': 'Zobacz relację live z wydarzenia Fogo Unia Leszno - RM Solar Falubaz Zielona Góra – 57 : 33, 28.09.2020, Żużel, PGE Ekstraliga. Wyniki online, komentarze, informacje.',  # in HTML source
+    'description': 'Zobacz relację live z wydarzenia Fogo Unia Leszno - RM Solar Falubaz Zielona Góra – 57 : 33, 28.09.2020, Żużel, PGE Ekstraliga. Wyniki online, komentarze, informacje.',
     'categories': [''],
     'tags': [''],
     'with': ['Znów lepszy moment startowy miejscowych, lecz', 'W Lesznie zaczął mocno padać deszcz.', 'Stadion im. Alfreda Smoczyka w Lesznie'],  # 3 segments
@@ -5973,67 +5976,67 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.healthline.com/nutrition/ways-to-measure-body-fat': {
-    'file': 'healthline.com.fat.html',  # stays empty until download
+    'file': 'healthline.com.fat.html',
     'author': 'Grant Tinsley',
     'title': 'The 10 Best Ways to Measure Your Body Fat Percentage',
     'date': '2018-04-29',
-    'description': 'Focusing on body fat percentage instead of weight is much more useful to track fat loss progress. Here are the 10 best ways to measure your body fat percentage.',  # in HTML source
+    'description': 'Focusing on body fat percentage instead of weight is much more useful to track fat loss progress. Here are the 10 best ways to measure your body fat percentage.',
     'categories': ['Nutrition'],
     'tags': [''],
     'with': ['It can be frustrating to step on the scale', 'Skinfold measurements have been used to estimate', 'Some methods, such as skinfold measurements, circumference'],  # 3 segments
     'without': ['to improve your health or lose weight, ', '© 2005-2020 Healthline Media a Red Ventures', 'Filter out the noise and nurture your inbox'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.realsimple.com/home-organizing/gardening/outdoor/hydrangea-care': {
-    'file': 'realsimple.com.hydrangea.html',  # stays empty until download
+    'file': 'realsimple.com.hydrangea.html',
     'author': 'Sarah Yang',
     'title': 'How to Care for Hydrangeas to Get the Most Beautiful Blooms on the Block',
     'date': '2019-05-06',
-    'description': 'It&#x27;s not too late to start a garden this year. Here are the best fall plants, including beautiful hydrangea, to grow right now.',  # in HTML source
+    'description': 'It&#x27;s not too late to start a garden this year. Here are the best fall plants, including beautiful hydrangea, to grow right now.',
     'categories': [''],
     'tags': ['Real Simple', 'Home Organizing', 'Gardening' 'Outdoor Gardening'],
     'with': ['Hydrangeas may be just about everywhere', 'Make sure that the bottom of your container has holes', '1. Choose the Right Pot'],  # 3 segments
     'without': ['choosing your hydrangeas at the store, look for', 'Fall is the time of year when root', 'Sarah Yang'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://thepostpartumparty.com/how-to-set-up-a-baby-nursery-in-a-small-space': {
-    'file': 'thepostpartumparty.com.nursery.html',  # stays empty until download
+    'file': 'thepostpartumparty.com.nursery.html',
     'author': 'Amy Motroni',
     'title': '20 Clever Small Nursery Ideas When You’re Tight On Space + Free Printable',
     'date': '2019-07-24',
-    'description': 'Set up your baby nursery in a small space. With these simple small nursery ideas, you can set up a functional nursery, even if you&#039;re tight on space.',  # in HTML source
+    'description': 'Set up your baby nursery in a small space. With these simple small nursery ideas, you can set up a functional nursery, even if you&#039;re tight on space.',
     'categories': [''],
     'tags': [''],
     'with': ['Pick products that can serve multiple purposes', 'Sometimes space is in the eye of the beholder', 'the idea of where to put everything can'],  # 3 segments
     'without': ['must-haves, and so much more.', 'Notify me of follow-up comments by email.', 'The Postpartum Party does not offer medical advice'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.instyle.com/beauty/wigs-for-black-women-cancer': {
-    'file': 'instyle.com.cancer.html',  # stays empty until download
+    'file': 'instyle.com.cancer.html',
     'author': 'Kayla Greaves',
     'title': 'Black Women Battling Breast Cancer Deserve More Wig Options, According to Coils to Locs Founder Dianne Austin',
     'date': '2020-10-13',
-    'description': 'Dianne Austin is the co-founder of Coils to Locs, a company that creates medical wigs for Black women battling cancer that match the texture of their natural hair. ',  # in HTML source
+    'description': 'Dianne Austin is the co-founder of Coils to Locs, a company that creates medical wigs for Black women battling cancer that match the texture of their natural hair. ',
     'categories': ['Beauty'],
     'tags': [''],
     'with': ['decided to ditch her relaxer and transition back', 'to see themselves provides privacy and dignity.', 'All women, regardless of hair type, should'],  # 3 segments
     'without': ['Scroll Down For the Next Article', 'A lot of the royal families had these', 'On the other hand, Black doo-wop girl'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.dailymail.co.uk/news/article-8772683/Chef-Jamie-Oliver-joins-Mail-Sundays-war-toxic-food.html': {
-    'file': 'dailymail.co.uk.food.html',  # stays empty until download
+    'file': 'dailymail.co.uk.food.html',
     'author': 'Glen Owen And Brendan Carlin For The Mail On Sunday',
     'title': "Jamie's war on toxic US food: Chef and fitness guru Joe Wicks lead plea to Boris Johnson to block sub-standard products from flooding into the UK under post-Brexit trade deals",
     'date': '2020-09-26',
-    'description': 'The move comes as International Trade Secretary Liz Truss faces growing Parliamentary pressure to bolster protections against poor quality foreign food.',  # in HTML source
+    'description': 'The move comes as International Trade Secretary Liz Truss faces growing Parliamentary pressure to bolster protections against poor quality foreign food.',
     'categories': [''],
     'tags': [''],
     'with': ['A powerful alliance of chefs, celebrities and charities', ' would also help secure the goal set out so', 'Even George Eustice, the current Environment Secretary'],  # 3 segments
@@ -6043,11 +6046,11 @@ EVAL_PAGES = {
     'region': 'UK',  # if obvious: DE, CH, AT
 },
 'https://www.independent.co.uk/news/uk/politics/coronavirus-false-reporting-contact-fine-penalty-b671230.html': {
-    'file': 'independent.co.uk.penalty.html',  # stays empty until download
+    'file': 'independent.co.uk.penalty.html',
     'author': 'Andrew Woodcock',
     'title': 'Coronavirus: £1,000 fine for falsely reporting a contact to force them to self-isolate',
     'date': '2020-09-28',
-    'description': 'Pubs and bars face penalties for playing loud music or allowing singing and dancing ',  # in HTML source
+    'description': 'Pubs and bars face penalties for playing loud music or allowing singing and dancing ',
     'categories': [''],
     'tags': ['pubs', 'regulations', 'Coronavirus'],
     'with': ['Anyone falsely naming an antagonist as a coronavirus contact', 'But it is understood that the ban on giving', 'New fines for failure to self-isolate, starting'],  # 3 segments
@@ -6057,25 +6060,25 @@ EVAL_PAGES = {
     'region': 'UK',  # if obvious: DE, CH, AT
 },
 'https://stardewvalleywiki.com/Penny': {
-    'file': 'stardewvalleywiki.com.penny.html',  # stays empty until download
+    'file': 'stardewvalleywiki.com.penny.html',
     'author': '',
     'title': 'Penny',
     'date': '2020-10-25',
-    'description': "Penny is a villager who lives in Pelican Town. She's one of the twelve characters available to marry. Her trailer is just east of the center of town, west of the river.",  # in HTML source
+    'description': "Penny is a villager who lives in Pelican Town. She's one of the twelve characters available to marry. Her trailer is just east of the center of town, west of the river.",
     'categories': ['Marriage candidates'],
     'tags': [''],
     'with': ['Penny lives with her mom, Pam, in a little trailer by', 'Penny is a villager who lives in Pelican Town', 'A fermented beverage made from honey.'],  # 3 segments
     'without': ['Content is available under', 'Privacy policy', 'Admin noticeboard'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': 'CC BY-NC-SA 3.0',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://statisticsglobe.com/change-font-size-of-ggplot2-plot-in-r-axis-text-main-title-legend': {
-    'file': 'statisticsglobe.com.ggplot2.html',  # stays empty until download
+    'file': 'statisticsglobe.com.ggplot2.html',
     'author': 'oachim Schork',
     'title': 'Change Font Size of ggplot2 Plot in R (5 Examples) | Axis Text, Main Title & Legend',
     'date': '',
-    'description': 'How to modify font sizes of ggplot2 graphics in R - 5 programming examples - Change font size of axes, main title &amp; legend - Reproducible R code',  # in HTML source
+    'description': 'How to modify font sizes of ggplot2 graphics in R - 5 programming examples - Change font size of axes, main title &amp; legend - Reproducible R code',
     'categories': [''],
     'tags': [''],
     'with': ['explain how to increase and decrease the text', 'y = Probability', 'If you have any further questions, please'],  # 3 segments
@@ -6085,11 +6088,11 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.tomshardware.com/uk/news/where-and-how-to-buy-rtx-3080-3090-3070': {
-    'file': 'tomshardware.com.rtx.html',  # stays empty until download
+    'file': 'tomshardware.com.rtx.html',
     'author': 'Michelle Ehrhardt',
     'title': 'Where and How to Buy an RTX 3080, 3090 or 3070 ',
     'date': '2020-11-02',
-    'description': 'The RTX 3000 series is finally here, which is why we’ve compiled a guide to get your hands on an RTX 3000 card before they sell out.',  # in HTML source
+    'description': 'The RTX 3000 series is finally here, which is why we’ve compiled a guide to get your hands on an RTX 3000 card before they sell out.',
     'categories': [''],
     'tags': [''],
     'with': ['RTX 3000 series graphics cards are finally', 'also some aftermarket RTX 3080 cards up on', 'RTX 3080 and RTX 3090 cards are'],  # 3 segments
@@ -6099,95 +6102,95 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.corkbeo.ie/news/local-news/level-3-live-cork-ireland-19056312': {
-    'file': 'corkbeo.ie.level.html',  # stays empty until download
+    'file': 'corkbeo.ie.level.html',
     'author': "Gavin O'Callaghan",
     'title': 'Level 3 LIVE from Cork as Ireland adapts to incoming coronavirus restrictions',
     'date': '2020-10-06',
-    'description': 'The country avoided Level 5 last night, but NPHET have warned it may be down the line',  # in HTML source
+    'description': 'The country avoided Level 5 last night, but NPHET have warned it may be down the line',
     'categories': [''],
     'tags': [''],
     'with': ['Tonight at midnight Cork will be moved into Level 3 ', 'So we thought that this is not the', 'Taoiseach Micheal Martin confirmed this evening that'],  # 3 segments
     'without': ['Never miss the latest news by signing', 'Corrections and Clarifications', 'The latest update for the Irish abroad'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'IE',  # if obvious: DE, CH, AT
 },
 'https://www.nationalrail.co.uk/service_disruptions/245738.aspx': {
-    'file': 'nationalrail.co.uk.disruptions.html',  # stays empty until download
+    'file': 'nationalrail.co.uk.disruptions.html',
     'author': '',
     'title': 'Rail Replacement Services Travel Advice',
     'date': '',
-    'description': 'The gateway to Britain&#39;s National Rail network. A portal into UK rail travel including train company information and promotions; train times; fares enquiries; ticket purchase and train running information.',  # in HTML source
+    'description': 'The gateway to Britain&#39;s National Rail network. A portal into UK rail travel including train company information and promotions; train times; fares enquiries; ticket purchase and train running information.',
     'categories': [''],
     'tags': ['Coronavirus', 'Facebook', 'Twitter', 'Museums'],
     'with': ['Customers with disabilities will be asked about the best', 'only on longer journeys over 60 minutes', 'LNER are able to carry foldable wheelchairs as'],  # 3 segments
     'without': ['About this site', 'Rail Replacement', 'You are here'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'UK',  # if obvious: DE, CH, AT
 },
 'https://www.chocolate.com/view/woman-sees-a-car-stop-for-pregnant-beggar-this-is-what-she-finds-when-she-follows/&page=2': {
-    'file': 'chocolate.com.pregnant.html',  # stays empty until download
+    'file': 'chocolate.com.pregnant.html',
     'author': 'Cara Stiles',
     'title': 'Woman Sees a Car Stop for Pregnant Beggar, This is What She Finds When She Follows ',
     'date': '2020-04-13',
-    'description': "Woman Sees a Car Stop for Pregnant Beggar, This is What She Finds When She Follows - A Mysterious Woman She couldn't take her eyes off the woman. Could it be true? Was she trying to fool her all along? So many thoughts were racing through her head. Maybe she was just being lured. But, maybe she was also in danger. . But, when the beggar agreed to sit into that car, she knew that something was wrong. She decided to go after her and find out the truth. But, little did she know that she'd discover a web of lies.",  # in HTML source
+    'description': "Woman Sees a Car Stop for Pregnant Beggar, This is What She Finds When She Follows - A Mysterious Woman She couldn't take her eyes off the woman. Could it be true? Was she trying to fool her all along? So many thoughts were racing through her head. Maybe she was just being lured. But, maybe she was also in danger. . But, when the beggar agreed to sit into that car, she knew that something was wrong. She decided to go after her and find out the truth. But, little did she know that she'd discover a web of lies.",
     'categories': [''],
     'tags': [''],
     'with': ['Could it be true? Was she trying', 'working to catch those who run operations', 'she was lucky enough to receive a'],  # 3 segments
     'without': ['CHOCOLATE.COM2020', 'Terms Of Service', 'DMCA'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.thelist.com/214894/when-you-take-a-multivitamin-every-day-this-is-what-happens-to-your-body/': {
-    'file': 'thelist.com.multivitamin.html',  # stays empty until download
+    'file': 'thelist.com.multivitamin.html',
     'author': 'Cat Lafuente',
     'title': 'When you take a multivitamin every day, this is what happens to your body',
     'date': '2020-06-12',
-    'description': 'Do you take a multivitamin every day? It certainly seems like a rational way to give yourself an extra boost, whether it&#039;s to amp up your immunity or increase your energy levels. But just what happens to your body if you start taking a multivitamin daily? Here&#039;s what you need to know.',  # in HTML source
+    'description': 'Do you take a multivitamin every day? It certainly seems like a rational way to give yourself an extra boost, whether it&#039;s to amp up your immunity or increase your energy levels. But just what happens to your body if you start taking a multivitamin daily? Here&#039;s what you need to know.',
     'categories': [''],
     'tags': [''],
     'with': ['Do you take a multivitamin every day?', 'sleeping for seven to nine hours a night', 'help steel yourself against any nutritional fallout.'],  # 3 segments
     'without': ['If you take turmeric every day, you might', 'retro-hipster chic (so 2010!) to your bathroom.', 'everyone has different nutritional needs, and she'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.sports.fr/direct-foot/50918/177512/lorient-olympique-lyonnais.html': {
-    'file': 'sports.fr.lorient.html',  # stays empty until download
+    'file': 'sports.fr.lorient.html',
     'author': '',
     'title': 'Match en direct',
     'date': '',
-    'description': "Toute l'actualité sportive : football, basket, nba, rugby, tennis...",  # in HTML source
+    'description': "Toute l'actualité sportive : football, basket, nba, rugby, tennis...",
     'categories': [''],
     'tags': [''],
     'with': ['terminé au Moustoir ! Lorient a tenu', 'Le coup de pied de coin ne donne rien.', 'se cherchent en ce début de match.'],  # 3 segments
     'without': ['Ligue des Champions de la CAF', 'Europa League', 'Tous les sports'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'FR',  # if obvious: DE, CH, AT
 },
 'https://pawszilla.com/pop-culture/celebrities/fans-expressed-fears-celine-dions-appearance-savagely-responded/21/': {
-    'file': 'pawszilla.com.celine.html',  # stays empty until download
+    'file': 'pawszilla.com.celine.html',
     'author': 'Staff Writer',
     'title': 'Fans Expressed Fears Over Céline Dion’s Major Weight Loss – Then The Star Confirmed The Real Cause',
     'date': '',
-    'description': 'When Céline Dion became the victim of trolling and body-shaming, she responded in surprising style. Even though Céline Dion is a multi-million-selling pop icon, people have occasionally chosen to focus more on her body than her considerable professional accomplishments. Recently, for instance, fans of the “My Heart Will Go On” songstress took to her Instagram&hellip;',  # in HTML source
+    'description': 'When Céline Dion became the victim of trolling and body-shaming, she responded in surprising style. Even though Céline Dion is a multi-million-selling pop icon, people have occasionally chosen to focus more on her body than her considerable professional accomplishments. Recently, for instance, fans of the “My Heart Will Go On” songstress took to her Instagram&hellip;',
     'categories': [''],
     'tags': [''],
     'with': ['Even though Céline Dion is a multi-million-selling', 'So this led to the star coming clean to her critics in spectacular fashion.', 'Her most iconic looks of the 1990s'],  # 3 segments
     'without': ['Getty Images', 'Staff Writer', 'Battery Media Group'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.foxyfolksy.com/chocolate-buttercream-frosting-without-powdered-sugar-ermine-icing/': {
-    'file': 'foxyfolksy.com.buttercream.html',  # stays empty until download
+    'file': 'foxyfolksy.com.buttercream.html',
     'author': 'Bebs',
     'title': 'Chocolate Buttercream Frosting without Powdered Sugar (Ermine Icing)',
     'date': '2018-01-28',
-    'description': 'Try this Chocolate Buttercream Frosting. No powdered sugar needed. It is so light and fluffy and smoother than the classic American Buttercream Frosting. It is a bit more work but definitely easier than Swiss Meringue Frosting. It is easily the best buttercream frosting I&#039;ve tried.',  # in HTML source
+    'description': 'Try this Chocolate Buttercream Frosting. No powdered sugar needed. It is so light and fluffy and smoother than the classic American Buttercream Frosting. It is a bit more work but definitely easier than Swiss Meringue Frosting. It is easily the best buttercream frosting I&#039;ve tried.',
     'categories': ['Cake Recipes'],
     'tags': [''],
     'with': ['Try this Chocolate Buttercream Frosting. No powdered sugar', 'Combine and sift together the flour, sugar, salt', 'work but definitely easier than Swiss Meringue Frosting'],  # 3 segments
@@ -6197,25 +6200,25 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://mydailymagazine.com/get-in-the-spooky-spirit-with-these-halloween-workouts/': {
-    'file': 'mydailymagazine.com.halloween.html',  # stays empty until download
+    'file': 'mydailymagazine.com.halloween.html',
     'author': 'Ariel H',
     'title': 'Get in the Spooky Spirit With These Halloween Workouts',
     'date': '2020-10-26',
-    'description': 'Get in the Spooky Spirit With These Halloween Workouts - My Daily Magazine - Art, Design, DIY, Fashion and Beauty !',  # in HTML source
+    'description': 'Get in the Spooky Spirit With These Halloween Workouts - My Daily Magazine - Art, Design, DIY, Fashion and Beauty !',
     'categories': [''],
     'tags': ['halloween', 'Halloween workout'],
     'with': ['Believe it or not, Halloween is just days', 'Kelsey Ellis, is perfect for you. The workout', '12 reps of each exercise with one to'],  # 3 segments
     'without': ['Terms & Conditions', 'Find Beauty in Imperfection with Public Holiday', 'Hot Buttered Rum Cocktail All Season Long'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://youhadmeatgardening.com/lemon-tree-from-seed': {
-    'file': 'youhadmeatgardening.com.lemon.html',  # stays empty until download
+    'file': 'youhadmeatgardening.com.lemon.html',
     'author': 'Florina Ionescu',
     'title': 'How to Grow a Lemon Tree from Seed | Step-by-Step Guide',
     'date': '',
-    'description': 'Learn how to grow a lemon tree from seed with this step-by-step guide on germinating and planting lemon seeds from store-bought lemons!',  # in HTML source
+    'description': 'Learn how to grow a lemon tree from seed with this step-by-step guide on germinating and planting lemon seeds from store-bought lemons!',
     'categories': [''],
     'tags': [''],
     'with': ['Now you know how to grow lemon trees', 'for planting lemon seeds has a pH between', 'Place the seeds about one inch apart on a paper'],  # 3 segments
@@ -6225,72 +6228,72 @@ EVAL_PAGES = {
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.standard.co.uk/news/uk/turkey-poland-caribbean-islands-added-to-uk-quarantine-list-a4561256.html': {
-    'file': 'standard.co.uk.caribbean.html',  # stays empty until download
+    'file': 'standard.co.uk.caribbean.html',
     'author': "Daniel O'Mahony",
     'title': 'Turkey, Poland and three Caribbean islands added to UK quarantine list',
     'date': '2020-10-01',
-    'description': 'Penalties for those who refuse to self-isolate are to be increased to a maximum of £10,000 for repeat offenders',  # in HTML source
+    'description': 'Penalties for those who refuse to self-isolate are to be increased to a maximum of £10,000 for repeat offenders',
     'categories': [''],
     'tags': ['Turkey', 'Poland', 'Caribbean', 'Quarantine', 'Coronavirus', 'covid-19', 'Travel', 'Grant Shapps', 'air bridges'],
     'with': ['Penalties for those who refuse to self-isolate are', 'Travellers arriving in the UK from those places after', 'to defend what the Government is doing'],  # 3 segments
     'without': ['There are no comments yet', 'This is London Magazine', 'Be part of the conversation'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'UK',  # if obvious: DE, CH, AT
 },
 'https://ext.theperspective.com/items-we-never-knew-we-wanted/1/': {
-    'file': 'ext.theperspective.com.items.html',  # stays empty until download
+    'file': 'ext.theperspective.com.items.html',
     'author': 'Adi Tzlil',
     'title': 'Items We Never Knew We Wanted',
     'date': '2020-09-21',
-    'description': '',  # in HTML source
+    'description': '',
     'categories': [''],
     'tags': [''],
     'with': ['dawn of the internet brought about a lot', 'to turn any laundry day into a blast', 'This item is perfect for those of'],  # 3 segments
     'without': ['All Rights Reserved', 'The Perspective Challenge', 'DMCA'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.popsugar.co.uk/smart-living/Cheap-Homemade-Halloween-Costumes-42432483/amp': {
-    'file': 'popsugar.co.uk.halloween.html',  # stays empty until download
+    'file': 'popsugar.co.uk.halloween.html',
     'author': 'Emily Co',
     'title': '90+ Costumes For Adults to DIY on the Cheap This Halloween',
     'date': '2020-10-30',
-    'description': 'Cheap and easy DIY costumes are all that matter this Halloween, and we are here to tell you that you can consider your 2020 costume complete thanks to these',  # in HTML source
+    'description': 'Cheap and easy DIY costumes are all that matter this Halloween, and we are here to tell you that you can consider your 2020 costume complete thanks to these',
     'categories': [''],
     'tags': ['Budget Tips', 'DIY Costumes', 'DIY', 'Halloween'],
     'with': ['thanks to these genius ideas. This year', 'With a bowler hat, a set of false lashes', 'Long hair or not, you can still pull'],  # 3 segments
     'without': ['Send You Push Notifications.', 'POPSUGAR Would Like To ', 'Want More?'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'UK',  # if obvious: DE, CH, AT
 },
 'https://harrypotter.fandom.com/wiki/Water-Making_Spell': {
-    'file': 'harrypotter.fandom.com.spell.html',  # stays empty until download
+    'file': 'harrypotter.fandom.com.spell.html',
     'author': '',
     'title': 'Water-Making Spell',
     'date': '',
-    'description': 'The Water-Making Spell2 (Aguamenti) was a charm that conjured a jet of clean, drinkable water from the tip of the caster&#039;s wand. This spell, in addition to being a charm, can also be classified as conjuration, an advanced form of Transfiguration. 1 History 2 Effects 3 Known uses 4 Known...',  # in HTML source
+    'description': 'The Water-Making Spell2 (Aguamenti) was a charm that conjured a jet of clean, drinkable water from the tip of the caster&#039;s wand. This spell, in addition to being a charm, can also be classified as conjuration, an advanced form of Transfiguration. 1 History 2 Effects 3 Known uses 4 Known...',
     'categories': ['Articles with information from Wonderbook: Book of Spells', 'Articles with information from Harry Potter and the Half-Blood Prince', 'Articles with information from Harry Potter and the Deathly Hallows', 'Articles with information from Harry Potter and the Goblet of Fire', 'Articles with information from Harry Potter and the Order of the Phoenix', 'Articles with information from Harry Potter: Hogwarts Mystery', 'Articles with information from Harry Potter: Puzzles &amp; Spells', 'Articles with information from Harry Potter: Wizards Unite Articles with information from Pottermore', 'Articles with information from Wizarding World', 'Spells', 'Charms', 'Conjurations', 'Crystal Cave', 'Spells with a light', 'Spells with Incantations of Latin Origin', 'Transfiguration Spells', 'Water', 'Water-based magic'],
     'tags': [''],
     'with': ['"The Water-Making Spell conjures clean, drinkable water from', 'A jet of water flew out of the umbrella tip', 'Hermione used this charm to extinguish his burning eyebrows'],  # 3 segments
     'without': ['Take your favorite fandoms with you and never miss a beat.', 'What is your opinion on people becoming obsessed with Draco?', 'Harry Potter Wiki is a FANDOM Movies Community.'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
 },
 'https://www.msn.com/en-gb/news/uknews/uk-university-student-halls-too-full-to-be-safe-experts-warn/ar-BB19DUqK': {
-    'file': 'msn.com.university.html',  # stays empty until download
+    'file': 'msn.com.university.html',
     'author': 'Anna Fazackerley',
     'title': 'UK university student halls too full to be safe, experts warn ',
     'date': '2020-10-02',
-    'description': 'As increasing numbers of UK universities wrestle with Covid-19 outbreaks, experts are warning that student halls are too full to be safe.&amp;nbsp;',  # in HTML source
+    'description': 'As increasing numbers of UK universities wrestle with Covid-19 outbreaks, experts are warning that student halls are too full to be safe.&amp;nbsp;',
     'categories': [''],
     'tags': [''],
     'with': ['s increasing numbers of UK universities wrestle with', 'seven days. In Northern Ireland, call your GP.', 'Some UK universities, including Cambridge, Imperial College London'],  # 3 segments
     'without': ['powered by Microsoft News', 'Sign in', 'Commenting is not currently available, but don’t worry'],  # 3 segments
-    'comments': [''],  # 0 or 3 segments
+    'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': 'UK',  # if obvious: DE, CH, AT
 },
@@ -6388,5 +6391,159 @@ EVAL_PAGES = {
     'file': 'Rosjanie sugerują natychmiastowe odcięcie Polski od gazu - Energetyka24.html',
     'with': ['Rosjanie twierdzą, że z', 'Danię do Polski.', 'konkluduje finobzor.ru.'],
     'without': ['ZOBACZ TAKŻE', 'Reklama', 'Prosimy o zaznaczenie', 'Czyżewski'],
+},
+'https://villagersandheroes.com/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/': {
+    'file': 'villagersandheroes.com.forums.patchnotes.html',
+    'author': 'Tiberius',
+    'title': 'Patchnotes 4.47.4 - Tagundnachtgleiche Bugfix Build',
+    'date': '2020-09-18',
+    'description': 'Patch Notes 4.47.4',
+    'categories': [''],
+    'tags': [''],
+    'with': ['Die Farbe der Spawn-Ankündigungen wurde geändert auf orange', 'erhöhen, zum Schaden aber nur begrenzt beitragen, entsteht.', 'Was jeder von Euch daraus nun für Konsequenzen zieht in Eventzonen'],  # 3 segments
+    'without': ['Forum software by XenForo® © 2010-2019 XenForo Ltd.', ' Terms and rules', ' Privacy policy'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://plantcaretoday.com/how-to-grow-and-care-for-bougainvillea.html': {
+    'file': 'plantcaretoday.com.bougainvillea.html',
+    'author': '',
+    'title': 'How To Grow and Care For Bougainvillea',
+    'date': '',
+    'description': 'Bougainvillea care has become more important with the popularity of this plant. A colorful patio or deck addition, We share growing and care info.',
+    'categories': ['Vines'],
+    'tags': [''],
+    'with': ['I need some help with Bougainvillea care and watering', 'In the United States, the peak blooms are typically', 'Hardiest species, with somewhat furry foliage and red-purple'],  # 3 segments
+    'without': ['Plantcaretoday.com is a participant in the Amazon Services', 'Plant Care Newsletter', 'Tips On Getting Rid Of Caterpillars On Roses'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://anarc.at/blog/2020-10-18-cdpath-replacement/': {
+    'file': 'anarc.at.cdpath.html',
+    'author': '',
+    'title': 'CDPATH replacements',
+    'date': '2020-10-18',
+    'description': '',
+    'categories': ['Blog'],
+    'tags': ['debian-planet', 'emacs', 'python-planet', 'review', 'shell'],
+    'with': [' I figured I might as well bite the', 'Those projects can be used to track files', 'this list through a command or the menu'],  # 3 segments
+    'without': ['Contact', 'Copyleft © 2002-2016 The Anarcat', ' Powered by'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': 'CC-BY-SA',  # if CC-...
+    'region': 'AT',  # if obvious: DE, CH, AT
+},
+'https://economictimes.indiatimes.com/tech/hardware/the-iphone-se-is-in-india-heres-all-we-know/not-a-flagship/slideshow/76280131.cms': {
+    'file': 'economictimes.indiatimes.com.slideshow.html',
+    'author': 'ET Online',
+    'title': 'The iPhone SE is in India, here\'s all we know',
+    'date': '2020-06-09',
+    'description': 'The latest iPhone from Apple is not what you would expect - a successor to the 2016 SE - it is designed to look like the iPhone 8 from 2017, but is a massive upgrade on it.Image credit: www.apple.com/in/ ​Not a flagship',
+    'categories': [''],
+    'tags': [''],
+    'with': ['The latest iPhone from Apple is not what', 'All of this - coupled with better cameras - comes', 'But, the iPhone SE fits in so much more'],  # 3 segments
+    'without': ['Apple has just updated the 13-inch MacBook Pro', 'for a smoother typing experience, according to Apple.', 'production and sales but new models are still being '],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'http://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm': {
+    'file': 'jobsnhire.com.health.html',
+    'author': 'Jose de la Cruz',
+    'title': 'Better Health For America: What You Need To Know About CVS Health',
+    'date': '2016-02-14',
+    'description': 'CVS Health is all about helping people who are treading a path to better health. Basically, this business entity is a pharmacy innovation company with a clear goal of providing the best in health care to its customers.',
+    'categories': [''],
+    'tags': ['CVS Health', 'CVS Pharmacy', 'Healthcare', 'CVS Health Platinum Whitening Kit'],
+    'with': ['is all about helping people who are treading', 'CVS Health also helps those diagnosed with complex', '17.6 percent to $2.7 billion. It seems CVS Health is really'],  # 3 segments
+    'without': ['Get the Most Popular Jobs&Hire Stories in a Weekly Newsletter', ' acceptance of our Terms and Conditions of Use and Privacy Policy. ', 't Career Options, Job Titles and Descriptions'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://football.ua/germany/311510-podolski-zavershil-kareru-v-sbornojj.html': {
+    'file': 'football.ua.podolski.html',
+    'author': '',
+    'title': 'Подольски завершил карьеру в сборной',
+    'date': '2016-08-15',
+    'description': 'Ветеран сборной Германии Лукаш Подольски принял решение прекратить выступления за Бундестим.',
+    'categories': [''],
+    'tags': [''],
+    'with': ['летний Лукаш Подольски – третий по количеству матчей за сборную', 'Экс-игрок Арсенала и Баварии попал в заявку', 'Решение далось мне очень тяжело. Сборная всегда была'],  # 3 segments
+    'without': ['© 2006-2019 ООО "ВИДАВНИЦТВО УКРАЇНСЬКИЙ МЕДІА ДІМ". Все права защищены.', 'Политика в сфере конфиденциальности и персональных данных', 'Германия. Новости'],  # 3 segments
+    'comments': ['Польди этот тот человек,который в сборной играл лучше чем в клубах ', '"Я прошел путь от двухлетнего поляка до чемпиона мира в этой футболке', 'Ждал пока Тимощук со сборной уйдет)'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': 'UA',  # if obvious: DE, CH, AT
+},
+'https://ukbdnews.com/2020/08/23646/': {
+    'file': 'ukbdnews.com.23646.html',
+    'author': '',
+    'title': 'এমপির ভাইকে নিজ বাড়ির সামনেই কুপিয়ে হত্যা',
+    'date': '2020-08-29',
+    'description': 'কুষ্টিয়া-১ (দৌলতপুর) আসনের সংসদ সদস্য (এমপি) অ্যাডভোকেট আ ক ম বিস্তারিত',
+    'categories': [''],
+    'tags': [''],
+    'with': ['কুষ্টিয়া-১ (দৌলতপুর) আসনের সংসদ সদস্য (এমপি) অ্যাডভোকেট', 'আজ শনিবার (২৯ আগস্ট) সকাল সাড়ে ৭টার'],
+    'without': ['করোনায় আরও ৩২ জনের মৃত্যু, নতুন শনাক্ত ২১৩১', 'ইভ্যালির সিইও রাসেলের', ' আগস্ট ২৯'],
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+'https://web.archive.org/web/20120611024252/http://www.he.xinhuanet.com/news/2012-06/04/content_25340717.htm': {
+    'file': 'archive.org.he.xinhuanet.com.25340717.html',
+    'author': '',
+    'title': '话剧《约定无期限》河北各市巡演结束 ',
+    'date': '2012-06-04',
+    'description': '',
+    'categories': [''],
+    'tags': [''],
+    'with': ['一个约定，信守15年，感人至深；一段真情，延续15年', '秦皇岛、承德、张家口等10个设区市演出(此前已在保定市演出多场)，引起强烈反响。', '如今，向河北农大果树93(01)班毕业生群体学习的热潮正在全省各地深入开展。廊坊以巡演为'],  # 3 segments
+    'without': ['copyright (c) 2000 he.xinhuanet.com Limited,All Rights Reserved ', '版权所有 翻版必究  新华网河北频道京ICP证010042号', '河北探索农村劳动力就地就近转移培训'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://redtri.com/best-jokes-for-kids/slide/1': {
+    'file': 'redtri.com.jokes.html',
+    'author': 'Amber Guetebier  Shares',
+    'title': 'Here Comes the Pun: 265 Hilarious Jokes for Kids',
+    'date': '2020-11-03',
+    'description': 'Encourage your kids to get punny with these kid-approved quips that require little to no explanation from parents. Whether it&#039;s a joke a day for the kids, lunchbox jokes for every day or clean jokes to tell to kids,  just don&#039;t be surprised when the comedy sketch goes beyond today! Scroll down for silly jokes and corny jokes, many of which have been sent to us by kid-readers (like you!).',
+    'categories': [''],
+    'tags': [''],
+    'with': ['37. What did one volcano say to the other?', ' You look for fresh prints. ', 'Kids are natural comedians so why not encourage'],  # 3 segments
+    'without': ['more stories you may have missed', 'COMPANY INFO', 'AS SEEN IN'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://www.linkedin.com/feed/update/urn:li:activity:6341926280803471360': {
+    'file': 'linkedin.com.feed.6341926280803471360.html',
+    'author': 'Messente Communications',
+    'title': 'Whitepaper - 2FA Impact on Data Breaches ',
+    'date': '',
+    'description': 'It&amp;#39;s no secret, user behavior and broken business processes are the culprits behind data breaches. 4 out of every 5 hacking-related breach is due to weak …',
+    'categories': [''],
+    'tags': [''],
+    'with': ['It\'s no secret', '2FA and its impact on mitigating the risk of financial breaches.', '2FA Impact on Data Breaches'],  # 3 segments
+    'without': ['To view or add a comment', '1,192 followers', 'Share'],  # 3 segments
+    'comments': [],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
+},
+    'https://www.fifplay.com/fifa-21-game-settings/': {
+    'file': 'fifplay.com.settings.html',
+    'author': '',
+    'title': 'FIFA 21 Game Settings',
+    'date': '',
+    'description': 'FIFA 21 Game Settings guide and instructions.',
+    'categories': [''],
+    'tags': [''],
+    'with': ['You are able to customise and adjust the settings', 'Your Default Game Lanaguage', 'By setting this to Default, attributes are', 'CPU GAMEPLAY CUSTOMISATION'],  # 3 segments
+    'without': ['FIFA 21 Camera Settings', 'Post Your Comments', 'Shortcuts'],  # 3 segments
+    'comments': ['Please i want you to teach me how to start'],  # 0 or 3 segments
+    'license': '',  # if CC-...
+    'region': '',  # if obvious: DE, CH, AT
 },
 }
