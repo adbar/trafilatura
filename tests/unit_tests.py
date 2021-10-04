@@ -104,6 +104,7 @@ def test_input():
     assert utils.load_html(123) is None
     assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
+    assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
