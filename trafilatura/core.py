@@ -30,8 +30,7 @@ from .utils import load_html, trim, txttocsv, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH,
-                     DISCARD_IMAGE_ELEMENTS)
-#, REMOVE_COMMENTS_XPATH
+                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -540,8 +539,8 @@ def extract_comments(tree, dedupbool, config):
 def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
-    # bypass
-    #if len_text > MIN_EXTRACTED_SIZE*10:
+    # bypass for recall?
+    #if len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*10:
     #    return body, text, len_text
     # try with readability
     temppost_algo = try_readability(backup_tree, url)
@@ -691,7 +690,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         filecontent: HTML code as string.
         url: URL of the webpage.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
-        favor_precision: prefer less text but correct extraction (inactive).
+        favor_precision: prefer less text but correct extraction (weak effect).
         favor_recall: prefer more text even when unsure (inactive).
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
@@ -776,7 +775,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             commentsbody, temp_comments, len_comments, cleaned_tree = extract_comments(cleaned_tree, deduplicate, config)
         else:
             commentsbody, temp_comments, len_comments = None, '', 0
-            #cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
+            if favor_precision is True:
+                cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
         postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
@@ -785,7 +785,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         if no_fallback is False:
             postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, config)
             # add baseline as additional fallback
-            if len(postbody) == 0: # or len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+            if len(postbody) == 0:
                 postbody, temp_text, len_text = baseline(filecontent)
         else:
             # rescue: try to use original/dirty tree
@@ -852,7 +852,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         url: URL of the webpage.
         record_id: Add an ID to the metadata.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
-        favor_precision: prefer less text but correct extraction (inactive).
+        favor_precision: prefer less text but correct extraction (weak effect).
         favor_recall: when unsure, prefer more text (inactive).
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
