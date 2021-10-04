@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="alternate" media="only screen and (max-width: 640px)" href="http://m.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm"/>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"2dbac3f3da",applicationID:"403938230"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(){}function i(t,e,n){return function(){return o(t,[u.now()].concat(f(arguments)),e?null:this,n),e?void 0:this}}var o=t("handle"),a=t(8),f=t(9),c=t("ee").get("tracer"),u=t("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var d=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],p="api-",l=p+"ixn-";a(d,function(t,e){s[e]=i(p+e,!0,"api")}),s.addPageAction=i(p+"addPageAction",!0),s.setCurrentRouteName=i(p+"routeName",!0),e.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(l+"tracer",[u.now(),t,n],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw c.emit("fn-err",[arguments,this,t],n),t}finally{c.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(l+e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),o("err",[t,u.now(),!1,e])}},{}],2:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],3:[function(t,e,n){function r(){return f.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,f=t(10);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],4:[function(t,e,n){function r(t){return!(!t||!t.protocol||"file:"===t.protocol)}e.exports=r},{}],5:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?d("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&d("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();n.length>0&&d("lcp",[n[n.length-1]])}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||d("cls",[t])})}function a(t){if(t instanceof m&&!g){var e=Math.round(t.timeStamp),n={type:t.type};e<=p.now()?n.fid=p.now()-e:e>p.offset&&e<=Date.now()?(e-=p.offset,n.fid=p.now()-e):e=p.now(),g=!0,d("timing",["fi",e,n])}}function f(t){"hidden"===t&&d("pageHide",[p.now()])}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var c,u,s,d=t("handle"),p=t("loader"),l=t(7),m=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){c=new PerformanceObserver(r);try{c.observe({entryTypes:["paint"]})}catch(v){}u=new PerformanceObserver(i);try{u.observe({entryTypes:["largest-contentful-paint"]})}catch(v){}s=new PerformanceObserver(o);try{s.observe({type:"layout-shift",buffered:!0})}catch(v){}}if("addEventListener"in document){var g=!1,h=["click","keydown","mousedown","pointerdown","touchstart"];h.forEach(function(t){document.addEventListener(t,a,!1)})}l(f)}},{}],6:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}e.exports={agent:i,version:o,match:r}},{}],7:[function(t,e,n){function r(t){function e(){t(a&&document[a]?document[a]:document[i]?"hidden":"visible")}"addEventListener"in document&&o&&document.addEventListener(o,e,!1)}e.exports=r;var i,o,a;"undefined"!=typeof document.hidden?(i="hidden",o="visibilitychange",a="visibilityState"):"undefined"!=typeof document.msHidden?(i="msHidden",o="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(i="webkitHidden",o="webkitvisibilitychange",a="webkitVisibilityState")},{}],8:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],9:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],10:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?u(t,c,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!l.aborted||o){t&&a&&t(n,r,i);for(var f=e(i),c=v(n),u=c.length,s=0;s<u;s++)c[s].apply(f,r);var p=d[w[n]];return p&&p.push([b,n,r,f]),f}}function o(t,e){y[t]=v(t).concat(e)}function m(t,e){var n=y[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function v(t){return y[t]||[]}function g(t){return p[t]=p[t]||i(n)}function h(t,e){l.aborted||s(t,function(t,n){e=e||"feature",w[n]=e,e in d||(d[e]=[])})}var y={},w={},b={on:o,addEventListener:o,removeEventListener:m,emit:n,get:g,listeners:v,context:e,buffer:h,abort:f,aborted:!1};return b}function o(t){return u(t,c,a)}function a(){return new r}function f(){(d.api||d.feature)&&(l.aborted=!0,d=l.backlog={})}var c="nr@context",u=t("gos"),s=t(8),d={},p={},l=e.exports=i();e.exports.getOrSetContext=o,l.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!R++){var t=M.info=NREUM.info,e=v.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();c(E,function(e,n){t[e]||(t[e]=n)});var n=a();f("mark",["onload",n+M.offset],null,"api"),f("timing",["load",n]);var r=v.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=l+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===v.readyState&&o()}function o(){f("mark",["domContent",a()+M.offset],null,"api")}var a=t(3),f=t("handle"),c=t(8),u=t("ee"),s=t(6),d=t(4),p=t(2),l=p.getConfiguration("ssl")===!1?"http":"https",m=window,v=m.document,g="addEventListener",h="attachEvent",y=m.XMLHttpRequest,w=y&&y.prototype,b=!d(m.location);NREUM.o={ST:setTimeout,SI:m.setImmediate,CT:clearTimeout,XHR:y,REQ:m.Request,EV:m.Event,PR:m.Promise,MO:m.MutationObserver};var x=""+location,E={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1210.min.js"},O=y&&w&&w[g]&&!/CriOS/.test(navigator.userAgent),M=e.exports={offset:a.getLastTimestamp(),now:a,origin:x,features:{},xhrWrappable:O,userAgent:s,disabled:b};if(!b){t(1),t(5),v[g]?(v[g]("DOMContentLoaded",o,!1),m[g]("load",r,!1)):(v[h]("onreadystatechange",i),m[h]("onload",r)),f("mark",["firstbyte",a.getLastTimestamp()],null,"api");var R=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,c,u){function nrWrapper(){var o,a,s,p;try{a=this,o=d(arguments),s="function"==typeof r?r(o,a):r||{}}catch(l){i([l,"",[o,a,c],s],t)}f(n+"start",[o,a,c],s,u);try{return p=e.apply(a,o)}catch(m){throw f(n+"err",[o,a,m],s,u),m}finally{f(n+"end",[o,a,p],s,u)}}return a(e)?e:(n||(n=""),nrWrapper[p]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var f,c,u,s="-"===r.charAt(0);for(u=0;u<e.length;u++)c=e[u],f=t[c],a(f)||(t[c]=n(f,s?c+r:r,i,c,o))}function f(n,r,o,a){if(!m||e){var f=m;m=!0;try{t.emit(n,r,o,e,a)}catch(c){i([c,n,r,o],t)}m=f}}return t||(t=s),n.inPlace=r,n.flag=p,n}function i(t,e){e||(e=s);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)l.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[p])}function f(t,e){var n=e(t);return n[p]=t,o(t,n,s),n}function c(t,e,n){var r=t[e];t[e]=f(r,n)}function u(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var s=t("ee"),d=t(9),p="nr@original",l=Object.prototype.hasOwnProperty,m=!1;e.exports=r,e.exports.wrapFunction=f,e.exports.wrapInPlace=c,e.exports.argsToArray=u},{}]},{},["loader"]);</script>
+<meta http-equiv="Imagetoolbar" content="no" />
+<meta http-equiv="x-dns-prefetch-control" content="on" />
+<link rel="dns-prefetch" href="//s.ntv.io" />
+<link rel="dns-prefetch" href="https://assetsorigin.jobsnhire.com" />
+<link rel="dns-prefetch" href="https://data.jobsnhire.com" />
+     <link rel="amphtml" href="https://www.jobsnhire.com/amp/articles/35030/20160214/need-know-cvs-health.htm" />
+	<meta property="fb:app_id" content="1867400013546490" />
+	    <title>Better Health For America: What You Need To Know About CVS Health : Home : Jobs & Hire</title>
+    <meta name="title" content="Better Health For America: What You Need To Know About CVS Health" />
+    <meta name="keywords" content="CVS Health, CVS Pharmacy, Healthcare, CVS Health Platinum Whitening Kit" />
+    <meta name="description" content="CVS Health is all about helping people who are treading a path to better health. Basically, this business entity is a pharmacy innovation company with a clear goal of providing the best in health care to its customers." />
+            <meta name="author" content="Jobs & Hire" />
+                <meta name="copyright" content="2016 Jobs & Hire" />
+                <meta name="subject" content="jobsnhire.com" />
+        <meta name="robots" content="index, follow" />
+    <meta name="news_keywords" content="need, know, cvs health" />
+    <meta name="Googlebot-News" content="index, follow" />
+
+
+			<meta property="og:type" content="article"/>
+		<meta property="og:url" content="https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm"/>
+		<meta property="og:site_name" content="Jobs & Hire"/>
+		<meta property="og:image" content=""/>
+		<meta property="og:title" content="Better Health For America: What You Need To Know About CVS Health"/>
+		<meta property="og:description" content="CVS Health is all about helping people who are treading a path to better health. Basically, this business entity is a pharmacy innovation company with a clear goal of providing the best in health care to its customers."/>
+		<meta property="article:published_time" content="2016-02-14"/>
+							<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:site" content="@JobsnHireCom">
+		<meta name="twitter:creator" content="@JobsnHireCom">
+		<meta name="twitter:domain" content="jobsnhire.com">
+		<meta name="twitter:url" content="https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm">
+		<meta name="twitter:title" content="Better Health For America: What You Need To Know About CVS Health">
+		<meta name="twitter:description" content="CVS Health is all about helping people who are treading a path to better health. Basically, this business entity is a pharmacy innovation company with a clear goal of providing the best in health care to its customers.">
+		<meta name="twitter:image"
+		      content="">
+
+				<meta name="syndication-source" content="https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm" />
+	<meta name="news_keywords" content="need, know, cvs health" />
+		<link rel="canonical" href="https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm" />
+	<link rel="stylesheet" href="https://assetsorigin.jobsnhire.com/static/common/_v0.0.0/css/style.css?v=55" type="text/css" />
+<link rel="stylesheet" href="https://assetsorigin.jobsnhire.com/static/common/_v0.0.0/css/adunit.css?fb6692c" type="text/css" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Viga" type="text/css" />
+<link rel="stylesheet" href="https://assetsorigin.jobsnhire.com/common/js/colorbox/colorbox.css" type="text/css" />
+<link rel="shortcut icon" href="https://assetsorigin.jobsnhire.com/static/common/_v0.0.0/favicon.ico" type="image/x-icon" />
+<script type='text/javascript'>function plGetCookie(t){for(var n=t+"=",r=document.cookie.split(";"),e=0;e<r.length;e++){for(var i=r[e];" "==i.charAt(0);)i=i.substring(1);if(0==i.indexOf(n))return i.substring(n.length,i.length)}return""}
+var fqv=plGetCookie('fqv')?plGetCookie('fqv'):0;function plSetCookie(e,o,t,i){var n=new Date;n.setTime(n.getTime()+36e5*t);var c=e+"="+escape(o)+"; path=/; expires="+n.toGMTString()+";";i&&(c+="domain="+i+";"),document.cookie=c}
+function get_param( name, url ) {if (!url) url=location.href; name=name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");var regexS="[\\?&]"+name+"=([^&#]*)"; var regex=new RegExp( regexS );var results=regex.exec( url );return results == null ? null : results[1];}var utm_campaign=get_param('utm_campaign');var utm_source=get_param('utm_source');var utm_term=get_param('utm_term');var cfvbt=plGetCookie('cfvbt')?plGetCookie('cfvbt'):'';var cfvts=plGetCookie('cfvts')?plGetCookie('cfvts'):'';if(!utm_term)utm_term=plGetCookie('utm_term')?plGetCookie('utm_term'):'';if(utm_campaign=='promoted'&&utm_source=='facebook'){cfvts="fb";plSetCookie("cfvts", cfvts, 6);plSetCookie("utm_term", utm_term, 6);}else if(utm_campaign=='promoted'&&utm_source=='taboola'){cfvts="tb";plSetCookie("cfvts", cfvts, 6);plSetCookie("utm_term", utm_term, 6);}else if(utm_campaign=='promoted'&&utm_source=='outbrain'){cfvts="ob";plSetCookie("cfvts", cfvts, 6);plSetCookie("utm_term", utm_term, 6);}else if(utm_campaign=='promoted'&&utm_source=='yahoo'){cfvts="yg";plSetCookie("cfvts", cfvts, 6);plSetCookie("utm_term", utm_term, 6);}else if(utm_source=='plecom'){cfvts="pc";plSetCookie("cfvts", cfvts, 6);plSetCookie("utm_term", utm_term, 6);}var cfvga='';var iu_param='';var repvst='';var addsp='';var dfpSlots={xuaInfo:{}};var p_type='pm1';var LSYE=function(h){var s=document.createElement('script');s.src=h;document.getElementsByTagName('head')[0].appendChild(s);};var callbackCSS=function(d){var o=document.createElement("style");o.innerHTML=d.data;document.getElementsByTagName('head')[0].appendChild(o);};
+window.mobilecheck = function() {var check = false;(function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);return check;}; var is_mobile = mobilecheck();
+var dfpEx=dfpEx||[],ivt_exports=function(e){var t,i,n,o=[],r=!1,a=!1,s=!1,g=!1;if(navigator&&navigator.userAgent&&!/bot|google|aolbuild|baidu|bing|evaliant|msn|duckduckgo|teoma|slurp|yandex|phantomjs|wkhtmltopdf/i.test(navigator.userAgent)||(r=!0),navigator&&navigator.userAgent&&!/adbeat/i.test(navigator.userAgent)||(a=!0),navigator.userAgent.match(/Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i))void 0===window.orientation&&(s=!0),/Media Center.+Zune/i.test(navigator.userAgent)&&(a=!0),/Touch.+NOKIA.+Lumia.+520/i.test(navigator.userAgent)&&(a=!0),/iPad.+8_0.+11A4132/i.test(navigator.userAgent)&&(a=!0),/iPad.+9_1.+13B5110e/i.test(navigator.userAgent)&&(a=!0),/iPad.+9_3_3.+13G34/i.test(navigator.userAgent)&&(a=!0),/iPhone.+8_1_1.+12B436/i.test(navigator.userAgent)&&(a=!0),/iPhone.+9_3_2.+13F69/i.test(navigator.userAgent)&&(a=!0),/Android.+(KOT49H|LRX22C|LMY47X).+UCBrowser/i.test(navigator.userAgent)&&(a=!0);else{var d=(i=navigator.userAgent,n=i.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i)||[],/trident/i.test(n[1])?(t=/\brv[ :]+(\d+)/g.exec(i)||[],"IE"):"Chrome"===n[1]&&null!=(t=i.match(/\b(OPR|Edge)\/(\d+)/))?t.slice(1)[0].replace("OPR","Opera"):n[2]?n[1]:"unclassified"),u=document&&document.documentElement&&document.documentElement.style||{};"Chrome"==d?(window.chrome||(s=!0),/X11; Linux x86_64.+Chrome\/(52|51|49|47)/i.test(navigator.userAgent)&&(r=!0),/Windows NT (6\.0|5\.1).+Chrome\/49/i.test(navigator.userAgent)&&(r=!0),/PTST/i.test(navigator.userAgent)&&(r=!0),/Windows NT 6\.1.+Chrome\/(51|42|41)/i.test(navigator.userAgent)&&(a=!0),/Chrome\/50\.0\.2661\.102/i.test(navigator.userAgent)&&(a=!0)):"Firefox"==d?("undefined"!=typeof InstallTrigger||"MozAppearance"in u||(s=!0),/Windows NT 6\.1.+Firefox\/35/i.test(navigator.userAgent)&&(a=!0),/Windows NT 6\.3.+Firefox\/36/i.test(navigator.userAgent)&&(a=!0),/Windows; U; Windows NT 5\.1.+Firefox\/3\.0\.1/i.test(navigator.userAgent)&&(r=!0)):"Opera"==d?window.opera||(s=!0):"IE"==d?document.documentMode||window.ActiveXObject||"-ms-scroll-limit"in u&&"-ms-ime-align"in u||(s=!0):"Edge"==d?document.documentMode||window.ActiveXObject||"-ms-scroll-limit"in u&&"-ms-ime-align"in u||(s=!0):"Safari"==d?0<Object.prototype.toString.call(window.HTMLElement).indexOf("Constructor")||"[object SafariRemoteNotification]"===(!window.safari||safari.pushNotification).toString()||(s=!0):g=!0}if(r&&o.push("spider"),a&&o.push("clickbot"),s&&o.push("incongruous_browser"),g&&o.push("unclassified"),!e)return o;e(o)},ivt_log=ivt_exports();if(typeof ivt_log[0]!= 'undefined'){plSetCookie("cfvbt", ivt_log[0], 6);cfvbt=ivt_log[0];}</script><script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://assetsorigin.jobsnhire.com/static/js/common/slides.min.jquery.js"></script>
+
+<script type="text/javascript" src="https://assetsorigin.jobsnhire.com/common/js/common/jquery.carouFredSel.min.js"></script>
+<script type="text/javascript" src="https://assetsorigin.jobsnhire.com/common/js/colorbox/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
+<script type='text/javascript'>
+var adoptsDeviceType = 'computer';
+var adoptsShouldShowSpecialAds = true;
+if (window.localStorage){ 
+var adoptsNotFirstVisit = localStorage.getItem('_adopts_not_first_visit'); 
+if (!adoptsNotFirstVisit){
+adoptsShouldShowSpecialAds = false;
+localStorage.setItem('_adopts_not_first_visit', 1)
+}
+}
+</script>
+<script>var t=document.createElement('script');t.async=!0,t.type='text/javascript';var e='https:'==document.location.protocol;t.src=(e?'https:':'http:')+'//www.googletagservices.com/tag/js/gpt.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(t,s);</script>
+<script type='text/javascript'>
+var adslot = '/21697271410/jobsnhire/home/articles';
+var googletag = googletag || {};
+googletag.cmd = googletag.cmd || [];
+</script>
+<script type='text/javascript'>
+googletag.slots = googletag.slots || {};
+googletag.cmd.push(function() {
+	googletag.slots['top'] = googletag.defineSlot(adslot,[[728,90],[970,90],[970,250]],'gpt_top').addService(googletag.pubads()).setTargeting('pos','top');
+	googletag.slots['right1'] = googletag.defineSlot(adslot,[[300,250],[300,600]],'gpt_right1').addService(googletag.pubads()).setTargeting('pos','right1');
+	googletag.slots['right2'] = googletag.defineSlot(adslot,[[300,250],[300,600],[160,600],[300,1050]],'gpt_right2').addService(googletag.pubads()).setTargeting('pos','right2');
+	googletag.slots['right3'] = googletag.defineSlot(adslot,[[300,250],[300,600],[160,600]],'gpt_right3').addService(googletag.pubads()).setTargeting('pos','right3');
+	googletag.slots['oop1'] = googletag.defineOutOfPageSlot(adslot,'gpt_oop1').addService(googletag.pubads()).setTargeting('pos','oop1');
+	googletag.slots['oop2'] = googletag.defineOutOfPageSlot(adslot,'gpt_oop2').addService(googletag.pubads()).setTargeting('pos','oop2');
+	googletag.pubads().setTargeting('article_id','35030');
+	for(i in dfpEx){ googletag.pubads().setCategoryExclusion(dfpEx[i]); }
+	googletag.pubads().enableAsyncRendering();
+	googletag.pubads().enableSingleRequest();
+	googletag.pubads().collapseEmptyDivs();
+	googletag.enableServices();
+});
+</script>
+<script type="text/javascript">
+(function(){
+    var anura = document.createElement('script');
+    if ('object' === typeof anura) {
+        var request = {
+            instance: 2238638024,
+            source: 'jobsnhire',
+            campaign: 'home/articles',
+            // exid: 'optionalUniqueExternalId',
+            // variable: 'optionalResponseObjectVariable',
+            // callback: 'optionalCallbackFunction'
+        };
+        var params = [];
+        for (var x in request) params.push(x+'='+encodeURIComponent(request[x]));
+        params.push(Math.floor(1E12*Math.random()+1));
+        anura.type = 'text/javascript';
+        anura.async = true;
+        anura.src = 'https://script.anura.io/request.js?'+params.join('&');
+        var script = document.getElementsByTagName('script')[0];
+        script.parentNode.insertBefore(anura, script);
+    }
+})();
+</script></head>
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1867400013546490";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div id="header">
+	<!-- inner start -->
+    <div class="inner">
+        <!-- logo start -->
+        <h1 id="logo"><a href="/"><img src="https://assetsorigin.jobsnhire.com/static/common/_v0.0.0/images/logo.gif" width="249" height="38" alt="Jobs &amp; Hires" /></a></h1>
+        <!-- logo end -->
+        <!-- search_box start -->
+        <div id="search_box" align="right">
+        	<form action="/search/">
+			  <div>
+			    <input type="text" name="q" size="55" style="width:180px;" class="form_sch">
+			    <input type="image" name="sa" src="https://assetsorigin.jobsnhire.com/static/common/_v0.0.0/images/search_btn.gif" class="form_btn" align="absbottom" alt="searchBtn">
+			  </div>
+			</form>
+			<script type="text/javascript" src="http://www.google.com/coop/cse/brand?form=cse-search-box&amp;lang=en"></script>
+       	</div>
+        <!-- search_box end -->
+        <div class="clear"></div>
+                <!-- nav start -->
+        <script>
+// menu display control
+$(window).scroll(function() {
+	if($(document).scrollTop()>$('.static_menu_position').position().top)
+		$('.static_menu').css({'position':'fixed','zIndex':100,'top':'0','width':'100%'});
+	else
+		$('.static_menu').css({'position':'relative'});
+});
+</script>
+<style type="text/css">#nav li a { padding: 12px 30px;} </style>
+
+<div class="static_menu_position" style="width:100%; margin:0 auto;background:#077de1;"></div>
+		<div id="nav" class="static_menu" style="width:100%; margin:0 auto;background:#077de1;">
+			<!-- inner start -->
+		    <div class="inner" style="width:100%; margin:0 auto;background:#077de1;">
+		    	<ul>
+		        	<li class='selected'><a href="/">Home</a></li>
+		            <li ><a href="/business/">Business</a></li>
+		            <li ><a href="/entrepreneurs/">Entrepreneurs</a></li>
+		            <li ><a href="/leadership/">Leadership</a></li>
+					<li ><a href="/lifestyle/">Lifestyle</a></li>
+					<li ><a href="/technology/">Technology</a></li>
+					<li ><a href="/events/">Events</a></li>
+							        </ul>
+		    </div>
+		    <!-- inner end -->
+		</div>
+		<!-- nav end -->
+    </div>
+    <!-- inner end -->
+</div>
+
+
+	<div class='adunit_leaderboard'>
+					<div id='gpt_top' style='width:970px;margin:0 auto;'>
+						<script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('gpt_top'); });
+						</script>
+					</div>
+				</div>
+<div id="container">
+ 	<!--inner start -->
+	<div class="inner">
+    	<!-- content01 start -->
+        <div id="content01">
+        	<!-- cont start -->
+        	<script type="text/javascript">
+	$(document).ready(function(){
+		$('.contribute a').click(function(){
+			var url, h = 385;
+			if($(this).hasClass('tp')) {
+				url = "/home/news/services/send_tip.php?ar_id=35030&ar_url=https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm&ar_title=Better+Health+For+America%3A+What+You+Need+To+Know+About+CVS+Health";
+			} else if($(this).hasClass('pv')) {
+				url = "/home/news/services/send_pv.php?ar_id=35030&ar_url=https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm&ar_title=Better+Health+For+America%3A+What+You+Need+To+Know+About+CVS+Health";
+				h = 520;
+			} else {
+				url = "/home/news/services/send_cr.php?ar_id=35030&ar_url=https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm&ar_title=Better+Health+For+America%3A+What+You+Need+To+Know+About+CVS+Health";
+			}
+			$(this).colorbox({href: url, iframe:true, width: 560, height: h, onLoad: function(){$('#cboxClose').remove();}});
+		});
+
+		$('.email_popup').click(function(){
+			var url = "/home/news/services/email.php?article_id=35030";
+			$(this).colorbox({href: url, iframe:true, width: 497, height: 505, onLoad: function(){$('#cboxClose').remove();}});
+		})
+	})
+
+</script>
+
+<div id="cont_ar350">
+	<!--bk_timeline start -->
+	<div class="bk_timeline">Feb 14, 2016 10:47 AM EST</div>
+	<!--bk_timeline end -->
+
+	<!--con_main start -->
+	<div class="con_main_ar350">
+		<h1 class="story_subject">Better Health For America: What You Need To Know About CVS Health</h1>
+		<div class="tags"><span class="label">TAG:</span><a href="/tags/cvs-health">CVS Health</a>, <a href="/tags/cvs-pharmacy">CVS Pharmacy</a>, <a href="/tags/healthcare">Healthcare</a>, <a href="/tags/cvs-health-platinum-whitening-kit">CVS Health Platinum Whitening Kit</a></div>
+		<!-- stroy_flow start -->
+		<div class="story_flow">
+    <div class="wrote_by">
+        By&nbsp;<a href="/reporters/jose-de-la-cruz">Jose de la Cruz</a>        <!-- tool start -->
+        <!--<div class="tool">
+        </div>-->
+        <!-- tool end -->
+    </div>
+    		<div class="clear"></div>
+
+		<div id="content">
+      
+        <script>
+          $(".enlarge").click(function() {
+            $(".at-photo").toggleClass("atp");
+          })
+        </script>
+
+			<div class="content1">
+						<p><a href="http://www.cvshealth.com/" rel="nofollow">CVS Health</a> is all about helping people who are treading a path to better health. Basically, this business entity is a pharmacy innovation company with a clear goal of providing the best in health care to its customers.</p>
+<p>Currently, there are millions of people around the world being impacted by the products, services and health initiatives that CVS Health disburses. The company claims that this is its sole purpose and the thing that inspires it to do what they are doing.</p>
+<p>There are four main areas where CVS Health accomplishes this objective:</p>
+<p>1.&nbsp;&nbsp;&nbsp; CVS/pharmacy</p>
+<p>For over 50 years, this company has provided customers with products and services that assisted them in gaining better health. Aside from pharmaceuticals, CVS Health also has trend beauty departments, photo labs and general merchandise</p>
+<p>2.&nbsp;&nbsp;&nbsp; CVS/caremark</p><p></p>
+<p>The company also provides pharmacy benefit management and prescription mail order services. It uses a combination of clinical interventions, discounted drug purchase deals and formulary management techniques to help control drug costs for CVS members and customers.</p>
+<p>3.&nbsp;&nbsp;&nbsp; CVS/minuteclinic</p>
+<p>This company also provides health care access in its more than 1,100 locations. There are company nurses who diagnose illnesses, injuries and skin disorders, and then provide the appropriate wellness services, including physicals, vaccinations and monitoring of chronic conditions.</p>
+<p>4.&nbsp;&nbsp;&nbsp; CVS/specialty</p>
+<p>CVS Health also helps those diagnosed with complex and rare health conditions. Apart from providing the tools and services that patients need, CVS also fills up specialty prescriptions so that patients can effectively manage their medication therapy, and thus be in the best of health.</p>
+<p>It seems that the service provided by CVS Health to the public is being rewarded bountifully. A recent <a href="https://cvshealth.com/content/cvs-health-reports-strong-fourth-quarter-and-full-year-profit-growth-2015-confirms-2016" rel="nofollow">company financial report</a> revealed that it had a strong fourth quarter and full year profit growth for 2015.</p>
+<p>The company's net revenues increased 11 percent to a record of $41.1 billion. Its operating profit increased 17.6 percent to $2.7 billion. It seems CVS Health is really enjoying the confidence of its millions of customers around the world.</p></p></div>
+		</div>
+
+
+		<style>
+.nw_cont { overflow:hidden; /*width:555px; */  font:12px/15px Arial,
+Helvetica, sans-serif;
+background:url(https://assetsorigin.jobsnhire.com/static/common/_v0.0.0/images/bg_cross.gif)
+repeat 0 0;  height:auto; min-height:40px; padding:15px 10px 10px
+10px; margin:15px 0;}
+.nw_cont .nw_icon_newsletter { padding-left:15px; height:31px;
+padding-top:7px; color:#444;}
+.nw_cont .nw_icon_newsletter .tet{color:#444;}
+.nw_cont .nw_form_newsletters{ width:270px; float:right; margin-left:10px;}
+.nw_cont .newsletters_form { height:25px; border:1px solid #cccccc;
+width:170px; padding:0 3px;}
+.nw_cont .newsletters_btn { background-color:#545454; height:27px;
+color:#fff; padding: 5px 10px; border:none; cursor:pointer;}
+.nw_cont .newsletters_btn:hover {background-color:#333;}
+.nw_cont .nw_comment:before {border-bottom: 8px solid #EAEAEA;
+border-left: 6px solid transparent; border-right: 6px solid
+transparent; bottom: 100%; content: "";  height: 0; left: 30px;
+position: absolute; z-index:10;
+width: 0;}
+.nw_cont .nw_comment { background: none repeat scroll 0 0 #EAEAEA;
+border-radius: 6px 6px 6px 6px; clear: both; color: #777777; float:
+left; margin-top:5px; padding: 5px 10px; position: relative; width:
+230px; font-size:12px;}
+
+
+</style>
+
+
+<!-- newsletter_cont start -->
+<div class="nw_cont">
+	<form id="articleletter">
+		<input type="hidden" name="nl" value="3"/>
+	    <div class="nw_form_newsletters">
+	           <input type="text" class="newsletters_form" placeholder="Enter your Email Address" name="email">
+	           <input class="newsletters_btn" type="button" value="Subscribe" id="articlesubmit">
+	           <p class="nw_comment" id="info" style="display:none;">You have already subscribed. Thank you.</p> 
+	    </div> 
+    </form>
+    <div class="nw_icon_newsletter">Get the Most Popular Jobs&Hire Stories in a Weekly  Newsletter</div>
+</div>
+<div class="clear" id="clear"></div>
+<!-- newsletter_cont end -->
+
+
+<script type="text/javascript">
+				var word=$('#info');
+				$('#articleletter').submit(function(){
+					return false;
+				});
+				$('#articlesubmit').click(function(){
+					$.ajax({
+						url:'/home/news/newsletter/article_insert.php',type:'post',data:$('#articleletter').serialize(),dataType: "json",
+						success:function(s){
+							
+							var r=s.result;
+							var email=s.email;
+							word.css('display','block');
+							if(r==3)
+								word.html('Your email couldn\'t be accepted. Please contact us.');
+							if(r==4)
+								word.html('You have already subscribed. Thank you.');
+							if(r==2)
+								word.html('Please provide a valid email address');
+							if(r==1)
+								word.html('<b>Please Confirm Your E-mail</b> '+email+' According to your records, you have not yet confirmed your email address');
+						}
+					});
+				});
+			</script>		<div class="clear"></div>
+		<div class="sourcecopy">© 2017 Jobs & Hire All rights reserved. Do not reproduce without permission.</div></div>
+		<div id="rcjsload_1ec879"></div>
+		<script type="text/javascript">
+		(function() {
+		function ad_block_test(e,o){if("undefined"!=typeof document.body){var t="0.1.2-dev",o=o?o:"sponsorText",n=document.createElement("DIV");n.id=o,n.style.position="absolute",n.style.left="-999px",n.appendChild(document.createTextNode(" ")),document.body.appendChild(n),setTimeout(function(){if(n){var o=0==n.clientHeight;try{}catch(d){console&&console.log&&console.log("ad-block-test error",d)}e(o,t),document.body.removeChild(n)}},175)}}
+		ad_block_test(function(is_blocked){
+		var widget_id = 15700;
+		if (is_blocked === true) {
+		widget_id = 29212;
+		}
+		var referer="";try{if(referer=document.referrer,"undefined"==typeof referer)throw"undefined"}catch(exception){referer=document.location.href,(""==referer||"undefined"==typeof referer)&&(referer=document.URL)}referer=referer.substr(0,700);
+		var rcel = document.createElement("script");
+		rcel.id = 'rc_' + Math.floor(Math.random() * 1000);
+		rcel.type = 'text/javascript';
+		rcel.src = "http://trends.revcontent.com/serve.js.php?w="+widget_id+"&t="+rcel.id+"&c="+(new Date()).getTime()+"&width="+(window.outerWidth || document.documentElement.clientWidth) +"&referer="+referer + '&is_blocked=' + is_blocked;
+		rcel.async = true;
+		var rcds = document.getElementById("rcjsload_1ec879"); rcds.appendChild(rcel);
+		});
+		})();
+		</script>
+
+		<div id="2bef082127be2eadef49538439265dc1"></div><script type="text/javascript">(function(){var id="2bef082127be2eadef49538439265dc1";var plecom=document.createElement("script");plecom.type="text/javascript";plecom.src="https://widget-01-1tmxd3aba43noa.stackpathdns.com/resources/widget/annes.min.js?id="+id+"&url="+("//"+location.host+location.pathname)+"&type=plecon&position=bottom";plecom.async=true;document.getElementById(id).appendChild(plecom);})();</script>
+
+<!--//script type="text/javascript" id="rev2exit" src="http://cdn.revcontent.com/build/js/revexit.min.js?w=15641&p=11205&k=45b769123078168ac9b7dc8b2a6c95d4d5492e78&d=jobsnhire.com&t=false&i=none&x=false&z=10"></script-->
+<style>.rc-uid-15700 .rc-headline { 
+    color: #000!important;
+    font-size: 14px!important;text-align: left;margin-bottom: 10px!important;
+}</style>
+        
+<span id="comment" class="clearfix"></span>
+      <!--related article start -->
+     <div class="bk-desktop_related">	   <div class="bk-hd_desktop_related">
+			<div class="ttl-lft">
+			<h2>Related Articles</h2>
+			</div>
+			<span class="clearfix"></span>
+		</div>
+		<div class="bk-bd_desktop_related">
+        
+					<div class="bk-con_desktop_related ">
+				<a href="/articles/57364/20190510/5-soft-skills-healthcare-employers-desire-in-their-employees.htm">
+				<div>
+				<img class="art-img_desktop_related lazy" src="" data-original="" alt="">
+				</div>				
+				<div class="art-txt_desktop_related">
+                				<h3 class="art-ttl_desktop_related">5 Soft Skills Healthcare Employers Desire In Their Employees</h3>
+				</div>
+				</a>
+			</div>
+						<div class="bk-con_desktop_related ">
+				<a href="/articles/57028/20170318/health-jobs-risk-trump-plans-budget-cuts.htm">
+				<div>
+				<img class="art-img_desktop_related lazy" src="https://data.jobsnhire.com/data/thumbs/full/58005/115/84/50/40/president-trump-holds-meeting-on-healthcare.jpg" data-original="https://data.jobsnhire.com/data/thumbs/full/58005/115/84/50/40/president-trump-holds-meeting-on-healthcare.jpg" alt="">
+				</div>				
+				<div class="art-txt_desktop_related">
+                				<h3 class="art-ttl_desktop_related">US Health Jobs At Risk As Trump Plans Budget Cuts</h3>
+				</div>
+				</a>
+			</div>
+						<div class="bk-con_desktop_related ">
+				<a href="/articles/55115/20170109/small-businesses-enjoy-higher-tax-breaks-new-health-care-option.htm">
+				<div>
+				<img class="art-img_desktop_related lazy" src="https://data.jobsnhire.com/data/thumbs/full/56320/115/84/50/40/democratic-senators-harkin-landrieu-and-warner-discuss-health-care.jpg" data-original="https://data.jobsnhire.com/data/thumbs/full/56320/115/84/50/40/democratic-senators-harkin-landrieu-and-warner-discuss-health-care.jpg" alt="">
+				</div>				
+				<div class="art-txt_desktop_related">
+                				<h3 class="art-ttl_desktop_related">Small Businesses To Enjoy Higher Tax Breaks, New Health Care Option</h3>
+				</div>
+				</a>
+			</div>
+						<div class="bk-con_desktop_related ">
+				<a href="/articles/55084/20170107/cancer-patients-fear-possible-revoke-obamacare-government-plans-replace-affordable.htm">
+				<div>
+				<img class="art-img_desktop_related lazy" src="https://data.jobsnhire.com/data/thumbs/full/56287/115/84/50/40/obamacare-possible-repeal.jpg" data-original="https://data.jobsnhire.com/data/thumbs/full/56287/115/84/50/40/obamacare-possible-repeal.jpg" alt="">
+				</div>				
+				<div class="art-txt_desktop_related">
+                				<h3 class="art-ttl_desktop_related">Cancer Patients Fear Possible Revoke of Obamacare; Government Plans To Replace ...</h3>
+				</div>
+				</a>
+			</div>
+			      
+		<span class="clearfix"></span>
+		</div>
+	</div>
+        		<!-- con_left start -->
+      
+      <div class="clr_both"></div>
+
+	  
+		<!-- cont_left end -->
+		<!-- stroy_flow end -->
+		<div class="clr_both"></div>
+
+
+		<div id="scroll"></div>
+
+	
+<!-- article_center_middle5_computer start-->
+<div id='adunit_article_center_middle5_computer' class='adunit_rectangle'>
+<div id='article_center_middle5_computer'>
+ <script type='text/javascript'>
+  googletag.cmd.push(function() { googletag.display('article_center_middle5_computer'); });
+ </script>
+</div>
+</div>
+<!-- article_center_middle5_computer end -->
+	
+<!-- article_center_middle6_computer start-->
+<div id='adunit_article_center_middle6_computer' class='adunit_rectangle'>
+<div id='article_center_middle6_computer'>
+ <script type='text/javascript'>
+  googletag.cmd.push(function() { googletag.display('article_center_middle6_computer'); });
+ </script>
+</div>
+</div>
+<!-- article_center_middle6_computer end -->
+
+		<div style="font-weight:bold;padding:10px 0;font-family:arial;font-size:15px;border-bottom:1px solid #CCC;margin-bottom:10px;clear:both;margin-top:15px;">TRENDING ON THE WEB</div>
+<style>
+#trending{width:728px;px;clear:both;overflow:hidden;}
+#trending li{float:left; width:24%; margin-right:1%;}
+#trending li img{width:100%;}
+#trending .t_trending a{color:#666;}
+#trending p {line-height:16px;margin-top:-5px;}
+#trending a {font-size:12px; width:25%;}
+</style>
+<div>
+	<ul id="trending">
+				<li>
+			<a href="/articles/57664/20210112/bo-parfets-tips-for-successfully-collaborating-with-new-faces-in-professional-settings.htm"><img src="https://data.jobsnhire.com/data/thumbs/full/58623/130/100/50/40/bo-parfets-tips-for-successfully-collaborating-with-new-faces-in-professional-settings.jpg" alt=""/></a>			<p class="t_trending"><a href="/articles/57664/20210112/bo-parfets-tips-for-successfully-collaborating-with-new-faces-in-professional-settings.htm">Bo Parfet's Tips for Successfully Collaborating with New Faces in Professional Settings</a></p>
+		</li>
+				<li>
+			<a href="/articles/57609/20200723/what-not-to-do-if-youve-been-in-a-car-accident.htm"><img src="https://data.jobsnhire.com/data/thumbs/full/58568/130/100/50/40/what-not-to-do-if-youve-been-in-a-car-accident.jpg" alt=""/></a>			<p class="t_trending"><a href="/articles/57609/20200723/what-not-to-do-if-youve-been-in-a-car-accident.htm">What NOT to Do If You've Been in a Car Accident</a></p>
+		</li>
+				<li>
+			<a href="/articles/57605/20200713/coronavirus-in-australia-–-what-s-happening-right-now.htm"><img src="https://data.jobsnhire.com/data/thumbs/full/58564/130/100/50/40/coronavirus-in-australia-what-s-happening-right-now.jpg" alt=""/></a>			<p class="t_trending"><a href="/articles/57605/20200713/coronavirus-in-australia-–-what-s-happening-right-now.htm">Coronavirus in Australia – What’s Happening Right Now</a></p>
+		</li>
+				<li>
+			<a href="/articles/57602/20200619/what-to-look-for-in-your-cmm-equipment-provider.htm"><img src="https://data.jobsnhire.com/data/thumbs/full/58561/130/100/50/40/what-to-look-for-in-your-cmm-equipment-provider.png" alt=""/></a>			<p class="t_trending"><a href="/articles/57602/20200619/what-to-look-for-in-your-cmm-equipment-provider.htm">What to Look for In Your CMM Equipment Provider</a></p>
+		</li>
+		<span class="clear"></span>		<li>
+			<a href="/articles/57599/20200618/what-is-distracted-driving-and-why-does-it-cause-so-many-accidents.htm"><img src="https://data.jobsnhire.com/data/thumbs/full/58558/130/100/50/40/what-is-distracted-driving-and-why-does-it-cause-so-many-accidents.jpg" alt=""/></a>			<p class="t_trending"><a href="/articles/57599/20200618/what-is-distracted-driving-and-why-does-it-cause-so-many-accidents.htm">What is Distracted Driving? And Why Does It Cause So Many Accidents?</a></p>
+		</li>
+				<li>
+						<p class="t_trending"><a href="/articles/57591/20200605/sbv-ceo-amit-raizadas-advice-on-preparing-for-the-economy-to-reopen.htm">SBV CEO Amit Raizada's Advice on Preparing for the Economy to Reopen</a></p>
+		</li>
+				<li>
+			<a href="/articles/57581/20200420/common-forms-you-need-to-know-to-file-your-taxes.htm"><img src="https://data.jobsnhire.com/data/thumbs/full/58540/130/100/50/40/common-forms-you-need-to-know-to-file-your-taxes.jpg" alt=""/></a>			<p class="t_trending"><a href="/articles/57581/20200420/common-forms-you-need-to-know-to-file-your-taxes.htm">Common Forms You Need to Know to File Your Taxes</a></p>
+		</li>
+				<li>
+			<a href="/articles/57550/20200128/what-to-look-in-a-car-accident-lawyer.htm"><img src="https://data.jobsnhire.com/data/thumbs/full/58507/130/100/50/40/what-to-look-in-a-car-accident-lawyer.jpg" alt=""/></a>			<p class="t_trending"><a href="/articles/57550/20200128/what-to-look-in-a-car-accident-lawyer.htm">What To Look In A Car Accident Lawyer?</a></p>
+		</li>
+			</ul>
+</div>
+	</div>
+		<span  id="comment"></span>
+		<div class="box_disqus"><h3 class="title">Join the Conversation</h3></div>
+				<div class="fb-comments" data-href="https://www.jobsnhire.com/articles/35030/20160214/need-know-cvs-health.htm" data-width="100%" data-numposts="5"></div>
+<!-- ZergNet Start -->
+<!-- ZergNet End -->
+					<div id="insideWidget">
+
+		</div>
+		<script>
+		(function(){
+			var params =
+			{
+				'containerId': 'insideWidget',
+				'widgetType': 'inside',
+				'lazyLoad': false
+			}
+
+			var qs="";
+			for(var key in params){qs+=key+"="+params[key]+"&"}
+			qs=qs.substring(0,qs.length-1);
+
+			var tsc = document.createElement('script'); tsc.type = 'text/javascript'; tsc.async = true;
+			tsc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.jobsnhire.com/widget_init.php?' + qs;
+			document.getElementById(params.containerId).appendChild(tsc);
+
+
+		})()
+		</script>
+				<div class="clear"></div>
+	</div>
+		<div id="sidebar_ar350">
+	<div class='adunit_rectangle'>
+					<div id='gpt_right1' >
+						<script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('gpt_right1'); });
+						</script>
+					</div>
+				</div>  <div class="title mt20">Financial Tips & Other Stories</div><!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57699/20210505/5-tips-for-starting-a-career-as-a-social-media-manager.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58662/100/66/50/40/5-tips-for-starting-a-career-as-a-social-media-manager.jpeg" width="100" height="66" alt="5 Tips for Starting a Career as a Social Media Manager" class="lazy"/></a>    <h3><a href="/articles/57699/20210505/5-tips-for-starting-a-career-as-a-social-media-manager.htm">5 Tips for Starting a Career as a Social Media Manager</a></h3>
+    <p>With almost everyone being on one or more social media platforms, businesses have now turned their focus on social media as an essential avenue for reaching potential customers. This, in turn, has created a demand for social media managers as ...</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57698/20210503/should-you-earn-a-master-of-arts-in-teaching-or-a-master-of-education.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58661/100/66/50/40/should-you-earn-a-master-of-arts-in-teaching-or-a-master-of-education.jpg" width="100" height="66" alt="Should You Earn a Master of Arts in Teaching or a Master of Education?" class="lazy"/></a>    <h3><a href="/articles/57698/20210503/should-you-earn-a-master-of-arts-in-teaching-or-a-master-of-education.htm">Should You Earn a Master of Arts in Teaching or a Master of Education?</a></h3>
+    <p>In order to become a teacher in kindergarten through the 12th grade in the U.S., you'll need to earn a minimum of a bachelor's degree. However, many teachers pursue additional degrees after they begin teaching.</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57697/20210430/simple-ways-to-streamline-business-operations-in-2021.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58660/100/66/50/40/simple-ways-to-streamline-business-operations-in-2021.jpeg" width="100" height="66" alt="Simple Ways to Streamline Business Operations in 2021" class="lazy"/></a>    <h3><a href="/articles/57697/20210430/simple-ways-to-streamline-business-operations-in-2021.htm">Simple Ways to Streamline Business Operations in 2021</a></h3>
+    <p>Due to the intricacies of running a business, many entrepreneurs may find themselves too caught up with day-to-day activities to bother optimizing their operational efficiency.</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57696/20210429/top-3-tips-for-maintaining-safety-and-health-in-the-office.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58659/100/66/50/40/top-3-tips-for-maintaining-safety-and-health-in-the-office.jpeg" width="100" height="66" alt="Top 3 Tips For Maintaining Safety And Health In The Office " class="lazy"/></a>    <h3><a href="/articles/57696/20210429/top-3-tips-for-maintaining-safety-and-health-in-the-office.htm">Top 3 Tips For Maintaining Safety And Health In The Office</a></h3>
+    <p>Since 2020, the U.S recorded approximately 5,333 fatal occupational injuries, according to the Bureau of Labor Statistics. Many people associate workplace injuries with the most dangerous jobs such as roofing, fishing, and oil mining.</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57695/20210429/shifting-careers-transitioning-from-employee-to-entrepreneur.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58658/100/66/50/40/shifting-careers-transitioning-from-employee-to-entrepreneur.jpg" width="100" height="66" alt="Shifting Careers: Transitioning From Employee To Entrepreneur" class="lazy"/></a>    <h3><a href="/articles/57695/20210429/shifting-careers-transitioning-from-employee-to-entrepreneur.htm">Shifting Careers: Transitioning From Employee To Entrepreneur</a></h3>
+    <p>Deciding to make the change from employee to entrepreneur can be scary. Starting a new venture is filled with new experiences and uncertainty that you can’t fully prepare for ahead of time.</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57694/20210426/benefits-of-giving-employee-recognition-awards.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58657/100/66/50/40/benefits-of-giving-employee-recognition-awards.jpg" width="100" height="66" alt="Benefits of Giving Employee Recognition Awards" class="lazy"/></a>    <h3><a href="/articles/57694/20210426/benefits-of-giving-employee-recognition-awards.htm">Benefits of Giving Employee Recognition Awards</a></h3>
+    <p>Employees respond positively to appreciation at work, especially when the appreciation is expressed through recognition of their efforts. This shows that their work is valued and important to the company. A simple award for their efforts can go a ...</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57693/20210426/how-can-university-students-boost-their-chances-of-landing-a-job-in-2021.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58656/100/66/50/40/how-can-university-students-boost-their-chances-of-landing-a-job-in-2021.jpg" width="100" height="66" alt="How Can University Students Boost Their Chances of Landing a Job in 2021" class="lazy"/></a>    <h3><a href="/articles/57693/20210426/how-can-university-students-boost-their-chances-of-landing-a-job-in-2021.htm">How Can University Students Boost Their Chances of Landing a Job in 2021</a></h3>
+    <p>Amid the ongoing pandemic, young people are apprehensive about their future job hunt. A lot of things have been put on hold due to social distancing and safety measurements. Many students are trying to make the most of the downtime by taking online ...</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57692/20210424/the-home-advantage-on-auto-insurance.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58653/100/66/50/40/the-home-advantage-on-auto-insurance.jpg" width="100" height="66" alt="The Home Advantage on Auto Insurance" class="lazy"/></a>    <h3><a href="/articles/57692/20210424/the-home-advantage-on-auto-insurance.htm">The Home Advantage on Auto Insurance</a></h3>
+    <p>The coronavirus abruptly turned remote work from an optional benefit to a necessary directive. We scrambled to transition to working from home for what we initially thought would be short term.</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57691/20210416/fascinating-reasons-to-start-wearing-your-glasses-at-work.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58652/100/66/50/40/fascinating-reasons-to-start-wearing-your-glasses-at-work.jpg" width="100" height="66" alt="Fascinating Reasons to Start Wearing Your Glasses at Work" class="lazy"/></a>    <h3><a href="/articles/57691/20210416/fascinating-reasons-to-start-wearing-your-glasses-at-work.htm">Fascinating Reasons to Start Wearing Your Glasses at Work</a></h3>
+    <p>Are you someone who hates being seen in their glasses? Do you prefer to wear them in the comfort and privacy of your own home? Interestingly, more people than ever are falling back in love with their frames, and electing to wear glasses over contact ...</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57690/20210414/entrepreneurship-overseas-how-to-go-ahead-with-an-opportunity.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58651/100/66/50/40/entrepreneurship-overseas-how-to-go-ahead-with-an-opportunity.jpeg" width="100" height="66" alt="Entrepreneurship Overseas- How To Go Ahead With An Opportunity" class="lazy"/></a>    <h3><a href="/articles/57690/20210414/entrepreneurship-overseas-how-to-go-ahead-with-an-opportunity.htm">Entrepreneurship Overseas- How To Go Ahead With An Opportunity</a></h3>
+    <p>Starting a business in another country or extending an existing one with an overseas branch is an exciting prospect. You can expect immense growth and global outreach with an international presence for your brand.</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57689/20210413/four-ways-every-business-is-changing.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58650/100/66/50/40/four-ways-every-business-is-changing.jpg" width="100" height="66" alt="Four Ways Every Business is Changing" class="lazy"/></a>    <h3><a href="/articles/57689/20210413/four-ways-every-business-is-changing.htm">Four Ways Every Business is Changing</a></h3>
+    <p>If you're still using the term computer age, then it's time to update your vocabulary. There are dozens of different buzzwords floating around academia and the business world these days, but the one that most aptly describes the current state of the ...</p>
+</div>
+<!-- wrap_box04 end -->
+<!-- wrap_box04 start -->
+<div class="wrap_box04">
+    <a href="/articles/57688/20210409/university-of-phoenix-works-with-local-and-regional-institutions-to-create-a-novel-and-affordable-pathway-to-degree-completion.htm"><img src="https://assetsorigin.jobsnhire.com/common/images/preload.png" data-original="https://data.jobsnhire.com/data/thumbs/full/58649/100/66/50/40/university-of-phoenix-works-with-local-and-regional-institutions-to-create-a-novel-and-affordable-pathway-to-degree-completion.png" width="100" height="66" alt="University of Phoenix Works with Local and Regional Institutions to Create a Novel and Affordable Pathway to Degree Completion" class="lazy"/></a>    <h3><a href="/articles/57688/20210409/university-of-phoenix-works-with-local-and-regional-institutions-to-create-a-novel-and-affordable-pathway-to-degree-completion.htm">University of Phoenix Works with Local and Regional Institutions to Create a Novel and Affordable Pathway to Degree Completion</a></h3>
+    <p>University of Phoenix was founded on the idea that learners - whether working adults, first-time college students, military veterans or people from other backgrounds - should have access to a world-class education.</p>
+</div>
+<!-- wrap_box04 end -->
+	<div class='adunit_rectangle'>
+					<div id='gpt_right2' >
+						<script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('gpt_right2'); });
+						</script>
+					</div>
+				</div>  <div class="soc_box">
+	<div class="sctitle">
+		<ul>
+			<li class="col1">Follow JOBS&amp;HIRE</li>
+			<li class="col2">Share</li>
+		</ul>
+	</div>
+	<div class="scwh">
+	    <div class="soc2">
+	        <div class="soc_ac bt1">
+                <ul>
+                    <li class="w1"><iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FJobsNHire&amp;send=&amp;layout=button_count&amp;width=47&amp;show_faces=&amp;share=&amp;action=like&amp;locale=en_US&amp;colorscheme=light&amp;font&amp;height=20" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:47px; height:20px;" allowTransparency="true"></iframe></li><!--Facebook-->
+                    <li>Like Us on Facebook</li>
+                </ul>
+	        </div>
+	        <div class="soc_ac bt2">
+                <ul>
+                    <li class="w2"><iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?count=horizontal&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=https%3A%2F%2Ftwitter.com%2F%23%21%2FJobsnHireCom&amp;size=m&amp;text=&amp;url=https%3A%2F%2Ftwitter.com%2F%23%21%2FJobsnHireCom" class="twitter-share-button twitter-count-horizontal" style="width: 61px; height: 20px; " title="Twitter Tweet Button"></iframe></li><!--Twitter-->
+                    <li>@JobsnHireCom</li>
+                </ul>
+	        </div>
+	        <div class="soc_ac bt3">
+                <ul>
+                    <li class="w3"><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><div class="g-plusone" data-size="medium" data-width="90" data-height="20" data-href="https://plus.google.com/106796888577563852283/posts" data-annotation="none"></div></li><!--Google Plus-->
+                    <li>Recommend on Google</li>
+                </ul>
+	        </div>
+	    </div>
+	    <div class="soc_share">
+    		<ul>
+            	<li class="sh1"><a href="javascript:;" onclick="window.open('http://www.facebook.com/sharer.php?u=https%3A%2F%2Fwww.jobsnhire.com&amp;t=Jobs+%26+Hire','win','width=700,height=380')">Facebook</a></li>
+                <li class="sh2"><a href="https://twitter.com/intent/tweet?text=Hey%2C%20check%20out%20what%E2%80%99s%20going%20on%20at%20Jobsnhire.com&amp;count=none&amp;url=https://www.jobsnhire.com">Twitter </a></li>
+            </ul>
+	    </div>
+	</div>
+</div>
+	<div class='adunit_rectangle'>
+					<div id='gpt_right3' >
+						<script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('gpt_right3'); });
+						</script>
+					</div>
+				</div></div>
+
+        	<!-- cont end -->
+        </div>
+    	<!-- content01 end -->
+	    <!-- content02 start -->
+	    <div id="content02" class="mt20">
+	    			    
+		</div>
+	    <!-- content02 end -->
+	</div>
+	<!-- inner end -->
+</div>
+
+<div class="clear"></div>
+
+<!-- article_center_bottom_computer start-->
+<div id='adunit_article_center_bottom_computer' class='adunit_leaderboard'>
+<div id='article_center_bottom_computer'>
+ <script type='text/javascript'>
+  googletag.cmd.push(function() { googletag.display('article_center_bottom_computer'); });
+ </script>
+</div>
+</div>
+<!-- article_center_bottom_computer end -->
+<div id="footer" style="clear:both; margin-top:30px;" xmlns="http://www.w3.org/1999/html"
+	 xmlns="http://www.w3.org/1999/html">
+	<!-- inner start -->
+	<div class="inner">
+		<!-- footer_menu-->
+		<div id="footer_menu">
+<!--			<a href="/">Home</a>-->
+<!--			<a href="--><!--news/">News</a>-->
+<!--			<a href="--><!--career-advice/">Career Advice</a>-->
+<!--			<a href="--><!--resume-center/">Resume Center</a>-->
+<!--			<a href="--><!--biz-tech/">Biz / Tech</a>-->
+<!--			<a href="--><!--blogs/">Blogs</a>-->
+			<a href="/">Home</a>
+			<a href="/business/">Business</a>
+			<a href="/entrepreneurs/">Entrepreneurs</a>
+			<a href="/leadership/">Leadership</a>
+			<a href="/lifestyle/">Lifestyle</a>
+			<a href="/technology/">Technology</a>
+            <a href="/events/">Events</a>
+					</div>
+		<!-- footer_menu-->
+		<!-- copyright -->
+        <div id="copyright" style="margin-top:9px;">
+        	<p>
+			<a href="/about-us/">About Us</a> &nbsp;&nbsp;|&nbsp;<a href="/contact-us/">Contact Us</a> &nbsp;&nbsp;|&nbsp;&nbsp;<a href="/privacypolicy/">Privacy Policy</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="/termsofservice/">Terms of Service</a> &nbsp;&nbsp; <br><br>
+			Copyright &copy; 2021 JOBS&HIRE All rights reserved.<br>
+Use of this Web site constitutes acceptance of our Terms and Conditions of Use and Privacy Policy.
+			</p>
+        </div>
+        <!-- copyright -->
+
+        <ul class="foot_social">
+        	<li class="fb"><a href="https://www.facebook.com/JobsNHire" target="_blank">facebook</a></li>
+            <li class="tw"><a href="https://twitter.com/#!/JobsnHireCom" target="_blank">twitter</a></li>
+        </ul>
+          <!-- groupdiv start -->
+        <div class="groupdiv">
+			        </div>
+
+		<script>
+		$(document).ready(function() {
+			$(".tab_group").click(function() {
+				$(".tab_hidden").slideToggle();
+			});
+		});
+		</script>
+        <!-- groupdiv end -->
+	</div>
+	<!-- inner end-->
+</div>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-56a7bf1580804b73" async="async"></script>
+
+<script type="text/javascript">
+$('img.lazy').lazyload({ effect : "fadeIn", failure_limit : 40 });
+</script>
+
+<script async defer src="//platform.instagram.com/en_US/embeds.js"></script>
+<!-- start getclicky code -->
+<div style="display:none;">
+			<img alt="Real Time Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0" />
+			<script type="text/javascript">
+			  var clicky_custom = {
+				href: "/articles/35030/20160214/need-know-cvs-health.htm",
+				title: "Better Health For America: What You Need To Know About CVS Health"
+			  };
+			  clicky_custom.outbound_disable = 1;
+			  clicky_custom.video_disable = 1;
+			</script>
+			<script src="//static.getclicky.com/js" type="text/javascript"></script>
+			<script type="text/javascript">try{ stat_track=true;if(typeof cfvbt!='undefined' && cfvbt){stat_track=false;console.log('cfvbt ck:'+cfvbt);}if(stat_track){clicky.init(66581478);} }catch(e){}</script>
+			<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/66581478ns.gif" /></p></noscript>
+		</div><!-- end getclicky code -->
+
+<!-- Start of StatCounter Code for Default Guide -->
+<!-- End of StatCounter Code for Default Guide -->
+
+<!-- Start of Quantcast Code -->
+<script type="text/javascript">
+		var stat_track=true;
+		window._qevents = window._qevents || [];
+
+(function() {
+var elem = document.createElement('script');
+elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+elem.async = true;
+elem.type = "text/javascript";
+var scpt = document.getElementsByTagName('script')[0];
+scpt.parentNode.insertBefore(elem, scpt);
+})();
+
+    window._qevents.push({
+qacct:"p-hw1SwJAApcMv1",
+uid:"webmaster@jobsnhire.com"
+});
+</script>
+<noscript>
+<div style="display:none;">
+<img src="//pixel.quantserve.com/pixel/p-hw1SwJAApcMv1.gif" border="0" height="1" width="1" alt="Quantcast"/>
+</div>
+		</noscript><!-- End of Quantcast Code -->
+
+<!-- Start of comScore Code -->
+<script>
+	  var _comscore = _comscore || [];
+	  _comscore.push({ c1: "2", c2: "14401431" });
+	  (function() {
+		var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+		s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+		el.parentNode.insertBefore(s, el);
+	  })();
+	</script>
+	<noscript>
+	  <img src="http://b.scorecardresearch.com/p?c1=2&c2=14401431&cv=2.0&cj=1" />
+	</noscript><!-- End of comScore Code -->
+
+
+<!-- Start of compete Code -->
+<!-- Compete XL Code for jobsnhire.com -->
+<script type="text/javascript">
+__compete_code = '88f8022a0fb51279c5c7e53871a374b5';
+/* Set control variables below this line. */ 
+</script>
+<script type="text/javascript" src="//c.compete.com/bootstrap/s/88f8022a0fb51279c5c7e53871a374b5/jobsnhire-com/bootstrap.js"></script>
+<noscript>
+    <img width="1" height="1" src="https://ssl-jobsnhire-com-88f802.c-col.com"/>
+</noscript>
+<!-- End of compete Code -->
+
+<script type="text/javascript"> __st_tracking_url = 'https://stat.jobsnhire.com'; __st_article_id = '35030';if(typeof cfvsid!='undefined' && cfvsid!=1){__st_tracking_url='';} </script>
+	<script type="text/javascript" src="https://assetsorigin.jobsnhire.com/common/js/stat/counter_ssl.js?v=11"></script>
+	
+	
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script>
+if(!cfvga)cfvga = 'UA-31734384-1';
+(function() {
+		var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+		s.src = "https://www.googletagmanager.com/gtag/js?id="+cfvga;
+		el.parentNode.insertBefore(s, el);
+	  })();
+</script>
+<script>
+stat_track=true;
+if(typeof cfvsid!='undefined' && cfvsid!=1){ }
+if(stat_track){
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', cfvga, {
+  'custom_map': {'dimension1': 'reporter','dimension2': 'article_type','dimension3': 'art_category','dimension4': 'page_type','dimension5': 'promo_code','dimension6': 'article_id'}
+  });
+  gtag('event', 'article3', {'reporter': 'Joseph L. de la Cruz',
+   'event_category': 'article', 
+  'article_type': 'News', 'art_category': 'Home', 'page_type': 'article', 'promo_code': '', 'article_id': '35030'});
+  var a = document.getElementsByTagName('a');
+  var site_domain = 'jobsnhire.com';
+  
+    for(i = 0; i < a.length; i++){  
+    
+        
+        if (a[i].href.indexOf(site_domain) == -1 && a[i].href.match(/^http/)){
+            a[i].onclick = function(){
+                gtag('event',this.href ,{
+                    'event_category': 'outgoing',
+                   'value': 35030 
+                });
+                                
+            }
+
+        }
+    }
+
+}
+</script>
+<!-- Start of addthis Code -->
+<script async type="text/javascript">var addthis_config = addthis_config||{}; addthis_config.data_track_clickback = false;</script>
+	<script async type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-56a7bf1580804b73"></script><!-- End of addthis Code -->
+
+<div class='adunit_oop'>
+					<div id='gpt_oop1' >
+						<script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('gpt_oop1'); });
+						</script>
+					</div>
+				</div><div class='adunit_oop'>
+					<div id='gpt_oop2' >
+						<script type='text/javascript'>
+							googletag.cmd.push(function() { googletag.display('gpt_oop2'); });
+						</script>
+					</div>
+				</div><script type="text/javascript">
+var refreshVisible=function(){var e=$(window).height(),o=$(window).scrollTop(),t=o+e;for(key in googletag.slots){if(key!='oop1'&&key!='oop2'){var g=$("#gpt_"+key).outerHeight();if($("#gpt_"+key).length){var r=$("#gpt_"+key).offset().top+g/2;r>o&&r<t&&googletag.cmd.push(function(){googletag.pubads().refresh([googletag.slots[key]])})}}}};setInterval(refreshVisible,6e4);   
+//page refresh
+if(!cfvts){setTimeout(function () {location.reload();}, 600000);}</script>
+
+
+
+<script type="text/javascript">
+if (NoPassAN != 'Y') {
+var this_site = window.top.location.hostname.split(".");
+this_site = this_site[this_site.length - 2];
+var sites = {
+  'jobsnhire': {
+    pageID: 82519
+  }
+}
+var site_ttf = sites[this_site],
+    pageID,
+    subdomain = window.top.location.hostname.split(".")[0];
+if (subdomain != 'www') {
+  pageID = site_ttf.sPageID;
+}else{
+  pageID = site_ttf.pageID;
+};
+(function(d, p) {
+    var js, s = d.getElementsByTagName('script')[0];
+    js = d.createElement('script');
+    js.async = true;
+    js.defer = true;
+    js.setAttribute("class", "teads");
+    js.src = '//a.teads.tv/page/' + p + '/tag';
+    s.parentNode.insertBefore(js, s);
+})(window.document, pageID);
+}
+</script>
+
+
+<script src="https://assetsorigin.jobsnhire.com/common/js/common/ads.js?" type="text/javascript"></script>
+<script type="text/javascript">(function(w){w.ADBlocked=(null===document.getElementById("tnoZwqfCbhIx"));})(window);</script><script type="text/javascript">
+    if (ADBlocked) {(function(){var e=document.createElement('script');e.type='text/javascript';e.src='https://assetsorigin.jobsnhire.com/static/js/adbk/cad.js?201611111737';e.async=true;var x=document.getElementsByTagName('script')[0];x.parentNode.insertBefore(e,x);})();}
+</script><!-- Yavli Start -->
+<!-- Yavli End -->
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","licenseKey":"2dbac3f3da","applicationID":"403938230","transactionName":"MwEDMEICXkZXW00KCQpLNBZZTFhaW10WDQMTF04FQhdZVlpdFxMOFA==","queueTime":0,"applicationTime":135,"atts":"H0YARgoYTUg=","errorBeacon":"bam-cell.nr-data.net","agent":""}</script></body>
+</html>

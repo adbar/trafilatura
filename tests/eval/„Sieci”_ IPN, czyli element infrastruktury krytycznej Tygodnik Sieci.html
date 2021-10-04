@@ -1,0 +1,981 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <style type="text/css" media="all">@import "/css/main.css?v=1.0";</style>
+                <style type="text/css" media="all">@import "/css/slimbox.css";</style>
+        
+        <!-- region Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+        <script type="text/javascript" async=true>
+          (function() {
+            var host = window.location.hostname;
+            var element = document.createElement('script');
+            var firstScript = document.getElementsByTagName('script')[0];
+            var url = 'https://quantcast.mgr.consensu.org'
+              .concat('/choice/', 'DJ0mbtRcRwRwg', '/', host, '/choice.js')
+            var uspTries = 0;
+            var uspTriesLimit = 3;
+            element.async = true;
+            element.type = 'text/javascript';
+            element.src = url;
+
+            firstScript.parentNode.insertBefore(element, firstScript);
+
+            function makeStub() {
+              var TCF_LOCATOR_NAME = '__tcfapiLocator';
+              var queue = [];
+              var win = window;
+              var cmpFrame;
+
+              function addFrame() {
+                var doc = win.document;
+                var otherCMP = !!(win.frames[TCF_LOCATOR_NAME]);
+
+                if (!otherCMP) {
+                  if (doc.body) {
+                    var iframe = doc.createElement('iframe');
+
+                    iframe.style.cssText = 'display:none';
+                    iframe.name = TCF_LOCATOR_NAME;
+                    doc.body.appendChild(iframe);
+                  } else {
+                    setTimeout(addFrame, 5);
+                  }
+                }
+                return !otherCMP;
+              }
+
+              function tcfAPIHandler() {
+                var gdprApplies;
+                var args = arguments;
+
+                if (!args.length) {
+                  return queue;
+                } else if (args[0] === 'setGdprApplies') {
+                  if (
+                    args.length > 3 &&
+                    args[2] === 2 &&
+                    typeof args[3] === 'boolean'
+                  ) {
+                    gdprApplies = args[3];
+                    if (typeof args[2] === 'function') {
+                      args[2]('set', true);
+                    }
+                  }
+                } else if (args[0] === 'ping') {
+                  var retr = {
+                    gdprApplies: gdprApplies,
+                    cmpLoaded: false,
+                    cmpStatus: 'stub'
+                  };
+
+                  if (typeof args[2] === 'function') {
+                    args[2](retr);
+                  }
+                } else {
+                  queue.push(args);
+                }
+              }
+
+              function postMessageEventHandler(event) {
+                var msgIsString = typeof event.data === 'string';
+                var json = {};
+
+                try {
+                  if (msgIsString) {
+                    json = JSON.parse(event.data);
+                  } else {
+                    json = event.data;
+                  }
+                } catch (ignore) {}
+
+                var payload = json.__tcfapiCall;
+
+                if (payload) {
+                  window.__tcfapi(
+                    payload.command,
+                    payload.version,
+                    function(retValue, success) {
+                      var returnMsg = {
+                        __tcfapiReturn: {
+                          returnValue: retValue,
+                          success: success,
+                          callId: payload.callId
+                        }
+                      };
+                      if (msgIsString) {
+                        returnMsg = JSON.stringify(returnMsg);
+                      }
+                      event.source.postMessage(returnMsg, '*');
+                    },
+                    payload.parameter
+                  );
+                }
+              }
+
+              while (win) {
+                try {
+                  if (win.frames[TCF_LOCATOR_NAME]) {
+                    cmpFrame = win;
+                    break;
+                  }
+                } catch (ignore) {}
+
+                if (win === window.top) {
+                  break;
+                }
+                win = win.parent;
+              }
+              if (!cmpFrame) {
+                addFrame();
+                win.__tcfapi = tcfAPIHandler;
+                win.addEventListener('message', postMessageEventHandler, false);
+              }
+            };
+
+            makeStub();
+
+            var uspStubFunction = function() {
+              var arg = arguments;
+              if (typeof window.__uspapi !== uspStubFunction) {
+                setTimeout(function() {
+                  if (typeof window.__uspapi !== 'undefined') {
+                    window.__uspapi.apply(window.__uspapi, arg);
+                  }
+                }, 500);
+              }
+            };
+
+            var checkIfUspIsReady = function() {
+              uspTries++;
+              if (window.__uspapi === uspStubFunction && uspTries < uspTriesLimit) {
+                console.warn('USP is not accessible');
+              } else {
+                clearInterval(uspInterval);
+              }
+            };
+
+            if (typeof window.__uspapi === 'undefined') {
+              window.__uspapi = uspStubFunction;
+              var uspInterval = setInterval(checkIfUspIsReady, 6000);
+            }
+          })();
+        </script>
+        <!-- endregion End Quantcast Choice. Consent Manager Tag v2.0 (for TCF 2.0) -->
+
+        <style type="text/css" media="all">@import "/css/adv_styles.css?v=21.03121";</style>
+        <style type="text/css" media="all">@import "/css/wtg_elements.css";</style>
+        <title> „Sieci”: IPN, czyli element infrastruktury krytycznej  Tygodnik Sieci</title>
+		<meta property="fb:app_id" content="1578979889067374"/>
+		<meta property="og:title" content=" „Sieci”: IPN, czyli element infrastruktury krytycznej  Tygodnik Sieci" />
+		<meta property="og:type" content="article" />
+		<meta property="og:description" content="Zadania Instytutu Pamięci Narodowej zawsze wykraczały poza sferę klasycznej działalności naukowej. Opisanie czasów komunizmu z mechanizmami działania" />
+		<meta property="og:url" content="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej,pnews,4715.html"/>
+		<meta property="og:image" content="http://www.wsieciprawdy.pl/prod/news/large/sieci_ipn_czyli_element_infrastruktury_krytycznej_4715.jpg" />		<meta name="google-site-verification" content="yQgSwcD33EIcDC1LhzqNP_jGtxSDFCGoC5lcDvlKWzQ" />
+		<meta property="og:site_name" content="www.wsieciprawdy.pl" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=1280">
+        <meta http-equiv="Content-Language" content="pl"/>
+        <meta name="robots" content="all"/>
+        <meta name="description" content="Zadania Instytutu Pamięci Narodowej zawsze wykraczały poza sferę klasycznej działalności naukowej. Opisanie czasów komunizmu z mechanizmami działania"/>
+        <meta name="keywords" content="  Tygodnik Sieci"/>
+		
+                			
+			<!-- (C)2000-2013 Gemius SA - gemiusAudience / pp.wsieci.pl / podstrony -->
+			<script type="text/javascript">
+			<!--//--><![CDATA[//><!--
+			var pp_gemius_identifier = '.X06SKbx03pjVPEfGAU40cV3PzHN3ju0tPLo8sVye_T.R7';
+			// lines below shouldn't be edited
+			function gemius_pending(i) { window[i] = window[i] || function() {var x = window[i+'_pdata'] = window[i+'_pdata'] || []; x[x.length]=arguments;};};
+			gemius_pending('gemius_hit'); gemius_pending('gemius_event'); gemius_pending('pp_gemius_hit'); gemius_pending('pp_gemius_event');
+			(function(d,t) {try {var gt=d.createElement(t),s=d.getElementsByTagName(t)[0],l='http'+((location.protocol=='https:')?'s':''); gt.setAttribute('async','async');
+			gt.setAttribute('defer','defer'); gt.src=l+'://gapl.hit.gemius.pl/xgemius.js'; s.parentNode.insertBefore(gt,s);} catch (e) {}})(document,'script');
+			//--><!]]>
+			</script>
+			
+                                <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+
+
+        <script type="text/javascript" src="/jvs/mootools-core-1.6.0.js"></script>
+        <script type="text/javascript" src="/jvs/mootools-more-1.6.0.js"></script>
+        <script type="text/javascript" src="/jvs/cookiepolicy.js"></script>
+
+
+        <script type="text/javascript" src="/jvs/Hyphenator.js"></script>
+
+
+                    <script type="text/javascript" src="/jvs/slimbox1_8.js"></script>
+                
+        <script type="text/javascript">
+            window.addEvent('domready',function(){
+            Locale.use('pl-PL');
+
+            function checkBoxHeight(el) {
+                var rows = new Array();
+                var rowId = 0;
+                $$(el).each(function(sDesc, i) {
+                sDesc.setStyle('padding-bottom', '0px');
+                    if(isNaN(rows[Math.floor(rowId)])){
+                        rows[Math.floor(rowId)] = 0;
+                    }
+                    rows[Math.floor(rowId)] = Math.max(rows[Math.floor(rowId)], sDesc.getSize().y);
+
+                    if(sDesc.hasClass('last')) {
+                        rowId++;
+                    }
+                });
+
+                var rowId = 0;
+                $$(el).each(function(sDesc, i){
+                    sDesc.setStyle('padding-bottom', ((rows[Math.floor(rowId)]-parseInt(sDesc.getStyle('padding-top'))-parseInt(sDesc.getStyle('padding-bottom'))-parseInt(sDesc.getStyle('height')))+14)+'px');
+                    if(sDesc.hasClass('last')){
+                        rowId++;
+                    }
+                });
+            }
+
+            function setInvHeight(){
+                $$('.inMask').each(function(el, i) {
+                    el.setStyle('height', 'auto');
+
+                    if(el.getFirst('.iresult'))
+                        h2 = el.getFirst('.iresult').getSize().y;
+                    else
+                        h2 = 0;
+
+                    h = el.getSize().y-h2;
+                    el.setStyle('height', h);
+                });
+
+            }
+
+            var exec = function(){
+                setInvHeight()
+                checkBoxHeight('.artBox');
+            }
+
+            
+                exec.delay(50);
+                exec.delay(150);
+                exec.delay(300);
+                exec.delay(500);
+                exec.delay(700);
+                exec.delay(900);
+                exec.delay(2000);
+            
+
+
+            
+                            if($('billboardArticle')){
+                                    $('contentBody').getFirst('p').grab($('billboardArticle'), 'after');
+                                    $('billboardArticle').show();               
+                                    }
+                                  if($('bigImgContainer')) {
+       
+
+
+        $('bigImgContainer').addEvent('click', function() {
+            var height = 375;
+            if(this.offsetHeight == 375) {
+                height = this.getElement('img').getSize().y;
+            }
+
+            this.morph({
+                'height': height
+            });
+        });
+    }
+
+
+
+            $$('.searchInput').addEvent('focus', function(){
+                if(this.value=='Szukaj'){ this.value=''; }
+                if(this.value=='adres e-mail'){ this.value=''; }
+                if(this.value=='hasło'){ this.value=''; }
+            });
+
+            $('searchInput').addEvent('blur', function(){
+                if(this.value==''){ this.value='Szukaj'; }
+            });
+
+            
+            $('mail_top').addEvent('blur', function(){
+                if(this.value==''){ this.value='adres e-mail'; }
+            });
+
+            $('pass_top').addEvent('blur', function(){
+                if(this.value==''){ this.value='hasło'; }
+            });
+
+            $('loginTopb').addEvent('click', function(){
+                $('logowanieBox').fade('toggle');
+                return false;
+            })
+
+            
+            $('searchForm').addEvent('keydown', function(evt) {
+                if(evt.key=='enter'){
+                    $('searchForm').submit();
+                    return false;
+                }
+            });
+            $$('.searchBtn').addEvent('click', function(evt) {
+                $('searchForm').submit();
+                return false;
+
+            });
+
+
+
+
+            
+            
+                        var formValidatorLoginTop = new Form.Validator.Inline($('topLoginForm'));
+            function logujTop(){
+                if(formValidatorLoginTop.validate()) {
+                    var address = new Element('input[type=hidden]');
+                    address.set('name', 'address');
+                    address.set('value', document.URL);
+                    address.inject($('topLoginForm'));
+
+                    $('topLoginForm').submit();
+                }
+            }
+
+            $('loginBtnTop').addEvent('click', function(e) {
+                logujTop();
+                return false;
+            });
+
+            $('topLoginForm').addEvent('keydown', function(evt) {
+                if(evt.key=='enter'){
+                    logujTop();
+                    return false;
+                }
+            });
+
+//            var showMoreLoginFormFormValidator = new Form.Validator.Inline($('showMoreLoginForm'));
+//
+//            function showMoreLoginFormLogin(){
+//                if(showMoreLoginFormFormValidator.validate()){
+//                    var address = new Element('input[type=hidden]');
+//                    address.set('name', 'address');
+//                    address.set('value', document.URL);
+//                    address.inject($('showMoreLoginForm'));
+//
+//                    $('showMoreLoginForm').submit();
+//                }
+//            }
+
+//            $('showMoreLoginButton').addEvent('click', function(e){
+//                showMoreLoginFormLogin();
+//                return false;
+//            });
+
+//            $('showMoreLoginForm').addEvent('keydown', function(evt){
+//                if(evt.key=='enter'){
+//                    showMoreLoginFormLogin();
+//                    return false;
+//                }
+//            });
+
+            
+             $('showMoreButton').addEvent('click', function() {
+
+                var right = '0px';
+
+                if($('showMoreLoginBox').getStyle('right') == '-344px') {
+                    right = '0px';
+                } else {
+                    right = '-344px';
+                }
+
+                $('showMoreLoginBox').morph({
+                'right': right
+                });
+
+                return false;
+            });
+
+            
+            if($('newszak1')){
+                $('newszak1').addEvent('click', function(){
+                    this.addClass('selected');
+                    $('newszak2').removeClass('selected');
+                    $$('.release_2').hide();
+                    $$('.release_1').show();
+                    return false
+                });
+
+                $('newszak2').addEvent('click', function(){
+                    this.addClass('selected');
+                    $('newszak1').removeClass('selected');
+                    $$('.release_1').hide();
+                    $$('.release_2').show();
+                    return false
+                });
+            }
+
+            });
+        </script>
+
+		<script src="/jvs/percent-viewed.js" type="text/javascript"></script>
+
+
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-21394414-5', 'auto');
+			ga('require', 'displayfeatures');
+			ga('send', 'pageview');
+
+
+					/**
+		 * Manual callback handler
+		 * false == no scroll to track from previous page
+		 */
+		var callbackData = bamPercentPageViewed.callback();
+		if(callbackData != false)
+		{
+			console.group('Callback');
+			console.log(callbackData);
+			console.groupEnd();
+			ga('send', 'event', 'Percent of Page Viewed', callbackData.documentLocation, callbackData.scrollPercent + '', undefined, true); //or send as a custom dimension before the pageview
+		}
+
+		/**
+		 * Use the bamPercentPageViewed plugin
+		 */
+		(function() {
+			var o=onload, n=function(){
+				bamPercentPageViewed.init({
+					trackDelay : '2000',
+					percentInterval : '10'
+				});
+		    }
+		    if (typeof o!='function'){onload=n} else { onload=function(){ n();o();}}
+		})(window);
+
+
+	</script>
+
+
+		</script>
+
+
+ 
+
+ 
+
+        <script type="text/javascript" src="https://lib.wtg-ads.com/lib.min.js" async></script>
+
+
+<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1580968395454752');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1580968395454752&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Facebook Pixel Code -->
+
+
+    </head>
+    <body>
+
+        <section class="adv-bg">
+            <div class="adv-content">
+                <a href="https://siec.wpolityce.pl/oferta?utm_source=wsieci&utm_campaign=siecprzyjaciol50proc2021&utm_medium=header">
+                    <img class="adv-img-full" src="/images/adv_assets/top-adv-wsieci.png" target="_blank" />
+                </a>
+            </div>
+        </section>
+        <div id="headerBg">
+            <div id="header">
+                <div id="hleft">
+                    <div id="socBox">
+                        <a class="socIco fb" target="_blank" title="facebook" href="https://www.facebook.com/wsieciprawdy"></a>
+                        <a class="socIco tw" target="_blank" title="twitter" href="https://twitter.com/Tygodnik_Sieci"></a>
+                        
+                        <a class="socIco yt" target="_blank" title="Youtube" href="https://www.youtube.com/user/tygodnikmlodejpolski?feature=watch"></a>
+                        
+                        <a class="socIco xy" target="_blank" title="RSS" href="/rss"></a>
+                    </div>
+                    
+                </div>
+                <a  id="logo" href="/" title=" Tygodnik Sieci"><img src="/images/logoNew.jpg" alt=" Tygodnik Sieci" /></a>
+                <div id="searchBox">
+                    <form method="get" action="/siecisearch.html" id="searchForm">
+                        <input id="searchInput" class="searchInput" type="text" value="Szukaj" name="search" />
+                        <a class="searchBtn" title="szukaj" href="#">&nbsp;</a>
+                    </form>
+                    <div class="clear"></div>
+                    
+                                            <a class="last" title="Rejestracja do serwisu" rel="nofollow" href="/rejestracja-logowanie.html">Rejestracja</a>
+                        <a id="loginTopb" title="Logowanie do serwisu" rel="nofollow" href="#">Zaloguj</a>
+                                        
+
+
+                </div>
+
+                
+                                    <div id="logowanieBox">
+                        <form id="topLoginForm" action="pClientLogin" method="post">
+                            <input id="mail_top" type="text" name="email" value="adres e-mail" class="required validate-email searchInput" />
+                            <input id="pass_top" type="password" name="password" value="hasło" class="required searchInput" />
+
+                            <div class="clear loHeight"></div>
+                            <a class="forgotPass" href="/zapomniane-haslo.html" title="nie pamiętam hasła">nie pamiętam hasła</a>
+                            <a title="zaloguj się" href="#" class="loginBtn right" id="loginBtnTop"></a>
+                        </form>
+                    </div>
+                
+            </div>
+        </div>
+
+
+
+        <div id="wrapper">
+                <div class="out-bill_top">
+                <div id="wsieci/art_bill_top" class="w2g"></div>
+            </div>
+    
+                            <div id="right" >
+                    <div class="quizLink">
+                        <a href="https://siec.wpolityce.pl/oferta?utm_source=wsieci&utm_campaign=siecprzyjaciol50proc2021&utm_medium=minirectangle"
+                           target="self" title="Sieć Przyjaciół">
+                            <img src="/images/adv_assets/zamow-eprenumerate-50proc.jpg" alt="Zamów e-prenumeratę sieci i oszczędź 50%"/>
+                        </a>
+                    </div>
+
+                    <div id="newspaperBox">
+                        <a id="newszak1" class="selected" href="#" title="Sieci">Sieci</a>
+                        <a id="newszak2" href="#" title="wSieci Historii">wSieci Historii</a>
+                        <div id="newspapercontent">
+                            <a  href="/aktualne-wydanie-sieci.html" title="Zobacz spis treści"><img class="release_1" src="/pMagazineReleaseGetCover,2451?type=medium" alt="Numer 18" /></a>
+                            <a  href="/aktualne-wydanie-sieci-historii.html" title="Zobacz spis treści"><img class="release_2" src="/pMagazineReleaseGetCover,2465?type=medium" alt="Numer 5-6" /></a>
+                        </div>
+                        <a class="newspbtn1 release_1" href="/e-wydanie.html" title="kup e-wydanie" ></a>
+                        <a class="newspbtn1 release_2" href="/e-wydanie-sieci-historii.html" title="kup e-wydanie" ></a>
+                        <a class="newspbtn2 btnRed h101" href="/prenumerata.html" title="prenumerata" >Prenumerata</a>
+                        <div class="clear"></div>
+                    </div>
+
+                    <div class="rigContent">
+                        <div class="box">
+                            <div class="release_1">
+                                
+                                <div class="boxlink"><a  href="/numer-18-pmagazine-2451.html" title="Zobacz spis treści">Zobacz spis treści</a></div>
+                            </div>
+                            <div class="release_2">
+                                
+                                <div class="boxlink"><a  href="/numer-5-6-pmagazine-2465.html" title="Zobacz spis treści">Zobacz spis treści</a></div>
+                            </div>
+                        </div>
+						<div>
+						<a href="https://www.wsieciprawdy.pl/prenumerata.html?utm_source=wsieciprawdy&utm_campaign=siecipapier&utm_medium=minirectangle" target="self"><img src="/upload/baner/Marketing-Siec-Przyjaciol-Prenumerata.jpg" alt="Sieć Przyjaciół Prenumerata"></a>
+                           </div>
+                                                    <div class="box">
+                                <p class="podpat">Plebiscyty</p>
+                                                                <h2><a href="/czlowiek-wolnosci-2020-pproject-23.html" title="Człowiek Wolności 2020">Człowiek Wolności 2020</a></h2>
+                                                                <p>
+                                <a href="/czlowiek-wolnosci-2020-pproject-23.html" title="Człowiek Wolności 2020">
+                                    <img src='/prod/compimg/large/czlowiek_wolnosci_2020_23.jpg'/>
+                                </a>
+                                </p>
+                                                                <div>&nbsp;</div>
+                                                                <div class="boxlink"><a  href="/plebiscyty.html" title="Inne plebiscyty">Inne plebiscyty</a></div>
+                            </div>
+                        
+                        
+                        <div class="box">
+                            <p class="podpat">Pod patronatem</p>
+                            <h2><a href="/14-edycja-plebiscytu-wydarzenie-historyczne-roku-2020-pnews-4701.html" title="14. edycja Plebiscytu „Wydarzenie Historyczne Roku 2020” ">14. edycja Plebiscytu „Wydarzenie Historyczne Roku 2020” </a></h2>
+                            <p><p><strong>Muzeum Historii Polski, we wsp&oacute;łpracy z&nbsp;portalem historia.org.pl, po raz czternasty ogłasza Plebiscyt &bdquo;Wydarzenie Historyczne Roku&rdquo;, kt&oacute;rego celem jest uhonorowanie organizator&oacute;w, tw&oacute;rc&oacute;w oraz inicjator&oacute;w najciekawszych przedsięwzięć historycznych w&nbsp;minionym roku. </strong></p></p>
+                            <div class="boxlink"><a  href="/patronat.html" title="Inne wydarzenia">Inne wydarzenia</a></div>
+                        </div>
+
+                                                <a class="twitter-timeline" height="280" href="https://twitter.com/Tygodnik_Sieci" data-widget-id="331804277477613568">Tweets</a>
+                        <script>!function(d,s,id){ var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){ js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+
+                        <div class="box boxFacebook">
+                        <div id="facebook">
+                            <div id="fb-root"></div>
+<script type="text/javascript" language="javaScript">
+  (function(d, s, id) {
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/pl_PL/all.js#xfbml=1&appId=1578979889067374";
+     fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+                            <div class="fb-like-box" data-href="https://www.facebook.com/wsieciprawdy" data-width="188" data-height="285" data-show-faces="true" data-stream="false" data-show-border="false" data-header="true"></div>
+
+                        </div>
+                            </div>
+
+                        <div class="box">
+                            <h2>Galeria</h2>
+                            <a class="imglink" href="/galeria-pgalery-1p20.html" title="Galeria"><img src="/prod/galimage/minRight/_32.jpg" alt="Galeria" /></a>
+                            <div class="boxlink"> <a  href="/galeria-pgalery-1.html" title="Galeria">Zobacz więcej grafik</a></div>
+
+                        </div>
+                        <div class="box">
+                            <h2>Filmy</h2>
+                            <a class="imglink" target="_blank" href="https://www.youtube.com/user/tygodnikmlodejpolski/videos?flow=grid&view=0" title="Filmy"><img src="images/ytimg.jpg" alt="Filmy" /></a>
+                            <div class="boxlink"><a  href="https://www.youtube.com/user/tygodnikmlodejpolski/videos?flow=grid&view=0" title="Nasze materiały na Youtube" target="_blank"><img class='ytico' src="images/ytico.png" /></a><a  href="https://www.youtube.com/user/tygodnikmlodejpolski/videos?flow=grid&view=0" title="Nasze materiały na Youtube" target="_blank">Nasze materiały</a></div>
+                        </div>
+                        
+                        <div class="box wspolpr">
+                            <p class="podpat">Współpracujemy z</p>
+                            <ul style="" class="adresy-url">
+                                <li><a class="v4" target="_blank" href="http://www.wpolityce.pl">wpolityce.pl</a></li>
+                                <li><a class="v4" target="_blank" href="http://www.wPolsce.pl">wPolsce.pl</a></li>
+                                <li><a class="v4" target="_blank" href="http://www.wgospodarce.pl">wgospodarce.pl</a></li>
+                                <li><a class="v4" target="_blank" href="http://www.stefczyk.info">stefczyk.info</a></li>
+                                <li><a class="v4" target="_blank" href="http://www.stefczyk.tv">stefczyk.tv</a></li>
+                                <li><a class="v4" target="_blank" href="http://www.gb.pl">gb.pl</a></li>
+                                <li><a class="v4" target="_blank" href="http://www.tygodnikpodlaski.pl">tygodnikpodlaski.pl</a></li>
+                                <li><a class="v4" target="_blank" href="http://www.kochampodlasie.pl/">kochampodlasie.pl</a></li>
+                                <li><a class="v4 colorOrange" target="_blank" href="http://www.wsklepiku.pl/">wsklepiku.pl</a></li>
+                            </ul>
+                        </div>
+                        <!--
+                        <div class="box white">
+                        <a href="/w-jak-wolnosc.html" title="W jak Wolność" id="wjw">W jak Wolność</a>
+                        </div>
+                        -->
+                                            </div>
+
+                                                                
+                </div>
+            
+            
+            
+
+
+
+            <div id="content" >
+
+            <div class="out-sky_left">
+            <div id="wsieci/art_sky_lewa" class="w2g"></div>
+        </div>
+    
+
+                                          
+                
+                                <h1> „Sieci”: IPN, czyli element infrastruktury krytycznej</h1>
+                
+            
+            
+
+
+            <div class="infobox">
+    <div class="infoEditor left">
+                    opublikowano:  7 kwietnia 2021
+                    </div>
+    <div class="socialMediaBar right">
+    <ul>
+        <li class="facebook">
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/pl_PL/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+			<div class="fb-share-button" data-href="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=facebook&utm_medium=button&utm_campaign=wSieci-social-buttons" data-layout="button_count"></div>
+        </li>
+        <li class="gplus">
+            <div class="g-plusone" data-size="medium" data-href="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=google-plus&utm_medium=button&utm_campaign=wSieci-social-buttons"></div>
+            <script type="text/javascript">
+            window.___gcfg = { lang: 'pl' };
+
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+            </script>
+        </li>
+        <li class="twitter">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-lang="pl" data-url="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=twitter&utm_medium=button&utm_campaign=wSieci-social-buttons">Tweetnij</a>
+           <script>
+                !function(d,s,id){ 
+                    var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                    if(!d.getElementById(id)){
+                        js=d.createElement(s);
+                        js.id=id;
+                        js.src=p+'://platform.twitter.com/widgets.js';
+                        fjs.parentNode.insertBefore(js,fjs);
+                    }
+                }(document, 'script', 'twitter-wjs');</script>
+        </li>
+        <li class="wykop">
+            <script language="javascript">
+            // wykopywarka wersja kompaktowa (70x20)
+            var wykop_url='http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=wykop&utm_medium=button&utm_campaign=wSieci-social-buttons';	// Link do strony
+            var wykop_title=encodeURIComponent(document.title);	// Tytuł strony (pobierany z <title>)
+            var wykop_desc=encodeURIComponent('Przykładowy opis');
+            var widget_bg='FFFFFF';
+            var widget_type='compact';
+            var widget_bold=true;	// pogrubienie napisu Wykop - domyślnie true
+            var widget_url='http://www.wykop.pl/dataprovider/diggerwidget/?url='+encodeURIComponent(wykop_url)+'&title='+(wykop_title)+'&desc='+(wykop_desc)+'&bg='+(widget_bg)+'&type='+(widget_type)+'&bold='+(widget_bold);
+            document.write('<div><iframe src="'+widget_url+'" style="border:none;width:70px;height:20px;overflow:hidden;margin:0;padding:0;" frameborder="0" border="0"></iframe></div>');
+        </script>
+        </li>
+      <li class="nk">
+            <script type="text/javascript">
+            var nk_wg = ({
+                content: "http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=nk&utm_medium=button&utm_campaign=wSieci-social-buttons",
+                host: "http://nk.pl/",
+                image: "http://www.wsieciprawdy.pl/images/nk.png"
+            });
+            </script>
+            <script type="text/javascript" src="http://0.s-nk.pl/script/sledzik/widgets/sledzik_widget_shout"></script>
+        </li> 
+    <div class="clear"></div>
+</div>
+
+
+    <div class="clear loHeight"></div>
+</div>
+
+
+
+        <div id="bigImgContainer" class="img imgContent ">
+            <img src="/prod/news/large/sieci_ipn_czyli_element_infrastruktury_krytycznej_4715.jpg" alt=" „Sieci”: IPN, czyli element infrastruktury krytycznej" title=" „Sieci”: IPN, czyli element infrastruktury krytycznej" />
+                    </div>
+        
+
+        
+
+
+
+<div id="contentBody">
+        <p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL"><em><strong>Zadania Instytutu Pamięci Narodowej zawsze wykraczały poza sferę klasycznej działalności naukowej. Opisanie czas&oacute;w komunizmu z&nbsp;mechanizmami działania systemu, kt&oacute;re uznano za istotne przy tworzeniu Ustawy o&nbsp;IPN, wcale nie okazało się najważniejsze. Niezwykle ważne stało się odtworzenie los&oacute;w wielu mniej znaczących ludzi Solidarności, a&nbsp;także tych, kt&oacute;rzy walczyli zbrojnie z&nbsp;komunistami w&nbsp;początkach PRL </strong></em></span></span><span style="font-size: small;"><span lang="pl-PL"><strong>&ndash; czytamy w&nbsp;artykule Piotra Gontarczyka na łamach nowego wydania tygodnika &bdquo;Sieci&rdquo;.</strong></span></span></p>
+    <p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL">Autor podkreśla ogromne znaczenie państwowej instytucji, kt&oacute;ra dba o&nbsp;budowanie narodowej wsp&oacute;lnoty. Czytamy także, że poprzez narzucanie interpretacji przeszłości, obce państwa mogą negatywnie oddziaływać na Polskę. </span></span></p>
+<p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL"><em>Właściwa infrastruktura energetyczna, jednostki do walki z&nbsp;atakiem cyfrowym czy zaplecze techniczno-medyczne na wypadek pandemii są dziś oczywistymi elementami bezpieczeństwa, tak jak regularna armia i&nbsp;służby bezpieczeństwa państwa. Nie można zapominać, że przestrzenią walki o&nbsp;r&oacute;żne interesy, zwłaszcza ostatnio, stała się także historia. </em></span></span><span style="font-size: small;"><span lang="pl-PL">Piotr Gontarczyk wspomina, że Rosja pr&oacute;buje obecnie intensywnie wybielać politykę Związku Sowieckiego w&nbsp;latach 1939-1945. </span></span><span style="font-size: small;"><span lang="pl-PL"><em>Do nowych hit&oacute;w rosyjskiej propagandy przejdzie ostatnia huczna wystawa z&nbsp;okazji podpisania traktatu ryskiego kończącego w&nbsp;1921 r. wojnę polsko-bolszewicką. Prezydent Putin określił Polskę jako agresora, a&nbsp;sam pok&oacute;j jako niesprawiedliwy, bo przyznający Warszawie część ziem białoruskich i&nbsp;ukraińskich, kt&oacute;re ZSRS odebrał w&nbsp;1939 r. (a więc z&nbsp;historycznego punktu widzenia słusznie). Putin wspomniał też o&nbsp;tragicznym losach rosyjskich jeńc&oacute;w, kt&oacute;rzy mieli &bdquo;zginąć&rdquo; w&nbsp;polskich obozach w&nbsp;czasie wojny. Czyli kłamliwa propaganda anty-Katynia w&nbsp;pełnej krasie.</em></span></span></p>
+<p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL">Piotr Gontarczyk stwierdza także, że obserwujemy&hellip; </span></span><span style="font-size: small;"><span lang="pl-PL"><em>przedstawianie Polski jako kraju antysemickiego i&nbsp;wsp&oacute;łodpowiedzialnego za Holokaust. [&hellip;] Dziś wiele środowisk u&nbsp;naszego zachodniego sąsiada twierdzi, że Niemcy rozliczyły się ze zbrodniczą historią (co jest wierutnym kłamstwem) i&nbsp;teraz czeka na to, że inni też się rozliczą. Tak realizuje się właśnie cele strategiczne. Bo łatwiej będzie uzyskać og&oacute;lne przyzwolenie na hegemonię w&nbsp;Europie przez kraj rozliczony z&nbsp;Holokaustu, z&nbsp;kt&oacute;rego na dodatek nie rozliczyli się inni</em></span></span><span style="font-size: small;"><span lang="pl-PL">.</span></span></p>
+<p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL">Historyk zaznacza, że nasz kraj nie powinien pozostać obojętny na mechanizmy krzywdzące historię polskiego narodu. </span></span></p>
+<p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL"><em>Na działania Rosji czy Niemiec, na &bdquo;polskie obozy koncentracyjne&rdquo;, na inne szkalujące wypowiedzi światowych medi&oacute;w, także oszust&oacute;w udających naukowc&oacute;w w&nbsp;dziedzinie badań nad Holokaustem, Polska musi dawać odpowiedź. Tak jak szkolimy żołnierzy i&nbsp;kupujemy samoloty, budujemy gazoporty, trzeba zadbać o&nbsp;wizerunek Polski w&nbsp;świecie i&nbsp;świadomość historyczną własnych obywateli. Inaczej za kilka lat ockniemy się w&nbsp;Polsce, w&nbsp;kt&oacute;rej młode pokolenie będzie prezentowało wiedzę z&nbsp;serialu &bdquo;Nasze matki, nasi ojcowie&rdquo; i&nbsp;będzie się wzruszało przy artykułach Onetu o&nbsp;smutnych świętach niemieckich żołnierzy w&nbsp;okupowanej Polsce. Jeśli pozwolimy na takie medialne prowokacje bez odpowiedzi, za chwilę zrobią z&nbsp;nami, co zechcą </em></span></span><span style="font-size: small;"><span lang="pl-PL">- czytamy</span></span><span style="font-size: small;"><span lang="pl-PL"><em>.</em></span></span></p>
+<p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL"><strong>Więcej o&nbsp;wsp&oacute;łcześnie realizowanej polityce historycznej w&nbsp;najnowszym numerze &bdquo;Sieci&rdquo; dostępnym w&nbsp;sprzedaży od 6 kwietnia br., także w&nbsp;formie e-wydania na </strong></span></span><span style="color: #0563c1;"><span style="text-decoration: underline;"><a href="https://www.wsieciprawdy.pl/aktualne-wydanie-sieci.html"><span style="font-size: small;"><span lang="pl-PL"><strong>https://www.wsieciprawdy.pl/aktualne-wydanie-sieci.html</strong></span></span></a></span></span><span style="font-size: small;"><span lang="pl-PL"><strong>.</strong></span></span></p>
+<p class="western" lang="en-GB" align="justify"><span style="font-size: small;"><span lang="pl-PL"><strong>Zapraszamy też do subskrypcji tygodnika w&nbsp;Sieci Przyjaci&oacute;ł &ndash; </strong></span></span><span style="color: #0563c1;"><span style="text-decoration: underline;"><a href="http://www.siecprzyjaciol.pl/"><span style="font-size: small;"><span lang="pl-PL"><strong>www.siecprzyjaciol.pl</strong></span></span></a></span></span><span style="font-size: small;"><span lang="pl-PL"><strong> i&nbsp;oglądania ciekawych audycji telewizji </strong></span></span><span style="color: #0563c1;"><span style="text-decoration: underline;"><a href="http://www.wPolsce.pl/"><span style="font-size: small;"><span lang="pl-PL"><strong>wPolsce.pl</strong></span></span></a></span></span><span style="font-size: small;"><span lang="pl-PL"><strong>. </strong></span></span></p>
+
+            <div class="relatedNews">
+        Zobacz także: <a href="/sieci-dla-dobra-ipn-zdecydowalem-ze-trzeba-to-przeciac-pnews-4678.html" title="&quot;Sieci&quot;: Dla dobra IPN zdecydowałem, że trzeba to przeciąć">"Sieci": Dla dobra IPN zdecydowałem, że trzeba to przeciąć</a>
+        </div>
+        <div class="clear loHeight"></div>
+</div>
+
+
+
+    <div class="socialMediaBar right">
+    <ul>
+        <li class="facebook">
+            <div id="fb-root"></div>
+            <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/pl_PL/all.js#xfbml=1";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+			<div class="fb-share-button" data-href="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=facebook&utm_medium=button&utm_campaign=wSieci-social-buttons" data-layout="button_count"></div>
+        </li>
+        <li class="gplus">
+            <div class="g-plusone" data-size="medium" data-href="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=google-plus&utm_medium=button&utm_campaign=wSieci-social-buttons"></div>
+            <script type="text/javascript">
+            window.___gcfg = { lang: 'pl' };
+
+            (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+            })();
+            </script>
+        </li>
+        <li class="twitter">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-lang="pl" data-url="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=twitter&utm_medium=button&utm_campaign=wSieci-social-buttons">Tweetnij</a>
+           <script>
+                !function(d,s,id){ 
+                    var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';
+                    if(!d.getElementById(id)){
+                        js=d.createElement(s);
+                        js.id=id;
+                        js.src=p+'://platform.twitter.com/widgets.js';
+                        fjs.parentNode.insertBefore(js,fjs);
+                    }
+                }(document, 'script', 'twitter-wjs');</script>
+        </li>
+        <li class="wykop">
+            <script language="javascript">
+            // wykopywarka wersja kompaktowa (70x20)
+            var wykop_url='http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=wykop&utm_medium=button&utm_campaign=wSieci-social-buttons';	// Link do strony
+            var wykop_title=encodeURIComponent(document.title);	// Tytuł strony (pobierany z <title>)
+            var wykop_desc=encodeURIComponent('Przykładowy opis');
+            var widget_bg='FFFFFF';
+            var widget_type='compact';
+            var widget_bold=true;	// pogrubienie napisu Wykop - domyślnie true
+            var widget_url='http://www.wykop.pl/dataprovider/diggerwidget/?url='+encodeURIComponent(wykop_url)+'&title='+(wykop_title)+'&desc='+(wykop_desc)+'&bg='+(widget_bg)+'&type='+(widget_type)+'&bold='+(widget_bold);
+            document.write('<div><iframe src="'+widget_url+'" style="border:none;width:70px;height:20px;overflow:hidden;margin:0;padding:0;" frameborder="0" border="0"></iframe></div>');
+        </script>
+        </li>
+      <li class="nk">
+            <script type="text/javascript">
+            var nk_wg = ({
+                content: "http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html?utm_source=nk&utm_medium=button&utm_campaign=wSieci-social-buttons",
+                host: "http://nk.pl/",
+                image: "http://www.wsieciprawdy.pl/images/nk.png"
+            });
+            </script>
+            <script type="text/javascript" src="http://0.s-nk.pl/script/sledzik/widgets/sledzik_widget_shout"></script>
+        </li> 
+    <div class="clear"></div>
+</div>
+
+
+
+<div class="out-rec_group">
+    <div class="out-rec_1">
+        <div id="wsieci/art_rec_1" class="w2g"></div>
+    </div>
+    <div class="out-rec_2">
+        <div id="wsieci/art_rec_2" class="w2g"></div>
+    </div>
+</div>
+
+
+<div class="clear"></div>
+<br><br>
+
+
+<div class="fb-comments" data-href="http://www.wsieciprawdy.pl/sieci-ipn-czyli-element-infrastruktury-krytycznej-pnews-4715.html" data-width="690" data-numposts="10"></div>
+
+
+
+  <link rel='stylesheet prefetch' href='css/bootstrap.min.css'>
+
+  <div class="modal fade" id="overlay">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Treść niniejszej publikacji jest przedmiotem postępowania o ochornę dóbr osobistych przed Sądem Okręgowym w Poznaniu (sygn. akt XII C 1366/ 17), z uwagi na to, że sformuowania, sugestię i informacje w niej zawarte mogą naruszać dobra osobiste Przemysława Marchlewicza</p>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src='https://code.jquery.com/jquery-1.12.1.min.js'></script>
+<script src='jvs/bootstrap.min.js'></script>
+
+
+    <script  src="jvs/index.js"></script>
+
+            
+                        
+			
+
+                    </div>
+
+        <div class="clear">&nbsp;</div>
+
+            </div>
+
+
+
+    <div id="footer">
+        <div id="bottomMenu">
+            <ul>
+                                    <li ><a style="color:#000;" href="/o-tygodniku.html" title="Sieci">Sieci</a></li>
+                                    <li ><a style="color:#000;" href="/sieci-historii.html" title="wSieci Historii">wSieci Historii</a></li>
+                                    <li ><a style="color:#000;" href="/wsiecifinansow.html" title="wSieci Finansów">wSieci Finansów</a></li>
+                                    <li ><a style="color:#003399;" href="/wsieci-funduszy-europejskich.html" title="wSieci Funduszy Europejskich">wSieci Funduszy Europejskich</a></li>
+                                    <li ><a style="color:#000;" href="/archiwum.html" title="Archiwum">Archiwum</a></li>
+                                    <li ><a style="color:#000;" href="/prenumerata.html" title="Wybierz prenumeratę">Wybierz prenumeratę</a></li>
+                                    <li ><a style="color:#000;" href="/reklama.html" title="Reklama">Reklama</a></li>
+                                    <li ><a style="color:#000;" href="/dla-mediow.html" title="Dla mediów">Dla mediów</a></li>
+                                    <li class="last"><a style="color:#000;" href="/kontakt.html" title="Kontakt">Kontakt</a></li>
+                            </ul>
+            <a  id="logos" href="/" title=" Tygodnik Sieci"><img src="/images/logoS.gif" alt=" Tygodnik Sieci" /></a>
+        </div>
+        <div id="bottomLinks">
+            <ul>
+			    <li><a title="Dostawa i płatność" href="/dostawa-i-platnosc.html">Dostawa i płatność</a></li>
+				<li><a title="Konkursy" href="/konkursy.html">Konkursy</a></li>
+                <li><a title="Regulamin" href="/regulamin.html">Regulamin</a></li>
+                <li><a title="Polityka prywatności" href="/polityka-prywatnosci.html">Polityka prywatności</a></li>
+                <li><a target="_blank" title="eGazety.pl" href="http://www.egazety.pl/fratria/e-wydanie-w-sieci.html">eGazety.pl</a></li>
+                <li><a target="_blank" title="e-kiosk.pl" href="http://www.e-kiosk.pl/index.php?page=titleissues&id_title=6965">e-kiosk.pl</a></li>
+                <li><a target="_blank" title="nexto.pl" href="http://www.nexto.pl/e-prasa/sieci_p35638.xml?archival">nexto.pl</a></li>
+                <li class="last"><a target="_blank" title="eprasa.pl" href="http://eprasa.pl/search?qu=w+sieci">eprasa.pl</a></li>
+            </ul>
+        </div>
+    </div>
+
+        <div id="wsieci/w2g-pushad" class="w2g"></div>
+        <div id="wsieci/interstitial" class="w2g"></div>
+
+        <div id="showMoreLoginBox">
+            <a id="showMoreButton" href="#" title="Dowiedz się więcej"></a>
+            <div>
+                                <h2>Zaloguj się, by uzyskać dostęp do unikatowych treści oraz cotygodniowego newslettera z informacjami na temat najnowszego wydania</h2>
+
+                
+                <a class="textLink" href="/rejestracja-logowanie.html" rel="nofollow" title="Zarejestruj się">Zarejestruj się</a> |
+                <a class="textLink" href="/zapomniane-haslo.html" rel="nofollow" title="Zapomniałem hasła">Zapomniałem hasła</a>
+                <a id="showMoreLoginButton" title="Zaloguj się" rel="nofollow" href="/rejestracja-logowanie.html" class="loginBtn right"></a>
+                                <div class="clear"></div>
+            </div>
+        </div>
+
+        <!-- region Quantcast Tag -->
+        <script type="text/javascript">
+          var _qevents = _qevents || [];
+
+          (function() {
+            var elem = document.createElement('script');
+            elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+            elem.async = true;
+            elem.type = "text/javascript";
+            var scpt = document.getElementsByTagName('script')[0];
+            scpt.parentNode.insertBefore(elem, scpt);
+          })();
+
+          _qevents.push({
+            qacct:"p-DJ0mbtRcRwRwg",
+            uid:"__INSERT_EMAIL_HERE__"
+          });
+        </script>
+
+        <noscript>
+            <div style="display:none;">
+                <img src="//pixel.quantserve.com/pixel/p-DJ0mbtRcRwRwg.gif" border="0" height="1" width="1" alt="Quantcast"/>
+            </div>
+        </noscript>
+        <!-- endregion End Quantcast tag -->
+
+        <script type="text/javascript" src="/jvs/wtg_sticky_fix.js?v20210202"></script>
+        <!-- region testing ads positions -->
+
+
+        <!-- endregion -->
+    </body>
+</html>

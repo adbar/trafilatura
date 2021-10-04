@@ -1,0 +1,3051 @@
+<!DOCTYPE html>
+<html id="XF" lang="en-US" dir="LTR"
+	data-app="public"
+	data-template="thread_view"
+	data-container-key="node-22"
+	data-content-key="thread-3976"
+	data-logged-in="false"
+	data-cookie-prefix="xf_"
+	data-csrf="1632308311,e1899485f9015a3d2ef6419c1780fe30"
+	class="has-no-js template-thread_view"
+	>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://villagersandheroes.com/wp-content/themes/villagersandheroes/js/clamp.js"></script>
+	
+	<script>
+	var isUS1 = false;
+	var isUS2 = false;
+	var isUS3 = false;
+	var isEU1 = false;
+	var isEU2 = false;
+	</script>
+	
+	
+	
+	
+	
+	
+	
+	<script>
+		var mobileCutoffWidth = 1220;
+		
+		$(document).on("mousemove", function(e){ 
+    var position = e.clientX - 970;
+    var opacity = Math.min(200/e.clientY, 1);
+    
+    $(".header-border-bottom").css("left",position+"px");  
+    $(".header-border-bottom").css("opacity",opacity);
+	});
+		
+		$( document ).ready(function() {
+    FitContentToHeader();
+    FrontpageAnnouncements();
+			
+			});
+
+
+$(window).resize(function() {
+    FitContentToHeader();
+});
+		
+		$(window).scroll(function() {
+    
+    if(window.innerWidth > mobileCutoffWidth){
+    
+        if($(window).scrollTop() != 0 ){
+           $(".site-subheader").css("top", (-$(".site-subheader").outerHeight(true))+82+"px");
+            }
+        else{
+            $(".site-subheader").css("top", "82px");
+        }
+    }
+    else{
+        $(".site-subheader").css("top", "82px");
+    }
+    
+});
+function FitContentToHeader(){
+
+    if(window.innerWidth > mobileCutoffWidth){
+        var headerHeight = Math.round(82 + $(".site-subheader").innerHeight() + 20);
+        $(".p-body").css("margin-top", headerHeight + "px");
+    }
+    else{
+        $(".p-body").css("margin-top", "102px");
+    }
+}
+
+function ToggleMenu(id){
+    if(window.innerWidth > mobileCutoffWidth){
+        $("body").css("overflow", "auto");
+    }
+    else{
+        $("body").css("overflow", "hidden");
+    }
+    
+    //Show the menu as a whole
+    $(".site-subheader").addClass("opened");
+    $(".icon-menu").addClass("opened");
+    
+    //Highlight matching submenu
+    $(".subheader-menu-container").removeClass("active");
+    $(".subheader-menu-container").eq(id).addClass("active");
+    
+    //Highlight matching main menu
+    $(".header-menu-item").removeClass("active");
+    $(".header-menu-item").eq(id).addClass("active");
+}
+
+function ToggleMobileMenu(){
+    //Close menu
+    if($(".site-subheader").hasClass("opened")){
+        
+        $(".site-subheader").removeClass("opened");
+        $(".icon-menu").removeClass("opened");
+        $("body").css("overflow", "auto");
+    }
+    
+    //Open menu
+    else{
+        $(".site-subheader").addClass("opened");
+        $(".icon-menu").addClass("opened");
+        if(window.innerWidth > mobileCutoffWidth){
+            $("body").css("overflow", "auto");
+        }   
+        else{
+            $("body").css("overflow", "hidden");
+        }
+    }
+}
+
+function DisableAllMenus(){
+    if(window.innerWidth > mobileCutoffWidth){
+        $(".subheader-menu-container").removeClass("active");
+        $(".header-menu-item").removeClass("active");
+    }
+}
+
+function HideMenu(){
+    if(window.innerWidth > mobileCutoffWidth){
+    $(".site-subheader").removeClass("opened");
+        $(".icon-menu").removeClass("opened");
+    
+    $("body").css("overflow", "auto");
+    }
+}
+
+function GoHome(){
+    window.location.href = '/';
+}
+
+		var currentAnnouncementID = 0;
+
+var announcementTitleList = [];
+var announcementTextList = [];
+
+function FrontpageAnnouncements(){
+    
+    var jsonPath = 'https://moconnect.net/VH/live/globalMessages';
+	var isDE = ($(".p-breadcrumbs a[href*=\"/forums/categories/deutsch.23/\"]").length > 0 || $("h1.p-title-value").html() == "Deutsch");
+
+    $.getJSON(jsonPath, function(data) {
+    })
+        .done(function(data) {
+
+            //Go through all announcements that are allowed on live and push their titles and text to the respective arrays
+            $.each(data.messages, function() {
+                if(this.filterServerId != "test" && ((isDE && this.filterLanguage == "deu") || (!isDE && this.filterLanguage != "deu"))){
+					
+					if(this.filterServerId == null){
+						announcementTitleList.push(this.title);
+						announcementTextList.push(this.body);
+					}
+					else if((this.filterServerId.includes("US1") && isUS1)
+					|| (this.filterServerId.includes("US2") && isUS2)
+					|| (this.filterServerId.includes("US3") && isUS3)
+					|| (this.filterServerId.includes("EU1") && isEU1)
+					|| (this.filterServerId.includes("EU2") && isEU2)){
+						announcementTitleList.push(this.title);
+						announcementTextList.push(this.body);
+					}
+
+                }
+            });
+        
+            //Check if there are any announcements present at all
+            if(announcementTitleList.length > 0){
+                //If there's more than 1 announcement, set the announcements to loop through
+                if(announcementTitleList.length > 1){
+                    $(".news-snippet-progressbar").css("display", "block");
+                    $(".news-snippet-progressbar-mobile").css("display", "block");
+                    
+                    UpdateFrontpageAnnouncement(true);
+                }
+                //Otherwise, just show the one announcement with no looping
+                else{
+                    $(".news-snippet-content").html("<b>"+announcementTitleList[0]+"</b><br>"+announcementTextList[0]);
+                    $(".news-snippet-content-mobile").html("<b>"+announcementTitleList[0]+"</b><br>"+announcementTextList[0]);
+                }
+            }
+        
+            //If there is nothing in the array, there are no announcements currently. Update text to say this.
+            else{
+                $(".news-snippet-content").html("<b>No Announcements</b><br>There are no game announcements at the moment.");
+                $(".news-snippet-content-mobile").html("<b>No Announcements</b><br>There are no game announcements at the moment.");
+            }
+        })
+    
+        //If the announcements fail to load entirely, say there's no announcements.
+        .fail(function(jqxhr) {
+                $(".news-snippet-content").html("<b>No Announcements</b><br>There are no game announcements at the moment.");
+                $(".news-snippet-content-mobile").html("<b>No Announcements</b><br>There are no game announcements at the moment.");
+        });
+    
+    $clamp(document.getElementById("news-snippet-content"), {clamp: 3});
+    $clamp(document.getElementById("news-snippet-content-mobile"), {clamp: 3});
+
+}
+
+function UpdateFrontpageAnnouncement(start){
+    
+    if(!start){
+        currentAnnouncementID++;
+        if(currentAnnouncementID >= announcementTitleList.length)
+            currentAnnouncementID = 0;
+    }
+    else
+        currentAnnouncementID = 0;
+    
+     var oldbar = $(".news-snippet-progressbar-fill"),  
+     newbar = oldbar.clone(true);
+     oldbar.before(newbar);
+     $("." + oldbar.attr("class") + ":last").remove();
+
+    $(".news-snippet-content").html("<b>"+announcementTitleList[currentAnnouncementID]+" ("+(currentAnnouncementID+1)+"/"+announcementTitleList.length+")</b><br>"+announcementTextList[currentAnnouncementID]);
+    
+    //Mobile
+    var oldbar = $(".news-snippet-progressbar-fill-mobile"),  
+     newbar = oldbar.clone(true);
+     oldbar.before(newbar);
+     $("." + oldbar.attr("class") + ":last").remove();
+
+    $(".news-snippet-content-mobile").html("<b>"+announcementTitleList[currentAnnouncementID]+" ("+(currentAnnouncementID+1)+"/"+announcementTitleList.length+")</b><br>"+announcementTextList[currentAnnouncementID]);
+
+    setTimeout(function(){UpdateFrontpageAnnouncement(false)}, 6000);
+}
+
+		function OpenPage(page){
+    window.location.href = '/'+page;
+}
+
+	</script>
+
+	
+	
+	
+
+	<title>Patch Notes - Patchnotes 4.47.4 - Tagundnachtgleiche Bugfix Build | Villagers &amp; Heroes Forums</title>
+
+	
+		
+		<meta name="description" content="Patch Notes 4.47.4
+
+Verbesserungen und Balance
+
+Lichtrunen von Pharaoh Okyris wurden entfernt.
+Die Farbe der Spawn-Ankündigungen wurde geändert auf orange..." />
+		<meta property="og:description" content="Patch Notes 4.47.4
+
+Verbesserungen und Balance
+
+Lichtrunen von Pharaoh Okyris wurden entfernt.
+Die Farbe der Spawn-Ankündigungen wurde geändert auf orange.
+Die Gesundheit und der Schaden von Kalifen wurde erhöht. Die Spawnzeit wurde von 30 Minuten auf 20 Minuten gesenkt.
+Ankündigungsmeldung für..." />
+		<meta property="twitter:description" content="Patch Notes 4.47.4
+
+Verbesserungen und Balance
+
+Lichtrunen von Pharaoh Okyris wurden entfernt.
+Die Farbe der Spawn-Ankündigungen wurde geändert auf orange.
+Die Gesundheit und der Schaden von..." />
+	
+	
+		<meta property="og:url" content="https://villagersandheroes.com/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/" />
+	
+		<link rel="canonical" href="https://villagersandheroes.com/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/" />
+	
+	
+	
+		
+	
+	
+	<meta property="og:site_name" content="Villagers &amp; Heroes Forums" />
+
+
+	
+	
+		
+	
+	
+	<meta property="og:type" content="website" />
+
+
+	
+	
+		
+	
+	
+	
+		<meta property="og:title" content="Patch Notes - Patchnotes 4.47.4 - Tagundnachtgleiche Bugfix Build" />
+		<meta property="twitter:title" content="Patch Notes - Patchnotes 4.47.4 - Tagundnachtgleiche Bugfix Build" />
+	
+
+
+	
+	
+	
+	
+
+	
+
+	
+	
+
+	
+	<link rel="preload" href="/forums/styles/fonts/fa/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+
+	<link rel="preload" href="/forums/styles/fonts/fa/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+
+<link rel="preload" href="/forums/styles/fonts/fa/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+	<link rel="stylesheet" href="/forums/css.php?css=public%3Anormalize.css%2Cpublic%3Acore.less%2Cpublic%3Aapp.less&amp;s=3&amp;l=1&amp;d=1599410957&amp;k=ed07b078d3760293704057ad083eccdcd16dc1b4" />
+
+	<link rel="stylesheet" href="/forums/css.php?css=public%3Abb_code.less%2Cpublic%3Amessage.less%2Cpublic%3Aextra.less&amp;s=3&amp;l=1&amp;d=1599410957&amp;k=53e6a6e816f9d2ade7df3768468b0412be32d7b4" />
+
+	
+		<script src="/forums/js/xf/preamble.min.js?_v=6060c06b"></script>
+	
+
+
+	
+		<link rel="icon" type="image/png" href="https://villagersandheroes.com/forums/styles/villagersandheroes/images/favicon-32.png" sizes="32x32" />
+	
+	
+	
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-69353612-9"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-69353612-9', {
+			// 
+			
+			
+		});
+	</script>
+
+	
+	<link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,600,700,800|Vollkorn:400,400i,700,700i|Open+Sans:400,700,800&display=swap" rel="stylesheet"> 
+	
+	
+	
+	
+
+	
+</head>
+<body data-template="thread_view">
+<!-- <div class="body-background"></div> -->
+<div class="p-pageWrapper" id="top">
+	
+
+<!-- HEADER ------------------------------------------------------ -->
+
+<div id="headers" onmouseleave="HideMenu()">
+    
+		<header id="masthead" class="site-header">
+            
+            <div class="header-border-bottom" style="left: 209px; opacity: 1;"></div>
+            
+        
+            <div class="header-menu">
+                
+                <div class="header-menu-item" onmouseleave="DisableAllMenus()" onclick="GoHome()">
+                    <span class="header-logo-align"></span>
+                    <img class="header-logo" src="https://villagersandheroes.com/wp-content/themes/villagersandheroes/images/header-logo.png">
+                    <img class="header-logo-vertical" src="https://villagersandheroes.com/wp-content/themes/villagersandheroes/images/header-logo-vertical.png">
+                </div>
+                
+            <div class="header-menu-item" onmouseover="ToggleMenu(1)" onmouseleave="DisableAllMenus()">News</div>
+				<div class="header-menu-item" onmouseover="ToggleMenu(2)" onmouseleave="DisableAllMenus()">Game Guide</div>
+				<div class="header-menu-item" onmouseover="ToggleMenu(3)" onmouseleave="DisableAllMenus()">Community</div>
+				<div class="header-menu-item" onmouseover="ToggleMenu(4)" onmouseleave="DisableAllMenus()">Contact Us</div>
+				<div class="header-menu-item" onmouseover="ToggleMenu(5)" onmouseleave="DisableAllMenus()">Web Store</div>
+				<div class="header-menu-item" onmouseover="ToggleMenu(6)" onmouseleave="DisableAllMenus()">Play Now!</div>
+				<div class="header-menu-item compact" onmousedown="ToggleMobileMenu()"><div class="icon-menu"><span></span>
+  <span></span>
+  <span></span>
+  <span></span></div></div></div>
+            
+		</header><!-- #masthead -->
+    
+    <header id="subheader" class="site-subheader">
+        
+        <div class="subheader-menu">
+            <div class="subheader-menu-container" onmouseover="ToggleMenu(0)" onmouseleave="DisableAllMenus()" onclick="OpenPage('announcements')">            
+            <div class="news-snippet">
+                <div class="news-snippet-content" id="news-snippet-content" style="overflow: hidden; text-overflow: ellipsis; -moz-box-orient: vertical; display: -webkit-box; -webkit-line-clamp: 3;"><b>No Announcements</b><br>There are no game announcements at the moment.</div>
+                <div class="news-snippet-progressbar">
+                    <div class="news-snippet-progressbar-fill"></div>
+                </div>
+            </div>
+            
+            </div><div class="subheader-menu-container" onmouseover="ToggleMenu(1)" onmouseleave="DisableAllMenus()">
+			<div class="subheader-menu-mobile-title">News</div><a href="https://villagersandheroes.com/announcements/">
+			<div class="subheader-menu-item announcements">Announcements</div>
+			</a><a href="https://villagersandheroes.com/patchnotes/"><div class="subheader-menu-item patchnotes">Patch Notes</div></a><a href="https://villagersandheroes.com/category/ardent-ledger/"><div class="subheader-menu-item newsletter">Newsletter</div></a></div><div class="subheader-menu-container" onmouseover="ToggleMenu(2)" onmouseleave="DisableAllMenus()"><div class="subheader-menu-mobile-title">Game Guide</div><a href="https://villagersandheroes.com/wiki/"><div class="subheader-menu-item wiki">Official Wiki</div></a><a href="https://villagersandheroes.com/talentbuilder/"><div class="subheader-menu-item talentbuilder">Talent Builder</div></a><a href="https://villagersandheroes.com/lore/"><div class="subheader-menu-item playerguides">Story &amp; Lore</div></a></div><div class="subheader-menu-container" onmouseover="ToggleMenu(3)" onmouseleave="DisableAllMenus()"><div class="subheader-menu-mobile-title">Community</div><a href="/forums"><div class="subheader-menu-item forums">Official Forums</div></a><a href="https://villagersandheroes.com/discord/"><div class="subheader-menu-item discord">Discord Server</div></a><a href="https://villagersandheroes.com/social/"><div class="subheader-menu-item communities">Social Media</div></a></div><div class="subheader-menu-container" onmouseover="ToggleMenu(4)" onmouseleave="DisableAllMenus()"><div class="subheader-menu-mobile-title">Contact Us</div><a href="https://villagersandheroes.com/support/"><div class="subheader-menu-item support">Contact Support</div></a><a href="https://villagersandheroes.com/playtest/"><div class="subheader-menu-item playtest">Playtest V&amp;H</div></a></div><div class="subheader-menu-container" onmouseover="ToggleMenu(5)" onmouseleave="DisableAllMenus()"><div class="subheader-menu-mobile-title">Web Store</div><a href="https://villagersandheroes.com/store/"><div class="subheader-menu-item crowns">Buy Crowns</div></a><a href="https://villagersandheroes.com/merchandise/"><div class="subheader-menu-item merchandise">Merchandise</div></a></div><div class="subheader-menu-container" onmouseover="ToggleMenu(6)" onmouseleave="DisableAllMenus()"><div class="subheader-menu-mobile-title">Play Now!</div><a href="/"><div class="subheader-menu-item play-ios">Play on iOS</div></a><a href="/"><div class="subheader-menu-item play-android">Play on Android</div></a><a href="/"><div class="subheader-menu-item play-pc">Play on PC</div></a>        </div>
+        
+    </div></header>
+        
+        </div>
+	
+	
+	
+
+<!-- ------------------------------------------------------------- -->
+
+<div class="p-body">
+	
+	<div class="preload">
+		<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/button-long-h.png">
+		<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/button-long-d.png">
+		<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/button-tiny-h.png">
+		<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/button-tiny-d.png">
+		<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/maintabs-1.png">
+		<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/maintabs-2.png">
+		<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/maintabs-3.png">
+	</div>
+	
+	<div class="p-body-inner">
+		
+		
+		
+		<div class="parchment-wrapper">
+            
+				
+			
+				
+			
+				
+			
+						
+				
+
+            
+                
+                <nav class="p-nav">
+                    <!-- Center menu container -->
+                    <div class="p-nav-inner">
+
+                        <a class="p-nav-menuTrigger button" data-xf-click="off-canvas" data-menu=".js-headerOffCanvasMenu" role="button" tabindex="0">
+                            <i aria-hidden="true"></i>
+                            <span class="p-nav-menuText">Menu</span>
+                        </a>
+
+                        <div class="p-nav-smallLogo">
+                            <a href="/forums/">
+                                <img src="/forums/styles/villagersandheroes/images/logo-header.png"
+                                    alt="Villagers &amp; Heroes Forums"
+                                 />
+                            </a>
+                        </div>
+
+                        <!-- Actual center menu -->
+						
+                        	<div class="p-nav-scroller p-nav-forums hScroller" data-xf-init="h-scroller" data-auto-scroll=".p-navEl.is-selected">
+						
+							
+						
+							
+                            <div class="hScroller-scroll">
+                                <ul class="p-nav-list js-offCanvasNavSource">
+                                
+                                    <li>
+                                        
+	<div class="p-navEl is-selected" data-has-children="true">
+		
+
+			
+	
+	<a href="/forums/"
+		class="p-navEl-link p-navEl-link--splitMenu "
+		
+		
+		data-nav-id="forums">Forums</a>
+
+
+			<a data-xf-key="1"
+				data-xf-click="menu"
+				data-menu-pos-ref="< .p-navEl"
+				class="p-navEl-splitTrigger"
+				role="button"
+				tabindex="0"
+				aria-label="Toggle expanded"
+				aria-expanded="false"
+				aria-haspopup="true"></a>
+
+		
+		
+			<div class="menu menu--structural" data-menu="menu" aria-hidden="true">
+				<div class="menu-content">
+					
+						
+	
+	
+	<a href="/forums/search/?type=post"
+		class="menu-linkRow u-indentDepth0 js-offCanvasCopy "
+		
+		
+		data-nav-id="searchForums">Search forums</a>
+
+	
+
+					
+				</div>
+			</div>
+		
+	</div>
+
+                                    </li>
+                                
+                                    <li>
+                                        
+	<div class="p-navEl " >
+		
+
+			
+	
+	<a href="/forums/whats-new/posts/"
+		class="p-navEl-link "
+		
+		data-xf-key="2"
+		data-nav-id="whatsNew">What's new</a>
+
+
+			
+
+		
+		
+	</div>
+
+                                    </li>
+                                
+                                    <li>
+                                        
+	<div class="p-navEl " data-has-children="true">
+		
+
+			
+	
+	<a href="/forums/members/"
+		class="p-navEl-link p-navEl-link--splitMenu "
+		
+		
+		data-nav-id="members">Members</a>
+
+
+			<a data-xf-key="3"
+				data-xf-click="menu"
+				data-menu-pos-ref="< .p-navEl"
+				class="p-navEl-splitTrigger"
+				role="button"
+				tabindex="0"
+				aria-label="Toggle expanded"
+				aria-expanded="false"
+				aria-haspopup="true"></a>
+
+		
+		
+			<div class="menu menu--structural" data-menu="menu" aria-hidden="true">
+				<div class="menu-content">
+					
+						
+	
+	
+	<a href="/forums/members/list/"
+		class="menu-linkRow u-indentDepth0 js-offCanvasCopy "
+		
+		
+		data-nav-id="registeredMembers">Registered members</a>
+
+	
+
+					
+						
+	
+	
+	<a href="/forums/online/"
+		class="menu-linkRow u-indentDepth0 js-offCanvasCopy "
+		
+		
+		data-nav-id="currentVisitors">Current visitors</a>
+
+	
+
+					
+				</div>
+			</div>
+		
+	</div>
+
+                                    </li>
+                                
+                                    <li>
+                                        
+	<div class="p-navEl " data-has-children="true">
+		<a data-xf-key="4"
+			data-xf-click="menu"
+			data-menu-pos-ref="< .p-navEl"
+			class="p-navEl-linkHolder"
+			role="button"
+			tabindex="0"
+			aria-expanded="false"
+			aria-haspopup="true">
+			
+	
+	<span 
+		class="p-navEl-link p-navEl-link--menuTrigger "
+		
+		
+		data-nav-id="game">Game</span>
+
+		</a>
+
+		
+		
+			<div class="menu menu--structural" data-menu="menu" aria-hidden="true">
+				<div class="menu-content">
+					
+						
+	
+	
+	<a href="http://www.villagersandheroes.com/contact-customer-support"
+		class="menu-linkRow u-indentDepth0 js-offCanvasCopy "
+		
+		
+		data-nav-id="support">V&H Support</a>
+
+	
+
+					
+						
+	
+	
+	<a href="https://villagersandheroes.gamepedia.com/Villagers_and_Heroes_Wiki"
+		class="menu-linkRow u-indentDepth0 js-offCanvasCopy "
+		
+		
+		data-nav-id="wiki">Wiki</a>
+
+	
+
+					
+				</div>
+			</div>
+		
+	</div>
+
+                                    </li>
+                                
+                                </ul>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+								<!-- aria-label="Inbox" -->
+                    <!-- Account info, messages, alerts, admin button -->
+                    <div class="p-nav-left">
+						
+                        
+                        <!-- Account info -->
+                        <div class="p-navgroup p-account p-navgroup--guest">
+                            
+								
+							<a class="loginbutton" href="/forums/login/" class="p-navgroup-link p-navgroup-link--textual p-navgroup-link--logIn"
+										data-xf-click="overlay" data-follow-redirects="on">
+								<div class="button-long">	
+								<span class="p-navgroup-linkText">Login/signup</span>
+								</div>
+							</a>
+
+                                <!-- 
+
+									<a class="registerbutton" href="/forums/register/" class="p-navgroup-link p-navgroup-link--textual p-navgroup-link--register"
+											data-xf-click="overlay" data-follow-redirects="on">
+										<div class="button-long">
+											<span class="p-navgroup-linkText">Register</span>
+										</div>
+										</a>
+                                 -->
+                            
+                            
+                        </div>
+						
+					</div><!-- Closing p-nav-left -->
+						<div class="p-nav-right">
+							 <a href="https://villagersandheroes.com/support" target="_blank" id="support-button-large"><div class="button-long">	
+								<span class="p-navgroup-linkText">V&H Support</span>
+							</div></a>
+							<a href="http://villagersandheroes.com/support" target="_blank" id="support-button-small"><div class="button-square" >	
+								<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/icon-support.png">
+							</div></a>
+							<a href="https://villagersandheroes.gamepedia.com/Villagers_and_Heroes_Wiki" target="_blank"><div class="button-square">	
+								<img src="https://www.madottergames.com/forums/styles/villagersandheroes/images/icon-wiki.png">
+							</div></a> 
+						</div>
+                    
+                </nav>
+            
+                
+				<div class="separator-large"></div>
+				
+            
+			
+
+            <div class="offCanvasMenu offCanvasMenu--nav js-headerOffCanvasMenu" data-menu="menu" aria-hidden="true" data-ocm-builder="navigation">
+                <div class="offCanvasMenu-backdrop" data-menu-close="true"></div>
+                <div class="offCanvasMenu-content">
+                    <div class="offCanvasMenu-header">
+                        Menu
+                        <a class="offCanvasMenu-closer" data-menu-close="true" role="button" tabindex="0" aria-label="Close"></a>
+                    </div>
+                    
+                        <div class="p-offCanvasRegisterLink">
+                            <div class="offCanvasMenu-linkHolder">
+                                <a href="/forums/login/" class="offCanvasMenu-link" data-xf-click="overlay" data-menu-close="true">
+                                    Log in
+                                </a>
+                            </div>
+                            <hr class="offCanvasMenu-separator" />
+                            
+                                <div class="offCanvasMenu-linkHolder">
+                                    <a href="/forums/register/" class="offCanvasMenu-link" data-xf-click="overlay" data-menu-close="true">
+                                        Register
+                                    </a>
+                                </div>
+                                <hr class="offCanvasMenu-separator" />
+                            
+                        </div>
+                    
+                    <div class="js-offCanvasNavTarget"></div>
+                </div>
+            </div>
+            
+            <!--XF:EXTRA_OUTPUT-->
+
+            
+
+            
+
+            
+            
+
+            
+	<noscript><div class="blockMessage blockMessage--important blockMessage--iconic u-noJsOnly">JavaScript is disabled. For a better experience, please enable JavaScript in your browser before proceeding.</div></noscript>
+
+            
+	<!--[if lt IE 9]><div class="blockMessage blockMessage&#45;&#45;important blockMessage&#45;&#45;iconic">You are using an out of date browser. It  may not display this or other websites correctly.<br />You should upgrade or use an <a href="https://www.google.com/chrome/browser/" target="_blank">alternative browser</a>.</div><![endif]-->
+
+
+			
+            
+                <div class="p-body-header">
+				
+	
+		<ul class="p-breadcrumbs "
+			itemscope itemtype="https://schema.org/BreadcrumbList">
+		
+			
+
+			
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/" itemprop="item">
+			<span itemprop="name">Forums</span>
+		</a>
+		<meta itemprop="position" content="1" />
+	</li>
+
+			
+
+			
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/#international-community.19" itemprop="item">
+			<span itemprop="name">International Community</span>
+		</a>
+		<meta itemprop="position" content="2" />
+	</li>
+
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/categories/deutsch.23/" itemprop="item">
+			<span itemprop="name">Deutsch</span>
+		</a>
+		<meta itemprop="position" content="3" />
+	</li>
+
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/forums/news-und-patchnotes.22/" itemprop="item">
+			<span itemprop="name">News und Patchnotes</span>
+		</a>
+		<meta itemprop="position" content="4" />
+	</li>
+
+			
+
+		
+		</ul>
+	
+
+                
+                    
+                        <div class="p-title ">
+                        
+                            
+                                <h1 class="p-title-value"><a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/"><span class="label label--blue" dir="auto">Patch Notes</span><span class="label-append">&nbsp;</span>Patchnotes 4.47.4 - Tagundnachtgleiche Bugfix Build</a></h1>
+                            
+                            
+                        
+                        </div>
+                    
+
+                    
+                        <div class="p-description">
+	<ul class="listInline listInline--bullet">
+		<li>
+			<i class="fa--xf far fa-user" aria-hidden="true" title="Thread starter"></i>
+			<span class="u-srOnly">Thread starter</span>
+
+			<a href="/forums/members/tiberius.8/" class="username  u-concealed" dir="auto" data-user-id="8" data-xf-init="member-tooltip"><span class="username--staff username--moderator username--admin">Tiberius</span></a>
+		</li>
+		<li>
+			<i class="fa--xf far fa-clock" aria-hidden="true" title="Start date"></i>
+			<span class="u-srOnly">Start date</span>
+
+			<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/" class="u-concealed"><time  class="u-dt" dir="auto" datetime="2020-09-18T08:56:40-0700" data-time="1600444600" data-date-string="Sep 18, 2020" data-time-string="8:56 AM" title="Sep 18, 2020 at 8:56 AM">Sep 18, 2020</time></a>
+		</li>
+		
+	</ul>
+</div>
+                    
+                
+					<div class="separator-large"></div>
+                </div>
+            
+			
+				
+            <div class="p-body-main  ">
+                
+
+                <div class="p-body-content">
+                    
+                    <div class="p-body-pageContent">
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+		
+	
+	
+	
+
+
+	
+	
+	
+		
+	
+	
+	
+
+
+	
+	
+		
+	
+	
+	
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+	
+
+	
+		
+	
+
+
+
+
+
+
+<div class="block-outer block-thread-tools"></div>
+
+		
+
+
+	
+
+
+
+
+
+
+<div class="block block--messages" data-xf-init="" data-type="post" data-href="/forums/inline-mod/">
+
+	<div class="block-container lbContainer"
+		data-xf-init="lightbox select-to-quote"
+		data-message-selector=".js-post"
+		data-lb-id="thread-3976"
+		data-lb-universal="0">
+
+		<div class="block-body js-replyNewMessageContainer">
+			
+				
+					
+	
+	
+	
+	
+		<article class="message message--post message--mod js-post js-inlineModContainer  "
+		data-author="Tiberius"
+		data-content="post-53504"
+		id="js-post-53504">
+	
+
+		<span class="u-anchorTarget" id="post-53504"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/tiberius.8/" class="avatar avatar--l" data-user-id="8" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/8.jpg?1543865850"  alt="Tiberius" class="avatar-u8-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/tiberius.8/" class="username " dir="auto" data-user-id="8" data-xf-init="member-tooltip" itemprop="name"><span class="username--staff username--moderator username--admin">Tiberius</span></a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Neonga Nation</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			<div class="userTitle message-titlebadge" dir="auto" itemprop="jobTitle">Forum Moderator</div>
+
+			<div class="message-extrainfo-container">
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53504" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-09-18T08:56:40-0700" data-time="1600444600" data-date-string="Sep 18, 2020" data-time-string="8:56 AM" title="Sep 18, 2020 at 8:56 AM">Sep 18, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53504"
+									data-xf-init="share-tooltip" data-href="/forums/posts/53504/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53504" rel="nofollow">
+										#1
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-53504"
+							data-lb-caption-desc="Tiberius &middot; Sep 18, 2020 at 8:56 AM">
+
+							
+								
+
+	
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper"><b>Patch Notes 4.47.4<br />
+<br />
+Verbesserungen und Balance</b><br />
+<ul>
+<li data-xf-list-type="ul">Lichtrunen von Pharaoh Okyris wurden entfernt.</li>
+<li data-xf-list-type="ul">Die Farbe der Spawn-Ankündigungen wurde geändert auf orange.</li>
+<li data-xf-list-type="ul">Die Gesundheit und der Schaden von Kalifen wurde erhöht. Die Spawnzeit wurde von 30 Minuten auf 20 Minuten gesenkt.</li>
+<li data-xf-list-type="ul">Ankündigungsmeldung für Kalifen wurde hinzugefügt (5 und 1 Minute vor Spawn).</li>
+<li data-xf-list-type="ul">Technologie für Accountbans erweitert.</li>
+</ul><br />
+<b>Bug Fixes</b><br />
+<ul>
+<li data-xf-list-type="ul">Behoben: Probleme beim Spawn von Pharaohs in der Oase von Anuk'Amon</li>
+<li data-xf-list-type="ul">Behoben: Viggo ist manchmal bei der Zerbrochene Klinge Quest nicht erschienen.</li>
+<li data-xf-list-type="ul">Behoben: Das Ardent Gesellschafts Werbebildschirm ist für manche Spieler bei jedem Zonen erschienen.</li>
+</ul><br />
+<b>Hinweis</b><br />
+<ul>
+<li data-xf-list-type="ul">Die neuen Highlevel  Quests im Roggen werden nur Spielern angezeigt, die schon eine Wiedergeburt  durchgeführt haben. Dies ist Absicht.</li>
+<li data-xf-list-type="ul"> Das Keyboard wird nicht auf allen Android 11 Geräten angezeigt. Wir haben bereits einen Fix dafür in Arbeit, er muss aber noch eingehender auf unserem Testserver getestet werden, deswegen ist er noch nicht in diesem Update enthalten.</li>
+</ul></div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+								
+
+	
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/53504/reactions" data-xf-click="overlay" data-cache="false"><bdi>Nixe</bdi></a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>1</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/53504/likes" data-xf-click="overlay"><bdi>Nixe</bdi></a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+			
+	<article class="message message--post js-post js-inlineModContainer  "
+		data-author="Bibi Blocksberg"
+		data-content="post-53670"
+		id="js-post-53670">
+	
+
+		<span class="u-anchorTarget" id="post-53670"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/bibi-blocksberg.201/" class="avatar avatar--l" data-user-id="201" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/201.jpg?1544646387" srcset="/forums/data/avatars/h/0/201.jpg?1544646387 2x" alt="Bibi Blocksberg" class="avatar-u201-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/bibi-blocksberg.201/" class="username " dir="auto" data-user-id="201" data-xf-init="member-tooltip" itemprop="name">Bibi Blocksberg</a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Hero</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			
+
+			<div class="message-extrainfo-container">
+				
+					<div class="message-extrainfo message-servers">
+						
+						
+						
+						
+						<div class="message-server server-eu2"></div>
+					</div>
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				<div class="message-extrainfo message-platform">
+					<div class="message-extrainfo-title">Platform</div><div class="message-extrainfo-content">
+					PC
+					</div>
+				</div>
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53670" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-09-20T04:01:14-0700" data-time="1600599674" data-date-string="Sep 20, 2020" data-time-string="4:01 AM" title="Sep 20, 2020 at 4:01 AM">Sep 20, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53670"
+									data-xf-init="share-tooltip" data-href="/forums/posts/53670/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53670" rel="nofollow">
+										#2
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-53670"
+							data-lb-caption-desc="Bibi Blocksberg &middot; Sep 20, 2020 at 4:01 AM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper">Schade das die Lichtrunen bei Okyris weg sind. Nun ist es wieder nur einfaches draufgekloppe <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="smilie smilie--sprite smilie--sprite3" alt=":(" title="Frown    :(" data-shortname=":(" /></div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/53670/reactions" data-xf-click="overlay" data-cache="false"><bdi>Herr Blocksberg</bdi></a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>1</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/53670/likes" data-xf-click="overlay"><bdi>Herr Blocksberg</bdi></a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+			
+	<article class="message message--post js-post js-inlineModContainer  "
+		data-author="Bluerider"
+		data-content="post-53693"
+		id="js-post-53693">
+	
+
+		<span class="u-anchorTarget" id="post-53693"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/bluerider.93/" class="avatar avatar--l" data-user-id="93" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/93.jpg?1551460789"  alt="Bluerider" class="avatar-u93-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/bluerider.93/" class="username " dir="auto" data-user-id="93" data-xf-init="member-tooltip" itemprop="name">Bluerider</a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Reader</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			
+
+			<div class="message-extrainfo-container">
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				<div class="message-extrainfo message-platform">
+					<div class="message-extrainfo-title">Platform</div><div class="message-extrainfo-content">
+					PC
+					</div>
+				</div>
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53693" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-09-20T09:28:31-0700" data-time="1600619311" data-date-string="Sep 20, 2020" data-time-string="9:28 AM" title="Sep 20, 2020 at 9:28 AM">Sep 20, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53693"
+									data-xf-init="share-tooltip" data-href="/forums/posts/53693/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53693" rel="nofollow">
+										#3
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-53693"
+							data-lb-caption-desc="Bluerider &middot; Sep 20, 2020 at 9:28 AM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper">Es ist ja nett, dass die Systemmeldungen  jetzt funktionieren und man weiß, wann wer spawnt.<br />
+Allerdings wäre es für die Pharaonen und besonders Okyris evtl. sinnvoller, feste Spawnzeiten festzulegen, z.B: 9.00 - 12.00 - 15.00 - 18 .00 - 21.00 usw. (Ranubis dann z.B. 8.15 - 10.15 - 12.15 ....)<br />
+Das würde die Pharaonen 1. planbarer machen und 2. die Zeitverschiebung aushebeln, die durch die Warterei (trotz Vorankündigung) und durch extrem lange Kampfzeiten aufgrund von Randfiguren, die die Stärke des Pharaonen erhöhen, zum Schaden aber nur begrenzt beitragen, entsteht.</div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/53693/reactions" data-xf-click="overlay" data-cache="false"><bdi>Bibi Blocksberg</bdi>, <bdi>Glockenfee</bdi>, <bdi>Herr Blocksberg</bdi> and 1 other person</a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>4</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/53693/likes" data-xf-click="overlay"><bdi>Bibi Blocksberg</bdi>, <bdi>Glockenfee</bdi>, <bdi>Herr Blocksberg</bdi> and 1 other person</a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+			
+	<article class="message message--post js-post js-inlineModContainer  "
+		data-author="Nixe"
+		data-content="post-53700"
+		id="js-post-53700">
+	
+
+		<span class="u-anchorTarget" id="post-53700"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/nixe.235/" class="avatar avatar--l" data-user-id="235" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/235.jpg?1550847601" srcset="/forums/data/avatars/h/0/235.jpg?1550847601 2x" alt="Nixe" class="avatar-u235-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/nixe.235/" class="username " dir="auto" data-user-id="235" data-xf-init="member-tooltip" itemprop="name">Nixe</a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Warrior</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			
+
+			<div class="message-extrainfo-container">
+				
+					<div class="message-extrainfo message-servers">
+						
+						
+						
+						
+						<div class="message-server server-eu2"></div>
+					</div>
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				<div class="message-extrainfo message-platform">
+					<div class="message-extrainfo-title">Platform</div><div class="message-extrainfo-content">
+					PC
+					</div>
+				</div>
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53700" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-09-20T10:13:41-0700" data-time="1600622021" data-date-string="Sep 20, 2020" data-time-string="10:13 AM" title="Sep 20, 2020 at 10:13 AM">Sep 20, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53700"
+									data-xf-init="share-tooltip" data-href="/forums/posts/53700/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53700" rel="nofollow">
+										#4
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-53700"
+							data-lb-caption-desc="Nixe &middot; Sep 20, 2020 at 10:13 AM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper">Ja, es sind leider einige Randfiguren und die schreiben dann hier es ist schade, das die Lichtrunen bei Okyris endfernt wurden ...es gibt eben Spieler, denen ist nichts peinlich, ich sterbe lieber mal bei den KG`s ... aber spiele fair.</div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--3" data-reaction-id="3"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Haha" title="Haha" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/53700/reactions" data-xf-click="overlay" data-cache="false"><bdi>Bibi Blocksberg</bdi> and <bdi>Herr Blocksberg</bdi></a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--3" data-reaction-id="3"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Haha" title="Haha" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>2</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/53700/likes" data-xf-click="overlay"><bdi>Bibi Blocksberg</bdi> and <bdi>Herr Blocksberg</bdi></a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+	
+		<article class="message message--post message--mod js-post js-inlineModContainer  "
+		data-author="Tiberius"
+		data-content="post-53760"
+		id="js-post-53760">
+	
+
+		<span class="u-anchorTarget" id="post-53760"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/tiberius.8/" class="avatar avatar--l" data-user-id="8" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/8.jpg?1543865850"  alt="Tiberius" class="avatar-u8-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/tiberius.8/" class="username " dir="auto" data-user-id="8" data-xf-init="member-tooltip" itemprop="name"><span class="username--staff username--moderator username--admin">Tiberius</span></a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Neonga Nation</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			<div class="userTitle message-titlebadge" dir="auto" itemprop="jobTitle">Forum Moderator</div>
+
+			<div class="message-extrainfo-container">
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53760" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-09-21T09:54:15-0700" data-time="1600707255" data-date-string="Sep 21, 2020" data-time-string="9:54 AM" title="Sep 21, 2020 at 9:54 AM">Sep 21, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53760"
+									data-xf-init="share-tooltip" data-href="/forums/posts/53760/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53760" rel="nofollow">
+										#5
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-53760"
+							data-lb-caption-desc="Tiberius &middot; Sep 21, 2020 at 9:54 AM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper">Unsere Entwickler haben Euer Feedback über das Wochenende zur Kenntnis genommen, vor allem die Tatsache, dass Ihr die Kalifen Nachrichten &quot;etwas&quot; übertrieben in der Häufigkeit findet. Es sind deswegen die folgenden Änderungen geplant:<br />
+<br />
+
+
+
+
+<blockquote class="bbCodeBlock bbCodeBlock--expandable bbCodeBlock--quote">
+	
+		<div class="bbCodeBlock-title">
+			
+				Damon Otter said:
+			
+		</div>
+	
+	<div class="bbCodeBlock-content">
+		
+		<div class="bbCodeBlock-expandContent ">
+			Wir werden die Boss-Spawnnachrichten ändern, die Änderungen werden allerdings erst mit dem nächsten Update, frühestens am 12. Oktober aufgespielt werden können. Wir planen vorerst die folgenden Änderungen::<br />
+1. Es wird nur noch 2 Benachrichtigungen geben: 5 Minuten vor dem Spawn und dann noch 2 Minuten vorher. Momentan gibt es Nachrichten bei 7, 4 und 1 Minuten.<br />
+2. Für zukünftige Tagundnachtgleiche Events wird es keine Benachrichtigungen mehr für Kalifen geben, sondern nur noch für Pharaonen. Da es deutlich mehr Kalifen als Pharaonen Nachrichten gibt, wird dies deutlich helfen und den Spam durch die Nachrichten um ca. 80% reduzieren.<br />
+<br />
+Solltet Ihr eine weitere Reduzierung auf z,B. nur noch 1 Nachricht wünschen, dann können wir das natürlich tun. Wir könnten auch die 5 Minuten Nachricht global aussenden und die 2 Minuten Nachricht dann nur noch in der Eventzone. Das könnte allerdings dazu führen, dass manche Spieler den Spawn wieder verpassen, weil sie die 5 Minuten Nachricht übersehen und sich noch nicht in der Eventzone aufhalten.<br />
+<br />
+Lasst uns doch wissen, wie Ihr über diese Möglichkeiten denkt. Jegliches weitere Feedback könnt Ihr natürlich ebenfalls weiterhin entweder hier oder im folgenden US Thread posten: <a href="https://villagersandheroes.com/forums/threads/huge-mistake.3987/" class="link link--internal">https://villagersandheroes.com/forums/threads/huge-mistake.3987/</a>
+		</div>
+		<div class="bbCodeBlock-expandLink"><a>Click to expand...</a></div>
+	</div>
+</blockquote></div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/53760/reactions" data-xf-click="overlay" data-cache="false"><bdi>Nixe</bdi></a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>1</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/53760/likes" data-xf-click="overlay"><bdi>Nixe</bdi></a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+			
+	<article class="message message--post js-post js-inlineModContainer  "
+		data-author="Glockenfee"
+		data-content="post-53773"
+		id="js-post-53773">
+	
+
+		<span class="u-anchorTarget" id="post-53773"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/glockenfee.219/" class="avatar avatar--l" data-user-id="219" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/219.jpg?1544165111" srcset="/forums/data/avatars/h/0/219.jpg?1544165111 2x" alt="Glockenfee" class="avatar-u219-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/glockenfee.219/" class="username " dir="auto" data-user-id="219" data-xf-init="member-tooltip" itemprop="name">Glockenfee</a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Adventurer</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			<div class="userTitle message-titlebadge" dir="auto" itemprop="jobTitle">Royal Guardian</div>
+
+			<div class="message-extrainfo-container">
+				
+					<div class="message-extrainfo message-servers">
+						
+						
+						
+						
+						<div class="message-server server-eu2"></div>
+					</div>
+				
+				<div class="message-extrainfo-container-inner">
+			
+				<div class="message-extrainfo message-characters">
+					<div class="message-extrainfo-title">Characters</div><div class="message-extrainfo-content">
+					Glockenfee / Glöckchen
+					</div>
+				</div>
+			
+			
+				<div class="message-extrainfo message-platform">
+					<div class="message-extrainfo-title">Platform</div><div class="message-extrainfo-content">
+					PC
+					</div>
+				</div>
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53773" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-09-21T14:06:46-0700" data-time="1600722406" data-date-string="Sep 21, 2020" data-time-string="2:06 PM" title="Sep 21, 2020 at 2:06 PM">Sep 21, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53773"
+									data-xf-init="share-tooltip" data-href="/forums/posts/53773/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53773" rel="nofollow">
+										#6
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-53773"
+							data-lb-caption-desc="Glockenfee &middot; Sep 21, 2020 at 2:06 PM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper">Jo, kann dem nur zustimmen - hinten wird nur auf Autokampf gekloppt, möglichst ohne Einsatz von evtl. Mana etc - und vorne die dürfen Kopf hinhalten und Tränke raushauen. Finde so ein Verhalten mehr als unkollegial. Ich überlege ehrlich, ob ich mich dem anpasse und nur noch ab und an mal ein Schlag raushaue (auch sowas hab ich schon beobachtet, dass is unter aller S...<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="smilie smilie--sprite smilie--sprite4" alt=":mad:" title="Mad    :mad:" data-shortname=":mad:" />). Reicht ja völlig, um so den Erfolg zu bekommen...</div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/53773/reactions" data-xf-click="overlay" data-cache="false"><bdi>Bibi Blocksberg</bdi></a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>1</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/53773/likes" data-xf-click="overlay"><bdi>Bibi Blocksberg</bdi></a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+			
+	<article class="message message--post js-post js-inlineModContainer  "
+		data-author="Bibi Blocksberg"
+		data-content="post-53796"
+		id="js-post-53796">
+	
+
+		<span class="u-anchorTarget" id="post-53796"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/bibi-blocksberg.201/" class="avatar avatar--l" data-user-id="201" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/201.jpg?1544646387" srcset="/forums/data/avatars/h/0/201.jpg?1544646387 2x" alt="Bibi Blocksberg" class="avatar-u201-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/bibi-blocksberg.201/" class="username " dir="auto" data-user-id="201" data-xf-init="member-tooltip" itemprop="name">Bibi Blocksberg</a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Hero</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			
+
+			<div class="message-extrainfo-container">
+				
+					<div class="message-extrainfo message-servers">
+						
+						
+						
+						
+						<div class="message-server server-eu2"></div>
+					</div>
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				<div class="message-extrainfo message-platform">
+					<div class="message-extrainfo-title">Platform</div><div class="message-extrainfo-content">
+					PC
+					</div>
+				</div>
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53796" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-09-22T03:29:16-0700" data-time="1600770556" data-date-string="Sep 22, 2020" data-time-string="3:29 AM" title="Sep 22, 2020 at 3:29 AM">Sep 22, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53796"
+									data-xf-init="share-tooltip" data-href="/forums/posts/53796/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-53796" rel="nofollow">
+										#7
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-53796"
+							data-lb-caption-desc="Bibi Blocksberg &middot; Sep 22, 2020 at 3:29 AM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper"><blockquote class="bbCodeBlock bbCodeBlock--expandable bbCodeBlock--quote">
+	
+		<div class="bbCodeBlock-title">
+			
+				<a href="/forums/goto/post?id=53700"
+					class="bbCodeBlock-sourceJump"
+					data-xf-click="attribution"
+					data-content-selector="#post-53700">Nixe said:</a>
+			
+		</div>
+	
+	<div class="bbCodeBlock-content">
+		
+		<div class="bbCodeBlock-expandContent ">
+			Ja, es sind leider einige Randfiguren und die schreiben dann hier es ist schade, das die Lichtrunen bei Okyris endfernt wurden ...es gibt eben Spieler, denen ist nichts peinlich, ich sterbe lieber mal bei den KG`s ... aber spiele fair.
+		</div>
+		<div class="bbCodeBlock-expandLink"><a>Click to expand...</a></div>
+	</div>
+</blockquote>Tja Nixe,<br />
+scheinbar hast Du meinen Post nur überflogen, sonst hätte es Dir nicht passieren können, dass Du mich mit meinem Mann (Herr Blocksberg)<br />
+verwechselst, dem Du selbiges schonmal im Zonenchat vorgeworfen hast. Vielleicht wäre es hilfreich mal die Kampftabelle aufzumachen und auch zu lesen und vorallem zu verstehen! Und wenn Du möchtest, dass ich als Randfigur in Erscheinung trete, kann ich dies gerne tun, denn ich schlage mich nicht drum, vorne meine Tränke zu verballern, damit sich hinten andre nen feinen Lenz machen.</div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span></li>
+				
+					<li><span class="reaction reaction--small reaction--3" data-reaction-id="3"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Haha" title="Haha" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/53796/reactions" data-xf-click="overlay" data-cache="false"><bdi>Kalinkakarin</bdi>, <bdi>Nixe</bdi> and <bdi>Glockenfee</bdi></a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>2</span></li><li><span class="reaction reaction--small reaction--3" data-reaction-id="3"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Haha" title="Haha" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>1</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/53796/likes" data-xf-click="overlay"><bdi>Kalinkakarin</bdi>, <bdi>Nixe</bdi> and <bdi>Glockenfee</bdi></a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+			
+	<article class="message message--post js-post js-inlineModContainer  "
+		data-author="Bibi Blocksberg"
+		data-content="post-54374"
+		id="js-post-54374">
+	
+
+		<span class="u-anchorTarget" id="post-54374"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/bibi-blocksberg.201/" class="avatar avatar--l" data-user-id="201" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/201.jpg?1544646387" srcset="/forums/data/avatars/h/0/201.jpg?1544646387 2x" alt="Bibi Blocksberg" class="avatar-u201-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/bibi-blocksberg.201/" class="username " dir="auto" data-user-id="201" data-xf-init="member-tooltip" itemprop="name">Bibi Blocksberg</a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Hero</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			
+
+			<div class="message-extrainfo-container">
+				
+					<div class="message-extrainfo message-servers">
+						
+						
+						
+						
+						<div class="message-server server-eu2"></div>
+					</div>
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				<div class="message-extrainfo message-platform">
+					<div class="message-extrainfo-title">Platform</div><div class="message-extrainfo-content">
+					PC
+					</div>
+				</div>
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-54374" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-10-06T06:48:13-0700" data-time="1601992093" data-date-string="Oct 6, 2020" data-time-string="6:48 AM" title="Oct 6, 2020 at 6:48 AM">Oct 6, 2020</time></a>
+						
+							<div class="message-lastEdit">
+								
+									Last edited by a moderator <time  class="u-dt" dir="auto" datetime="2020-10-06T09:38:55-0700" data-time="1602002335" data-date-string="Oct 6, 2020" data-time-string="9:38 AM" title="Oct 6, 2020 at 9:38 AM">Oct 6, 2020</time>
+								
+							</div>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-54374"
+									data-xf-init="share-tooltip" data-href="/forums/posts/54374/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-54374" rel="nofollow">
+										#8
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-54374"
+							data-lb-caption-desc="Bibi Blocksberg &middot; Oct 6, 2020 at 6:48 AM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper"><blockquote class="bbCodeBlock bbCodeBlock--expandable bbCodeBlock--quote">
+	
+		<div class="bbCodeBlock-title">
+			
+				<a href="/forums/goto/post?id=53773"
+					class="bbCodeBlock-sourceJump"
+					data-xf-click="attribution"
+					data-content-selector="#post-53773">Glockenfee said:</a>
+			
+		</div>
+	
+	<div class="bbCodeBlock-content">
+		
+		<div class="bbCodeBlock-expandContent ">
+			Jo, kann dem nur zustimmen - hinten wird nur auf Autokampf gekloppt, möglichst ohne Einsatz von evtl. Mana etc - und vorne die dürfen Kopf hinhalten und Tränke raushauen. Finde so ein Verhalten mehr als unkollegial. Ich überlege ehrlich, ob ich mich dem anpasse und nur noch ab und an mal ein Schlag raushaue (auch sowas hab ich schon beobachtet, dass is unter aller S...<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="smilie smilie--sprite smilie--sprite4" alt=":mad:" title="Mad    :mad:" data-shortname=":mad:" />). Reicht ja völlig, um so den Erfolg zu bekommen...
+		</div>
+		<div class="bbCodeBlock-expandLink"><a>Click to expand...</a></div>
+	</div>
+</blockquote>Gegen Ende der Zone wird es grad immer schlimmer. Man bekommt teilweise mit Mühe und Not noch genug Leute (mit Schlagkraft) zusammen um die Pharaonen zu hauen und hinten stehen welche aufm Berg, matchen die Pharaonen noch hoch und kommen bei 2% runter und hauen 1x drauf.<br />
+Kann man solche Leute nicht aus den Events bannen?  Vorne sind ein paar die potten wie blöd um die Pharaonen runter zu kriegen und die &quot;kleinen&quot; die kaum bis keinen Schaden machen mitzuziehen (was vollkommen normal und in Ordnung ist) und solche [BELEIDIGUNG GELÖSCHT] machen sich nen lauen Lenz.</div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList ">
+							
+							
+				
+							
+							 
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList ">
+					
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+				
+					
+	
+	
+	
+	
+		<article class="message message--post message--mod js-post js-inlineModContainer  "
+		data-author="Tiberius"
+		data-content="post-54375"
+		id="js-post-54375">
+	
+
+		<span class="u-anchorTarget" id="post-54375"></span>
+
+		<div class="message-inner">
+			<div class="message-cell message-cell--user">
+				
+
+	<section itemscope itemtype="https://schema.org/Person" class="message-user">
+		<div class="message-avatar ">
+			<div class="message-avatar-wrapper">
+				<a href="/forums/members/tiberius.8/" class="avatar avatar--l" data-user-id="8" data-xf-init="member-tooltip">
+			<img src="/forums/data/avatars/l/0/8.jpg?1543865850"  alt="Tiberius" class="avatar-u8-l" itemprop="image" /> 
+		</a>
+				
+			</div>
+		</div>
+		<div class="message-userDetails">
+			<div class="message-ribbon">
+				<h4 class="message-name"><span><a href="/forums/members/tiberius.8/" class="username " dir="auto" data-user-id="8" data-xf-init="member-tooltip" itemprop="name"><span class="username--staff username--moderator username--admin">Tiberius</span></a></span></h4>
+				
+				
+					<div class="userBanner userBanner userBanner--primary message-userBanner" itemprop="jobTitle"><span class="userBanner-before"></span><strong>Neonga Nation</strong><span class="userBanner-after"></span></div>
+				
+				
+				
+			</div>
+			
+			<div class="userTitle message-titlebadge" dir="auto" itemprop="jobTitle">Forum Moderator</div>
+
+			<div class="message-extrainfo-container">
+				
+				<div class="message-extrainfo-container-inner">
+			
+			
+				</div>
+			</div>
+		</div>
+		
+			
+			
+		
+		<span class="message-userArrow"></span>
+	</section>
+
+			</div>
+			<div class="message-cell message-cell--main">
+				<div class="message-main js-quickEditTarget">
+
+					<header class="message-attribution">
+						<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-54375" class="message-attribution-main u-concealed" rel="nofollow"><time  class="u-dt" dir="auto" datetime="2020-10-06T09:38:08-0700" data-time="1602002288" data-date-string="Oct 6, 2020" data-time-string="9:38 AM" title="Oct 6, 2020 at 9:38 AM">Oct 6, 2020</time></a>
+						
+						<div class="message-attribution-opposite">
+							
+							
+							<!-- <li>
+								<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-54375"
+									data-xf-init="share-tooltip" data-href="/forums/posts/54375/share"
+									rel="nofollow">
+									<i class="fa--xf far fa-share-alt" aria-hidden="true"></i>
+								</a>
+							</li>
+							 -->
+							
+								<li>
+									<a href="/forums/threads/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976/post-54375" rel="nofollow">
+										#9
+									</a>
+								</li>
+							
+						</ul>
+					</header>
+
+						
+						<div class="message-content js-messageContent">
+					
+
+						
+						
+						
+
+						<div class="message-userContent lbContainer js-lbContainer "
+							data-lb-id="post-54375"
+							data-lb-caption-desc="Tiberius &middot; Oct 6, 2020 at 9:38 AM">
+
+							
+							
+							<article class="message-body js-selectToQuote">
+								
+								<div class="bbWrapper"><blockquote class="bbCodeBlock bbCodeBlock--expandable bbCodeBlock--quote">
+	
+		<div class="bbCodeBlock-title">
+			
+				<a href="/forums/goto/post?id=54374"
+					class="bbCodeBlock-sourceJump"
+					data-xf-click="attribution"
+					data-content-selector="#post-54374">Bibi Blocksberg said:</a>
+			
+		</div>
+	
+	<div class="bbCodeBlock-content">
+		
+		<div class="bbCodeBlock-expandContent ">
+			Gegen Ende der Zone wird es grad immer schlimmer. Man bekommt teilweise mit Mühe und Not noch genug Leute (mit Schlagkraft) zusammen um die Pharaonen zu hauen und hinten stehen welche aufm Berg, matchen die Pharaonen noch hoch und kommen bei 2% runter und hauen 1x drauf.<br />
+Kann man solche Leute nicht aus den Events bannen?
+		</div>
+		<div class="bbCodeBlock-expandLink"><a>Click to expand...</a></div>
+	</div>
+</blockquote>Nein, das kann man (auch wenn viele nun sicher &quot;leider&quot; denken werden, und ich verstehe Euch da auch) nicht.<br />
+<br />
+Genau wie im echten Leben auch, wird es auch in V&amp;H immer Leute geben, die sich für das Gemeinwohl (vielleicht ein klein wenig hoch gegriffener Begriff bei einem &quot;schnöden&quot; Bosskill in einem Computerspiel, aber seis drum) einsetzen und ihr Bestes geben und nicht nur vollen Einsatz, sondern teilweise auch persönliche Ressourcen dafür aufwenden, dass nicht nur man selbst, sondern auch die Gemeinschaft davon etwas hat. Und es wird auch immer Leute geben, die eben genau das nicht tun, sondern sich ohne eigenen Aufwand &quot;durchleechen&quot; und von der Arbeit der Gemeinschaft profitieren, ohne groß etwas selbst beizutragen.<br />
+<br />
+So unfair wie das auch ist, ist dies leider etwas, mit dem jede Gemeinschaft, und damit auch unser Spiel, irgendwie umgehen muss, ohne konstante Überwachung &quot;von oben&quot; mit dann eingehender Bestrafung usw. Weder können wir die Eventzonen konstant überwachen und schauen, ob jeder Spieler auch immer sein bestes gibt, noch wollen wir dieses. Und dabei habe wir noch gar nicht darüber geredet, dass es auch nicht immer einwandfrei zu entscheiden ist, ob jemand jetzt zu den &quot;solchen Leuten&quot; gehört und ein Leecher ist oder nicht mehr Schaden machen kann, zu spät gekommen ist und gerade noch Glück hat, nen Hit oder zwei auf den Boss reinzubekommen oder oder oder. Das ist nun einmal nichts, was man in den Serverlogs einwandfrei beweisbar belegen kann, wie sagen wir mal nen Frühstart beim Autorennen.<br />
+<br />
+Was jeder von Euch daraus nun für Konsequenzen zieht in Eventzonen, bleibt Euch natürlich selbst überlassen, einschreiten werden wir hier als Spielbetreiber aber nicht. Um was wir Euch aber bitten möchten ist, andere Spieler deswegen nicht zu beschimpfen, weder hier noch im Spiel. Denn das ist erstens wirklich gegen unsere Regeln und zweitens haben Beleidigungen noch höchst selten jemand davon überzeugt, seine Meinung und damit seine Spielweise zu ändern. Danke!</div>
+								<div class="js-selectToQuoteEnd">&nbsp;</div>
+								
+							</article>
+
+							
+
+							
+						</div>
+
+
+					</div>
+
+					
+						<div class="reactionsBar js-reactionsList is-active">
+							
+							
+	
+	<!--
+		<ul class="reactionSummary">
+			
+				
+					<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span></li>
+				
+			
+		</ul>
+	 -->
+
+
+<span class="u-srOnly">Reactions:</span>
+<a class="reactionsBar-link" href="/forums/posts/54375/reactions" data-xf-click="overlay" data-cache="false"><bdi>Zysen</bdi>, <bdi>XMerlindaX</bdi> and <bdi>Sarah05</bdi></a>
+				
+							
+							 
+								<ul class="reactionSummary">
+								
+									<li><span class="reaction reaction--small reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" /></span><span class="reactionCount"><span class="reactionCountSmall">x</span>3</span></li>
+								
+								</ul>
+							
+						
+						</div>
+						
+					<!--<div class="likesBar js-likeList is-active">
+					<i class="likeIcon" title="Likes" aria-hidden="true"></i>
+<span class="u-srOnly">Likes:</span>
+<a href="/forums/posts/54375/likes" data-xf-click="overlay"><bdi>Zysen</bdi>, <bdi>XMerlindaX</bdi> and <bdi>Sarah05</bdi></a>
+					</div> -->
+
+					
+	
+
+					
+					<footer class="message-footer">
+						
+
+
+
+						<div class="js-historyTarget message-historyTarget toggleTarget" data-href="trigger-href"></div>
+					</footer>
+				</div>
+			</div>
+			
+		</div>
+	</article>
+
+	
+
+				
+			
+		</div>
+	</div>
+
+	
+		<div class="block-outer block-outer--after">
+			
+				
+				
+					<div class="block-outer-opposite">
+						
+							<a href="/forums/login/" class="button--link button" data-xf-click="overlay"><span class="button-text">
+								Login/Signup
+							</span></a>
+						
+					</div>
+				
+			
+		</div>
+	
+
+	
+	
+
+</div>
+
+
+
+	
+
+<div class="button-scrolltotop-container">
+	<a href="#top" class="button-scrolltotop button" data-xf-click="scroll-to"><span class="button-text">Scroll To Top</span></a>
+</div>
+
+
+
+
+
+<div class="blockMessage blockMessage--none">
+	
+	
+
+</div>
+
+	<div class="block-outer js-threadStatusField"></div>
+
+
+
+
+</div>
+                    
+                </div>
+
+                
+            </div>
+
+            <!-- 
+            
+	
+		<ul class="p-breadcrumbs p-breadcrumbs--bottom"
+			itemscope itemtype="https://schema.org/BreadcrumbList">
+		
+			
+
+			
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/" itemprop="item">
+			<span itemprop="name">Forums</span>
+		</a>
+		<meta itemprop="position" content="1" />
+	</li>
+
+			
+
+			
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/#international-community.19" itemprop="item">
+			<span itemprop="name">International Community</span>
+		</a>
+		<meta itemprop="position" content="2" />
+	</li>
+
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/categories/deutsch.23/" itemprop="item">
+			<span itemprop="name">Deutsch</span>
+		</a>
+		<meta itemprop="position" content="3" />
+	</li>
+
+			
+				
+				
+	<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+		<a href="/forums/forums/news-und-patchnotes.22/" itemprop="item">
+			<span itemprop="name">News und Patchnotes</span>
+		</a>
+		<meta itemprop="position" content="4" />
+	</li>
+
+			
+
+		
+		</ul>
+	
+
+             -->
+            
+	   </div> <!-- Closing parchment-wrapper -->
+    </div> <!-- Closing p-body-inner -->
+</div> <!-- Closing p-body -->
+
+<footer class="p-footer" id="footer">
+	<div class="p-footer-inner">
+
+		<div class="p-footer-row">
+			
+			<div class="p-footer-row-opposite">
+				<ul class="p-footer-linkList">
+					
+						
+							<li><a href="https://www.villagersandheroes.com/support/" data-xf-click="">Contact us</a></li>
+						
+					
+
+					
+						<li><a href="https://villagersandheroes.com/tos">Terms and rules</a></li>
+					
+
+					
+						<li><a href="https://villagersandheroes.com/privacypolicy">Privacy policy</a></li>
+					
+
+					
+						<li><a href="/forums/help/">Help</a></li>
+					
+
+					
+						<li><a href="http://www.villagersandheroes.com">Home</a></li>
+					
+					
+						
+
+				</ul>
+			</div>
+		</div>
+
+		
+			<div class="p-footer-copyright">
+			
+				<a href="https://xenforo.com" class="u-concealed" dir="ltr" target="_blank">Forum software by XenForo<sup>&reg;</sup> <span class="copyright">&copy; 2010-2019 XenForo Ltd.</span></a>
+				
+			
+			</div>
+		
+
+		
+	</div>
+</footer>
+
+</div> <!-- closing p-pageWrapper -->
+
+<div class="u-bottomFixer js-bottomFixTarget">
+	
+	
+</div>
+
+
+	<div class="u-scrollButtons js-scrollButtons" data-trigger-type="up">
+		<a href="#top" class="button--scroll button" data-xf-click="scroll-to"><span class="button-text"><i class="fa--xf far fa-arrow-up" aria-hidden="true"></i><span class="u-srOnly">Top</span></span></a>
+		
+	</div>
+
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script>window.jQuery || document.write('<script src="/forums/js/vendor/jquery/jquery-3.3.1.min.js?_v=6060c06b"><\/script>')</script>
+	<script src="/forums/js/vendor/vendor-compiled.js?_v=6060c06b"></script>
+	<script src="/forums/js/xf/core-compiled.js?_v=6060c06b"></script>
+	<script src="https://www.madottergames.com/forums/js/custom/jquery.textfill.js"></script>
+<script>
+
+	jQuery(document).ready(function(){
+		$('.message-ribbon .message-name').each(function() {
+			$(this).textfill({
+				maxFontPixels: 18,
+				widthOnly: true
+			});
+		});
+	});
+
+</script>
+
+	<script>
+		jQuery.extend(true, XF.config, {
+			// 
+			userId: 0,
+			enablePush: true,
+			pushAppServerKey: 'BKWEjx2BG/DyGMg0cccP62USar6+3O/hWfPh0UphHqYIPsYOHgJcqN22spQoN7hMY9mHRbwGnfo+M9+AFpUoe8o=',
+			url: {
+				fullBase: 'https://villagersandheroes.com/forums/',
+				basePath: '/forums/',
+				css: '/forums/css.php?css=__SENTINEL__&s=3&l=1&d=1599410957',
+				keepAlive: '/forums/login/keep-alive'
+			},
+			cookie: {
+				path: '/',
+				domain: '',
+				prefix: 'xf_',
+				secure: true
+			},
+			csrf: '1632308311,e1899485f9015a3d2ef6419c1780fe30',
+			js: {"https:\/\/www.madottergames.com\/forums\/js\/custom\/jquery.textfill.js":true},
+			css: {"public:bb_code.less":true,"public:message.less":true,"public:extra.less":true},
+			time: {
+				now: 1632308311,
+				today: 1632294000,
+				todayDow: 3,
+				tomorrow: 1632380400,
+				yesterday: 1632207600,
+				week: 1631775600
+			},
+			borderSizeFeature: '3px',
+			fontAwesomeWeight: 'r',
+			enableRtnProtect: true,
+			enableFormSubmitSticky: true,
+			uploadMaxFilesize: 268435456,
+			allowedVideoExtensions: ["m4v","mov","mp4","mp4v","mpeg","mpg","ogv","webm"],
+			shortcodeToEmoji: true,
+			visitorCounts: {
+				conversations_unread: '0',
+				alerts_unread: '0',
+				total_unread: '0',
+				title_count: true,
+				icon_indicator: true
+			},
+			jsState: {},
+			publicMetadataLogoUrl: '',
+			publicPushBadgeUrl: 'https://villagersandheroes.com/forums/styles/default/xenforo/bell.png'
+		});
+
+		jQuery.extend(XF.phrases, {
+			// 
+			date_x_at_time_y: "{date} at {time}",
+			day_x_at_time_y:  "{day} at {time}",
+			yesterday_at_x:   "Yesterday at {time}",
+			x_minutes_ago:    "{minutes} minutes ago",
+			one_minute_ago:   "1 minute ago",
+			a_moment_ago:     "A moment ago",
+			today_at_x:       "Today at {time}",
+			in_a_moment:      "In a moment",
+			in_a_minute:      "In a minute",
+			in_x_minutes:     "In {minutes} minutes",
+			later_today_at_x: "Later today at {time}",
+			tomorrow_at_x:    "Tomorrow at {time}",
+
+			day0: "Sunday",
+			day1: "Monday",
+			day2: "Tuesday",
+			day3: "Wednesday",
+			day4: "Thursday",
+			day5: "Friday",
+			day6: "Saturday",
+
+			dayShort0: "Sun",
+			dayShort1: "Mon",
+			dayShort2: "Tue",
+			dayShort3: "Wed",
+			dayShort4: "Thu",
+			dayShort5: "Fri",
+			dayShort6: "Sat",
+
+			month0: "January",
+			month1: "February",
+			month2: "March",
+			month3: "April",
+			month4: "May",
+			month5: "June",
+			month6: "July",
+			month7: "August",
+			month8: "September",
+			month9: "October",
+			month10: "November",
+			month11: "December",
+
+			active_user_changed_reload_page: "The active user has changed. Reload the page for the latest version.",
+			server_did_not_respond_in_time_try_again: "The server did not respond in time. Please try again.",
+			oops_we_ran_into_some_problems: "Oops! We ran into some problems.",
+			oops_we_ran_into_some_problems_more_details_console: "Oops! We ran into some problems. Please try again later. More error details may be in the browser console.",
+			file_too_large_to_upload: "The file is too large to be uploaded.",
+			uploaded_file_is_too_large_for_server_to_process: "The uploaded file is too large for the server to process.",
+			files_being_uploaded_are_you_sure: "Files are still being uploaded. Are you sure you want to submit this form?",
+			attach: "Attach files",
+			rich_text_box: "Rich text box",
+			close: "Close",
+			link_copied_to_clipboard: "Link copied to clipboard.",
+			text_copied_to_clipboard: "Text copied to clipboard.",
+			loading: "Loading…",
+
+			processing: "Processing",
+			'processing...': "Processing…",
+
+			showing_x_of_y_items: "Showing {count} of {total} items",
+			showing_all_items: "Showing all items",
+			no_items_to_display: "No items to display",
+
+			push_enable_notification_title: "Push notifications enabled successfully at Villagers & Heroes Forums",
+			push_enable_notification_body: "Thank you for enabling push notifications!"
+		});
+	</script>
+
+	<form style="display:none" hidden="hidden">
+		<input type="text" name="_xfClientLoadTime" value="" id="_xfClientLoadTime" title="_xfClientLoadTime" tabindex="-1" />
+	</form>
+
+	
+
+
+
+	<script type="text/template" id="xfReactTooltipTemplate">
+		<div class="tooltip-content-inner">
+			<div class="reactTooltip">
+				
+					<a href="#" class="reaction reaction--1" data-reaction-id="1"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Like" title="Like" data-xf-init="tooltip" /></a>
+				
+					<a href="#" class="reaction reaction--7" data-reaction-id="7"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Happy" title="Happy" data-xf-init="tooltip" /></a>
+				
+					<a href="#" class="reaction reaction--2" data-reaction-id="2"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Love" title="Love" data-xf-init="tooltip" /></a>
+				
+					<a href="#" class="reaction reaction--3" data-reaction-id="3"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Haha" title="Haha" data-xf-init="tooltip" /></a>
+				
+					<a href="#" class="reaction reaction--4" data-reaction-id="4"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Wow" title="Wow" data-xf-init="tooltip" /></a>
+				
+					<a href="#" class="reaction reaction--5" data-reaction-id="5"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Sad" title="Sad" data-xf-init="tooltip" /></a>
+				
+					<a href="#" class="reaction reaction--6" data-reaction-id="6"><i aria-hidden="true"></i><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" class="reaction-sprite js-reaction" alt="Angry" title="Angry" data-xf-init="tooltip" /></a>
+				
+			</div>
+		</div>
+	</script>
+
+
+
+	
+		
+	
+	
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "DiscussionForumPosting",
+			"@id": "https:\/\/villagersandheroes.com\/forums\/threads\/patchnotes-4-47-4-tagundnachtgleiche-bugfix-build.3976\/",
+			"headline": "Patchnotes 4.47.4 - Tagundnachtgleiche Bugfix Build",
+			"articleBody": "Patch Notes 4.47.4\n\nVerbesserungen und Balance\n\nLichtrunen von Pharaoh Okyris wurden entfernt.\nDie Farbe der Spawn-Ankündigungen wurde geändert auf orange.\nDie Gesundheit und der Schaden von Kalifen wurde erhöht. Die Spawnzeit wurde von 30 Minuten auf 20 Minuten gesenkt.\nAnkündigungsmeldung für Kalifen wurde hinzugefügt (5 und 1 Minute vor Spawn).\nTechnologie für Accountbans erweitert.\n\n\nBug Fixes\n\nBehoben: Probleme beim Spawn von Pharaohs in der Oase von Anuk'Amon\nBehoben: Viggo ist manchmal bei der Zerbrochene Klinge Quest nicht erschienen.\nBehoben: Das Ardent Gesellschafts Werbebildschirm ist für manche Spieler bei jedem Zonen erschienen.\n\n\nHinweis\n\nDie neuen Highlevel  Quests im Roggen werden nur Spielern angezeigt, die schon eine Wiedergeburt  durchgeführt haben. Dies ist Absicht.\n Das Keyboard wird nicht auf allen Android 11 Geräten angezeigt. Wir haben bereits einen Fix dafür in Arbeit, er muss aber noch eingehender auf unserem Testserver getestet werden, deswegen ist er noch nicht in diesem Update enthalten.",
+			"articleSection": "News und Patchnotes",
+			"author": {
+				"@type": "Person",
+				"name": "Tiberius"
+			},
+			"datePublished": "2020-09-18",
+			"dateModified": "2020-10-06",
+			"image": "https:\/\/villagersandheroes.com\/forums\/data\/avatars\/l\/0\/8.jpg?1543865850",
+			"interactionStatistic": {
+				"@type": "InteractionCounter",
+				"interactionType": "https://schema.org/ReplyAction",
+				"userInteractionCount": 8
+			}
+		}
+		</script>
+	
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+

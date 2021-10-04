@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    
+    
+
+    <title>CDPATH replacements - anarcat</title>
+
+    <!-- cargo-culted from https://realfavicongenerator.net/ -->
+    <!-- for the record: it is absolutely ridiculous that new browsers
+    *and* operating systems each want their own little precious
+    snowflake just for a frigging icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ikiwiki CSS -->
+    <link href="/style.css" rel="stylesheet" />
+
+    <!-- Bootstrap core CSS -->
+    <!-- those checksums can be verified with: shasum -b -a 384 $file | xxd -r -p | base64 -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
+    <!-- Custom styles for this template -->
+    <link href="/bootstrap.local.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for derivatives -->
+    
+    <link rel="stylesheet" href="/local.css" type="text/css" />
+    
+
+    
+      
+        <link rel="alternate" type="application/x-wiki" title="Edit this page" href="/ikiwiki.cgi?do=edit&amp;page=blog%2F2020-10-18-cdpath-replacement" />
+      
+      
+      <link rel="vcs-git" href="ssh://w-anarcat@anarcat.wiki.orangeseeds.org/" title="wiki git repository" />
+<link rel="vcs-git" href="git://anarcat.wiki.orangeseeds.org/" title="wiki git repository" />
+      
+      
+        
+          <link rel="prev" href="../2020-10-19-google-authenticator-libpam/" title="SSH 2FA with Google Authenticator and Yubikey" />
+        
+        <link rel="up" href="../" title="Blog." />
+        
+          <link rel="next" href="../2020-09-30-presentation-tools/" title="Presentation tools" />
+        
+      
+    
+  </head>
+  <body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">
+            <img alt="anarcat" src="/favicon.png" width="50" heigth="50" />
+          </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            
+            
+
+
+<ul class="nav navbar-nav navbar-right">
+<li><a href="../../#top">Bio</a></li>
+<li><a href="../#top">Blog</a></li>
+<li><a href="../../contact/">Contact</a></li>
+</ul>
+
+
+            
+          <ul class="nav navbar-nav">
+            
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" id="content">
+
+
+          <header class="page-header">
+            <h1 class="nocount">CDPATH replacements</h1>
+              <ol class="breadcrumb">
+              
+              
+              
+              
+                <li><a href="../">blog</a></li>
+              
+              
+            </ol>
+          </header>
+
+            <p>after reading <a href="https://www.kvr.at/posts/my-new-favorite-utility-autojump/">this post</a> I figured I might as well bite the bullet
+and improve on my CDPATH-related setup, especially because it does not
+work with Emacs. so i looked around for autojump-related alternatives
+that do.</p>
+
+<h1 id="what-i-use-now">What I use now</h1>
+
+<p>I currently have this in my <code>.shenv</code> (sourced by <code>.bashrc</code>):</p>
+
+<pre><code>export CDPATH=".:~:~/src:~/dist:~/wikis:~/go/src:~/src/tor"
+</code></pre>
+
+<p>This allows me to quickly jump into projects from my home dir, or the
+"source code" (<code>~/src</code>), "work" (<code>src/tor</code>), or wiki checkouts
+(<code>~/wikis</code>) directories. It works well from the shell, but
+unfortunately it's very static: if I want a new directory, I need to
+edit my config file, restart shells, etc. It also doesn't work from my
+text editor.</p>
+
+<h1 id="shell-jumpers">Shell jumpers</h1>
+
+<p>Those are commandline tools that can be used from a shell, generally
+with built-in shell integration so that a shell alias will find the
+right directory magically, usually by keeping track of the directories
+visited with <code>cd</code>.</p>
+
+<p>Some of those may or may not have integration in Emacs.</p>
+
+<h2 id="autojump">autojump</h2>
+
+<ul>
+<li><a href="https://github.com/wting/autojump">home page</a></li>
+<li>not in emacs, but <a href="https://github.com/coldnew/eshell-autojump">works in eshell</a></li>
+<li><a href="https://stackoverflow.com/questions/25277748/use-z-jump-around-in-emacs-to-find-directories">this might work though</a></li>
+</ul>
+
+
+<h2 id="fasd">fasd</h2>
+
+<ul>
+<li><a href="https://github.com/clvv/fasd">home page</a></li>
+<li>upstream packaged in Debian</li>
+<li>emacs extensions, not in Debian:
+
+<ul>
+<li><a href="https://github.com/ajsalminen/helm-fasd">helm integration</a> (not in melpa?)</li>
+<li><a href="https://framagit.org/steckerhalter/emacs-fasd">more direct</a></li>
+</ul>
+</li>
+</ul>
+
+
+<h2 id="z">z</h2>
+
+<ul>
+<li><a href="https://github.com/rupa/z">home page</a></li>
+<li>ungooglable</li>
+<li>not in Debian</li>
+<li><a href="https://melpa.org/#/helm-z">helm integration</a></li>
+<li><a href="https://github.com/xuchunyang/eshell-z">eshell integration</a></li>
+</ul>
+
+
+<h2 id="fzf">fzf</h2>
+
+<ul>
+<li><a href="https://github.com/junegunn/fzf">home page</a></li>
+<li>the original "fuzzer". uses <code>find</code> by default, so no notion of
+frequency.</li>
+<li><a href="https://github.com/bling/fzf.el">emacs integration</a></li>
+<li><a href="https://github.com/junegunn/fzf/wiki/Related-projects">similar projects</a></li>
+<li><a href="https://github.com/ajeetdsouza/zoxide">rust implementation</a></li>
+</ul>
+
+
+<h1 id="emacs-plugins-not-integrated-with-the-shell">Emacs plugins not integrated with the shell</h1>
+
+<p>Those projects can be used to track files inside a project or find
+files around directories, but do not offer the equivalent
+functionality in the shell.</p>
+
+<h2 id="projectile">projectile</h2>
+
+<ul>
+<li><a href="https://github.com/bbatsov/projectile">home page</a></li>
+<li>supports ido, ivy, or helm.</li>
+</ul>
+
+
+<h2 id="elpy">elpy</h2>
+
+<ul>
+<li><a href="https://elpy.readthedocs.io/">home page</a></li>
+<li>elpy has a notion of <a href="https://elpy.readthedocs.io/en/latest/ide.html#projects">projects</a>, so, by default, will find files
+in the current "project" with <kbd>C-c C-f which is useful</li>
+</ul>
+
+
+<h2 id="bookmarksel">bookmarks.el</h2>
+
+<ul>
+<li>built-in</li>
+<li><a href="https://www.emacswiki.org/emacs/BookMarks">home page</a></li>
+<li>"Bookmarks record locations so you can return to them later"</li>
+</ul>
+
+
+<h2 id="recentf">recentf</h2>
+
+<ul>
+<li>built-in</li>
+<li><a href="https://www.emacswiki.org/emacs/RecentFiles">home page</a></li>
+<li>"builds a list of recently opened files. This list is is
+automatically saved across sessions on exiting Emacs - you can then
+access this list through a command or the menu"</li>
+</ul>
+
+
+<h1 id="references">references</h1>
+
+<p>https://www.emacswiki.org/emacs/LocateFilesAnywhere</p>
+
+
+            
+
+            
+              
+  
+  <nav class="navbar">
+    <ul class="nav navbar-nav pager">
+  
+    
+      <li class="previous">
+          <a href="../2020-10-19-google-authenticator-libpam/">
+              <span class="glyphicon glyphicon-menu-left"></span>
+          SSH 2FA with Google Authenticator and Yubikey</a>
+      </li>
+    
+    <li class="up">
+        <a href="../">
+          <span class="glyphicon glyphicon-menu-up"></span>
+        Blog.</a>
+    </li>
+    
+      <li class="next">
+          <a href="../2020-09-30-presentation-tools/">Presentation tools
+          <span class="glyphicon glyphicon-menu-right"></span>
+          </a>
+      </li>
+    
+  
+  </ul>
+  </nav>
+  
+
+
+            
+
+            
+            
+            <section id="comments">
+            
+
+
+            
+            <div class="addcomment">
+            <a href="/ikiwiki.cgi?do=comment&amp;page=blog%2F2020-10-18-cdpath-replacement">Add a comment</a>
+            </div>
+            
+            </section>
+            
+
+            <div class="pagedate">
+            <span class="created">Created <time datetime="2020-10-18T21:30:35Z" pubdate="pubdate" class="relativedate" title="Sun, 18 Oct 2020 17:30:35 -0400">tard dans l'après-midi de Sunday, October 18th, 2020</time>.</span>
+            <span class="edited">
+            
+            <a href="http://source.anarcat.wiki.orangeseeds.org/?p=source.git;a=history;f=blog/2020-10-18-cdpath-replacement.mdwn">Edited <time datetime="2020-10-18T21:31:23Z" class="relativedate" title="Sun, 18 Oct 2020 17:31:23 -0400">tard dans l'après-midi de Sunday, October 18th, 2020</time>.</a>
+            
+            </span>
+            </div>
+
+            <nav class="navbar navbar-default">
+                
+            <div class="navbar-brand"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></div>
+            <div class="container-fluid">
+
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-footer" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </div>
+
+            <div id="navbar-footer" class="collapse navbar-collapse">
+            
+              <form method="get" action="/ikiwiki.cgi" class="navbar-form navbar-left" role="search">
+<input type="text" class="form-control" name="P" value="" size="16"
+placeholder="search" />
+</form>
+
+            
+
+            <ul class="nav navbar-nav navbar-right">
+            
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tags <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  
+                    <li><a href="../../tag/debian-planet/" rel="tag">debian-planet</a></li>
+                  
+                    <li><a href="../../tag/emacs/" rel="tag">emacs</a></li>
+                  
+                    <li><a href="../../tag/python-planet/" rel="tag">python-planet</a></li>
+                  
+                    <li><a href="../../tag/review/" rel="tag">review</a></li>
+                  
+                    <li><a href="../../tag/shell/" rel="tag">shell</a></li>
+                  
+                </ul>
+              </li>
+            
+
+            
+            
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Meta<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+              
+                <li><a href="/ikiwiki.cgi?do=edit&amp;page=blog%2F2020-10-18-cdpath-replacement" rel="nofollow">Edit</a></li>
+              
+              
+                <li><a href="../../recentchanges/">Timeline</a></li>
+              
+              
+                <li class="hidden-xs"><a href="http://source.anarcat.wiki.orangeseeds.org/?p=source.git;a=history;f=blog/2020-10-18-cdpath-replacement.mdwn">History</a></li>
+              
+              
+              
+                <li><a href="/ikiwiki.cgi?do=prefs">Prefs</a></li>
+              
+              
+                
+                  <li class="hidden-xs"><a href="/ikiwiki.cgi?do=branchable">Branchable</a></li>
+                
+              
+              
+                <li><a rel="nofollow" href="/ikiwiki.cgi?do=comment&amp;page=blog%2F2020-10-18-cdpath-replacement">Comment</a></li>
+                
+                </ul>
+              </li>
+            
+            </ul>
+            </div>
+            </div>
+            </nav>
+            
+
+            
+    </div> <!-- /container -->
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted">
+          <span class="copyright">
+          Copyleft © 2002-2016 The
+          Anarcat <a href="/meta/license">CC-BY-SA</a>.
+          <!-- Bootstrap theme: © 2011-2015 Twitter, Inc, © 2009-2015 Julian Andres Klode
+          <a href="../../LICENSE">MIT</a>. -->
+          </span>
+          <span class="pull-right powered-by">
+            Powered
+            by <a href="http://ikiwiki.info/">ikiwiki</a>.
+            <a href="http://validator.w3.org/check?uri=referer">Valid (X)HTML 5</a>.
+          </span>
+        </p>
+      </div>
+    </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"></script>
+
+    <script data-goatcounter="https://analytics.anarc.at/count" async src="//analytics.anarc.at/count.js"></script>
+    <noscript>
+    <img src="https://analytics.anarc.at/count?p=blog/2020-10-18-cdpath-replacement&t=CDPATH replacements" />
+    </noscript>
+<script src="../../ikiwiki/ikiwiki.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../ikiwiki/relativedate.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../ikiwiki/ikiwiki.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../ikiwiki/toggle.js" type="text/javascript" charset="utf-8"></script>
+  </body>
+</html>

@@ -104,6 +104,7 @@ def test_input():
     assert utils.load_html(123) is None
     assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
+    assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
     assert extract(None, 'url', '0000', target_language=None) is None
     # legacy
@@ -488,6 +489,14 @@ def test_htmlprocessing():
     assert '<fw rend="h1" type="header">Test headline</fw>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
 
 
+def test_precision_recall():
+    '''test precision- and recall-oriented settings'''
+    # the test cases could be better
+    my_document = html.fromstring('<html><body><p>This here is the text.</p></body></html>')
+    assert extract(my_document, favor_precision=True, config=ZERO_CONFIG) is not None
+    assert extract(my_document, favor_recall=True, config=ZERO_CONFIG) is not None
+
+
 
 if __name__ == '__main__':
     test_trim()
@@ -498,6 +507,7 @@ if __name__ == '__main__':
     test_images()
     test_links()
     test_htmlprocessing()
+    test_precision_recall()
     test_filters()
     test_baseline()
     test_txttocsv()
