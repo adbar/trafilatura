@@ -539,9 +539,9 @@ def extract_comments(tree, dedupbool, config):
 def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
-    # bypass for recall?
-    #if len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*10:
-    #    return body, text, len_text
+    # bypass for recall
+    if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*10:
+        return body, text, len_text
     # try with readability
     temppost_algo = try_readability(backup_tree, url)
     algo_text = trim(' '.join(temppost_algo.itertext()))
@@ -578,7 +578,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
             # post-processing: remove unwanted sections
             body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
     # try with justext
-    elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') or favor_recall is True:
         LOGGER.error('not enough text %s', url)
         body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
@@ -691,7 +691,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         url: URL of the webpage.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
         favor_precision: prefer less text but correct extraction (weak effect).
-        favor_recall: prefer more text even when unsure (inactive).
+        favor_recall: prefer more text even when unsure (experimental).
         include_comments: Extract comments along with the main text.
         output_format: Define an output format, Python being the default
             and the interest of this internal function.
@@ -853,7 +853,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         record_id: Add an ID to the metadata.
         no_fallback: Skip the backup extraction with readability-lxml and justext.
         favor_precision: prefer less text but correct extraction (weak effect).
-        favor_recall: when unsure, prefer more text (inactive).
+        favor_recall: when unsure, prefer more text (experimental).
         include_comments: Extract comments along with the main text.
         output_format: Define an output format:
             'txt', 'csv', 'json', 'xml', or 'xmltei'.
