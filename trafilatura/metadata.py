@@ -33,6 +33,8 @@ HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
+LICENSE_REGEX = re.compile(r'/(by|by-sa|by-nd|by-nc|by-nc-sa|by-nc-nd|zero)/([1-9]\.[0-9])')
+
 METANAME_AUTHOR = {
     'author', 'byl', 'citation_author', 'dc.creator', 'dc.creator.aut',
     'dc:creator',
@@ -323,6 +325,19 @@ def extract_catstags(metatype, tree):
     return [x for x in results if x is not None]
 
 
+def extract_license(tree):
+    '''Search the HTML code for license information and parse it.'''
+    for element in tree.xpath('//a[@rel="license"]'):
+        if element.get('href') is not None:
+            # look for Creative Commons elements
+            match = LICENSE_REGEX.search(element.get('href'))
+            if match:
+               return 'CC ' + match.group(1).upper() + ' ' + match.group(2)
+        if element.text is not None:
+            return trim(element.text) 
+    return None
+
+
 def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False):
     """Main process for metadata extraction.
 
@@ -399,10 +414,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if not metadata['tags']:
         metadata['tags'] = extract_catstags('tag', tree)
     # license
-    for element in tree.xpath('//a[@rel="license"]', ):
-        if element.text is not None:
-            metadata['license'] = trim(element.text)
-            break
+    metadata['license'] = extract_license(tree)
     # for safety: length check
     for key, value in metadata.items():
         if value is not None and len(value) > 10000:

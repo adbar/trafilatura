@@ -271,6 +271,14 @@ def test_catstags():
     assert metadata['tags'] == ['Tag1', 'Tag2']
 
 
+def test_license():
+    '''Test extraction of CC licenses'''
+    metadata = extract_metadata('<html><body><p><a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license">CC BY-SA</a></p></body></html>')
+    assert metadata['license'] == 'CC BY-SA 4.0'
+    metadata = extract_metadata('<html><body><p><a href="https://licenses.org/unknown" rel="license">Unknown</a></p></body></html>')
+    assert metadata['license'] == 'Unknown'
+
+
 def test_pages():
     '''Test on real web pages'''
     metadata = extract_metadata(load_mock_page('http://blog.python.org/2016/12/python-360-is-now-available.html'))
@@ -504,4 +512,5 @@ if __name__ == '__main__':
     test_description()
     test_catstags()
     test_sitename()
+    test_license()
     test_pages()
