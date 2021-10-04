@@ -542,6 +542,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
     # bypass for recall
     if favor_recall is True and len_text > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')*10:
         return body, text, len_text
+    algo_flag, jt_result = False, False
     # try with readability
     temppost_algo = try_readability(backup_tree, url)
     algo_text = trim(' '.join(temppost_algo.itertext()))
@@ -574,20 +575,14 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         if jt_result is True: # and not len_text > 2*len_text2:
             LOGGER.debug('using justext, length: %s', len_text2)  #MIN_EXTRACTED_SIZE:
             body, text, len_text = body2, text2, len_text2
-        else:
-            # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
     # try with justext
     elif len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') or favor_recall is True:
         LOGGER.error('not enough text %s', url)
         body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
-        if jt_result is False:
-            # post-processing: remove unwanted sections
-            body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
-    else:
-        if algo_flag is True:
-            body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
+    # post-processing: remove unwanted sections
+    if algo_flag is True and jt_result is False:
+        body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
     return body, text, len_text
 
 
