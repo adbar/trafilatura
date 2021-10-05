@@ -7,8 +7,8 @@ import json
 
 from .utils import normalize_authors, trim
 
-JSON_ARTICLE_SCHEMA = {"Article", "BackgroundNewsArticle", "BlogPosting", "MedicalScholarlyArticle", "NewsArticle", "OpinionNewsArticle", "ReportageNewsArticle",  "ScholarlyArticle", "SocialMediaPosting"}
-JSON_PUBLISHER_SCHEMA = {"NewsMediaOrganization", "Organization", "WebPage", "Website"}
+JSON_ARTICLE_SCHEMA = {"article", "backgroundnewsarticle", "blogposting", "medicalscholarlyarticle", "newsarticle", "opinionnewsarticle", "reportagenewsarticle", "scholarlyarticle", "socialmediaposting"}
+JSON_PUBLISHER_SCHEMA = {"newsmediaorganization", "organization", "webpage", "website"}
 JSON_AUTHOR_1 = re.compile(r'"author":[^}[]+?"name?\\?": ?\\?"([^"\\]+)|"author"[^}[]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_2 = re.compile(r'"[Pp]erson"[^}]+?"names?".+?"([^"]+)', re.DOTALL)
 JSON_AUTHOR_REMOVE = re.compile(r',?(?:"\w+":?[:|,|\[])?{?"@type":"(?:[Ii]mageObject|[Oo]rganization|[Ww]eb[Pp]age)",[^}[]+}[\]|}]?')
@@ -25,11 +25,11 @@ def extract_json(schema, metadata):
         schema = [schema]
 
     for parent in filter(None, schema):
-        if '@context' not in parent or parent['@context'][-10:].lower() != 'schema.org':
+        if '@context' not in parent or not isinstance(parent['@context'], str) or parent['@context'][-10:].lower() != 'schema.org':
             continue
         if '@graph' in parent:
             parent = parent['@graph']
-        elif '@type' in parent and 'LiveBlogPosting' in parent['@type']:
+        elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower():
             parent = parent['liveBlogUpdate']
         else:
             parent = schema
@@ -44,20 +44,20 @@ def extract_json(schema, metadata):
                 continue
             if isinstance(content["@type"], list):
                 # some websites are using ['Person'] as type
-                content_type = content["@type"][0]
+                content_type = content["@type"][0].lower()
             else:
-                content_type = content["@type"]
+                content_type = content["@type"].lower()
 
             if content_type in JSON_PUBLISHER_SCHEMA:
                 for candidate in ("name", "alternateName"):
                     if candidate in content:
                         if content[candidate] is not None:
-                            if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content_type != "WebPage"):
+                            if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content_type != "webpage"):
                                 metadata['sitename'] = content[candidate]
                             if metadata['sitename'] is None and metadata['sitename'].startswith('http') and not content[candidate].startswith('http'):
                                 metadata['sitename'] = content[candidate]
 
-            elif content_type == "Person":
+            elif content_type == "person":
                 if 'name' in content and not content['name'].startswith('http'):
                     metadata['author'] = normalize_authors(metadata['author'], content['name'])
 
@@ -77,8 +77,11 @@ def extract_json(schema, metadata):
                     for author in list_authors:
                         if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
                             # error thrown: author['name'] can be a list (?)
-                            if 'name' in author and author['name'] is not None and not isinstance(author['name'], list) and not author['name'].startswith('http'):
-                                metadata['author'] = normalize_authors(metadata['author'], author['name'])
+                            if 'name' in author and author['name'] is not None:
+                                author_name = author['name']
+                                if isinstance(author_name, list):
+                                    author_name = '; '.join(author_name).strip('; ')
+                                metadata['author'] = normalize_authors(metadata['author'], author_name)
                             elif 'givenName' in author is not None and 'familyName' in author:
                                 name = [author['givenName'], author['additionalName'], author['familyName']]
                                 metadata['author'] = normalize_authors(metadata['author'], ' '.join(
@@ -92,7 +95,7 @@ def extract_json(schema, metadata):
 
                 # try to extract title
                 if metadata['title'] is None:
-                    if 'name' in content and content_type == 'Article':
+                    if 'name' in content and content_type == 'article':
                         metadata['title'] = content['name']
                     elif 'headline' in content:
                         metadata['title'] = content['headline']

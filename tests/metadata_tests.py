@@ -150,19 +150,31 @@ def test_authors():
     assert metadata['author'] == 'Jenny Smith; John Smith'
     metadata = extract_metadata('<html><body><a href="" rel="author">Jenny Smith</a></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><a href="" rel="author">Jenny "The Author" Smith</a></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span class="author">Jenny Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><h4 class="author">Jenny Smith</h4></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><h4 class="author">Jenny Smith — Trafilatura</h4></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span class="wrapper--detail__writer">Jenny Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><span id="author-name">Jenny Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><figure data-component="Figure"><div class="author">Jenny Smith</div></figure></body></html>')
+    assert metadata['author'] is None
+    metadata = extract_metadata('<html><body><div class="sidebar"><div class="author">Jenny Smith</div></figure></body></html>')
+    assert metadata['author'] is None
     metadata = extract_metadata('<html><body><span class="author">Jenny Smith and John Smith</span></body></html>')
     assert metadata['author'] == 'Jenny Smith; John Smith'
     metadata = extract_metadata('<html><body><a class="author">Jenny Smith</a></body></html>')
     assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><a class="author">Jenny Smith <div class="title">Editor</div></a></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><a class="author">Jenny Smith from Trafilatura</a></body></html>')
+    assert metadata['author'] == 'Jenny Smith'
+    metadata = extract_metadata('<html><body><meta itemprop="author" content="Fake Author"/><a class="author">Jenny Smith from Trafilatura</a></body></html>', author_blacklist={'Fake Author'})
     assert metadata['author'] == 'Jenny Smith'
     metadata = extract_metadata('<html><body><a class="username">Jenny Smith</a></body></html>')
     assert metadata['author'] == 'Jenny Smith'

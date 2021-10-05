@@ -107,7 +107,8 @@ DISCARD_XPATH = [
     contains(@class, "embedded") or contains(@class, "embed")
     or contains(@id, "teaser") or contains(@class, "teaser") or
     contains(translate(@class, "T","t"), "teaser")
-    or contains(@id, "newsletter") or contains(@class, "newsletter") or
+    or contains(@id, "newsletter") or contains(@class, "newsletter")
+    or contains(@class, "subnav") or
     contains(@id, "cookie") or contains(@class, "cookie") or contains(@id, "tags")
     or contains(@class, "tags")  or contains(@id, "sidebar") or
     contains(@class, "sidebar") or contains(@id, "banner") or contains(@class, "banner")
@@ -158,7 +159,9 @@ DISCARD_IMAGE_ELEMENTS = [
 COMMENTS_DISCARD_XPATH = [
     './/*[(self::div or self::section)][starts-with(@id, "respond")]',
     './/cite|.//quote',
-    '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
-    contains(@class, "-reply-") or contains(@class, "message") or
+    '''.//*[@class="comments-title" or contains(@class, "comments-title") or
+    contains(@class, "nocomments") or starts-with(@id, "reply-") or
+    starts-with(@class, "reply-") or contains(@class, "-reply-") or contains(@class, "message")
+    or contains(@class, "signin") or
     contains(@id, "akismet") or contains(@class, "akismet") or contains(@style, "display:none")]''',
 ]
