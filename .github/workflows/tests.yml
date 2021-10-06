@@ -18,7 +18,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: [3.6, 3.7, 3.8, 3.9, "3.10.0"]
-        env: [{ MINIMAL: true }, { MINIMAL: false }]
+        env: [{ MINIMAL: "true" }, { MINIMAL: "false" }]
         include:
         # custom tests
         - python-version: 3.5
