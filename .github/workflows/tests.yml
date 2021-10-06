@@ -17,15 +17,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: [3.6, 3.7, 3.8, 3.9, "3.10.0"]
         env: [{ MINIMAL: true }, { MINIMAL: false }]
         include:
         # custom tests
         - python-version: 3.5
-          os: ubuntu-latest
-          experimental: true
-          allowed_failure: true
-        - python-version: 3.10-dev
           os: ubuntu-latest
           experimental: true
           allowed_failure: true
@@ -64,7 +60,7 @@ jobs:
 
     # optional, just for certain versions
     - name: Install LXML dependencies
-      if: ${{ matrix.python-version == '3.10-dev' || matrix.python-version == 'pypy3' }}
+      if: ${{ matrix.python-version == '3.10.0' || matrix.python-version == 'pypy3' }}
       run: sudo apt-get install libxml2-dev libxslt-dev
 
     # package setup
