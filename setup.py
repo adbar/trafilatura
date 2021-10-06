@@ -31,7 +31,7 @@ def get_long_description():
 extras = {
     'all': [
         'cchardet >= 2.1.7',
-        'htmldate[speed] >= 0.9.0',
+        'htmldate[speed] >= 0.9.1',
         'pycld3 == 0.21; python_version < "3.6"',
         'pycld3 >= 0.22; python_version >= "3.6"',
     ],
@@ -63,6 +63,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Text Processing :: Linguistic',
@@ -87,7 +88,7 @@ setup(
         'chardet == 3.0.4; python_version < "3.6"',
         'chardet >= 4.0.0; python_version >= "3.6"',
         'courlan >= 0.4.2',
-        'htmldate >= 0.9.0',
+        'htmldate >= 0.9.1',
         'justext >= 2.2.0',
         'lxml >= 4.6.3',
         'readability-lxml >= 0.8.1',

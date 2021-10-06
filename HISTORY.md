@@ -1,6 +1,15 @@
 ## History / Changelog
 
 
+### 0.9.2
+- first precision- and recall-oriented presets defined
+- improvements in authorship extraction (thanks @felipehertzer)
+- requesting TXT output with formatting now results in Markdown format
+- bugs fixed: notably extraction robustness and consistency (#109, #111, #113)
+- setting for cookies in request headers (thanks @muellermartin)
+- better date extraction thanks to htmldate update
+
+
 ### 0.9.1
 - improved author extraction (thanks @felipehertzer!)
 - bugs fixed: HTML element handling, HTML meta attributes, spider, CLI, ...
