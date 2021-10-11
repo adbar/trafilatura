@@ -438,7 +438,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     result_body = etree.Element('body')
     potential_tags = set(TAG_CATALOG)  # + 'span'?
     if include_tables is True:
-        potential_tags.update(['table', 'tr', 'th', 'td'])
+        potential_tags.update(['table', 'td', 'th', 'tr'])
     if include_images is True:
         potential_tags.add('graphic')
     if include_links is True:
@@ -449,30 +449,22 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         subtree = tree.xpath(expr)
         if not subtree:
             continue
-        subtree = subtree[0]
-        # for table_elem in subtree.xpath('//table'):
-        #    print('1', table_elem.text_content())
         # prune
-        subtree = prune_unwanted_nodes(subtree, DISCARD_XPATH)
+        subtree = prune_unwanted_nodes(subtree[0], DISCARD_XPATH)
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
-        # for table_elem in subtree.xpath('//table'):
-        #    print('2', table_elem.text_content())
         # remove elements by link density
         subtree = delete_by_link_density(subtree, 'div', backtracking=True)
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
         subtree = delete_by_link_density(subtree, 'p', backtracking=False)
-        # subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-        # also filter fw/head and quote elements
-        # for table_elem in subtree.xpath('//table'):
-        #    print('3', table_elem.text_content())
-        # define iteration strategy
-        if 'table' in potential_tags:
+        # also filter fw/head, table and quote elements?
+        if favor_precision is True:
+            subtree = delete_by_link_density(subtree, 'head', backtracking=False)
+            # subtree = delete_by_link_density(subtree, 'quote', backtracking=False)
+        if 'table' in potential_tags or favor_precision is True:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
                     elem.getparent().remove(elem)
-        # for table_elem in subtree.xpath('//table'):
-        #    print('4', table_elem.text_content())
         # skip if empty tree
         if len(subtree) == 0:
             continue
@@ -496,11 +488,12 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         while len(result_body) > 0 and result_body[-1].tag in ('fw', 'head'):
             result_body[-1].getparent().remove(result_body[-1])
         # exit the loop if the result has children
-        if len(result_body) > 1: # for recall put 0
+        if len(result_body) > 1:
             LOGGER.debug(expr)
             break
     temp_text = trim(' '.join(result_body.itertext()))
     # try parsing wild <p> elements if nothing found or text too short
+    # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         result_body = recover_wild_text(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
