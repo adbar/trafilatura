@@ -200,6 +200,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             spacing = True
         else:
             spacing = False
+        # todo: act on spacing here?
         processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True, config=config)
         if processed_child is not None:
             # todo: needing attention!
@@ -260,7 +261,17 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     return None
 
 
-def handle_table(table_elem, dedupbool, config):
+
+def define_cell_type(element):
+    '''Determine cell element type and mint new element'''
+    # define tag
+    cell_element = etree.Element('cell')
+    if element.tag == 'th':
+        cell_element.set('role', 'head')
+    return cell_element
+
+
+def handle_table(table_elem, potential_tags, dedupbool, config):
     '''Process single table element'''
     newtable = etree.Element('table')
     newrow = etree.Element('row')
@@ -280,19 +291,43 @@ def handle_table(table_elem, dedupbool, config):
             # if len(textcontent) == 0 or not re.search(r'[p{L}]+', textcontent):
             #    continue
         elif subelement.tag in ('td', 'th'):
+            newchildelem = define_cell_type(subelement)
             # process
-            processed_cell = process_node(subelement, dedupbool, config)
-            if processed_cell is None or text_chars_test(processed_cell.text) is False:
-                continue
-            # define tag
-            newsub = etree.SubElement(newrow, 'cell')
-            if subelement.tag == 'th':
-                newsub.set('role', 'head')
-            newsub.text = processed_cell.text
-            # subelement.tag = 'done' ??
+            if len(subelement) == 0:
+                processed_cell = process_node(subelement, dedupbool, config)
+                if processed_cell is not None:
+                    newchildelem.text, newchildelem.tail = processed_cell.text, processed_cell.tail
+            else:
+                # proceed with iteration, fix for nested elements
+                for child in subelement.iter('*'):
+                    if child.tag not in potential_tags and child.tag not in ('div', 'done', 'item', 'li'):
+                        LOGGER.warning('unexpected in table: %s %s %s', child.tag, child.text, child.tail)
+                        child.tag = 'done'
+                        continue
+                    if child.tag in ('td', 'th') or child.tag not in ('code', 'hi', 'ref', 'quote'):
+                        # todo: define properly
+                        # subcell_elem = define_cell_type(subelement)
+                        child.tag = 'cell'
+                    # todo: lists in table cells
+                    #else:
+                    #    subcell_elem = etree.Element(child.tag)
+                    processed_subchild = handle_textnode(child, comments_fix=True, deduplicate=dedupbool, config=config)  # preserve_spaces=True
+                    # test: handle_textelem(element, potential_tags, dedupbool, config)
+                    # add child element to processed_element
+                    if processed_subchild is not None:
+                        subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
+                        subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
+                    #elif child.tag == 'lb':
+                    #    subchildelem = etree.SubElement(newchildelem, child.tag)
+                    #child.tag = 'done'
+            # add to tree
+            if newchildelem.text or len(newchildelem) > 0:
+                newrow.append(newchildelem)
         # beware of nested tables
         elif subelement.tag == 'table' and i > 1:
             break
+        # cleanup
+        subelement.tag = 'done'
     # end of processing
     if len(newrow) > 0:
         newtable.append(newrow)
@@ -368,7 +403,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     elif element.tag in ('hi', 'ref', 'span'):
         new_element = handle_formatting(element, dedupbool, config) # process_node(element, dedupbool, config)
     elif element.tag == 'table' and 'table' in potential_tags:
-        new_element = handle_table(element, dedupbool, config)
+        new_element = handle_table(element, potential_tags, dedupbool, config)
     elif element.tag == 'graphic' and 'graphic' in potential_tags:
         new_element = handle_image(element)
     else:
@@ -412,7 +447,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     result_body = etree.Element('body')
     potential_tags = set(TAG_CATALOG)  # + 'span'?
     if include_tables is True:
-        potential_tags.add('table')
+        potential_tags.update(['table', 'tr', 'th', 'td'])
     if include_images is True:
         potential_tags.add('graphic')
     if include_links is True:

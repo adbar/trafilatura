@@ -27,7 +27,7 @@ from trafilatura.core import baseline, bare_extraction, extract, handle_formatti
 from trafilatura.lru import LRUCache
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
 from trafilatura.metadata import METADATA_LIST
-from trafilatura.settings import DEFAULT_CONFIG, use_config
+from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 
 from trafilatura import utils, xml
 
@@ -146,7 +146,7 @@ def test_exotic_tags(xmloutput=False):
     assert 'ABC' in extract(htmlstring, config=ZERO_CONFIG)
     # quotes
     assert handle_quotes(etree.Element('quote'), False, ZERO_CONFIG) is None
-    assert handle_table(etree.Element('table'), False, ZERO_CONFIG) is None
+    assert handle_table(etree.Element('table'), TAG_CATALOG, False, ZERO_CONFIG) is None
     # p within p
     element, second = etree.Element('p'), etree.Element('p')
     element.text, second.text = '1st part.', '2nd part.'
@@ -162,11 +162,34 @@ def test_exotic_tags(xmloutput=False):
     # HTML5: <details>
     htmlstring = '<html><body><article><details><summary>Epcot Center</summary><p>Epcot is a theme park at Walt Disney World Resort featuring exciting attractions, international pavilions, award-winning fireworks and seasonal special events.</p></details></article></body></html>'
     my_result = extract(htmlstring, no_fallback=True, config=ZERO_CONFIG)
-    print(my_result)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
     my_result = extract(htmlstring, no_fallback=False, config=ZERO_CONFIG)
     assert 'Epcot Center' in my_result and 'award-winning fireworks' in my_result
-
+    # tables with nested elements
+    htmlstring = '''<html><body><article>
+<table>
+<tr><td><b>Present Tense</b></td>
+<td>I buy</td>
+<td>you buy</td>
+<td>he/she/it buys</td>
+<td>we buy</td>
+<td>you buy</td>
+<td>they buy</td>
+</tr>
+    </table></article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
+    assert '''<row>
+        <cell>
+          <hi>Present Tense</hi>
+        </cell>
+        <cell>I buy</cell>
+        <cell>you buy</cell>
+        <cell>he/she/it buys</cell>
+        <cell>we buy</cell>
+        <cell>you buy</cell>
+        <cell>they buy</cell>
+      </row>''' in my_result
+    
 
 def test_lrucache():
     '''test basic duplicate detection'''
