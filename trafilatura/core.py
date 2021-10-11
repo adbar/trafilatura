@@ -286,10 +286,6 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
             if len(newrow) > 0:
                 newtable.append(newrow)
                 newrow = etree.Element('row')
-            # skip rows empty of text
-            # textcontent = ''.join(subelement.itertext())
-            # if len(textcontent) == 0 or not re.search(r'[p{L}]+', textcontent):
-            #    continue
         elif subelement.tag in ('td', 'th'):
             newchildelem = define_cell_type(subelement)
             # process
@@ -300,26 +296,21 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
             else:
                 # proceed with iteration, fix for nested elements
                 for child in subelement.iter('*'):
-                    if child.tag not in potential_tags and child.tag not in ('div', 'done', 'item', 'li'):
-                        LOGGER.warning('unexpected in table: %s %s %s', child.tag, child.text, child.tail)
-                        child.tag = 'done'
-                        continue
-                    if child.tag in ('td', 'th') or child.tag not in ('code', 'hi', 'ref', 'quote'):
-                        # todo: define properly
-                        # subcell_elem = define_cell_type(subelement)
-                        child.tag = 'cell'
+                    if child.tag in ('td', 'th', 'hi'):
+                        # todo: define attributes properly
+                        if child.tag in ('td', 'th'):
+                            # subcell_elem = define_cell_type(subelement)
+                            child.tag = 'cell'
+                        processed_subchild = handle_textnode(child, preserve_spaces=True, comments_fix=True, deduplicate=dedupbool, config=config)
                     # todo: lists in table cells
-                    #else:
-                    #    subcell_elem = etree.Element(child.tag)
-                    processed_subchild = handle_textnode(child, comments_fix=True, deduplicate=dedupbool, config=config)  # preserve_spaces=True
-                    # test: handle_textelem(element, potential_tags, dedupbool, config)
+                    else:
+                        # subcell_elem = etree.Element(child.tag)
+                        processed_subchild = handle_textelem(child, potential_tags.union(['div']), dedupbool, config)
                     # add child element to processed_element
                     if processed_subchild is not None:
                         subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
                         subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
-                    #elif child.tag == 'lb':
-                    #    subchildelem = etree.SubElement(newchildelem, child.tag)
-                    #child.tag = 'done'
+                    child.tag = 'done'
             # add to tree
             if newchildelem.text or len(newchildelem) > 0:
                 newrow.append(newchildelem)
