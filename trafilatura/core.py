@@ -211,8 +211,8 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                 else:
                     processed_element.text = processed_child.text
                 continue
-            newsub = etree.Element(child.tag)
             # handle formatting
+            newsub = etree.Element(child.tag)
             if processed_child.tag in ('hi', 'ref'):
                 # check depth and clean
                 if len(processed_child) > 0:
@@ -495,6 +495,8 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+        if favor_recall is True:
+            potential_tags.add('div')
         result_body = recover_wild_text(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     else:
