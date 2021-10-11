@@ -328,17 +328,36 @@ def extract_catstags(metatype, tree):
     return [x for x in results if x is not None]
 
 
+def parse_license_element(element):
+    '''Probe a link for identifiable free license cues.
+       Parse the href attribute first and then the link text.'''
+    if element.get('href') is not None:
+       # look for Creative Commons elements
+        match = LICENSE_REGEX.search(element.get('href'))
+        if match:
+            return 'CC ' + match.group(1).upper() + ' ' + match.group(2)
+    if element.text is not None:
+        return trim(element.text)
+    return None
+
+
 def extract_license(tree):
     '''Search the HTML code for license information and parse it.'''
+    result = None
+    # look for links labeled as license
     for element in tree.xpath('//a[@rel="license"]'):
-        if element.get('href') is not None:
-            # look for Creative Commons elements
-            match = LICENSE_REGEX.search(element.get('href'))
-            if match:
-               return 'CC ' + match.group(1).upper() + ' ' + match.group(2)
-        if element.text is not None:
-            return trim(element.text) 
-    return None
+        result = parse_license_element(element)
+        if result is not None:
+            break
+    # probe footer elements for CC links
+    if result is None:
+        for element in tree.xpath(
+            '//footer//a|//div[contains(@class, "footer") or contains(@id, "footer")]//a'
+        ):
+            result = parse_license_element(element)
+            if result is not None:
+                break
+    return result
 
 
 def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=False, author_blacklist=None):
