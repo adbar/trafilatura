@@ -415,11 +415,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         else:
             date_config = HTMLDATE_CONFIG_FAST
     date_config['url'] = metadata['url']
-    try:
-        metadata['date'] = find_date(tree, **date_config)
-    # temporary fixes for htmldate bugs # todo: remove later
-    except (TypeError, UnicodeError):
-        pass
+    metadata['date'] = find_date(tree, **date_config)
     # sitename
     if metadata['sitename'] is None:
         metadata['sitename'] = extract_sitename(tree)
