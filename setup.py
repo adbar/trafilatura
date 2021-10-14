@@ -85,8 +85,7 @@ setup(
     python_requires='>=3.5',
     install_requires=[
         'certifi',
-        'chardet == 3.0.4; python_version < "3.6"',
-        'chardet >= 4.0.0; python_version >= "3.6"',
+        'charset_normalizer >= 2.0.7',
         'courlan >= 0.4.2',
         'htmldate >= 0.9.1',
         'justext >= 2.2.0',

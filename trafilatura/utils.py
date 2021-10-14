@@ -17,12 +17,13 @@ from html import unescape
 
 # CChardet is faster and can be more accurate
 try:
-    import cchardet as chardet
+    import cchardet
 except ImportError:
-    import chardet
-
+    cchardet = None
 
 import urllib3
+
+from charset_normalizer import detect
 
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
@@ -87,16 +88,19 @@ def isutf8(data):
 
 def detect_encoding(bytesobject):
     """Read the first chunk of input and return its encoding"""
-    #https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
+    # alternatives: https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
     if isutf8(bytesobject):
         return 'UTF-8'
     # try one of the installed detectors on first part
-    guess = chardet.detect(bytesobject[:1999])
+    if cchardet is not None:
+        guess = cchardet.detect(bytesobject[:5000])
+    else:
+        guess = detect(bytesobject[:5000])
     LOGGER.debug('guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
     # fallback on full response
-    if guess is None or (guess['confidence'] is not None and guess['confidence'] < 0.95):
-        guess = chardet.detect(bytesobject)
+    if guess is None or (guess['confidence'] is not None and guess['confidence'] < 0.98):
+        guess = detect(bytesobject)
         LOGGER.debug('second-guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
     return guess['encoding']
 
