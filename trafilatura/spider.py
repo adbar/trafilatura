@@ -160,8 +160,9 @@ def process_response(response, todo, known_links, base_url, language, shortform=
     return todo, known_links, htmlstring
 
 
-def init_crawl(homepage, todo, known_links, language=None, shortform=False, config=DEFAULT_CONFIG, rules=None):
+def init_crawl(homepage, todo, known_links, language=None, shortform=False, rules=None):
     """Start crawl by initializing variables and potentially examining the starting page."""
+    # config=DEFAULT_CONFIG
     _, base_url = get_hostinfo(homepage)
     known_links = known_links or set()
     i = 0
@@ -173,17 +174,18 @@ def init_crawl(homepage, todo, known_links, language=None, shortform=False, conf
         try:
             rules.read()
         except Exception as exc:
-            LOGGER.error('cannot read robots.txt')
+            LOGGER.error('cannot read robots.txt: %s', exc)
             rules = None
     # initialize crawl by visiting homepage if necessary
     if todo is None:
         todo = deque([homepage])
-        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=language, shortform=shortform, rules=rules, initial=True, config=config)
+        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=language, shortform=shortform, rules=rules, initial=True)
     return todo, known_links, base_url, i, rules
 
 
-def crawl_page(i, base_url, todo, known_links, lang=None, config=DEFAULT_CONFIG, rules=None, initial=False, shortform=False):
+def crawl_page(i, base_url, todo, known_links, lang=None, rules=None, initial=False, shortform=False):
     """Examine a webpage, extract navigation links and links."""
+    # config=DEFAULT_CONFIG
     url = todo.popleft()
     known_links.add(url)
     if initial is True:
@@ -219,10 +221,10 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
         Set of known links.
 
     """
-    todo, known_links, base_url, i, rules = init_crawl(homepage, todo, known_links, language=lang, config=config, rules=rules)
+    todo, known_links, base_url, i, rules = init_crawl(homepage, todo, known_links, language=lang, rules=rules)
     # visit pages until a limit is reached
     while todo and i < max_seen_urls and len(known_links) <= max_known_urls:
-        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, config=config, rules=rules)
+        todo, known_links, i, _ = crawl_page(i, base_url, todo, known_links, lang=lang, rules=rules)
         sleep(get_crawl_delay(rules, default=config.getfloat('DEFAULT', 'SLEEP_TIME')))
     # refocus todo-list on URLs without navigation?
     # [u for u in todo if not is_navigation_page(u)]
@@ -244,4 +246,7 @@ def get_crawl_delay(rules, default=5):
 
 def is_still_navigation(todo):
     """Probe if there are still navigation URLs in the queue."""
-    return bool([u for u in todo if is_navigation_page(u)])
+    for url in todo:
+        if is_navigation_page(url):
+            return True
+    return False
