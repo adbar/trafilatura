@@ -28,7 +28,7 @@ def handle_link_list(linklist, domainname, baseurl, target_lang=None):
        lead to a web page'''
     output_links = []
     # sort and uniq
-    for item in sorted(list(set(linklist))):
+    for item in sorted(set(linklist)):
         # fix and check
         link = fix_relative_urls(baseurl, item)
         # control output for validity
@@ -156,6 +156,8 @@ def find_feed_urls(url, target_lang=None):
             return feed_links
     else:
         LOGGER.warning('Could not download web page: %s', url)
+        if url.strip('/') != baseurl:
+            return try_homepage(baseurl, target_lang)
     # try alternative: Google News
     if target_lang is not None:
         url = 'https://news.google.com/rss/search?q=site:' + baseurl + '&hl=' + target_lang + '&scoring=n&num=100'
@@ -167,3 +169,10 @@ def find_feed_urls(url, target_lang=None):
             return feed_links
         LOGGER.warning('Could not download web page: %s', url)
     return []
+
+
+def try_homepage(baseurl, target_lang):
+    '''Shift into reverse and try the homepage instead of the particular feed
+       page that was given as input.'''
+    LOGGER.info('Probing homepage for feeds instead: %s', baseurl)
+    return find_feed_urls(baseurl, target_lang)
