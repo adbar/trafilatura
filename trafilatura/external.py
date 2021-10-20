@@ -35,7 +35,7 @@ def jt_stoplist_init():
     stoplist = set()
     for language in get_stoplists():
         stoplist.update(get_stoplist(language))
-    return stoplist
+    return tuple(stoplist)
 
 JT_STOPLIST = jt_stoplist_init()
 
