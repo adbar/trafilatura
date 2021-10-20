@@ -48,9 +48,13 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
     feed_links = []
     # check if it's a feed
     if feed_string is None:
+        LOGGER.debug('Empty feed: %s', domainname)
         return feed_links
     feed_string = feed_string.strip()
-    if not FEED_OPENING.match(feed_string):
+    # typical first and second lines absent
+    if not FEED_OPENING.match(feed_string) and not \
+        ('<rss' in feed_string[:100] or '<feed' in feed_string[:100]):
+        LOGGER.debug('Possibly invalid feed: %s', domainname)
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
@@ -83,6 +87,7 @@ def determine_feed(htmlstring, baseurl, reference):
     tree = load_html(htmlstring)
     # safeguard
     if tree is None:
+        LOGGER.debug('Invalid HTML/Feed page: %s', baseurl)
         return []
     feed_urls = []
     for linkelem in tree.xpath('//link[@rel="alternate"]'):
@@ -154,6 +159,7 @@ def find_feed_urls(url, target_lang=None):
             feed_links = filter_urls(feed_links, urlfilter)
             LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
             return feed_links
+        LOGGER.debug('No usable feed links found: %s', url)
     else:
         LOGGER.warning('Could not download web page: %s', url)
         if url.strip('/') != baseurl:
@@ -165,7 +171,7 @@ def find_feed_urls(url, target_lang=None):
         if downloaded is not None:
             feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
             feed_links = filter_urls(feed_links, urlfilter)
-            LOGGER.debug('%s feed links found for %s', len(feed_links), domainname)
+            LOGGER.debug('%s Google news links found for %s', len(feed_links), domainname)
             return feed_links
         LOGGER.warning('Could not download web page: %s', url)
     return []
