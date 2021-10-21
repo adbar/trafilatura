@@ -201,7 +201,11 @@ def file_processing(filename, args, counter=None, config=None):
 def process_result(htmlstring, args, url, counter, config):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
-    fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
+    if args.backup_dir:
+        fileslug = archive_html(htmlstring, args, counter)
+    else:
+        fileslug = None
+    # suggested: fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
     result = examine(htmlstring, args, url=url, config=config)
     write_result(result, args, orig_filename=fileslug, counter=counter, new_filename=fileslug)
@@ -243,10 +247,10 @@ def cli_crawler(args, n=30, domain_dict=None):
         homepage = website + domain_dict[website].popleft()
         crawlinfo[website] = {}
         domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], crawlinfo[website]['count'], crawlinfo[website]['rules'] = init_crawl(homepage, None, set(), language=args.target_language, shortform=True)
-            # update info
-            # TODO: register changes?
-            # if base_url != website:
-            # ...
+        # update info
+        # TODO: register changes?
+        # if base_url != website:
+        # ...
     # iterate until the threshold is reached
     while domain_dict:
         bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)

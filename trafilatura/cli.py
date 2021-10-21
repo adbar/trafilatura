@@ -227,11 +227,14 @@ def process_args(args):
         logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
     if args.blacklist:
         args.blacklist = load_blacklist(args.blacklist)
+
     # processing according to mutually exclusive options
     # read url list from input file
     if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
         inputdict = load_input_dict(args)
         url_processing_pipeline(args, inputdict)
+
+    # fetch urls from a feed or a sitemap
     elif args.feed or args.sitemap:
         input_urls = load_input_urls(args)
         inputdict = None
@@ -247,8 +250,12 @@ def process_args(args):
                     inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=inputdict)
         # process the links found
         url_processing_pipeline(args, inputdict)
+
+    # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
+
+    # activate site explorer
     elif args.explore:
         input_urls = load_input_urls(args)
         inputdict = None
@@ -271,20 +278,27 @@ def process_args(args):
 
         # add to compressed dict and crawl the remaining websites
         cli_crawler(args, n=100, domain_dict=still_to_crawl)
+
+    # read files from an input directory
     elif args.inputdir:
         file_processing_pipeline(args)
-    elif args.URL:
-        inputdict = add_to_compressed_dict([args.URL], args.blacklist)
-        url_processing_pipeline(args, inputdict)  # process single url
+
+    # read from input directly
     else:
-        # file type and unicode check
-        try:
-            htmlstring = sys.stdin.read()
-        except UnicodeDecodeError:
-            sys.exit('ERROR: system, file type or buffer encoding')
-        # process
-        result = examine(htmlstring, args, url=args.URL)
-        write_result(result, args)
+        # process input URL
+        if args.URL:
+            inputdict = add_to_compressed_dict([args.URL], args.blacklist)
+            url_processing_pipeline(args, inputdict)  # process single url
+        # process input on STDIN
+        else:
+            # file type and unicode check
+            try:
+                htmlstring = sys.stdin.read()
+            except UnicodeDecodeError:
+                sys.exit('ERROR: system, file type or buffer encoding')
+            # process
+            result = examine(htmlstring, args, url=args.URL)
+            write_result(result, args)
 
 
 if __name__ == '__main__':
