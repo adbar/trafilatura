@@ -36,9 +36,8 @@ def extract_json(schema, metadata):
 
         for content in filter(None, parent):
             # try to extract publisher
-            if 'publisher' in content:
-                if 'name' in content['publisher']:
-                    metadata['sitename'] = content['publisher']['name']
+            if 'publisher' in content and 'name' in content['publisher']:
+                metadata['sitename'] = content['publisher']['name']
 
             if '@type' not in content:
                 continue
@@ -50,12 +49,11 @@ def extract_json(schema, metadata):
 
             if content_type in JSON_PUBLISHER_SCHEMA:
                 for candidate in ("name", "alternateName"):
-                    if candidate in content:
-                        if content[candidate] is not None:
-                            if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content_type != "webpage"):
-                                metadata['sitename'] = content[candidate]
-                            if metadata['sitename'] is None and metadata['sitename'].startswith('http') and not content[candidate].startswith('http'):
-                                metadata['sitename'] = content[candidate]
+                    if candidate in content and content[candidate] is not None:
+                        if metadata['sitename'] is None or (len(metadata['sitename']) < len(content[candidate]) and content_type != "webpage"):
+                            metadata['sitename'] = content[candidate]
+                        if metadata['sitename'] is None and metadata['sitename'].startswith('http') and not content[candidate].startswith('http'):
+                            metadata['sitename'] = content[candidate]
 
             elif content_type == "person":
                 if 'name' in content and not content['name'].startswith('http'):
@@ -131,7 +129,7 @@ def extract_json_parse_error(elem, metadata):
     # try to extract publisher
     if '"publisher"' in elem:
         mymatch = JSON_PUBLISHER.search(elem)
-        if mymatch and not ',' in mymatch.group(1):
+        if mymatch and ',' not in mymatch.group(1):
             candidate = normalize_json(mymatch.group(1))
             if metadata['sitename'] is None or len(metadata['sitename']) < len(candidate):
                 metadata['sitename'] = candidate

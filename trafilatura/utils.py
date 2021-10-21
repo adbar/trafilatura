@@ -2,6 +2,7 @@
 """
 Module bundling functions related to HTML and text processing.
 """
+
 ## This file is available from https://github.com/adbar/trafilatura
 ## under GNU GPL v3 license
 
@@ -47,9 +48,11 @@ NO_TAG_SPACE = re.compile(r'(?<![p{P}>])\n')
 SPACE_TRIMMING = re.compile(r'\s+', flags=re.UNICODE|re.MULTILINE)
 
 NOPRINT_TRANS_TABLE = {
-    i: None for i in range(0, sys.maxunicode + 1)
+    i: None
+    for i in range(sys.maxunicode + 1)
     if not chr(i).isprintable() and not chr(i).isspace()
 }
+
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
@@ -110,10 +113,7 @@ def decode_response(response):
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
     # urllib3 response object / bytes switch
-    if isinstance(response, bytes):
-        resp_content = response
-    else:
-        resp_content = response.data
+    resp_content = response if isinstance(response, bytes) else response.data
     # decode GZipped data
     if is_gz_file(resp_content):
         try:
@@ -171,19 +171,17 @@ def load_html(htmlobject):
     # try to detect encoding and convert to string
     if isinstance(htmlobject, bytes):
         guessed_encoding = detect_encoding(htmlobject)
-        if guessed_encoding is not None:
-            if guessed_encoding == 'UTF-8':
-                tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-            else:
-                try:
-                    htmlobject = htmlobject.decode(guessed_encoding)
-                    tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-                except (LookupError, UnicodeDecodeError):  # VISCII encoding
-                    LOGGER.warning('encoding issue: %s', guessed_encoding)
-                    tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-        else:
+        if guessed_encoding is None:
             tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-    # use string if applicable
+        elif guessed_encoding == 'UTF-8':
+            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+        else:
+            try:
+                htmlobject = htmlobject.decode(guessed_encoding)
+                tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+            except (LookupError, UnicodeDecodeError):  # VISCII encoding
+                LOGGER.warning('encoding issue: %s', guessed_encoding)
+                tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
     elif isinstance(htmlobject, str):
         try:
             tree = html.fromstring(htmlobject, parser=HTML_PARSER)
@@ -195,7 +193,6 @@ def load_html(htmlobject):
                 LOGGER.error('parser bytestring %s', err)
         except Exception as err:
             LOGGER.error('parsing failed: %s', err)
-    # default to None
     else:
         LOGGER.error('this type cannot be processed: %s', type(htmlobject))
     # rejection test: is it (well-formed) HTML at all?
@@ -282,9 +279,7 @@ def trim(string):
 def is_image_file(imagesrc):
     '''Check if the observed string corresponds to a valid image extension,
        return False otherwise'''
-    if imagesrc is not None and IMAGE_EXTENSION.search(imagesrc):
-        return True
-    return False
+    return bool(imagesrc is not None and IMAGE_EXTENSION.search(imagesrc))
 
 
 def filter_urls(linklist, urlfilter):
@@ -294,7 +289,7 @@ def filter_urls(linklist, urlfilter):
     # filter links
     newlist = [l for l in linklist if urlfilter in l]
     # feedburner option
-    if len(newlist) == 0:
+    if not newlist:
         newlist = [l for l in linklist if urlfilter in l or 'feedburner' in l or 'feedproxy' in l]
     return sorted(set(newlist))
 
@@ -344,11 +339,13 @@ def normalize_authors(current_authors, author_string):
 
 
 def check_authors(authors, author_blacklist):
-    new_authors = []
-    for author in authors.split('; '):
-        if author.lower() not in [a.lower() for a in author_blacklist]:
-            new_authors.append(author)
-    if len(new_authors) > 0:
+    new_authors = [
+        author
+        for author in authors.split('; ')
+        if author.lower() not in [a.lower() for a in author_blacklist]
+    ]
+
+    if new_authors:
         return '; '.join(new_authors).strip('; ')
     else:
         return None

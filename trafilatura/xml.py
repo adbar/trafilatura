@@ -206,9 +206,9 @@ def replace_element_text(element, include_formatting, include_links):
     # handle text
     if element.text is not None and element.tail is not None:
         full_text = ''.join([element.text, element.tail])
-    elif element.text is not None and element.tail is None:
+    elif element.text is not None:
         full_text = element.text
-    elif element.text is None and element.tail is not None:
+    elif element.tail is not None:
         full_text = element.tail
     return full_text
 
@@ -226,12 +226,10 @@ def merge_with_parent(element, include_formatting=False, include_links=False):
             previous.tail = ' '.join([previous.tail, full_text])
         else:
             previous.tail = full_text
+    elif parent.text is not None:
+        parent.text = ' '.join([parent.text, full_text])
     else:
-        # It's the first node in <parent/>, append to parent's text
-        if parent.text is not None:
-            parent.text = ' '.join([parent.text, full_text])
-        else:
-            parent.text = full_text
+        parent.text = full_text
     parent.remove(element)
 
 
@@ -327,7 +325,7 @@ def write_fullheader(header, docmeta):
         sigle = docmeta['sitename'] + ', ' + docmeta['date']
     elif not docmeta['sitename'] and docmeta['date']:
         sigle = docmeta['date']
-    elif docmeta['sitename'] and not docmeta['date']:
+    elif docmeta['sitename']:
         sigle = docmeta['sitename']
     else:
         LOGGER.warning('no sigle for URL %s', docmeta['url'])
@@ -368,12 +366,12 @@ def write_fullheader(header, docmeta):
     if len(docmeta['categories']) > 0 or len(docmeta['tags']) > 0:
         textclass = etree.SubElement(profiledesc, 'textClass')
         keywords = etree.SubElement(textclass, 'keywords')
-        if len(docmeta['categories']) > 0:
-            cat_list = etree.SubElement(keywords, 'term', type='categories')
-            cat_list.text = ','.join(docmeta['categories'])
-        if len(docmeta['tags']) > 0:
-            tags_list = etree.SubElement(keywords, 'term', type='tags')
-            tags_list.text = ','.join(docmeta['tags'])
+    if len(docmeta['categories']) > 0:
+        cat_list = etree.SubElement(keywords, 'term', type='categories')
+        cat_list.text = ','.join(docmeta['categories'])
+    if len(docmeta['tags']) > 0:
+        tags_list = etree.SubElement(keywords, 'term', type='tags')
+        tags_list.text = ','.join(docmeta['tags'])
     encodingdesc = etree.SubElement(header, 'encodingDesc')
     appinfo = etree.SubElement(encodingdesc, 'appInfo')
     application = etree.SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')

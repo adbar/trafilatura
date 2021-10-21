@@ -126,15 +126,8 @@ def link_density_test(element):
             limitlen, threshold = 25, 0.8
             #if 'hi' in list(element):
             #    limitlen, threshold = 100, 0.8
-        #elif element.tag == 'head':
-        #    limitlen, threshold = 50, 0.8
         else:
-            if element.getnext() is None:
-                limitlen, threshold = 200, 0.66
-            #elif re.search(r'[.?!:]', elemtext):
-            #    limitlen, threshold = 150, 0.66
-            else:
-                limitlen, threshold = 100, 0.66
+            limitlen, threshold = (200, 0.66) if element.getnext() is None else (100, 0.66)
         if elemlen < limitlen:
             linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
             if elemnum == 0:
@@ -276,12 +269,11 @@ def handle_textnode(element, comments_fix=True, deduplicate=True, preserve_space
         if element.tail:
             element.tail = trim(element.tail)
     # filter content
-    if element.text and re.search(r'\w', element.text):  # text_content()?
-        if textfilter(element) is True:
-            return None
-        if deduplicate is True and duplicate_test(element, config) is True:
-            return None
-    else:
+    if not element.text or not re.search(r'\w', element.text):
+        return None
+    if textfilter(element) is True:
+        return None
+    if deduplicate is True and duplicate_test(element, config) is True:
         return None
     return element
 

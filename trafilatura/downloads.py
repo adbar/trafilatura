@@ -62,7 +62,7 @@ def _determine_headers(config, headers=None):
     'Internal function to decide on user-agent string.'
     if config != DEFAULT_CONFIG:
         myagents, mycookie = _parse_config(config)
-        headers = dict()
+        headers = {}
         if myagents is not None:
             rnumber = random.randint(0, len(myagents) - 1)
             headers['User-Agent'] = myagents[rnumber]
@@ -177,7 +177,7 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict
 def draw_backoff_url(domain_dict, backoff_dict, sleep_time, hosts):
     '''Select a random URL from the domains pool and apply backoff rule'''
     green_light = False
-    while green_light is False:
+    while not green_light:
         # choose among a fresh pool of hosts
         host = random.choice([d for d in domain_dict if d not in hosts])
         # safeguard
@@ -210,7 +210,7 @@ def load_download_buffer(domain_dict, backoff_dict, sleep_time=5, threads=DOWNLO
        len({x for v in domain_dict.values() for x in v}) < threads:
         threads = 1
     # populate buffer until a condition is reached
-    while domain_dict and len([d for d in domain_dict if d not in hosts]) > 0:
+    while domain_dict and [d for d in domain_dict if d not in hosts]:
         #print(len(domain_dict), len(hosts), len([d for d in domain_dict if d not in hosts]), len(bufferlist), threads)
         url, domain_dict, backoff_dict, host = draw_backoff_url(
             domain_dict, backoff_dict, sleep_time, hosts

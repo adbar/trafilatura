@@ -85,15 +85,10 @@ def is_known_link(link, known_links):
         return True
     if link[:5] == 'https':
         testlink = link[:4] + link[:5]
-        test1, test2 = testlink.rstrip('/'), testlink.rstrip('/') + '/'
-        if testlink in known_links or test1 in known_links or test2 in known_links:
-            return True
     else:
         testlink = ''.join([link[:4], 's', link[4:]])
-        test1, test2 = testlink.rstrip('/'), testlink.rstrip('/') + '/'
-        if testlink in known_links or test1 in known_links or test2 in known_links:
-            return True
-    return False
+    test1, test2 = testlink.rstrip('/'), testlink.rstrip('/') + '/'
+    return testlink in known_links or test1 in known_links or test2 in known_links
 
 
 def find_new_links(htmlstring, base_url, known_links, language=None, rules=None):
@@ -246,7 +241,4 @@ def get_crawl_delay(rules, default=5):
 
 def is_still_navigation(todo):
     """Probe if there are still navigation URLs in the queue."""
-    for url in todo:
-        if is_navigation_page(url):
-            return True
-    return False
+    return any(is_navigation_page(url) for url in todo)

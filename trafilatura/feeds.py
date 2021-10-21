@@ -92,7 +92,7 @@ def determine_feed(htmlstring, baseurl, reference):
     feed_urls = []
     for linkelem in tree.xpath('//link[@rel="alternate"]'):
         # discard elements without links
-        if not 'href' in linkelem.attrib:
+        if 'href' not in linkelem.attrib:
             continue
         # most common case
         if 'type' in linkelem.attrib and linkelem.get('type') in FEED_TYPES:
@@ -101,7 +101,7 @@ def determine_feed(htmlstring, baseurl, reference):
         elif 'atom' in linkelem.get('href') or 'rss' in linkelem.get('href'):
             feed_urls.append(linkelem.get('href'))
     # backup
-    if len(feed_urls) == 0:
+    if not feed_urls:
         for linkelem in tree.xpath('//a[@href]'):
             if linkelem.get('href')[-4:].lower() in ('.rss', '.rdf', '.xml'):
                 feed_urls.append(linkelem.get('href'))
