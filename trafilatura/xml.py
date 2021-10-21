@@ -366,12 +366,12 @@ def write_fullheader(header, docmeta):
     if len(docmeta['categories']) > 0 or len(docmeta['tags']) > 0:
         textclass = etree.SubElement(profiledesc, 'textClass')
         keywords = etree.SubElement(textclass, 'keywords')
-    if len(docmeta['categories']) > 0:
-        cat_list = etree.SubElement(keywords, 'term', type='categories')
-        cat_list.text = ','.join(docmeta['categories'])
-    if len(docmeta['tags']) > 0:
-        tags_list = etree.SubElement(keywords, 'term', type='tags')
-        tags_list.text = ','.join(docmeta['tags'])
+        if len(docmeta['categories']) > 0:
+            cat_list = etree.SubElement(keywords, 'term', type='categories')
+            cat_list.text = ','.join(docmeta['categories'])
+        if len(docmeta['tags']) > 0:
+            tags_list = etree.SubElement(keywords, 'term', type='tags')
+            tags_list.text = ','.join(docmeta['tags'])
     encodingdesc = etree.SubElement(header, 'encodingDesc')
     appinfo = etree.SubElement(encodingdesc, 'appInfo')
     application = etree.SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')

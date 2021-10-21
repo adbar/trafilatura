@@ -113,7 +113,13 @@ def decode_response(response):
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
     # urllib3 response object / bytes switch
-    resp_content = response if isinstance(response, bytes) else response.data
+    if isinstance(response, bytes):
+        resp_content = response
+    else:
+        resp_content = response.data
+    # suggested:
+    # resp_content = response if isinstance(response, bytes) else response.data
+
     # decode GZipped data
     if is_gz_file(resp_content):
         try:
@@ -182,6 +188,7 @@ def load_html(htmlobject):
             except (LookupError, UnicodeDecodeError):  # VISCII encoding
                 LOGGER.warning('encoding issue: %s', guessed_encoding)
                 tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+    # use string if applicable
     elif isinstance(htmlobject, str):
         try:
             tree = html.fromstring(htmlobject, parser=HTML_PARSER)
@@ -193,6 +200,7 @@ def load_html(htmlobject):
                 LOGGER.error('parser bytestring %s', err)
         except Exception as err:
             LOGGER.error('parsing failed: %s', err)
+    # default to None
     else:
         LOGGER.error('this type cannot be processed: %s', type(htmlobject))
     # rejection test: is it (well-formed) HTML at all?
@@ -338,6 +346,7 @@ def normalize_authors(current_authors, author_string):
     return '; '.join(new_authors).strip('; ')
 
 
+# todo: document and check this function
 def check_authors(authors, author_blacklist):
     new_authors = [
         author
