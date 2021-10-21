@@ -133,7 +133,8 @@ DISCARD_XPATH = [
     or contains(@class, "options")
     or contains(@class, "consent") or contains(@class, "modal-content")
     or contains(@class, "paid-content") or contains(@class, "paidcontent")
-    or contains(@class, " ad ")]''',
+    or contains(@class, " ad ")
+    or contains (@class, "next-post")]''',
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
