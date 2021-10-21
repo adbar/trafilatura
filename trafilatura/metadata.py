@@ -138,6 +138,7 @@ def examine_meta(tree):
                 tags.append(content_attr)
             elif elem.get('property') in ('author', 'article:author'):
                 author = normalize_authors(author, content_attr)
+        # name attribute
         elif 'name' in elem.attrib:
             name_attr = elem.get('name').lower()
             # author
@@ -172,6 +173,7 @@ def examine_meta(tree):
             # elif elem.get('itemprop') == 'name':
             #    if title is None:
             #        title = elem.get('content')
+        # other types
         elif all(
             key not in elem.attrib
             for key in ('charset', 'http-equiv', 'property')
@@ -258,6 +260,7 @@ def extract_url(tree, default_url=None):
     element = tree.find('.//head//link[@rel="canonical"]')
     if element is not None and 'href' in element.attrib and URL_COMP_CHECK.match(element.attrib['href']):
         url = element.attrib['href']
+    # try default language link
     else:
         for element in tree.iterfind('.//head//link[@rel="alternate"]'):
             if (
@@ -286,7 +289,12 @@ def extract_url(tree, default_url=None):
     # sanity check: don't return invalid URLs
     if url is not None:
         validation_result, parsed_url = validate_url(url)
-        url = None if validation_result is False else normalize_url(parsed_url)
+        if validation_result is False:
+            url = None
+        else:
+            url = normalize_url(parsed_url)
+        # suggested:
+        # url = None if validation_result is False else normalize_url(parsed_url)
     return url
 
 
@@ -307,7 +315,12 @@ def extract_catstags(metatype, tree):
     '''Find category and tag information'''
     results = []
     regexpr = '/' + metatype + '[s|ies]?/'
-    xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
+    if metatype == 'category':
+        xpath_expression = categories_xpaths
+    else:
+        xpath_expression = tags_xpaths
+    # suggested:
+    # xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
     # search using custom expressions
     for catexpr in xpath_expression:
         for elem in tree.xpath(catexpr):
@@ -378,6 +391,7 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         return None
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
+    # to check: remove it and replace with author_blacklist in test case
     if metadata['author'] is not None and ' ' not in metadata['author']:
         metadata['author'] = None
     # fix: try json-ld metadata and override
@@ -424,8 +438,10 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
                 and not metadata['sitename'][0].isupper()
             ):
                 metadata['sitename'] = metadata['sitename'].title()
+        # fix for empty name
         except IndexError:
             pass
+    # use URL
     elif metadata['url']:
         mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata['url'])
         if mymatch:
