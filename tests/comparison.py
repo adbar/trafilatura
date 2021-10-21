@@ -130,6 +130,18 @@ def run_baseline_2(htmlstring):
         #if entry not in results and len(entry) > 10:
         resultlist.append(entry)
         #results.add(entry)
+    # if nothing has been found
+    #if len(resultlist) < 1:
+    #    for element in tree.iter('b', 'em', 'i', 'strong'):
+    #        entry = element.text_content()
+    #        #if entry not in results: # and len(entry) > 15:
+    #        resultlist.append(entry)
+    #        #results.add(entry)
+    #if len(resultlist) == 0:
+    #    cleaned_tree = HTML_CLEANER.clean_html(tree)
+    #    for element in tree.iter('div'):
+    #        entry = element.text_content()
+            #if len(entry) > 15:
     #        resultlist.append(entry)
     #        #results.add(entry)
     #print(len(resultlist))
@@ -168,7 +180,7 @@ def run_justext(htmlstring):
         if not paragraph.is_boilerplate
     ]
 
-    return ' '.join(valid)
+    return ' '.join(valid)   # sanitize(result)
 
 
 def run_trafilatura_fallback(htmlstring):
@@ -263,7 +275,7 @@ def run_newspaper(htmlstring):
 
 def run_dragnet(htmlstring):
     '''try with the dragnet module'''
-    return extract_content(htmlstring)
+    return extract_content(htmlstring)  # sanitize(content)
 
 
 def run_boilerpipe(htmlstring):
@@ -292,11 +304,17 @@ def run_jparser(htmlstring):
     except (TypeError, ValueError):
         return ''
     result = pm.extract()
-    mylist = [
-        str(x['data'])
-        for x in result['content']
-        if x['type'] in ('text', 'html')
-    ]
+    # old
+    mylist = list()
+    for x in result['content']:
+        if x['type'] in ('text', 'html'):
+            mylist.append(str(x['data']))
+    # suggested
+    #mylist = [
+    #    str(x['data'])
+    #    for x in result['content']
+    #    if x['type'] in ('text', 'html')
+    #]
 
     returnstring = ' '.join(mylist)
     # returnstring = re.sub(r'\s+', ' ', returnstring)
