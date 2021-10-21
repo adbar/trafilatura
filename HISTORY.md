@@ -1,6 +1,15 @@
 ## History / Changelog
 
 
+### 0.9.3
+- better, faster encoding detection: replaced `chardet` with `charset_normalizer`
+- faster execution: updated `justext` to 3.0
+- better extraction of sub-elements in tables (#78, #90)
+- more robust web feed parsing
+- further defined precision- and recall-oriented settings
+- license extraction in footers (#118)
+
+
 ### 0.9.2
 - first precision- and recall-oriented presets defined
 - improvements in authorship extraction (thanks @felipehertzer)

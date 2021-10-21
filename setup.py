@@ -34,6 +34,7 @@ extras = {
         'htmldate[speed] >= 0.9.1',
         'pycld3 == 0.21; python_version < "3.6"',
         'pycld3 >= 0.22; python_version >= "3.6"',
+        'urllib3[brotli]',
     ],
 }
 
@@ -88,7 +89,7 @@ setup(
         'charset_normalizer >= 2.0.7',
         'courlan >= 0.4.2',
         'htmldate >= 0.9.1',
-        'justext >= 2.2.0',
+        'justext >= 3.0.0',
         'lxml >= 4.6.3',
         'readability-lxml >= 0.8.1',
         'urllib3>=1.25,<2',
