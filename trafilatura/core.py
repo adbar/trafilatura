@@ -196,10 +196,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         if child.tag not in potential_tags and child.tag != 'done':
             LOGGER.warning('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
-        if child.tag in ('code', 'hi', 'ref'): # todo: outputformat.startswith('xml')?
-            spacing = True
-        else:
-            spacing = False
+        spacing = child.tag in ('code', 'hi', 'ref')  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
         processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True, config=config)
         if processed_child is not None:
@@ -252,10 +249,15 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
             processed_element.append(newsub)
             child.tag = 'done'
     # finish
-    if len(processed_element) > 0 or processed_element.text:
+    if len(processed_element) > 0:
         # clean trailing lb-elements
-        if len(processed_element) > 0 and processed_element[-1].tag == 'lb' and processed_element[-1].tail is None:
+        if (
+            processed_element[-1].tag == 'lb'
+            and processed_element[-1].tail is None
+        ):
             processed_element[-1].getparent().remove(processed_element[-1])
+        return processed_element
+    elif processed_element.text:
         return processed_element
     LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
     return None
@@ -364,7 +366,7 @@ def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate
     if 'graphic' not in potential_tags:
         search_tree = prune_unwanted_nodes(search_tree, DISCARD_IMAGE_ELEMENTS)
     # decide if links are preserved
-    if not 'ref' in potential_tags:
+    if 'ref' not in potential_tags:
         etree.strip_tags(search_tree, 'a', 'ref', 'span')
     else:
         etree.strip_tags(search_tree, 'span')
@@ -379,7 +381,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     # bypass: nested elements
     if element.tag == 'list':
         new_element = handle_lists(element, dedupbool, config)
-    elif element.tag == 'quote' or element.tag == 'code':
+    elif element.tag in {'code', 'quote'}:
         new_element = handle_quotes(element, dedupbool, config)
     elif element.tag == 'head':
         new_element = handle_titles(element, dedupbool, config)
@@ -419,10 +421,10 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
                 myelems[text].append(elem)
     # summing up
     if backtracking is True:
-        for item in myelems:
-            if 0 < len(item) < 100 and len(myelems[item]) >= 3:
-                deletions.extend(myelems[item])
-                # print('backtrack:', item)
+        for text, elem in myelems.items():
+            if 0 < len(text) < 100 and len(elem) >= 3:
+                deletions.extend(elem)
+                # print('backtrack:', text)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
     for elem in list(OrderedDict.fromkeys(deletions)):
@@ -675,22 +677,23 @@ def determine_returnstring(docmeta, output_format, include_formatting, include_l
             output = build_tei_output(docmeta)
         # can be improved
         returnstring = control_xml_output(output, output_format, tei_validation, docmeta)
-    # CSV, JSON and TXT output
+    # CSV
+    elif output_format == 'csv':
+        posttext = xmltotxt(docmeta['body'], include_formatting, include_links)
+        if docmeta['commentsbody'] is not None:
+            commentstext = xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
+        else:
+            commentstext = ''
+        returnstring = txttocsv(posttext, commentstext, docmeta)
+    # JSON
+    elif output_format == 'json':
+        returnstring = build_json_output(docmeta)
+    # TXT
     else:
-        if output_format == 'csv':
-            posttext = xmltotxt(docmeta['body'], include_formatting, include_links)
-            if docmeta['commentsbody'] is not None:
-                commentstext = xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
-            else:
-                commentstext = ''
-            returnstring = txttocsv(posttext, commentstext, docmeta)
-        elif output_format == 'json':
-            returnstring = build_json_output(docmeta)
-        else:  # txt
-            returnstring = xmltotxt(docmeta['body'], include_formatting, include_links)
-            if docmeta['commentsbody'] is not None:
-                returnstring += '\n' + xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
-                returnstring = returnstring.strip()
+        returnstring = xmltotxt(docmeta['body'], include_formatting, include_links)
+        if docmeta['commentsbody'] is not None:
+            returnstring += '\n' + xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
+            returnstring = returnstring.strip()
     return returnstring
 
 
@@ -761,11 +764,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             raise ValueError
 
         # backup (or not) for further processing
-        if no_fallback is False:
-            backup_tree = deepcopy(tree)
-        else:
-            backup_tree = None
-
+        backup_tree = deepcopy(tree) if no_fallback is False else None
         # extract metadata if necessary
         if output_format != 'txt':
             docmeta = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
@@ -806,20 +805,21 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             # add baseline as additional fallback
             if len(postbody) == 0:
                 postbody, temp_text, len_text = baseline(filecontent)
-        else:
-            # rescue: try to use original/dirty tree
-            if sure_thing is False and len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-                postbody, temp_text, len_text = baseline(filecontent)
-                LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
+        # rescue: try to use original/dirty tree
+        elif sure_thing is False and len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+            postbody, temp_text, len_text = baseline(filecontent)
+            LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check
         if max_tree_size is not None:
+            # strip tags
             if len(postbody) > max_tree_size:
                 LOGGER.warning('output tree too long: %s', len(postbody))
                 etree.strip_tags(postbody, 'hi')
-                if len(postbody) > max_tree_size:
-                    LOGGER.error('output tree too long: %s, discarding file', len(postbody))
-                    raise ValueError
+            # still too long, raise an error
+            if len(postbody) > max_tree_size:
+                LOGGER.error('output tree too long: %s, discarding file', len(postbody))
+                raise ValueError
         # size checks
         if len_comments < config.getint('DEFAULT', 'MIN_EXTRACTED_COMM_SIZE'):
             LOGGER.info('not enough comments %s', url)

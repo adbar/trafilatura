@@ -132,10 +132,12 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
                 elem.set('role', 'head')
             elem.tag = 'cell'
     # sanitize
-    sanitization_list = list()
-    for tagname in [element.tag for element in set(cleaned_tree.iter('*'))]:
-        if tagname not in TEI_VALID_TAGS:
-            sanitization_list.append(tagname)
+    sanitization_list = [
+        tagname
+        for tagname in [element.tag for element in set(cleaned_tree.iter('*'))]
+        if tagname not in TEI_VALID_TAGS
+    ]
+
     etree.strip_tags(cleaned_tree, sanitization_list)
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)

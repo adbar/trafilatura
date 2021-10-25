@@ -33,7 +33,7 @@ start = time.time()
 for item in EVAL_PAGES:
     if len(EVAL_PAGES[item]['file']) == 0:
         continue
-    if not 'author' in EVAL_PAGES[item] or len(EVAL_PAGES[item]['author']) < 1:
+    if 'author' not in EVAL_PAGES[item] or len(EVAL_PAGES[item]['author']) < 1:
         continue
     author_gold = EVAL_PAGES[item]['author']
     i += 1

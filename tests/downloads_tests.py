@@ -53,7 +53,7 @@ def test_fetch():
     # user-agents rotation
     assert _parse_config(UA_CONFIG) == (['Firefox', 'Chrome'], 'yummy_cookie=choco; tasty_cookie=strawberry')
     custom = _determine_headers(UA_CONFIG)
-    assert custom['User-Agent'] == 'Chrome' or custom['User-Agent'] == 'Firefox'
+    assert custom['User-Agent'] in ['Chrome', 'Firefox']
     assert custom['Cookie'] == 'yummy_cookie=choco; tasty_cookie=strawberry'
 
 
@@ -72,16 +72,27 @@ def test_queue():
     testargs = ['', '-v']
     with patch.object(sys, 'argv', testargs):
         args = parse_args(testargs)
-    domain_dict = dict()
-    domain_dict['https://httpbin.org'] = deque(['/status/301', '/status/304', '/status/200', '/status/300', '/status/400', '/status/505'])
+    domain_dict = {
+        'https://httpbin.org': deque(
+            [
+                '/status/301',
+                '/status/304',
+                '/status/200',
+                '/status/300',
+                '/status/400',
+                '/status/505',
+            ]
+        )
+    }
+
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
     config = use_config(filename=args.config_file)
     results = download_queue_processing(domain_dict, args, None, config)
     assert len(results[0]) == 6 and results[1] is None
     # test backoff algorithm
-    testdict = dict()
-    backoffdict = dict()
+    testdict = {}
+    backoffdict = {}
     testdict['http://test.org'] = deque(['/1'])
     assert draw_backoff_url(testdict, backoffdict, 0, set()) == ('http://test.org/1', dict(), dict(), 'http://test.org')
     testdict['http://test.org'] = deque(['/1'])

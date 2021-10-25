@@ -116,20 +116,15 @@ def textfilter(element):
         testtext = element.text
     if text_chars_test(testtext) is False:
         return True
-    for line in testtext.splitlines():
-        #if len(line) <= 5:
-        #    continue
-        if RE_FILTER.match(line):
-            return True
-    return False
+    # to check: line len → continue if len(line) <= 5
+    return any(RE_FILTER.match(line) for line in testtext.splitlines())
 
 
 def text_chars_test(string):
     '''Determine if a string is only composed of spaces and/or control characters'''
     # or not re.search(r'\w', string)
-    if string is None or len(string) == 0 or string.isspace():
-        return False
-    return True
+    # return string is not None and len(string) != 0 and not string.isspace()
+    return string not in (None, '') and not string.isspace()
 
 
 def content_fingerprint(string):

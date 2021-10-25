@@ -141,12 +141,11 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
         output_format = 'xml'
     if tei_output is True:
         output_format = 'tei'
-    result = extract(htmlstring, url,
+    return extract(htmlstring, url,
                      record_id='0000',
                      no_fallback=False,
                      output_format=output_format,
                      target_language=langcheck)
-    return result
 
 
 @pytest.mark.parametrize("xmloutput", [False, True])

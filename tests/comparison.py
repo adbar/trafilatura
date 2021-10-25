@@ -118,7 +118,7 @@ def run_baseline_2(htmlstring):
     if result is not None:
         return result
     #results = set()
-    resultlist = list()
+    resultlist = []
     # iterate potentially relevant elements
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q'): # 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
         #if element.tag in ('h1', 'h2', 'h3', 'h4', 'h5', 'h6'):
@@ -162,37 +162,60 @@ def run_baseline(htmlstring):
 
 def run_trafilatura(htmlstring):
     '''run trafilatura (without fallback) on content'''
-    result = extract(htmlstring, no_fallback=True, include_comments=False, include_tables=True, include_formatting=False)
-    return result
+    return extract(
+        htmlstring,
+        no_fallback=True,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
 
 
 def run_justext(htmlstring):
     '''try with the generic algorithm justext'''
-    valid = list()
     paragraphs = justext.justext(htmlstring, justext.get_stoplist("German"), 50, 200, 0.1, 0.2, 0.2, 200, True)  # stop_words
-    for paragraph in paragraphs:
-        if not paragraph.is_boilerplate:
-            valid.append(paragraph.text)
-    result = ' '.join(valid)
-    return result # sanitize(result)
+    valid = [
+        paragraph.text
+        for paragraph in paragraphs
+        if not paragraph.is_boilerplate
+    ]
+
+    return ' '.join(valid)   # sanitize(result)
 
 
 def run_trafilatura_fallback(htmlstring):
     '''run trafilatura (with fallback) on content'''
-    result = extract(htmlstring, no_fallback=False, include_comments=False, include_tables=True, include_formatting=False)
-    return result
+    return extract(
+        htmlstring,
+        no_fallback=False,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
 
 
 def run_trafilatura_precision(htmlstring):
     '''run trafilatura with preference for precision'''
-    result = extract(htmlstring, no_fallback=False, favor_precision=True, include_comments=False, include_tables=True, include_formatting=False)
-    return result
+    return extract(
+        htmlstring,
+        no_fallback=False,
+        favor_precision=True,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
 
 
 def run_trafilatura_recall(htmlstring):
     '''run trafilatura with preference for recall'''
-    result = extract(htmlstring, no_fallback=False, favor_recall=True, include_comments=False, include_tables=True, include_formatting=False)
-    return result
+    return extract(
+        htmlstring,
+        no_fallback=False,
+        favor_recall=True,
+        include_comments=False,
+        include_tables=True,
+        include_formatting=False,
+    )
 
 
 def run_goose(htmlstring):
@@ -252,8 +275,7 @@ def run_newspaper(htmlstring):
 
 def run_dragnet(htmlstring):
     '''try with the dragnet module'''
-    content = extract_content(htmlstring)
-    return content # sanitize(content)
+    return extract_content(htmlstring)  # sanitize(content)
 
 
 def run_boilerpipe(htmlstring):
@@ -282,10 +304,18 @@ def run_jparser(htmlstring):
     except (TypeError, ValueError):
         return ''
     result = pm.extract()
+    # old
     mylist = list()
     for x in result['content']:
         if x['type'] in ('text', 'html'):
             mylist.append(str(x['data']))
+    # suggested
+    #mylist = [
+    #    str(x['data'])
+    #    for x in result['content']
+    #    if x['type'] in ('text', 'html')
+    #]
+
     returnstring = ' '.join(mylist)
     # returnstring = re.sub(r'\s+', ' ', returnstring)
     returnstring = re.sub(r'\s+(p{P}+)', '\1', returnstring)
@@ -298,9 +328,7 @@ def run_readabilipy(htmlstring):
         article = simple_json_from_html_string(htmlstring, use_readability=True)
     except (TypeError, ValueError):
         return ''
-    returnlist = []
-    for textelem in article['plain_text']:
-        returnlist.append(textelem['text'])
+    returnlist = [textelem['text'] for textelem in article['plain_text']]
     return '\n'.join(returnlist) # sanitize(content)
 
 

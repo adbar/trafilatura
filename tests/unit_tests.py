@@ -72,12 +72,11 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
         output_format = 'xml'
     if tei_output is True:
         output_format = 'tei'
-    result = extract(htmlstring, url,
+    return extract(htmlstring, url,
                      record_id='0000',
                      no_fallback=False,
                      output_format=output_format,
                      target_language=langcheck)
-    return result
 
 
 def test_trim():
@@ -408,7 +407,7 @@ def test_external():
     assert len(mytree) == 1
     mydoc = html.fromstring('<html><body><p>Text here <fancy>Test text</fancy><a href="">with a link</a>.</p><img src="test.jpg"/></body></html>')
     mytree, _, _ = sanitize_tree(mydoc, include_links=True, include_images=True)
-    myelems = set([element.tag for element in set(mytree.iter())])
+    myelems = {element.tag for element in set(mytree.iter())}
     assert 'graphic' in myelems and 'ref' in myelems
     # test langid
     if LANGID_FLAG is True:

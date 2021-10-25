@@ -174,10 +174,12 @@ def examine_meta(tree):
             #    if title is None:
             #        title = elem.get('content')
         # other types
-        else:
-            if not any(key in elem.attrib for key in ('charset', 'http-equiv', 'property')):
-                LOGGER.debug('unknown attribute: %s',
-                             html.tostring(elem, pretty_print=False, encoding='unicode').strip())
+        elif all(
+            key not in elem.attrib
+            for key in ('charset', 'http-equiv', 'property')
+        ):
+            LOGGER.debug('unknown attribute: %s',
+                         html.tostring(elem, pretty_print=False, encoding='unicode').strip())
     # backups
     if site_name is None and backup_sitename is not None:
         site_name = backup_sitename
@@ -261,11 +263,14 @@ def extract_url(tree, default_url=None):
     # try default language link
     else:
         for element in tree.iterfind('.//head//link[@rel="alternate"]'):
-            if 'hreflang' in element.attrib and element.attrib['hreflang'] is not None and element.attrib[
-                'hreflang'] == 'x-default':
-                if URL_COMP_CHECK.match(element.attrib['href']):
-                    LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
-                    url = element.attrib['href']
+            if (
+                'hreflang' in element.attrib
+                and element.attrib['hreflang'] is not None
+                and element.attrib['hreflang'] == 'x-default'
+                and URL_COMP_CHECK.match(element.attrib['href'])
+            ):
+                LOGGER.debug(html.tostring(element, pretty_print=False, encoding='unicode').strip())
+                url = element.attrib['href']
     # add domain name if it's missing
     if url is not None and url.startswith('/'):
         for element in tree.iterfind('.//head//meta[@content]'):
@@ -288,6 +293,8 @@ def extract_url(tree, default_url=None):
             url = None
         else:
             url = normalize_url(parsed_url)
+        # suggested:
+        # url = None if validation_result is False else normalize_url(parsed_url)
     return url
 
 
@@ -312,6 +319,8 @@ def extract_catstags(metatype, tree):
         xpath_expression = categories_xpaths
     else:
         xpath_expression = tags_xpaths
+    # suggested:
+    # xpath_expression = categories_xpaths if metatype == 'category' else tags_xpaths
     # search using custom expressions
     for catexpr in xpath_expression:
         for elem in tree.xpath(catexpr):
@@ -382,10 +391,9 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         return None
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
-    if metadata['author'] is not None:
-        # check to remove it and replace with author_blacklist on test case
-        if ' ' not in metadata['author']:
-            metadata['author'] = None
+    # to check: remove it and replace with author_blacklist in test case
+    if metadata['author'] is not None and ' ' not in metadata['author']:
+        metadata['author'] = None
     # fix: try json-ld metadata and override
     metadata = extract_meta_json(tree, metadata)
     # try with x-paths
@@ -425,17 +433,19 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
             metadata['sitename'] = re.sub(r'^@', '', metadata['sitename'])
         # capitalize
         try:
-            if not '.' in metadata['sitename'] and not metadata['sitename'][0].isupper():
+            if (
+                '.' not in metadata['sitename']
+                and not metadata['sitename'][0].isupper()
+            ):
                 metadata['sitename'] = metadata['sitename'].title()
         # fix for empty name
         except IndexError:
             pass
-    else:
-        # use URL
-        if metadata['url']:
-            mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata['url'])
-            if mymatch:
-                metadata['sitename'] = mymatch.group(1)
+    # use URL
+    elif metadata['url']:
+        mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata['url'])
+        if mymatch:
+            metadata['sitename'] = mymatch.group(1)
     # categories
     if not metadata['categories']:
         metadata['categories'] = extract_catstags('category', tree)

@@ -45,8 +45,7 @@ class LRUCache:
         with self.lock:
             link = self.cache.get(key)
             if link is not None:
-                result = self._move_link(link)
-                return result
+                return self._move_link(link)
         return -1
 
     def put(self, key, value):

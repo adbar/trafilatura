@@ -147,20 +147,15 @@ def handle_link(link, sitemapurl, domainname, baseurl, target_lang):
     link = fix_relative_urls(baseurl, link)
     # clean and normalize
     link = clean_url(link, target_lang)
-    if link is not None:
-        if lang_filter(link, target_lang) is True:
-            newdomain = extract_domain(link)
-            if newdomain is not None:
-                # don't take links from another domain and make an exception for main platforms
-                if newdomain != domainname and not WHITELISTED_PLATFORMS.search(newdomain):
-                    LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
-                else:
-                    if DETECT_SITEMAP_LINK.search(link):
-                        state = 'sitemap'
-                    else:
-                        state = 'link'
-            else:
-                LOGGER.error("Couldn't extract domain: %s", link)
+    if link is not None and lang_filter(link, target_lang) is True:
+        newdomain = extract_domain(link)
+        if newdomain is None:
+            LOGGER.error("Couldn't extract domain: %s", link)
+        # don't take links from another domain and make an exception for main platforms
+        elif newdomain != domainname and not WHITELISTED_PLATFORMS.search(newdomain):
+            LOGGER.warning('Diverging domain names: %s %s', domainname, newdomain)
+        else:
+            state = 'sitemap' if DETECT_SITEMAP_LINK.search(link) else 'link'
     return link, state
 
 
@@ -176,7 +171,7 @@ def store_sitemap_link(sitemapurls, linklist, link, state):
 
 def extract_sitemap_langlinks(pagecontent, sitemapurl, domainname, baseurl, target_lang):
     'Extract links corresponding to a given target language.'
-    if not 'hreflang=' in pagecontent:
+    if 'hreflang=' not in pagecontent:
         return [], []
     sitemapurls, linklist = [], []
     # compile regex here for modularity and efficiency
