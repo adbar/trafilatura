@@ -577,11 +577,15 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_algo > 2 * len_text:
         algo_flag = True
-    elif not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
-        algo_flag = True  # borderline case
+    # borderline cases
     else:
-        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
-        algo_flag = False
+        if not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+            algo_flag = True
+        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+            algo_flag = True
+        else:
+            LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+            algo_flag = False
     # apply decision
     if algo_flag is True:
         body, text, len_text = temppost_algo, algo_text, len_algo
