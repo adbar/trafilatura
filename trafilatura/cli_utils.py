@@ -6,6 +6,7 @@ Functions dedicated to command-line processing.
 ## under GNU GPL v3 license
 
 
+import gzip
 import logging
 import random
 import re
@@ -160,12 +161,12 @@ def determine_output_path(args, orig_filename, content, counter=None, new_filena
 def archive_html(htmlstring, args, counter=None):
     '''Write a copy of raw HTML in backup directory'''
     destination_directory = determine_counter_dir(args.backup_dir, counter)
-    output_path, filename = get_writable_path(destination_directory, '.html')
+    output_path, filename = get_writable_path(destination_directory, '.html.gz')
     # check the directory status
     if check_outputdir_status(destination_directory) is True:
         # write
-        with open(output_path, mode='w', encoding='utf-8') as outputfile:
-            outputfile.write(htmlstring)
+        with gzip.open(output_path, 'wb') as outputfile:
+            outputfile.write(htmlstring.encode('utf-8'))
     return filename
 
 
