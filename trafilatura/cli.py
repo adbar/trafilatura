@@ -232,6 +232,20 @@ def dump_on_exit(inputdict=None):
 atexit.register(dump_on_exit, INPUTDICT)
 
 
+def process_parallel_results(future_to_url, blacklist, url_filter, inputdict):
+    """Process results from the parallel threads and add them
+       to the compressed URL dictionary for further processing."""
+    for future in as_completed(future_to_url):
+        if future.result() is not None:
+            inputdict = add_to_compressed_dict(
+                        future.result(), blacklist=blacklist,
+                        url_filter=url_filter, inputdict=inputdict
+                        )
+    # process the links found
+    # url_processing_pipeline(args, INPUTDICT)
+    return inputdict
+
+
 def process_args(args):
     """Perform the actual processing according to the arguments"""
     global INPUTDICT
@@ -258,10 +272,8 @@ def process_args(args):
                 future_to_url = {executor.submit(find_feed_urls, url, target_lang=args.target_language): url for url in input_urls}
             elif args.sitemap:
                 future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
-            # process results one-by-one, i.e. in parallel
-            for future in as_completed(future_to_url):
-                if future.result() is not None:
-                    INPUTDICT = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=INPUTDICT)
+            # process results
+            INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
         # process the links found
         url_processing_pipeline(args, INPUTDICT)
 
@@ -275,10 +287,8 @@ def process_args(args):
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
-            # process results one-by-one, i.e. in parallel
-            for future in as_completed(future_to_url):
-                if future.result() is not None:
-                    INPUTDICT = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=INPUTDICT)
+            # process results
+            INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
         # process the links found
         url_processing_pipeline(args, INPUTDICT)
         # find domains for which nothing has been found and crawl
@@ -288,7 +298,6 @@ def process_args(args):
             for key in control_dict
             if key not in INPUTDICT
         }
-
         # add to compressed dict and crawl the remaining websites
         cli_crawler(args, n=100, domain_dict=still_to_crawl)
 
