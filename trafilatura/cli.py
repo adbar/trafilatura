@@ -6,6 +6,7 @@ Implementing a basic command-line interface.
 ## under GNU GPL v3 license
 
 import argparse
+import atexit
 import logging
 import sys
 import warnings
@@ -23,6 +24,8 @@ from .sitemaps import sitemap_search
 
 
 LOGGER = logging.getLogger(__name__)
+
+INPUTDICT = None
 
 
 # fix output encoding on some systems
@@ -218,8 +221,20 @@ def main():
     process_args(args)
 
 
+def dump_on_exit(inputdict=None):
+    """Write all remaining URLs still in the input/processing list
+       to standard output before exiting."""
+    if inputdict:
+        for hostname in inputdict:
+            for urlpath in inputdict[hostname]:
+                sys.stdout.write('todo: ' + hostname + urlpath + '\n')
+
+atexit.register(dump_on_exit, INPUTDICT)
+
+
 def process_args(args):
     """Perform the actual processing according to the arguments"""
+    global INPUTDICT
     # verbosity
     if args.verbose == 1:
         logging.basicConfig(stream=sys.stdout, level=logging.WARNING)
@@ -231,13 +246,12 @@ def process_args(args):
     # processing according to mutually exclusive options
     # read url list from input file
     if args.inputfile and all([args.feed is False, args.sitemap is False, args.crawl is False, args.explore is False]):
-        inputdict = load_input_dict(args)
-        url_processing_pipeline(args, inputdict)
+        INPUTDICT = load_input_dict(args)
+        url_processing_pipeline(args, INPUTDICT)
 
     # fetch urls from a feed or a sitemap
     elif args.feed or args.sitemap:
         input_urls = load_input_urls(args)
-        inputdict = None
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             if args.feed:
@@ -247,9 +261,9 @@ def process_args(args):
             # process results one-by-one, i.e. in parallel
             for future in as_completed(future_to_url):
                 if future.result() is not None:
-                    inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=inputdict)
+                    INPUTDICT = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=INPUTDICT)
         # process the links found
-        url_processing_pipeline(args, inputdict)
+        url_processing_pipeline(args, INPUTDICT)
 
     # activate crawler/spider
     elif args.crawl:
@@ -258,22 +272,21 @@ def process_args(args):
     # activate site explorer
     elif args.explore:
         input_urls = load_input_urls(args)
-        inputdict = None
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
             # process results one-by-one, i.e. in parallel
             for future in as_completed(future_to_url):
                 if future.result() is not None:
-                    inputdict = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=inputdict)
+                    INPUTDICT = add_to_compressed_dict(future.result(), blacklist=args.blacklist, url_filter=args.url_filter, inputdict=INPUTDICT)
         # process the links found
-        url_processing_pipeline(args, inputdict)
+        url_processing_pipeline(args, INPUTDICT)
         # find domains for which nothing has been found and crawl
         control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
         still_to_crawl = {
             key: control_dict[key]
             for key in control_dict
-            if key not in inputdict
+            if key not in INPUTDICT
         }
 
         # add to compressed dict and crawl the remaining websites
@@ -287,8 +300,8 @@ def process_args(args):
     else:
         # process input URL
         if args.URL:
-            inputdict = add_to_compressed_dict([args.URL], args.blacklist)
-            url_processing_pipeline(args, inputdict)  # process single url
+            INPUTDICT = add_to_compressed_dict([args.URL], args.blacklist)
+            url_processing_pipeline(args, INPUTDICT)  # process single url
         # process input on STDIN
         else:
             # file type and unicode check
