@@ -73,10 +73,17 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
 
 
-def is_gz_file(contents):
-    """Tell if a file's magic number corresponds to the GZip format"""
+def handle_gz_file(filecontent):
+    """Tell if a file's magic number corresponds to the GZip format
+       and try to decode it"""
     # source: https://stackoverflow.com/questions/3703276/how-to-tell-if-a-file-is-gzip-compressed
-    return contents[:2] == b'\x1f\x8b'
+    if isinstance(filecontent, bytes) and filecontent[:2] == b'\x1f\x8b':
+        # decode GZipped data
+        try:
+            filecontent = gzip.decompress(filecontent)
+        except (EOFError, OSError):
+            logging.warning('invalid GZ file')
+    return filecontent
 
 
 def isutf8(data):
@@ -119,13 +126,8 @@ def decode_response(response):
         resp_content = response.data
     # suggested:
     # resp_content = response if isinstance(response, bytes) else response.data
-
-    # decode GZipped data
-    if is_gz_file(resp_content):
-        try:
-            resp_content = gzip.decompress(resp_content)
-        except (EOFError, OSError):
-            logging.warning('invalid GZ file')
+    # decode GZipped data if necessary
+    resp_content = handle_gz_file(resp_content)
     # detect encoding
     guessed_encoding = detect_encoding(resp_content)
     LOGGER.debug('response encoding: %s', guessed_encoding)
@@ -141,11 +143,6 @@ def decode_response(response):
     # force decoding # ascii instead?
     if htmltext is None:
         htmltext = str(resp_content, encoding='utf-8', errors='replace')
-        #try:
-        #    # frequent error
-        #    htmltext = resp_content.decode('cp1252').encode('utf-8')
-        #except UnicodeDecodeError:
-        #    htmltext = str(resp_content, encoding='utf-8', errors='replace')
     return htmltext
 
 
@@ -172,6 +169,8 @@ def load_html(htmlobject):
     # use urllib3 response directly
     if isinstance(htmlobject, urllib3.response.HTTPResponse):
         htmlobject = decode_response(htmlobject.data)
+    # GZip test
+    htmlobject = handle_gz_file(htmlobject)
     # sanity check
     check_flag = is_dubious_html(htmlobject)
     # try to detect encoding and convert to string

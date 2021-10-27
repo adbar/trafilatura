@@ -35,13 +35,13 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')
 SAMPLE_META = dict.fromkeys(METADATA_LIST)
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
 ZERO_CONFIG['DEFAULT']['MIN_EXTRACTED_SIZE'] = '0'
 
-RESOURCES_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'resources')
 UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 MOCK_PAGES = {
@@ -106,6 +106,10 @@ def test_input():
     assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
     assert extract(None, 'url', '0000', target_language=None) is None
+    # GZip
+    with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
+        myinput = gzfile.read()
+    assert 'Long story short,' in extract(myinput)
     # legacy
     assert process_record(None, 'url', '0000', target_language=None) is None
 
@@ -423,8 +427,7 @@ def test_images():
     assert utils.is_image_file('test.jpg') is True
     assert utils.is_image_file('test.txt') is False
     assert handle_textelem(etree.Element('graphic'), [], False, DEFAULT_CONFIG) is None
-    resources_dir = os.path.join(TEST_DIR, 'resources')
-    with open(os.path.join(resources_dir, 'http_sample.html')) as f:
+    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     assert 'test.jpg Example image' not in extract(teststring)
     assert 'test.jpg Example image' in extract(teststring, include_images=True, no_fallback=True)
@@ -450,8 +453,7 @@ def test_links():
     # link without target
     mydoc = html.fromstring('<html><body><p><a>Test link text.</a></p></body></html>')
     assert '[Test link text.]' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
-    resources_dir = os.path.join(TEST_DIR, 'resources')
-    with open(os.path.join(resources_dir, 'http_sample.html')) as f:
+    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
     assert '[link](testlink.html)' in extract(teststring, include_links=True, no_fallback=True, config=ZERO_CONFIG)
@@ -464,8 +466,7 @@ def test_links():
 def test_tei():
     '''test TEI-related functions'''
     # open local resources to avoid redownloading at each run
-    resources_dir = os.path.join(TEST_DIR, 'resources')
-    with open(os.path.join(resources_dir, 'httpbin_sample.html')) as f:
+    with open(os.path.join(RESOURCES_DIR, 'httpbin_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
     result1 = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
@@ -474,7 +475,7 @@ def test_tei():
     assert xml.validate_tei(etree.fromstring(result1)) is True
     assert xml.validate_tei(etree.fromstring(teststring)) is False
     # test with another file
-    with open(os.path.join(resources_dir, 'http_sample.html')) as f:
+    with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
     result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
