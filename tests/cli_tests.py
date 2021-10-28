@@ -80,17 +80,18 @@ def test_parser():
 
 def test_climain():
     '''test arguments and main CLI entrypoint'''
-    python_bin_dir = os.path.dirname(sys.executable)  # current virtualenv bin/ directory
-    trafilatura_bin = os.path.join(python_bin_dir, "trafilatura")
+    if os.name == 'nt':
+        trafilatura_bin = os.path.join(sys.prefix, "Scripts", "trafilatura")
+    else:
+        trafilatura_bin = os.path.join(sys.prefix, "bin", "trafilatura")
+
     assert subprocess.run([trafilatura_bin, '--help']).returncode == 0  # exit status
     ## doesn't pass remote tests, 256 or 0 is OK
     # piped input
     empty_input = b'<html><body></body></html>'
     assert subprocess.run([trafilatura_bin], input=empty_input).returncode == 0
     # input directory walking and processing
-    result = subprocess.run([trafilatura_bin, '--inputdir', 'tests/resources/'], capture_output=True)
-    assert result.returncode == 0
-    assert b"Long story short" in result.stdout
+    result = subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR]).returncode == 0
 
 
 def test_input_type():
@@ -201,6 +202,10 @@ def test_cli_pipeline():
     #    cli.process_args(args)
     #assert len(f.getvalue()) == 0
     # test URL listing
+
+    # Force encoding to utf-8 for Windows in future processes spawned by multiprocessing.Pool
+    os.environ['PYTHONIOENCODING'] = "utf-8"
+
     testargs = ['', '--list']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
