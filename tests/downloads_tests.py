@@ -84,7 +84,6 @@ def test_queue():
             ]
         )
     }
-
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
     config = use_config(filename=args.config_file)

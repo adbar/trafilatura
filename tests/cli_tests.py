@@ -278,6 +278,7 @@ def test_cli_pipeline():
     #    teststring = f.read()
     #result = cli.examine(teststring, args)
     #assert '[link](testlink.html)' in result # and 'test.jpg' in result
+
     # Crawling
     testargs = ['', '--crawl', 'https://httpbin.org/html']
     with patch.object(sys, 'argv', testargs):
@@ -286,14 +287,22 @@ def test_cli_pipeline():
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
     assert len(f.getvalue()) == 0
-    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list']
+    # links permitted
+    testargs = ['', '--crawl', 'https://httpbin.org/links/1/1', '--list', '--parallel', '1']
     with patch.object(sys, 'argv', testargs):
         args = cli.parse_args(testargs)
     f = io.StringIO()
     with redirect_stdout(f):
         cli_utils.cli_crawler(args)
-    print(f.getvalue())
     assert f.getvalue() == 'https://httpbin.org/links/1/0\n'
+    # 0 links permitted
+    args.crawl = 'https://httpbin.org/links/4/4'
+    f = io.StringIO()
+    with redirect_stdout(f):
+        cli_utils.cli_crawler(args, n=0)
+    # print(f.getvalue())
+    assert len(f.getvalue().split('\n')) == 5
+
     # Exploration (Sitemap + Crawl)
     testargs = ['', '--explore', 'https://httpbin.org/html']
     with patch.object(sys, 'argv', testargs):

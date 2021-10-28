@@ -220,7 +220,7 @@ def process_result(htmlstring, args, url, counter, config):
 def download_queue_processing(domain_dict, args, counter, config):
     '''Implement a download queue consumer, single- or multi-threaded'''
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
-    backoff_dict, errors = dict(), []
+    backoff_dict, errors = {}, []
     while domain_dict:
         bufferlist, download_threads, domain_dict, backoff_dict = load_download_buffer(domain_dict, backoff_dict, sleep_time, threads=args.parallel)
         # process downloads
@@ -240,7 +240,7 @@ def cli_crawler(args, n=30, domain_dict=None):
        and prints the links found in the process'''
     config = use_config(filename=args.config_file)
     sleep_time = config.getfloat('DEFAULT', 'SLEEP_TIME')
-    counter, crawlinfo, backoff_dict = None, dict(), dict()
+    counter, crawlinfo, backoff_dict = None, {}, {}
     # load input URLs
     if domain_dict is None:
         domain_dict = load_input_dict(args)
@@ -276,7 +276,7 @@ def cli_crawler(args, n=30, domain_dict=None):
                 #    if args.archived is True:
                 #        errors.append(url)
         # early exit if maximum count is reached
-        if any(i >= n for i in [crawlinfo[site]['count'] for site in crawlinfo]):
+        if any(i >= n for i in [dictvalue['count'] for _, dictvalue in crawlinfo.items()]):
             break
     # print results
     for website in sorted(domain_dict):
