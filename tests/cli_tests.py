@@ -5,6 +5,7 @@ Unit tests for the command-line interface.
 import io
 import logging
 import os
+import subprocess
 import sys
 
 from collections import deque
@@ -79,12 +80,17 @@ def test_parser():
 
 def test_climain():
     '''test arguments and main CLI entrypoint'''
-    assert os.system('trafilatura --help') % 256 == 0  # exit status
+    python_bin_dir = os.path.dirname(sys.executable)  # current virtualenv bin/ directory
+    trafilatura_bin = os.path.join(python_bin_dir, "trafilatura")
+    assert subprocess.run([trafilatura_bin, '--help']).returncode == 0  # exit status
     ## doesn't pass remote tests, 256 or 0 is OK
     # piped input
-    assert os.system('echo "<html><body></body></html>" | trafilatura') % 256 == 0
+    empty_input = b'<html><body></body></html>'
+    assert subprocess.run([trafilatura_bin], input=empty_input).returncode == 0
     # input directory walking and processing
-    assert os.system('trafilatura --inputdir "tests/resources/"') % 256 == 0
+    result = subprocess.run([trafilatura_bin, '--inputdir', 'tests/resources/'], capture_output=True)
+    assert result.returncode == 0
+    assert b"Long story short" in result.stdout
 
 
 def test_input_type():
