@@ -15,7 +15,7 @@ import string
 import sys
 import traceback
 
-from collections import deque
+from collections import deque, OrderedDict
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk
@@ -70,7 +70,8 @@ def load_input_urls(args):
         input_urls = [args.feed]
     elif args.sitemap:
         input_urls = [args.sitemap]
-    return input_urls
+    # uniq URLs while preserving order (important)
+    return list(OrderedDict.fromkeys(input_urls))
 
 
 def load_blacklist(filename):

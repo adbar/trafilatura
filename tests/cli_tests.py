@@ -337,6 +337,10 @@ def test_input_filtering():
     # malformed URLs
     inputdict = add_to_compressed_dict(['123345', 'https://www.example.org/1'], {}, None, None)
     assert len(inputdict) == 1
+    # double URLs
+    args.inputfile = os.path.join(RESOURCES_DIR, 'redundant-urls.txt')
+    my_urls = cli_utils.load_input_urls(args)
+    assert len(my_urls) == 5
 
 
 if __name__ == '__main__':

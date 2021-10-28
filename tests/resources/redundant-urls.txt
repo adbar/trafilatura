@@ -1,0 +1,7 @@
+https://example.org/
+https://www.example.org/
+https://www.example.org
+http://example.org/
+http://example.org
+https://example.org/
+https://www.example.org/

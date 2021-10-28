@@ -12,6 +12,7 @@ import sys
 import warnings
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
 
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
                         cli_crawler,
@@ -26,7 +27,7 @@ from .sitemaps import sitemap_search
 LOGGER = logging.getLogger(__name__)
 
 INPUTDICT = None
-
+THREAD_LOCK = Lock()
 
 # fix output encoding on some systems
 try:
@@ -241,8 +242,6 @@ def process_parallel_results(future_to_url, blacklist, url_filter, inputdict):
                         future.result(), blacklist=blacklist,
                         url_filter=url_filter, inputdict=inputdict
                         )
-    # process the links found
-    # url_processing_pipeline(args, INPUTDICT)
     return inputdict
 
 
@@ -273,7 +272,11 @@ def process_args(args):
             elif args.sitemap:
                 future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
             # process results
-            INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
+            with THREAD_LOCK:
+                INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
+                # list all links found to free memory
+                if args.list:
+                    url_processing_pipeline(args, INPUTDICT)
         # process the links found
         url_processing_pipeline(args, INPUTDICT)
 
@@ -288,7 +291,11 @@ def process_args(args):
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
             # process results
-            INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
+            with THREAD_LOCK:
+                INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
+                # list all links found to free memory
+                if args.list:
+                    url_processing_pipeline(args, INPUTDICT)
         # process the links found
         url_processing_pipeline(args, INPUTDICT)
         # find domains for which nothing has been found and crawl
