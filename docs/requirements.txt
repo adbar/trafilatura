@@ -1,3 +1,4 @@
 # without version specifier
 trafilatura
 pydata-sphinx-theme
+docutils==0.17.1
