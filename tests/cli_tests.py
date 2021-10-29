@@ -80,18 +80,20 @@ def test_parser():
 
 def test_climain():
     '''test arguments and main CLI entrypoint'''
+    # exit status required: 0
+    # Windows platforms
     if os.name == 'nt':
         trafilatura_bin = os.path.join(sys.prefix, "Scripts", "trafilatura")
+    # other platforms
     else:
-        trafilatura_bin = os.path.join(sys.prefix, "bin", "trafilatura")
-
-    assert subprocess.run([trafilatura_bin, '--help']).returncode == 0  # exit status
-    ## doesn't pass remote tests, 256 or 0 is OK
+        trafilatura_bin = 'trafilatura'
+    # help display
+    assert subprocess.run([trafilatura_bin, '--help']).returncode == 0
     # piped input
     empty_input = b'<html><body></body></html>'
     assert subprocess.run([trafilatura_bin], input=empty_input).returncode == 0
     # input directory walking and processing
-    result = subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR]).returncode == 0
+    assert subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR]).returncode == 0
 
 
 def test_input_type():
