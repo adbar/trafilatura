@@ -46,6 +46,18 @@ def test_rss_extraction():
     assert len(feeds.extract_links(teststring, 'example.com', 'https://example.org', '')) > 0
 
 
+def test_json_extraction():
+    '''Test link extraction from a JSON feed'''
+    # find link
+    assert len(feeds.determine_feed('<html><meta><link rel="alternate" type="application/json" title="JSON Feed" href="https://www.jsonfeed.org/feed.json" />></meta><body/></html>', 'jsonfeed.org', 'https://www.jsonfeed.org')) == 1
+    # extract data
+    filepath = os.path.join(RESOURCES_DIR, 'feed.json')
+    with open(filepath) as f:
+        teststring = f.read()
+    links = feeds.extract_links(teststring, 'npr.org', 'https://npr.org', '')
+    assert len(links) == 25
+
+
 def test_feeds_helpers():
     '''Test helper functions for feed extraction'''
     # nothing useful
@@ -82,5 +94,6 @@ def test_cli_behavior():
 if __name__ == '__main__':
     test_atom_extraction()
     test_rss_extraction()
+    test_json_extraction()
     test_feeds_helpers()
     test_cli_behavior()

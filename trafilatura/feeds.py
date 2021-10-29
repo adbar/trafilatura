@@ -6,6 +6,7 @@ Examining feeds and extracting links for further processing.
 ## under GNU GPL v3 license
 
 import logging
+import json
 import re
 
 from courlan import check_url, clean_url, fix_relative_urls, get_hostinfo, validate_url
@@ -15,7 +16,7 @@ from .utils import filter_urls, load_html
 
 LOGGER = logging.getLogger(__name__)
 
-FEED_TYPES = set(['application/atom+xml', 'application/rdf+xml', 'application/rss+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/atom+xml', 'text/rdf+xml', 'text/rss+xml', 'text/xml'])
+FEED_TYPES = set(['application/atom+xml', 'application/json', 'application/rdf+xml', 'application/rss+xml', 'application/x.atom+xml', 'application/x-atom+xml', 'text/atom+xml', 'text/plain', 'text/rdf+xml', 'text/rss+xml', 'text/xml'])
 FEED_OPENING = re.compile(r'<(feed|rss|\?xml)')
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
@@ -54,7 +55,21 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
     # typical first and second lines absent
     if not FEED_OPENING.match(feed_string) and not \
         ('<rss' in feed_string[:100] or '<feed' in feed_string[:100]):
-        LOGGER.debug('Possibly invalid feed: %s', domainname)
+        # could be JSON
+        if feed_string.startswith('{'):
+            try:
+                feed_dict = json.loads(feed_string)
+                if 'items' in feed_dict:
+                    for item in feed_dict['items']:
+                        if 'url' in item:
+                            feed_links.append(item['url'])
+                        # fallback: https://www.jsonfeed.org/version/1.1/
+                        elif 'id' in item:
+                            feed_links.append(item['id'])
+            except json.decoder.JSONDecodeError:
+                LOGGER.debug('JSON decoding error: %s', domainname)
+        else:
+            LOGGER.debug('Possibly invalid feed: %s', domainname)
         return feed_links
     # could be Atom
     if '<link ' in feed_string:
