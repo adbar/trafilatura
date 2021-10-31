@@ -126,17 +126,10 @@ def link_density_test(element):
             limitlen, threshold = 25, 0.8
             #if 'hi' in list(element):
             #    limitlen, threshold = 100, 0.8
-        #elif element.tag == 'head':
-        #    limitlen, threshold = 50, 0.8
         else:
-            if element.getnext() is None:
-                limitlen, threshold = 200, 0.66
-            #elif re.search(r'[.?!:]', elemtext):
-            #    limitlen, threshold = 150, 0.66
-            else:
-                limitlen, threshold = 100, 0.66
-            # suggested:
-            # limitlen, threshold = (200, 0.66) if element.getnext() is None else (100, 0.66)
+            limitlen, threshold = (200, 0.66) if element.getnext() is None else (100, 0.66)
+                    # suggested:
+                    # limitlen, threshold = (200, 0.66) if element.getnext() is None else (100, 0.66)
         if elemlen < limitlen:
             linklen, elemnum, shortelems, mylist = collect_link_info(links_xpath)
             if elemnum == 0:

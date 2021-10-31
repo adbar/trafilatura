@@ -204,10 +204,7 @@ def file_processing(filename, args, counter=None, config=None):
 def process_result(htmlstring, args, url, counter, config):
     '''Extract text and metadata from a download webpage and eventually write out the result'''
     # backup option
-    if args.backup_dir:
-        fileslug = archive_html(htmlstring, args, counter)
-    else:
-        fileslug = None
+    fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # suggested: fileslug = archive_html(htmlstring, args, counter) if args.backup_dir else None
     # process
     result = examine(htmlstring, args, url=url, config=config)

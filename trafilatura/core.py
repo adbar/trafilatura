@@ -579,17 +579,15 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         algo_flag = False
     elif len_algo > 2 * len_text:
         algo_flag = True
-    # borderline cases
+    elif not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+        algo_flag = True
+    elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+        algo_flag = True
     else:
-        if not body.xpath('//p//text()') and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
-            algo_flag = True
-        elif len(body.xpath('//table')) > len(body.xpath('//p')) and len_algo > config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
-            algo_flag = True
-        else:
-            LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
-            algo_flag = False
+        LOGGER.debug('extraction values: %s %s for %s', len_text, len_algo, url)
+        algo_flag = False
     # apply decision
-    if algo_flag is True:
+    if algo_flag:
         body, text, len_text = temppost_algo, algo_text, len_algo
         LOGGER.info('using generic algorithm: %s', url)
     else:
@@ -606,7 +604,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         body, text, len_text, jt_result = justext_rescue(tree, url, target_language, body, len_text, text)
         LOGGER.debug('justext length %s', len_text)
     # post-processing: remove unwanted sections
-    if algo_flag is True and jt_result is False:
+    if algo_flag and jt_result is False:
         body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
     return body, text, len_text
 

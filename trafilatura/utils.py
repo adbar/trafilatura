@@ -121,10 +121,7 @@ def decode_response(response):
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
     # urllib3 response object / bytes switch
-    if isinstance(response, bytes):
-        resp_content = response
-    else:
-        resp_content = response.data
+    resp_content = response if isinstance(response, bytes) else response.data
     # suggested:
     # resp_content = response if isinstance(response, bytes) else response.data
     # decode GZipped data if necessary
