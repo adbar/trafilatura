@@ -114,7 +114,7 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
         elem.getparent().remove(elem)
     # elements to be stripped
     stripped_set = MANUALLY_STRIPPED.copy()
-    stripped_set.update('a', 'span')
+    stripped_set.update(('a', 'span'))
     if include_links is True:
         stripped_set.remove('a')
     if include_images is True:
