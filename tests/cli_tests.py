@@ -93,7 +93,11 @@ def test_climain():
     empty_input = b'<html><body></body></html>'
     assert subprocess.run([trafilatura_bin], input=empty_input).returncode == 0
     # input directory walking and processing
-    assert subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR]).returncode == 0
+    env = os.environ.copy()
+    if os.name == 'nt':
+        # Force encoding to utf-8 for Windows (seem to be a problem only in GitHub Actions)
+        env['PYTHONIOENCODING'] = 'utf-8'
+    assert subprocess.run([trafilatura_bin, '--inputdir', RESOURCES_DIR], env=env).returncode == 0
 
 
 def test_input_type():
