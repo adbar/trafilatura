@@ -408,11 +408,11 @@ def handle_textelem(element, potential_tags, dedupbool, config):
 def delete_by_link_density(subtree, tagname, backtracking=False):
     '''Determine the link density of elements with respect to their length,
        and remove the elements identified as boilerplate.'''
-    myelems, deletions = dict(), list()
+    myelems, deletions = dict(), set()
     for elem in subtree.iter(tagname):
         result, templist = link_density_test(elem)
         if result is True:
-            deletions.append(elem)
+            deletions.add(elem)
         elif backtracking is True and len(templist) > 0:
             text = trim(elem.text_content())
             if text not in myelems:
@@ -423,11 +423,11 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     if backtracking is True:
         for text, elem in myelems.items():
             if 0 < len(text) < 100 and len(elem) >= 3:
-                deletions.extend(elem)
+                deletions.update(elem)
                 # print('backtrack:', text)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
-    for elem in list(OrderedDict.fromkeys(deletions)):
+    for elem in deletions:
         elem.getparent().remove(elem)
     return subtree
 
@@ -544,8 +544,8 @@ def extract_comments(tree, dedupbool, config):
         #    processed_elem = process_comments_node(elem, potential_tags)
         #    if processed_elem is not None:
         #        comments_body.append(processed_elem)
-        processed_elems = [process_comments_node(elem, potential_tags, dedupbool, config) for elem in subtree.xpath('.//*')]
-        comments_body.extend(list(filter(None.__ne__, processed_elems)))
+        processed_elems = (process_comments_node(elem, potential_tags, dedupbool, config) for elem in subtree.xpath('.//*'))
+        comments_body.extend(elem for elem in processed_elems if elem is not None)
         # control
         if len(comments_body) > 0:  # if it has children
             LOGGER.debug(expr)

@@ -14,6 +14,7 @@ import sys
 
 from functools import lru_cache
 from html import unescape
+from collections import OrderedDict
 
 
 # CChardet is faster and can be more accurate
@@ -357,3 +358,16 @@ def check_authors(authors, author_blacklist):
         return '; '.join(new_authors).strip('; ')
     else:
         return None
+
+
+def uniqify_list(l):
+    """
+    Remove duplicates from a list while keeping order in an efficient way
+    This depends on Python version: dicts preserve insertion order since Python 3.6
+
+    https://www.peterbe.com/plog/fastest-way-to-uniquify-a-list-in-python-3.6
+    """
+    if sys.version_info > (3, 6):
+        return list(dict.fromkeys(l))
+    else:
+        return list(OrderedDict.fromkeys(l))

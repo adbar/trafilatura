@@ -113,12 +113,13 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
     for elem in tree.xpath(sanitized_xpath):
         elem.getparent().remove(elem)
     # elements to be stripped
-    stripped_list = MANUALLY_STRIPPED + ['a', 'span']
+    stripped_set = MANUALLY_STRIPPED.copy()
+    stripped_set.update('a', 'span')
     if include_links is True:
-        stripped_list.remove('a')
+        stripped_set.remove('a')
     if include_images is True:
-        stripped_list.remove('img')
-    etree.strip_tags(tree, stripped_list)
+        stripped_set.remove('img')
+    etree.strip_tags(tree, *stripped_set)
     tree = prune_html(tree)
     # convert
     cleaned_tree = convert_tags(tree, include_formatting=include_formatting, include_links=include_links, include_images=include_images)
@@ -138,6 +139,6 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
         if tagname not in TEI_VALID_TAGS
     ]
 
-    etree.strip_tags(cleaned_tree, sanitization_list)
+    etree.strip_tags(cleaned_tree, *sanitization_list)
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)
