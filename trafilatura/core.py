@@ -26,7 +26,7 @@ from .htmlprocessing import (convert_tags, handle_textnode,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
-from .utils import load_html, trim, txttocsv, is_image_file
+from .utils import load_html, trim, txttocsv, uniqify_list, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH,
@@ -408,11 +408,11 @@ def handle_textelem(element, potential_tags, dedupbool, config):
 def delete_by_link_density(subtree, tagname, backtracking=False):
     '''Determine the link density of elements with respect to their length,
        and remove the elements identified as boilerplate.'''
-    myelems, deletions = dict(), set()
+    myelems, deletions = {}, []
     for elem in subtree.iter(tagname):
         result, templist = link_density_test(elem)
         if result is True:
-            deletions.add(elem)
+            deletions.append(elem)
         elif backtracking is True and len(templist) > 0:
             text = trim(elem.text_content())
             if text not in myelems:
@@ -423,11 +423,11 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     if backtracking is True:
         for text, elem in myelems.items():
             if 0 < len(text) < 100 and len(elem) >= 3:
-                deletions.update(elem)
+                deletions.extend(elem)
                 # print('backtrack:', text)
             # else: # and not re.search(r'[?!.]', text):
             # print(elem.tag, templist)
-    for elem in deletions:
+    for elem in uniqify_list(deletions):
         elem.getparent().remove(elem)
     return subtree
 
