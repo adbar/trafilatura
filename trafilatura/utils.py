@@ -12,10 +12,9 @@ import logging
 import re
 import sys
 
+from collections import OrderedDict
 from functools import lru_cache
 from html import unescape
-from collections import OrderedDict
-
 
 # CChardet is faster and can be more accurate
 try:
