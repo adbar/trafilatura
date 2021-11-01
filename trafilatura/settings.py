@@ -50,7 +50,8 @@ CUT_EMPTY_ELEMS = {'article', 'b', 'blockquote', 'dd', 'div', 'dt', 'em',
                    # 'colgroup', 'col',
 #CUT_EMPTY_ELEMS = {'div', 'span'}
 
-MANUALLY_CLEANED = {
+# order could matter, using lists to keep extraction deterministic
+MANUALLY_CLEANED = [
     # important
     'aside', 'embed', 'footer', 'form', 'head', 'iframe', 'menu', 'object', 'script',
     # other content
@@ -61,14 +62,14 @@ MANUALLY_CLEANED = {
     'marquee', 'math', 'menuitem', 'nav', 'noscript', 'optgroup', 'option',
     'output', 'param', 'progress', 'rp', 'rt', 'rtc', 'select', 'source',
     'style', 'track', 'template', 'textarea', 'time', 'use',
-}
+]
 # 'meta', 'hr', 'img', 'data', 'details', 'summary'
 
-MANUALLY_STRIPPED = {
+MANUALLY_STRIPPED = [
     'abbr', 'acronym', 'address', 'bdi', 'bdo', 'big', 'cite', 'data', 'dfn',
     'font', 'hgroup', 'img', 'ins', 'mark', 'meta', 'ruby', 'small', 'tbody',
     'tfoot', 'thead',
-}
+]
 # 'center', 'rb', 'wbr'
 
 TAG_CATALOG = frozenset(['blockquote', 'code', 'del', 'fw', 'head', 'hi', 'lb', 'list', 'p', 'pre', 'quote'])

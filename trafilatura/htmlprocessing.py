@@ -42,24 +42,24 @@ HTML_CLEANER.style = False
 
 def tree_cleaning(tree, include_tables, include_images=False):
     '''Prune the tree by discarding unwanted elements'''
-    # determine cleaning strategy
-    cleaning_set, stripping_set = \
+    # determine cleaning strategy, use lists to keep it deterministic
+    cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     if include_tables is False:
-        cleaning_set.add('table')
+        cleaning_list.append('table')
     if include_images is True:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
-        cleaning_list = [e for e in cleaning_set if e
+        cleaning_list = [e for e in cleaning_list if e
                          not in ('figure', 'picture', 'source')]
-        stripping_set.remove('img')
+        stripping_list.remove('img')
     # delete targeted elements
-    for expression in cleaning_set:
+    for expression in cleaning_list:
         for element in tree.getiterator(expression):
             try:
                 element.drop_tree() # faster when applicable
             except AttributeError:
                 element.getparent().remove(element)
-    HTML_CLEANER.kill_tags, HTML_CLEANER.remove_tags = cleaning_set, stripping_set
+    HTML_CLEANER.kill_tags, HTML_CLEANER.remove_tags = cleaning_list, stripping_list
     # save space and processing time
     return HTML_CLEANER.clean_html(prune_html(tree))
 
