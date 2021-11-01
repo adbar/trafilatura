@@ -35,6 +35,16 @@ from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD
 
 LOGGER = logging.getLogger(__name__)
 
+FORMATTING_PROTECTED = {'cell', 'head', 'hi', 'item', 'p', 'quote', 'td'}
+SPACING_PROTECTED = {'code', 'hi', 'ref'}
+P_FORMATTING = {'hi', 'ref'}
+TABLE_ELEMS = {'td', 'th'}
+TABLE_ALL = {'td', 'th', 'hi'}
+FORMATTING = {'hi', 'ref', 'span'}
+CODES_QUOTES = {'code', 'quote'}
+HEADINGS = {'fw', 'head'}
+
+
 
 def handle_titles(element, dedupbool, config):
     '''Process head elements (titles)'''
@@ -98,7 +108,7 @@ def handle_formatting(element, dedupbool, config):
     #        child.tag = 'done'
     # repair orphan elements
     parent = element.getparent() or element.getprevious()
-    if parent is None or parent.tag not in ('cell', 'head', 'hi', 'item', 'p', 'quote', 'td'):
+    if parent is None or parent.tag not in FORMATTING_PROTECTED:
         processed_element = etree.Element('p')
         processed_element.insert(0, formatting)
     else:
@@ -196,7 +206,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         if child.tag not in potential_tags and child.tag != 'done':
             LOGGER.warning('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
-        spacing = child.tag in ('code', 'hi', 'ref')  # todo: outputformat.startswith('xml')?
+        spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
         processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True, config=config)
         if processed_child is not None:
@@ -210,7 +220,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                 continue
             # handle formatting
             newsub = etree.Element(child.tag)
-            if processed_child.tag in ('hi', 'ref'):
+            if processed_child.tag in P_FORMATTING:
                 # check depth and clean
                 if len(processed_child) > 0:
                     for item in processed_child:  # children are lists
@@ -288,7 +298,7 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
             if len(newrow) > 0:
                 newtable.append(newrow)
                 newrow = etree.Element('row')
-        elif subelement.tag in ('td', 'th'):
+        elif subelement.tag in TABLE_ELEMS:
             newchildelem = define_cell_type(subelement)
             # process
             if len(subelement) == 0:
@@ -298,9 +308,9 @@ def handle_table(table_elem, potential_tags, dedupbool, config):
             else:
                 # proceed with iteration, fix for nested elements
                 for child in subelement.iter('*'):
-                    if child.tag in ('td', 'th', 'hi'):
+                    if child.tag in TABLE_ALL:
                         # todo: define attributes properly
-                        if child.tag in ('td', 'th'):
+                        if child.tag in TABLE_ELEMS:
                             # subcell_elem = define_cell_type(subelement)
                             child.tag = 'cell'
                         processed_subchild = handle_textnode(child, preserve_spaces=True, comments_fix=True, deduplicate=dedupbool, config=config)
@@ -381,7 +391,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
     # bypass: nested elements
     if element.tag == 'list':
         new_element = handle_lists(element, dedupbool, config)
-    elif element.tag in {'code', 'quote'}:
+    elif element.tag in CODES_QUOTES:
         new_element = handle_quotes(element, dedupbool, config)
     elif element.tag == 'head':
         new_element = handle_titles(element, dedupbool, config)
@@ -393,7 +403,7 @@ def handle_textelem(element, potential_tags, dedupbool, config):
             if element is not None:
                 new_element = etree.Element('p')
                 new_element.text = element.tail
-    elif element.tag in ('hi', 'ref', 'span'):
+    elif element.tag in FORMATTING:
         new_element = handle_formatting(element, dedupbool, config) # process_node(element, dedupbool, config)
     elif element.tag == 'table' and 'table' in potential_tags:
         new_element = handle_table(element, potential_tags, dedupbool, config)
@@ -487,7 +497,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                             if e is not None])
         # remove trailing titles
-        while len(result_body) > 0 and result_body[-1].tag in ('fw', 'head'):
+        while len(result_body) > 0 and result_body[-1].tag in HEADINGS:
             result_body[-1].getparent().remove(result_body[-1])
         # exit the loop if the result has children
         if len(result_body) > 1:

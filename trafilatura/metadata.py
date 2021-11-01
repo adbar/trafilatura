@@ -61,6 +61,11 @@ METANAME_TITLE = {
     'parsely-title', 'sailthru.title', 'shareaholic:title',
     'title', 'twitter:title'
 }
+OG_AUTHOR = {'og:author', 'og:article:author'}
+PROPERTY_AUTHOR = {'author', 'article:author'}
+TWITTER_ATTRS = {'twitter:site', 'application-name'}
+
+EXTRA_META = {'charset', 'http-equiv', 'property'}
 
 
 def extract_meta_json(tree, metadata):
@@ -99,7 +104,7 @@ def extract_opengraph(tree):
         elif elem.get('property') == 'og:description':
             description = elem.get('content')
         # og:author
-        elif elem.get('property') in ('og:author', 'og:article:author'):
+        elif elem.get('property') in OG_AUTHOR:
             author = elem.get('content')
         # og:type
         # elif elem.get('property') == 'og:type':
@@ -136,7 +141,7 @@ def examine_meta(tree):
                 continue
             if elem.get('property') == 'article:tag':
                 tags.append(content_attr)
-            elif elem.get('property') in ('author', 'article:author'):
+            elif elem.get('property') in PROPERTY_AUTHOR:
                 author = normalize_authors(author, content_attr)
         # name attribute
         elif 'name' in elem.attrib:
@@ -153,7 +158,7 @@ def examine_meta(tree):
             # site name
             elif name_attr in METANAME_PUBLISHER:
                 site_name = site_name or content_attr
-            elif name_attr in ('twitter:site', 'application-name') or 'twitter:app:name' in elem.get('name'):
+            elif name_attr in TWITTER_ATTRS or 'twitter:app:name' in elem.get('name'):
                 backup_sitename = content_attr
             # url
             elif name_attr == 'twitter:url':
@@ -176,7 +181,7 @@ def examine_meta(tree):
         # other types
         elif all(
             key not in elem.attrib
-            for key in ('charset', 'http-equiv', 'property')
+            for key in EXTRA_META
         ):
             LOGGER.debug('unknown attribute: %s',
                          html.tostring(elem, pretty_print=False, encoding='unicode').strip())
