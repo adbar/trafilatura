@@ -42,7 +42,7 @@ HTML_CLEANER.style = False
 
 def tree_cleaning(tree, include_tables, include_images=False):
     '''Prune the tree by discarding unwanted elements'''
-    # determine cleaning strategy
+    # determine cleaning strategy, use lists to keep it deterministic
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     if include_tables is False:

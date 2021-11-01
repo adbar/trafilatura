@@ -20,7 +20,7 @@ from courlan import get_host_and_path, validate_url
 
 from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
-from .utils import decode_response
+from .utils import decode_response, uniquify_list
 
 # customize headers
 RETRY_STRATEGY = urllib3.util.Retry(
@@ -147,7 +147,7 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict
     if inputdict is None:
         inputdict = defaultdict(deque)
     # deduplicate while keeping order
-    inputlist = list(OrderedDict.fromkeys(inputlist))
+    inputlist = uniquify_list(inputlist)
     # filter
     if blacklist:
         inputlist = [u for u in inputlist if re.sub(r'https?://', '', u) not in blacklist]

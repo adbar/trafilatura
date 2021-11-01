@@ -118,7 +118,7 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
         stripped_list.remove('a')
     if include_images is True:
         stripped_list.remove('img')
-    etree.strip_tags(tree, stripped_list)
+    etree.strip_tags(tree, *stripped_list)
     tree = prune_html(tree)
     # convert
     cleaned_tree = convert_tags(tree, include_formatting=include_formatting, include_links=include_links, include_images=include_images)
@@ -138,6 +138,6 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
         if tagname not in TEI_VALID_TAGS
     ]
 
-    etree.strip_tags(cleaned_tree, sanitization_list)
+    etree.strip_tags(cleaned_tree, *sanitization_list)
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)

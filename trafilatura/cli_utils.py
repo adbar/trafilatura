@@ -33,6 +33,7 @@ from courlan import get_host_and_path, is_navigation_page, validate_url
 from .core import extract
 from .downloads import add_to_compressed_dict, buffered_downloads, load_download_buffer
 from .filters import content_fingerprint
+from .utils import uniquify_list
 from .settings import (use_config, FILENAME_LEN,
                        FILE_PROCESSING_CORES, MAX_FILES_PER_DIRECTORY)
 from .spider import get_crawl_delay, init_crawl, process_response
@@ -71,7 +72,7 @@ def load_input_urls(args):
     elif args.sitemap:
         input_urls = [args.sitemap]
     # uniq URLs while preserving order (important)
-    return list(OrderedDict.fromkeys(input_urls))
+    return uniquify_list(input_urls)
 
 
 def load_blacklist(filename):

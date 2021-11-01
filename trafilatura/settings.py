@@ -50,6 +50,7 @@ CUT_EMPTY_ELEMS = {'article', 'b', 'blockquote', 'dd', 'div', 'dt', 'em',
                    # 'colgroup', 'col',
 #CUT_EMPTY_ELEMS = {'div', 'span'}
 
+# order could matter, using lists to keep extraction deterministic
 MANUALLY_CLEANED = [
     # important
     'aside', 'embed', 'footer', 'form', 'head', 'iframe', 'menu', 'object', 'script',
