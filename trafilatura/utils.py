@@ -366,7 +366,7 @@ def uniquify_list(l):
 
     https://www.peterbe.com/plog/fastest-way-to-uniquify-a-list-in-python-3.6
     """
-    if sys.version_info > (3, 6):  # only 
+    if sys.version_info > (3, 6):  # changed when support moved to Python 3.6+
         return list(dict.fromkeys(l))
     else:
         return list(OrderedDict.fromkeys(l))
