@@ -6,7 +6,7 @@ Functions dedicated to website navigation and crawling/spidering.
 import logging
 import urllib.robotparser
 
-from collections import deque, OrderedDict
+from collections import deque
 from time import sleep
 
 from courlan import extract_links, fix_relative_urls, get_hostinfo, get_host_and_path, is_navigation_page, is_not_crawlable
@@ -16,7 +16,7 @@ from .core import baseline
 from .downloads import fetch_url
 # from .feeds import find_feed_urls # extract_links ad extract_feed_links
 from .settings import DEFAULT_CONFIG
-from .utils import decode_response, load_html
+from .utils import decode_response, load_html, uniquify_list
 
 # language detection
 try:
@@ -130,7 +130,7 @@ def store_todo_links(todo, new_links, shortform=False):
         else:
             todo.append(link)
     # unique list while preserving order
-    return deque(OrderedDict.fromkeys(todo))
+    return deque(uniquify_list(todo))
 
 
 def process_links(htmlstring, base_url, known_links, todo, language=None, shortform=False, rules=None):
@@ -228,11 +228,7 @@ def focused_crawler(homepage, max_seen_urls=10, max_known_urls=100000, todo=None
 
 def get_crawl_delay(rules, default=5):
     """Define sleeping time between requests (in seconds)."""
-    try:
-        delay = rules.crawl_delay("*") or 0
-    # Python < 3.6
-    except AttributeError:
-        delay = 0
+    delay = rules.crawl_delay("*") or 0
     # backup
     if delay == 0:
         delay = default

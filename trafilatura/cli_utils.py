@@ -15,7 +15,7 @@ import string
 import sys
 import traceback
 
-from collections import deque, OrderedDict
+from collections import deque
 from functools import partial
 from multiprocessing import Pool
 from os import makedirs, path, walk

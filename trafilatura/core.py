@@ -12,7 +12,6 @@ import logging
 import re # import regex as re
 import warnings
 
-from collections import OrderedDict
 from copy import deepcopy
 
 from lxml import etree, html

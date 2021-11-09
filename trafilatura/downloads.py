@@ -8,7 +8,7 @@ import logging
 import random
 import re
 
-from collections import defaultdict, deque, OrderedDict
+from collections import defaultdict, deque
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from time import sleep
@@ -34,7 +34,7 @@ RETRY_STRATEGY = urllib3.util.Retry(
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # cert_reqs='CERT_REQUIRED', ca_certs=certifi.where()
 HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_certs=certifi.where(), num_pools=50)
-NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE', num_pools=50)
+NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE', num_pools=20)
 
 USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
 DEFAULT_HEADERS = {
