@@ -12,6 +12,21 @@ Tutorials
    tutorial-data
    tutorial-dwds
 
+
+
+Blog posts
+^^^^^^^^^^
+
+- `Extracting the main text content from web pages using Python <https://adrien.barbaresi.eu/blog/trafilatura-main-text-content-python.html>`_
+- `Validating TEI-XML documents with Python <https://adrien.barbaresi.eu/blog/validating-tei-xml-python.html>`_
+- `Evaluating scraping and text extraction tools for Python <https://adrien.barbaresi.eu/blog/evaluating-text-extraction-python.html>`_
+- `Filtering links to gather texts on the web <https://adrien.barbaresi.eu/blog/link-filtering-courlan-python.html>`_
+- `Using sitemaps to crawl websites on the command-line <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_
+- `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_
+- `Web scraping with R: Text and metadata extraction <https://adrien.barbaresi.eu/blog/web-scraping-text-metadata-r.html>`_
+- `Web scraping with Trafilatura just got faster <https://adrien.barbaresi.eu/blog/web-scraping-trafilatura-faster.html>`_
+
+
 External resources
 ^^^^^^^^^^^^^^^^^^
 

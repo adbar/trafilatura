@@ -24,11 +24,8 @@ Notable projects using this software
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
 
 
-
-Ports
------
-
-- Go port: `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
+Go port
+    `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
 
 
 
@@ -36,9 +33,9 @@ Citations in papers
 -------------------
 
 
-To reference this software in a publication please cite the following paper:
+**To reference this software in a publication please cite the following paper:**
 
-- Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, in *Proceedings of ACL/IJCNLP 2021: System Demonstrations*, 2021, p. 122-131.
+- Barbaresi, A. `Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction <https://aclanthology.org/2021.acl-demo.15/>`_, in *Proceedings of ACL/IJCNLP 2021: System Demonstrations*, 2021, p. 122-131. DOI: 10.18653/v1/2021.acl-demo.15
 
 
 .. code-block:: shell
@@ -54,8 +51,28 @@ To reference this software in a publication please cite the following paper:
     }
 
 
+The date extraction component ``htmldate`` is referenced in the following publication:
+
+- Barbaresi, A. "`htmldate: A Python package to extract publication dates from web pages <https://doi.org/10.21105/joss.02439>`_", Journal of Open Source Software, 5(51), 2439, 2020. DOI: 10.21105/joss.02439
+
+
+.. code-block:: shell
+
+    @article{barbaresi-2020-htmldate,
+      title = {{htmldate: A Python package to extract publication dates from web pages}},
+      author = "Barbaresi, Adrien",
+      journal = "Journal of Open Source Software",
+      volume = 5,
+      number = 51,
+      pages = 2439,
+      url = {https://doi.org/10.21105/joss.02439},
+      publisher = {The Open Journal},
+      year = 2020,
+    }
+
+
 Research using Trafilatura
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 
 - Bozarth, L., & Budak, C. (2021). `An Analysis of the Partnership between Retailers and Low-credibility News Publishers <https://journalqd.org/article/download/2579/1818>`_. Journal of Quantitative Description: Digital Media, 1.
@@ -65,4 +82,15 @@ Research using Trafilatura
 - Khusainov, A., Suleymanov, D., Gilmullin, R., Minsafina, A., Kubedinova, L., & Abdurakhmonova, N. `First Results of the “TurkLang-7” Project: Creating Russian-Turkic Parallel Corpora and MT Systems <http://ceur-ws.org/Vol-2780/paper8.pdf>`_.
 - Laippala, V., Rönnqvist, S., Hellström, S., Luotolahti, J., Repo, L., Salmela, A., ... & Pyysalo, S. (2020). `From Web Crawl to Clean Register-Annotated Corpora <https://www.aclweb.org/anthology/2020.wac-1.3.pdf>`_. In Proceedings of the 12th Web as Corpus Workshop (pp. 14-22).
 - Madrid-Morales, D. (2021). `Who Set the Narrative? Assessing the Influence of Chinese Media in News Coverage of COVID-19 in 30 African Countries <https://uh-ir.tdl.org/bitstream/handle/10657/7708/GMAC_Submission_DMM_preprint.pdf>`_.
+- Meng, K. (2021). `An End-to-End Computational System for Monitoring and Verifying Factual Claims <https://mengk.me/projects/vericlaim/vericlaim.pdf>`_. (pre-print)
 - Robertson, F., Lagus, J., & Kajava, K. (2021). `A COVID-19 news coverage mood map of Europe <https://www.aclweb.org/anthology/2021.hackashop-1.15.pdf>`_. In Proceedings of the EACL Hackashop on News Media Content Analysis and Automated Report Generation (pp. 110-115).
+- Sawczyn, A., Binkowski, J., Janiak, D., Augustyniak, Ł., & Kajdanowicz, T. (2021). `Fact-checking: relevance assessment of references in the Polish political domain <https://www.sciencedirect.com/science/article/pii/S1877050921016215/pdf?md5=852bdcde532c50079b336d1775772c6c&pid=1-s2.0-S1877050921016215-main.pdf>`_. Procedia Computer Science, 192, 1285-1293.
+
+
+
+Research using Htmldate
+-----------------------
+
+
+- Smits, T., & Ros, R. (2021). `Distant reading 940,000 online circulations of 26 iconic photographs <https://journals.sagepub.com/doi/pdf/10.1177/14614448211049459>`_. New Media & Society, DOI: 10.1177/14614448211049.
+

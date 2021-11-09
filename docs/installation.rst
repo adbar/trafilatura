@@ -7,7 +7,7 @@ Python
 
 Trafilatura runs using `Python <https://en.wikipedia.org/wiki/Python_%28programming_language%29>`_, currently one of the most frequently used programming languages.
 
-This software library/package is tested on Linux, macOS and Windows systems. It is compatible with Python 3 (3.5 upwards):
+This software library/package is tested on Linux, macOS and Windows systems. It is compatible with all recent versions of Python:
 
 -  `Installing Python 3 on Mac OS X <https://docs.python-guide.org/starting/install3/osx/>`_ (& `official documentation for Mac <https://docs.python.org/3/using/mac.html>`_)
 -  `Installing Python 3 on Windows <https://docs.python-guide.org/starting/install3/win/>`_ (& `official documentation for Windows <https://docs.python.org/3/using/windows.html>`_)
@@ -92,5 +92,5 @@ For improved date extraction you can use ``pip install htmldate[speed]``.
 
 You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 
-*For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_
+*For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_.
 

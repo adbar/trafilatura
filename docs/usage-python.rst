@@ -101,14 +101,18 @@ Their inclusion can be activated or deactivated using paramaters passed to the `
 
 Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements.
 
-- ``include_formatting=True``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
-- ``include_links=True``: Keep link targets (in ``href="..."``)
-- ``include_images=True``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
-- ``include_tables=True``: Extract text from HTML ``<table>`` elements.
+
+``include_formatting=True``
+    Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+``include_links=True``
+    Keep link targets (in ``href="..."``)
+``include_images=True``
+    Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+``include_tables=True``
+    Extract text from HTML ``<table>`` elements.
+
 
 Only ``include_tables`` is activated by default.
-
-
 
 
 Language identification
@@ -124,13 +128,12 @@ Experimental feature: the target language can also be set using 2-letter codes (
     Additional components are required: ``pip install trafilatura[all]``
 
 
-Speed
-^^^^^
+Optimizing for speed
+^^^^^^^^^^^^^^^^^^^^
 
-Execution speed not only depends on the platform but also on the extraction strategy.
+Execution speed not only depends on the platform and on supplementary packages (``trafilatura[all]``, ``htmldate[speed]``), but also on the extraction strategy.
 
-.. hint::
-    The available fallbacks make extraction more precise but also slower. The use of fallback algorithms can also be bypassed in *fast* mode:
+The available fallbacks make extraction more precise but also slower. The use of fallback algorithms can also be bypassed in *fast* mode, which should make extraction about twice as fast:
 
 .. code-block:: python
 
@@ -146,6 +149,12 @@ The following combination can lead to shorter processing times:
 
 Extraction settings
 -------------------
+
+Precision and recall-oriented presets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The parameters ``favor_precision`` & ``favor_recall`` can be passed to the ``extract()`` & ``bare_extraction()`` functions, e.g. ``favor_precision=True``. They slightly affect processing and volume of textual output, respectively concerning precision/accuracy (i.e. more selective extraction, yielding less and more central elements) and recall (i.e. more opportunistic extraction, taking more elements into account).
+
 
 Text extraction
 ^^^^^^^^^^^^^^^

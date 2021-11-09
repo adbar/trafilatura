@@ -24,6 +24,10 @@ DMOZ (at the time of experiments) and Wikipedia work quite well as primary sourc
 - `Qualification of URLs extracted from DMOZ and Wikipedia <https://tel.archives-ouvertes.fr/tel-01167309/document#page=189>`_ (PhD thesis section)
 - `Overview of the Web archiving community <https://github.com/pirate/ArchiveBox/wiki/Web-Archiving-Community>`_
 
+..
+   https://www.sketchengine.eu/guide/create-a-corpus-from-the-web/
+   https://github.com/chiphuyen/lazynlp
+
 
 
 Searching for URLs

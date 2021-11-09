@@ -106,7 +106,7 @@ Link filtering
 --------------
 
 
-For more information see also this blog post: `Filtering links to gather texts on the web <https://adrien.barbaresi.eu/blog/link-filtering-courlan-python.html>`_.
+For more information see also these blog posts: `Filtering links to gather texts on the web <https://adrien.barbaresi.eu/blog/link-filtering-courlan-python.html>`_ & `An easy way to save time and resources: content-aware URL filtering <https://adrien.barbaresi.eu/blog/easy-content-aware-url-filtering.html>`_.
 
 
 Filtering with coURLan

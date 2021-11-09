@@ -64,7 +64,7 @@ Features
    - XML (for metadata and structure) and `TEI-XML <https://tei-c.org/>`_
 - Link discovery and URL lists:
    - Focused crawling and politeness rules
-   - Support for sitemaps and ATOM/RSS feeds
+   - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
    - Efficient and polite processing of URL queues
    - Blacklisting
 - Optional language detection on extracted content
