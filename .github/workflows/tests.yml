@@ -21,7 +21,7 @@ jobs:
         env: [{ MINIMAL: "true" }, { MINIMAL: "false" }]
         include:
         # custom tests
-        - python-version: 3.5
+        - python-version: "3.11-dev"
           os: ubuntu-latest
           experimental: true
           allowed_failure: true
