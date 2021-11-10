@@ -109,7 +109,7 @@ def download_and_process_sitemap(url, domain, baseurl, target_lang, sitemapurls=
     sitemapurls, linklist = sitemapurls or [], linklist or []
     # fetch and pre-process
     LOGGER.info('fetching sitemap: %s', url)
-    pagecontent = fetch_url(url)
+    pagecontent = fetch_url(url, default_mode=True)
     add_sitemaps, add_links = process_sitemap(url, domain, baseurl, pagecontent, target_lang)
     return sitemapurls + add_sitemaps, linklist + add_links
 
@@ -201,7 +201,7 @@ def extract_sitemap_links(pagecontent, sitemapurl, domainname, baseurl, target_l
 def find_robots_sitemaps(baseurl):
     '''Guess the location of the robots.txt file and try to extract
        sitemap URLs from it'''
-    robotstxt = fetch_url(baseurl + '/robots.txt')
+    robotstxt = fetch_url(baseurl + '/robots.txt', default_mode=True)
     return extract_robots_sitemaps(robotstxt, baseurl)
 
 

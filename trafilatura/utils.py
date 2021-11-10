@@ -21,16 +21,17 @@ try:
 except ImportError:
     cchardet = None
 
-import urllib3
 
 from charset_normalizer import detect
 
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
 
+# response types
+from urllib3.response import HTTPResponse
+
 
 LOGGER = logging.getLogger(__name__)
-
 
 # collect_ids=False, default_doctype=False, huge_tree=True, remove_blank_text=True
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
@@ -145,6 +146,7 @@ def decode_response(response):
     return htmltext
 
 
+
 def is_dubious_html(htmlobject):
     "Assess if the object is proper HTML (with a corresponding declaration)."
     if isinstance(htmlobject, bytes):
@@ -165,9 +167,12 @@ def load_html(htmlobject):
         return htmlobject
     tree = None
     check_flag = False
-    # use urllib3 response directly
-    if isinstance(htmlobject, urllib3.response.HTTPResponse):
-        htmlobject = decode_response(htmlobject.data)
+    # use trafilatura or urllib3 responses directly
+    try:
+        if isinstance(htmlobject, HTTPResponse) or htmlobject.data:
+            htmlobject = decode_response(htmlobject.data)
+    except AttributeError:
+        pass
     # GZip test
     htmlobject = handle_gz_file(htmlobject)
     # sanity check

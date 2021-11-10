@@ -63,9 +63,9 @@ def probe_alternative_homepage(homepage):
     if response is None or response == '':
         return None, None, None
     # get redirected URL here?
-    if response.geturl() != homepage:
-        logging.info('followed redirect: %s', response.geturl())
-        homepage = response.geturl()
+    if response.url != homepage:
+        logging.info('followed redirect: %s', response.url)
+        homepage = response.url
     # decode response
     htmlstring = decode_response(response.data)
     # is there a meta-refresh on the page?
@@ -146,7 +146,7 @@ def process_response(response, todo, known_links, base_url, language, shortform=
     htmlstring = None
     # add final document URL to known_links
     if response is not None:
-        known_links.add(response.geturl())
+        known_links.add(response.url)
         if response.data is not None and response.data != '':
             # convert urllib3 response to string
             htmlstring = decode_response(response.data)

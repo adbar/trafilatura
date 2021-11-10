@@ -265,7 +265,7 @@ def cli_crawler(args, n=30, domain_dict=None):
             if result is not None and result != '':
                 domain_dict[website], crawlinfo[website]['known'], htmlstring = process_response(result, domain_dict[website], crawlinfo[website]['known'], crawlinfo[website]['base'], args.target_language, shortform=True, rules=crawlinfo[website]['rules'])
                 # only store content pages, not navigation
-                if not is_navigation_page(url): # + response.geturl()
+                if not is_navigation_page(url):  # + response.url
                     if args.list:
                         write_result(url, args)
                     else:

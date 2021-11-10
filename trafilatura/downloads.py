@@ -8,12 +8,17 @@ import logging
 import random
 import re
 
-from collections import defaultdict, deque
+from collections import defaultdict, deque, namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
+from io import BytesIO
 from time import sleep
 
 import certifi
+try:
+    import pycurl
+except ImportError:
+    pycurl = None
 import urllib3
 
 from courlan import get_host_and_path, validate_url
@@ -21,6 +26,7 @@ from courlan import get_host_and_path, validate_url
 from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
 from .utils import decode_response, uniquify_list
+
 
 # customize headers
 RETRY_STRATEGY = urllib3.util.Retry(
@@ -42,6 +48,8 @@ DEFAULT_HEADERS = {
 }
 
 LOGGER = logging.getLogger(__name__)
+
+RawResponse = namedtuple('RawResponse', ['data', 'status', 'url'])
 
 
 # caching throws an error
@@ -71,7 +79,7 @@ def _determine_headers(config, headers=None):
     return headers or DEFAULT_HEADERS
 
 
-def _send_request(url, no_ssl, config):
+def _send_request(url, no_ssl, decode, config):
     'Internal function to send a robustly (SSL) send a request and return its result.'
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
@@ -90,10 +98,12 @@ def _send_request(url, no_ssl, config):
         LOGGER.error('connection timeout: %s %s', url, err)
     except urllib3.exceptions.SSLError:
         LOGGER.error('retrying after SSLError: %s', url)
-        return _send_request(url, True, config)
+        return _send_request(url, True, decode, config)
     except Exception as err:
         logging.error('unknown error: %s %s', url, err) # sys.exc_info()[0]
     else:
+        if decode is False:
+            response = RawResponse(response.data, response.status, response.geturl())
         return response
     # catchall
     return None
@@ -118,7 +128,7 @@ def _handle_response(url, response, decode, config):
     return None
 
 
-def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
+def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, default_mode=False):
     """Fetches page using urllib3 and decodes the response.
 
     Args:
@@ -126,13 +136,18 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
         decode: Decode response instead of returning urllib3 response object (boolean).
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
+        default_mode: Bypass potential optimizations (e.g. pycurl).
 
     Returns:
         HTML code as string, or Urllib3 response object (headers + body), or empty string in case
         the result is invalid, or None if there was a problem with the network.
 
     """
-    response = _send_request(url, no_ssl, config)
+    if pycurl is None or default_mode is True:
+        response = _send_request(url, no_ssl, decode, config)
+    else:
+        response = _send_pycurl_request(url, no_ssl, config)
+        decode = False
     if response is not None:
         if response != '':
             return _handle_response(url, response, decode, config)
@@ -231,3 +246,68 @@ def buffered_downloads(bufferlist, download_threads, decode=True):
         for future in as_completed(future_to_url):
             # url and download result
             yield future_to_url[future], future.result()
+
+
+def _send_pycurl_request(url, no_ssl, config):
+    '''Experimental function using libcurl and pycurl to speed up downloads'''
+    # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
+
+    # init
+    bufferbytes, headerbytes = BytesIO(), BytesIO()
+    headers = _determine_headers(config)
+    getheaderlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']
+    for header in headers:
+        getheaderlist.append(header + ': ' + headers[header])
+
+    # prepare curl request
+    # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
+    curl = pycurl.Curl()
+    curl.setopt(curl.URL, url)  # url.encode('UTF-8')
+    curl.setopt(pycurl.HTTPHEADER, getheaderlist)
+    # curl.setopt(pycurl.USERAGENT, '')
+    curl.setopt(pycurl.FOLLOWLOCATION, 1)
+    curl.setopt(pycurl.MAXREDIRS, 2)
+    curl.setopt(pycurl.CONNECTTIMEOUT, TIMEOUT)
+    curl.setopt(pycurl.TIMEOUT, TIMEOUT)
+    curl.setopt(pycurl.NOSIGNAL, 1)
+    if no_ssl is True:
+        curl.setopt(pycurl.SSL_VERIFYPEER, 0)
+        curl.setopt(pycurl.SSL_VERIFYHOST, 0)
+    curl.setopt(curl.MAXFILESIZE, config.getint('DEFAULT', 'MAX_FILE_SIZE'))
+    curl.setopt(curl.HEADERFUNCTION, headerbytes.write)
+    curl.setopt(curl.WRITEDATA, bufferbytes)
+    # TCP_FASTOPEN
+    # curl.setopt(pycurl.FAILONERROR, 1)
+    # curl.setopt(curl.ACCEPT_ENCODING, '')
+
+    # send request
+    try:
+        curl.perform()
+    except pycurl.error as err:
+        # traceback.print_exc(file=sys.stderr)
+        # sys.stderr.flush()
+        logging.error('pycurl: %s %s', url, err)
+        return None
+
+    # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
+    #respheaders = dict()
+    #for header_line in headerbytes.getvalue().decode('iso-8859-1').splitlines(): # re.split(r'\r?\n',
+    #    # This will botch headers that are split on multiple lines...
+    #    if ':' not in header_line:
+    #        continue
+    #    # Break the header line into header name and value.
+    #    name, value = header_line.split(':', 1)
+    #    # Now we can actually record the header name and value.
+    #    respheaders[name.strip()] = value.strip() # name.strip().lower() ## TODO: check
+    # body
+    bodybytes = bufferbytes.getvalue()
+    # status
+    respcode = curl.getinfo(curl.RESPONSE_CODE)
+    # url
+    effective_url = curl.getinfo(curl.EFFECTIVE_URL)
+    # additional info
+    # ip_info = curl.getinfo(curl.PRIMARY_IP)
+
+    # tidy up
+    curl.close()
+    return RawResponse(bodybytes, respcode, effective_url)

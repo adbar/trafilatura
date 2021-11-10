@@ -6,6 +6,11 @@ Unit tests for download functions from the trafilatura library.
 import os
 import sys
 
+try:
+    import pycurl
+except ImportError:
+    pycurl = None
+
 from collections import deque
 from datetime import datetime
 from unittest.mock import patch
@@ -13,9 +18,9 @@ from unittest.mock import patch
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import extract
-from trafilatura.downloads import USER_AGENT, add_to_compressed_dict, fetch_url, decode_response, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request
+from trafilatura.downloads import USER_AGENT, add_to_compressed_dict, fetch_url, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request
 from trafilatura.settings import DEFAULT_CONFIG, use_config
-from trafilatura.utils import load_html
+from trafilatura.utils import decode_response, load_html
 
 
 ZERO_CONFIG = DEFAULT_CONFIG
@@ -27,23 +32,31 @@ UA_CONFIG = use_config(filename=os.path.join(RESOURCES_DIR, 'newsettings.cfg'))
 
 
 def test_fetch():
-    '''test URL fetching'''
-    assert fetch_url('1234') == ''
+    '''Test URL fetching.'''
+    # pycurl tests
+    if pycurl is not None:
+        assert fetch_url('1234') is None
+    # urllib3 tests
+    else:
+        assert fetch_url('1234') == ''
     assert fetch_url('https://httpbin.org/status/404') is None
-    assert decode_response(b'\x1f\x8babcdef') is not None
     assert fetch_url('https://expired.badssl.com/', no_ssl=True) is not None
     # no decoding
     response = fetch_url('https://httpbin.org/status/200', decode=False)
     assert response == ''
     # response object
     url = 'https://httpbin.org/encoding/utf8'
-    response = _send_request(url, False, DEFAULT_CONFIG)
+    response = _send_request(url, False, False, DEFAULT_CONFIG)
     myobject = _handle_response(url, response, False, DEFAULT_CONFIG)
     assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
     # straight handling of response object
     assert load_html(response) is not None
     # nothing to see here
-    assert extract(response, url=response.geturl(), config=ZERO_CONFIG) is None
+    assert extract(response, url=response.url, config=ZERO_CONFIG) is None
+
+
+def test_config():
+    '''Test how configuration options are read and stored.'''
     # default config is none
     assert _parse_config(DEFAULT_CONFIG) == (None, None)
     # default user-agent
@@ -55,6 +68,11 @@ def test_fetch():
     custom = _determine_headers(UA_CONFIG)
     assert custom['User-Agent'] in ['Chrome', 'Firefox']
     assert custom['Cookie'] == 'yummy_cookie=choco; tasty_cookie=strawberry'
+
+
+def test_decode():
+    '''Test how responses are being decoded.'''
+    assert decode_response(b'\x1f\x8babcdef') is not None
 
 
 def test_queue():
@@ -111,4 +129,6 @@ def test_queue():
 
 if __name__ == '__main__':
     test_fetch()
+    test_config()
+    test_decode()
     test_queue()
