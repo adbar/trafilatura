@@ -69,6 +69,12 @@ jobs:
     - name: Install dependencies
       run: python -m pip install -e "."
 
+    # pycurl installation fix
+    - name: Install packages required by pycurl
+      if: ${{ matrix.env.MINIMAL == 'false'}}
+      run: sudo apt-get install libcurl4-gnutls-dev libgnutls28-dev
+    # alternatively sudo apt-get install libcurl4-openssl-dev libssl-dev
+
     - name: Install full dependencies
       if: ${{ matrix.env.MINIMAL == 'false'}}
       run: python -m pip install -e ".[all]"
