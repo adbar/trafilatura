@@ -17,6 +17,12 @@ from time import sleep
 import certifi
 try:
     import pycurl
+    curl_share = pycurl.CurlShare()
+    curl_share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
+    curl_share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
+    # not thread-safe
+    # https://curl.se/libcurl/c/curl_share_setopt.html
+    # curl_share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
 except ImportError:
     pycurl = None
 import urllib3
@@ -28,10 +34,13 @@ from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
 from .utils import decode_response, uniquify_list
 
 
+NUM_CONNECTIONS = 50
+MAX_REDIRECTS = 2
+
 # customize headers
 RETRY_STRATEGY = urllib3.util.Retry(
     total=0,
-    redirect=2, # raise_on_redirect=False,
+    redirect=MAX_REDIRECTS, # raise_on_redirect=False,
     connect=0,
     backoff_factor=TIMEOUT*2,
     status_forcelist=[429, 499, 500, 502, 503, 504, 509, 520, 521, 522, 523, 524, 525, 526, 527, 530, 598],
@@ -39,7 +48,7 @@ RETRY_STRATEGY = urllib3.util.Retry(
 )
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 # cert_reqs='CERT_REQUIRED', ca_certs=certifi.where()
-HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_certs=certifi.where(), num_pools=50)
+HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_certs=certifi.where(), num_pools=NUM_CONNECTIONS)
 NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE', num_pools=20)
 
 USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
@@ -255,38 +264,42 @@ def _send_pycurl_request(url, no_ssl, config):
     # init
     bufferbytes, headerbytes = BytesIO(), BytesIO()
     headers = _determine_headers(config)
-    getheaderlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']
+    headerlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']
     for header in headers:
-        getheaderlist.append(header + ': ' + headers[header])
+        headerlist.append(header + ': ' + headers[header])
 
     # prepare curl request
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
     curl = pycurl.Curl()
-    curl.setopt(curl.URL, url)  # url.encode('UTF-8')
-    curl.setopt(pycurl.HTTPHEADER, getheaderlist)
+    curl.setopt(pycurl.URL, url.encode('utf-8'))
+    # share data
+    curl.setopt(pycurl.SHARE, curl_share)
+    curl.setopt(pycurl.HTTPHEADER, headerlist)
     # curl.setopt(pycurl.USERAGENT, '')
     curl.setopt(pycurl.FOLLOWLOCATION, 1)
-    curl.setopt(pycurl.MAXREDIRS, 2)
+    curl.setopt(pycurl.MAXREDIRS, MAX_REDIRECTS)
     curl.setopt(pycurl.CONNECTTIMEOUT, TIMEOUT)
     curl.setopt(pycurl.TIMEOUT, TIMEOUT)
     curl.setopt(pycurl.NOSIGNAL, 1)
     if no_ssl is True:
         curl.setopt(pycurl.SSL_VERIFYPEER, 0)
         curl.setopt(pycurl.SSL_VERIFYHOST, 0)
-    curl.setopt(curl.MAXFILESIZE, config.getint('DEFAULT', 'MAX_FILE_SIZE'))
-    curl.setopt(curl.HEADERFUNCTION, headerbytes.write)
-    curl.setopt(curl.WRITEDATA, bufferbytes)
+    else:
+        curl.setopt(pycurl.CAINFO, certifi.where())
+    curl.setopt(pycurl.MAXFILESIZE, config.getint('DEFAULT', 'MAX_FILE_SIZE'))
+    #curl.setopt(pycurl.HEADERFUNCTION, headerbytes.write)
+    #curl.setopt(pycurl.WRITEDATA, bufferbytes)
     # TCP_FASTOPEN
     # curl.setopt(pycurl.FAILONERROR, 1)
-    # curl.setopt(curl.ACCEPT_ENCODING, '')
+    # curl.setopt(pycurl.ACCEPT_ENCODING, '')
 
     # send request
     try:
-        curl.perform()
+        bufferbytes = curl.perform_rb()
     except pycurl.error as err:
+        logging.error('pycurl: %s %s', url, err)
         # traceback.print_exc(file=sys.stderr)
         # sys.stderr.flush()
-        logging.error('pycurl: %s %s', url, err)
         return None
 
     # https://github.com/pycurl/pycurl/blob/master/examples/quickstart/response_headers.py
@@ -299,8 +312,6 @@ def _send_pycurl_request(url, no_ssl, config):
     #    name, value = header_line.split(':', 1)
     #    # Now we can actually record the header name and value.
     #    respheaders[name.strip()] = value.strip() # name.strip().lower() ## TODO: check
-    # body
-    bodybytes = bufferbytes.getvalue()
     # status
     respcode = curl.getinfo(curl.RESPONSE_CODE)
     # url
@@ -310,4 +321,4 @@ def _send_pycurl_request(url, no_ssl, config):
 
     # tidy up
     curl.close()
-    return RawResponse(bodybytes, respcode, effective_url)
+    return RawResponse(bufferbytes, respcode, effective_url)
