@@ -299,7 +299,9 @@ def _send_pycurl_request(url, no_ssl, config):
         logging.error('pycurl: %s %s', url, err)
         # retry in case of SSL-related error
         # see https://curl.se/libcurl/c/libcurl-errors.html
-        if no_ssl is False and b'SSL' in curl.errstr_raw():
+        # errmsg = curl.errstr_raw()
+        # additional error codes: 80, 90, 96, 98
+        if no_ssl is False and err.args[0] in (35, 54, 58, 59, 60, 64, 66, 77, 82, 83, 91):
             LOGGER.error('retrying after SSL error: %s %s', url, err)
             return _send_pycurl_request(url, True, config)
         # traceback.print_exc(file=sys.stderr)
