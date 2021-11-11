@@ -157,14 +157,14 @@ def find_feed_urls(url, target_lang=None):
         LOGGER.warning('Invalid URL: %s', url)
         return []
     urlfilter = None
-    downloaded = fetch_url(url, default_mode=True)
+    downloaded = fetch_url(url)
     if downloaded is not None:
         # assume it's a feed
         feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
         if len(feed_links) == 0:
             # assume it's a web page
             for feed in determine_feed(downloaded, baseurl, url):
-                feed_string = fetch_url(feed, default_mode=True)
+                feed_string = fetch_url(feed)
                 feed_links.extend(extract_links(feed_string, domainname, baseurl, url, target_lang))
             # filter triggered, prepare it
             if len(url) > len(baseurl) + 2:
@@ -182,7 +182,7 @@ def find_feed_urls(url, target_lang=None):
     # try alternative: Google News
     if target_lang is not None:
         url = 'https://news.google.com/rss/search?q=site:' + baseurl + '&hl=' + target_lang + '&scoring=n&num=100'
-        downloaded = fetch_url(url, default_mode=True)
+        downloaded = fetch_url(url)
         if downloaded is not None:
             feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
             feed_links = filter_urls(feed_links, urlfilter)

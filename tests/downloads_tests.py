@@ -18,7 +18,7 @@ from unittest.mock import patch
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import extract
-from trafilatura.downloads import USER_AGENT, add_to_compressed_dict, fetch_url, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request
+from trafilatura.downloads import USER_AGENT, add_to_compressed_dict, fetch_url, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request, _send_pycurl_request
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
 
@@ -40,13 +40,19 @@ def test_fetch():
     else:
         assert fetch_url('1234') == ''
     assert fetch_url('https://httpbin.org/status/404') is None
-    assert fetch_url('https://expired.badssl.com/', no_ssl=True) is not None
-    # no decoding
-    response = fetch_url('https://httpbin.org/status/200', decode=False)
-    assert response == ''
+    # test if the fonctions default to no_ssl
+    assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+    if pycurl is not None:
+        assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
+    # no SSL, no decoding
+    response = _send_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
+    assert response.data == b''
+    if pycurl is not None:
+        response = _send_pycurl_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
+        assert response.data == b''
     # response object
     url = 'https://httpbin.org/encoding/utf8'
-    response = _send_request(url, False, False, DEFAULT_CONFIG)
+    response = _send_request(url, False, DEFAULT_CONFIG)
     myobject = _handle_response(url, response, False, DEFAULT_CONFIG)
     assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
     # straight handling of response object

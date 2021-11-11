@@ -17,12 +17,13 @@ from time import sleep
 import certifi
 try:
     import pycurl
-    curl_share = pycurl.CurlShare()
-    curl_share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
-    curl_share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
+    CURL_SHARE = pycurl.CurlShare()
+    # available options: https://pycurl.io/docs/latest/curlshareobject.html?highlight=lock_data_cookie
+    CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_DNS)
+    CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_SSL_SESSION)
     # not thread-safe
     # https://curl.se/libcurl/c/curl_share_setopt.html
-    # curl_share.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
+    # CURL_SHARE.setopt(pycurl.SH_SHARE, pycurl.LOCK_DATA_CONNECT)
 except ImportError:
     pycurl = None
 import urllib3
@@ -88,7 +89,7 @@ def _determine_headers(config, headers=None):
     return headers or DEFAULT_HEADERS
 
 
-def _send_request(url, no_ssl, decode, config):
+def _send_request(url, no_ssl, config):
     'Internal function to send a robustly (SSL) send a request and return its result.'
     try:
         # read by streaming chunks (stream=True, iter_content=xx)
@@ -107,13 +108,12 @@ def _send_request(url, no_ssl, decode, config):
         LOGGER.error('connection timeout: %s %s', url, err)
     except urllib3.exceptions.SSLError:
         LOGGER.error('retrying after SSLError: %s', url)
-        return _send_request(url, True, decode, config)
+        return _send_request(url, True, config)
     except Exception as err:
         logging.error('unknown error: %s %s', url, err) # sys.exc_info()[0]
     else:
-        if decode is False:
-            response = RawResponse(response.data, response.status, response.geturl())
-        return response
+        # necessary for standardization
+        return RawResponse(response.data, response.status, response.geturl())
     # catchall
     return None
 
@@ -137,7 +137,7 @@ def _handle_response(url, response, decode, config):
     return None
 
 
-def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, default_mode=False):
+def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG):
     """Fetches page using urllib3 and decodes the response.
 
     Args:
@@ -145,22 +145,20 @@ def fetch_url(url, decode=True, no_ssl=False, config=DEFAULT_CONFIG, default_mod
         decode: Decode response instead of returning urllib3 response object (boolean).
         no_ssl: Don't try to establish a secure connection (to prevent SSLError).
         config: Pass configuration values for output control.
-        default_mode: Bypass potential optimizations (e.g. pycurl).
 
     Returns:
         HTML code as string, or Urllib3 response object (headers + body), or empty string in case
         the result is invalid, or None if there was a problem with the network.
 
     """
-    if pycurl is None or default_mode is True:
-        response = _send_request(url, no_ssl, decode, config)
+    if pycurl is None:
+        response = _send_request(url, no_ssl, config)
     else:
         response = _send_pycurl_request(url, no_ssl, config)
-        decode = False
     if response is not None:
         if response != '':
             return _handle_response(url, response, decode, config)
-        # return ''
+        # return '' (useful do discard further processing?)
         return response
     return None
 
@@ -262,18 +260,19 @@ def _send_pycurl_request(url, no_ssl, config):
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
     # init
-    bufferbytes, headerbytes = BytesIO(), BytesIO()
+    bufferbytes = BytesIO()
+    # headerbytes = BytesIO()
     headers = _determine_headers(config)
     headerlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']
-    for header in headers:
-        headerlist.append(header + ': ' + headers[header])
+    for header, content in headers.items():
+        headerlist.append(header + ': ' + content)
 
     # prepare curl request
     # https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
     curl = pycurl.Curl()
     curl.setopt(pycurl.URL, url.encode('utf-8'))
     # share data
-    curl.setopt(pycurl.SHARE, curl_share)
+    curl.setopt(pycurl.SHARE, CURL_SHARE)
     curl.setopt(pycurl.HTTPHEADER, headerlist)
     # curl.setopt(pycurl.USERAGENT, '')
     curl.setopt(pycurl.FOLLOWLOCATION, 1)
@@ -298,6 +297,11 @@ def _send_pycurl_request(url, no_ssl, config):
         bufferbytes = curl.perform_rb()
     except pycurl.error as err:
         logging.error('pycurl: %s %s', url, err)
+        # retry in case of SSL-related error
+        # see https://curl.se/libcurl/c/libcurl-errors.html
+        if no_ssl is False and b'SSL' in curl.errstr_raw():
+            LOGGER.error('retrying after SSL error: %s %s', url, err)
+            return _send_pycurl_request(url, True, config)
         # traceback.print_exc(file=sys.stderr)
         # sys.stderr.flush()
         return None

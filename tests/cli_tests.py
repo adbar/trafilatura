@@ -192,7 +192,7 @@ def test_download():
     #assert teststring is not None
     #assert cli.examine(teststring, args, url) is None
     url = 'https://httpbin.org/html'
-    teststring = fetch_url(url, default_mode=True)
+    teststring = fetch_url(url)
     assert teststring is not None
     assert cli.examine(teststring, args, url) is not None
 
