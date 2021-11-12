@@ -20,7 +20,7 @@ FEED_TYPES = set(['application/atom+xml', 'application/json', 'application/rdf+x
 FEED_OPENING = re.compile(r'<(feed|rss|\?xml)')
 LINK_ATTRS = re.compile(r'<link .*?href=".+?"')
 LINK_HREF = re.compile(r'href="(.+?)"')
-LINK_ELEMENTS = re.compile(r'<link>(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?</link>')
+LINK_ELEMENTS = re.compile(r'<link>(?:\s*)(?:<!\[CDATA\[)?(.+?)(?:\]\]>)?(?:\s*)</link>')
 BLACKLIST = re.compile(r'\bcomments\b')  # no comment feed
 
 
