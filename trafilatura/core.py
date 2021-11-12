@@ -566,7 +566,7 @@ def extract_comments(tree, dedupbool, config):
     return comments_body, temp_comments, len(temp_comments), tree
 
 
-def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, config):
+def compare_extraction(tree, backup_tree, url, body, text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config):
     '''Decide whether to choose own or external extraction
        based on a series of heuristics'''
     # bypass for recall
@@ -616,7 +616,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         LOGGER.debug('justext length %s', len_text)
     # post-processing: remove unwanted sections
     if algo_flag is True and jt_result is False:
-        body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images)
+        body, text, len_text = sanitize_tree(body, include_formatting, include_links, include_images, include_tables)
     return body, text, len_text
 
 
@@ -810,7 +810,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, config)
+            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
             # add baseline as additional fallback
             if len(postbody) == 0:
                 postbody, temp_text, len_text = baseline(filecontent)

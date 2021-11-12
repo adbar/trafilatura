@@ -417,6 +417,11 @@ def test_external():
     if LANGID_FLAG is True:
         doc = html.fromstring('<html><body>' + '<p>Non è inglese.</p>'*20 + '</body></html>')
         assert extract(doc, no_fallback=False, target_language='en', deduplicate=False) is None
+    # no tables
+    with open(os.path.join(RESOURCES_DIR, 'apache.html')) as f:
+        teststring = f.read()
+    assert 'localhost:80' in extract(teststring, no_fallback=False, include_tables=True)
+    assert 'localhost:80' not in extract(teststring, no_fallback=False, include_tables=False)
 
 
 def test_images():
