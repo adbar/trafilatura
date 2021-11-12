@@ -547,6 +547,7 @@ def extract_comments(tree, dedupbool, config):
         subtree = subtree[0]
         # prune
         subtree = prune_unwanted_nodes(subtree, COMMENTS_DISCARD_XPATH)
+        # todo: unified stripping function, taking include_links into account
         etree.strip_tags(subtree, 'a', 'ref', 'span')
         # extract content
         # for elem in subtree.xpath('.//*'):

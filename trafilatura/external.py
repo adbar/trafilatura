@@ -18,16 +18,15 @@ from readability import Document
 from readability.readability import Unparseable
 
 # own
-from .htmlprocessing import convert_tags, prune_html  #, tree_cleaning
-from .settings import JUSTEXT_LANGUAGES, MANUALLY_STRIPPED
+from .htmlprocessing import convert_tags, tree_cleaning
+from .settings import JUSTEXT_LANGUAGES
 from .utils import trim, HTML_PARSER
 from .xml import TEI_VALID_TAGS
 
 
 LOGGER = logging.getLogger(__name__)
 
-SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//img|//image|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
-SANITIZED_XPATH_WITH_IMAGES = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
+SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
 
 
 def jt_stoplist_init():
@@ -105,25 +104,15 @@ def justext_rescue(tree, url, target_language, postbody, len_text, text):
 
 def sanitize_tree(tree, include_formatting=False, include_links=False, include_images=False, include_tables=True):
     '''Convert and sanitize the output from the generic algorithm (post-processing)'''
-    if include_images is False:
-        sanitized_xpath = SANITIZED_XPATH
-    else:
-        sanitized_xpath = SANITIZED_XPATH_WITH_IMAGES
-    if include_tables is False:
-        sanitized_xpath += '|//table'
-    # delete unnecessary elements
-    for elem in tree.xpath(sanitized_xpath):
+    # 1. clean
+    cleaned_tree = tree_cleaning(tree, include_tables, include_images)
+    for elem in tree.xpath(SANITIZED_XPATH):
         elem.getparent().remove(elem)
-    # elements to be stripped
-    stripped_list = MANUALLY_STRIPPED + ['a', 'span']
-    if include_links is True:
-        stripped_list.remove('a')
-    if include_images is True:
-        stripped_list.remove('img')
-    etree.strip_tags(tree, *stripped_list)
-    tree = prune_html(tree)
-    # convert
-    cleaned_tree = convert_tags(tree, include_tables=include_tables, include_formatting=include_formatting, include_links=include_links, include_images=include_images)
+    if include_links is False:
+        etree.strip_tags(cleaned_tree, 'a')
+    etree.strip_tags(cleaned_tree, 'span')
+    # 2. convert
+    cleaned_tree = convert_tags(cleaned_tree, include_tables=include_tables, include_formatting=include_formatting, include_links=include_links, include_images=include_images)
     for elem in cleaned_tree.iter('td', 'th', 'tr'):
         # elem.text, elem.tail = trim(elem.text), trim(elem.tail)
         # finish table conversion
@@ -133,13 +122,13 @@ def sanitize_tree(tree, include_formatting=False, include_links=False, include_i
             if elem.tag == 'th':
                 elem.set('role', 'head')
             elem.tag = 'cell'
-    # sanitize
+    # 3. sanitize
     sanitization_list = [
         tagname
         for tagname in [element.tag for element in set(cleaned_tree.iter('*'))]
         if tagname not in TEI_VALID_TAGS
     ]
-
     etree.strip_tags(cleaned_tree, *sanitization_list)
+    # 4. return
     text = trim(' '.join(cleaned_tree.itertext()))
     return cleaned_tree, text, len(text)
