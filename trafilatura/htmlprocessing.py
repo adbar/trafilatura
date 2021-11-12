@@ -178,21 +178,15 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
         elem.tag = 'list'
         for subelem in elem.iter('dd', 'dt', 'li'):
             subelem.tag = 'item'
-        for subelem in elem.iter('a'):
-            subelem.tag = 'ref'
-    # divs
-    for elem in tree.xpath('//div//a'):
-        elem.tag = 'ref'
-    # tables
-    if include_tables is True:
-        for elem in tree.xpath('//table//a'):
-            elem.tag = 'ref'
     # images
     if include_images is True:
         for elem in tree.iter('img'):
             elem.tag = 'graphic'
     # delete links for faster processing
     if include_links is False:
+        # necessary for further detection
+        for elem in tree.xpath('//div//a|//list//a|//table//a'):
+            elem.tag = 'ref'
         etree.strip_tags(tree, 'a')
     else:
         for elem in tree.iter('a', 'ref'):
