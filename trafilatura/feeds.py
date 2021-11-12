@@ -77,8 +77,8 @@ def extract_links(feed_string, domainname, baseurl, reference, target_lang=None)
             if 'atom+xml' in link or 'rel="self"' in link:
                 continue
             feedlink = LINK_HREF.search(link).group(1)
-            if '"' in feedlink:
-                feedlink = feedlink.split('"')[0]
+            #if '"' in feedlink:
+            #    feedlink = feedlink.split('"')[0]
             feed_links.append(feedlink)
     # could be RSS
     elif '<link>' in feed_string:
@@ -181,14 +181,12 @@ def find_feed_urls(url, target_lang=None):
             return try_homepage(baseurl, target_lang)
     # try alternative: Google News
     if target_lang is not None:
-        url = 'https://news.google.com/rss/search?q=site:' + baseurl + '&hl=' + target_lang + '&scoring=n&num=100'
-        downloaded = fetch_url(url)
+        downloaded = fetch_url('https://news.google.com/rss/search?q=site:' + baseurl + '&hl=' + target_lang + '&scoring=n&num=100')
         if downloaded is not None:
             feed_links = extract_links(downloaded, domainname, baseurl, url, target_lang)
             feed_links = filter_urls(feed_links, urlfilter)
             LOGGER.debug('%s Google news links found for %s', len(feed_links), domainname)
             return feed_links
-        LOGGER.warning('Could not download web page: %s', url)
     return []
 
 

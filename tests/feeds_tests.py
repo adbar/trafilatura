@@ -36,7 +36,10 @@ def test_atom_extraction():
 def test_rss_extraction():
     '''Test link extraction from a RSS feed'''
     assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/article1/</link>', 'example.org', 'http://example.org/', '')) == 1
+    # CDATA
     assert feeds.extract_links(XMLDECL + '<link><![CDATA[http://example.org/article1/]]></link>', 'example.org', 'http://example.org/', '') == ['http://example.org/article1/']
+    # spaces
+    assert len(feeds.extract_links(XMLDECL + '<link>\r\n    https://www.ak-kurier.de/akkurier/www/artikel/108815-sinfonisches-blasorchester-spielt-1500-euro-fuer-kinder-in-drk-krankenhaus-kirchen-ein    </link>', 'ak-kurier.de', 'https://www.ak-kurier.de/', '')) == 1
     assert len(feeds.extract_links(XMLDECL + '<link>http://example.org/</link>', 'example.org', 'http://example.org', 'http://example.org')) == 0
     assert len(feeds.extract_links(XMLDECL + '<link>https://example.org</link>', 'example.org', 'http://example.org/', '')) == 0
     assert feeds.extract_links(XMLDECL + '<link>/api/feed/themenglossar/Corona</link>', 'www.dwds.de', 'https://www.dwds.de', 'https://www.dwds.de') == ['https://www.dwds.de/api/feed/themenglossar/Corona']
@@ -56,6 +59,9 @@ def test_json_extraction():
         teststring = f.read()
     links = feeds.extract_links(teststring, 'npr.org', 'https://npr.org', '')
     assert len(links) == 25
+    # id as a backup
+    links = feeds.extract_links(r'{"version":"https:\/\/jsonfeed.org\/version\/1","items":[{"id":"https://www.example.org/1","title":"Test"}]}', 'example.org', 'https://example.org', '')
+    assert len(links) == 1
 
 
 def test_feeds_helpers():
@@ -82,6 +88,8 @@ def test_feeds_helpers():
     assert feeds.find_feed_urls('https://httpbin.org/status/404') == []
     # Feedburner/Google links
     assert feeds.handle_link_list(['https://feedproxy.google.com/ABCD'], 'example.org', 'https://example.org') == ['https://feedproxy.google.com/ABCD']
+    # override failed checks
+    assert feeds.handle_link_list(['https://feedburner.com/kat/1'], 'example.org', 'https://example.org') == ['https://feedburner.com/kat/1']
 
 
 def test_cli_behavior():
