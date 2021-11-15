@@ -1,3 +1,9 @@
-include CONTRIBUTING.md HISTORY.md README.rst LICENSE tox.ini
+include CONTRIBUTING.md HISTORY.md README.rst LICENSE pytest.ini
 include tests/unit_tests.py
 graft tests/cache/
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include conf.py Makefile make.bat *.jpg *.png *.gif
+recursive-include docs *.rst
