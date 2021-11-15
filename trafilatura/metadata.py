@@ -400,7 +400,11 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     if metadata['author'] is not None and ' ' not in metadata['author']:
         metadata['author'] = None
     # fix: try json-ld metadata and override
-    metadata = extract_meta_json(tree, metadata)
+    try:
+        metadata = extract_meta_json(tree, metadata)
+    # todo: fix bugs in json_metadata.py
+    except TypeError as err:
+        LOGGER.warning('error in JSON metadata extraction: %s', err)
     # try with x-paths
     # title
     if metadata['title'] is None:
@@ -444,8 +448,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
             ):
                 metadata['sitename'] = metadata['sitename'].title()
         # fix for empty name
-        except IndexError:
-            pass
+        except IndexError as err:
+            LOGGER.warning('error in sitename extraction: %s', err)
     # use URL
     elif metadata['url']:
         mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata['url'])
