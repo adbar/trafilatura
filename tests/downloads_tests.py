@@ -11,6 +11,14 @@ try:
 except ImportError:
     pycurl = None
 
+try:
+    try:
+        import brotlicffi as brotli
+    except ImportError:
+        import brotli
+except ImportError:
+    brotli = None
+
 from collections import deque
 from datetime import datetime
 from unittest.mock import patch
@@ -18,7 +26,7 @@ from unittest.mock import patch
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
 from trafilatura.core import extract
-from trafilatura.downloads import USER_AGENT, add_to_compressed_dict, fetch_url, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request, _send_pycurl_request
+from trafilatura.downloads import DEFAULT_HEADERS, USER_AGENT, add_to_compressed_dict, fetch_url, draw_backoff_url, load_download_buffer, _determine_headers, _handle_response, _parse_config, _send_request, _send_pycurl_request
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
 
@@ -65,6 +73,11 @@ def test_config():
     '''Test how configuration options are read and stored.'''
     # default config is none
     assert _parse_config(DEFAULT_CONFIG) == (None, None)
+    # default accept-encoding
+    if brotli is None:
+        assert DEFAULT_HEADERS['accept-encoding'].endswith(',deflate')
+    else:
+        assert DEFAULT_HEADERS['accept-encoding'].endswith(',br')
     # default user-agent
     default = _determine_headers(DEFAULT_CONFIG)
     assert default['User-Agent'] == USER_AGENT

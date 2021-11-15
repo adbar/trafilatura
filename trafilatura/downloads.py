@@ -52,10 +52,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 HTTP_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, ca_certs=certifi.where(), num_pools=NUM_CONNECTIONS)
 NO_CERT_POOL = urllib3.PoolManager(retries=RETRY_STRATEGY, timeout=TIMEOUT, cert_reqs='CERT_NONE', num_pools=20)
 
+DEFAULT_HEADERS = urllib3.util.make_headers(accept_encoding=True)
 USER_AGENT = 'trafilatura/' + __version__ + ' (+https://github.com/adbar/trafilatura)'
-DEFAULT_HEADERS = {
-    'User-Agent': USER_AGENT,
-}
+DEFAULT_HEADERS['User-Agent'] = USER_AGENT
 
 LOGGER = logging.getLogger(__name__)
 
