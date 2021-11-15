@@ -124,25 +124,40 @@ def test_queue():
     args.archived = True
     args.config_file = os.path.join(RESOURCES_DIR, 'newsettings.cfg')
     config = use_config(filename=args.config_file)
+    config['DEFAULT']['SLEEP_TIME'] = '0.2'
     results = download_queue_processing(domain_dict, args, None, config)
     assert len(results[0]) == 6 and results[1] is None
     # test backoff algorithm
     testdict = {}
     backoffdict = {}
     testdict['http://test.org'] = deque(['/1'])
-    assert draw_backoff_url(testdict, backoffdict, 0, set()) == ('http://test.org/1', dict(), dict(), 'http://test.org')
+    assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
     testdict['http://test.org'] = deque(['/1'])
     backoffdict['http://test.org'] = datetime(2019, 5, 18, 15, 17, 8, 132263)
-    assert draw_backoff_url(testdict, backoffdict, 0, set()) == ('http://test.org/1', dict(), dict(), 'http://test.org')
+    assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
+    # concurrent domains
+    testdict = {}
+    backoffdict = {}
+    testdict['http://test.org'] = deque(['/1'])
+    testdict['http://example.org'] = deque(['/1'])
+    # simulate recent request
+    backoffdict['http://test.org'] = datetime.now()
+    # must return the other domain
+    test = draw_backoff_url(testdict, backoffdict, 5)
+    assert test[0], test[1] == ('http://example.org/1', {'http://test.org': deque(['/1'])})
+    print(test)
+    assert test[2] != {}
+    # sleeps and returns the rest
+    assert draw_backoff_url(testdict, backoffdict, 1) == ('http://test.org/1', {}, {})
     # code hangs, logical:
     #testdict['http://test.org'] = deque(['/1'])
     #backoffdict['http://test.org'] = datetime(2030, 5, 18, 15, 17, 8, 132263)
-    #assert cli_utils.draw_backoff_url(testdict, backoffdict, 0, 3) == ('http://test.org/1', dict(), dict(), 0)
+    #assert draw_backoff_url(testdict, backoffdict, 0) == ('http://test.org/1', dict(), dict())
     # download buffer
     domain_dict = {'https://test.org': deque(['/1', '/2', '/3']), 'https://test2.org': deque(['/1', '/2', '/3']), 'https://test3.org': deque(['/1', '/2', '/3']), 'https://test4.org': deque(['/1', '/2', '/3']), 'https://test5.org': deque(['/1', '/2', '/3']), 'https://test6.org': deque(['/1', '/2', '/3'])}
-    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), 0, threads=1)
+    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), sleep_time=5, threads=1)
     assert len(bufferlist) == 6
-    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), 0, threads=2)
+    bufferlist, _, _, _ = load_download_buffer(domain_dict, dict(), sleep_time=5, threads=2)
     assert len(bufferlist) == 6
 
 

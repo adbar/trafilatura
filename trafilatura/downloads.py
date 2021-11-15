@@ -12,6 +12,7 @@ from collections import defaultdict, deque, namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from io import BytesIO
+from threading import RLock
 from time import sleep
 
 import certifi
@@ -34,6 +35,8 @@ from . import __version__
 from .settings import DEFAULT_CONFIG, DOWNLOAD_THREADS, TIMEOUT
 from .utils import decode_response, uniquify_list
 
+
+LOCK = RLock()
 
 NUM_CONNECTIONS = 50
 MAX_REDIRECTS = 2
@@ -195,52 +198,58 @@ def add_to_compressed_dict(inputlist, blacklist=None, url_filter=None, inputdict
     return inputdict
 
 
-def draw_backoff_url(domain_dict, backoff_dict, sleep_time, hosts):
+def draw_backoff_url(domain_dict, backoff_dict, sleep_time):
     '''Select a random URL from the domains pool and apply backoff rule'''
     green_light = False
-    while not green_light:
-        # choose among a fresh pool of hosts
-        host = random.choice([d for d in domain_dict if d not in hosts])
-        # safeguard
-        if host in backoff_dict and \
-            (datetime.now() - backoff_dict[host]).total_seconds() < sleep_time:
-            LOGGER.debug('spacing request for host %s', host)
-            sleep(sleep_time)
-        else:
-            if domain_dict[host]:
-                # draw URL
-                url = host + domain_dict[host].popleft()
-                backoff_dict[host] = datetime.now()
+    targets = set(domain_dict.keys())
+    while not green_light:  # use walrus operator in Python >= 3.8
+        # choose randomly multiple times until a usable target is found
+        while targets:
+            # choose among a fresh pool of hosts
+            host = random.choice(tuple(targets))
+            targets.remove(host)
+            # take another one if this host has been visited too recently
+            if host in backoff_dict and \
+                (datetime.now() - backoff_dict[host]).total_seconds() < sleep_time:
+                LOGGER.debug('spacing request for host %s', host)
+                host = None
             else:
-                url = None
-            # release the chosen URL
+                break
+        # safeguard
+        if host is None:
+            LOGGER.debug('spacing downloads for all targets')
+            sleep(sleep_time)
+            targets = set(domain_dict.keys())
+        else:
             green_light = True
+    if domain_dict[host]:
+        # draw URL
+        url = host + domain_dict[host].popleft()
+        backoff_dict[host] = datetime.now()
+    else:
+        url = None
     # clean registries
     if not domain_dict[host]:
         del domain_dict[host]
         if host in backoff_dict:
             del backoff_dict[host]
-    return url, domain_dict, backoff_dict, host
+    return url, domain_dict, backoff_dict
 
 
 def load_download_buffer(domain_dict, backoff_dict, sleep_time=5, threads=DOWNLOAD_THREADS):
     '''Determine threading strategy and draw URLs respecting domain-based back-off rules.'''
-    bufferlist, hosts = [], set()
+    bufferlist= []
     # the remaining list is too small, process it differently
     if len(domain_dict) < threads or \
        len({x for v in domain_dict.values() for x in v}) < threads:
         threads = 1
-    # populate buffer until a condition is reached
-    while domain_dict and [d for d in domain_dict if d not in hosts]:
-        #print(len(domain_dict), len(hosts), len([d for d in domain_dict if d not in hosts]), len(bufferlist), threads)
-        url, domain_dict, backoff_dict, host = draw_backoff_url(
-            domain_dict, backoff_dict, sleep_time, hosts
+    # populate buffer until all parallel URLs are ready
+    while domain_dict and len(bufferlist) < len(domain_dict):
+        url, domain_dict, backoff_dict = draw_backoff_url(
+            domain_dict, backoff_dict, sleep_time
             )
-        hosts.add(host)
         if url is not None:
             bufferlist.append(url)
-        #print(domain_dict)
-        #print(bufferlist)
     return bufferlist, threads, domain_dict, backoff_dict
 
 
