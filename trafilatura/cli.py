@@ -12,8 +12,10 @@ import sys
 import warnings
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from platform import python_version
 from threading import Lock
 
+from . import __version__
 from .cli_utils import (load_blacklist, load_input_dict, load_input_urls,
                         cli_crawler,
                         file_processing_pipeline, url_processing_pipeline,
@@ -175,6 +177,12 @@ def parse_args(args):
     parser.add_argument('-v', '--verbose', action='count', default=0,
                         help="increase logging verbosity (-v or -vv)",
                         )
+    parser.add_argument("--version",
+                        help="show version information and exit",
+                        action="version",
+                        version="Trafilatura {} - Python {}".format(
+                        __version__, python_version()
+                        ),)
 
     # wrap in mapping to prevent invalid input
     return map_args(parser.parse_args())

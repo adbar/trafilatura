@@ -5,6 +5,7 @@ Unit tests for the command-line interface.
 import io
 import logging
 import os
+import re
 import subprocess
 import sys
 
@@ -12,6 +13,8 @@ from collections import deque
 from contextlib import redirect_stdout
 from datetime import datetime
 from unittest.mock import patch
+
+import pytest
 
 from trafilatura import cli, cli_utils
 from trafilatura.downloads import add_to_compressed_dict, fetch_url
@@ -76,6 +79,14 @@ def test_parser():
     with redirect_stdout(f):
         cli.process_args(args)
     assert len(f.getvalue()) == 0
+    # version
+    testargs = ['', '--version']
+    with pytest.raises(SystemExit) as e, redirect_stdout(f):
+        with patch.object(sys, 'argv', testargs):
+            args = cli.parse_args(testargs)
+    assert e.type == SystemExit
+    assert e.value.code == 0
+    assert re.match(r'Trafilatura [0-9]\.[0-9]\.[0-9] - Python [0-9]\.[0-9]\.[0-9]', f.getvalue())
 
 
 def test_climain():
