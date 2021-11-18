@@ -1,0 +1,22 @@
+authors:
+  - family-names: Barbaresi
+    given-names: Adrien
+    orcid: https://orcid.org/0000-0002-8079-8694
+cff-version: 1.2.0
+identifiers:
+  - description: "This is the collection of archived snapshots of all versions of Trafilatura"
+    type: doi
+    value: 10.5281/zenodo.3460969
+message: "If you use this software, please cite both the article from preferred-citation and the software itself."
+preferred-citation:
+  authors:
+    - family-names: Barbaresi
+      given-names: Adrien
+  title: "Trafilatura: A Web Scraping Library and Command-Line Tool for Text Discovery and Extraction"
+  type: article
+  year: 2021
+repository: https://github.com/adbar/trafilatura
+repository-code: https://github.com/adbar/trafilatura
+title: Trafilatura
+type: software
+url: https://trafilatura.readthedocs.io/
