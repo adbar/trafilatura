@@ -35,7 +35,8 @@ HTMLTITLE_REGEX = re.compile(r'^(.+)?\s+[-|]\s+(.+)$')  # part without dots?
 URL_COMP_CHECK = re.compile(r'https?://|/')
 HTML_STRIP_TAG = re.compile(r'(<!--.*?-->|<[^>]*>)')
 
-LICENSE_REGEX = re.compile(r'/(by|by-sa|by-nd|by-nc|by-nc-sa|by-nc-nd|zero)/([1-9]\.[0-9])')
+LICENSE_REGEX = re.compile(r'/(by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero)/([1-9]\.[0-9])')
+TEXT_LICENSE_REGEX = re.compile(r'(cc|creative commons) (by-nc-nd|by-nc-sa|by-nc|by-nd|by-sa|by|zero) ?([1-9]\.[0-9])?', re.I)
 
 METANAME_AUTHOR = {
     'author', 'byl', 'citation_author', 'dc.creator', 'dc.creator.aut',
@@ -342,7 +343,7 @@ def extract_catstags(metatype, tree):
     return [x for x in results if x is not None]
 
 
-def parse_license_element(element):
+def parse_license_element(element, strict=False):
     '''Probe a link for identifiable free license cues.
        Parse the href attribute first and then the link text.'''
     if element.get('href') is not None:
@@ -351,7 +352,13 @@ def parse_license_element(element):
         if match:
             return 'CC ' + match.group(1).upper() + ' ' + match.group(2)
     if element.text is not None:
-        return trim(element.text)
+        # just return the anchor text without further ado
+        if strict is False:
+            return trim(element.text)
+        # else: check if it could be a CC license
+        match = TEXT_LICENSE_REGEX.search(element.text)
+        if match:
+            return match.group(0)
     return None
 
 
@@ -360,7 +367,7 @@ def extract_license(tree):
     result = None
     # look for links labeled as license
     for element in tree.xpath('//a[@rel="license"]'):
-        result = parse_license_element(element)
+        result = parse_license_element(element, strict=False)
         if result is not None:
             break
     # probe footer elements for CC links
@@ -368,7 +375,7 @@ def extract_license(tree):
         for element in tree.xpath(
             '//footer//a|//div[contains(@class, "footer") or contains(@id, "footer")]//a'
         ):
-            result = parse_license_element(element)
+            result = parse_license_element(element, strict=True)
             if result is not None:
                 break
     return result

@@ -304,6 +304,16 @@ def test_license():
     </div>
 </body></html>''')
     assert metadata['license'] == 'CC BY-NC-SA 4.0'
+    # this is not a license
+    metadata = extract_metadata('''<html><body><footer class="entry-footer">
+	<span class="cat-links">Posted in <a href="https://sallysbakingaddiction.com/category/seasonal/birthday/" rel="category tag">Birthday</a></span>
+	</footer></body></html>''')
+    assert metadata['license'] is None
+    # this is a license
+    metadata = extract_metadata('''<html><body><footer class="entry-footer">
+	<span>The license is <a href="https://example.org/1">CC BY-NC</a></span>
+	</footer></body></html>''')
+    assert metadata['license'] == 'CC BY-NC'
 
 
 def test_pages():
