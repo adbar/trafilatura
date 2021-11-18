@@ -385,8 +385,9 @@ def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate
         etree.strip_tags(search_tree, 'a', 'ref', 'span')
     else:
         etree.strip_tags(search_tree, 'span')
-    processed_elems = [handle_textelem(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'div', 'p', 'pre', 'q', 'quote', 'table')]
-    result_body.extend(list(filter(None.__ne__, processed_elems)))
+    result_body.extend(e for e in
+                        [handle_textelem(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'div', 'p', 'pre', 'q', 'quote', 'table')]
+                        if e is not None)
     return result_body
 
 
@@ -498,9 +499,9 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         ##etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
         # extract content
         # list(filter(None.__ne__, processed_elems))
-        result_body.extend([e for e in
+        result_body.extend(e for e in
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
-                            if e is not None])
+                            if e is not None)
         # remove trailing titles
         while len(result_body) > 0 and result_body[-1].tag in HEADINGS:
             result_body[-1].getparent().remove(result_body[-1])
