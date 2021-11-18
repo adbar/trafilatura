@@ -106,7 +106,13 @@ def handle_formatting(element, dedupbool, config):
     #            processed_element.append(processed_child)
     #        child.tag = 'done'
     # repair orphan elements
-    parent = element.getparent() or element.getprevious()
+    # shorter code but triggers warning:
+    # parent = element.getparent() or element.getprevious()
+    parent = element.getparent()
+    if parent is not None:
+        parent = parent
+    else:
+        parent = element.getprevious()
     if parent is None or parent.tag not in FORMATTING_PROTECTED:
         processed_element = etree.Element('p')
         processed_element.insert(0, formatting)
