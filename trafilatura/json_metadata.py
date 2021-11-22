@@ -28,9 +28,9 @@ def extract_json(schema, metadata):
         if '@context' not in parent or not isinstance(parent['@context'], str) or parent['@context'][-10:].lower() != 'schema.org':
             continue
         if '@graph' in parent:
-            parent = parent['@graph']
+            parent = parent['@graph'] if isinstance(parent['@graph'], list) else [parent['@graph']]
         elif '@type' in parent and isinstance(parent['@type'], str) and 'liveblogposting' in parent['@type'].lower():
-            parent = parent['liveBlogUpdate']
+            parent = parent['liveBlogUpdate'] if isinstance(parent['liveBlogUpdate'], list) else [parent['liveBlogUpdate']]
         else:
             parent = schema
 
