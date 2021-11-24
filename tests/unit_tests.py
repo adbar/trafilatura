@@ -16,7 +16,7 @@ except ImportError:
 
 # language detection
 try:
-    import cld3
+    import py3langid
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False

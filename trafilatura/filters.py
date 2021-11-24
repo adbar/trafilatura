@@ -10,7 +10,7 @@ import re
 
 # language detection
 try:
-    import cld3
+    import py3langid
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False
@@ -95,11 +95,11 @@ def language_filter(temp_text, temp_comments, target_language, docmeta):
         if LANGID_FLAG is True:
             # comments
             if len(temp_comments) > len(temp_text):
-                result = cld3.get_language(temp_comments)
+                result, _ = py3langid.classify(temp_comments)
             # default
             else:
-                result = cld3.get_language(temp_text)
-            if result.language != target_language:
+                result, _ = py3langid.classify(temp_text)
+            if result != target_language:
                 LOGGER.warning('wrong language: %s %s %s', result, docmeta['id'], docmeta['url'])
                 return True
         else:

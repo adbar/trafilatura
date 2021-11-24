@@ -32,7 +32,7 @@ extras = {
     'all': [
         'cchardet >= 2.1.7',
         'htmldate[speed] >= 1.0.0',
-        'pycld3 >= 0.22',
+        'py3langid',
         'pycurl >= 7.44.1',
         'urllib3[brotli]',
     ],
