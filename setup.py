@@ -36,6 +36,9 @@ extras = {
         'pycurl >= 7.44.1',
         'urllib3[brotli]',
     ],
+    'gui': [
+        'Gooey >= 1.0.1',
+    ],
 }
 
 setup(
@@ -95,7 +98,10 @@ setup(
     ],
     extras_require=extras,
     entry_points = {
-        'console_scripts': ['trafilatura=trafilatura.cli:main'],
+        'console_scripts': [
+            'trafilatura=trafilatura.cli:main',
+            'trafilatura_gui=trafilatura.gui:main',
+        ],
     },
     # platforms='any',
     tests_require=['pytest'],
