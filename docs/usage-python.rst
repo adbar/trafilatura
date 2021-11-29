@@ -31,7 +31,7 @@ Quickstart
     >>> from trafilatura import fetch_url, extract
     >>> url = 'https://github.blog/2019-03-29-leader-spotlight-erin-spiceland/'
     >>> downloaded = fetch_url(url)
-    >>> downloaded is None # assuming the download was successful
+    >>> downloaded is None  # assuming the download was successful
     False
     >>> result = extract(downloaded)
     >>> print(result)
@@ -96,10 +96,7 @@ Their inclusion can be activated or deactivated using paramaters passed to the `
 
 
 .. note::
-    Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
-
-
-Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements.
+    Including extra elements works best with conversion to XML formats (``output_format="xml"``) or ``bare_extraction()``. Both ways allow for direct display and manipulation of the elements. Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
 
 
 ``include_formatting=True``
@@ -115,10 +112,15 @@ Including extra elements works best with conversion to XML formats (``output_for
 Only ``include_tables`` is activated by default.
 
 
+.. hint::
+    If the output is buggy removing a constraint (e.g. formatting) can greatly improve the result.
+
+
+
 Language identification
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Experimental feature: the target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above for installation instructions).
+The target language can also be set using 2-letter codes (`ISO 639-1 <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_), there will be no output if the detected language of the result does not match and no such filtering if the identification component has not been installed (see above `installation instructions <installation.html>`_).
 
 .. code-block:: python
 

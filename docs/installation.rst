@@ -2,6 +2,7 @@ Installation
 ============
 
 
+
 Python
 ------
 
@@ -71,26 +72,48 @@ If you are using a Unix derivative (e.g. Linux, OS X), you can achieve this by r
 For local or user installations where trafilatura cannot be used from the command-line, please refer to `the official Python documentation <https://docs.python.org/3/library/site.html#cmdoption-site-user-base>`_ and this page on `finding executables from the command-line <https://stackoverflow.com/questions/35898734/pip-installs-packages-successfully-but-executables-not-found-from-command-line>`_.
 
 
-Graphical user interface
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-See `this link <https://github.com/adbar/trafilatura_gui>`_ for installation instructions.
-
-
 
 Additional functionality
 ------------------------
+
+Optional modules
+~~~~~~~~~~~~~~~~
 
 A few additional libraries can be installed for extended functionality and faster processing: language detection and faster encoding detection: the ``cchardet`` package may not work on all systems but it is highly recommended.
 
 .. code-block:: bash
 
-    $ pip install cchardet # speed-up only
-    $ pip install trafilatura[all] # all additional functionality
+    $ pip install cchardet  # single package only
+    $ pip install trafilatura[all]  # all additional functionality
 
-For improved date extraction you can use ``pip install htmldate[speed]``.
-
-You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
 
 *For infos on dependency management of Python packages see* `this discussion thread <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_.
 
+
+.. hint::
+    Everything works even if not all packages are installed (e.g. because installation fails).
+
+    You can also install or update relevant packages separately, *trafilatura* will detect which ones are present on your system and opt for the best available combination.
+
+
+cchardet
+    Faster encoding detection, also possibly more accurate (especially for encodings used in Asia)
+htmldate[all]
+    Faster and more precise date extraction with a series of dedicated packages
+py3langid
+    Language detection on extracted main text
+pycurl
+    Faster downloads, possibly less robust though
+urllib3[brotli]
+    Potentially faster file downloads (not essential)
+
+
+
+Graphical user interface
+------------------------
+
+
+.. toctree::
+   :maxdepth: 2
+
+   installation-gui

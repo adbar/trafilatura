@@ -69,14 +69,17 @@ Only comments and text extracted from HTML ``<table>`` elements are extracted by
 
 Further options:
 
-- ``--formatting``: Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
-- ``--links``: Keep link targets (in ``href="..."``)
-- ``--images``: Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
+``--formatting``
+    Keep structural elements related to formatting (``<b>``/``<strong>``, ``<i>``/``<emph>`` etc.)
+``--links``
+    Keep link targets (in ``href="..."``)
+``--images``
+    Keep track of images along with their targets (``<img>`` attributes: alt, src, title)
 
 .. note::
     Certain elements are only visible in the output if the chosen format allows it (e.g. images and XML).
     
-    Including extra elements works best with conversion to XML/XML-TEI.
+    Including extra elements works best with conversion to XML/XML-TEI. If the output is buggy removing a constraint (e.g. formatting) can greatly improve the result.
 
 
 Output format
@@ -140,6 +143,14 @@ Two major command line arguments are necessary here:
     ``$ trafilatura --inputfile links.txt --outputdir converted/ --backup-dir html-sources/ --xml``
 
 
+Internet Archive
+~~~~~~~~~~~~~~~~
+
+Using the option ``--archived`` will trigger queries to the `Internet Archive <https://web.archive.org/>`_ for web pages which could not be downloaded.
+
+There is a fair chance to find archived versions for larger websites, whereas pages of lesser-known websites may not have been preserved there. The retrieval process is slow as it depends on a single web portal only, it is best performed for a relatively small number of URLs.
+
+
 Link discovery
 --------------
 
@@ -157,6 +168,12 @@ Feeds
 -  ``trafilatura --feed "https://www.dwds.de/" --list``
 -  ``trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list``
 
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/NW2ISdOx08M?start=406" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 Youtube tutorial: `Extracting links from web feeds <https://www.youtube.com/watch?v=NW2ISdOx08M&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci&index=2&t=398s>`_
 
 
@@ -165,6 +182,12 @@ Sitemaps
 
 -  ``trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list``
 -  ``trafilatura --sitemap "https://www.sitemaps.org/" --list``
+
+
+.. raw:: html
+
+    <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/uWUyhxciTOs?start=330" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 Youtube tutorial: `Listing all website contents with sitemaps <https://www.youtube.com/watch?v=uWUyhxciTOs&list=PL-pKWbySIRGMgxXQOtGIz1-nbfYLvqrci&index=3&t=330s>`_
 
@@ -208,7 +231,7 @@ For all usage instructions see ``trafilatura -h``:
                    [--target-language TARGET_LANGUAGE] [--deduplicate]
                    [--config-file CONFIG_FILE]
                    [-out {txt,csv,json,xml,xmltei} | --csv | --json | --xml | --xmltei]
-                   [--validate-tei] [-v]
+                   [--validate-tei] [-v] [--version]
 
 
 Command-line interface for Trafilatura
@@ -216,6 +239,7 @@ Command-line interface for Trafilatura
 optional arguments:
   -h, --help            show this help message and exit
   -v, --verbose         increase logging verbosity (-v or -vv)
+  --version             show version information and exit
 
 Input:
   URLs, files or directories to process
