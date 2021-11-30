@@ -2,9 +2,14 @@
 Unit tests for JSON metadata extraction.
 """
 
+import logging
+import sys
+
 from lxml import html
 from trafilatura.metadata import extract_metadata, METADATA_LIST, extract_meta_json
 
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 def test_json_extraction():

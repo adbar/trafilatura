@@ -3,6 +3,7 @@
 Unit tests for download functions from the trafilatura library.
 """
 
+import logging
 import os
 import sys
 
@@ -30,6 +31,8 @@ from trafilatura.downloads import DEFAULT_HEADERS, USER_AGENT, add_to_compressed
 from trafilatura.settings import DEFAULT_CONFIG, use_config
 from trafilatura.utils import decode_response, load_html
 
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'

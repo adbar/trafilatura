@@ -10,11 +10,5 @@ omit =
 exclude_lines =
     pragma: no cover
     if __name__ == .__main__.:
-    .*level=logging.DEBUG.*
     except .*etree.XMLSyntaxError.*:
-    except .*ImportError.*:
-    except .*requests.exceptions.*:
-    except .*socket.*
     except .*UnicodeDecodeError.*:
-    except .*UnboundLocalError.*:
-    with .*
