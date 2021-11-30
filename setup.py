@@ -32,7 +32,7 @@ extras = {
     'all': [
         'cchardet >= 2.1.7',
         'htmldate[speed] >= 1.0.0',
-        'py3langid',
+        'py3langid >= 0.2.0',
         'pycurl >= 7.44.1',
         'urllib3[brotli]',
     ],
@@ -88,11 +88,11 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'certifi',
-        'charset_normalizer >= 2.0.7',
-        'courlan >= 0.5.0',
+        'charset_normalizer >= 2.0.8',
+        'courlan >= 0.6.0',
         'htmldate >= 1.0.0',
         'justext >= 3.0.0',
-        'lxml >= 4.6.3',
+        'lxml >= 4.6.4',
         'readability-lxml >= 0.8.1',
         'urllib3 >=1.26, <2',
     ],
