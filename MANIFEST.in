@@ -1,9 +1,17 @@
-include CONTRIBUTING.md HISTORY.md README.rst LICENSE pytest.ini
-include tests/unit_tests.py
+include CITATION.cff CONTRIBUTING.md HISTORY.md README.rst LICENSE pytest.ini
+graft trafilatura/data/
+
+include tests/__init__.py
+include tests/__init__.py
+include tests/*test*.py
 graft tests/cache/
+graft tests/resources/
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
-recursive-include conf.py Makefile make.bat *.jpg *.png *.gif
+recursive-include conf.py Makefile make.bat *.jpg *.png
+
+include docs/requirements.txt
 recursive-include docs *.rst
+recursive-include docs/_build/ *.jpg *.png

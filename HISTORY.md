@@ -1,6 +1,19 @@
 ## History / Changelog
 
 
+### 1.0.0
+- compress HTML backup files & seamlessly open .gz files
+- support JSON web feeds
+- graphical user interface integrated into main package
+- faster downloads: reviewed backoff, compressed data
+- optional modules: downloads with `pycurl`, language identification with `py3langid`
+- bugs fixed (#111, #125, #132, #136, #140)
+- minor optimizations and fixes by @vbarbaresi in [#124](https://github.com/adbar/trafilatura/pull/124) & [#130](https://github.com/adbar/trafilatura/pull/130)
+- fixed array with single or multiples entries on json extractor by @felipehertzer in [#143](https://github.com/adbar/trafilatura/pull/143)
+- code base refactored with @sourcery-ai [#121](https://github.com/adbar/trafilatura/pull/121), improved and optimized for Python 3.6+
+- drop support for Python 3.5
+
+
 ### 0.9.3
 - better, faster encoding detection: replaced `chardet` with `charset_normalizer`
 - faster execution: updated `justext` to 3.0
