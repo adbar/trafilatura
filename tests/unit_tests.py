@@ -483,7 +483,10 @@ def test_tei():
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     # download, parse and validate simple html file
-    result = extract(teststring, "mocked", no_fallback=True, output_format='xmltei', tei_validation=False)
+    result = extract(teststring, "mocked", no_fallback=True, include_comments=True, output_format='xmltei', tei_validation=False)
+    assert result is not None # and '<p>license</p>' in result
+    assert xml.validate_tei(etree.fromstring(result)) is True
+    result = extract(teststring, "mocked", no_fallback=True, include_comments=False, output_format='xmltei', tei_validation=False)
     assert result is not None # and '<p>license</p>' in result
     assert xml.validate_tei(etree.fromstring(result)) is True
     # include ID in metadata
@@ -499,7 +502,16 @@ def test_tei():
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta['sitename'] = 'Site Name'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['hostname'], docmeta['sitename'] = 'hostname', None
+    docmeta['hostname'] = 'hostname'
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['sitename'] = None
+    docmeta['license'] = 'CC BY-SA'
+    docmeta['url'] = 'https://test.org/'
+    docmeta['categories'] = ['cat1', 'cat2']
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['date'] = '2021-01-01'
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['title'], docmeta['sitename'] = None, None
     assert xml.write_fullheader(header, docmeta) is not None
 
 
@@ -515,6 +527,17 @@ def test_htmlprocessing():
     mydoc = html.fromstring('<html><body><article><h1>Test headline</h1><p>Test</p></article></body></html>')
     assert '<head rend="h1">Test headline</head>' in extract(mydoc, output_format='xml', config=ZERO_CONFIG, no_fallback=True)
     assert '<fw rend="h1" type="header">Test headline</fw>' in extract(mydoc, output_format='xmltei', config=ZERO_CONFIG, no_fallback=True)
+    # merge with parent function
+    element = etree.Element('test')
+    xml.merge_with_parent(element)
+    mydoc = html.fromstring('<html><body><p><span>A</span><span>B</span><span>C</span></p></body></html>')
+    for element in mydoc.iter('span'):
+        xml.merge_with_parent(element)
+    assert b'<p>A B C</p>' in etree.tostring(mydoc)
+    mydoc = html.fromstring('<html><body><p><span>A</span><span>B</span> tail<span>C</span></p></body></html>')
+    for element in mydoc.iter('span'):
+        xml.merge_with_parent(element)
+    assert b'<p>A B tail C</p>' in etree.tostring(mydoc)
 
 
 def test_precision_recall():
