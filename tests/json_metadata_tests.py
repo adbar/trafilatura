@@ -84,4 +84,40 @@ def test_json_extraction():
 }
 </script>
 </body></html>'''), metadata)
+    print(metadata)
     assert metadata is not None and metadata['title'] == 'Apple Spring Forward Event Live Blog'
+
+    metadata = dict.fromkeys(METADATA_LIST)
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "socialmediaposting",
+            "name": "The Hitchhiker's Guide to the Galaxy",
+            "genre": "comedy science fiction",
+            "startDate": "1979-10-12",
+            "endDate": "1992-10-12",
+            "abstract": "Earthman Arthur Dent is saved by his friend, Ford Prefect—an alien researcher for the titular Hitchhiker's Guide to the Galaxy, which provides info on every planet in the galaxy—from the Earth just before it is destroyed by the alien Vogons.",
+            "author": {
+                "@type": "Person",
+                "givenName": "Douglas",
+                "familyName": "Adams",
+                "additionalName": "Noel",
+                "birthDate": "1952-03-11",
+                "birthPlace": {
+                    "@type": "Place",
+                    "address": "Cambridge, Cambridgeshire, England"
+                },
+                "deathDate": "2001-05-11",
+                "deathPlace": {
+                    "@type": "Place",
+                    "address": "Highgate Cemetery, London, England"
+                }
+            }
+        }
+    </script>
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and metadata['author'] == 'Douglas Noel Adams'
+

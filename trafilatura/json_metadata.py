@@ -73,7 +73,7 @@ def extract_json(schema, metadata):
                     if not isinstance(list_authors, list):
                         list_authors = [list_authors]
                     for author in list_authors:
-                        if ('@type' in author and author['@type'] == 'Person') or ('@type' not in author):
+                        if '@type' not in author or author['@type'] == 'Person':
                             # error thrown: author['name'] can be a list (?)
                             if 'name' in author and author['name'] is not None:
                                 author_name = author['name']
@@ -82,8 +82,9 @@ def extract_json(schema, metadata):
                                 metadata['author'] = normalize_authors(metadata['author'], author_name)
                             elif 'givenName' in author is not None and 'familyName' in author:
                                 name = [author['givenName'], author['additionalName'], author['familyName']]
-                                metadata['author'] = normalize_authors(metadata['author'], ' '.join(
-                                    filter(lambda v: v is not None, name)))
+                                metadata['author'] = normalize_authors(
+                                    metadata['author'], ' '.join([n for n in name if n is not None])
+                                )
                 # category
                 if metadata['categories'] is None and 'articleSection' in content:
                     if isinstance(content['articleSection'], str):
@@ -111,9 +112,7 @@ def extract_json_author(elemtext, regular_expression):
             mymatch = regular_expression.search(elemtext)
         else:
             break
-    if authors is not None:
-        return authors
-    return None
+    return authors or None
 
 
 def extract_json_parse_error(elem, metadata):
