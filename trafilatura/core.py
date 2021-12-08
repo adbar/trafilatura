@@ -60,7 +60,7 @@ def handle_titles(element, dedupbool, config):
         # TODO: write tests for it and check
         for child in list(element):
             # if child.tag not in potential_tags:
-            #    LOGGER.warning('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
+            #    LOGGER.debug('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
             #    continue
             processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
             if processed_child is not None:
@@ -84,7 +84,7 @@ def handle_formatting(element, dedupbool, config):
     # if len(element) > 0:
     #    for child in element.iter('*'):
     #        if child.tag not in potential_tags:
-    #            LOGGER.warning('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
+    #            LOGGER.debug('unexpected in title: %s %s %s', child.tag, child.text, child.tail)
     #            continue
     #        processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, config=config)
     #        if processed_child is not None:
@@ -190,7 +190,7 @@ def handle_other_elements(element, potential_tags, dedupbool, config):
             # insert
             return processed_element
     else:
-        LOGGER.warning('unexpected element seen: %s %s', element.tag, element.text)
+        LOGGER.debug('unexpected element seen: %s %s', element.tag, element.text)
     return None
 
 
@@ -209,7 +209,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
     processed_element = etree.Element(element.tag)
     for child in element.iter('*'):
         if child.tag not in potential_tags and child.tag != 'done':
-            LOGGER.warning('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
+            LOGGER.debug('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
         spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
