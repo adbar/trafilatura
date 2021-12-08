@@ -46,7 +46,7 @@ def tree_cleaning(tree, include_tables, include_images=False):
     cleaning_list, stripping_list = \
         MANUALLY_CLEANED.copy(), MANUALLY_STRIPPED.copy()
     if include_tables is False:
-        cleaning_list.append('table')
+        cleaning_list.extend(['table', 'td', 'th', 'tr'])
     if include_images is True:
         # Many websites have <img> inside <figure> or <picture> or <source> tag
         cleaning_list = [e for e in cleaning_list if e

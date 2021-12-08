@@ -422,6 +422,10 @@ def test_external():
         teststring = f.read()
     assert 'localhost:80' in extract(teststring, no_fallback=False, include_tables=True)
     assert 'localhost:80' not in extract(teststring, no_fallback=False, include_tables=False)
+    with open(os.path.join(RESOURCES_DIR, 'scam.html')) as f:
+        teststring = f.read()
+    assert extract(teststring, no_fallback=True, include_tables=False) == ''
+    assert extract(teststring, no_fallback=False, include_tables=False) == ''
 
 
 def test_images():
