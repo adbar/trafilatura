@@ -33,7 +33,9 @@ trafilatura: Web scraping tool for text discovery and retrieval
 Description
 -----------
 
-*Trafilatura* is a Python package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract metadata, main body text and comments while preserving parts of the text formatting and page structure. The output can be converted to different formats.
+*Trafilatura* is a Python software package and command-line tool which seamlessly downloads, parses, and scrapes web page data: it can extract text and metadata while preserving parts of text formatting and page structure. This light-weight package acts as a modular toolkit: no database is required, the output can be converted to different commonly used formats.
+
+
 
 
 Features
@@ -56,7 +58,9 @@ Features
    - Support for sitemaps (TXT, XML) and feeds (ATOM, JSON, RSS)
    - Efficient and polite processing of URL queues
    - Blacklisting
-- Optional language detection on extracted content
+- Optional add-ons:
+   - Language detection on extracted content
+   - Graphical user interface (GUI)
 
 
 Evaluation and alternatives
@@ -81,10 +85,11 @@ trafilatura 0.8.2 (fast)        0.925      0.868      0.899     0.896     3.9x
 trafilatura 0.8.2               0.934      **0.890**  **0.914** **0.912** 8.4x
 =============================== =========  ========== ========= ========= ======
 
-**External evaluations:**
+Other evaluations:
+^^^^^^^^^^^^^^^^^^
 
-- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_ as well as in `another independant evaluation on the same data <https://github.com/currentsapi/extractnet>`_.
-- `Evaluation page <https://trafilatura.readthedocs.io/en/latest/evaluation.html>`_ in the docs.
+- Most efficient open-source library in *ScrapingHub*'s `article extraction benchmark <https://github.com/scrapinghub/article-extraction-benchmark>`_
+- Best overall tool according to Gaël Lejeune & Adrien Barbaresi, `Bien choisir son outil d'extraction de contenu à partir du Web <https://hal.archives-ouvertes.fr/hal-02768510v3/document>`_ (2020, PDF, French)
 
 
 Usage and documentation
@@ -111,6 +116,11 @@ License
 See also `GPL and free software licensing: What's in it for business? <https://www.techrepublic.com/blog/cio-insights/gpl-and-free-software-licensing-whats-in-it-for-business/>`_
 
 
+
+Context
+-------
+
+
 Contributing
 ~~~~~~~~~~~~
 
@@ -119,8 +129,11 @@ Contributing
 Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
 
 
-Context
--------
+Roadmap
+~~~~~~~
+
+For planned enhancements and relevant milestones see `issues page <https://github.com/adbar/trafilatura/milestones>`_.
+
 
 Author
 ~~~~~~
@@ -166,3 +179,5 @@ Software
 *Trafilatura*: `Italian word <https://en.wiktionary.org/wiki/trafilatura>`_ for `wire drawing <https://en.wikipedia.org/wiki/Wire_drawing>`_.
 
 `Known uses of the software <https://trafilatura.readthedocs.io/en/latest/used-by.html>`_.
+
+Corresponding posts on `Bits of Language <https://adrien.barbaresi.eu/blog/tag/trafilatura.html>`_ (blog).
