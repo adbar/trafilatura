@@ -165,8 +165,14 @@ For more information please refer to the `tutorial on content discovery <tutoria
 Feeds
 ~~~~~
 
--  ``trafilatura --feed "https://www.dwds.de/" --list``
--  ``trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list``
+.. code-block:: bash
+
+    # looking for feeds
+    $ trafilatura --feed "https://www.dwds.de/" --list
+    # already known feed
+    $ trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list
+    # processing a list in parallel
+    $ trafilatura -i mylist.txt --feed --list
 
 
 .. raw:: html
@@ -180,8 +186,17 @@ Youtube tutorial: `Extracting links from web feeds <https://www.youtube.com/watc
 Sitemaps
 ~~~~~~~~
 
--  ``trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list``
--  ``trafilatura --sitemap "https://www.sitemaps.org/" --list``
+.. code-block:: bash
+
+    # run link discovery through a sitemap for sitemaps.org and store the resulting links in a file
+    $ trafilatura --sitemap "https://www.sitemaps.org/" --list > mylinks.txt
+    # using an already known sitemap URL
+    $ trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list
+    # targeting webpages in German
+    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --target-language "de"
+
+
+For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
 
 
 .. raw:: html

@@ -3,32 +3,47 @@ Tutorial: Gathering a custom web corpus
 
 .. meta::
     :description lang=en:
-        This how-to explains how to easily build a text collection with Python and the command-line.
-        All steps from web crawling to text extraction are described.
+        This how-to explains how to easily build text collections on the command-line using tools provided by Trafilatura. All steps from web crawling to text extraction are described.
 
 
 Get your system up and running
 ------------------------------
 
--  Installation: see `dedicated page <installation.html>`_
--  Ensure that you have installed the latest version: ``pip install -U trafilatura``
+1.  Installation: see `dedicated page <installation.html>`_
+2.  Ensure that you have installed the latest version: ``pip install -U trafilatura`` (or ``pip3``)
 
-The following consists of `command-line instructions <https://en.wikipedia.org/wiki/Command-line_interface>`_. For an introduction see the `page on command-line usage <usage-cli.html#introduction>`_.
+
+.. note::
+    The following consists of `command-line instructions <https://en.wikipedia.org/wiki/Command-line_interface>`_.
+
+    For an introduction to and more information on this topic see the `documentation page on command-line usage <usage-cli.html#introduction>`_.
 
 
 Content discovery
 -----------------
 
-..
-   https://www.sketchengine.eu/guide/create-a-corpus-from-the-web/
+
+Web sources
+~~~~~~~~~~~
 
 Sources used by Trafilatura can consist of previously known or listed web pages. Currently, functions to discover content within a website are available. Other methods include sifting through Wikipedia, social networks, or using lists of links gathered by other projects.
+
+.. hint::
+    Please refer to the `tutorial page on sources <sources.html>`_ for detailed information.
 
 
 Finding subpages within a website
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In order to gather web documents it can be useful to download the portions of a website programmatically, mostly to save time and resources. The retrieval and download of documents within a website is often called *web crawling* or *web spidering*. Web crawlers usually discover pages from links within the site and from other sites. Trafilatura supports two different ways to gather further links `web feeds <https://en.wikipedia.org/wiki/Web_feed>`_ (Atom and RSS) or `sitemaps <https://en.wikipedia.org/wiki/Sitemaps>`_. As a result, a comprehensive overview of the available documents can be obtained faster and more efficiently than by systematically extracting and following links within a website.
+
+In order to gather web documents it can be useful to download the portions of a website programmatically, mostly to save time and resources. The retrieval and download of documents within a website is often called *web crawling* or *web spidering*. Web crawlers usually discover pages from links within the site and from other sites. Trafilatura supports three different ways to gather further links:
+
+1. Sitemaps
+2. Web feeds (Atom and RSS)
+3. Web crawling (see the `corresponding documentation page <crawls.html>`_)
+
+
+A comprehensive overview of the available documents can be obtained faster and more efficiently using the first two methods than by systematically extracting and following links within a website.
 
 The formats supported are all machine-readable rather than human-readable they can also be used to automatically transfer information from one website to another without any human intervention. However, link inspection and filtering prior to systematic download is recommended to avoid undesired content or overstreching computing resources.
 
@@ -55,11 +70,13 @@ Most commonly, feeds are made available to provide either summaries or full rend
 *Trafilatura* supports XML-based feeds with the two common formats `Atom <https://en.wikipedia.org/wiki/Atom_(Web_standard)>`_ and `RSS <https://en.wikipedia.org/wiki/RSS>`_.
 
 
+
 Gathering links
 ~~~~~~~~~~~~~~~
 
 
-The following examples use the command-line interface. For more information on the usage with Python please refer to this blog post: `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_.
+.. note::
+    The following examples use the command-line interface. For more information on the **usage with Python** please refer to this blog post: `Using RSS and Atom feeds to collect web pages with Python <https://adrien.barbaresi.eu/blog/using-feeds-text-extraction-python.html>`_.
 
 
 Features
@@ -73,40 +90,37 @@ Features
 The following examples return lists of links. If ``--list`` is absent the pages that have been found are directly retrieved, processed, and returned in the chosen output format (default: TXT and standard output).
 
 
-Sitemaps
-^^^^^^^^
+.. note::
+    Please refer to the `CLI documentation on link discovery <usage-cli.html#link-discovery>`_ for detailed information.
 
-.. code-block:: bash
 
-    # run link discovery through a sitemap for sitemaps.org and store the resulting links in a file
-    $ trafilatura --sitemap "https://www.sitemaps.org/" --list > mylinks.txt
-    # using an already known sitemap URL
-    $ trafilatura --sitemap "https://www.sitemaps.org/sitemap.xml" --list
-    # targeting webpages in German
-    $ trafilatura --sitemap "https://www.sitemaps.org/" --list --target-language "de"
+In a nutshell
+^^^^^^^^^^^^^
+
+- The ``--sitemap`` option followed by a homepage or a XML sitemap will search for sitemaps links:
+
+  ``$ trafilatura --sitemap "https://www.sitemaps.org/" --list``
+
+- The ``--feed`` option followed by a homepage or a feed URL will search for feed links:
+
+  ``$ trafilatura --feed "https://www.dwds.de/" --list``
+
+- The ``--crawl`` option will try to discover internal links by hopping from page to page
 
 
 For more information on sitemap use and filters for lists of links see this blog post: `Using sitemaps to crawl websites <https://adrien.barbaresi.eu/blog/using-sitemaps-crawl-websites.html>`_.
 
-
-Feeds
-^^^^^
-
-.. code-block:: bash
-
-    # looking for feeds
-    $ trafilatura --feed "https://www.dwds.de/" --list
-    # already known feed
-    $ trafilatura --feed "https://www.dwds.de/api/feed/themenglossar/Corona" --list
-    # processing a list in parallel
-    $ trafilatura -i mylist.txt --feed --list
 
 
 Link filtering
 --------------
 
 
-For more information see also these blog posts: `Filtering links to gather texts on the web <https://adrien.barbaresi.eu/blog/link-filtering-courlan-python.html>`_ & `An easy way to save time and resources: content-aware URL filtering <https://adrien.barbaresi.eu/blog/easy-content-aware-url-filtering.html>`_.
+.. note::
+    For more information see also these blog posts:
+
+    - `Filtering links to gather texts on the web <https://adrien.barbaresi.eu/blog/link-filtering-courlan-python.html>`_
+    - `An easy way to save time and resources: content-aware URL filtering <https://adrien.barbaresi.eu/blog/easy-content-aware-url-filtering.html>`_.
 
 
 Filtering with coURLan
@@ -114,7 +128,9 @@ Filtering with coURLan
 
 It is better to examine a list of URLs for content adequacy, most notably to make download and extraction more efficient by removing unwanted and redundant content. The `courlan <https://github.com/adbar/courlan>`_ software package is installed along with ``trafilatura``. It separates the wheat from the chaff by focusing on non-spam text-rich HTML pages, and can be used on the command-line:
 
-``courlan --inputfile raw-linklist.txt --outputfile filtered-linklist.txt``
+.. code-block:: bash
+
+    $ courlan --inputfile raw-linklist.txt --outputfile filtered-linklist.txt
 
 
 Custom filtering
@@ -137,7 +153,11 @@ Other relevant utilities include `sort <https://en.wikipedia.org/wiki/Sort_(Unix
     sort -R myfile.txt > myfile-random.txt
     shuf myfile.txt > myfile-random.txt
 
-To draw a random sample of a list of URLs `head <https://en.wikipedia.org/wiki/Head_(Unix)>`_ or `tail <https://en.wikipedia.org/wiki/Tail_(Unix)>`_ come in handy after a random sorting: ``shuf myfile.txt | head -100 > myfile-random-sample.txt``
+To draw a random sample of a list of URLs `head <https://en.wikipedia.org/wiki/Head_(Unix)>`_ or `tail <https://en.wikipedia.org/wiki/Tail_(Unix)>`_ come in handy after a random sorting:
+
+.. code-block:: bash
+
+    $ shuf myfile.txt | head -100 > myfile-random-sample.txt
 
 *Trafilatura* automatically sorts the input list to optimize the download order and make sure the input URLs are unique; it is not mandatory to perform these steps by yourself.
 
@@ -145,26 +165,54 @@ To draw a random sample of a list of URLs `head <https://en.wikipedia.org/wiki/H
 Process a list of links
 -----------------------
 
+
+Seamless download and processing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Two major command line arguments are necessary here:
 
 -  ``-i`` or ``--inputfile`` to select an input list to read links from
 -  ``-o`` or ``--outputdir`` to define a directory to eventually store the results
 
+An additional argument can be useful in this context:
+
+-  ``--backup-dir`` in order to keep a copy of downloaded pages
+
 The input list will be read sequentially, only lines beginning with a valid URL will be read, the file can thus contain other information which will be discarded.
+
+
 
 The output directory can be created on demand, but it must be writable.
 
 .. code-block:: bash
 
-    $ trafilatura -i list.txt -o txtfiles	# output as raw text
-    $ trafilatura --xml -i list.txt -o xmlfiles	# output in XML format
+    # output as raw text
+    $ trafilatura -i list.txt -o txtfiles/
+    # output in XML format
+    $ trafilatura --xml -i list.txt -o xmlfiles/
+    # output in XML format, backup of HTML files
+    $ trafilatura --xml -i list.txt -o xmlfiles/ --backup-dir htmlfiles/
 
-The second instruction creates a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_ which can be edited with a basic text editor or a full-fledged text-editing software or IDE such as the `Atom editor <https://atom.io/>`_.
+The second and third instructions create a collection of `XML files <https://en.wikipedia.org/wiki/XML>`_ which can be edited with a basic text editor or a full-fledged text-editing software or IDE such as the `Atom editor <https://atom.io/>`_.
+
+
+.. hint::
+    Trafilatura automatically throttles the requests made to a given server, making it the prefered method if you do not want to worry about downloads.
+
+    See `documentation page on downloads <downloads.html>`_ for more information.
+
+
+Alternative / existing archives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 Alternatively, you can download a series of web documents with generic command-line tools such as `wget <https://en.wikipedia.org/wiki/Wget>`_ and (re-)process the downloaded files at a later stage:
 
 .. code-block:: bash
 
+    # download if necessary
     $ wget --directory-prefix=download/ --wait 5 --input-file=mylist.txt
+    # process a directory with archived HTML files
     $ trafilatura --inputdir download/ --outputdir corpus/ --xmltei --nocomments
+
 
