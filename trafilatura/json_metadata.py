@@ -90,7 +90,7 @@ def extract_json(schema, metadata):
                     if isinstance(content['articleSection'], str):
                         metadata['categories'] = [content['articleSection']]
                     else:
-                        metadata['categories'] = content['articleSection']
+                        metadata['categories'] = list(filter(None, content['articleSection']))
 
                 # try to extract title
                 if metadata['title'] is None:
