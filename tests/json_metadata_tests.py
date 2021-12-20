@@ -89,7 +89,7 @@ def test_json_extraction():
 }
 </script>
 </body></html>'''), metadata)
-    print(metadata)
+
     assert metadata is not None and metadata['title'] == 'Apple Spring Forward Event Live Blog'
 
     metadata = dict.fromkeys(METADATA_LIST)
@@ -125,4 +125,32 @@ def test_json_extraction():
 </script>
 </body></html>'''), metadata)
     assert metadata is not None and metadata['author'] == 'Douglas Noel Adams'
+
+    metadata = dict.fromkeys(METADATA_LIST)
+    metadata = extract_meta_json(html.fromstring('''
+<html><body>
+    <script type="application/ld+json">
+        {
+            "@context":"https://schema.org",
+            "@graph":[
+                {
+                    "@type": "Article",
+                    "author":{
+                        "name":"John Smith"
+                    },
+                    "keywords": [
+                        "SAFC",
+                        "Warwick Thornton"
+                    ],
+                    "articleSection": [
+                        null
+                    ],
+                    "inLanguage": "en-AU"
+                }
+            ]
+        }
+    </script>
+</script>
+</body></html>'''), metadata)
+    assert metadata is not None and len(metadata['categories']) == 0
 
