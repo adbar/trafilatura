@@ -23,7 +23,7 @@ from boilerpy3 import extractors
 from dragnet import extract_content #, extract_content_and_comments
 from goose3 import Goose
 from inscriptis import get_text
-from jparser import PageModel
+# from jparser import PageModel
 # from libextract.api import extract as lib_extract
 from newspaper import fulltext
 from newsplease import NewsPlease
@@ -297,29 +297,29 @@ def run_newsplease(htmlstring):
         print('Exception:', err)
         return ''
 
-def run_jparser(htmlstring):
-    '''try with jparser'''
-    try:
-        pm = PageModel(htmlstring)
-    except (TypeError, ValueError):
-        return ''
-    result = pm.extract()
-    # old
-    mylist = list()
-    for x in result['content']:
-        if x['type'] in ('text', 'html'):
-            mylist.append(str(x['data']))
-    # suggested
-    #mylist = [
-    #    str(x['data'])
-    #    for x in result['content']
-    #    if x['type'] in ('text', 'html')
-    #]
+#def run_jparser(htmlstring):
+#    '''try with jparser'''
+#    try:
+#        pm = PageModel(htmlstring)
+#    except (TypeError, ValueError):
+#        return ''
+#    result = pm.extract()
+#    # old
+#    mylist = list()
+#    for x in result['content']:
+#        if x['type'] in ('text', 'html'):
+#            mylist.append(str(x['data']))
+#    # suggested
+#    #mylist = [
+#    #    str(x['data'])
+#    #    for x in result['content']
+#    #    if x['type'] in ('text', 'html')
+#    #]
 
-    returnstring = ' '.join(mylist)
-    # returnstring = re.sub(r'\s+', ' ', returnstring)
-    returnstring = re.sub(r'\s+(p{P}+)', '\1', returnstring)
-    return sanitize(returnstring)
+#    returnstring = ' '.join(mylist)
+#    # returnstring = re.sub(r'\s+', ' ', returnstring)
+#    returnstring = re.sub(r'\s+(p{P}+)', '\1', returnstring)
+#    return sanitize(returnstring)
 
 
 def run_readabilipy(htmlstring):
@@ -407,8 +407,8 @@ html_text_result.update(template_dict)
 dragnet_result.update(template_dict)
 boilerpipe_result.update(template_dict)
 newsplease_result.update(template_dict)
-jparser_result.update(template_dict)
 readabilipy_result.update(template_dict)
+# jparser_result.update(template_dict)
 
 
 i = 0
@@ -568,14 +568,14 @@ for item in EVAL_PAGES:
     newsplease_result['true negatives'] += tn
     newsplease_result['false negatives'] += fn
     # jparser
-    start = time.time()
-    result = run_jparser(htmlstring)
-    jparser_result['time'] += time.time() - start
-    tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
-    jparser_result['true positives'] += tp
-    jparser_result['false positives'] += fp
-    jparser_result['true negatives'] += tn
-    jparser_result['false negatives'] += fn
+    #start = time.time()
+    #result = run_jparser(htmlstring)
+    #jparser_result['time'] += time.time() - start
+    #tp, fn, fp, tn = evaluate_result(result, EVAL_PAGES[item])
+    #jparser_result['true positives'] += tp
+    #jparser_result['false positives'] += fp
+    #jparser_result['true negatives'] += tn
+    #jparser_result['false negatives'] += fn
     # readabilipy
     start = time.time()
     result = run_readabilipy(htmlstring)
@@ -644,10 +644,10 @@ print(boilerpipe_result)
 print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(boilerpipe_result)))
 print("time diff.: %.2f" % (boilerpipe_result['time'] / baseline_result['time']))
 
-print('jparser')
-print(jparser_result)
-print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
-print("time diff.: %.2f" % (jparser_result['time'] / baseline_result['time']))
+#print('jparser')
+#print(jparser_result)
+#print("precision: %.3f recall: %.3f accuracy: %.3f f-score: %.3f" % (calculate_scores(jparser_result)))
+#print("time diff.: %.2f" % (jparser_result['time'] / baseline_result['time']))
 
 print('newsplease')
 print(newsplease_result)
