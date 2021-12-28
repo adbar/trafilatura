@@ -273,11 +273,7 @@ def xmltotxt(xmloutput, include_formatting, include_links):
 def write_teitree(docmeta):
     '''Bundle the extracted post and comments into a TEI tree'''
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
-    header = etree.SubElement(tei, 'teiHeader')
-    #if simplified is True:
-    #    header = write_simpleheader(header, docmeta)
-    #else:
-    header = write_fullheader(header, docmeta)
+    header = write_fullheader(tei, docmeta)
     textelem = etree.SubElement(tei, 'text')
     textbody = etree.SubElement(textelem, 'body')
     # post
@@ -294,8 +290,9 @@ def write_teitree(docmeta):
     return tei
 
 
-def write_fullheader(header, docmeta):
+def write_fullheader(tei, docmeta):
     '''Write TEI header based on gathered metadata'''
+    header = etree.SubElement(tei, 'teiHeader')
     filedesc = etree.SubElement(header, 'fileDesc')
     bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
     bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')

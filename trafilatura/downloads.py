@@ -268,7 +268,6 @@ def _send_pycurl_request(url, no_ssl, config):
     # https://github.com/pycurl/pycurl/blob/master/examples/retriever-multi.py
 
     # init
-    bufferbytes = BytesIO()
     # headerbytes = BytesIO()
     headers = _determine_headers(config)
     headerlist = ['Accept-Encoding: gzip, deflate', 'Accept: */*']

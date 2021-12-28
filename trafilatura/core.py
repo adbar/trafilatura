@@ -109,9 +109,7 @@ def handle_formatting(element, dedupbool, config):
     # shorter code but triggers warning:
     # parent = element.getparent() or element.getprevious()
     parent = element.getparent()
-    if parent is not None:
-        parent = parent
-    else:
+    if parent is None:
         parent = element.getprevious()
     if parent is None or parent.tag not in FORMATTING_PROTECTED:
         processed_element = etree.Element('p')
@@ -211,7 +209,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         if child.tag not in potential_tags and child.tag != 'done':
             LOGGER.debug('unexpected in p: %s %s %s', child.tag, child.text, child.tail)
             continue
-        spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
+        # spacing = child.tag in SPACING_PROTECTED  # todo: outputformat.startswith('xml')?
         # todo: act on spacing here?
         processed_child = handle_textnode(child, comments_fix=False, deduplicate=dedupbool, preserve_spaces=True, config=config)
         if processed_child is not None:
