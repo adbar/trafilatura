@@ -11,7 +11,6 @@ import re
 from collections import defaultdict, deque, namedtuple
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from io import BytesIO
 from threading import RLock
 from time import sleep
 

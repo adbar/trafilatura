@@ -156,14 +156,11 @@ def link_density_test_tables(element):
     if links_xpath:
         elemlen = len(trim(element.text_content()))
         if elemlen > 250:
-            linklen, elemnum, shortelems, _ = collect_link_info(links_xpath)
+            linklen, elemnum, _, _ = collect_link_info(links_xpath)
             if elemnum == 0:
                 return True
-            #if len(set(mylist))/len(mylist) <= 0.5:
-            #    return True
             LOGGER.debug('table link text: %s / total: %s', linklen, elemlen)
             if (elemlen < 1000 and linklen > 0.8*elemlen) or (elemlen > 1000 and linklen > 0.5*elemlen):
-            #if linklen > 0.5 * elemlen:
                 return True
             # does more harm than good (issue #76)
             #if shortelems > len(links_xpath) * 0.66:
@@ -184,9 +181,14 @@ def convert_tags(tree, include_formatting=False, include_tables=False, include_i
             elem.tag = 'graphic'
     # delete links for faster processing
     if include_links is False:
+        if include_tables is True:
+            xpath_expr = '//div//a|//list//a|//table//a'
+        else:
+            xpath_expr = '//div//a|//list//a'
         # necessary for further detection
-        for elem in tree.xpath('//div//a|//list//a|//table//a'):
+        for elem in tree.xpath(xpath_expr):
             elem.tag = 'ref'
+        # strip the rest
         etree.strip_tags(tree, 'a')
     else:
         for elem in tree.iter('a', 'ref'):

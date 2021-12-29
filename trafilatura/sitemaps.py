@@ -71,7 +71,7 @@ def sitemap_search(url, target_lang=None):
     if sitemapurls == [] and linklist == []:
         sitemapurls = find_robots_sitemaps(baseurl)
         # try additional URLs just in case
-        if sitemapurls == []:
+        if not sitemapurls:
             sitemapurls = [''.join([baseurl, '/', g]) for g in GUESSES]
     # iterate through nested sitemaps and results
     i = 1

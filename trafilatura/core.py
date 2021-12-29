@@ -270,7 +270,7 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
         ):
             processed_element[-1].getparent().remove(processed_element[-1])
         return processed_element
-    elif processed_element.text:
+    if processed_element.text:
         return processed_element
     LOGGER.debug('discarding p-child: %s', html.tostring(processed_element))
     return None
