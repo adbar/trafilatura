@@ -271,13 +271,13 @@ def process_args(args):
         url_processing_pipeline(args, INPUTDICT)
 
     # fetch urls from a feed or a sitemap
-    elif args.feed or args.sitemap:
+    elif args.explore or args.feed or args.sitemap:
         input_urls = load_input_urls(args)
         # link discovery and storage
         with ThreadPoolExecutor(max_workers=args.parallel) as executor:
             if args.feed:
                 future_to_url = {executor.submit(find_feed_urls, url, target_lang=args.target_language): url for url in input_urls}
-            elif args.sitemap:
+            elif args.explore or args.sitemap:
                 future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
             # process results
             with THREAD_LOCK:
@@ -285,36 +285,25 @@ def process_args(args):
                 # list all links found to free memory
                 if args.list:
                     url_processing_pipeline(args, INPUTDICT)
+
         # process the links found
         url_processing_pipeline(args, INPUTDICT)
+
+        # activate site explorer
+        if args.explore:
+            # find domains for which nothing has been found and crawl
+            control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
+            still_to_crawl = {
+                key: control_dict[key]
+                for key in control_dict
+                if key not in INPUTDICT
+            }
+            # add to compressed dict and crawl the remaining websites
+            cli_crawler(args, n=100, domain_dict=still_to_crawl)
 
     # activate crawler/spider
     elif args.crawl:
         cli_crawler(args)
-
-    # activate site explorer
-    elif args.explore:
-        input_urls = load_input_urls(args)
-        # link discovery and storage
-        with ThreadPoolExecutor(max_workers=args.parallel) as executor:
-            future_to_url = {executor.submit(sitemap_search, url, target_lang=args.target_language): url for url in input_urls}
-            # process results
-            with THREAD_LOCK:
-                INPUTDICT = process_parallel_results(future_to_url, args.blacklist, args.url_filter, INPUTDICT)
-                # list all links found to free memory
-                if args.list:
-                    url_processing_pipeline(args, INPUTDICT)
-        # process the links found
-        url_processing_pipeline(args, INPUTDICT)
-        # find domains for which nothing has been found and crawl
-        control_dict = add_to_compressed_dict(input_urls, blacklist=args.blacklist, url_filter=args.url_filter)
-        still_to_crawl = {
-            key: control_dict[key]
-            for key in control_dict
-            if key not in INPUTDICT
-        }
-        # add to compressed dict and crawl the remaining websites
-        cli_crawler(args, n=100, domain_dict=still_to_crawl)
 
     # read files from an input directory
     elif args.inputdir:
