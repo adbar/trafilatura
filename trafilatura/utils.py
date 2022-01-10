@@ -359,8 +359,7 @@ def check_authors(authors, author_blacklist):
 
     if new_authors:
         return '; '.join(new_authors).strip('; ')
-    else:
-        return None
+    return None
 
 
 def uniquify_list(l):
