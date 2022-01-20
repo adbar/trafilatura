@@ -249,7 +249,9 @@ def xmltotxt(xmloutput, include_formatting, include_links):
         # process text
         if element.text is None and element.tail is None:
             if element.tag == 'graphic':
-                returnlist.extend(['\n', element.get('src')])
+                # add source, default to ''
+                returnlist.extend(['\n', element.get('src', '')])
+                # proceed with other potential attributes
                 if element.get('alt') is not None:
                     returnlist.extend([' ', element.get('alt')])
                 if element.get('title') is not None:
