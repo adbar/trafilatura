@@ -28,8 +28,8 @@ from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
 from .utils import load_html, trim, txttocsv, uniquify_list, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
-from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, DISCARD_XPATH,
-                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
+from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
+                     PRECISION_DISCARD_XPATH, DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -375,7 +375,10 @@ def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
     # prune
-    search_tree = prune_unwanted_nodes(tree, DISCARD_XPATH)
+    search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH)
+    # get rid of additional elements
+    search_tree = prune_unwanted_nodes(search_tree, PRECISION_DISCARD_XPATH)
+    # decide if images are preserved
     if 'graphic' not in potential_tags:
         search_tree = prune_unwanted_nodes(search_tree, DISCARD_IMAGE_ELEMENTS)
     # decide if links are preserved
@@ -466,7 +469,9 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         if not subtree:
             continue
         # prune
-        subtree = prune_unwanted_nodes(subtree[0], DISCARD_XPATH)
+        subtree = prune_unwanted_nodes(subtree[0], OVERALL_DISCARD_XPATH)
+        if favor_recall is False:
+            subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
         # remove elements by link density
