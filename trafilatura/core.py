@@ -9,7 +9,8 @@ Module bundling all functions needed to extract the text in a webpage.
 
 # standard
 import logging
-import re # import regex as re
+import re
+from types import resolve_bases # import regex as re
 import warnings
 
 from copy import deepcopy
@@ -446,140 +447,102 @@ def delete_by_link_density(subtree, tagname, backtracking=False):
     return subtree
 
 
-def _extracted_content_and_valid_class(tree, potential_tags, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
-    valid_class = None
-    sure_thing = False
-    result_body = etree.Element('body')
+def _clean_and_validate_node(node, potential_tags, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
+    # prune
+    node = prune_unwanted_nodes(node, DISCARD_XPATH)
+    if include_images is False:
+        node = prune_unwanted_nodes(node, DISCARD_IMAGE_ELEMENTS)
 
-    # iterate
-    for expr in BODY_XPATH:
-        # select tree if the expression has been found
-        subtree = tree.xpath(expr)
-        if not subtree:
-            continue
-        # prune
-        subtree = prune_unwanted_nodes(subtree[0], DISCARD_XPATH)
-        if include_images is False:
-            subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
-        # remove elements by link density
-        subtree = delete_by_link_density(subtree, 'div', backtracking=True)
-        subtree = delete_by_link_density(subtree, 'list', backtracking=False)
-        subtree = delete_by_link_density(subtree, 'p', backtracking=False)
-        # also filter fw/head, table and quote elements?
-        if favor_precision is True:
-            subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-            # subtree = delete_by_link_density(subtree, 'quote', backtracking=False)
-        if 'table' in potential_tags or favor_precision is True:
-            for elem in subtree.iter('table'):
-                if link_density_test_tables(elem) is True:
-                    elem.getparent().remove(elem)
-        # skip if empty tree
-        if len(subtree) == 0:
-            continue
-        parent = subtree[0].getparent()
-        valid_class = parent.attrib.get('class')
-        # no paragraphs containing text, or not enough
-        ptest = subtree.xpath('//p//text()')
-        if not ptest or len(''.join(ptest)) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
-            potential_tags.add('div')
-            # potential_tags.add('span')
-        if 'ref' not in potential_tags:
-            etree.strip_tags(subtree, 'ref')
-        if 'span' not in potential_tags:
-            etree.strip_tags(subtree, 'span')
-        LOGGER.debug(sorted(potential_tags))
-        # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
-        # extract content
-        # list(filter(None.__ne__, processed_elems))
-        textelems = [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
-        result_body.extend(e for e in textelems if e is not None)
-        # remove trailing titles
-        while len(result_body) > 0 and result_body[-1].tag in HEADINGS:
-            result_body[-1].getparent().remove(result_body[-1])
-        # exit the loop if the result has children
-        if len(result_body) > 1:
-            LOGGER.debug(expr)
-            break
-    temp_text = trim(' '.join(result_body.itertext()))
-    # try parsing wild <p> elements if nothing found or text too short
-    # todo: test precision and recall settings here
-    if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-        if favor_recall is True:
-            potential_tags.add('div')
-        result_body = recover_wild_text(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
-        temp_text = trim(' '.join(result_body.itertext()))
-    else:
-        sure_thing = True
-    # return
-    return valid_class, result_body, temp_text, sure_thing
+    # remove elements by link density
+    node = delete_by_link_density(node, 'div', backtracking=True)
+    node = delete_by_link_density(node, 'list', backtracking=False)
+    node = delete_by_link_density(node, 'p', backtracking=False)
+
+    # also filter fw/head, table and quote elements?
+    if favor_precision is True:
+        node = delete_by_link_density(node, 'head', backtracking=False)
+        # node = delete_by_link_density(node, 'quote', backtracking=False)
+
+    if 'table' in potential_tags or favor_precision is True:
+        for elem in node.iter('table'):
+            if link_density_test_tables(elem) is True:
+                elem.getparent().remove(elem)
+
+    test_text = trim(''.join(node.itertext()))
+    is_valid = len(node) > 0 and len(test_text) > 0
+    return node, is_valid
 
 
 def _extracted_content(tree, potential_tags, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
-    valid_class = None
-    sure_thing = False
+    # init empty container
     result_body = etree.Element('body')
 
-    subtree = prune_unwanted_nodes(tree[0], DISCARD_XPATH)
-    if include_images is False:
-        subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
-    # remove elements by link density
-    subtree = delete_by_link_density(subtree, 'div', backtracking=True)
-    subtree = delete_by_link_density(subtree, 'list', backtracking=False)
-    subtree = delete_by_link_density(subtree, 'p', backtracking=False)
-    # also filter fw/head, table and quote elements?
-    if favor_precision is True:
-        subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-        # subtree = delete_by_link_density(subtree, 'quote', backtracking=False)
-    if 'table' in potential_tags or favor_precision is True:
-        for elem in subtree.iter('table'):
-            if link_density_test_tables(elem) is True:
-                elem.getparent().remove(elem)
-    # skip if empty tree
-    # if len(subtree) == 0:
-    #     return None
-    parent = subtree[0].getparent()
-    valid_class = parent.attrib.get('class')
-    # no paragraphs containing text, or not enough
-    ptest = subtree.xpath('//p//text()')
-    if not ptest or len(''.join(ptest)) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
-        potential_tags.add('div')
-        # potential_tags.add('span')
-    if 'ref' not in potential_tags:
-        etree.strip_tags(subtree, 'ref')
-    if 'span' not in potential_tags:
-        etree.strip_tags(subtree, 'span')
-    LOGGER.debug(sorted(potential_tags))
-    # etree.strip_tags(subtree, 'lb') # BoingBoing-Bug
-    # extract content
-    # list(filter(None.__ne__, processed_elems))
-    textelems = [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
-    result_body.extend(e for e in textelems if e is not None)
-    # remove trailing titles
-    while len(result_body) > 0 and result_body[-1].tag in HEADINGS:
-        result_body[-1].getparent().remove(result_body[-1])
-    # exit the loop if the result has children
-    # if len(result_body) > 1:
-    #     LOGGER.debug(expr)
-    #     return None
+    for expr in BODY_XPATH:
+        # select subtree if match is found
+        subtree = tree.xpath(expr)
+        if not subtree:
+            continue
+
+        print('found {} matching subtrees\n'.format(len(subtree)))
+
+        for node in subtree:
+            # print('node: ', str(etree.tostring(node)) + '\n')
+
+            # skip if empty
+            node, is_valid = _clean_and_validate_node(node, potential_tags, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
+            # print('valid?', is_valid, '\n')
+            if is_valid is False:
+                continue
+
+            # no paragraphs containing text, or not enough
+            ptest = node.xpath('.//p//text()')
+            if not ptest or len(''.join(ptest)) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+                potential_tags.add('div')
+                # potential_tags.add('span')
+            if 'ref' not in potential_tags:
+                etree.strip_tags(node, 'ref')
+            if 'span' not in potential_tags:
+                etree.strip_tags(node, 'span')
+            # etree.strip_tags(node, 'lb') # BoingBoing-Bug
+            
+            # extract content
+            # list(filter(None.__ne__, processed_elems))
+            for e in node.xpath('.//*'):
+                textelem = handle_textelem(e, potential_tags, deduplicate, config)
+                if textelem is not None:
+                    result_body.append(textelem)
+
+        # remove trailing titles
+        while len(result_body) > 0 and result_body[-1].tag in HEADINGS:
+            result_body[-1].getparent().remove(result_body[-1])
+
+        # exit the loop if the result has children
+        if len(result_body) > 1:
+            break
+
     temp_text = trim(' '.join(result_body.itertext()))
+
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
-    if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+    enough_found = len(result_body) > 0 and len(temp_text) >= config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE')
+    if not enough_found:
         if favor_recall is True:
             potential_tags.add('div')
         result_body = recover_wild_text(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
-    else:
-        sure_thing = True
-    # return
-    return result_body
+
+    # filter output
+    etree.strip_elements(result_body, 'done')
+    etree.strip_tags(result_body, 'div')
+
+    return result_body, temp_text, enough_found
 
 
 def extract_content(tree, favor_precision=False, favor_recall=False, include_tables=False, include_images=False, include_links=False, deduplicate=False, config=None):
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
-    potential_tags = set(TAG_CATALOG)  # + 'span'?
+    potential_tags = set(TAG_CATALOG) # + 'span'?
     if include_tables is True:
         potential_tags.update(['table', 'td', 'th', 'tr'])
     if include_images is True:
@@ -587,20 +550,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     if include_links is True:
         potential_tags.add('ref')
 
-    valid_class, result_body, temp_text, sure_thing = _extracted_content_and_valid_class(tree, potential_tags, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
-    if valid_class:
-        # print("valid class:", valid_class)
-        subtrees = tree.xpath("//div[@class='{}']".format(valid_class)) # TODO: wildcard instead of div?
-        # print("subtrees:", len(subtrees))
-        for subtree in subtrees:
-            res = _extracted_content(subtree, potential_tags, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
-            # print('>', etree.tostring(res))
-            result_body.extend(res)
-
-    # filter output
-    etree.strip_elements(result_body, 'done')
-    etree.strip_tags(result_body, 'div')
-    print(etree.tostring(result_body))
+    result_body, temp_text, sure_thing = _extracted_content(tree, potential_tags, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
     return result_body, temp_text, len(temp_text), sure_thing
 
 
