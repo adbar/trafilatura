@@ -98,9 +98,10 @@ DISCARD_XPATH = [
     # self::article or self::link
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
-    contains(@id, "related") or contains(translate(@class, "R","r"), "related") or
+    contains(@id, "related") or contains(translate(@class, "R", "r"), "related") or
     contains(@id, "viral") or contains(@class, "viral") or
     starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or
+    contains(translate(@id, "S", "s"), "share") or
     contains(@id, "social") or contains(@class, "social") or contains(@class, "sociable") or
     contains(@id, "syndication") or contains(@class, "syndication") or
     starts-with(@id, "jp-") or starts-with(@id, "dpsp-content") or
@@ -140,7 +141,7 @@ DISCARD_XPATH = [
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
-    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden")]''',
+    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"]''',
 ]
 
 DISCARD_IMAGE_ELEMENTS = [
