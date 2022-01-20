@@ -10,7 +10,6 @@ Module bundling all functions needed to extract the text in a webpage.
 # standard
 import logging
 import re
-from types import resolve_bases # import regex as re
 import warnings
 
 from copy import deepcopy
@@ -18,7 +17,7 @@ from copy import deepcopy
 from lxml import etree, html
 
 # own
-from .external import LXMLDocument, justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
+from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import (check_html_lang, content_fingerprint, duplicate_test,
                      language_filter, text_chars_test)
 from .htmlprocessing import (convert_tags, handle_textnode,
