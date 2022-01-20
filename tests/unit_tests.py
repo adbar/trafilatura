@@ -456,7 +456,7 @@ def test_links():
     assert handle_textelem(etree.Element('ref'), [], False, DEFAULT_CONFIG) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), dedupbool=False, config=ZERO_CONFIG) is not None
     # empty link
-    mydoc = html.fromstring('<html><body><p><a></a><a>Some text.</b></p></body></html>')
+    mydoc = html.fromstring('<html><body><p><a></a><b>Some text.</b></p></body></html>')
     assert extract(mydoc) is not None
     # link with target
     mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
