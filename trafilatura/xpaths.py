@@ -90,7 +90,7 @@ REMOVE_COMMENTS_XPATH = [
 #  or contains(@class, 'comment-page') or
 
 
-DISCARD_XPATH = [
+OVERALL_DISCARD_XPATH = [
     '''.//*[contains(@id, "footer") or contains(@class, "footer") or
     contains(@id, "bottom") or contains(@class, "bottom")]''',
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
@@ -106,8 +106,6 @@ DISCARD_XPATH = [
     contains(@id, "syndication") or contains(@class, "syndication") or
     starts-with(@id, "jp-") or starts-with(@id, "dpsp-content") or
     contains(@class, "embedded") or contains(@class, "embed")
-    or contains(@id, "teaser") or contains(@class, "teaser") or
-    contains(translate(@class, "T","t"), "teaser")
     or contains(@id, "newsletter") or contains(@class, "newsletter")
     or contains(@class, "subnav") or
     contains(@id, "cookie") or contains(@class, "cookie") or contains(@id, "tags")
@@ -143,6 +141,16 @@ DISCARD_XPATH = [
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"]''',
 ]
+
+
+# the following conditions focus on extraction precision
+PRECISION_DISCARD_XPATH = [
+    '''.//*[(self::div or self::item or self::list
+             or self::p or self::section or self::span)][
+        contains(translate(@id, "T","t"), "teaser") or contains(translate(@class, "T","t"), "teaser")
+    ]''',
+]
+
 
 DISCARD_IMAGE_ELEMENTS = [
     '''.//*[(self::div or self::item or self::list

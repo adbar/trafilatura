@@ -456,7 +456,7 @@ def test_links():
     assert handle_textelem(etree.Element('ref'), [], False, DEFAULT_CONFIG) is None
     assert handle_formatting(html.fromstring('<a href="testlink.html">Test link text.</a>'), dedupbool=False, config=ZERO_CONFIG) is not None
     # empty link
-    mydoc = html.fromstring('<html><body><p><a></a><a>Some text.</b></p></body></html>')
+    mydoc = html.fromstring('<html><body><p><a></a><b>Some text.</b></p></body></html>')
     assert extract(mydoc) is not None
     # link with target
     mydoc = html.fromstring('<html><body><p><a href="testlink.html">Test link text.</a></p></body></html>')
@@ -553,7 +553,9 @@ def test_precision_recall():
     my_document = html.fromstring('<html><body><p>This here is the text.</p></body></html>')
     assert extract(my_document, favor_precision=True, config=ZERO_CONFIG) is not None
     assert extract(my_document, favor_recall=True, config=ZERO_CONFIG) is not None
-
+    my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><p>This here is the text.</p></div></body></html>')
+    assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
+    assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
 
 
 if __name__ == '__main__':
