@@ -29,7 +29,8 @@ from .utils import load_html, trim, txttocsv, uniquify_list, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
-                     PRECISION_DISCARD_XPATH, DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
+                     ADDITIONAL_DISCARD_XPATH, PRECISION_DISCARD_XPATH,
+                     DISCARD_IMAGE_ELEMENTS, REMOVE_COMMENTS_XPATH)
 
 
 LOGGER = logging.getLogger(__name__)
@@ -370,14 +371,17 @@ def handle_image(element):
     return processed_element
 
 
-def recover_wild_text(tree, result_body, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
+def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=False, potential_tags=TAG_CATALOG, deduplicate=True, config=None):
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
     # prune
     search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH)
     # get rid of additional elements
-    search_tree = prune_unwanted_nodes(search_tree, PRECISION_DISCARD_XPATH)
+    if favor_recall is False:
+        search_tree = prune_unwanted_nodes(search_tree, ADDITIONAL_DISCARD_XPATH)
+        if favor_precision is True:
+            search_tree = prune_unwanted_nodes(search_tree, PRECISION_DISCARD_XPATH)
     # decide if images are preserved
     if 'graphic' not in potential_tags:
         search_tree = prune_unwanted_nodes(search_tree, DISCARD_IMAGE_ELEMENTS)
@@ -471,7 +475,9 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         # prune
         subtree = prune_unwanted_nodes(subtree[0], OVERALL_DISCARD_XPATH)
         if favor_recall is False:
-            subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
+            subtree = prune_unwanted_nodes(subtree, ADDITIONAL_DISCARD_XPATH)
+            if favor_precision is True:
+                subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
         if include_images is False:
             subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
         # remove elements by link density
@@ -518,7 +524,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
         if favor_recall is True:
             potential_tags.add('div')
-        result_body = recover_wild_text(tree, result_body, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
+        result_body = recover_wild_text(tree, result_body, favor_precision=favor_precision, favor_recall=favor_recall, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     else:
         sure_thing = True

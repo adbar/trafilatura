@@ -95,12 +95,13 @@ OVERALL_DISCARD_XPATH = [
     contains(@id, "bottom") or contains(@class, "bottom")]''',
     # related posts, sharing jp-post-flair jp-relatedposts, news outlets + navigation
     #'''.//*[
-    # self::article or self::link
+    # self::link
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
     contains(@id, "related") or contains(translate(@class, "R", "r"), "related") or
     contains(@id, "viral") or contains(@class, "viral") or
-    starts-with(@id, "shar") or starts-with(@class, "shar") or contains(@class, "share-") or
+    starts-with(@id, "shar") or starts-with(@class, "shar") or
+    contains(@class, "share-") or
     contains(translate(@id, "S", "s"), "share") or
     contains(@id, "social") or contains(@class, "social") or contains(@class, "sociable") or
     contains(@id, "syndication") or contains(@class, "syndication") or
@@ -141,13 +142,26 @@ OVERALL_DISCARD_XPATH = [
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
     or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"]''',
 ]
+# conflicts:
+# contains(@id, "header") or contains(@class, "header") or
+# class contains "cats" (categories, also tags?)
+# or contains(@class, "hidden ")  or contains(@class, "-hide")
 
 
 # the following conditions focus on extraction precision
-PRECISION_DISCARD_XPATH = [
+ADDITIONAL_DISCARD_XPATH = [
     '''.//*[(self::div or self::item or self::list
              or self::p or self::section or self::span)][
         contains(translate(@id, "T","t"), "teaser") or contains(translate(@class, "T","t"), "teaser")
+    ]''',
+]
+
+
+PRECISION_DISCARD_XPATH = [
+    './/header',
+    '''.//*[(self::div or self::item or self::list
+             or self::p or self::section or self::span)][
+        contains(@id, "link") or contains(@class, "link")
     ]''',
 ]
 
@@ -159,11 +173,6 @@ DISCARD_IMAGE_ELEMENTS = [
             ]
     '''
 ]
-# conflicts:
-# .//header # contains(@id, "header") or contains(@class, "header") or
-# contains(@id, "link") or contains(@class, "link")
-# class contains cats
-# or contains(@class, "hidden ")  or contains(@class, "-hide")
 
 
 COMMENTS_DISCARD_XPATH = [
