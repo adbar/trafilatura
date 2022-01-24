@@ -20,7 +20,7 @@ from .utils import decode_response, load_html, uniquify_list
 
 # language detection
 try:
-    import cld3
+    import py3langid
     LANGID_FLAG = True
 except ImportError:
     LANGID_FLAG = False
@@ -98,8 +98,9 @@ def find_new_links(htmlstring, base_url, known_links, language=None, rules=None)
     # optional language check: run baseline extraction + language identifier
     if language is not None and LANGID_FLAG is True:
         _, text, _ = baseline(htmlstring)
-        result = cld3.get_language(text)
-        if result is not None and result.language != language:
+        result, _ = py3langid.classify(text)
+
+        if result != language:
             return new_links, known_links
     # iterate through the links and filter them
     for link in extract_links(htmlstring, base_url, False, language=language, with_nav=True):
