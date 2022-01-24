@@ -1,6 +1,14 @@
 trafilatura: Web scraping tool for text discovery and retrieval
 ===============================================================
 
+
+.. image:: docs/trafilatura-logo.png
+    :alt: Logo as PNG image
+    :align: center
+    :width: 60%
+
+|
+
 .. image:: https://img.shields.io/pypi/v/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
     :alt: Python package

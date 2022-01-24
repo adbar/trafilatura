@@ -21,7 +21,7 @@ import trafilatura
 # -- Project information -----------------------------------------------------
 
 project = 'trafilatura'
-copyright = '2021, Adrien Barbaresi'
+copyright = '2022, Adrien Barbaresi'
 html_show_sphinx = False
 author = 'Adrien Barbaresi'
 version = trafilatura.__version__
@@ -96,6 +96,9 @@ html_theme_options = {
 #  "navigation_depth": 3,
 #  "show_toc_level": 3,
 }
+
+html_logo = "trafilatura-logo.png"
+
 
 html_context = {
     # "github_url": "https://github.com", # or your GitHub Enterprise interprise

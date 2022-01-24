@@ -6,6 +6,7 @@ trafilatura: Web scraping tool for text discovery and retrieval
         Documentation page for the Web scraping library and command-line tool. Easy text discovery and
         extraction of main content, metadata, and comments. Output as TXT, CSV, JSON, XML and XML-TEI.
 
+
 .. image:: https://img.shields.io/pypi/v/trafilatura.svg
     :target: https://pypi.python.org/pypi/trafilatura
     :alt: Python package
@@ -21,12 +22,6 @@ trafilatura: Web scraping tool for text discovery and retrieval
 .. image:: https://static.pepy.tech/badge/trafilatura/month
     :target: https://pepy.tech/project/trafilatura
     :alt: Downloads
-
-|
-
-:Code:           https://github.com/adbar/trafilatura
-:Documentation:  https://trafilatura.readthedocs.io/
-:Issue tracker:  https://github.com/adbar/trafilatura/issues
 
 |
 
