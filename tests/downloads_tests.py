@@ -22,7 +22,7 @@ except ImportError:
 
 from collections import deque
 from datetime import datetime
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from trafilatura.cli import parse_args
 from trafilatura.cli_utils import download_queue_processing, url_processing_pipeline
@@ -66,6 +66,10 @@ def test_fetch():
     response = _send_request(url, False, DEFAULT_CONFIG)
     myobject = _handle_response(url, response, False, DEFAULT_CONFIG)
     assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
+    # too large response object
+    mock = Mock()
+    mock.data = (b' '*10000000)
+    assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
     # straight handling of response object
     assert load_html(response) is not None
     # nothing to see here
@@ -95,12 +99,16 @@ def test_config():
 def test_decode():
     '''Test how responses are being decoded.'''
     assert decode_response(b'\x1f\x8babcdef') is not None
+    assert decode_response(b'\x1f\x8babcdef') is not None
+    mock = Mock()
+    mock.data = (b' ')
+    assert decode_response(mock) is not None
 
 
 def test_queue():
     'Test creation, modification and download of URL queues.'
     # test conversion and storage
-    inputdict = add_to_compressed_dict(['ftps://www.example.org/'])
+    inputdict = add_to_compressed_dict(['ftps://www.example.org/', 'http://'])
     assert inputdict == dict()
     inputdict = add_to_compressed_dict(['https://www.example.org/'])
     # CLI args

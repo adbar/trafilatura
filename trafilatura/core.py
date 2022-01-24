@@ -237,10 +237,6 @@ def handle_paragraphs(element, potential_tags, dedupbool, config):
                 elif child.tag == 'ref':
                     if child.get('target') is not None:
                         newsub.set('target', child.get('target'))
-                    # to be removed after thorough testing
-                    elif child.get('href') is not None:
-                        newsub.set('target', child.get('href'))
-                        # del processed_child.attrib['href']
             # handle line breaks
             # elif processed_child.tag == 'lb':
             #    try:

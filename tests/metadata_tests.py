@@ -15,6 +15,7 @@ except ImportError:
 
 from lxml import html
 
+from trafilatura.json_metadata import normalize_json
 from trafilatura.metadata import extract_metadata, METADATA_LIST, extract_meta_json
 from trafilatura.utils import normalize_authors
 
@@ -125,6 +126,7 @@ def test_authors():
     assert normalize_authors(None, 'abc') == 'Abc'
     assert normalize_authors(None, 'Steve Steve 123') == 'Steve Steve'
     assert normalize_authors(None, 'By Steve Steve') == 'Steve Steve'
+    assert normalize_json('Test \\nthis') == 'Test this'
     # extraction
     metadata = extract_metadata('<html><head><meta itemprop="author" content="Jenny Smith"/></head><body></body></html>')
     assert metadata['author'] == 'Jenny Smith'
@@ -264,6 +266,10 @@ def test_meta():
     assert extract_metadata('') is None
     metadata = extract_metadata('<html><title></title></html>')
     assert metadata['sitename'] is None
+    metadata = extract_metadata('<html><head><title>' + 'AAA'*10000 + '</title></head></html>')
+    assert metadata['title'].endswith('…') and len(metadata['title']) == 10000
+    assert extract_metadata('<html><head><meta otherkey="example" content="Unknown text"/></head></html>') is not None
+    assert extract_metadata('<html><head><title></title><title></title><title></title></head></html>') is not None
 
 
 def test_catstags():

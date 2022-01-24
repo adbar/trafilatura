@@ -129,6 +129,7 @@ def test_txttocsv():
     # test json
     result = extract(mystring, output_format='json', config=ZERO_CONFIG)
     assert result.endswith('}') and '"fingerprint":' in result
+    assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
     result = bare_extraction(mystring, config=ZERO_CONFIG)
     assert isinstance(result, dict) and len(result) == 14
@@ -238,7 +239,12 @@ def test_lrucache():
 
 def test_formatting():
     '''Test HTML formatting conversion and extraction'''
-    # simple
+    # trailing <lb>
+    my_document = html.fromstring('<html><body><p>This here is the text.</p><br/></body></html>')
+    my_result = extract(my_document, output_format='xml', config=ZERO_CONFIG)
+    assert 'lb' not in my_result
+
+    # simple formatting
     my_document = html.fromstring('<html><body><p><b>This here is in bold font.</b></p></body></html>')
     my_result = extract(my_document, output_format='xml', include_formatting=True, config=ZERO_CONFIG)
     assert '<hi rend="#b">This here is in bold font.</hi>' in my_result
@@ -300,10 +306,9 @@ def test_formatting():
 
     # double <p>-elems
     # could be solved by keeping the elements instead of reconstructing them
-    #my_document = html.fromstring('<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>')
-    #my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
-    #print(my_result)
-    #assert 1 == 0 
+    my_document = html.fromstring('<html><body><p>AAA, <p>BBB</p>, CCC.</p></body></html>')
+    my_result = extract(my_document, output_format='xml', include_formatting=True, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert 'AAA' in my_result and 'BBB' in my_result and 'CCC' in my_result
 
     # line-break following formatting
     my_document = html.fromstring('<html><body><article><p><strong>Staff Review of the Financial Situation</strong><br>Domestic financial conditions remained accommodative over the intermeeting period.</p></article></body></html>')
@@ -379,7 +384,7 @@ def test_filters():
     # text + lang
     my_p = '<p>In sleep a king, but waking no such matter.</p>'
     assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='en') is not None
-    #assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='de') is None
+    assert extract(html.fromstring('<html lang="en-US"><body>' + my_p*50 + '</body></html>'), target_language='de') is None
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='de') is True
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='en') is True
     assert check_html_lang(html.fromstring('<html lang="de_DE, en_US"><body></body></html>'), target_language='de', strict=True) is True
@@ -430,11 +435,14 @@ def test_external():
 
 def test_images():
     '''Test image extraction function'''
+    # file type
+    assert utils.is_image_file('test.jpg') is True
+    assert utils.is_image_file('test.txt') is False
+    # tag with attributes
     assert handle_image(html.fromstring('<img src="test.jpg"/>')) is not None
     assert handle_image(html.fromstring('<img data-src="test.jpg" alt="text" title="a title"/>')) is not None
     assert handle_image(html.fromstring('<img other="test.jpg"/>')) is None
-    assert utils.is_image_file('test.jpg') is True
-    assert utils.is_image_file('test.txt') is False
+    # HTML conversion
     assert handle_textelem(etree.Element('graphic'), [], False, DEFAULT_CONFIG) is None
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
@@ -508,6 +516,9 @@ def test_tei():
     docmeta['title'] = 'Title'
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta['sitename'] = 'Site Name'
+    docmeta['date'] = '2021-01-01'
+    assert xml.write_fullheader(header, docmeta) is not None
+    docmeta['date'] = None
     assert xml.write_fullheader(header, docmeta) is not None
     docmeta['hostname'] = 'hostname'
     assert xml.write_fullheader(header, docmeta) is not None
@@ -547,6 +558,16 @@ def test_htmlprocessing():
     assert b'<p>A B tail C</p>' in etree.tostring(mydoc)
 
 
+def test_extraction_options():
+    '''Test the different parameters available in extract() and bare_extraction()'''
+    my_html = '<html><head><meta http-equiv="content-language" content="EN"/></head><body><div="article-body"><p>Text.</p></div></body></html>'
+    assert extract(my_html, config=ZERO_CONFIG) is not None
+    assert extract(my_html, with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
+    assert extract(my_html, only_with_metadata=True, output_format='xml', config=ZERO_CONFIG) is None
+    assert extract(my_html, target_language='de', config=ZERO_CONFIG) is None
+    # assert extract(my_html) is None
+
+
 def test_precision_recall():
     '''test precision- and recall-oriented settings'''
     # the test cases could be better
@@ -556,6 +577,8 @@ def test_precision_recall():
     my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><p>This here is the text.</p></div></body></html>')
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
+    assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)
+    
 
 
 if __name__ == '__main__':
@@ -567,6 +590,7 @@ if __name__ == '__main__':
     test_images()
     test_links()
     test_htmlprocessing()
+    test_extraction_options()
     test_precision_recall()
     test_filters()
     test_baseline()
