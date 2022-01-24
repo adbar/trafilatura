@@ -145,6 +145,21 @@ Context
 These documentation pages also provides information on concepts behind data collection as well as practical tips on how to gather web texts (see `tutorials <tutorials.html>`_).
 
 
+
+Contributing
+~~~~~~~~~~~~
+
+Contributions are welcome! See `CONTRIBUTING.md <https://github.com/adbar/trafilatura/blob/master/CONTRIBUTING.md>`_ for more information. Bug reports can be filed on the `dedicated page <https://github.com/adbar/trafilatura/issues>`_.
+
+Many thanks to the `contributors <https://github.com/adbar/trafilatura/graphs/contributors>`_ who submitted features and bugfixes!
+
+
+Roadmap
+~~~~~~~
+
+For planned enhancements and relevant milestones see `issues page <https://github.com/adbar/trafilatura/milestones>`_.
+
+
 Author
 ~~~~~~
 
@@ -172,8 +187,6 @@ This effort is part of methods to derive information from web documents in order
 
 
 You can contact me via my `contact page <https://adrien.barbaresi.eu/>`_ or `GitHub <https://github.com/adbar>`_.
-
-To have a chat about the software feel free to `book a 15 min slot <https://calendly.com/adbarba/15min>`_ for video-conferencing.
 
 
 Software
