@@ -240,7 +240,7 @@ def test_lrucache():
 def test_formatting():
     '''Test HTML formatting conversion and extraction'''
     # trailing <lb>
-    my_document = html.fromstring('<html><body><p>This here is the text.</p><br/></body></html>')
+    my_document = html.fromstring('<html><body><p>This here is the text.<br/></p></body></html>')
     my_result = extract(my_document, output_format='xml', config=ZERO_CONFIG)
     assert 'lb' not in my_result
 

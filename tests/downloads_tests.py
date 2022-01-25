@@ -51,16 +51,20 @@ def test_fetch():
     else:
         assert fetch_url('1234') == ''
     assert fetch_url('https://httpbin.org/status/404') is None
+    # empty request?
+    #assert _send_request('') is None
     # test if the fonctions default to no_ssl
     assert _send_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     if pycurl is not None:
         assert _send_pycurl_request('https://expired.badssl.com/', False, DEFAULT_CONFIG) is not None
     # no SSL, no decoding
+    url = 'https://httpbin.org/status/200'
     response = _send_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
     assert response.data == b''
     if pycurl is not None:
-        response = _send_pycurl_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
-        assert response.data == b''
+        response1 = _send_pycurl_request('https://httpbin.org/status/200', True, DEFAULT_CONFIG)
+        assert _handle_response(url, response1, False, DEFAULT_CONFIG) == _handle_response(url, response, False, DEFAULT_CONFIG)
+        assert _handle_response(url, response1, True, DEFAULT_CONFIG) == _handle_response(url, response, True, DEFAULT_CONFIG)
     # response object
     url = 'https://httpbin.org/encoding/utf8'
     response = _send_request(url, False, DEFAULT_CONFIG)
@@ -68,8 +72,13 @@ def test_fetch():
     assert myobject.data.startswith(b'<h1>Unicode Demo</h1>')
     # too large response object
     mock = Mock()
-    mock.data = (b' '*10000000)
-    assert _handle_response(url, mock, False, DEFAULT_CONFIG) is None
+    mock.status = 200
+    # too large
+    mock.data = (b'ABC'*10000000)
+    assert _handle_response(url, mock, False, DEFAULT_CONFIG) == ''
+    # too small
+    mock.data = (b'ABC')
+    assert _handle_response(url, mock, False, DEFAULT_CONFIG) == ''
     # straight handling of response object
     assert load_html(response) is not None
     # nothing to see here

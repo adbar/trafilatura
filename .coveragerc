@@ -10,5 +10,6 @@ omit =
 exclude_lines =
     pragma: no cover
     if __name__ == .__main__.:
+    except .*ImportError.*:
     except .*UnicodeDecodeError.*:
     except .*urllib3.exceptions.*:
