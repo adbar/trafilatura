@@ -166,7 +166,6 @@ def load_html(htmlobject):
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
     tree = None
-    check_flag = False
     # use trafilatura or urllib3 responses directly
     try:
         if isinstance(htmlobject, HTTPResponse) or htmlobject.data:
