@@ -219,6 +219,7 @@ Further documentation
    evaluation
    corefunctions
    used-by
+   background
 
 
 Indices and tables

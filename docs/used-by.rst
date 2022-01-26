@@ -24,10 +24,6 @@ Notable projects using this software
 - `Vulristics <https://github.com/leonov-av/vulristics>`_, a framework for analyzing publicly available information about vulnerabilities
 
 
-Go port
-    `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
-
-
 
 Citations in papers
 -------------------
@@ -88,6 +84,7 @@ Research using Trafilatura
 - Meng, K. (2021). `An End-to-End Computational System for Monitoring and Verifying Factual Claims <https://mengk.me/projects/vericlaim/vericlaim.pdf>`_. (pre-print)
 - Robertson, F., Lagus, J., & Kajava, K. (2021). `A COVID-19 news coverage mood map of Europe <https://www.aclweb.org/anthology/2021.hackashop-1.15.pdf>`_. In Proceedings of the EACL Hackashop on News Media Content Analysis and Automated Report Generation (pp. 110-115).
 - Sawczyn, A., Binkowski, J., Janiak, D., Augustyniak, Ł., & Kajdanowicz, T. (2021). `Fact-checking: relevance assessment of references in the Polish political domain <https://www.sciencedirect.com/science/article/pii/S1877050921016215/pdf?md5=852bdcde532c50079b336d1775772c6c&pid=1-s2.0-S1877050921016215-main.pdf>`_. Procedia Computer Science, 192, 1285-1293.
+- Zinn, J. O., & Müller, M. (2021). Understanding discourse and language of risk. Journal of Risk Research, 1-14.
 
 
 
@@ -95,5 +92,15 @@ Research using Htmldate
 -----------------------
 
 
+- Kupi, M. (2021). `Late to the Party? Agile Methods in British and German Government Institutions <https://osf.io/preprints/socarxiv/3j4sh/download>`_, Master’s Thesis, Hertie School Berlin.
 - Smits, T., & Ros, R. (2021). `Distant reading 940,000 online circulations of 26 iconic photographs <https://journals.sagepub.com/doi/pdf/10.1177/14614448211049459>`_. New Media & Society, DOI: 10.1177/14614448211049.
+
+
+
+Ports
+-----
+
+Go port
+    `go-trafilatura <https://github.com/markusmobius/go-trafilatura>`_
+
 

@@ -5,11 +5,9 @@ Tutorials
 .. toctree::
    :maxdepth: 2
 
-   sources
    tutorial0
    tutorial1
    tutorial2
-   tutorial-data
    tutorial-dwds
 
 
