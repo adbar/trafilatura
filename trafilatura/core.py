@@ -137,15 +137,21 @@ def handle_lists(element, dedupbool, config):
         else:
             # proceed with iteration, fix for nested elements
             for subelem in child.iter('*'):
-                processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool, config=config)
-                # add child element to processed_element
-                if processed_subchild is not None:
-                    subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
-                    subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
-                    if subelem.tag == 'ref' and subelem.get('target') is not None:
-                        subchildelem.set('target', subelem.get('target'))
+                # beware of nested lists
+                if subelem.tag == 'list':
+                    processed_subchild = handle_lists(subelem, dedupbool, config)
+                    if processed_subchild is not None:
+                        newchildelem.append(processed_subchild)
+                else:
+                    processed_subchild = handle_textnode(subelem, comments_fix=False, deduplicate=dedupbool, config=config)
+                    # add child element to processed_element
+                    if processed_subchild is not None:
+                        subchildelem = etree.SubElement(newchildelem, processed_subchild.tag)
+                        subchildelem.text, subchildelem.tail = processed_subchild.text, processed_subchild.tail
+                        if subelem.tag == 'ref' and subelem.get('target') is not None:
+                            subchildelem.set('target', subelem.get('target'))
+                # etree.strip_tags(newchildelem, 'item')
                 subelem.tag = 'done'
-            etree.strip_tags(newchildelem, 'item')
         if newchildelem.text or len(newchildelem) > 0:
             processed_element.append(newchildelem)
         child.tag = 'done'

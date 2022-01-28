@@ -193,7 +193,33 @@ def test_exotic_tags(xmloutput=False):
         <cell>you buy</cell>
         <cell>they buy</cell>
       </row>''' in my_result
-    
+    # nested list
+    htmlstring = '''<html><body><article>
+<ul>
+  <li>Coffee</li>
+  <li>Tea
+    <ul>
+      <li>Black tea</li>
+      <li>Green tea</li>
+    </ul>
+  </li>
+  <li>Milk</li>
+</ul>
+</article></body></html>'''
+    my_result = extract(htmlstring, no_fallback=True, output_format='xml', config=ZERO_CONFIG)
+    assert '''
+    <list>
+      <item>Coffee</item>
+      <item>
+        <item>Tea</item>
+        <list>
+          <item>Black tea</item>
+          <item>Green tea</item>
+        </list>
+      </item>
+      <item>Milk</item>
+    </list>''' in my_result
+
 
 def test_lrucache():
     '''test basic duplicate detection'''
