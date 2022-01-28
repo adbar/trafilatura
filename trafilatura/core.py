@@ -67,7 +67,7 @@ def handle_titles(element, dedupbool, config):
             if processed_child is not None:
                 title.append(processed_child)
             child.tag = 'done'
-    if title is not None and text_chars_test(title.text) is True:
+    if title is not None and text_chars_test(''.join(title.itertext())) is True:
         return title
     return None
 
@@ -514,7 +514,8 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                             if e is not None)
         # remove trailing titles
-        while len(result_body) > 0 and result_body[-1].tag in HEADINGS:
+        # and result_body[-1].tail is None ?
+        while len(result_body) > 0 and (result_body[-1].tag in HEADINGS or result_body[-1].tag == 'ref'):
             result_body[-1].getparent().remove(result_body[-1])
         # exit the loop if the result has children
         if len(result_body) > 1:

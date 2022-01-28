@@ -500,6 +500,9 @@ def test_links():
     # link without target
     mydoc = html.fromstring('<html><body><p><a>Test link text.</a></p></body></html>')
     assert '[Test link text.]' in extract(mydoc, include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    mydoc = html.fromstring('<html><body><article><a>Segment 1</a><h1><a>Segment 2</a></h1><p>Segment 3</p></article></body></html>')
+    result = extract(mydoc, output_format='xml', include_links=True, no_fallback=True, config=ZERO_CONFIG)
+    assert '1' in result and '2' in result and '3' in result
     with open(os.path.join(RESOURCES_DIR, 'http_sample.html')) as f:
         teststring = f.read()
     assert 'testlink.html' not in extract(teststring, config=ZERO_CONFIG)
