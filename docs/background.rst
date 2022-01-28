@@ -8,6 +8,7 @@ The pages below provide background information on scientific approaches to web d
 .. toctree::
     :maxdepth: 2
 
+    compendium
     sources
     corpus-data
 
