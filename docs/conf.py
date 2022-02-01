@@ -89,7 +89,7 @@ html_theme_options = {
   "github_url": "https://github.com/adbar/trafilatura",
   "twitter_url": "https://twitter.com/adbarbaresi",
   "external_links": [
-      {"name": "Blog posts", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
+      {"name": "Blog", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
   ],
   "google_analytics_id": "G-K3R5QCVDF1",
 #  "use_edit_page_button": True,
