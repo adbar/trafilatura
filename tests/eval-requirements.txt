@@ -3,7 +3,7 @@ trafilatura==1.0.0
 # alternatives
 boilerpy3==1.0.5
 dragnet==2.0.4
-goose3==3.1.10
+goose3==3.1.11
 html2text==2020.1.16
 html-text==0.5.2
 inscriptis==2.2.0
