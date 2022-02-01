@@ -1,6 +1,6 @@
 """
 Scrapes the main text of web pages while preserving some structure
-http://github.com/adbar/trafilatura
+https://github.com/adbar/trafilatura
 """
 
 import re
@@ -47,7 +47,7 @@ setup(
     description='Web scraping library and command-line tool for text discovery and retrieval. Downloads web pages, scrapes main text and comments while preserving some structure, and converts to TXT, CSV, JSON and XML',
     long_description=get_long_description(),
     classifiers=[
-        # As from http://pypi.python.org/pypi?%3Aaction=list_classifiers
+        # As from https://pypi.python.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 4 - Beta',
         #'Development Status :: 5 - Production/Stable',
         #'Development Status :: 6 - Mature',
@@ -73,7 +73,7 @@ setup(
         'Topic :: Text Processing :: Markup :: HTML',
     ],
     keywords=['html2text', 'nlp', 'scraper', 'tei-xml', 'text-extraction', 'webscraping', 'web-scraping'],
-    url='http://github.com/adbar/trafilatura',
+    url='https://trafilatura.readthedocs.io',
     project_urls={
         "Documentation": "https://trafilatura.readthedocs.io",
         "Source": "https://github.com/adbar/trafilatura",
@@ -88,13 +88,13 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'certifi',
-        'charset_normalizer >= 2.0.8',
+        'charset_normalizer >= 2.0.11',
         'courlan >= 0.6.0',
         'htmldate >= 1.0.0',
         'justext >= 3.0.0',
-        'lxml >= 4.6.4',
+        'lxml >= 4.6.5',
         'readability-lxml >= 0.8.1',
-        'urllib3 >=1.26, <2',
+        'urllib3 >= 1.26, < 2',
     ],
     extras_require=extras,
     entry_points = {
