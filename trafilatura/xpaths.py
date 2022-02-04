@@ -134,13 +134,14 @@ OVERALL_DISCARD_XPATH = [
     or contains(@class, "consent") or contains(@class, "modal-content")
     or contains(@class, "paid-content") or contains(@class, "paidcontent")
     or contains(@class, " ad ")
-    or contains (@class, "next-post")]''',
+    or contains(@class, "next-post")
+    or contains(@class, "message-container") or contains(@id, "message_container")]''',
     # comment debris
     '''.//*[@class="comments-title" or contains(@class, "comments-title") or contains(@class, "nocomments") or starts-with(@id, "reply-") or starts-with(@class, "reply-") or
     contains(@class, "-reply-") or contains(@class, "message") or contains(@id, "akismet") or contains(@class, "akismet")]''',
     # hidden
     '''.//*[starts-with(@class, "hide-") or contains(@class, "hide-print") or contains(@id, "hidden")
-    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true"]''',
+    or contains(@style, "hidden") or contains(@hidden, "hidden") or contains(@class, "noprint") or contains(@style, "display:none") or contains(@class, " hidden") or @aria-hidden="true" or contains(@class, "notloaded")]''',
 ]
 # conflicts:
 # contains(@id, "header") or contains(@class, "header") or
