@@ -29,18 +29,18 @@ class Metadata:
     'date', 'categories', 'tags', 'fingerprint', 'id', 'license'
 ]
     def __init__(self):
-        self.title: str = None
-        self.author: str = None
-        self.url: str = None
-        self.hostname = str = None
-        self.description = str = None
-        self.sitename = str = None
-        self.date: str = None
-        self.categories = list = None
-        self.tags: list = None
-        self.fingerprint: str = None
-        self.id: None
-        self.license: str = None
+        self.title = None
+        self.author = None
+        self.url = None
+        self.hostname = None
+        self.description = None
+        self.sitename = None
+        self.date = None
+        self.categories = None
+        self.tags= None
+        self.fingerprint = None
+        self.id = None
+        self.license = None
 
 
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
