@@ -295,7 +295,7 @@ def test_extract(xmloutput): # xmloutput=False
     assert '05:28 Uhr' not in result and 'Bahn-Konkurrenten wie Flixbus fürchten durch den geplanten Deutschlandtakt' in result and 'ICE im S-Bahn-Takt' not in result and 'Diskussion zu diesem Artikel auf:' not in result and 'Berater-Affäre bringt Bahnchef Lutz in Bedrängnis' not in result and 'auch der Bus ein klimafreundliches Verkehrsmittel sei' in result
 
     result = load_mock_page('https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/', xmloutput)
-    assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Diesel-Umtauschprämien' not in result and 'Besonders bei Babyschalen sollte geprüft werden' in result
+    assert 'Rund ums Fahrzeug' not in result and 'in punkto Sicherheit, Bedienung, Ergonomie' in result and 'Grenzwert der Richtlinie 2014/79/EU' in result and 'Diesel-Umtauschprämien' not in result and 'Besonders bei Babyschalen sollte geprüft werden' in result
 
     result = load_mock_page('https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/', xmloutput)
     assert 'Was I losing my mind?' in result and 'being cached after their first access.' in result and 'Finding a Fix' in result and 'from django.conf import settings' in result and 'New Call-to-action' not in result and 'Contact us' not in result and 'Back to blog' not in result # and 'You might also like:' not in result
