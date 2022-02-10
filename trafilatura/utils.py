@@ -14,6 +14,7 @@ import sys
 
 from functools import lru_cache
 from html import unescape
+from unicodedata import normalize
 
 # CChardet is faster and can be more accurate
 try:
@@ -247,6 +248,11 @@ def remove_control_characters(string):
     '''Prevent non-printable and XML invalid character errors'''
     # https://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python/93029#93029
     return string.translate(NOPRINT_TRANS_TABLE)
+
+
+def normalize_unicode(string, unicodeform='NFC'):
+    'Normalize the given string to the specified unicode format.'
+    return normalize(unicodeform, string)
 
 
 @lru_cache(maxsize=128)

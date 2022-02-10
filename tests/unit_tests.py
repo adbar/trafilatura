@@ -112,6 +112,10 @@ def test_input():
     assert 'Long story short,' in extract(myinput)
     # legacy
     assert process_record(None, 'url', '0000', target_language=None) is None
+    # unicode normalization
+    assert utils.normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
+    testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
+    assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
 
 
 def test_txttocsv():

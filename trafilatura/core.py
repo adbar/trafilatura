@@ -25,7 +25,7 @@ from .htmlprocessing import (convert_tags, handle_textnode,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, METADATA_LIST
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
-from .utils import load_html, trim, txttocsv, uniquify_list, is_image_file
+from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
                   control_xml_output, xmltotxt)
 from .xpaths import (BODY_XPATH, COMMENTS_XPATH, COMMENTS_DISCARD_XPATH, OVERALL_DISCARD_XPATH,
@@ -723,7 +723,8 @@ def determine_returnstring(docmeta, output_format, include_formatting, include_l
         if docmeta['commentsbody'] is not None:
             returnstring += '\n' + xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
             returnstring = returnstring.strip()
-    return returnstring
+    # normalize Unicode format (defaults to NFC)
+    return normalize_unicode(returnstring)
 
 
 def bare_extraction(filecontent, url=None, no_fallback=False,

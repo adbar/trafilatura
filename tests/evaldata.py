@@ -219,7 +219,7 @@ EVAL_PAGES = {
 },
 'https://www.adac.de/rund-ums-fahrzeug/tests/kindersicherheit/kindersitztest-2018/': {
     'file': 'adac.de.kindersitze.html',
-    'with': ['in punkto Sicherheit, Bedienung, Ergonomie', 'Elf Modelle sind empfehlenswert', 'Jané Koos i-Size', 'Grenzwert der Richtlinie 2014/79/EU', 'Besonders bei Babyschalen sollte geprüft werden'],
+    'with': ['in punkto Sicherheit, Bedienung, Ergonomie', 'Elf Modelle sind empfehlenswert', 'Jané Koos i-Size', 'Grenzwert der Richtlinie 2014/79/EU', 'Besonders bei Babyschalen sollte geprüft werden'],
     'without': ['23.10.2018', 'Rund ums Fahrzeug', 'Diesel-Umtauschprämien', 'Dieses Video wird über YouTube'],
 },
 'https://www.caktusgroup.com/blog/2015/06/08/testing-client-side-applications-django-post-mortem/': {
@@ -3176,10 +3176,10 @@ EVAL_PAGES = {
     'author': 'Karin Finkenzeller',
     'title': 'Die Sonne geht auch wieder auf',
     'date': '2019-07-30',
-    'description': 'Sierra Leone hat schwere B&uuml;rgerkriegszeiten hinter sich. Endlose Strände, grüne Hügel und die Hoffnung sind schon da. Jetzt fehlen nur...',
+    'description': 'Sierra Leone hat schwere B&uuml;rgerkriegszeiten hinter sich. Endlose Strände, grüne Hügel und die Hoffnung sind schon da. Jetzt fehlen nur...',
     'categories': [],
     'tags': [],
-    'with': ['Sierra Leone hat schwere Zeiten hinter sich', 'Touré, einem mageren, hoch aufgeschossenen Mann, gehört das Land', 'Deshalb sichert er den Herstellern ein Auskommen wie kaum ein'],
+    'with': ['Sierra Leone hat schwere Zeiten hinter sich', 'Touré, einem mageren, hoch aufgeschossenen Mann, gehört das Land', 'Deshalb sichert er den Herstellern ein Auskommen wie kaum ein'],
     'without': ['Hinweis der Redaktion: Zum Teil wurden die Recherchereisen für diesen Artikel von', 'Dieser Beitrag kann nicht mehr kommentiert werden.', ' © Frankfurter Allgemeine Zeitung GmbH 2020 '],
     'comments': ['Für Anbenteuerurlauber sicher ein guter Tip'],
     'license': '',
@@ -6479,13 +6479,13 @@ EVAL_PAGES = {
 'https://ukbdnews.com/2020/08/23646/': {
     'file': 'ukbdnews.com.23646.html',
     'author': '',
-    'title': 'এমপির ভাইকে নিজ বাড়ির সামনেই কুপিয়ে হত্যা',
+    'title': 'এমপির ভাইকে নিজ বাড়ির সামনেই কুপিয়ে হত্যা',
     'date': '2020-08-29',
-    'description': 'কুষ্টিয়া-১ (দৌলতপুর) আসনের সংসদ সদস্য (এমপি) অ্যাডভোকেট আ ক ম বিস্তারিত',
+    'description': 'কুষ্টিয়া-১ (দৌলতপুর) আসনের সংসদ সদস্য (এমপি) অ্যাডভোকেট আ ক ম বিস্তারিত',
     'categories': [''],
     'tags': [''],
-    'with': ['কুষ্টিয়া-১ (দৌলতপুর) আসনের সংসদ সদস্য (এমপি) অ্যাডভোকেট', 'আজ শনিবার (২৯ আগস্ট) সকাল সাড়ে ৭টার'],
-    'without': ['করোনায় আরও ৩২ জনের মৃত্যু, নতুন শনাক্ত ২১৩১', 'ইভ্যালির সিইও রাসেলের', ' আগস্ট ২৯'],
+    'with': ['কুষ্টিয়া-১ (দৌলতপুর) আসনের সংসদ সদস্য (এমপি) অ্যাডভোকেট', 'আজ শনিবার (২৯ আগস্ট) সকাল সাড়ে ৭টার'],
+    'without': ['করোনায় আরও ৩২ জনের মৃত্যু, নতুন শনাক্ত ২১৩১', 'ইভ্যালির সিইও রাসেলের', ' আগস্ট ২৯'],
     'comments': [],  # 0 or 3 segments
     'license': '',  # if CC-...
     'region': '',  # if obvious: DE, CH, AT
@@ -6521,7 +6521,7 @@ EVAL_PAGES = {
     'https://www.linkedin.com/feed/update/urn:li:activity:6341926280803471360': {
     'file': 'linkedin.com.feed.6341926280803471360.html',
     'author': 'Messente Communications',
-    'title': 'Whitepaper - 2FA Impact on Data Breaches ',
+    'title': 'Whitepaper - 2FA Impact on Data Breaches',
     'date': '',
     'description': 'It&amp;#39;s no secret, user behavior and broken business processes are the culprits behind data breaches. 4 out of every 5 hacking-related breach is due to weak …',
     'categories': [''],
