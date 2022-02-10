@@ -23,7 +23,7 @@ from .filters import (check_html_lang, content_fingerprint, duplicate_test,
 from .htmlprocessing import (convert_tags, handle_textnode,
                              link_density_test, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
-from .metadata import extract_metadata, METADATA_LIST
+from .metadata import extract_metadata, Metadata
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
 from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
@@ -810,7 +810,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                 LOGGER.error('no metadata for URL %s', url)
                 raise ValueError
         else:
-            docmeta = dict.fromkeys(METADATA_LIST)
+            docmeta = dict.fromkeys(Metadata.__slots__)
 
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, include_tables, include_images)

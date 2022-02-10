@@ -28,7 +28,7 @@ import trafilatura.htmlprocessing
 from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
 from trafilatura.lru import LRUCache
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
-from trafilatura.metadata import METADATA_LIST
+from trafilatura.metadata import Metadata
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 
 from trafilatura import utils, xml
@@ -38,7 +38,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')
-SAMPLE_META = dict.fromkeys(METADATA_LIST)
+SAMPLE_META = dict.fromkeys(Metadata.__slots__)
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
@@ -126,7 +126,7 @@ def test_input():
 
 
 def test_txttocsv():
-    mymeta = dict.fromkeys(METADATA_LIST)
+    mymeta = dict.fromkeys(Metadata.__slots__)
     assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\tNone\n'
     mymeta['title'] = 'Test title'
     mymeta['url'] = 'https://example.org'
@@ -552,7 +552,7 @@ def test_tei():
     # test header + metadata
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
-    docmeta = dict.fromkeys(METADATA_LIST)
+    docmeta = dict.fromkeys(Metadata.__slots__)
     docmeta['categories'], docmeta['tags'] = [], []
     docmeta['title'] = 'Title'
     assert xml.write_fullheader(header, docmeta) is not None

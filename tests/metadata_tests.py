@@ -16,7 +16,7 @@ except ImportError:
 from lxml import html
 
 from trafilatura.json_metadata import normalize_json
-from trafilatura.metadata import extract_metadata, METADATA_LIST, extract_meta_json
+from trafilatura.metadata import extract_metadata, extract_meta_json
 from trafilatura.utils import normalize_authors
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
