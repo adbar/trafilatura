@@ -10,6 +10,7 @@ import json
 import logging
 import pickle
 
+from html import unescape
 from io import StringIO
 from pathlib import Path
 
@@ -46,7 +47,7 @@ def build_json_output(docmeta):
         outputdict['comments'] = xmltotxt(outputdict.pop('commentsbody'), include_formatting=False, include_links=False)
     else:
         del outputdict['commentsbody']
-    return json.dumps(outputdict, ensure_ascii=False)
+    return unescape(json.dumps(outputdict, ensure_ascii=False))
 
 
 def clean_attributes(tree):
@@ -272,7 +273,7 @@ def xmltotxt(xmloutput, include_formatting, include_links):
         else:
             LOGGER.debug('unexpected element: %s', element.tag)
             returnlist.extend([textelement, ' '])
-    return sanitize(''.join(returnlist))
+    return unescape(sanitize(''.join(returnlist)))
 
 
 def write_teitree(docmeta):

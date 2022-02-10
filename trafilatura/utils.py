@@ -257,9 +257,10 @@ def normalize_unicode(string, unicodeform='NFC'):
 
 @lru_cache(maxsize=128)
 def line_processing(line):
-    '''Discard incompatible unicode and invalid XML characters on line level'''
+    '''Remove HTML space entities, then discard incompatible unicode
+       and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
-    line = line.replace('&#13;', '\r').replace('&#10;', '\n')
+    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
     # remove non-printable chars and normalize space characters
     line = trim(remove_control_characters(UNICODE_WHITESPACE.sub(' ', line)))
     # prune empty lines

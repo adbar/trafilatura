@@ -94,8 +94,8 @@ def test_trim():
     # sanitize logic
     assert utils.sanitize(None) is None
     # non-breaking spaces
-    #print(utils.sanitize('Test&nbsp;Text'))
-    #assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
+    print(utils.sanitize('Test&nbsp;Text'))
+    assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
 
 
 def test_input():
