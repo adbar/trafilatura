@@ -7,6 +7,8 @@ import logging
 import os
 import sys
 
+import pytest
+
 from lxml import etree, html
 
 try:
@@ -100,18 +102,23 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
-    assert utils.load_html(123) is None
+    with pytest.raises(TypeError) as err:
+        assert utils.load_html(123) is None
+    print(err.value)
+    assert 'incompatible' in str(err.value)
     assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
     assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
-    assert extract(None, 'url', '0000', target_language=None) is None
+    with pytest.raises(TypeError) as err:
+        assert extract(None, 'url', '0000', target_language=None) is None
+        # legacy
+        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
     assert 'Long story short,' in extract(myinput)
-    # legacy
-    assert process_record(None, 'url', '0000', target_language=None) is None
+
     # unicode normalization
     assert utils.normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
     testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)

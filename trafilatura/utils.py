@@ -147,7 +147,6 @@ def decode_response(response):
     return htmltext
 
 
-
 def is_dubious_html(htmlobject):
     "Assess if the object is proper HTML (with a corresponding declaration)."
     if isinstance(htmlobject, bytes):
@@ -166,13 +165,16 @@ def load_html(htmlobject):
     # use tree directly
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
-    tree = None
     # use trafilatura or urllib3 responses directly
     try:
         if isinstance(htmlobject, HTTPResponse) or htmlobject.data:
             htmlobject = decode_response(htmlobject.data)
     except AttributeError:
         pass
+    # do not accept any other type after this point
+    if not isinstance(htmlobject, (bytes, str)):
+        raise TypeError('incompatible input type', type(htmlobject))
+    tree = None
     # GZip test
     htmlobject = handle_gz_file(htmlobject)
     # sanity check
@@ -192,7 +194,7 @@ def load_html(htmlobject):
                 LOGGER.warning('encoding issue: %s', guessed_encoding)
                 tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
     # use string if applicable
-    elif isinstance(htmlobject, str):
+    else:
         try:
             tree = html.fromstring(htmlobject, parser=HTML_PARSER)
         except ValueError:
@@ -203,17 +205,17 @@ def load_html(htmlobject):
                 LOGGER.error('parser bytestring %s', err)
         except Exception as err:
             LOGGER.error('parsing failed: %s', err)
-    # default to None
-    else:
-        LOGGER.error('this type cannot be processed: %s', type(htmlobject))
+    # more robust option: try BeautifulSoup
+    #if tree is None or not isinstance(tree, (etree._ElementTree, html.HtmlElement)):
+    #    if isinstance(htmlobject, (bytes, str)):
+    #        try:
+    #            tree = fromsoup(htmlobject)
+    #        except Exception as err:
+    #            LOGGER.error('BS parser error: %s', err)
     # rejection test: is it (well-formed) HTML at all?
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
         tree = None
-    #if tree is None:
-    #    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
-    #        # more robust parsing
-    #        tree = fromsoup(htmlobject)
     return tree
 
 
