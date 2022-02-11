@@ -28,7 +28,7 @@ import trafilatura.htmlprocessing
 from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
 from trafilatura.lru import LRUCache
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
-from trafilatura.metadata import Metadata
+from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 
 from trafilatura import utils, xml
@@ -38,7 +38,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')
-SAMPLE_META = dict.fromkeys(Metadata.__slots__)
+SAMPLE_META = Document()
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
@@ -126,13 +126,13 @@ def test_input():
 
 
 def test_txttocsv():
-    mymeta = dict.fromkeys(Metadata.__slots__)
+    mymeta = Document()
     assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\tNone\n'
-    mymeta['title'] = 'Test title'
-    mymeta['url'] = 'https://example.org'
-    mymeta['hostname'] = 'example.org'
-    mymeta['id'] = '1'
-    mymeta['license'] = 'CC BY-SA'
+    mymeta.title = 'Test title'
+    mymeta.url = 'https://example.org'
+    mymeta.hostname = 'example.org'
+    mymeta.id = '1'
+    mymeta.license = 'CC BY-SA'
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\tCC BY-SA\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
@@ -142,8 +142,8 @@ def test_txttocsv():
     assert result.endswith('}') and '"fingerprint":' in result
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
-    result = bare_extraction(mystring, config=ZERO_CONFIG)
-    assert isinstance(result, dict) and len(result) == 14
+    result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
+    assert isinstance(result, dict) and len(result) == 17
 
 
 def test_exotic_tags(xmloutput=False):
@@ -552,25 +552,25 @@ def test_tei():
     # test header + metadata
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
-    docmeta = dict.fromkeys(Metadata.__slots__)
-    docmeta['categories'], docmeta['tags'] = [], []
-    docmeta['title'] = 'Title'
+    docmeta = Document()
+    docmeta.categories, docmeta.tags = [], []
+    docmeta.title = 'Title'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['sitename'] = 'Site Name'
-    docmeta['date'] = '2021-01-01'
+    docmeta.sitename = 'Site Name'
+    docmeta.date = '2021-01-01'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['date'] = None
+    docmeta.date = None
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['hostname'] = 'hostname'
+    docmeta.hostname = 'hostname'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['sitename'] = None
-    docmeta['license'] = 'CC BY-SA'
-    docmeta['url'] = 'https://test.org/'
-    docmeta['categories'] = ['cat1', 'cat2']
+    docmeta.sitename = None
+    docmeta.license = 'CC BY-SA'
+    docmeta.url = 'https://test.org/'
+    docmeta.categories = ['cat1', 'cat2']
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['date'] = '2021-01-01'
+    docmeta.date = '2021-01-01'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['title'], docmeta['sitename'] = None, None
+    docmeta.title, docmeta.sitename = None, None
     assert xml.write_fullheader(header, docmeta) is not None
 
 

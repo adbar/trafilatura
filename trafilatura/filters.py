@@ -100,7 +100,7 @@ def language_filter(temp_text, temp_comments, target_language, docmeta):
             else:
                 result, _ = py3langid.classify(temp_text)
             if result != target_language:
-                LOGGER.warning('wrong language: %s %s %s', result, docmeta['id'], docmeta['url'])
+                LOGGER.warning('wrong language: %s %s %s', result, docmeta.id, docmeta.url)
                 return True
         else:
             LOGGER.warning('Detector not installed, no language detection run')

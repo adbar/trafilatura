@@ -23,7 +23,7 @@ from .filters import (check_html_lang, content_fingerprint, duplicate_test,
 from .htmlprocessing import (convert_tags, handle_textnode,
                              link_density_test, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
-from .metadata import extract_metadata, Metadata
+from .metadata import extract_metadata, Document
 from .settings import use_config, DEFAULT_CONFIG, TAG_CATALOG
 from .utils import load_html, normalize_unicode, trim, txttocsv, uniquify_list, is_image_file
 from .xml import (build_json_output, build_xml_output, build_tei_output,
@@ -43,7 +43,6 @@ TABLE_ALL = {'td', 'th', 'hi'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
 HEADINGS = {'fw', 'head'}
-
 
 
 def handle_titles(element, dedupbool, config):
@@ -689,39 +688,39 @@ def baseline(filecontent):
     return postbody, temp_text, len(temp_text)
 
 
-def determine_returnstring(docmeta, output_format, include_formatting, include_links, tei_validation):
+def determine_returnstring(document, output_format, include_formatting, include_links, tei_validation):
     '''Convert XML tree to chosen format, clean the result and output it as a string'''
     # XML (TEI) steps
     if 'xml' in output_format:
         # last cleaning
-        for element in docmeta['body'].iter('*'):
+        for element in document.body.iter('*'):
             if element.tag != 'graphic' and len(element) == 0 and not element.text and not element.tail:
                 parent = element.getparent()
                 if parent is not None:
                     parent.remove(element)
         # build output trees
         if output_format == 'xml':
-            output = build_xml_output(docmeta)
+            output = build_xml_output(document)
         elif output_format == 'xmltei':
-            output = build_tei_output(docmeta)
+            output = build_tei_output(document)
         # can be improved
-        returnstring = control_xml_output(output, output_format, tei_validation, docmeta)
+        returnstring = control_xml_output(output, output_format, tei_validation, document)
     # CSV
     elif output_format == 'csv':
-        posttext = xmltotxt(docmeta['body'], include_formatting, include_links)
-        if docmeta['commentsbody'] is not None:
-            commentstext = xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
+        posttext = xmltotxt(document.body, include_formatting, include_links)
+        if document.commentsbody is not None:
+            commentstext = xmltotxt(document.commentsbody, include_formatting, include_links)
         else:
             commentstext = ''
-        returnstring = txttocsv(posttext, commentstext, docmeta)
+        returnstring = txttocsv(posttext, commentstext, document)
     # JSON
     elif output_format == 'json':
-        returnstring = build_json_output(docmeta)
+        returnstring = build_json_output(document)
     # TXT
     else:
-        returnstring = xmltotxt(docmeta['body'], include_formatting, include_links)
-        if docmeta['commentsbody'] is not None:
-            returnstring += '\n' + xmltotxt(docmeta['commentsbody'], include_formatting, include_links)
+        returnstring = xmltotxt(document.body, include_formatting, include_links)
+        if document.commentsbody is not None:
+            returnstring += '\n' + xmltotxt(document.commentsbody, include_formatting, include_links)
             returnstring = returnstring.strip()
     # normalize Unicode format (defaults to NFC)
     return normalize_unicode(returnstring)
@@ -734,7 +733,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                     include_links=False, deduplicate=False,
                     date_extraction_params=None,
                     only_with_metadata=False, with_metadata=False,
-                    max_tree_size=None, url_blacklist=None, author_blacklist=None, config=DEFAULT_CONFIG):
+                    max_tree_size=None, url_blacklist=None, author_blacklist=None,
+                    as_dict=True, config=DEFAULT_CONFIG):
     """Internal function for text extraction returning bare Python variables.
 
     Args:
@@ -757,10 +757,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         date_extraction_params: Provide extraction parameters to htmldate as dict().
         only_with_metadata: Only keep documents featuring all essential metadata
             (date, title, url).
-        with_metadata: similar (will be deprecated).
+        with_metadata: Similar (will be deprecated).
         max_tree_size: Discard documents with too many elements.
         url_blacklist: Provide a blacklist of URLs as set() to filter out documents.
         author_blacklist: Provide a blacklist of Author Names as set() to filter out authors.
+        as_dict: Legacy option, return a dictionary instead of a class with attributes.
         config: Directly provide a configparser configuration.
 
     Returns:
@@ -797,20 +798,20 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
         backup_tree = deepcopy(tree) if no_fallback is False else None
         # extract metadata if necessary
         if output_format != 'txt':
-            docmeta = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
+            document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
             # cut short if extracted URL in blacklist
-            if docmeta['url'] in url_blacklist:
+            if document.url in url_blacklist:
                 LOGGER.info('blacklisted URL: %s', url)
                 raise ValueError
             # cut short if core elements are missing
             if only_with_metadata is True and any(
                     x is None for x in
-                    [docmeta['date'], docmeta['title'], docmeta['url']]
+                    [document.date, document.title, document.url]
                 ):
                 LOGGER.error('no metadata for URL %s', url)
                 raise ValueError
         else:
-            docmeta = dict.fromkeys(Metadata.__slots__)
+            document = Document()
 
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, include_tables, include_images)
@@ -863,22 +864,24 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             raise ValueError
 
         # sanity check on language
-        if target_language is not None and language_filter(temp_text, temp_comments, target_language, docmeta) is True:
+        if target_language is not None and language_filter(temp_text, temp_comments, target_language, document) is True:
             LOGGER.error('wrong language for URL %s', url)
             raise ValueError
 
     except ValueError:
-        LOGGER.info('discarding data for url: %s', url)  # docmeta['url'] , record_id
+        LOGGER.info('discarding data for url: %s', url)  # document.url , record_id
         return None
 
     # special case: python variables
     if output_format == 'python':
-        docmeta['text'] = xmltotxt(postbody, include_formatting, include_links)
+        document.text = xmltotxt(postbody, include_formatting, include_links)
         if include_comments is True:
-            docmeta['comments'] = xmltotxt(commentsbody, include_formatting, include_links)
+            document.comments = xmltotxt(commentsbody, include_formatting, include_links)
     else:
-        docmeta['raw-text'], docmeta['body'], docmeta['commentsbody'] = temp_text, postbody, commentsbody
-    return docmeta
+        document.raw_text, document.body, document.commentsbody = temp_text, postbody, commentsbody
+    if as_dict is True:
+        document = {slot: getattr(document, slot, None) for slot in document.__slots__}
+    return document
 
 
 def extract(filecontent, url=None, record_id=None, no_fallback=False,
@@ -930,7 +933,7 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
     config = use_config(settingsfile, config)
 
     # extraction
-    docmeta = bare_extraction(
+    document = bare_extraction(
         filecontent, url=url, no_fallback=no_fallback,
         favor_precision=favor_precision, favor_recall=favor_recall,
         include_comments=include_comments, output_format=output_format,
@@ -939,17 +942,18 @@ def extract(filecontent, url=None, record_id=None, no_fallback=False,
         deduplicate=deduplicate,
         date_extraction_params=date_extraction_params,
         only_with_metadata=only_with_metadata, with_metadata=with_metadata,
-        max_tree_size=max_tree_size, url_blacklist=url_blacklist, author_blacklist=author_blacklist, config=config,
+        max_tree_size=max_tree_size, url_blacklist=url_blacklist, author_blacklist=author_blacklist,
+        as_dict=False, config=config,
     )
-    if docmeta is None:
+    if document is None:
         return None
     if output_format != 'txt':
         # add record ID to metadata
-        docmeta['id'] = record_id
+        document.id = record_id
         # calculate fingerprint
-        docmeta['fingerprint'] = content_fingerprint(docmeta['raw-text'])
+        document.fingerprint = content_fingerprint(document.raw_text)
     # return
-    return determine_returnstring(docmeta, output_format, include_formatting, include_links, tei_validation)
+    return determine_returnstring(document, output_format, include_formatting, include_links, tei_validation)
 
 
 # for legacy and backwards compatibility

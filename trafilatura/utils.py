@@ -230,18 +230,18 @@ def txttocsv(text, comments, docmeta):
     tsv_output = \
         '{url}\t{fingerprint}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\t{textlicense}\n' \
         .format(
-        url=docmeta['url'],
-        fingerprint=docmeta['fingerprint'],
-        hostname=docmeta['hostname'],
-        doctitle=docmeta['title'],
-        docdate=docmeta['date'],
+        url=docmeta.url,
+        fingerprint=docmeta.fingerprint,
+        hostname=docmeta.hostname,
+        doctitle=docmeta.title,
+        docdate=docmeta.date,
         text=text,
         comments=comments,
-        textlicense=docmeta['license']
+        textlicense=docmeta.license
         )
     # add id up front if provided
-    if docmeta['id'] is not None:
-        tsv_output = docmeta['id'] + '\t' + tsv_output
+    if docmeta.id is not None:
+        tsv_output = docmeta.id + '\t' + tsv_output
     return tsv_output
 
 

@@ -22,25 +22,17 @@ LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
 
-class Metadata:
-    "Defines a class to store metadata information."
+class Document:
+    "Defines a class to store all necessary data and metadata fields for extracted information."
     __slots__ = [
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
-    'date', 'categories', 'tags', 'fingerprint', 'id', 'license'
-]
+    'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
+    'body', 'comments', 'commentsbody', 'raw_text', 'text'
+    ]
+    # consider dataclasses for Python 3.7+
     def __init__(self):
-        self.title = None
-        self.author = None
-        self.url = None
-        self.hostname = None
-        self.description = None
-        self.sitename = None
-        self.date = None
-        self.categories = None
-        self.tags= None
-        self.fingerprint = None
-        self.id = None
-        self.license = None
+        for slot in self.__slots__:
+            setattr(self, slot, None)
 
 
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
@@ -135,7 +127,7 @@ def extract_opengraph(tree):
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    metadata = Metadata()
+    metadata = Document()  # alt: Metadata()
     # bootstrap from potential OpenGraph tags
     title, author, url, description, site_name = extract_opengraph(tree)
     # test if all return values have been assigned
@@ -485,15 +477,18 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         metadata.tags = extract_catstags('tag', tree)
     # license
     metadata.license = extract_license(tree)
-    # convert to dict
-    metadata = {slot: getattr(metadata, slot, None) for slot in metadata.__slots__}
-    # for safety: length check
-    for key, value in metadata.items():
-        if value is not None and len(value) > 10000:
-            metadata[key] = value[:9999] + '…'
-    # remove spaces and control characters
-    for item in metadata:
-        if metadata[item] is not None and isinstance(metadata[item], str):
-            metadata[item] = line_processing(metadata[item])
-    # return dictionary
+    # safety checks
+    if metadata.description and len(metadata.description) > 10000:
+        metadata.description = metadata.description[:9999] + '…'
+    if metadata.title and len(metadata.title) > 10000:
+        metadata.title = metadata.title[:9999] + '…'
+    for slot in metadata.__slots__:
+        value = getattr(metadata, slot, None)
+        if isinstance(value, str):
+            # length
+            #if len(value) > 10000:
+            #    setattr(metadata, slot, value[:9999] + '…')
+            # text content: remove spaces and control characters
+            setattr(metadata, slot, line_processing(value))
+    # return result
     return metadata

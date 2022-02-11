@@ -36,7 +36,7 @@ TEXTELEMS = {'code', 'fw', 'head', 'lb', 'list', 'p', 'quote', 'row', 'table'}
 
 def build_json_output(docmeta):
     '''Build JSON output based on extracted information'''
-    outputdict = docmeta
+    outputdict = {slot: getattr(docmeta, slot, None) for slot in docmeta.__slots__}
     outputdict['source'] = outputdict.pop('url')
     outputdict['source-hostname'] = outputdict.pop('sitename')
     outputdict['excerpt'] = outputdict.pop('description')
@@ -70,13 +70,13 @@ def build_xml_output(docmeta):
     '''Build XML output tree based on extracted information'''
     output = etree.Element('doc')
     output = add_xml_meta(output, docmeta)
-    docmeta['body'].tag = 'main'
+    docmeta.body.tag = 'main'
     # clean XML tree
-    docmeta['body'] = remove_empty_elements(docmeta['body'])
-    output.append(clean_attributes(docmeta['body']))
-    if docmeta['commentsbody'] is not None:
-        docmeta['commentsbody'].tag = 'comments'
-        output.append(clean_attributes(docmeta['commentsbody']))
+    docmeta.body = remove_empty_elements(docmeta.body)
+    output.append(clean_attributes(docmeta.body))
+    if docmeta.commentsbody is not None:
+        docmeta.commentsbody.tag = 'comments'
+        output.append(clean_attributes(docmeta.commentsbody))
 # XML invalid characters
 # https://chase-seibert.github.io/blog/2011/05/20/stripping-control-characters-in-python.html
     return output
@@ -90,7 +90,7 @@ def control_xml_output(output_tree, output_format, tei_validation, docmeta):
     # validate
     if output_format == 'xmltei' and tei_validation is True:
         result = validate_tei(output_tree)
-        LOGGER.info('TEI validation result: %s %s %s', result, docmeta['id'], docmeta['url'])
+        LOGGER.info('TEI validation result: %s %s %s', result, docmeta.id, docmeta.url)
     return etree.tostring(output_tree, pretty_print=True, encoding='unicode').strip()
 
 
@@ -98,30 +98,30 @@ def add_xml_meta(output, docmeta):
     '''Add extracted metadata to the XML output tree'''
     # metadata
     if docmeta:
-        if docmeta['sitename'] is not None:
-            output.set('sitename', docmeta['sitename'])
-        if docmeta['title'] is not None:
-            output.set('title', docmeta['title'])
-        if docmeta['author'] is not None:
-            output.set('author', docmeta['author'])
-        if docmeta['date'] is not None:
-            output.set('date', docmeta['date'])
-        if docmeta['url'] is not None:
-            output.set('source', docmeta['url'])
-        if docmeta['hostname'] is not None:
-            output.set('hostname', docmeta['hostname'])
-        if docmeta['description'] is not None:
-            output.set('excerpt', docmeta['description'])
-        if docmeta['categories'] is not None:
-            output.set('categories', ';'.join(docmeta['categories']))
-        if docmeta['tags'] is not None:
-            output.set('tags', ';'.join(docmeta['tags']))
-        if docmeta['license'] is not None:
-            output.set('license', docmeta['license'])
-        if docmeta['id'] is not None:
-            output.set('id', docmeta['id'])
-        if docmeta['fingerprint'] is not None:
-            output.set('fingerprint', docmeta['fingerprint'])
+        if docmeta.sitename is not None:
+            output.set('sitename', docmeta.sitename)
+        if docmeta.title is not None:
+            output.set('title', docmeta.title)
+        if docmeta.author is not None:
+            output.set('author', docmeta.author)
+        if docmeta.date is not None:
+            output.set('date', docmeta.date)
+        if docmeta.url is not None:
+            output.set('source', docmeta.url)
+        if docmeta.hostname is not None:
+            output.set('hostname', docmeta.hostname)
+        if docmeta.description is not None:
+            output.set('excerpt', docmeta.description)
+        if docmeta.categories is not None:
+            output.set('categories', ';'.join(docmeta.categories))
+        if docmeta.tags is not None:
+            output.set('tags', ';'.join(docmeta.tags))
+        if docmeta.license is not None:
+            output.set('license', docmeta.license)
+        if docmeta.id is not None:
+            output.set('id', docmeta.id)
+        if docmeta.fingerprint is not None:
+            output.set('fingerprint', docmeta.fingerprint)
     return output
 
 
@@ -131,7 +131,7 @@ def build_tei_output(docmeta):
     output = write_teitree(docmeta)
     # filter output (strip unwanted elements), just in case
     # check and repair
-    output = check_tei(output, docmeta['url'])
+    output = check_tei(output, docmeta.url)
     return output
 
 
@@ -283,13 +283,13 @@ def write_teitree(docmeta):
     textelem = etree.SubElement(tei, 'text')
     textbody = etree.SubElement(textelem, 'body')
     # post
-    postbody = clean_attributes(docmeta['body'])
+    postbody = clean_attributes(docmeta.body)
     postbody.tag = 'div'
     postbody.set('type', 'entry') # rendition='#pst'
     textbody.append(postbody)
     # comments
-    if docmeta['commentsbody'] is not None:
-        commentsbody = clean_attributes(docmeta['commentsbody'])
+    if docmeta.commentsbody is not None:
+        commentsbody = clean_attributes(docmeta.commentsbody)
         commentsbody.tag = 'div'
         commentsbody.set('type', 'comments') # rendition='#cmt'
         textbody.append(commentsbody)
@@ -302,39 +302,39 @@ def write_fullheader(tei, docmeta):
     filedesc = etree.SubElement(header, 'fileDesc')
     bib_titlestmt = etree.SubElement(filedesc, 'titleStmt')
     bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
-    bib_titlemain.text = docmeta['title']
-    if docmeta['author']:
+    bib_titlemain.text = docmeta.title
+    if docmeta.author:
         bib_author = etree.SubElement(bib_titlestmt, 'author')
-        bib_author.text = docmeta['author']
+        bib_author.text = docmeta.author
     publicationstmt_a = etree.SubElement(filedesc, 'publicationStmt')
     # license, if applicable
-    if docmeta['license']:
+    if docmeta.license:
         availability = etree.SubElement(publicationstmt_a, 'availability')
         avail_p = etree.SubElement(availability, 'p')
-        avail_p.text = docmeta['license']
+        avail_p.text = docmeta.license
     # insert an empty paragraph for conformity
     else:
         publicationstmt_p = etree.SubElement(publicationstmt_a, 'p')
     notesstmt = etree.SubElement(filedesc, 'notesStmt')
-    if docmeta['id']:
+    if docmeta.id:
         idno = etree.SubElement(notesstmt, 'note', type='id')
-        idno.text = docmeta['id']
+        idno.text = docmeta.id
     fingerprint = etree.SubElement(notesstmt, 'note', type='fingerprint')
-    fingerprint.text = docmeta['fingerprint']
+    fingerprint.text = docmeta.fingerprint
     sourcedesc = etree.SubElement(filedesc, 'sourceDesc')
     source_bibl = etree.SubElement(sourcedesc, 'bibl')
     # determination of sigle string
-    if docmeta['sitename'] and docmeta['date']:
-        sigle = docmeta['sitename'] + ', ' + docmeta['date']
-    elif not docmeta['sitename'] and docmeta['date']:
-        sigle = docmeta['date']
-    elif docmeta['sitename']:
-        sigle = docmeta['sitename']
+    if docmeta.sitename and docmeta.date:
+        sigle = docmeta.sitename + ', ' + docmeta.date
+    elif not docmeta.sitename and docmeta.date:
+        sigle = docmeta.date
+    elif docmeta.sitename:
+        sigle = docmeta.sitename
     else:
-        LOGGER.warning('no sigle for URL %s', docmeta['url'])
+        LOGGER.warning('no sigle for URL %s', docmeta.url)
         sigle = ''
-    if docmeta['title']:
-        source_bibl.text = docmeta['title'] + '. ' + sigle
+    if docmeta.title:
+        source_bibl.text = docmeta.title + '. ' + sigle
     else:
         source_bibl.text = '. ' + sigle
     source_sigle = etree.SubElement(sourcedesc, 'bibl', type='sigle')
@@ -342,39 +342,39 @@ def write_fullheader(tei, docmeta):
     biblfull = etree.SubElement(sourcedesc, 'biblFull')
     bib_titlestmt = etree.SubElement(biblfull, 'titleStmt')
     bib_titlemain = etree.SubElement(bib_titlestmt, 'title', type='main')
-    bib_titlemain.text = docmeta['title']
-    if docmeta['author']:
+    bib_titlemain.text = docmeta.title
+    if docmeta.author:
         bib_author = etree.SubElement(bib_titlestmt, 'author')
-        bib_author.text = docmeta['author']
+        bib_author.text = docmeta.author
     publicationstmt = etree.SubElement(biblfull, 'publicationStmt')
     publication_publisher = etree.SubElement(publicationstmt, 'publisher')
-    if docmeta['hostname'] and docmeta['sitename']:
-        publisherstring = docmeta['sitename'].strip() + ' (' + docmeta['hostname'] + ')'
-    elif docmeta['hostname']:
-        publisherstring = docmeta['hostname']
-    elif docmeta['sitename']:
-        publisherstring = docmeta['sitename']
+    if docmeta.hostname and docmeta.sitename:
+        publisherstring = docmeta.sitename.strip() + ' (' + docmeta.hostname + ')'
+    elif docmeta.hostname:
+        publisherstring = docmeta.hostname
+    elif docmeta.sitename:
+        publisherstring = docmeta.sitename
     else:
-        LOGGER.warning('no publisher for URL %s', docmeta['url'])
+        LOGGER.warning('no publisher for URL %s', docmeta.url)
         publisherstring = 'N/A'
     publication_publisher.text = publisherstring
-    if docmeta['url']:
-        publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL', target=docmeta['url'])
+    if docmeta.url:
+        publication_url = etree.SubElement(publicationstmt, 'ptr', type='URL', target=docmeta.url)
     publication_date = etree.SubElement(publicationstmt, 'date')
-    publication_date.text = docmeta['date']
+    publication_date.text = docmeta.date
     profiledesc = etree.SubElement(header, 'profileDesc')
     abstract = etree.SubElement(profiledesc, 'abstract')
     abstract_p = etree.SubElement(abstract, 'p')
-    abstract_p.text = docmeta['description']
-    if len(docmeta['categories']) > 0 or len(docmeta['tags']) > 0:
+    abstract_p.text = docmeta.description
+    if len(docmeta.categories) > 0 or len(docmeta.tags) > 0:
         textclass = etree.SubElement(profiledesc, 'textClass')
         keywords = etree.SubElement(textclass, 'keywords')
-        if len(docmeta['categories']) > 0:
+        if len(docmeta.categories) > 0:
             cat_list = etree.SubElement(keywords, 'term', type='categories')
-            cat_list.text = ','.join(docmeta['categories'])
-        if len(docmeta['tags']) > 0:
+            cat_list.text = ','.join(docmeta.categories)
+        if len(docmeta.tags) > 0:
             tags_list = etree.SubElement(keywords, 'term', type='tags')
-            tags_list.text = ','.join(docmeta['tags'])
+            tags_list.text = ','.join(docmeta.tags)
     encodingdesc = etree.SubElement(header, 'encodingDesc')
     appinfo = etree.SubElement(encodingdesc, 'appInfo')
     application = etree.SubElement(appinfo, 'application', version=__version__, ident='Trafilatura')
