@@ -34,6 +34,19 @@ class Document:
         for slot in self.__slots__:
             setattr(self, slot, None)
 
+    def trim_data(self):
+        'Limit text length and trim the attributes.'
+        for slot in self.__slots__:
+            value = getattr(self, slot)
+            if isinstance(value, str):
+                # length
+                if len(value) > 10000:
+                    new_value = value[:9999] + '…'
+                    setattr(self, slot, new_value)
+                    value = new_value
+                # text content: remove spaces and control characters
+                setattr(self, slot, line_processing(value))
+
 
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
 HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
@@ -478,17 +491,6 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # license
     metadata.license = extract_license(tree)
     # safety checks
-    if metadata.description and len(metadata.description) > 10000:
-        metadata.description = metadata.description[:9999] + '…'
-    if metadata.title and len(metadata.title) > 10000:
-        metadata.title = metadata.title[:9999] + '…'
-    for slot in metadata.__slots__:
-        value = getattr(metadata, slot, None)
-        if isinstance(value, str):
-            # length
-            #if len(value) > 10000:
-            #    setattr(metadata, slot, value[:9999] + '…')
-            # text content: remove spaces and control characters
-            setattr(metadata, slot, line_processing(value))
+    metadata.trim_data()
     # return result
     return metadata
