@@ -97,7 +97,8 @@ def check_sitemap(url, contents):
         # strip query and fragments
         url = SCRUB_REGEX.sub('', url)
         if POTENTIAL_SITEMAP.search(url) and \
-            (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents)):
+            (not isinstance(contents, str) or not SITEMAP_FORMAT.match(contents)) \
+             or '<html' in contents[:150].lower():
             LOGGER.info('not a valid XML sitemap: %s', url)
             return None
     return contents
