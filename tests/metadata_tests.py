@@ -9,9 +9,9 @@ import sys
 from os import path
 
 try:
-    import cchardet as chardet
+    from cchardet import detect
 except ImportError:
-    import chardet
+    from charset_normalizer import detect
 
 from lxml import html
 
@@ -90,7 +90,7 @@ def load_mock_page(url):
         # read as binary
         with open(path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'rb') as inputf:
             htmlbinary = inputf.read()
-        guessed_encoding = chardet.detect(htmlbinary)['encoding']
+        guessed_encoding = detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
             try:
                 htmlstring = htmlbinary.decode(guessed_encoding)

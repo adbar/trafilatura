@@ -12,9 +12,9 @@ import pytest
 
 
 try:
-    import cchardet as chardet
+    from cchardet import detect
 except ImportError:
-    import chardet
+    from charset_normalizer import detect
 
 from trafilatura.core import extract
 
@@ -128,7 +128,7 @@ def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
         # read as binary
         with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'rb') as inputf:
             htmlbinary = inputf.read()
-        guessed_encoding = chardet.detect(htmlbinary)['encoding']
+        guessed_encoding = detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
             try:
                 htmlstring = htmlbinary.decode(guessed_encoding)

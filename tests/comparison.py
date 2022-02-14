@@ -12,9 +12,9 @@ from lxml import html #  etree
 #HTML_CLEANER = Cleaner()
 
 try:
-    import cchardet as chardet
+    from cchardet import detect
 except ImportError:
-    import chardet
+    from charset_normalizer import detect
 
 import html2text
 import html_text
@@ -87,7 +87,7 @@ def load_document_string(filename):
         # read as binary
         with open(mypath, 'rb') as inputf:
             htmlbinary = inputf.read()
-        guessed_encoding = chardet.detect(htmlbinary)['encoding']
+        guessed_encoding = detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
             try:
                 htmlstring = htmlbinary.decode(guessed_encoding)
