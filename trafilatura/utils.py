@@ -32,9 +32,10 @@ from urllib3.response import HTTPResponse
 
 LOGGER = logging.getLogger(__name__)
 
+UNICODE_ALIASES = {'utf-8', 'utf_8'}
+
 # collect_ids=False, default_doctype=False, huge_tree=True, remove_blank_text=True
 HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
-RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(
     r'''
@@ -112,7 +113,7 @@ def detect_encoding(bytesobject):
     if len(detection_results) > 0:
         guesses.extend([r.encoding for r in detection_results])
     # it cannot be utf-8 (tested above)
-    return [g for g in guesses if g != 'utf-8' and g != 'utf_8']
+    return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
 def decode_response(response):
@@ -174,41 +175,20 @@ def load_html(htmlobject):
     # start processing
     tree = None
     # try to guess encoding and decode file: if None then keep original
-    # htmlobject = decode_file(htmlobject)
-    # GZip test
-    htmlobject = handle_gz_file(htmlobject)
+    htmlobject = decode_file(htmlobject)
     # sanity check
     check_flag = is_dubious_html(htmlobject)
-    # residual bytestring: try to use recovery parser
-    if isinstance(htmlobject, bytes):
-        guessed_encodings = detect_encoding(htmlobject)
-        if len(guessed_encodings) > 0:
-            if guessed_encodings[0] in ('utf-8', 'utf_8'):
-                tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-            else:
-                for guess in guessed_encodings:
-                    try:
-                        htmlobject = htmlobject.decode(guess)
-                        tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-                    except (LookupError, UnicodeDecodeError, ValueError) as err:  # VISCII: lookup
-                        LOGGER.warning('wrong encoding detected: %s, %s', guess, err)
-                    else:
-                        break
-        if tree is None:
-            # force decoding
-            tree = html.fromstring(str(htmlobject, encoding='utf-8', errors='replace'), parser=RECOVERY_PARSER)
     # use Unicode string
-    else:
+    try:
+        tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+    except ValueError:
+        # "Unicode strings with encoding declaration are not supported."
         try:
-            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-        except ValueError:
-            # "Unicode strings with encoding declaration are not supported."
-            try:
-                tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
-            except Exception as err:
-                LOGGER.error('lxml parser bytestring %s', err)
+            tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
         except Exception as err:
-            LOGGER.error('lxml parsing failed: %s', err)
+            LOGGER.error('lxml parser bytestring %s', err)
+    except Exception as err:
+        LOGGER.error('lxml parsing failed: %s', err)
     # more robust option: try BeautifulSoup
     #if tree is None or not isinstance(tree, (etree._ElementTree, html.HtmlElement)):
     #    if isinstance(htmlobject, (bytes, str)):
