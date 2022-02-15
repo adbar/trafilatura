@@ -34,8 +34,8 @@ LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
-# collect_ids=False, default_doctype=False, huge_tree=True, remove_blank_text=True
-HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
+# huge_tree=True, remove_blank_text=True
+HTML_PARSER = html.HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(
     r'''
