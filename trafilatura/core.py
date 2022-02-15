@@ -20,7 +20,7 @@ from lxml import etree, html
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import (check_html_lang, content_fingerprint, duplicate_test,
                      language_filter, text_chars_test)
-from .htmlprocessing import (convert_tags, handle_textnode,
+from .htmlprocessing import (HTML_CLEANER, convert_tags, handle_textnode,
                              link_density_test, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, Document
@@ -653,39 +653,45 @@ def baseline(filecontent):
     tree = load_html(filecontent)
     postbody = etree.Element('body')
     if tree is None:
-        return postbody, 0, ''
+        return postbody, '', 0
     # scrape from json text
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and '"article' in elem.text:
             mymatch = re.search(r'"articlebody":"(.+?)","', elem.text, re.I)
             if mymatch:
-                postbody = etree.Element('body')
-                elem = etree.Element('p')
+                elem = etree.SubElement(postbody, 'p')
                 elem.text = trim(mymatch.group(1).replace('\\"', '"'))
-                postbody.append(elem)
                 return postbody, elem.text, len(elem.text)
+    # clean tree?
+    #tree = HTML_CLEANER.clean_html(tree)
     # scrape from article tag
-    article_elem = tree.find('.//article')  # |.//main
-    if article_elem is not None:  # len(elems) > 0:
+    article_elem = tree.find('.//article')
+    if article_elem is not None:
+        # not as good? ' '.join([trim(e) for e in article_elem.itertext()])
         temp_text = trim(article_elem.text_content())
-        len_text = len(temp_text)
-        if len_text > 0:
-            elem = etree.Element('p')
+        if len(temp_text) > 0:
+            elem = etree.SubElement(postbody, 'p')
             elem.text = temp_text
-            postbody.append(elem)
-            return postbody, temp_text, len_text
+            return postbody, temp_text, len(temp_text)
     # scrape from text paragraphs
     results = set()
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
-        entry = element.text_content()
+        entry = element.text_content()  # trim() ?
         if entry not in results:
-            elem = etree.Element('p')
+            elem = etree.SubElement(postbody, 'p')
             elem.text = entry
-            postbody.append(elem)
             results.add(entry)
             # elem.getparent().remove(elem)
     temp_text = trim('\n'.join(postbody.itertext()))
-    return postbody, temp_text, len(temp_text)
+    if len(temp_text) > 0:
+        return postbody, temp_text, len(temp_text)
+    # default strategy: clean the tree and take everything
+    #postbody = etree.Element('body')
+    #elem = etree.SubElement(postbody, 'p')
+    # a bit better than tree.text_content()
+    #elem.text = '\n'.join([trim(e) for e in tree.itertext()])
+    #return postbody, elem.text, len(elem.text)
+    return postbody, '', 0
 
 
 def determine_returnstring(document, output_format, include_formatting, include_links, tei_validation):
