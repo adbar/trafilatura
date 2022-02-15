@@ -18,12 +18,10 @@ from unicodedata import normalize
 
 # CChardet is faster and can be more accurate
 try:
-    import cchardet
+    from cchardet import detect as cchardet_detect
 except ImportError:
-    cchardet = None
-
-
-from charset_normalizer import detect
+    cchardet_detect = None
+from charset_normalizer import from_bytes
 
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
@@ -102,18 +100,19 @@ def detect_encoding(bytesobject):
     # alternatives: https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
     if isutf8(bytesobject):
-        return 'UTF-8'
-    # try one of the installed detectors on first part
-    if cchardet is not None:
-        guess = cchardet.detect(bytesobject[:5000])
-    else:
-        guess = detect(bytesobject[:5000])
-    LOGGER.debug('guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
-    # fallback on full response
-    if guess is None or (guess['confidence'] is not None and guess['confidence'] < 0.98):
-        guess = detect(bytesobject)
-        LOGGER.debug('second-guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
-    return guess['encoding']
+        return ['utf-8']
+    guesses = []
+    # additional module
+    if cchardet_detect is not None:
+        cchardet_guess = cchardet_detect(bytesobject)['encoding'].lower()
+        guesses.append(cchardet_guess)
+    # try charset_normalizer on first part, fallback on full document
+    detection_results = from_bytes(bytesobject[:15000]) or from_bytes(bytesobject)
+    # return alternatives
+    if len(detection_results) > 0:
+        guesses.extend([r.encoding for r in detection_results])
+    # it cannot be utf-8 (tested above)
+    return [g for g in guesses if g != 'utf-8' and g != 'utf_8']
 
 
 def decode_response(response):
@@ -121,30 +120,31 @@ def decode_response(response):
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
     # urllib3 response object / bytes switch
-    if isinstance(response, bytes):
-        resp_content = response
-    else:
-        resp_content = response.data
-    # suggested:
-    # resp_content = response if isinstance(response, bytes) else response.data
-    # decode GZipped data if necessary
-    resp_content = handle_gz_file(resp_content)
-    # detect encoding
-    guessed_encoding = detect_encoding(resp_content)
-    LOGGER.debug('response encoding: %s', guessed_encoding)
-    # process
+    resp_content = response if isinstance(response, bytes) else response.data
+    return decode_file(resp_content)
+
+
+def decode_file(filecontent):
+    """Guess bytestring encoding and try to decode to Unicode string.
+       Resort to destructive conversion otherwise."""
+    # init
+    if isinstance(filecontent, str):
+        return filecontent
     htmltext = None
-    if guessed_encoding is not None:
+    # GZip test
+    filecontent = handle_gz_file(filecontent)
+    # encoding
+    guesses = detect_encoding(filecontent)
+    for guessed_encoding in guesses:
         try:
-            htmltext = resp_content.decode(guessed_encoding)
+            htmltext = filecontent.decode(guessed_encoding)
         except (LookupError, UnicodeDecodeError): # VISCII: lookup
             LOGGER.warning('wrong encoding detected: %s', guessed_encoding)
-    else:
-        LOGGER.error('no encoding detected: %s', guessed_encoding)
-    # force decoding # ascii instead?
-    if htmltext is None:
-        htmltext = str(resp_content, encoding='utf-8', errors='replace')
-    return htmltext
+            htmltext = None
+        else:
+            break
+    # return original content if nothing else succeeded
+    return htmltext or str(filecontent, encoding='utf-8', errors='replace')
 
 
 def is_dubious_html(htmlobject):
@@ -166,45 +166,49 @@ def load_html(htmlobject):
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
     # use trafilatura or urllib3 responses directly
-    try:
-        if isinstance(htmlobject, HTTPResponse) or htmlobject.data:
-            htmlobject = decode_response(htmlobject.data)
-    except AttributeError:
-        pass
+    if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, 'data'):
+        htmlobject = htmlobject.data
     # do not accept any other type after this point
     if not isinstance(htmlobject, (bytes, str)):
         raise TypeError('incompatible input type', type(htmlobject))
+    # start processing
     tree = None
+    # try to guess encoding and decode file: if None then keep original
+    # htmlobject = decode_file(htmlobject)
     # GZip test
     htmlobject = handle_gz_file(htmlobject)
     # sanity check
     check_flag = is_dubious_html(htmlobject)
-    # try to detect encoding and convert to string
+    # residual bytestring: try to use recovery parser
     if isinstance(htmlobject, bytes):
-        guessed_encoding = detect_encoding(htmlobject)
-        if guessed_encoding is None:
-            tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-        elif guessed_encoding == 'UTF-8':
-            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-        else:
-            try:
-                htmlobject = htmlobject.decode(guessed_encoding)
+        guessed_encodings = detect_encoding(htmlobject)
+        if len(guessed_encodings) > 0:
+            if guessed_encodings[0] in ('utf-8', 'utf_8'):
                 tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-            except (LookupError, UnicodeDecodeError):  # VISCII encoding
-                LOGGER.warning('encoding issue: %s', guessed_encoding)
-                tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-    # use string if applicable
+            else:
+                for guess in guessed_encodings:
+                    try:
+                        htmlobject = htmlobject.decode(guess)
+                        tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
+                    except (LookupError, UnicodeDecodeError, ValueError) as err:  # VISCII: lookup
+                        LOGGER.warning('wrong encoding detected: %s, %s', guess, err)
+                    else:
+                        break
+        if tree is None:
+            # force decoding
+            tree = html.fromstring(str(htmlobject, encoding='utf-8', errors='replace'), parser=RECOVERY_PARSER)
+    # use Unicode string
     else:
         try:
             tree = html.fromstring(htmlobject, parser=HTML_PARSER)
         except ValueError:
-            # try to parse a bytestring
+            # "Unicode strings with encoding declaration are not supported."
             try:
                 tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
             except Exception as err:
-                LOGGER.error('parser bytestring %s', err)
+                LOGGER.error('lxml parser bytestring %s', err)
         except Exception as err:
-            LOGGER.error('parsing failed: %s', err)
+            LOGGER.error('lxml parsing failed: %s', err)
     # more robust option: try BeautifulSoup
     #if tree is None or not isinstance(tree, (etree._ElementTree, html.HtmlElement)):
     #    if isinstance(htmlobject, (bytes, str)):
