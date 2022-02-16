@@ -460,7 +460,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
        convert them'''
     sure_thing = False
     result_body = etree.Element('body')
-    potential_tags = set(TAG_CATALOG)  # + 'span'?
+    potential_tags = set(TAG_CATALOG)
     if include_tables is True:
         potential_tags.update(['table', 'td', 'th', 'tr'])
     if include_images is True:
@@ -473,14 +473,16 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         subtree = tree.xpath(expr)
         if not subtree:
             continue
-        # prune
+        # prune the rest
         subtree = prune_unwanted_nodes(subtree[0], OVERALL_DISCARD_XPATH)
+        # prune images
+        if include_images is False:
+            subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
+        # balance precision/recall
         if favor_recall is False:
             subtree = prune_unwanted_nodes(subtree, ADDITIONAL_DISCARD_XPATH)
             if favor_precision is True:
                 subtree = prune_unwanted_nodes(subtree, PRECISION_DISCARD_XPATH)
-        if include_images is False:
-            subtree = prune_unwanted_nodes(subtree, DISCARD_IMAGE_ELEMENTS)
         # remove elements by link density
         subtree = delete_by_link_density(subtree, 'div', backtracking=True)
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
@@ -498,9 +500,15 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             continue
         # no paragraphs containing text, or not enough
         ptest = subtree.xpath('//p//text()')
-        if not ptest or len(''.join(ptest)) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * 2:
+        if favor_recall is True:
+            factor = 5
+        elif favor_precision is True:
+            factor = 1
+        else:
+            factor = 3
+        if not ptest or len(''.join(ptest)) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE') * factor:
             potential_tags.add('div')
-            # potential_tags.add('span')
+        # polish list of potential tags
         if 'ref' not in potential_tags:
             etree.strip_tags(subtree, 'ref')
         if 'span' not in potential_tags:
@@ -513,7 +521,6 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                             if e is not None)
         # remove trailing titles
-        # and result_body[-1].tail is None ?
         while len(result_body) > 0 and (result_body[-1].tag in HEADINGS or result_body[-1].tag == 'ref'):
             result_body[-1].getparent().remove(result_body[-1])
         # exit the loop if the result has children
