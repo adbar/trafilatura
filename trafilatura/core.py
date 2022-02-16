@@ -657,13 +657,13 @@ def baseline(filecontent):
     # scrape from json text
     for elem in tree.iterfind('.//script[@type="application/ld+json"]'):
         if elem.text and '"article' in elem.text:
-            mymatch = re.search(r'"articlebody":"(.+?)","', elem.text, re.I)
+            mymatch = re.search(r'"articlebody": *"(.+?)(?<!\\)"', elem.text, re.I)
             if mymatch:
                 elem = etree.SubElement(postbody, 'p')
                 elem.text = trim(mymatch.group(1).replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
     # clean tree?
-    #tree = HTML_CLEANER.clean_html(tree)
+    # tree = HTML_CLEANER.clean_html(tree)
     # scrape from article tag
     article_elem = tree.find('.//article')
     if article_elem is not None:
@@ -681,14 +681,13 @@ def baseline(filecontent):
             elem = etree.SubElement(postbody, 'p')
             elem.text = entry
             results.add(entry)
-            # elem.getparent().remove(elem)
     temp_text = trim('\n'.join(postbody.itertext()))
     if len(temp_text) > 0:
         return postbody, temp_text, len(temp_text)
     # default strategy: clean the tree and take everything
-    #postbody = etree.Element('body')
+    postbody = etree.Element('body')
     #elem = etree.SubElement(postbody, 'p')
-    # a bit better than tree.text_content()
+    # a bit better than trim(tree.text_content()) ?
     #elem.text = '\n'.join([trim(e) for e in tree.itertext()])
     #return postbody, elem.text, len(elem.text)
     return postbody, '', 0
