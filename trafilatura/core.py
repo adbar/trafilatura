@@ -20,7 +20,7 @@ from lxml import etree, html
 from .external import justext_rescue, sanitize_tree, SANITIZED_XPATH, try_readability
 from .filters import (check_html_lang, content_fingerprint, duplicate_test,
                      language_filter, text_chars_test)
-from .htmlprocessing import (HTML_CLEANER, convert_tags, handle_textnode,
+from .htmlprocessing import (convert_tags, handle_textnode,
                              link_density_test, link_density_test_tables,
                              process_node, prune_unwanted_nodes, tree_cleaning)
 from .metadata import extract_metadata, Document
@@ -458,7 +458,6 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
-    sure_thing = False
     result_body = etree.Element('body')
     potential_tags = set(TAG_CATALOG)
     if include_tables is True:
@@ -535,13 +534,11 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
             potential_tags.add('div')
         result_body = recover_wild_text(tree, result_body, favor_precision=favor_precision, favor_recall=favor_recall, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
-    else:
-        sure_thing = True
     # filter output
     etree.strip_elements(result_body, 'done')
     etree.strip_tags(result_body, 'div')
     # return
-    return result_body, temp_text, len(temp_text), sure_thing
+    return result_body, temp_text, len(temp_text)
 
 
 def process_comments_node(elem, potential_tags, dedupbool, config):
@@ -669,12 +666,10 @@ def baseline(filecontent):
                 elem = etree.SubElement(postbody, 'p')
                 elem.text = trim(mymatch.group(1).replace('\\"', '"'))
                 return postbody, elem.text, len(elem.text)
-    # clean tree?
-    # tree = HTML_CLEANER.clean_html(tree)
+    # no tree cleaning
     # scrape from article tag
     article_elem = tree.find('.//article')
     if article_elem is not None:
-        # not as good? ' '.join([trim(e) for e in article_elem.itertext()])
         temp_text = trim(article_elem.text_content())
         if len(temp_text) > 0:
             elem = etree.SubElement(postbody, 'p')
@@ -683,7 +678,7 @@ def baseline(filecontent):
     # scrape from text paragraphs
     results = set()
     for element in tree.iter('blockquote', 'code', 'p', 'pre', 'q', 'quote'):
-        entry = element.text_content()  # trim() ?
+        entry = element.text_content()
         if entry not in results:
             elem = etree.SubElement(postbody, 'p')
             elem.text = entry
@@ -693,10 +688,12 @@ def baseline(filecontent):
         return postbody, temp_text, len(temp_text)
     # default strategy: clean the tree and take everything
     postbody = etree.Element('body')
-    #elem = etree.SubElement(postbody, 'p')
-    # a bit better than trim(tree.text_content()) ?
-    #elem.text = '\n'.join([trim(e) for e in tree.itertext()])
-    #return postbody, elem.text, len(elem.text)
+    body_elem = tree.find('.//body')
+    if body_elem is not None:
+        elem = etree.SubElement(postbody, 'p')
+        # elem.text = trim(body_elem.text_content())
+        elem.text = '\n'.join([trim(e) for e in body_elem.itertext()])
+        return postbody, elem.text, len(elem.text)
     return postbody, '', 0
 
 
@@ -840,16 +837,14 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
                 cleaned_tree = prune_unwanted_nodes(cleaned_tree, REMOVE_COMMENTS_XPATH)
 
         # extract content
-        postbody, temp_text, len_text, sure_thing = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
+        postbody, temp_text, len_text = extract_content(cleaned_tree, favor_precision, favor_recall, include_tables, include_images, include_links, deduplicate, config)
 
         # compare if necessary
         if no_fallback is False:
             postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
-            # add baseline as additional fallback
-            if len(postbody) == 0:
-                postbody, temp_text, len_text = baseline(filecontent)
+        # add baseline as additional fallback
         # rescue: try to use original/dirty tree
-        elif sure_thing is False and len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
+        if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
             postbody, temp_text, len_text = baseline(filecontent)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
