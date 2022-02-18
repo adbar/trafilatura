@@ -106,8 +106,9 @@ def detect_encoding(bytesobject):
     guesses = []
     # additional module
     if cchardet_detect is not None:
-        cchardet_guess = cchardet_detect(bytesobject)['encoding'].lower()
-        guesses.append(cchardet_guess)
+        cchardet_guess = cchardet_detect(bytesobject)['encoding']
+        if cchardet_guess is not None:
+            guesses.append(cchardet_guess.lower())
     # try charset_normalizer on first part, fallback on full document
     detection_results = from_bytes(bytesobject[:15000]) or from_bytes(bytesobject)
     # return alternatives
