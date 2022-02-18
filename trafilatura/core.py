@@ -42,7 +42,7 @@ TABLE_ELEMS = {'td', 'th'}
 TABLE_ALL = {'td', 'th', 'hi'}
 FORMATTING = {'hi', 'ref', 'span'}
 CODES_QUOTES = {'code', 'quote'}
-HEADINGS = {'fw', 'head'}
+NOT_AT_THE_END = {'fw', 'head', 'ref'}
 
 
 def handle_titles(element, dedupbool, config):
@@ -376,6 +376,10 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
     '''Look for all previously unconsidered wild elements, including outside of the determined
        frame and throughout the document to recover potentially missing text parts'''
     LOGGER.debug('Recovering wild text elements')
+    search_list = ['blockquote', 'code', 'p', 'pre', 'q', 'quote', 'table']
+    if favor_recall is True:
+        potential_tags.add('div')
+        search_list.append('div')
     # prune
     search_tree = prune_unwanted_nodes(tree, OVERALL_DISCARD_XPATH)
     # get rid of additional elements
@@ -392,7 +396,9 @@ def recover_wild_text(tree, result_body, favor_precision=False, favor_recall=Fal
     else:
         etree.strip_tags(search_tree, 'span')
     result_body.extend(e for e in
-                        [handle_textelem(element, potential_tags, deduplicate, config) for element in search_tree.iter('blockquote', 'code', 'div', 'p', 'pre', 'q', 'quote', 'table')]
+                        [handle_textelem(
+                            element, potential_tags, deduplicate, config)
+                            for element in search_tree.iter(search_list)]
                         if e is not None)
     return result_body
 
@@ -458,6 +464,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     '''Find the main content of a page using a set of XPath expressions,
        then extract relevant elements, strip them of unwanted subparts and
        convert them'''
+    backup_tree = deepcopy(tree)
     result_body = etree.Element('body')
     potential_tags = set(TAG_CATALOG)
     if include_tables is True:
@@ -486,10 +493,11 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
         subtree = delete_by_link_density(subtree, 'div', backtracking=True)
         subtree = delete_by_link_density(subtree, 'list', backtracking=False)
         subtree = delete_by_link_density(subtree, 'p', backtracking=False)
+        #subtree = delete_by_link_density(subtree, 'head', backtracking=False)
         # also filter fw/head, table and quote elements?
         if favor_precision is True:
             subtree = delete_by_link_density(subtree, 'head', backtracking=False)
-            # subtree = delete_by_link_density(subtree, 'quote', backtracking=False)
+            subtree = delete_by_link_density(subtree, 'quote', backtracking=False)
         if 'table' in potential_tags or favor_precision is True:
             for elem in subtree.iter('table'):
                 if link_density_test_tables(elem) is True:
@@ -520,7 +528,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
                             [handle_textelem(e, potential_tags, deduplicate, config) for e in subtree.xpath('.//*')]
                             if e is not None)
         # remove trailing titles
-        while len(result_body) > 0 and (result_body[-1].tag in HEADINGS or result_body[-1].tag == 'ref'):
+        while len(result_body) > 0 and (result_body[-1].tag in NOT_AT_THE_END):
             result_body[-1].getparent().remove(result_body[-1])
         # exit the loop if the result has children
         if len(result_body) > 1:
@@ -530,9 +538,7 @@ def extract_content(tree, favor_precision=False, favor_recall=False, include_tab
     # try parsing wild <p> elements if nothing found or text too short
     # todo: test precision and recall settings here
     if len(result_body) == 0 or len(temp_text) < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-        if favor_recall is True:
-            potential_tags.add('div')
-        result_body = recover_wild_text(tree, result_body, favor_precision=favor_precision, favor_recall=favor_recall, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
+        result_body = recover_wild_text(backup_tree, result_body, favor_precision=favor_precision, favor_recall=favor_recall, potential_tags=potential_tags, deduplicate=deduplicate, config=config)
         temp_text = trim(' '.join(result_body.itertext()))
     # filter output
     etree.strip_elements(result_body, 'done')
@@ -804,7 +810,8 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
             raise ValueError
 
         # backup (or not) for further processing
-        backup_tree = deepcopy(tree) if no_fallback is False else None
+        tree_backup_1 = deepcopy(tree) if no_fallback is False else None
+        tree_backup_2 = deepcopy(tree)
         # extract metadata if necessary
         if output_format != 'txt':
             document = extract_metadata(tree, url, date_extraction_params, no_fallback, author_blacklist)
@@ -824,6 +831,7 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # clean + use LXML cleaner
         cleaned_tree = tree_cleaning(tree, include_tables, include_images)
+        cleaned_tree_backup = deepcopy(cleaned_tree)
 
         # convert tags, the rest does not work without conversion
         cleaned_tree = convert_tags(cleaned_tree, include_formatting, include_tables, include_images, include_links)
@@ -841,11 +849,11 @@ def bare_extraction(filecontent, url=None, no_fallback=False,
 
         # compare if necessary
         if no_fallback is False:
-            postbody, temp_text, len_text = compare_extraction(tree, backup_tree, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
+            postbody, temp_text, len_text = compare_extraction(cleaned_tree_backup, tree_backup_1, url, postbody, temp_text, len_text, target_language, favor_precision, favor_recall, include_formatting, include_links, include_images, include_tables, config)
         # add baseline as additional fallback
         # rescue: try to use original/dirty tree
         if len_text < config.getint('DEFAULT', 'MIN_EXTRACTED_SIZE'):
-            postbody, temp_text, len_text = baseline(filecontent)
+            postbody, temp_text, len_text = baseline(tree_backup_2)
             LOGGER.debug('non-clean extracted length: %s (extraction)', len_text)
 
         # tree size sanity check

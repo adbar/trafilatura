@@ -34,6 +34,7 @@ LOGGER = logging.getLogger(__name__)
 
 UNICODE_ALIASES = {'utf-8', 'utf_8'}
 
+# note: htmldate could use HTML comments
 # huge_tree=True, remove_blank_text=True
 HTML_PARSER = html.HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
 
@@ -97,7 +98,7 @@ def isutf8(data):
 
 
 def detect_encoding(bytesobject):
-    """Read the first chunk of input and return its encoding"""
+    """"Read all input or first chunk and return a list of encodings"""
     # alternatives: https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
     if isutf8(bytesobject):
@@ -135,8 +136,7 @@ def decode_file(filecontent):
     # GZip test
     filecontent = handle_gz_file(filecontent)
     # encoding
-    guesses = detect_encoding(filecontent)
-    for guessed_encoding in guesses:
+    for guessed_encoding in detect_encoding(filecontent):
         try:
             htmltext = filecontent.decode(guessed_encoding)
         except (LookupError, UnicodeDecodeError): # VISCII: lookup
@@ -161,7 +161,7 @@ def is_dubious_html(htmlobject):
 
 def load_html(htmlobject):
     """Load object given as input and validate its type
-    (accepted: LXML tree, bytestring and string)
+    (accepted: LXML tree, trafilatura/urllib3 response, bytestring and string)
     """
     # use tree directly
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
