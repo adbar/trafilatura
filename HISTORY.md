@@ -1,6 +1,15 @@
 ## History / Changelog
 
 
+### 1.1.0
+- encodings: better detection, output NFC-normalized Unicode
+- maintenance and performance: more efficient code
+- bugs fixed (#119, #136, #147, #160, #161, #162, #164, #167 and others)
+- prepare compatibility with upcoming Python 3.11
+- changed default settings
+- extended documentation
+
+
 ### 1.0.0
 - compress HTML backup files & seamlessly open .gz files
 - support JSON web feeds

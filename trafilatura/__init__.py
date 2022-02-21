@@ -8,7 +8,7 @@ __title__ = 'trafilatura'
 __author__ = 'Adrien Barbaresi and contributors'
 __license__ = 'GNU GPL v3+'
 __copyright__ = 'Copyright 2019-2022, Adrien Barbaresi'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 import logging
