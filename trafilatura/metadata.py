@@ -15,7 +15,7 @@ from lxml import html
 
 from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
-from .utils import line_processing, load_html, normalize_authors, trim, check_authors
+from .utils import line_processing, load_html, normalize_authors, trim, check_authors, normalize_tags, normalize_string
 from .htmlprocessing import prune_unwanted_nodes
 
 LOGGER = logging.getLogger(__name__)
@@ -125,7 +125,7 @@ def extract_opengraph(tree):
                 url = elem.get('content')
         # description
         elif elem.get('property') == 'og:description':
-            description = elem.get('content')
+            description = normalize_string(elem.get('content'))
         # og:author
         elif elem.get('property') in OG_AUTHOR:
             author = elem.get('content')
@@ -162,7 +162,7 @@ def examine_meta(tree):
             if elem.get('property').startswith('og:'):
                 continue
             if elem.get('property') == 'article:tag':
-                tags.append(content_attr)
+                tags.append(normalize_tags(content_attr))
             elif elem.get('property') in PROPERTY_AUTHOR:
                 author = normalize_authors(author, content_attr)
         # name attribute
@@ -188,7 +188,7 @@ def examine_meta(tree):
                     url = content_attr
             # keywords
             elif name_attr in METANAME_TAG:  # 'page-topic'
-                tags.append(content_attr)
+                tags.append(normalize_tags(content_attr))
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
                 author = normalize_authors(author, content_attr)

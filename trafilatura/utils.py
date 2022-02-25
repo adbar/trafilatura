@@ -54,6 +54,7 @@ NOPRINT_TRANS_TABLE = {
     if not chr(i).isprintable() and not chr(i).isspace()
 }
 
+TAG_REMOVE_SPECIAL = re.compile(r'["\']')
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
@@ -278,6 +279,19 @@ def trim(string):
         return SPACE_TRIMMING.sub(r' ', NO_TAG_SPACE.sub(r' ', string)).strip(' \t\n\r\v')
     except TypeError:
         return None
+
+
+def normalize_string(string):
+    '''Remove special characters of string'''
+    return trim(unescape(string))
+
+
+def normalize_tags(tags):
+    '''Remove special characters of tags'''
+    tags = TAG_REMOVE_SPECIAL.sub(r'', normalize_string(tags))
+    tags = list(filter(None, tags.split(", ")))
+
+    return ", ".join(tags)
 
 
 def is_image_file(imagesrc):
