@@ -54,8 +54,6 @@ NOPRINT_TRANS_TABLE = {
     if not chr(i).isprintable() and not chr(i).isspace()
 }
 
-TAG_REMOVE_SPECIAL = re.compile(r'["\']')
-
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
 
@@ -73,6 +71,8 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
     u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
     u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
+
+CLEAN_META_TAGS = re.compile(r'["\']')
 
 
 def handle_gz_file(filecontent):
@@ -281,16 +281,10 @@ def trim(string):
         return None
 
 
-def normalize_string(string):
-    '''Remove special characters of string'''
-    return trim(unescape(string))
-
-
 def normalize_tags(tags):
     '''Remove special characters of tags'''
-    tags = TAG_REMOVE_SPECIAL.sub(r'', normalize_string(tags))
+    tags = CLEAN_META_TAGS.sub(r'', trim(unescape(tags)))
     tags = list(filter(None, tags.split(", ")))
-
     return ", ".join(tags)
 
 
