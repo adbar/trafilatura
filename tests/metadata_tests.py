@@ -224,6 +224,8 @@ def test_description():
     '''Test the extraction of descriptions'''
     metadata = extract_metadata('<html><head><meta itemprop="description" content="Description"/></head><body></body></html>')
     assert metadata.description == 'Description'
+    metadata = extract_metadata('<html><head><meta property="og:description" content="&amp;#13; A Northern Territory action plan, which includes plans to support development and employment on Aboriginal land, has received an update. &amp;#13..." /></head><body></body></html>')
+    assert metadata.description == 'A Northern Territory action plan, which includes plans to support development and employment on Aboriginal land, has received an update. ...'
 
 
 def test_dates():
@@ -278,6 +280,8 @@ def test_catstags():
     assert metadata.categories == ['Cat1', 'Cat2']
     metadata = extract_metadata('<html><body><p class="entry-tags"><a href="https://example.org/tags/tag1/">Tag1</a>, <a href="https://example.org/tags/tag2/">Tag2</a></p></body></html>')
     assert metadata.tags == ['Tag1', 'Tag2']
+    metadata = extract_metadata('<html><head><meta name="keywords" content="sodium, salt, paracetamol, blood, pressure, high, heart, &amp;quot, intake, warning, study, &amp;quot, medicine, dissolvable, cardiovascular" /></head></html>')
+    assert metadata.tags == ['sodium, salt, paracetamol, blood, pressure, high, heart, intake, warning, study, medicine, dissolvable, cardiovascular']
 
 
 def test_license():

@@ -15,7 +15,7 @@ from lxml import html
 
 from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
-from .utils import line_processing, load_html, normalize_authors, trim, check_authors
+from .utils import check_authors, line_processing, load_html, normalize_authors, normalize_tags, trim, unescape
 from .htmlprocessing import prune_unwanted_nodes
 
 LOGGER = logging.getLogger(__name__)
@@ -115,27 +115,27 @@ def extract_opengraph(tree):
             continue
         # site name
         if elem.get('property') == 'og:site_name':
-            site_name = elem.get('content')
+            site_name = trim(unescape(elem.get('content')))
         # blog title
         elif elem.get('property') == 'og:title':
-            title = elem.get('content')
+            title = trim(unescape(elem.get('content')))
         # orig URL
         elif elem.get('property') == 'og:url':
             if validate_url(elem.get('content'))[0] is True:
-                url = elem.get('content')
+                url = trim(unescape(elem.get('content')))
         # description
         elif elem.get('property') == 'og:description':
-            description = elem.get('content')
+            description = trim(unescape(elem.get('content')))
         # og:author
         elif elem.get('property') in OG_AUTHOR:
-            author = elem.get('content')
+            author = trim(unescape(elem.get('content')))
         # og:type
         # elif elem.get('property') == 'og:type':
         #    pagetype = elem.get('content')
         # og:locale
         # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')
-    return trim(title), trim(author), trim(url), trim(description), trim(site_name)
+    return title, author, url, description, site_name
 
 
 def examine_meta(tree):
@@ -162,7 +162,7 @@ def examine_meta(tree):
             if elem.get('property').startswith('og:'):
                 continue
             if elem.get('property') == 'article:tag':
-                tags.append(content_attr)
+                tags.append(normalize_tags(content_attr))
             elif elem.get('property') in PROPERTY_AUTHOR:
                 author = normalize_authors(author, content_attr)
         # name attribute
@@ -188,7 +188,7 @@ def examine_meta(tree):
                     url = content_attr
             # keywords
             elif name_attr in METANAME_TAG:  # 'page-topic'
-                tags.append(content_attr)
+                tags.append(normalize_tags(content_attr))
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
                 author = normalize_authors(author, content_attr)
