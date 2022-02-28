@@ -34,7 +34,7 @@ class Document:
         for slot in self.__slots__:
             setattr(self, slot, None)
 
-    def trim_data(self):
+    def clean_and_trim(self):
         'Limit text length and trim the attributes.'
         for slot in self.__slots__:
             value = getattr(self, slot)
@@ -44,8 +44,9 @@ class Document:
                     new_value = value[:9999] + '…'
                     setattr(self, slot, new_value)
                     value = new_value
-                # text content: remove spaces and control characters
-                setattr(self, slot, line_processing(value))
+                # HTML entities, remove spaces and control characters
+                value = line_processing(unescape(value))
+                setattr(self, slot, value)
 
 
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
@@ -115,20 +116,20 @@ def extract_opengraph(tree):
             continue
         # site name
         if elem.get('property') == 'og:site_name':
-            site_name = trim(unescape(elem.get('content')))
+            site_name = elem.get('content')
         # blog title
         elif elem.get('property') == 'og:title':
-            title = trim(unescape(elem.get('content')))
+            title = elem.get('content')
         # orig URL
         elif elem.get('property') == 'og:url':
             if validate_url(elem.get('content'))[0] is True:
-                url = trim(unescape(elem.get('content')))
+                url = elem.get('content')
         # description
         elif elem.get('property') == 'og:description':
-            description = trim(unescape(elem.get('content')))
+            description = elem.get('content')
         # og:author
         elif elem.get('property') in OG_AUTHOR:
-            author = trim(unescape(elem.get('content')))
+            author = elem.get('content')
         # og:type
         # elif elem.get('property') == 'og:type':
         #    pagetype = elem.get('content')
@@ -491,6 +492,6 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # license
     metadata.license = extract_license(tree)
     # safety checks
-    metadata.trim_data()
+    metadata.clean_and_trim()
     # return result
     return metadata
