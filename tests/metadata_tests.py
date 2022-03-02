@@ -118,6 +118,8 @@ def test_titles():
     metadata = extract_metadata(r'''<html><body><script type="application/ld+json">{"@context":"https:\/\/schema.org","@type":"Article","name":"Semantic satiation","url":"https:\/\/en.wikipedia.org\/wiki\/Semantic_satiation","sameAs":"http:\/\/www.wikidata.org\/entity\/Q226007","mainEntity":"http:\/\/www.wikidata.org\/entity\/Q226007","author":{"@type":"Organization","name":"Contributors to Wikimedia projects"},"publisher":{"@type":"Organization","name":"Wikimedia Foundation, Inc.","logo":{"@type":"ImageObject","url":"https:\/\/www.wikimedia.org\/static\/images\/wmf-hor-googpub.png"}},"datePublished":"2006-07-12T09:27:14Z","dateModified":"2020-08-31T23:55:26Z","headline":"psychological phenomenon in which repetition causes a word to temporarily lose meaning for the listener"}</script>
 <script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":112,"wgHostname":"mw2373"});});</script></html>''')
     assert metadata.title == 'Semantic satiation'
+    metadata = extract_metadata('<html><head><title> - Home</title></head><body/></html>')
+    assert metadata.title == '- Home'
 
 
 def test_authors():
@@ -247,7 +249,6 @@ def test_sitename():
     '''Test extraction of site name'''
     metadata = extract_metadata('<html><head><title>sitemaps.org - Home</title></head><body/></html>')
     assert metadata.sitename == 'sitemaps.org'
-
 
 def test_meta():
     '''Test extraction out of meta-elements'''

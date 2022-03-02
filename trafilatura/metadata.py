@@ -233,6 +233,20 @@ def extract_metainfo(tree, expressions, len_limit=200):
     return None
 
 
+def examine_title_element(tree):
+    '''Extract text segments out of main <title> element.'''
+    title, first, second = None, None, None
+    try:
+        title = trim(tree.xpath('//head//title')[0].text_content())
+        mymatch = HTMLTITLE_REGEX.match(title)
+        if mymatch is not None:
+            first = mymatch.group(1) or None
+            second = mymatch.group(2) or None
+    except IndexError:
+        LOGGER.warning('no main title found')
+    return title, first, second
+
+
 def extract_title(tree):
     '''Extract the document title'''
     # only one h1-element: take it
@@ -246,18 +260,11 @@ def extract_title(tree):
     if title is not None:
         return title
     # extract using title tag
-    try:
-        title = trim(tree.xpath('//head/title')[0].text_content())
-        # refine
-        mymatch = HTMLTITLE_REGEX.match(title)
-        if mymatch:
-            if '.' not in mymatch.group(1):
-                title = mymatch.group(1)
-            elif '.' not in mymatch.group(2):
-                title = mymatch.group(2)
-            return title
-    except IndexError:
-        LOGGER.warning('no main title found')
+    title, first, second = examine_title_element(tree)
+    if first is not None and '.' not in first:
+        return first
+    if second is not None and '.' not in second:
+        return second
     # take first h1-title
     if h1_results:
         return h1_results[0].text_content()
@@ -327,14 +334,11 @@ def extract_url(tree, default_url=None):
 
 def extract_sitename(tree):
     '''Extract the name of a site from the main title (if it exists)'''
-    title_elem = tree.find('.//head/title')
-    if title_elem is not None and title_elem.text is not None:
-        mymatch = HTMLTITLE_REGEX.match(title_elem.text)
-        if mymatch:
-            if '.' in mymatch.group(1):
-                return mymatch.group(1)
-            if '.' in mymatch.group(2):
-                return mymatch.group(2)
+    _, first, second = examine_title_element(tree)
+    if first is not None and '.' in first:
+        return first
+    if second is not None and '.' in second:
+        return second
     return None
 
 
