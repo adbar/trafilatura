@@ -369,6 +369,9 @@ def test_baseline():
     my_document = '<html><body><quote>This is only a quote but it is better than nothing.</quote></body></html>'
     _, result, _ = baseline(my_document)
     assert result is not None
+    my_document = "<html><body><div>   Document body...   </div><script> console.log('Hello world') </script></body></html>"
+    _, result, _ = baseline(my_document)
+    assert result == 'Document body...'
 
 
 def test_filters():
