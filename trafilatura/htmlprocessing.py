@@ -16,28 +16,30 @@ from .filters import duplicate_test, textfilter
 from .settings import CUT_EMPTY_ELEMS, DEFAULT_CONFIG, MANUALLY_CLEANED, MANUALLY_STRIPPED
 from .utils import trim
 
+
 LOGGER = logging.getLogger(__name__)
 
 # HTML_CLEANER config
-# http://lxml.de/api/lxml.html.clean.Cleaner-class.html
+# https://lxml.de/api/lxml.html.clean.Cleaner-class.html
 # https://lxml.de/apidoc/lxml.html.clean.html
-HTML_CLEANER = Cleaner()
-HTML_CLEANER.annoying_tags = False  # True
-HTML_CLEANER.comments = True
-HTML_CLEANER.embedded = False  # True
-HTML_CLEANER.forms = False  # True
-HTML_CLEANER.frames = False  # True
-HTML_CLEANER.javascript = False
-HTML_CLEANER.links = False
-HTML_CLEANER.meta = False
-HTML_CLEANER.page_structure = False
-HTML_CLEANER.processing_instructions = True
-HTML_CLEANER.remove_unknown_tags = False
-HTML_CLEANER.safe_attrs_only = False
-HTML_CLEANER.scripts = False
-HTML_CLEANER.style = False
-#HTML_CLEANER.remove_tags = MANUALLY_STRIPPED
-#HTML_CLEANER.kill_tags = MANUALLY_CLEANED
+HTML_CLEANER = Cleaner(
+    annoying_tags = False,  # True
+    comments = True,
+    embedded = False,  # True
+    forms = False,  # True
+    frames = False,  # True
+    javascript = False,
+    links = False,
+    meta = False,
+    page_structure = False,
+    processing_instructions = True,
+    remove_unknown_tags = False,
+    safe_attrs_only = False,
+    scripts = False,
+    style = False,
+    # remove_tags = MANUALLY_STRIPPED,
+    # kill_tags = MANUALLY_CLEANED,
+)
 
 
 def tree_cleaning(tree, include_tables, include_images=False):
