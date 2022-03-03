@@ -102,9 +102,10 @@ def test_trim():
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
+    assert utils.is_dubious_html('This is a string.') is True
+    assert utils.is_dubious_html(b'This is a string.') is True
     with pytest.raises(TypeError) as err:
         assert utils.load_html(123) is None
-    print(err.value)
     assert 'incompatible' in str(err.value)
     assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
@@ -618,7 +619,7 @@ def test_precision_recall():
     my_document = html.fromstring('<html><body><p>This here is the text.</p></body></html>')
     assert extract(my_document, favor_precision=True, config=ZERO_CONFIG) is not None
     assert extract(my_document, favor_recall=True, config=ZERO_CONFIG) is not None
-    my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><p>This here is the text.</p></div></body></html>')
+    my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><div><p>This here is the text.</p></div></body></html>')
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)

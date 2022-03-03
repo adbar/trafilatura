@@ -603,7 +603,7 @@ def compare_extraction(tree, backup_tree, url, body, text, len_text, target_lang
         return body, text, len_text
     algo_flag, jt_result = False, False
     # try with readability
-    temppost_algo = try_readability(backup_tree, url)
+    temppost_algo = try_readability(backup_tree)
     algo_text = trim(' '.join(temppost_algo.itertext()))
     len_algo = len(algo_text)
     # compare

@@ -14,11 +14,10 @@ from justext.core import classify_paragraphs, ParagraphMaker, preprocessor, revi
 from justext.utils import get_stoplist, get_stoplists
 
 from lxml import etree, html
-from readability import Document
-from readability.readability import Unparseable
 
 # own
 from .htmlprocessing import convert_tags, tree_cleaning
+from .readability_lxml import Document as ReadabilityDocument  # fork
 from .settings import JUSTEXT_LANGUAGES
 from .utils import trim, HTML_PARSER
 from .xml import TEI_VALID_TAGS
@@ -27,6 +26,17 @@ from .xml import TEI_VALID_TAGS
 LOGGER = logging.getLogger(__name__)
 
 SANITIZED_XPATH = '//aside|//audio|//button|//fieldset|//figure|//footer|//iframe|//input|//label|//link|//nav|//noindex|//noscript|//object|//option|//select|//source|//svg|//time'
+
+
+def try_readability(htmlinput):
+    '''Safety net: try with the generic algorithm readability'''
+    # defaults: min_text_length=25, retry_length=250
+    try:
+        doc = ReadabilityDocument(htmlinput, min_text_length=25, retry_length=250)
+        return html.fromstring(doc.summary(), parser=HTML_PARSER)
+    except Exception as err:
+        LOGGER.warning('readability_lxml failed: %s', err)
+        return etree.Element('div')
 
 
 def jt_stoplist_init():
@@ -39,28 +49,9 @@ def jt_stoplist_init():
 JT_STOPLIST = jt_stoplist_init()
 
 
-class LXMLDocument(Document):
-    '''Sub-class of readability.Document accepting parsed trees as input'''
-    def __init__(self, input_, *args, **kwargs):
-        super().__init__(input_)
-
-    def _parse(self, input_):
-        return input_
-
-
-def try_readability(htmlinput, url):
-    '''Safety net: try with the generic algorithm readability'''
-    # defaults: min_text_length=25, retry_length=250
-    try:
-        doc = LXMLDocument(htmlinput, url=url, min_text_length=25, retry_length=250)
-        return html.fromstring(doc.summary(html_partial=True), parser=HTML_PARSER)
-    except (etree.SerialisationError, Unparseable):
-        return etree.Element('div')
-
-
 def custom_justext(tree, stoplist):
     'Customized version of JusText processing'
-    dom = preprocessor(tree) # tree_cleaning(tree, True)
+    dom = preprocessor(tree)  # tree_cleaning(tree, True)
     paragraphs = ParagraphMaker.make_paragraphs(dom)
     classify_paragraphs(paragraphs, stoplist, 50, 200, 0.1, 0.2, 0.2, True)
     revise_paragraph_classification(paragraphs, 200)
