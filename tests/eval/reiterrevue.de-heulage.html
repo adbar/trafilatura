@@ -1,0 +1,1010 @@
+<!doctype html>
+
+<html lang="de">
+
+    <head>
+
+                <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge"><script type="text/javascript">(window.NREUM||(NREUM={})).init={ajax:{deny_list:["bam-cell.nr-data.net"]}};(window.NREUM||(NREUM={})).loader_config={licenseKey:"d6708d3abf",applicationID:"101531279"};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var i=e[n]={exports:{}};t[n][0].call(i.exports,function(e){var i=t[n][1][e];return r(i||e)},i,i.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<n.length;i++)r(n[i]);return r}({1:[function(t,e,n){function r(){}function i(t,e,n,r){return function(){return s.recordSupportability("API/"+e+"/called"),o(t+e,[u.now()].concat(c(arguments)),n?null:this,r),n?void 0:this}}var o=t("handle"),a=t(10),c=t(11),f=t("ee").get("tracer"),u=t("loader"),s=t(4),d=NREUM;"undefined"==typeof window.newrelic&&(newrelic=d);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",v=l+"ixn-";a(p,function(t,e){d[e]=i(l,e,!0,"api")}),d.addPageAction=i(l,"addPageAction",!0),d.setCurrentRouteName=i(l,"routeName",!0),e.exports=newrelic,d.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(t,e){var n={},r=this,i="function"==typeof e;return o(v+"tracer",[u.now(),t,n],r),function(){if(f.emit((i?"":"no-")+"fn-start",[u.now(),r,i],n),i)try{return e.apply(this,arguments)}catch(t){throw f.emit("fn-err",[arguments,this,t],n),t}finally{f.emit("fn-end",[u.now()],n)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(t,e){m[e]=i(v,e)}),newrelic.noticeError=function(t,e){"string"==typeof t&&(t=new Error(t)),s.recordSupportability("API/noticeError/called"),o("err",[t,u.now(),!1,e])}},{}],2:[function(t,e,n){function r(t){if(NREUM.init){for(var e=NREUM.init,n=t.split("."),r=0;r<n.length-1;r++)if(e=e[n[r]],"object"!=typeof e)return;return e=e[n[n.length-1]]}}e.exports={getConfiguration:r}},{}],3:[function(t,e,n){var r=!1;try{var i=Object.defineProperty({},"passive",{get:function(){r=!0}});window.addEventListener("testPassive",null,i),window.removeEventListener("testPassive",null,i)}catch(o){}e.exports=function(t){return r?{passive:!0,capture:!!t}:!!t}},{}],4:[function(t,e,n){function r(t,e){var n=[a,t,{name:t},e];return o("storeMetric",n,null,"api"),n}function i(t,e){var n=[c,t,{name:t},e];return o("storeEventMetrics",n,null,"api"),n}var o=t("handle"),a="sm",c="cm";e.exports={constants:{SUPPORTABILITY_METRIC:a,CUSTOM_METRIC:c},recordSupportability:r,recordCustom:i}},{}],5:[function(t,e,n){function r(){return c.exists&&performance.now?Math.round(performance.now()):(o=Math.max((new Date).getTime(),o))-a}function i(){return o}var o=(new Date).getTime(),a=o,c=t(12);e.exports=r,e.exports.offset=a,e.exports.getLastTimestamp=i},{}],6:[function(t,e,n){function r(t){return!(!t||!t.protocol||"file:"===t.protocol)}e.exports=r},{}],7:[function(t,e,n){function r(t,e){var n=t.getEntries();n.forEach(function(t){"first-paint"===t.name?l("timing",["fp",Math.floor(t.startTime)]):"first-contentful-paint"===t.name&&l("timing",["fcp",Math.floor(t.startTime)])})}function i(t,e){var n=t.getEntries();if(n.length>0){var r=n[n.length-1];if(u&&u<r.startTime)return;var i=[r],o=a({});o&&i.push(o),l("lcp",i)}}function o(t){t.getEntries().forEach(function(t){t.hadRecentInput||l("cls",[t])})}function a(t){var e=navigator.connection||navigator.mozConnection||navigator.webkitConnection;if(e)return e.type&&(t["net-type"]=e.type),e.effectiveType&&(t["net-etype"]=e.effectiveType),e.rtt&&(t["net-rtt"]=e.rtt),e.downlink&&(t["net-dlink"]=e.downlink),t}function c(t){if(t instanceof y&&!w){var e=Math.round(t.timeStamp),n={type:t.type};a(n),e<=v.now()?n.fid=v.now()-e:e>v.offset&&e<=Date.now()?(e-=v.offset,n.fid=v.now()-e):e=v.now(),w=!0,l("timing",["fi",e,n])}}function f(t){"hidden"===t&&(u=v.now(),l("pageHide",[u]))}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var u,s,d,p,l=t("handle"),v=t("loader"),m=t(9),g=t(3),y=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){s=new PerformanceObserver(r);try{s.observe({entryTypes:["paint"]})}catch(h){}d=new PerformanceObserver(i);try{d.observe({entryTypes:["largest-contentful-paint"]})}catch(h){}p=new PerformanceObserver(o);try{p.observe({type:"layout-shift",buffered:!0})}catch(h){}}if("addEventListener"in document){var w=!1,b=["click","keydown","mousedown","pointerdown","touchstart"];b.forEach(function(t){document.addEventListener(t,c,g(!1))})}m(f)}},{}],8:[function(t,e,n){function r(t,e){if(!i)return!1;if(t!==i)return!1;if(!e)return!0;if(!o)return!1;for(var n=o.split("."),r=e.split("."),a=0;a<r.length;a++)if(r[a]!==n[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var c=navigator.userAgent,f=c.match(a);f&&c.indexOf("Chrome")===-1&&c.indexOf("Chromium")===-1&&(i="Safari",o=f[1])}e.exports={agent:i,version:o,match:r}},{}],9:[function(t,e,n){function r(t){function e(){t(c&&document[c]?document[c]:document[o]?"hidden":"visible")}"addEventListener"in document&&a&&document.addEventListener(a,e,i(!1))}var i=t(3);e.exports=r;var o,a,c;"undefined"!=typeof document.hidden?(o="hidden",a="visibilitychange",c="visibilityState"):"undefined"!=typeof document.msHidden?(o="msHidden",a="msvisibilitychange"):"undefined"!=typeof document.webkitHidden&&(o="webkitHidden",a="webkitvisibilitychange",c="webkitVisibilityState")},{}],10:[function(t,e,n){function r(t,e){var n=[],r="",o=0;for(r in t)i.call(t,r)&&(n[o]=e(r,t[r]),o+=1);return n}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],11:[function(t,e,n){function r(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,i=n-e||0,o=Array(i<0?0:i);++r<i;)o[r]=t[e+r];return o}e.exports=r},{}],12:[function(t,e,n){e.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(t,e,n){function r(){}function i(t){function e(t){return t&&t instanceof r?t:t?u(t,f,a):a()}function n(n,r,i,o,a){if(a!==!1&&(a=!0),!l.aborted||o){t&&a&&t(n,r,i);for(var c=e(i),f=m(n),u=f.length,s=0;s<u;s++)f[s].apply(c,r);var p=d[w[n]];return p&&p.push([b,n,r,c]),c}}function o(t,e){h[t]=m(t).concat(e)}function v(t,e){var n=h[t];if(n)for(var r=0;r<n.length;r++)n[r]===e&&n.splice(r,1)}function m(t){return h[t]||[]}function g(t){return p[t]=p[t]||i(n)}function y(t,e){l.aborted||s(t,function(t,n){e=e||"feature",w[n]=e,e in d||(d[e]=[])})}var h={},w={},b={on:o,addEventListener:o,removeEventListener:v,emit:n,get:g,listeners:m,context:e,buffer:y,abort:c,aborted:!1};return b}function o(t){return u(t,f,a)}function a(){return new r}function c(){(d.api||d.feature)&&(l.aborted=!0,d=l.backlog={})}var f="nr@context",u=t("gos"),s=t(10),d={},p={},l=e.exports=i();e.exports.getOrSetContext=o,l.backlog=d},{}],gos:[function(t,e,n){function r(t,e,n){if(i.call(t,e))return t[e];var r=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return t[e]=r,r}var i=Object.prototype.hasOwnProperty;e.exports=r},{}],handle:[function(t,e,n){function r(t,e,n,r){i.buffer([t],r),i.emit(t,e,n)}var i=t("ee").get("handle");e.exports=r,r.ee=i},{}],id:[function(t,e,n){function r(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:a(t,o,function(){return i++})}var i=1,o="nr@id",a=t("gos");e.exports=r},{}],loader:[function(t,e,n){function r(){if(!P++){var t=M.info=NREUM.info,e=g.getElementsByTagName("script")[0];if(setTimeout(u.abort,3e4),!(t&&t.licenseKey&&t.applicationID&&e))return u.abort();f(O,function(e,n){t[e]||(t[e]=n)});var n=a();c("mark",["onload",n+M.offset],null,"api"),c("timing",["load",n]);var r=g.createElement("script");0===t.agent.indexOf("http://")||0===t.agent.indexOf("https://")?r.src=t.agent:r.src=v+"://"+t.agent,e.parentNode.insertBefore(r,e)}}function i(){"complete"===g.readyState&&o()}function o(){c("mark",["domContent",a()+M.offset],null,"api")}var a=t(5),c=t("handle"),f=t(10),u=t("ee"),s=t(8),d=t(6),p=t(2),l=t(3),v=p.getConfiguration("ssl")===!1?"http":"https",m=window,g=m.document,y="addEventListener",h="attachEvent",w=m.XMLHttpRequest,b=w&&w.prototype,E=!d(m.location);NREUM.o={ST:setTimeout,SI:m.setImmediate,CT:clearTimeout,XHR:w,REQ:m.Request,EV:m.Event,PR:m.Promise,MO:m.MutationObserver};var x=""+location,O={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1215.min.js"},T=w&&b&&b[y]&&!/CriOS/.test(navigator.userAgent),M=e.exports={offset:a.getLastTimestamp(),now:a,origin:x,features:{},xhrWrappable:T,userAgent:s,disabled:E};if(!E){t(1),t(7),g[y]?(g[y]("DOMContentLoaded",o,l(!1)),m[y]("load",r,l(!1))):(g[h]("onreadystatechange",i),m[h]("onload",r)),c("mark",["firstbyte",a.getLastTimestamp()],null,"api");var P=0}},{}],"wrap-function":[function(t,e,n){function r(t,e){function n(e,n,r,f,u){function nrWrapper(){var o,a,s,p;try{a=this,o=d(arguments),s="function"==typeof r?r(o,a):r||{}}catch(l){i([l,"",[o,a,f],s],t)}c(n+"start",[o,a,f],s,u);try{return p=e.apply(a,o)}catch(v){throw c(n+"err",[o,a,v],s,u),v}finally{c(n+"end",[o,a,p],s,u)}}return a(e)?e:(n||(n=""),nrWrapper[p]=e,o(e,nrWrapper,t),nrWrapper)}function r(t,e,r,i,o){r||(r="");var c,f,u,s="-"===r.charAt(0);for(u=0;u<e.length;u++)f=e[u],c=t[f],a(c)||(t[f]=n(c,s?f+r:r,i,f,o))}function c(n,r,o,a){if(!v||e){var c=v;v=!0;try{t.emit(n,r,o,e,a)}catch(f){i([f,n,r,o],t)}v=c}}return t||(t=s),n.inPlace=r,n.flag=p,n}function i(t,e){e||(e=s);try{e.emit("internal-error",t)}catch(n){}}function o(t,e,n){if(Object.defineProperty&&Object.keys)try{var r=Object.keys(t);return r.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(o){i([o],n)}for(var a in t)l.call(t,a)&&(e[a]=t[a]);return e}function a(t){return!(t&&t instanceof Function&&t.apply&&!t[p])}function c(t,e){var n=e(t);return n[p]=t,o(t,n,s),n}function f(t,e,n){var r=t[e];t[e]=c(r,n)}function u(){for(var t=arguments.length,e=new Array(t),n=0;n<t;++n)e[n]=arguments[n];return e}var s=t("ee"),d=t(11),p="nr@original",l=Object.prototype.hasOwnProperty,v=!1;e.exports=r,e.exports.wrapFunction=c,e.exports.wrapInPlace=f,e.exports.argsToArray=u},{}]},{},["loader"]);</script>
+
+                                
+            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">                    
+            <meta name="description" content="Gutes Heu ist das Grundnahrungsmittel für unsere Pferde. Heulage genießt als Pferdefutter einen weniger guten Ruf. Warum das so ist, ob das berechtigt ist und worauf Sie achten müssen.">                    
+            <meta name="apple-mobile-web-app-capable" content="yes">                    
+            <meta name="apple-mobile-web-app-status-bar-style" content="black">                    
+            <meta name="twitter:card" content="summary_large_image">                    
+            <meta name="twitter:site" content="@reiterrevue">                    
+            <meta name="twitter:title" content="Heulage: Besser als ihr Ruf?">                    
+            <meta name="twitter:description" content="Gutes Heu ist das Grundnahrungsmittel für unsere Pferde. Heulage genießt als Pferdefutter einen weniger guten Ruf. Warum das so ist, ob das berechtigt ist und worauf Sie achten müssen.">                    
+            <meta name="twitter:image" content="https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/2d1267b686ddfe62.jpg">                                                        
+            <meta property="article:section" content="Fütterung">                                        
+            <meta property="article:published_time" content="2022-02-03T11:53:18+01:00">                    
+            <meta property="article:modified_time" content="2022-02-03T16:25:42+01:00">                                                                                
+            <meta property="og:id" content="12842649">                    
+            <meta property="og:type" content="article">                    
+            <meta property="og:title" content="Heulage: Besser als ihr Ruf?">                    
+            <meta property="og:locale" content="de_DE">                    
+            <meta property="og:url" content="https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html">                    
+            <meta property="og:secure_url" content="https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html">                    
+            <meta property="og:description" content="Gutes Heu ist das Grundnahrungsmittel für unsere Pferde. Heulage genießt als Pferdefutter einen weniger guten Ruf. Warum das so ist, ob das berechtigt ist und worauf Sie achten müssen.">                    
+            <meta property="og:site_name" content="Reiterrevue">                    
+            <meta property="og:image" content="https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/2d1267b686ddfe62.jpg">                    
+            <meta property="og:image:secure_url" content="https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/2d1267b686ddfe62.jpg">                    
+            <meta property="og:image:height" content="853">                    
+            <meta property="og:image:width" content="1280">                    
+            <meta property="product:brand" content="Reiterrevue">                    
+            <meta property="product:availability" content="in Stock">                    
+            <meta property="product:condition" content="new">                    
+            <meta property="product:price:amount" content="1">                    
+            <meta property="product:price:currency" content="EUR">                    
+            <meta property="product:retailer_item_id" content="12842649">            
+
+
+                    <title>Heulage: Besser als ihr Ruf? - fuetterung - ausbildung-und-praxis - Reiterrevue International</title>
+
+            
+    <script id="usercentrics-cmp" data-settings-id="r5FAT681d" src="https://app.usercentrics.eu/browser-ui/latest/bundle_legacy.js" data-tcf-enabled></script>
+
+        <script type="text/javascript">
+    var record_data = {
+        "cover_id": ""
+    }
+</script>
+        <!-- Google Data Layer -->
+<script>
+    const dataLayerContents = JSON.parse('{"id":"7325","uid":"3927894","title":"Heulage: Besser als ihr Ruf?","okat":"ausbildung-und-praxis","ukat":"fuetterung","cat_name1":"ausbildung-und-praxis","cat_id1":"7314","cat_name2":"fuetterung","cat_id2":"7325","author":"Sarah Schnieder","ivw_id":"reiterrevue.ausbildung-und-praxis.fuetterung.article.education","ivw_comment":"Heulage: Besser als ihr Ruf?","articletype":"Article","articlelength":317,"articleletters":2121,"login_subscription":"Unbekannt","lang":"de","containerId":"12842649","contentgroup":1,"path":"ausbildung-und-praxis\/fuetterung\/","page_url":"https:\/\/www.reiterrevue.de\/ausbildung-und-praxis\/fuetterung\/heulage-besser-als-ihr-ruf-12842649.html","ver\u00f6ffentlichungsdatum":"Thu, 03 Feb 2022 16:10:00 +0100"}');
+    dataLayer = [dataLayerContents];
+</script>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T58HZPD');
+</script>
+                
+<script async defer src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<script>
+
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+
+    googletag.cmd.push(function() {
+
+
+        //googletag.pubads().collapseEmptyDivs();
+
+
+                            googletag.pubads().setTargeting('RRI_OKat', 'ausbildung-und-praxis');
+            googletag.pubads().setTargeting('RRI_UKat', 'fuetterung');
+                googletag.pubads().setTargeting('BID', '3927894');
+        googletag.pubads().setTargeting('RRI_Seitenart', 'Article');
+
+                            googletag.pubads().setTargeting('RRI_Login', 'Gast');
+        
+        
+                mapping_head = googletag.sizeMapping().
+        addSize([970, 300], [[970, 250], [970, 90], [728, 90]]).
+        addSize([730, 200], [[728, 90], [468, 60]]).
+        addSize([480, 200], [[468, 60], [320, 50]]).
+        addSize([350, 200], [[320, 50], [300, 50]]).
+        addSize([0, 0], []).
+        build();
+        mapping_side = googletag.sizeMapping().
+        addSize([1420, 100], [[120, 600], [160,600], [300, 600]]).
+        addSize([1280, 100], [[120, 600], [160,600]]).
+        addSize([1090, 100], [[120, 600]]).
+        addSize([0, 0], []).
+        build();
+        mapping_left = googletag.sizeMapping().
+        addSize([1220, 100], [120, 600]).
+        addSize([0, 0], []).
+        build();
+        mapping_content = googletag.sizeMapping().
+        addSize([768, 0], [[300, 250], [600, 110], [620, 465], [468, 60], [620, 200]]).
+        addSize([500, 0], [[468, 60], [300, 250]]).
+        addSize([350, 0], [300, 250]).
+        addSize([0, 0], []).
+        build();
+        mapping_sidebar = googletag.sizeMapping().
+        addSize([1000, 0], [[300, 250]]).
+        addSize([765, 0], []).
+        addSize([300, 0], [[300, 250]]).
+        addSize([0, 0], []).
+        build();
+
+        
+                googletag.defineSlot('/23870085/Hockeystick-Pixel', [1, 1], 'div-gpt-outerad-1387385818999-9').addService(googletag.pubads());
+        googletag.defineSlot('36094283/Reiterrevue-Leaderboard', [[728, 90], [970, 90], [970, 250], [320, 50], [300, 50], [620, 465], [468, 60], [620, 200]], 'div-gpt-outerad-1387385818256-2').defineSizeMapping(mapping_head).addService(googletag.pubads());
+        googletag.defineSlot('/36094283/Reiterrevue-Skyscraper', [[120, 600], [160, 600], [300, 600]], 'div-gpt-outerad-1387385818256-6').defineSizeMapping(mapping_side).addService(googletag.pubads());
+
+                googletag.defineSlot('/36094283/Reiterrevue-MedRect1', [[300, 250], [620, 110], [300, 50], [320, 50]], 'div-gpt-ad-1387385818256-3').defineSizeMapping(mapping_content).addService(googletag.pubads());
+
+                         googletag.defineSlot('/36094283/Reiterrevue-MedRect-Marginal1', [300,250], 'div-gpt-ad-1387385818256-4').defineSizeMapping(mapping_sidebar).addService(googletag.pubads());
+                         googletag.defineSlot('/36094283/Reiterrevue-MedRect-Marginal2', [300, 250], 'div-gpt-ad-1387385818256-5').defineSizeMapping(mapping_sidebar).addService(googletag.pubads());
+        
+                // googletag.defineSlot('/23870085/LWB_FloorAd', [[468, 60], [728, 90], [1200, 200], [320, 50]], 'div-gpt-outerad-1520320653166-0').defineSizeMapping(mapping_lwb_floorad).addService(googletag.pubads());
+
+
+        
+                googletag.pubads().enableSingleRequest();
+        googletag.pubads().collapseEmptyDivs();
+        googletag.pubads().addEventListener('slotRenderEnded', function(event) {
+            if(typeof adDisplayLabel !== "function") {
+                window.addEventListener("adIndicatorLoaded", function() {
+                    if(event && !event.isEmpty) {
+                        adDisplayLabel(event.slot, '<p><small>Anzeige</small></p>');
+                    }
+                });
+            } else {
+                if(event && !event.isEmpty) {
+                    adDisplayLabel(event.slot, '<p><small>Anzeige</small></p>');
+                }
+            }
+        });
+                                        googletag.pubads().disableInitialLoad();
+    });
+
+    __tcfapi('addEventListener', 2, function (tcData, success) {
+        if(success && (tcData.eventStatus === 'tcloaded' || tcData.eventStatus === 'useractioncomplete')) {
+            window.googletag.enableServices();
+            window.googletag.pubads().refresh();
+            __tcfapi('removeEventListener', 2, function (success) {}, tcData.listenerId);
+        }
+    });
+</script>
+            <script type="application/ld+json">
+{"@context":"http:\/\/schema.org","@type":"Article","name":"Reiterrevue International","description":"Reiterrevue International","headline":"Heulage: Besser als ihr Ruf?","url":"https:\/\/www.reiterrevue.de\/ausbildung-und-praxis\/fuetterung\/heulage-besser-als-ihr-ruf-12842649.html","mainEntityOfPage":"https:\/\/www.reiterrevue.de\/ausbildung-und-praxis\/fuetterung\/heulage-besser-als-ihr-ruf-12842649.html","inLanguage":"de","thumbnailUrl":"https:\/\/www.reiterrevue.de\/imgs\/3\/9\/2\/7\/8\/9\/4\/2d1267b686ddfe62.jpg","image":{"@type":"ImageObject","url":"https:\/\/www.reiterrevue.de\/imgs\/3\/9\/2\/7\/8\/9\/4\/2d1267b686ddfe62.jpg","width":"853","height":"1280"},"datePublished":"2022-02-03T11:53:18+01:00","dateModified":"2022-02-03T16:25:42+01:00","articleSection":"ausbildung-und-praxis","wordCount":317,"keywords":"","timeRequired":"","creator":"Sarah Schnieder","author":{"@type":"Person","name":"Sarah Schnieder"},"publisher":{"@type":"Organization","name":"Reiterrevue International","logo":{"@type":"ImageObject","url":"https:\/\/www.reiterrevue.de\/img\/reiterrevue\/reiterrevue\/og_image.png","width":"1200","height":"249"}}}
+</script>
+
+                <link rel="stylesheet" href="https://www.reiterrevue.de/css/reiterrevue/style.css?v=0005">
+
+<link rel="apple-touch-icon" href="https://www.reiterrevue.de/img/reiterrevue/touch-icon-iphone.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://www.reiterrevue.de/img/reiterrevue/touch-icon-ipad.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://www.reiterrevue.de/img/reiterrevue/touch-icon-iphone-retina.png">
+<link rel="apple-touch-icon" sizes="167x167" href="https://www.reiterrevue.de/img/reiterrevue/touch-icon-ipad-retina.png">
+<link rel="apple-touch-startup-image" media="(device-width: 320px)" href="https://www.reiterrevue.de/img/reiterrevue/apple-touch-startup-image-320x460.png">
+<link rel="apple-touch-startup-image" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" href="https://www.reiterrevue.de/img/reiterrevue/apple-touch-startup-image-640x920.png">
+<link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href="https://www.reiterrevue.de/img/reiterrevue/apple-touch-startup-image-640x1096.png">
+<link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: portrait)" href="https://www.reiterrevue.de/img/reiterrevue/apple-touch-startup-image-768x1004.png">
+<link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: landscape)" href="https://www.reiterrevue.de/img/reiterrevue/apple-touch-startup-image-748x1024.png">
+<link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)" href="https://www.reiterrevue.de/img/reiterrevue/apple-touch-startup-image-1536x2008.png">
+<link rel="apple-touch-startup-image" media="(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)" href="https://www.reiterrevue.de/img/reiterrevue/apple-touch-startup-image-1496x2048.png">
+<link rel="shortcut icon" href="https://www.reiterrevue.de/img/reiterrevue/favicon.ico">
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Barlow+Condensed:400,500,700|Source+Sans+Pro:400,600');
+</style>
+</head>
+<body class=" tree-name-fütterung controller-name-article">
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T58HZPD"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<a href="#content" class="sr-only sr-only-focusable">Zum Inhalt springen</a>
+
+<div id="wrapper">
+
+        
+        
+
+
+            <div id="adZoneOuter" class="d-print-none">
+
+    <!-- Leaderboard -->
+    <div id="sky-left">
+            </div>
+
+    <!-- Leaderboard -->
+    <div id="leaderboard">
+        <div id="div-gpt-outerad-1387385818256-2">
+            <script type="text/javascript">
+                googletag.cmd.push(function() { googletag.display('div-gpt-outerad-1387385818256-2'); });
+            </script>
+        </div>
+                
+    </div>
+
+    <!-- Hockeystick-Pixel -->
+    <div id="hockeystick">
+        <div id="div-gpt-outerad-1387385818999-9">
+            <script type="text/javascript">
+                googletag.cmd.push(function() { googletag.display('div-gpt-outerad-1387385818999-9'); });
+            </script>
+        </div>
+    </div>
+
+    <!-- Skyscraper -->
+    <div id="skyscraper">
+        <div id="div-gpt-outerad-1387385818256-6">
+            <script type="text/javascript">
+                googletag.cmd.push(function() { googletag.display('div-gpt-outerad-1387385818256-6'); });
+            </script>
+        </div>
+    </div>
+
+</div>
+
+    <div class="wrapperbody">
+
+                    <div class="branding container d-none d-md-flex my-3">
+
+    <div class="flex-column mr-auto">
+        <a href="https://www.reiterrevue.de">
+            <img  src="/img/reiterrevue/logo.svg" height="50" class="d-inline-block" alt="Reiterrevue">
+            <h1 class="sr-only">Reiterrevue</h1>
+        </a>
+    </div>
+
+    <div class="flex-column ml-3 mr-3 d-print-none">
+
+                    <ul class="navigationService list-unstyled nav mt-1">
+            </ul>
+
+    </div>
+
+    <div class=" d-print-none text-right nav">
+                <div class="mr-2 nav-item d-xs-none ">
+                <a class="btn btn-secondary" href="/login" role="button" ga-on="click" ga-event-category="Navigation Login" ga-event-action="click">
+            Anmelden
+        </a>
+    </div>
+
+                <div class="nav-item">
+            <button class="btn btn-secondary btn-search" data-toggle="collapse" data-target="#searchFormSiteOverlay" aria-expanded="false" aria-controls="searchFormSiteOverlay" ga-on="click" ga-event-category="searchFormMini" ga-event-action="open">
+                <i class="fa fa-lg fa-search" aria-hidden="true"></i><span class="sr-only">Suche</span>
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+                    <nav id="main-nav" class="container navbar navbar-expand-md navbar-light bg-white sticky-top pt-1 pb-1 mt-0 mb-3 d-flex justify-content-start align-content-end d-print-none">
+
+        <button class="btn btn-link d-md-none btn-hamburger" data-toggle="collapse" data-target="#navbarHamburger" aria-expanded="false" aria-controls="navbarHamburger" ga-on="click" ga-event-category="Hamburger navigtaion" ga-event-action="open">
+        <i class="fa fa-2x fa-bars text-dark" aria-hidden="true"></i>
+    </button>
+
+        <a class="navbar-brand d-md-none" href="https://www.reiterrevue.de">
+        <img  src="/img/reiterrevue/logo.svg" height="50" class="d-inline-block" alt="Reiterrevue">
+        <h1 class="sr-only">Reiterrevue International</h1>
+    </a>
+
+        <div class="d-none d-md-block collapse navbar-collapse" id="navbarMainNavigation">
+        <ul class="navbar-nav main-navigation d-print-none">
+
+            
+        <li class="nav-item dropdown ">
+
+            <a href="#"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle"                 id="navbarDropdownMenuLink1"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                News
+            </a>
+
+                            <div class="dropdown-menu  " aria-labelledby="navbarDropdownMenuLink1">
+                                            <a class="dropdown-item" href="/news/sport/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Sport</a>
+                                            <a class="dropdown-item" href="/news/nachrichten/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Nachrichten</a>
+                                            <a class="dropdown-item" href="/news/szene/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Szene</a>
+                                            <a class="dropdown-item" href="/news/vermarktung/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Vermarktung</a>
+                                            <a class="dropdown-item" href="/news/zucht/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Zucht</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item dropdown active">
+
+            <a href="#"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle"                 id="navbarDropdownMenuLink2"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                Ausbildung &amp; Praxis
+            </a>
+
+                            <div class="dropdown-menu  " aria-labelledby="navbarDropdownMenuLink2">
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/ausbildung/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Ausbildung</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/fuetterung/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Fütterung</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/gesundheit/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Gesundheit</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/stall-und-weide/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Stall &amp; Weide</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/equipment/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Equipment</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item dropdown ">
+
+            <a href="#"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle"                 id="navbarDropdownMenuLink3"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                Mediathek
+            </a>
+
+                            <div class="dropdown-menu  " aria-labelledby="navbarDropdownMenuLink3">
+                                            <a class="dropdown-item" href="/mediathek/filme/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Filme</a>
+                                            <a class="dropdown-item" href="/mediathek/bildergalerien/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Bildergalerien</a>
+                                            <a class="dropdown-item" href="/mediathek/podcasts/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Podcasts</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item dropdown ">
+
+            <a href="#"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle"                 id="navbarDropdownMenuLink4"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                Wissen
+            </a>
+
+                            <div class="dropdown-menu  " aria-labelledby="navbarDropdownMenuLink4">
+                                            <a class="dropdown-item" href="/wissen/profis-und-experten/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Profis &amp; Experten </a>
+                                            <a class="dropdown-item" href="/wissen/menschen-macher-maerkte/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Menschen, Macher, Märkte</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item dropdown ">
+
+            <a href="#"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle"                 id="navbarDropdownMenuLink5"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+                Service
+            </a>
+
+                            <div class="dropdown-menu  " aria-labelledby="navbarDropdownMenuLink5">
+                                            <a class="dropdown-item" href="https://shop.reiteronline.com/abo" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Abo</a>
+                                            <a class="dropdown-item" href="http://shop.reiteronline.com/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Shop</a>
+                                            <a class="dropdown-item" href="/service/kontakt/ihr-kontakt-zu-uns-9001004.html" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Kontakt</a>
+                                            <a class="dropdown-item" href="/service/newsletter/newsletter-anmeldung-9001732.html" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Newsletter</a>
+                                            <a class="dropdown-item" href="/service/gewinnspiele/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Gewinnspiele</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item  ">
+
+            <a href="/seminare/"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link " >
+                Seminare
+            </a>
+
+            
+        </li>
+
+    
+    
+</ul>
+        <ul class="navigationEPaper nav ml-auto">
+    <li class="nav-item">
+            </li>
+    <li class="nav-item">
+        <a href="https://shop.reiteronline.com/abo/" class="btn btn-abo btn-primary ml-2 " ga-on="click" ga-event-category="Abonnement" ga-event-action="open">
+            Abo
+        </a>
+
+    </li>
+</ul>
+    </div>
+
+    <button class="btn btn-link btn-search ml-auto d-md-none" data-toggle="collapse" data-target="#searchFormSiteOverlay" aria-expanded="false" aria-controls="searchFormSiteOverlay" ga-on="click" ga-event-category="searchFormSiteOverlay" ga-event-action="open">
+        <i class="fa fa-lg fa-search" aria-hidden="true"></i><span class="sr-only">Suche</span>
+    </button>
+
+</nav>
+
+
+<div class="collapse fade h-100" id="searchFormSiteOverlay">
+            <div class="d-flex flex-row-reverse">
+        <button type="button" class="close btn-lg" aria-label="Close" data-toggle="collapse" data-target="#searchFormSiteOverlay" aria-expanded="false" aria-controls="searchFormSiteOverlay" ga-on="click" ga-event-category="searchFormMini" ga-event-action="close">
+            <span aria-hidden="true" class="m-3 text-white">&times;</span>
+        </button>
+    </div>
+
+        <div class="d-flex justify-content-center h-100">
+        <form action="https://www.reiterrevue.de" method='get' role='form' class="my-auto w-75">
+            <div class="form-group row text-center">
+
+            <div class="input-group">
+                <input type='hidden' name='doSearch' value='1'>
+                 <input type="text" class="form-control" name="query" placeholder="Suchtext" value="" aria-label="Suchtext">
+                 <span class="input-group-btn">
+                     <button class="btn btn-link" id="searchDo" type="submit" name="search"><i class="fa fa-2x  fa-arrow-right text-white" aria-hidden="true"></i></button>
+                    </span>
+                 </div>
+            </div>
+
+            <div class="form-group row text-center text-white mt-4">
+            <p>Drücken Sie Öffnen / Eingabe / Enter / Return um die Suche zu starten</p>            
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div id="navbarHamburger" class="nav-brand collapse d-md-none pt-2">
+
+    <div class="d-flex">
+                <button class="btn btn-link p-0" data-toggle="collapse" data-target="#navbarHamburger" aria-expanded="false" aria-controls="navbarHamburger" ga-on="click" ga-event-category="Hamburger Navigation" ga-event-action="close">
+            <i class="fa fa fa-2x fa-times text-dark" aria-hidden="true"></i>
+        </button>
+
+                <div class="ml-auto">
+                            <a href="/login" role="" ga-on="click" ga-event-category="Authentication" ga-event-action="login" class="btn btn-lg btn-secondary">
+                    <i class="fa fa-user" aria-hidden="true"></i> <span class="p">Anmelden</span>
+                </a>
+                    </div>
+    </div>
+
+    <ul class="navbar-nav main-navigation d-print-none">
+
+            
+        <li class="nav-item  ">
+
+            <a href="/news/"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle" >
+                News
+            </a>
+
+                            <div class="dropdown-menu  show" aria-labelledby="navbarDropdownMenuLink1">
+                                            <a class="dropdown-item" href="/news/sport/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Sport</a>
+                                            <a class="dropdown-item" href="/news/nachrichten/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Nachrichten</a>
+                                            <a class="dropdown-item" href="/news/szene/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Szene</a>
+                                            <a class="dropdown-item" href="/news/vermarktung/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Vermarktung</a>
+                                            <a class="dropdown-item" href="/news/zucht/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Zucht</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item  active">
+
+            <a href="/ausbildung-und-praxis/"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle" >
+                Ausbildung &amp; Praxis
+            </a>
+
+                            <div class="dropdown-menu  show" aria-labelledby="navbarDropdownMenuLink2">
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/ausbildung/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Ausbildung</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/fuetterung/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Fütterung</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/gesundheit/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Gesundheit</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/stall-und-weide/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Stall &amp; Weide</a>
+                                            <a class="dropdown-item" href="/ausbildung-und-praxis/equipment/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Equipment</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item  ">
+
+            <a href="/mediathek/"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle" >
+                Mediathek
+            </a>
+
+                            <div class="dropdown-menu  show" aria-labelledby="navbarDropdownMenuLink3">
+                                            <a class="dropdown-item" href="/mediathek/filme/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Filme</a>
+                                            <a class="dropdown-item" href="/mediathek/bildergalerien/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Bildergalerien</a>
+                                            <a class="dropdown-item" href="/mediathek/podcasts/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Podcasts</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item  ">
+
+            <a href="/wissen/"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle" >
+                Wissen
+            </a>
+
+                            <div class="dropdown-menu  show" aria-labelledby="navbarDropdownMenuLink4">
+                                            <a class="dropdown-item" href="/wissen/profis-und-experten/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Profis &amp; Experten </a>
+                                            <a class="dropdown-item" href="/wissen/menschen-macher-maerkte/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Menschen, Macher, Märkte</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item  ">
+
+            <a href="/service/"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link dropdown-toggle" >
+                Service
+            </a>
+
+                            <div class="dropdown-menu  show" aria-labelledby="navbarDropdownMenuLink5">
+                                            <a class="dropdown-item" href="https://shop.reiteronline.com/abo" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Abo</a>
+                                            <a class="dropdown-item" href="http://shop.reiteronline.com/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Shop</a>
+                                            <a class="dropdown-item" href="/service/kontakt/ihr-kontakt-zu-uns-9001004.html" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Kontakt</a>
+                                            <a class="dropdown-item" href="/service/newsletter/newsletter-anmeldung-9001732.html" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Newsletter</a>
+                                            <a class="dropdown-item" href="/service/gewinnspiele/" ga-on="click" ga-event-category="MainNavigation" ga-event-action="Sub"
+>Gewinnspiele</a>
+                                    </div>
+            
+        </li>
+
+            
+        <li class="nav-item  ">
+
+            <a href="/seminare/"
+                ga-on="click" ga-event-category="MainNavigation" ga-event-action="Main"
+                class="nav-link " >
+                Seminare
+            </a>
+
+            
+        </li>
+
+    
+                
+</ul>
+    
+<nav class="ml-md-auto navigationSharing ">
+        <a class="mx-1" href="https://www.facebook.com/reiterrevue" ga-on="click" ga-event-category="Social Channel Navigation" ga-event-action="facebook">
+        <i class="fa fa-lg fa-facebook-square socialnetwork-facebook" aria-hidden="true"></i> <span class="sr-only"> facebook</span>
+    </a>
+                <a class="mx-1" href="https://www.youtube.com/user/reiterrevue" ga-on="click" ga-event-category="Social Channel Navigation" ga-event-action="youtube">
+        <i class="fa fa-lg fa-youtube-square socialnetwork-youtube" aria-hidden="true"></i> <span class="sr-only"> youtube</span>
+    </a>
+            <a class="mx-1" href="https://www.pinterest.com/reiterrevue" ga-on="click" ga-event-category="Social Channel Navigation" ga-event-action="pinterest">
+        <i class="fa fa-lg fa-pinterest-square socialnetwork-pinterest" aria-hidden="true"></i> <span class="sr-only"> pinterest</span>
+    </a>
+                        </nav>
+
+    <div class="d-flex justify-content-center footer">
+        <ul class="nav navbar-brand d-flex flex-nowrap" style="overflow-x:auto;">
+                                            <li class="nav-item">
+                    <a href="/agb-9115835.html" class="nav-link text-nowrap text-dark">
+                        AGB
+                    </a>
+                </li>
+                                            <li class="nav-item">
+                    <a href="/datenschutz-9000618.html" class="nav-link text-nowrap text-dark">
+                        Datenschutz
+                    </a>
+                </li>
+                                            <li class="nav-item">
+                    <a href="/impressum-9002020.html" class="nav-link text-nowrap text-dark">
+                        Impressum
+                    </a>
+                </li>
+                                            <li class="nav-item">
+                    <a href="/mediadaten-9115894.html" class="nav-link text-nowrap text-dark">
+                        Mediadaten
+                    </a>
+                </li>
+                                            <li class="nav-item">
+                    <a href="/service/kontakt/ihr-kontakt-zu-uns-9001004.html" class="nav-link text-nowrap text-dark">
+                        Kontakt
+                    </a>
+                </li>
+                        <li class="nav-item">
+                <a href="#" onClick="UC_UI.showSecondLayer();" class="nav-link text-nowrap text-dark">
+                    Datenschutzeinstellungen
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+                
+
+
+
+<article class="entry container hyphens-auto">
+
+    <header class="entry-header hyphens-none">
+                <ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb my-0"><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item" ><a itemprop="item" href="https://www.reiterrevue.de/ausbildung-und-praxis"><span itemprop="name">Ausbildung & Praxis</span></a><meta itemprop="position" content="1" /></li><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item" ><a itemprop="item" href="https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung"><span itemprop="name">Fütterung</span></a><meta itemprop="position" content="2" /></li><li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active"><span itemprop="name">Heulage: Besser als ihr Ruf?</span><meta itemprop="item" content="https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html" /><meta itemprop="position" content="3" /></li></ol>
+
+                            <h3 class="subtitle">Leseprobe: Das perfekte Dinner</h3>
+
+<h1 itemprop="headline" class="">Heulage: Besser als ihr Ruf?</h1>
+
+
+
+    <p class="entry-meta text-muted small mt-1">
+
+                    Veröffentlicht am <span itemprop="datePublished" content="2022-02-03">03.02.2022</span>
+                            von Sarah Schnieder   <span class="sr-only">Reiterrevue International</span>
+        
+    </p>
+
+
+    </header>
+
+    <section class="entry-text">
+
+                <p class="lead teasertext">Gutes Heu ist das Grundnahrungsmittel für unsere Pferde. Heulage genießt als Pferdefutter einen weniger guten Ruf. Warum das so ist, ob das berechtigt ist und worauf Sie achten müssen.</p>
+                
+
+    <figure class="entry-image " itemscope itemprop="image" itemtype="http://schema.org/ImageObject">
+
+                <picture>
+
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/heulage-lafrentz-ea11ea41b973707f.JPG" media="(max-width: 480px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_576,h_324,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/heulage-lafrentz-ea11ea41b973707f.JPG" media="(max-width: 576px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_768,h_432,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/heulage-lafrentz-ea11ea41b973707f.JPG" media="(max-width: 768px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/heulage-lafrentz-ea11ea41b973707f.JPG" media="(max-width: 992px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/heulage-lafrentz-ea11ea41b973707f.JPG" media="(min-width: 1200px)">
+
+            <img class="img-fluid lozad" data-src="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/heulage-lafrentz-ea11ea41b973707f.JPG" itemprop="url" alt=""
+                    >
+
+            <noscript>
+                <img class="img-fluid lozad" src="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/heulage-lafrentz-ea11ea41b973707f.JPG"  itemprop="url" alt=""
+                        >
+            </noscript>
+
+        </picture>
+
+                
+            <figcaption class="entry-image-caption caption mt-1" itemprop="caption">
+
+                Kritiker behaupten, Heulage würde das Gleichgewicht im Darm des Pferdes stören. So ganz stimmt das allerdings nicht.                <span class="entry-image-source" itemprop="author"><em>Bild:&nbsp;S. Lafrentz</em></span>
+            </figcaption>
+
+        
+    </figure>
+
+
+
+        <a name="jump"></a>
+
+                <div class="mt-3 mb-4">
+            <div class="socialsharing-buttons d-print-none">
+                    <a href="whatsapp://send?text=https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html" rel="popup" title="Per whatsapp teilen" target="_blank" class="d-md-none btn btn-whatsapp icon-left text-white">
+            <i class="fa fa-whatsapp"></i><span class="d-none d-md-inline"> whatsapp</span>
+        </a>
+                        <a href="https://pinterest.com/pin/create/bookmarklet/?media=https%3A%2F%2Fwww.reiterrevue.de%2F%2Fimgs%2F3%2F9%2F2%2F7%2F8%2F9%2F4%2F2d1267b686ddfe62.jpg&amp;url=https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html&amp;description=Heulage%3A%20Besser%20als%20ihr%20Ruf%3F" rel="popup" title="Per pinterest teilen" target="_blank" class="btn btn-pinterest icon-left text-white">
+            <i class="fa fa-pinterest"></i><span class="d-none d-md-inline"> pinterest</span>
+        </a>
+                        <a href="https://www.facebook.com/sharer.php?u=https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html" rel="popup" title="Per facebook teilen" target="_blank" class="btn btn-facebook icon-left text-white">
+            <i class="fa fa-facebook"></i><span class="d-none d-md-inline"> facebook</span>
+        </a>
+                        <a href="https://twitter.com/intent/tweet?url=https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html&amp;text=Heulage%3A%20Besser%20als%20ihr%20Ruf%3F" rel="popup" title="Per twitter teilen" target="_blank" class="btn btn-twitter icon-left text-white">
+            <i class="fa fa-twitter"></i><span class="d-none d-md-inline"> twitter</span>
+        </a>
+                                                <a href="mailto:?subject=Interessanter Beitrag auf reiterrevue.com: Heulage%3A%20Besser%20als%20ihr%20Ruf%3F&amp;body=Schau dir den Beitrag Heulage%3A%20Besser%20als%20ihr%20Ruf%3F auf Reiterrevue.com an: https://www.reiterrevue.de/ausbildung-und-praxis/fuetterung/heulage-besser-als-ihr-ruf-12842649.html" rel="popup" title="Per mail teilen" target="_blank" class="btn btn-envelope icon-left text-white">
+            <i class="fa fa-envelope"></i><span class="d-none d-md-inline"> mail</span>
+        </a>
+    <a href="javascript:self.print();" rel="popup" title="Drucken" class="btn btn-print d-none d-md-inline-block icon-left text-white">
+    <i class="fa fa-print"></i><span class="d-md-inline"> Drucken</span>
+</a>
+</div>
+    
+        </div>
+
+    </section>
+
+
+    <div class="row">
+
+        <div class="col">
+
+            
+                
+                                <div itemtype="text">    <p>Für Pferde mit Allergien oder Equinem Asthma kann auch Heulage eine Raufutter-Alternative sein. Allerdings mit einer Einschränkung: Es kommt auch hier auf den Feuchtigkeitsgrad des Ballens an. Heulage oder Silage werden nach dem Pressen mit Folie luftdicht umwickelt. Kritiker argumentieren, dass die durch das Folieren entstehenden Milchsäurebakterien, die die Heulage haltbar machen, die natürlichen Darmbakterien des Pferdes stören und den pH-Wert in Richtung „sauer“ verändern. Durch das Folieren recht trockener Heulage mit einem Feuchtigkeitswert unter 50 Prozent lässt sich dies Tierärzten zufolge aber weitestgehend verhindern. Der pH-Wert ähnelt tatsächlich dem von Heu. „Wenn Heulage gut gemacht ist, kann sie im Labor in Sachen Keime sehr gute Werte haben“, sagt Guido Schmitz, der sich auf die maschinelle Heutrocknung spezialisiert hat und daher klar in Trocknungsanlagen aufbereitetes Heu präferiert.</p><p>Auch bei Heulage kann es übrigens zu Schimmelbildung kommen, wenn die Folie nicht in Ordnung ist. Kontrolle ist immer sinnvoll. Ein Vorteil: Die Heulage kann in der Folie draußen gelagert werden. Die Nachteile: Die Folie ist alles andere als nachhaltig und ein geöffneter Ballen beginnt zu „atmen“ und gammelt schnell. Entsprechend muss man seine Innentemperatur im Blick behalten. Sobald er warm wird, beginnen Fäulnisprozesse und er kann nicht mehr verfüttert werden. Außerdem birgt die luftdichte Verpackung noch ein weiteres Risiko: Botulismus. Wenn versehentlich Tierkadaver, wie tote Mäuse in den Ballen eingepresst werden, können sich sogenannte Botuline im Ballen ausbreiten, was die teils tödlich verlaufende Nervenkrankheit Botulismus zur Folge haben kann, wenn Pferde davon fressen. Bei nicht folierten Heuballen ist dies nicht der Fall.</p><div class="inlineTextbox inlineTextboxstandard">
+
+
+    <figure class="entry-image  entry-image-left " itemscope itemprop="image" itemtype="http://schema.org/ImageObject">
+
+                <picture>
+
+            <source srcset="https://flm.reiterrevue.de/flm/upload/w_480,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/Titel_2-22-f9b11a698a379bae.JPG" media="(max-width: 480px)">
+            <source srcset="https://flm.reiterrevue.de/flm/upload/w_576,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/Titel_2-22-f9b11a698a379bae.JPG" media="(max-width: 576px)">
+            <source srcset="https://flm.reiterrevue.de/flm/upload/w_768,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/Titel_2-22-f9b11a698a379bae.JPG" media="(max-width: 768px)">
+            <source srcset="https://flm.reiterrevue.de/flm/upload/w_992,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/Titel_2-22-f9b11a698a379bae.JPG" media="(max-width: 992px)">
+            <source srcset="https://flm.reiterrevue.de/flm/upload/w_992,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/Titel_2-22-f9b11a698a379bae.JPG" media="(min-width: 1200px)">
+
+            <img class="img-fluid" src="https://flm.reiterrevue.de/flm/upload/w_992,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/Titel_2-22-f9b11a698a379bae.JPG" itemprop="url" alt=""
+                     style="width:100%; max-width:258px;" >
+
+            <noscript>
+                <img class="img-fluid" src="https://flm.reiterrevue.de/flm/upload/w_992,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/7/8/9/4/Titel_2-22-f9b11a698a379bae.JPG"  itemprop="url" alt=""
+                         style="width:100%; max-width:258px;" >
+            </noscript>
+
+        </picture>
+
+                
+    </figure>
+
+
+     Heu ist die Grundlage einer guten Pferdefütterung, doch viele Ballen enthalten Staub und Schimmelpilze. Was Sie bei der Fütterung beachten müssen, was wässern und bedampfen bringt und wie gutes Heu eigentlich produziert wird, lesen Sie in unserer Februar-Ausgabe. <a href="https://shop.reiteronline.com/reiter_revue_heft_2_2022-007551.html?utm_source=Webseite_RRI&amp;utm_medium=Beitrag_red&amp;utm_campaign=RRI_Einzelheft_022022" target="_blank">Das Heft können Sie hier versandkostenfrei bestellen.</a>
+</div>
+<p>
+        <div class="media border p-2">
+            <div class="align-self-center w-25 ml-2">
+            <a href="/ausbildung-und-praxis/fuetterung/heu-richtig-ernten-richtig-lagern-richtig-fuettern-12808635.html" title="Heu - richtig ernten, richtig lagern, richtig füttern" itemprop="url" class="relatedPost">
+
+    <figure class="entry-image " itemscope itemprop="image" itemtype="http://schema.org/ImageObject">
+
+                <picture>
+
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 480px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_576,h_324,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 576px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_768,h_432,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 768px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 992px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(min-width: 1200px)">
+
+            <img class="img-fluid lozad" data-src="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" itemprop="url" alt=""
+                    >
+
+            <noscript>
+                <img class="img-fluid lozad" src="https://flm.reiterrevue.de/flm/upload/w_992,h_558,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg"  itemprop="url" alt=""
+                        >
+            </noscript>
+
+        </picture>
+
+                
+    </figure>
+
+ </a>
+        </div>
+        <div class="media-body text-left m-auto p-2">
+        <a href="/ausbildung-und-praxis/fuetterung/heu-richtig-ernten-richtig-lagern-richtig-fuettern-12808635.html" title="Heu - richtig ernten, richtig lagern, richtig füttern" itemprop="url" class="relatedPost"> 
+            <p class="text-primary text-uppercase d-none d-md-inline small">Leseprobe: Das perfekte Dinner</p>
+            <h4>Heu - richtig ernten, richtig lagern, richtig füttern</h4>
+            <p>Heu ist die Grundlage einer guten Pferdefütterung. Doch viele Ballen enthalten Staub und Schimmelpilze. Umso wichtiger, einmal genau hinzuschauen, um gutes Heu zu erkennen: von der Ernte über die Lagerung bis zur bedarfsgerechten Fütterung!</p>
+                <a class="read-more " href="/ausbildung-und-praxis/fuetterung/heu-richtig-ernten-richtig-lagern-richtig-fuettern-12808635.html" >weiterlesen <span>→</span></a>
+
+        </a>
+    </div>
+</div>
+    </p>
+</div>
+
+                
+<div class="card-deck mb-5 inline-navigation">
+
+    
+</div>
+
+
+            
+            <section>
+
+                <div id="adZoneContent">
+    <div id="div-gpt-ad-1387385818256-3" class="w-100 mb-4 insert-adLabel text-center">
+        <script type="text/javascript">
+            googletag.cmd.push(function() { googletag.display('div-gpt-ad-1387385818256-3'); });
+        </script>
+    </div>
+</div>
+
+            </section>
+
+            <footer class="mt-5">
+
+                                                    
+                                
+    <nav class="navigationPreviousNext row mb-5 d-print-none">
+
+        
+                    <a href="/ausbildung-und-praxis/fuetterung/heu-richtig-ernten-richtig-lagern-richtig-fuettern-12808635.html" class="next-post-nav col-12 col-md-6 mb-3" ga-on="click" ga-event-category="PrevNext" ga-event-action="next">
+                <div class="card">
+                    <div class="mb-2 ml-auto">
+                        Nächster Artikel
+                        <i class="fa fa-angle-right " aria-hidden="true"></i>
+                    </div>
+                                            
+
+    <figure class="entry-image " itemscope itemprop="image" itemtype="http://schema.org/ImageObject">
+
+                <picture>
+
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 480px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_576,h_324,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 576px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 768px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(max-width: 992px)">
+            <source class="lozad" data-srcset="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" media="(min-width: 1200px)">
+
+            <img class="img-fluid lozad" data-src="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg" itemprop="url" alt=""
+                   >
+
+            <noscript>
+                <img class="img-fluid lozad" src="https://flm.reiterrevue.de/flm/upload/w_480,h_270,c_1,g_Center,q_60/https://www.reiterrevue.de/imgs/3/9/2/1/6/4/2/AdobeStock_281002052_id265461-8ea4d6bf62671acf.jpg"  itemprop="url" alt=""
+                        >
+            </noscript>
+
+        </picture>
+
+                
+    </figure>
+
+
+                                        <div class="card-body">
+                                                <h4 class="m-0">Heu - richtig ernten, richtig lagern, richtig füttern</h4>
+                    </div>
+                </div>
+            </a>
+        
+    </nav>
+
+
+                                
+
+
+                
+
+            </footer>
+
+        </div>
+
+        
+    </div>
+
+</article>
+
+
+
+
+        <hr class="featurette-divider">
+
+                    <footer id="site-footer" class="container d-print-none">
+
+    <div class="mb-4 pb-5">
+
+        <div id="footerNavigation" class="bg-white ">
+            <ul class="nav navbar-brand d-flex">
+                                                        <li class="nav-item">
+                        <a href="/agb-9115835.html"  class="nav-link text-nowrap text-dark" ga-on="click" ga-event-category="Footer" ga-event-action="">
+                            AGB
+                        </a>
+                    </li>
+                                                        <li class="nav-item">
+                        <a href="/datenschutz-9000618.html"  class="nav-link text-nowrap text-dark" ga-on="click" ga-event-category="Footer" ga-event-action="">
+                            Datenschutz
+                        </a>
+                    </li>
+                                                        <li class="nav-item">
+                        <a href="/impressum-9002020.html"  class="nav-link text-nowrap text-dark" ga-on="click" ga-event-category="Footer" ga-event-action="">
+                            Impressum
+                        </a>
+                    </li>
+                                                        <li class="nav-item">
+                        <a href="/mediadaten-9115894.html"  class="nav-link text-nowrap text-dark" ga-on="click" ga-event-category="Footer" ga-event-action="">
+                            Mediadaten
+                        </a>
+                    </li>
+                                                        <li class="nav-item">
+                        <a href="/service/kontakt/ihr-kontakt-zu-uns-9001004.html"  class="nav-link text-nowrap text-dark" ga-on="click" ga-event-category="Footer" ga-event-action="">
+                            Kontakt
+                        </a>
+                    </li>
+                                <li class="nav-item">
+                    <a href="#" onClick="UC_UI.showSecondLayer();" class="nav-link text-nowrap text-dark">
+                        Datenschutzeinstellungen
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <a class="btn btn-link-outline float-right" href="#" role="button"><i class="fa fa-arrow-up" aria-hidden="true"></i> nach oben</a>
+
+
+
+    </div>
+    <div class="row" id="copyright" style="border-top: 1px solid rgba(0,0,0,.1);font-size:0.8rem">
+        <div class="col">
+        <span class="lv">© <a href="https://www.lv.de" target="_blank">Landwirtschaftsverlag GmbH</a>, Hülsebrockstraße 2-8, 48165 Münster</span>
+        </div>
+        <div class="col">
+        <span class="poweredby"><a href="https://www.interred.de/" target="_blank" rel="nofollow">Content Management</a> by Inter<span style="color:#c00;">Red</span></span>
+        </div>
+    </div>
+
+</footer>
+
+                    <nav id="stickyFooterNavigationContainer" class="navbar navbar-brand fixed-bottom navbar-light d-flex justify-content-center d-xs-block d-md-none d-print-none blur-bg"  style="overflow:hidden;">
+        <ul id="stickyFooterNavigation" class="nav d-flex flex-nowrap" style="overflow-x:auto;">
+                                            <li class="nav-item ">
+                    <a href="/news/" class="nav-link" ga-on="click" ga-event-category="Sticky Footer Navigation" ga-event-action="News">
+                        News
+                    </a>
+                </li>
+                                            <li class="nav-item ">
+                    <a href="/ausbildung-und-praxis/" class="nav-link" ga-on="click" ga-event-category="Sticky Footer Navigation" ga-event-action="Ausbildung &amp; Praxis">
+                        Ausbildung &amp; Praxis
+                    </a>
+                </li>
+                                            <li class="nav-item ">
+                    <a href="/mediathek/" class="nav-link" ga-on="click" ga-event-category="Sticky Footer Navigation" ga-event-action="Mediathek">
+                        Mediathek
+                    </a>
+                </li>
+                                            <li class="nav-item ">
+                    <a href="/wissen/" class="nav-link" ga-on="click" ga-event-category="Sticky Footer Navigation" ga-event-action="Wissen">
+                        Wissen
+                    </a>
+                </li>
+                                            <li class="nav-item ">
+                    <a href="/service/" class="nav-link" ga-on="click" ga-event-category="Sticky Footer Navigation" ga-event-action="Service">
+                        Service
+                    </a>
+                </li>
+                                            <li class="nav-item ">
+                    <a href="/seminare/" class="nav-link" ga-on="click" ga-event-category="Sticky Footer Navigation" ga-event-action="Seminare">
+                        Seminare
+                    </a>
+                </li>
+                    </ul>
+</nav>
+    </div>
+
+</div>
+
+    <script src="/js/lozad.js?v=002"></script>
+<script src="/js/app.js?v=002"></script>
+<script src="/js/royalSlider.js?v=002"></script>
+<script src="/js/reiterrevue.js?v=002"></script>
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam-cell.nr-data.net","licenseKey":"d6708d3abf","applicationID":"101531279","transactionName":"NANTZUtXVkYCVEAPCg1JcFJNX1dbTFZBFQcKClVEV1EVQA1TGRYXAh5YQhZQTVAXQ1EUEA0BHllcQ1RUBFIZBAAQFVRDFFdURk5eXBRIERNXHAgEAAFRAQBfSwsSXF0=","queueTime":0,"applicationTime":145,"atts":"GERQEwNNRUg=","errorBeacon":"bam-cell.nr-data.net","agent":""}</script></body>
+
+</html>

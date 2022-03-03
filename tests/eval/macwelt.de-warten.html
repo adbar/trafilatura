@@ -1,0 +1,2505 @@
+        <!DOCTYPE html>
+<html lang="de-DE">
+    <head>
+                        <script type="text/javascript">
+        /* Vendor IDs */
+        var vendorIds = {
+            'blueconic': '5eb32dea09c3f947e75e6f02',
+            'google_admanager': '5e74df5ff443bb795772df9c',
+            'google_analytics': '5e542b3a4cd8884eb41b5a72',
+            'google_advertising_products': '5f1aada6b8e05c306c0597d7',
+            'twitter': '5e71760b69966540e4554f01',
+            'facebook': '5e716fc09a0b5040d575080f',
+            'linkedin': '5f2d22a6b8e05c02aa283b3c',
+            'triblio': '5f2bf89e2b87b72624acb6fa',
+            'permutive_inc': '5f369a02b8e05c0ee351e350',
+            'permutive_ltd': '5f369a02b8e05c2f2d546a40',
+            'dun_and_bradstreet': '5f02efc0b8e05c2e742a3a45'
+        };
+        /* Purpose IDs */
+        var purposeIds = {
+            'store_access_on_device': '5ea7dfd36ede87504f7dedc5',
+            'select_personsalised_content': '5ea7dfd36ede87504f7df18d',
+            'select_personsalised_ads': '5ea7dfd36ede87504f7df04e',
+            'select_basic_ads': '5ea7dfd36ede87504f7deeaf',
+            'create_personalised_ads_profile': '5ea7dfd36ede87504f7def8d',
+            'create_personalised_content_profile': '5ea7dfd36ede87504f7df117',
+            'measure_ads_performance': '5ea7dfd36ede87504f7df1f7',
+            'measure_content_performance': '5ea7dfd36ede87504f7df2f3',
+            'apply_market_research': '5ea7dfd36ede87504f7df378',
+            'develop_and_improve_products': '5ea7dfd36ede87504f7df425'
+        };
+        var social_media_purpose_id = '5f1019609c10086dcb659fba';
+        var idgB2CPurposes = {
+            0: 'store_access_on_device'
+        };
+        var mauticPurposes = {
+            0: 'store_access_on_device',
+            1: 'select_personsalised_content',
+            2: 'select_personsalised_ads',
+            3: 'create_personalised_ads_profile',
+            4: 'create_personalised_content_profile',
+            5: 'measure_ads_performance',
+            6: 'apply_market_research',
+            7: 'develop_and_improve_products'
+        };
+        let consentedCustomVendors = [];
+        let consentedPurposes = [];
+        let vendorGrants = {};
+        window.mauticConsent = false;
+        /* 
+         * Just define this here and default to false to avoid console errors 
+         * i.e. (checkConsent is not defined) 
+         * if for some reason the event-listener does not fire (in time).
+         */
+        window.checkConsent = function() {
+            return false;
+        };
+    </script>
+    <script>
+        /*
+        * debugging via localStorage.cmpDebugging
+        * localStorage.setItem('cmpDebugging', true)
+        */
+        var sourcepointCmpDebugging = function() {
+            if (typeof(localStorage) !== 'undefined') {
+                return (localStorage.getItem('cmpDebugging') === 'true');
+            }
+            return false;
+        };
+        window.cmpDebugger = sourcepointCmpDebugging() ? console.log : function(){};
+    </script>
+
+    <link rel="preload" as="script" href="https://cmp2.macwelt.de/wrapperMessagingWithoutDetection.js">
+
+            <script>
+            var d = new Date();
+            d.setTime(d.getTime() + 60 * 60 * 24 * 2 * 1000);
+            document.cookie = "__adblocker=true; expires=" + d.toUTCString() + "; path=/";
+        </script>
+                    <!--start Sourcepoint tcfv2 code-->
+        <script>
+            cmpDebugger('###### Serving CMP v2');
+        </script>
+        <script type="text/javascript">
+            !function () { var e = function () { var e, t = "__tcfapiLocator", a = [], n = window; for (; n;) { try { if (n.frames[t]) { e = n; break } } catch (e) { } if (n === window.top) break; n = n.parent } e || (!function e() { var a = n.document, r = !!n.frames[t]; if (!r) if (a.body) { var i = a.createElement("iframe"); i.style.cssText = "display:none", i.name = t, a.body.appendChild(i) } else setTimeout(e, 5); return !r }(), n.__tcfapi = function () { for (var e, t = arguments.length, n = new Array(t), r = 0; r < t; r++)n[r] = arguments[r]; if (!n.length) return a; if ("setGdprApplies" === n[0]) n.length > 3 && 2 === parseInt(n[1], 10) && "boolean" == typeof n[3] && (e = n[3], "function" == typeof n[2] && n[2]("set", !0)); else if ("ping" === n[0]) { var i = { gdprApplies: e, cmpLoaded: !1, cmpStatus: "stub" }; "function" == typeof n[2] && n[2](i) } else a.push(n) }, n.addEventListener("message", (function (e) { var t = "string" == typeof e.data, a = {}; try { a = t ? JSON.parse(e.data) : e.data } catch (e) { } var n = a.__tcfapiCall; n && window.__tcfapi(n.command, n.version, (function (a, r) { var i = { __tcfapiReturn: { returnValue: a, success: r, callId: n.callId } }; t && (i = JSON.stringify(i)), e.source.postMessage(i, "*") }), n.parameter) }), !1)) }; "undefined" != typeof module ? module.exports = e : e() }();
+        </script>
+        <script>
+            window._sp_ = {
+                config: {
+                    accountId: 146,
+                    baseEndpoint: 'https://cmp2.macwelt.de',
+                    consentLanguage: 'de',
+                    events: {
+                        onMessageReady: function () {
+                            cmpDebugger('###### _sp_.onMessageReady() callback.');
+                        },
+                        onMessageChoiceSelect: function (choice_id, choice_type_id) {
+                            cmpDebugger('###### _sp_.onMessageChoiceSelect() callback (choice_id, choice_type_id).', choice_id, choice_type_id);
+                        },
+                        onPrivacyManagerAction: function (pmData) {
+                            cmpDebugger('###### _sp_.onPrivacyManagerAction() callback(pmData).', pmData);
+                        },
+                        onMessageChoiceError: function (err) {
+                            cmpDebugger('###### _sp_.onMessageChoiceError() callback(err).', err);
+                        },
+                        onConsentReady: function (consentUUID, euconsent) {
+                            cmpDebugger('###### _sp_.onConsentReady() callback(consentUUID,euconsent).', consentUUID, euconsent);
+                        },
+                        onPMCancel: function () {
+                            cmpDebugger('###### _sp_.onPMCancel() callback.');
+                        },
+                        onMessageReceiveData: function (data) {
+                            cmpDebugger('###### _sp_.onMessageReceiveData() callback(data).', data);
+                        },
+                        onSPPMObjectReady: function () {
+                            cmpDebugger('###### _sp_.onSPPMObjectReady() callback() => load modal.');
+                            cmpDebugger('###### onSPPMObjectReady', window._sp_.loadPrivacyManagerModal)
+                        }
+                    },
+                }
+            };
+
+            __tcfapi('addEventListener', 2, function(tcData, success) {
+                
+                cmpDebugger('###### _sp_.onConsentReady __tcfapi addEventListener() - tcData: ', tcData)
+                cmpDebugger('###### _sp_.onConsentReady __tcfapi addEventListener() -tcData.dgprApplies:', tcData.gdprApplies, 'eventStatus', tcData.eventStatus, 'success', success);
+
+                if ( success && (tcData.eventStatus === 'tcloaded' || tcData.eventStatus === 'useractioncomplete') ) {
+                    
+                    cmpDebugger('###### _sp_.onConsentReady __tcfapi addEventListener() tcData.eventStatus', tcData.eventStatus)
+
+                    var isEuVisitor = tcData.gdprApplies || false;
+                    
+                    cmpDebugger('###### _sp_.onConsentReady isEuVisitor', isEuVisitor);
+
+                    if (isEuVisitor) {
+
+                        cmpDebugger('###### _sp_.onConsentReady __tcfapi.getCustomVendorConsents');
+                        __tcfapi('getCustomVendorConsents', 2, function(vendorConsents, success) {
+
+                            /*
+                                * this can possibly fail for some reason, so check success before using vendorConsents
+                                */
+                            cmpDebugger('###### __tcfapi getCustomVendorConsents success', success);
+                            if(success) {
+                                consentedPurposes = vendorConsents.consentedPurposes || [];
+                                consentedCustomVendors = vendorConsents.consentedVendors || [];
+                                vendorGrants = vendorConsents.grants;
+                                
+                                /*
+                                    VendorGrands and purposeGrants by Vendor
+                                    grants["5e7ced56b8e05c4854221bb3"] = {vendorGrant:true, purposeGrants : {
+                                        '5ea7dfd36ede87504f7df18d': true
+                                        '5ea7dfd36ede87504f7df378': false
+                                    }
+                                */
+
+                                cmpDebugger('###### __tcfapi getCustomVendorConsents  -vendorConsents:', vendorConsents);
+                                cmpDebugger('###### __tcfapi getCustomVendorConsents inside eventListener consentedPurposes,consentedCustomVendors', consentedPurposes, consentedCustomVendors);
+
+                                var googleAdManagerConsent = checkConsent('5e74df5ff443bb795772df9c');
+
+                                cmpDebugger('###### __tcfapi getCustomVendorConsents inside eventListener googleAdManagerConsent', googleAdManagerConsent);
+                                cmpDebugger('###### __tcfapi getCustomVendorConsents inside eventListener setRequestNonPersonalizedAds()', googleAdManagerConsent);
+                                /*
+                                * set RequestNonPersonalizedAds based on given consent
+                                */
+                                cmpDebugger('###### Checking host after consent given');
+                                 
+                                    cmpDebugger('Host == Macwelt, setting nonPersonalizedAds($)', googleAdManagerConsent);
+                                    // googletag.pubads().setRequestNonPersonalizedAds(googleAdManagerConsent);
+                                
+                                /*
+                                    *
+                                    * Custom consent checks for vendors that are not in the VendorList
+                                    *
+                                */
+                                /* Mautic */
+                                cmpDebugger('###### checking Consent for Mautic via mauticPurposes', mauticPurposes, 'in consentedPurposes', consentedPurposes);
+
+                                for (var mauticPurpose in mauticPurposes) {
+
+                                    cmpDebugger('###### checking Consent for Mautic for mauticPurpose', mauticPurposes[mauticPurpose], purposeIds[mauticPurposes[mauticPurpose]]);
+                                  
+                                    mauticConsent = consentedPurposes.some( function(consentedPurposes) { 
+                                        return consentedPurposes['_id'] == purposeIds[mauticPurposes[mauticPurpose]];
+                                    });
+
+                                    cmpDebugger('###### -- consent for mauticPurpose', mauticPurposes[mauticPurpose], purposeIds[mauticPurposes[mauticPurpose]], 'is', mauticConsent);
+
+                                    /*
+                                        * We can stop here as soon as one purpose is not consented
+                                        */
+                                    if (!mauticConsent) {
+                                        cmpDebugger('###### Consent for Mautic is denied based on purpose', mauticPurposes[mauticPurpose], purposeIds[mauticPurposes[mauticPurpose]], '. Consent given for this purpose is', mauticConsent, 'See consentedPurposes:', consentedPurposes);
+                                        break;
+                                    }
+                                }
+
+                                /* IDGB2C */
+                                cmpDebugger('###### checking Consent for IDGB2C via idgB2CPurposes', mauticPurposes, 'in consentedPurposes', consentedPurposes);
+
+                                if(typeof window.idgB2CConsent === 'undefined'){
+                                    window.idgB2CConsent = false;
+                                }
+
+                                for (var idgB2CPurpose in idgB2CPurposes) {
+
+                                    cmpDebugger('###### checking Consent for IDGB2C for idgB2CPurpose', idgB2CPurposes[idgB2CPurpose], purposeIds[idgB2CPurposes[idgB2CPurpose]]);
+                                    
+                                    idgB2CConsent = consentedPurposes.some( function(consentedPurposes) {
+                                        return consentedPurposes['_id'] == purposeIds[idgB2CPurposes[idgB2CPurpose]];
+                                    });
+
+                                    cmpDebugger('###### -- consent for idgB2CPurpose', idgB2CPurposes[idgB2CPurpose], purposeIds[idgB2CPurposes[idgB2CPurpose]], 'is', idgB2CConsent);
+
+                                    /*
+                                    * We can stop here as soon as one purpose is not consented
+                                    */
+                                    if (!idgB2CConsent) {
+                                        cmpDebugger('###### Consent for IDGB2C is denied based on purpose', idgB2CPurposes[idgB2CPurpose], purposeIds[idgB2CPurposes[idgB2CPurpose]], '. Consent given for this purpose is', idgB2CConsent, 'See consentedPurposes:', consentedPurposes);
+                                        break;
+                                    }
+                                }
+                            }
+
+                            cmpDebugger('###### __tcfapi getCustomVendorConsents inside eventListener -vendorConsents:', vendorConsents);
+                            cmpDebugger('###### __tcfapi getCustomVendorConsents inside eventListener consentedPurposes,consentedCustomVendors', consentedPurposes, consentedCustomVendors);
+                            
+                        });
+                    };
+                };
+            });
+
+            /*
+            * check consent for given vendor ID i.e. '5e74df5ff443bb795772df9c' for Google Ad Manager
+            */
+            checkConsent = function(identity) {
+                cmpDebugger('###### Checking consent given for identity', identity);
+                
+                /*
+                    * Always assume consent is not given by default
+                    */
+                var consentGiven = false;
+
+                if (identity in vendorGrants) {
+
+                    /* 
+                        * Check grant for consent and associated purposes
+                        */
+                    var vendor = vendorGrants[identity];
+                    
+                    cmpDebugger('###### checkConsent vendorGrants[identity] is', vendor);
+
+                    consentGiven = vendor.vendorGrant;
+
+                    cmpDebugger('###### checkConsent vendor.vendorGrant', consentGiven);
+                    
+                    /*
+                        * Check purposes
+                        */
+                    if (consentGiven) {
+
+                        cmpDebugger('###### checkConsent purposeGrants for vendor', vendor, vendor.purposeGrants);
+
+                        for (var purposeID in vendor.purposeGrants) {
+                            
+                            consentGiven = vendor.purposeGrants[purposeID];
+
+                            cmpDebugger('###### checkConsent with purposeID', purposeID, consentGiven);
+                            /*
+                                * We can stop here if one consent was denied already
+                                */
+                            if (!consentGiven) {
+                                cmpDebugger('###### checkConsent exiting with', consentGiven, 'for purposeGrant', purposeID);
+                                break;
+                            }
+                        }
+                    }
+                    cmpDebugger('###### checkConsent vendor has ultimate grant', consentGiven);
+                    return consentGiven;
+                }
+            
+                /*
+                    * not in vendorGrants, so check purposes 
+                    */
+
+                consentGiven = consentedPurposes.some( function(object) { return object[__id] ==  identity} );
+                
+                cmpDebugger('###### checkConsent identity', identity, 'is not in vendorGrants', vendorGrants, 'exiting with consentGiven:', consentGiven);
+
+                return consentGiven;
+            };
+        </script>
+                        <script src='https://cmp2.macwelt.de/wrapperMessagingWithoutDetection.js'></script>
+        <!-- end Sourcepoint tcfv2 code-->
+        <!-- Kickfire -->
+                    <script src='//twin-iq.kickfire.com/twin.js?14984'></script>
+        
+        
+        
+        <!-- __tcfapi callbacks -->
+        <script>
+            if(sourcepointCmpDebugging) {
+                console.group('__tcfapi tests');
+            };
+                /* tcfapi.ping */
+                cmpDebugger('###### Testing __tcfapi.ping:');
+                __tcfapi('ping', 2, function(pingReturn) {
+                    cmpDebugger('###### __tcfapi.ping returned:', pingReturn);  
+                });
+
+                /* tcfapi.getTCData */
+                cmpDebugger('###### Testing __tcfapi.getTCData:');
+                __tcfapi('getTCData', 2, function(tcData, success) { 
+                    cmpDebugger('###### __tcfapi.getTCData returned:', tcData, success);
+                }); 
+                
+                /* tcfapi.getCustomVendorConsents */
+                cmpDebugger('###### Testing __tcfapi.getCustomVendorConsents:');
+                __tcfapi('getCustomVendorConsents', 2, function(vendorConsents, success) { 
+                    cmpDebugger('###### __tcfapi.getCustomVendorConsents returned:', vendorConsents, success); 
+                });
+            if(sourcepointCmpDebugging) {
+                console.groupEnd('__tcfapi tests');
+            };
+        </script>
+    
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect" crossorigin>
+    <link href="https://www.google-analytics.com" rel="preconnect" crossorigin>
+
+    <script>console.log("checking for __tcfapi.. ", typeof tcfapi);</script>
+<script>console.log("###### loading //js-sec.indexww.");</script>
+<script>
+(function () {
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = '//js-sec.indexww.com/ht/p/183980-228048418855971.js';
+    var x = document.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+})();
+</script>
+    
+    <link href="https://api.permutive.com" rel="preconnect" crossorigin>
+    <link href="https://tt.onthe.io" rel="preconnect" crossorigin>
+    <link href="https://www.googletagmanager.com" rel="preconnect" crossorigin>
+    <link href="https://bilder.macwelt.de" rel="preconnect" crossorigin>
+                                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="google-site-verification" content="VDHXFVeE4DdfZ5tLqRuLqd31Q2zmCIWJSKaMg2XZ600">
+    <meta name="copyright" content="IDG Tech Media GmbH">
+    <meta name="publisher" content="IDG Tech Media GmbH">
+    <meta name="date" content="2022-02-04 15:33" />
+    <meta name="pubdate" content="2021-12-14T15:41:07+01:00">
+    <meta name="keywords" content="iphone&#x20;14,">
+    <meta name="description" content="Im September 2022 kommt das iPhone 14 mit Features auf den Markt, die wir uns für das iPhone 13 gewünscht hätten.">
+        <link rel="amphtml" href="https://amp.macwelt.de/article/11153570" />
+    
+            <meta name="robots" content="index, follow, noodp" />
+            
+            <meta name="author" content="Dennis&#x20;Steimels">
+        <meta property="article:publisher" content="https://www.facebook.com/macwelt" />
+    <meta property="publisher" content="IDG Tech Media GmbH">
+    <meta property="og:title" content="iPhone 14: Warum sich das Warten wirklich lohnt" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html" />
+    <meta name="og:image" property="og:image" content="https://bilder.macwelt.de/4324738_1000x500_r.jpg" />
+    <meta property="og:image:type" content="image/jpg">
+    <meta property="og:image:width" content="1000">
+    <meta property="og:image:height" content="500">
+    <meta property="ob:image" content="https://bilder.macwelt.de/4324738_640x320_r.jpg" />
+    <link rel="image_src" href="https://bilder.macwelt.de/4324738_1000x500_r.jpg">
+    <meta property="og:description" content="Im September 2022 kommt das iPhone 14 mit Features auf den Markt, die wir uns für das iPhone 13 gewünscht hätten." />
+    <meta name="twitter:title" content="iPhone&#x20;14&#x3A;&#x20;Warum&#x20;sich&#x20;das&#x20;Warten&#x20;wirklich&#x20;lohnt" />
+    <meta name="twitter:description" content="Im&#x20;September&#x20;2022&#x20;kommt&#x20;das&#x20;iPhone&#x20;14&#x20;mit&#x20;Features&#x20;auf&#x20;den&#x20;Markt,&#x20;die&#x20;wir&#x20;uns&#x20;f&#x00FC;r&#x20;das&#x20;iPhone&#x20;13&#x20;gew&#x00FC;nscht&#x20;h&#x00E4;tten." />
+    <meta property="twitter:image" content="https://bilder.macwelt.de/4324738_620x310_r.jpg" />
+    <meta name="DC.date.issued" content="2022-02-04T15:33:00+01:00" />
+            <meta property="vr:category" content="Ratgeber" />
+    
+    <title>
+                        iPhone 14: Warum sich das Warten wirklich lohnt - Macwelt
+                </title>
+            <link rel="canonical" href="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html" />
+        <link title="Macwelt.de - Globale Suche" type="application/opensearchdescription+xml" rel="search" href="https://www.macwelt.de/suche/osd.xml" >
+        <link  rel="alternate" media="only screen and (max-width: 640px)" href="https://mobil.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html" />
+    <meta property="og:site_name" content="Macwelt">
+        <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@macwelt" />
+    
+    <script>var globB2Cdata = {};
+globB2Cdata.timestamp = Date.now();
+dataLayer = [{
+'displayType': 'IdgArticle', //dim1 
+'contentId': '2631553', //dim2 
+'title': 'iPhone 14: Warum sich das Warten wirklich lohnt', //dim3 
+'canonicalDomain': 'www.macwelt.de', //dim4 
+'contentDatum': '2022-02-04T15:33:00+01:00', //dim5 
+'score2': 'Mobile Computing,Hardware,Security,Hersteller', //dim6 
+'autoren': 'Dennis Steimels', //dim7 
+'contentLength': '8000', //dim8 
+'contentType': 'Ratgeber', //dim9 
+'rubrik': 'Ratgeber(202)', //dim10 
+'subRubrik': 'iPhone & iPad(219)', //dim11 
+'subSubRubrik': '', //dim12 
+'rubrikenPfad': 'Ratgeber(202),iPhone & iPad(219)', //dim13 
+'seitenzahl': '1', //dim15 
+'datePublished': '', //dim16 
+'userStatus': document.cookie.match(/user_is_insider=true/) ? 'Insider' : 'Anonym', //dim17 
+'abm': document.cookie.match(/idg_company=(.+?);/) ? document.cookie.match(/idg_company=(.+?);/)[1] : '', //dim18 
+'gTaxonomie': 'iPhone(746),Industry(672),Vendors and Providers(707),Apple(739),Apple TV(1134),Commercial Providers(731),HomePod(1135)', //dim19 
+'isSponsored': '0', //dim20 
+'tapId': document.cookie.match(/tap_id=(.+?);/) ? document.cookie.match(/tap_id=(.+?);/)[1] : '', //dim21 
+'gaTrackingId': document.cookie.match(/_ga=(.+?);/) ? document.cookie.match(/_ga=(.+?);/)[1].split('.').slice(-2).join('.') : '', //dim29 
+'property': 'MAW DE', //dim30 
+'gtaxIdList': '746,672,707,739,1134,731,1135', //dim31 
+'gtaxList': 'iPhone,Industry,Vendors and Providers,Apple,Apple TV,Commercial Providers,HomePod', //dim32 
+'timestamp': globB2Cdata.timestamp, //dim53 
+'platform': 'web',
+'propertyCountry': 'IDG DE',
+'primaryCategory': 'Ratgeber',
+'secondaryCategory': 'iPhone & iPad',
+'sponsorName': '',
+'blogName': '',
+'insiderSignedIn': document.cookie.match(/user_is_insider=true/) ? true : false
+}];
+</script>
+    <!-- DFP -->
+			<script>
+			var idgStorage = new Object();
+			String.prototype.rot13 = function(){
+				var decoded = this.replace(/[a-zA-Z]/g, function(c){
+					return String.fromCharCode((c <= "Z" ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26);
+				});
+				return decoded.replace(/\\/g, "/");
+			};
+			idgStorage.setRot13 = function(key, value) {
+				var cleanKey = key.rot13();
+				var cleanValue = value.rot13();
+				this[cleanKey] = cleanValue;
+			}
+			idgStorage.setRot13("nqHavg1", "\\8456\\VQT.QR_O2P_ZnpJryg.qr");
+			idgStorage.setRot13("nqHavg2", "\\gvccf");
+			idgStorage.setRot13("nqHavg3", "");
+			inDapIF = true;
+			idgStorage.rs_tax = "iphone 14,";
+						idgStorage.adScore1 = ["Mobile Computing","Hardware","Security","Hersteller"];
+						idgStorage.adScore2 = ["Hardware allgemein","Apple","Samsung","iOS","Mobile Client","Mobile Plattformen","Mobilfunk","Mobile Security","Peripherie","BYOD","Mobile Device Management"];
+						idgStorage.adTax = ["iPhone","Apple","Modell","Display","Kamera","Design","Megapixel","Android Handy","Feature","Preis","Handy","Android Ger\u00e4te","Standard Version","Die Rendering","Touch ID","Version","Samsung","Rendering","Hertz","Notch"];idgStorage.goldenTaxonomy = ["iPhone","Industry","Vendors and Providers","Apple","Apple TV","Commercial Providers","HomePod"];
+idgStorage.goldenTaxonomyIds = ["746","672","707","739","1134","731","1135"];
+idgStorage.clientShortcut = "macwelt";
+						idgStorage.adContentType = "IdgArticle";
+						idgStorage.detailContentId = "2631553";
+						idgStorage.editorialDate = "2022-02-04T15:33:00.000Z";
+			idgStorage.adBlock = "1";
+			idgStorage.blockWall = false;
+			idgStorage.adUnit = idgStorage.adUnit1 + idgStorage.adUnit2 + idgStorage.adUnit3;
+			</script>
+			<!-- DFP --><script>window.grumi = {key: "859c0fcb-feae-4616-afed-20011b559baa"};</script><script src="//rumcdn.geoedge.be/c6874004-9568-46d5-93a9-067147d516fd/grumi-ip.js" async></script><script>var tagmanagerGaDetailAvailable = setInterval(tagmanagerGaDetailInterval, 350);
+        function tagmanagerGaDetailInterval() {
+            console.log('tagmanager setup: waiting for ga-tracker detail to become available.');
+            if(typeof ga !== 'undefined' && typeof ga.getByName === 'function' && typeof ga.getByName('detail') !== 'undefined') {
+                console.log('Detail tracker should be available now:', ga.getByName('detail'));
+                clearInterval(tagmanagerGaDetailAvailable);
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-NRFD8HK');
+            };
+        }
+        </script>
+                    <!-- <link rel="stylesheet" type="text/css" media="screen" href="/css/bootstrap.css?v=9bbb1d6ea" /> -->
+        <link rel="stylesheet" type="text/css" media="screen" href="/css/macwelt_combined.css?v=9bbb1d6ea" />                <link rel="stylesheet" type="text/css" media="print" href="/css/print.css?v=9bbb1d6ea" />
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/article_macwelt.css?v=9bbb1d6ea" />
+            <link rel="stylesheet" type="text/css" media="screen" href="/css/plus_macwelt.css?v=9bbb1d6ea" />
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/product_macwelt.css?v=9bbb1d6ea" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/product_article_macwelt.css?v=9bbb1d6ea" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700%7COpen+Sans:400,600,700%7CSource+Code+Pro&amp;display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i,700&amp;display=swap" rel="stylesheet">
+                                                            <script src="/js/??macwelt_combined.js,macwelt_additional_scripts.js?v=9bbb1d6ea"></script>
+                    <script src="/js/advert.js"></script>
+                            <script>
+            redirectConfig = {
+                name: "idg_content_content_showcontent",
+                parameters: {
+                    speakingUrl: "iPhone-14-Warum-sich-das-Warten-wirklich-lohnt",
+                    id: "11153570",
+                    type: "ratgeber",
+                    subdomain: "mobil"
+                }
+            };
+            Navigation.checkMobile(redirectConfig);
+        </script>
+        
+    <script src="/js/article.js?v=9bbb1d6ea"></script>
+
+
+    <script>Idg.Tracking.Config.add('googleAnalytics', '""');
+Idg.Tracking.Config.add('vgwort', '""');
+Idg.Tracking.Config.add('onthe', '""');
+Idg.Tracking.Config.add('permutive', '""');
+</script>
+    <script type="application/ld+json">
+            { "@context" : "https://schema.org",
+              "@type" : "Organization",
+              "name" : "IDG Tech Media GmbH",
+              "url" : "https://www.macwelt.de",
+              "sameAs" : ["https://twitter.com/macwelt","https://www.facebook.com/macwelt","https://www.youtube.com/user/redaktionmacwelt"]
+            }
+        </script>
+    <script> (function(){ window.ldfdr = window.ldfdr || {}; (function(d, s, ss, fs){ fs = d.getElementsByTagName(s)[0]; function ce(src){ var cs = d.createElement(s); cs.src = src; setTimeout(function(){fs.parentNode.insertBefore(cs,fs)}, 1); } ce(ss); })(document, 'script', 'https://sc.lfeeder.com/lftracker_v1_YEgkB8l0ZmM8ep3Z.js'); })(); </script>
+    <!-- Blue Conic -->
+        <script type="text/javascript">
+            __tcfapi("addEventListener", 2, function(tcData, success) {
+                if ( success && (tcData.eventStatus === "tcloaded" || tcData.eventStatus === "useractioncomplete") ) {
+                    cmpDebugger("### Check consent for blueconic");
+                    if (checkConsent(vendorIds["blueconic"])) {
+                        cmpDebugger("### Blueconic is allowed, proceed checking for social vendors: Facebook, Twitter, LinkedIn.");
+                        if (checkConsent(vendorIds["facebook"]) && checkConsent(vendorIds["twitter"]) && checkConsent(vendorIds["linkedin"])) {
+                            cmpDebugger("### Blueconic socials are allowed, proceed with script tag.");
+                            var bcscript = document.createElement("script");
+                            bcscript.async = true;
+                            bcscript.type = "text/javascript";
+                            var useSSL = "https:" == document.location.protocol;
+                            bcscript.src = (useSSL ? "https:" : "http:") + "//cdn.blueconic.net/idg.js";
+                            var node = document.getElementsByTagName("script")[0];
+                            node.parentNode.insertBefore(bcscript, node);
+
+                            __tcfapi("removeEventListener", 2, function(success) {
+                                if (success) {
+                                    cmpDebugger("###### head.cfm:231, removing event listener", tcData.listenerId);
+                                }
+                            }, tcData.listenerId);
+                        }
+                    }
+                } else {
+                    cmpDebugger("###### TrackingExtension.php:163, failed in addEventListener, success is", success, "and tcData.eventStatus is", tcData.eventStatus);
+                }
+            });
+        </script>
+
+    <script type = "text/javascript">
+        (function () {
+            window.aax = window.aax || {};
+            var aax = window.aax;
+            aax.initTime = new Date().getTime();
+            aax.pubId = "AAXFGX83C";
+            aax.ver = "1.2";
+            aax.hst = window.location.hostname;
+            var aaxEndpoint = "https://c.aaxads.com/aax.js?pub=" + aax.pubId + "&hst=" +
+              aax.hst + "&ver=" + aax.ver;
+
+            function loadScript(endpoint) {
+              var scriptTag = document.createElement("script"),
+                placeTag = document.getElementsByTagName("script")[0];
+              scriptTag.type = "text/javascript";
+              scriptTag.async = true;
+              scriptTag.src = endpoint;
+              placeTag.parentNode.insertBefore(scriptTag, placeTag);
+            }
+            loadScript(aaxEndpoint);
+        })();
+    </script>
+            
+    </head>
+    <body class="default macwelt" data-abmisactive="true">
+        <div class="ad-enabled"></div>
+        <script>
+__tcfapi('addEventListener', 2, function(tcData, success) {
+    if ( success && (tcData.eventStatus === 'tcloaded' || tcData.eventStatus === 'useractioncomplete') ) {
+        cmpDebugger('###### onthetracker.php:45, look for ontheioConsent from base.html.twig:221');
+        cmpDebugger('###### ontheioConsent is ', idgB2CConsent, ', proceed with script tag?', idgB2CConsent);
+        if(typeof idgB2CConsent !== 'undefined') {
+            if(idgB2CConsent){
+                var onthescr = document.createElement('script');
+                onthescr.async = true;
+                onthescr.src = "https://cdn.onthe.io/io.js/MDHlwMsvjebc";
+                document.getElementsByTagName('head')[0].appendChild(onthescr);
+            } else {
+                if (typeof XMLHttpRequest !== 'undefined') {
+                    var onthexmlhttp = new XMLHttpRequest();
+                    var ontherand = (Math.random()*100000).toString().substring(0,11).replace('.', '');
+                    onthexmlhttp.open("GET", "https://tt.onthe.io/?k[]=12542:pageviews[domain:www.macwelt.de,url:%2Fratgeber%2FiPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html,page:iPhone%2014%3A%20Warum%20sich%20das%20Warten%20wirklich%20lohnt,page_type:article,language:de,author:Dennis%20Steimels,category:RATGEBER%28202%29%7CIPHONE%20%26%20IPAD%28219%29,type_article:Ratgeber,pub_date:Fri%2C%2004%20Feb%202022%2015%3A33%3A00%20%2B0100,platform:TCF_NO]&gtmcb="+ontherand, true);
+                    onthexmlhttp.send();
+                }
+            }
+            /* Only remove the eventListener if consent was given and the script was added to the page */
+            __tcfapi('removeEventListener', 2, function(success) {
+                if (success) {
+                    cmpDebugger('###### onthetracker.php:56, removing event listener', tcData.listenerId);
+                }
+            }, tcData.listenerId);
+           
+        }
+    } else {
+        cmpDebugger('###### onthetracker.php:54, failed in addEventListener, success is', success, 'and tcData.eventStatus is', tcData.eventStatus);
+    }
+});
+</script><script>
+            __tcfapi("addEventListener", 2, function(tcData, success) {
+                if ( success && (tcData.eventStatus === "tcloaded" || tcData.eventStatus === "useractioncomplete") ) {
+                    cmpDebugger("###### Check consent for Permutive");
+                    if(checkConsent(vendorIds["permutive_inc"]) && checkConsent(vendorIds["permutive_ltd"])) {
+                        cmpDebugger("###### Permutive is allowed, proceed checking for social vendors: Facebook, Twitter, LinkedIn.");
+                        if(checkConsent(vendorIds["facebook"]) && checkConsent(vendorIds["twitter"]) && checkConsent(vendorIds["linkedin"])) { 
+                            cmpDebugger("###### Permutive socials are allowed, proceed with script tag.");
+                            
+                            /* Permutive */
+                            !function(n,e,o,r,i){if(!e){e=e||{},window.permutive=e,e.q=[],e.config=i||{},e.config.projectId=o,e.config.apiKey=r,e.config.environment=e.config.environment||"production";for(var t=["addon","identify","track","trigger","query","segment","segments","ready","on","once","user","consent"],c=0;c<t.length;c++){var f=t[c];e[f]=function(n){return function(){var o=Array.prototype.slice.call(arguments,0);e.q.push({functionName:n,arguments:o})}}(f)}}}(document,window.permutive,"f5b3be27-f789-4ef1-8867-37c67da5b361","84c7e805-5ce9-41f4-b988-3529488bab1c",{});
+                            permutive.addon("web", {"page":{"type":"article","keywords":["iPhone","Apple","Modell","Display","Kamera","Design","Megapixel","Android Handy","Feature","Preis","Handy","Android Ger\u00e4te","Standard Version","Die Rendering","Touch ID","Version","Samsung","Rendering","Hertz","Notch"],"language":"de","audience":"consumer","tags":[],"article":{"authors":["Dennis Steimels"],"description":"Im September 2022 kommt das iPhone 14 mit Features auf den Markt, die wir uns f\u00fcr das iPhone 13 gew\u00fcnscht h\u00e4tten.","id":"2631553","isInsiderContent":false,"source":"macwelt","title":"iPhone 14: Warum sich das Warten wirklich lohnt","type":"ratgeber"},"ads":{"adblocker":false,"enabled":true},"tax":{"primaryCategories":["iphone"],"secondaryCategories":["industry","vendors and providers","apple","apple tv","commercial providers","homepod"]},"gTax":{"primaryIds":[746],"secondaryIds":[672,707,739,1134,731,1135]}}});
+                            
+                            var permutive_script = document.createElement("script");
+                            permutive_script.async = true;
+                            permutive_script.type = "text/javascript";
+                            var useSSL = "https:" == document.location.protocol;
+                            permutive_script.src = (useSSL ? "https:" : "http:") + "//cdn.permutive.com/f5b3be27-f789-4ef1-8867-37c67da5b361-web.js";
+                            var node = document.getElementsByTagName("script")[0];
+                            node.parentNode.insertBefore(permutive_script, node);
+        
+                            if($.cookie("idg_company")) {
+                                window.permutive.track("User", {
+                                    emailDomain: $.cookie("idg_company")
+                                });
+                            }        
+                            window.permutive.track('Product', {
+                names: ['iPhone 13'],
+                categories: ['Handys ohne Vertrag (4373)'],
+                manufacturers: ['Apple'],
+                vendors: []
+                })
+        
+                            /* Only remove the eventListener if consent was given and the script was added to the page */
+                            __tcfapi("removeEventListener", 2, function(success) {
+                                if (success) {
+                                    cmpDebugger("###### PermutiveTracker.php:391, removing event listener", tcData.listenerId);
+                                }
+                            }, tcData.listenerId);
+        
+                        };
+                    };
+                } else {
+                    cmpDebugger("###### PermutiveTracker.php:398, failed in addEventListener, success is", success, "and tcData.eventStatus is", tcData.eventStatus);
+                }
+            });
+            </script>
+        <script>/* googleAnalytics */
+var idgStorage = idgStorage || {};
+idgStorage.gaData = {"1":"IdgArticle","2":"2631553","3":"iPhone 14: Warum sich das Warten wirklich lohnt","4":"www.macwelt.de","5":"2022-02-04T15:33:00+01:00","6":"Mobile Computing,Hardware,Security,Hersteller","7":"Dennis Steimels","8":8000,"9":"Ratgeber","10":"Ratgeber(202)","11":"iPhone & iPad(219)","12":"","13":"Ratgeber(202),iPhone & iPad(219)","14":"","15":1,"16":"","17":"Anonym","18":"","19":"iPhone(746),Industry(672),Vendors and Providers(707),Apple(739),Apple TV(1134),Commercial Providers(731),HomePod(1135)","30":"MAW DE","20":false,"31":"746,672,707,739,1134,731,1135","32":"iPhone,Industry,Vendors and Providers,Apple,Apple TV,Commercial Providers,HomePod","14":idgStorage.adBlock};
+idgStorage.gaTarget = {"idg":"UA-59557754-10","objekt":"UA-59557754-2","detail":"UA-59557754-24"};
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+if(typeof dataLayer!=='undefined' && typeof dataLayer[0]!=='undefined' && typeof idgStorage.adBlock!=='undefined'){ dataLayer[0].ablocker = idgStorage.adBlock; } //dim14 
+var disableStr = 'ga-disable-UA-59557754-10';
+                    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+                        window[disableStr] = true;
+                    }
+                    function gaOptout() {
+                        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+                        window[disableStr] = true;
+                    };
+ga('create', 'UA-59557754-10', 'auto', {'name': 'idg', 'allowLinker': true});
+ga('idg.set', 'anonymizeIp', true);
+ga('idg.set', 'forceSSL', true);
+ga('idg.require', 'linkid');
+ga('idg.require', 'displayfeatures');
+ga('idg.set', 'dimension1', "IdgArticle");
+ga('idg.set', 'dimension2', "2631553");
+ga('idg.set', 'dimension3', "iPhone 14: Warum sich das Warten wirklich lohnt");
+ga('idg.set', 'dimension4', "www.macwelt.de");
+ga('idg.set', 'dimension5', "2022-02-04T15:33:00+01:00");
+ga('idg.set', 'dimension6', "Mobile Computing,Hardware,Security,Hersteller");
+ga('idg.set', 'dimension7', "Dennis Steimels");
+ga('idg.set', 'dimension8', "8000");
+ga('idg.set', 'dimension9', "Ratgeber");
+ga('idg.set', 'dimension10', "Ratgeber(202)");
+ga('idg.set', 'dimension11', "iPhone & iPad(219)");
+ga('idg.set', 'dimension12', "");
+ga('idg.set', 'dimension13', "Ratgeber(202),iPhone & iPad(219)");
+ga('idg.set', 'dimension14', idgStorage.adBlock);
+ga('idg.set', 'dimension15', "1");
+ga('idg.set', 'dimension16', "");
+ga('idg.set', 'dimension17', $.cookie("user_is_insider") ? "Insider" : "Anonym");
+ga('idg.set', 'dimension19', "iPhone(746),Industry(672),Vendors and Providers(707),Apple(739),Apple TV(1134),Commercial Providers(731),HomePod(1135)");
+ga('idg.set', 'dimension30', "MAW DE");
+ga('idg.set', 'dimension20', "");
+ga('idg.set', 'dimension31', "746,672,707,739,1134,731,1135");
+ga('idg.set', 'dimension32', "iPhone,Industry,Vendors and Providers,Apple,Apple TV,Commercial Providers,HomePod");
+ga('idg.set', 'dimension53', globB2Cdata.timestamp);
+ga('idg.set', 'dimension18', $.cookie('idg_company') ? $.cookie('idg_company') : '');
+ga('idg.set', 'dimension21', $.cookie('tap_id') ? $.cookie('tap_id') : '');
+ga('idg.set', 'dimension29', document.cookie.match(/_ga=(.+?);/) ? document.cookie.match(/_ga=(.+?);/)[1].split('.').slice(-2).join() : '');
+ga('idg.send', 'pageview');
+var disableStr = 'ga-disable-UA-59557754-2';
+                    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+                        window[disableStr] = true;
+                    }
+                    function gaOptout() {
+                        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+                        window[disableStr] = true;
+                    };
+ga('create', 'UA-59557754-2', 'auto', {'name': 'event', 'allowLinker': true});
+ga('event.set', 'anonymizeIp', true);
+ga('event.set', 'forceSSL', true);
+ga('event.require', 'linkid');
+ga('event.require', 'displayfeatures');
+ga('event.set', 'dimension1', "IdgArticle");
+ga('event.set', 'dimension2', "2631553");
+ga('event.set', 'dimension3', "iPhone 14: Warum sich das Warten wirklich lohnt");
+ga('event.set', 'dimension4', "www.macwelt.de");
+ga('event.set', 'dimension5', "2022-02-04T15:33:00+01:00");
+ga('event.set', 'dimension6', "Mobile Computing,Hardware,Security,Hersteller");
+ga('event.set', 'dimension7', "Dennis Steimels");
+ga('event.set', 'dimension8', "8000");
+ga('event.set', 'dimension9', "Ratgeber");
+ga('event.set', 'dimension10', "Ratgeber(202)");
+ga('event.set', 'dimension11', "iPhone & iPad(219)");
+ga('event.set', 'dimension12', "");
+ga('event.set', 'dimension13', "Ratgeber(202),iPhone & iPad(219)");
+ga('event.set', 'dimension14', idgStorage.adBlock);
+ga('event.set', 'dimension15', "1");
+ga('event.set', 'dimension16', "");
+ga('event.set', 'dimension17', $.cookie("user_is_insider") ? "Insider" : "Anonym");
+ga('event.set', 'dimension19', "iPhone(746),Industry(672),Vendors and Providers(707),Apple(739),Apple TV(1134),Commercial Providers(731),HomePod(1135)");
+ga('event.set', 'dimension30', "MAW DE");
+ga('event.set', 'dimension20', "");
+ga('event.set', 'dimension31', "746,672,707,739,1134,731,1135");
+ga('event.set', 'dimension32', "iPhone,Industry,Vendors and Providers,Apple,Apple TV,Commercial Providers,HomePod");
+ga('event.set', 'dimension53', globB2Cdata.timestamp);
+ga('event.set', 'dimension18', $.cookie('idg_company') ? $.cookie('idg_company') : '');
+ga('event.set', 'dimension21', $.cookie('tap_id') ? $.cookie('tap_id') : '');
+ga('event.set', 'dimension29', document.cookie.match(/_ga=(.+?);/) ? document.cookie.match(/_ga=(.+?);/)[1].split('.').slice(-2).join() : '');
+var disableStr = 'ga-disable-UA-59557754-2';
+                    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+                        window[disableStr] = true;
+                    }
+                    function gaOptout() {
+                        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+                        window[disableStr] = true;
+                    };
+ga('create', 'UA-59557754-2', 'auto', {'name': 'objekt', 'allowLinker': true});
+ga('objekt.set', 'anonymizeIp', true);
+ga('objekt.set', 'forceSSL', true);
+ga('objekt.require', 'linkid');
+ga('objekt.require', 'displayfeatures');
+ga('objekt.set', 'dimension1', "IdgArticle");
+ga('objekt.set', 'dimension2', "2631553");
+ga('objekt.set', 'dimension3', "iPhone 14: Warum sich das Warten wirklich lohnt");
+ga('objekt.set', 'dimension4', "www.macwelt.de");
+ga('objekt.set', 'dimension5', "2022-02-04T15:33:00+01:00");
+ga('objekt.set', 'dimension6', "Mobile Computing,Hardware,Security,Hersteller");
+ga('objekt.set', 'dimension7', "Dennis Steimels");
+ga('objekt.set', 'dimension8', "8000");
+ga('objekt.set', 'dimension9', "Ratgeber");
+ga('objekt.set', 'dimension10', "Ratgeber(202)");
+ga('objekt.set', 'dimension11', "iPhone & iPad(219)");
+ga('objekt.set', 'dimension12', "");
+ga('objekt.set', 'dimension13', "Ratgeber(202),iPhone & iPad(219)");
+ga('objekt.set', 'dimension14', idgStorage.adBlock);
+ga('objekt.set', 'dimension15', "1");
+ga('objekt.set', 'dimension16', "");
+ga('objekt.set', 'dimension17', $.cookie("user_is_insider") ? "Insider" : "Anonym");
+ga('objekt.set', 'dimension19', "iPhone(746),Industry(672),Vendors and Providers(707),Apple(739),Apple TV(1134),Commercial Providers(731),HomePod(1135)");
+ga('objekt.set', 'dimension30', "MAW DE");
+ga('objekt.set', 'dimension20', "");
+ga('objekt.set', 'dimension31', "746,672,707,739,1134,731,1135");
+ga('objekt.set', 'dimension32', "iPhone,Industry,Vendors and Providers,Apple,Apple TV,Commercial Providers,HomePod");
+ga('objekt.set', 'dimension53', globB2Cdata.timestamp);
+ga('objekt.set', 'dimension18', $.cookie('idg_company') ? $.cookie('idg_company') : '');
+ga('objekt.set', 'dimension21', $.cookie('tap_id') ? $.cookie('tap_id') : '');
+ga('objekt.set', 'dimension29', document.cookie.match(/_ga=(.+?);/) ? document.cookie.match(/_ga=(.+?);/)[1].split('.').slice(-2).join() : '');
+ga('objekt.send', 'pageview');
+var disableStr = 'ga-disable-UA-59557754-24';
+                    if (document.cookie.indexOf(disableStr + '=true') > -1) {
+                        window[disableStr] = true;
+                    }
+                    function gaOptout() {
+                        document.cookie = disableStr + '=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';
+                        window[disableStr] = true;
+                    };
+ga('create', 'UA-59557754-24', 'auto', {'name': 'detail', 'siteSpeedSampleRate': '10'});
+ga('detail.set', 'anonymizeIp', true);
+ga('detail.set', 'forceSSL', true);
+ga('detail.require', 'linkid');
+ga('detail.require', 'displayfeatures');
+ga('detail.set', 'dimension1', "IdgArticle");
+ga('detail.set', 'dimension2', "2631553");
+ga('detail.set', 'dimension3', "iPhone 14: Warum sich das Warten wirklich lohnt");
+ga('detail.set', 'dimension4', "www.macwelt.de");
+ga('detail.set', 'dimension5', "2022-02-04T15:33:00+01:00");
+ga('detail.set', 'dimension6', "Mobile Computing,Hardware,Security,Hersteller");
+ga('detail.set', 'dimension7', "Dennis Steimels");
+ga('detail.set', 'dimension8', "8000");
+ga('detail.set', 'dimension9', "Ratgeber");
+ga('detail.set', 'dimension10', "Ratgeber(202)");
+ga('detail.set', 'dimension11', "iPhone & iPad(219)");
+ga('detail.set', 'dimension12', "");
+ga('detail.set', 'dimension13', "Ratgeber(202),iPhone & iPad(219)");
+ga('detail.set', 'dimension14', idgStorage.adBlock);
+ga('detail.set', 'dimension15', "1");
+ga('detail.set', 'dimension16', "");
+ga('detail.set', 'dimension17', $.cookie("user_is_insider") ? "Insider" : "Anonym");
+ga('detail.set', 'dimension19', "iPhone(746),Industry(672),Vendors and Providers(707),Apple(739),Apple TV(1134),Commercial Providers(731),HomePod(1135)");
+ga('detail.set', 'dimension30', "MAW DE");
+ga('detail.set', 'dimension20', "");
+ga('detail.set', 'dimension31', "746,672,707,739,1134,731,1135");
+ga('detail.set', 'dimension32', "iPhone,Industry,Vendors and Providers,Apple,Apple TV,Commercial Providers,HomePod");
+ga('detail.set', 'dimension53', globB2Cdata.timestamp);
+ga('detail.set', 'dimension18', $.cookie('idg_company') ? $.cookie('idg_company') : '');
+ga('detail.set', 'dimension21', $.cookie('tap_id') ? $.cookie('tap_id') : '');
+ga('detail.set', 'dimension29', document.cookie.match(/_ga=(.+?);/) ? document.cookie.match(/_ga=(.+?);/)[1].split('.').slice(-2).join() : '');
+ga('detail.send', 'pageview');
+
+/* vgwort */
+var vgWort = "https://ssl-idgmagazine.met.vgwort.de/na/b754fe1e2fc74d5c89c6864fabe5cbec";
+document.write("<img class=\"vgwort\" src=\""+vgWort+"?"+(Math.random()*100000)+"\" width=\"1\" height=\"1\" alt=\"vgwort\" />");
+
+/* onthe */
+
+        window._io_config = window._io_config || {};
+        window._io_config["0.2.0"] = window._io_config["0.2.0"] || [];
+        window._io_config["0.2.0"].push({
+            page_url: window.location.href,
+            page_url_canonical: "https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html",
+            page_title: "iPhone 14: Warum sich das Warten wirklich lohnt",
+            page_type: "article",
+            page_language: "de",
+                article_authors: ["Dennis Steimels"],
+                article_categories: ["RATGEBER(202)","IPHONE & IPAD(219)"],
+                article_type: "Ratgeber",article_publication_date: "Fri, 04 Feb 2022 15:33:00 +0100"})
+/* permutive */
+
+</script>
+        <noscript><img class="vgwort" src="https://ssl-idgmagazine.met.vgwort.de/na/b754fe1e2fc74d5c89c6864fabe5cbec?2045759790" width="1" height="1" alt="vgwort" /></noscript>
+        <div id="wrapper">
+            <div id="article-wrapper" class="w1">
+                                    <header id="header">
+    <div class="bar">
+        <div id="headersearch-form" class="search-form">
+            <fieldset>
+                <div class="field">
+                    <input zoomdSearch='{"trigger":"OnEnter"}' id="text_field" placeholder="Suchbegriff eingeben..."/>
+                    <div class="alignright">
+                        <button zoomdSearch='{"trigger":"OnClick","forInput":"#text_field"}'>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <strong class="logo">
+            <a href="//www.macwelt.de/">
+                <img src="//www.macwelt.de/img/macwelt/logo.svg" alt="Macwelt Logo">
+            </a>
+        </strong>
+                    <nav class="nav">
+    <ul>
+                                                                                                            <li data-color="default" class="default">
+                        <span class="nav_item_description">
+                <span class="divider"></span>
+            </span>
+                                                <a href="https://www.macwelt.de/apple-mac" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Apple&#x20;&amp;&#x20;Mac&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;apple-mac">
+                Apple &amp; Mac
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+            <ul>
+                                                                <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/apple" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Apple&#x20;News&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;apple">
+                Apple News
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/mac/" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;&amp;&#x20;Macbook&#x20;News&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;mac&#x2F;">
+                Mac &amp; Macbook News
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/tests/mac-macbook/" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;&amp;&#x20;Macbook&#x20;Tests&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;tests&#x2F;mac-macbook&#x2F;">
+                Mac &amp; Macbook Tests
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/mac-macbook/" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;&amp;&#x20;Macbook&#x20;Ratgeber&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;mac-macbook&#x2F;">
+                Mac &amp; Macbook Ratgeber
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/macwelt-tv" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Macwelt&#x20;TV&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;macwelt-tv">
+                Macwelt TV
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt-forum.de" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Macwelt&#x20;Forum&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt-forum.de">
+                Macwelt Forum
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+            </ul>
+        </li>
+                                                                                                                    <li data-color="default" class="default">
+                        <span class="nav_item_description">
+                <span class="divider"></span>
+            </span>
+                                                <a href="https://www.macwelt.de/iphone-ipad" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iPhone&#x20;&amp;&#x20;iPad&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;iphone-ipad">
+                iPhone &amp; iPad
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+            <ul>
+                                                                <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/iphone-ipad/" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iPhone&#x20;&amp;&#x20;iPad&#x20;News&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;iphone-ipad&#x2F;">
+                iPhone &amp; iPad News
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/tests/iphone-ipad/" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iPhone&#x20;&amp;&#x20;iPad&#x20;Tests&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;tests&#x2F;iphone-ipad&#x2F;">
+                iPhone &amp; iPad Tests
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/iphone-ipad/" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iPhone&#x20;&amp;&#x20;iPad&#x20;Ratgeber&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;iphone-ipad&#x2F;">
+                iPhone &amp; iPad Ratgeber
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/iphone-ipad/smart-home" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Smart&#x20;Home&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;iphone-ipad&#x2F;smart-home">
+                Smart Home
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/iphone-ipad/auto-technik" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Auto&#x20;&amp;&#x20;Technik&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;iphone-ipad&#x2F;auto-technik">
+                Auto &amp; Technik
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/iphone-ipad/tarifrechner" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Tarifrechner&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;iphone-ipad&#x2F;tarifrechner">
+                Tarifrechner
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="http://jobs.macwelt.de" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Stellenmarkt&#x20;-&#x20;&#x20;http&#x3A;&#x2F;&#x2F;jobs.macwelt.de">
+                Stellenmarkt
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+            </ul>
+        </li>
+                                                                                                                    <li data-color="default" class="default">
+                        <span class="nav_item_description">
+                <span class="divider"></span>
+            </span>
+                                                <a href="https://www.macwelt.de/news" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="News&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news">
+                News
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+            <ul>
+                                                                <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/alle-artikel" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Die&#x20;News&#x20;des&#x20;Tages&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;alle-artikel">
+                Die News des Tages
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/apple" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Apple&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;apple">
+                Apple
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/mac" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;mac">
+                Mac
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/iphone-ipad" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iPhone&#x20;&amp;&#x20;iPad&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;iphone-ipad">
+                iPhone &amp; iPad
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/vermischtes" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Vermischtes&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;vermischtes">
+                Vermischtes
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/news/apple-watch" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Apple&#x20;Watch&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;news&#x2F;apple-watch">
+                Apple Watch
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+            </ul>
+        </li>
+                                                                                                                    <li data-color="default" class="default">
+                        <span class="nav_item_description">
+                <span class="divider"></span>
+            </span>
+                                                <a href="https://www.macwelt.de/tests" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Tests&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;tests">
+                Tests
+                                                                                                                                                                                                                                                                                                                                                                                                                                </a>
+            <ul>
+                                                                <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/tests/mac-macbook" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;&amp;&#x20;Macbook&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;tests&#x2F;mac-macbook">
+                Mac &amp; Macbook
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/tests/iphone-ipad" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iPhone&#x20;&amp;&#x20;iPad&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;tests&#x2F;iphone-ipad">
+                iPhone &amp; iPad
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/tests/mac-software" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;Software&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;tests&#x2F;mac-software">
+                Mac Software
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/tests/mac-peripherie" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;Peripherie&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;tests&#x2F;mac-peripherie">
+                Mac Peripherie
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                        </ul>
+        </li>
+                                                                                                                    <li data-color="default" class="default dividerActive">
+                        <span class="nav_item_description">
+                <span class="divider"></span>
+            </span>
+                                                <a href="https://www.macwelt.de/ratgeber" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Ratgeber&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber">
+                Ratgeber
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </a>
+            <ul>
+                                                                <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/mac-macbook" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;&amp;&#x20;Macbook&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;mac-macbook">
+                Mac &amp; Macbook
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/iphone-ipad" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iPhone&#x20;&amp;&#x20;iPad&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;iphone-ipad">
+                iPhone &amp; iPad
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/mac-software" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Mac&#x20;Software&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;mac-software">
+                Mac Software
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/ios-apps" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="iOS&#x20;Apps&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;ios-apps">
+                iOS Apps
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/netzwerk" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Netzwerk&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;netzwerk">
+                Netzwerk
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/ratgeber/fotografie" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Fotografie&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;fotografie">
+                Fotografie
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                        </ul>
+        </li>
+                                                                                                                    <li data-color="default" class="default">
+                        <span class="nav_item_description">
+                <span class="divider"></span>
+            </span>
+                                                <a href="https://www.macwelt.de/plus" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Plus&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;plus">
+                Plus
+                                                                                                                                                                                                                            </a>
+            <ul>
+                                                                <li data-color="" class="">
+                                                <a href="https://magazin.macwelt.de/#/user/login" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Macwelt&#x20;-&#x20;Heftarchiv&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;magazin.macwelt.de&#x2F;&#x23;&#x2F;user&#x2F;login">
+                Macwelt - Heftarchiv
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                                                                        <li data-color="" class="">
+                                                <a href="https://www.macwelt.de/plus/morgenmagazin" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Morgenmagazin&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;plus&#x2F;morgenmagazin">
+                Morgenmagazin
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+            </ul>
+        </li>
+                                                                                                                                            <li data-color="default" class="default">
+                        <span class="nav_item_description">
+                <span class="divider"></span>
+            </span>
+                                                <a href="https://www.macwelt.de/preisvergleich" data-ga-event-type="click" data-ga-event-category="hautpnavi_click" data-ga-event-label="Preisvergleich&#x20;-&#x20;&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;preisvergleich">
+                Preisvergleich
+                                                            </a>
+            <ul>
+    </ul>
+        </li>
+                        </ul>
+</nav>
+            </div>
+    <div id="top-themen" class="panel">
+                <strong>Auf einen Blick:</strong>
+<ul class="add-nav">
+                        <li><a href="https://www.macwelt.de/a/macwelt-wir-ueber-uns,3439833">Über uns</a></li>
+                                <li><a href="https://www.macwelt.de/a/screenshots-am-mac-erstellen-so-geht-s,3209346">Screenshots am Mac</a></li>
+                                <li><a href="https://www.macwelt.de/news/Wordle-auf-Deutsch-bei-Macwelt-spielen-11172669.html">Wordle spielen 🟩🟨⬛️</a></li>
+                                <li><a href="http://bit.ly/macwelt-mailing">💌 Macwelt-Newsletter</a></li>
+                                <li><a href="https://www.macwelt.de/2142644">iPad-Kaufberatung</a></li>
+                                <li><a href="https://www.macwelt.de/ratgeber/iCloud-gratis-nutzen-Speicher-freiraeumen-8144859.html">iCloud aufräumen</a></li>
+            </ul>
+                                    <span class="icon-user align-right"></span>
+        <span class="login">Login&nbsp;&nbsp;</span>
+        <div class="loginframe"></div>
+        <div id="decision_layer">
+            <h3>Login</h3>
+            <div class="intro">Wählen Sie eine der beiden Login-Möglichkeiten aus</div>
+            <script>
+                function pianoTopLogin() {
+                    var offerId = 'OF877NBBNDQD';
+                    var templateId = 'OTCJZ1F6VLAU';
+                    if (window.location.hostname.match('macwelt')) {
+                        offerId = 'OFMQZPC9TPIW';
+                        templateId = 'OT3QJ13OUCQ0';
+                    }
+                    tp.offer.show({
+                        offerId: offerId,
+                        templateId: templateId,
+                        displayMode: 'inline',
+                        containerSelector: '#login_holder'
+                    });
+                }
+            </script>
+            <div class="choices clearfix">
+                <a style="background-image:url('/img/macwelt/insider/insider_login.jpg')" href="javascript:pianoTopLogin()" class="insider">
+                    <div class="explanation">Loggen Sie sich hier für Ihr<br>Insider-Abonnement ein</div>
+                    <div class="button" style="background-color:#8e8e8e;">Zum Insider-Login</div>
+                </a>
+                <a style="background-image:url('/img/macwelt/insider/plus_login.jpg')" href="/plus" class="plus">
+                    <div class="explanation">Loggen Sie sich hier für Ihr<br>Digitales Heft-Abonnement ein</div>
+                    <div class="button" style="background-color:#8e8e8e;">Zum Plus-Login</div>
+                </a>
+            </div>
+        </div>
+    
+    </div>
+</header>
+
+<!-- AD: dfp leadfull --><div id="leadfullWrapper"><div style="display:table-cell; vertical-align:middle;" data-idg-sizes="[[728,90],[800,250],[970,250]]" title="Google-Ad (Position: leadfull)" id="ad_leadfull" class="idgGoogleAdTag leadfull ad"></div></div>
+
+<script>
+    Search.initAutocomplete("#headersearch");
+</script>                                <div id="main">
+        <div id="outer">
+                                                    <div id="twocolumns">
+                <div id="content">
+                                            <div class="heading-page">
+        <div class="add-box2">
+            <div class="breadcrumb" vocab="https://schema.org" typeof="BreadcrumbList">
+                                <span>
+    <span property="itemListElement" typeof="ListItem">
+                        <a href="https://www.macwelt.de/" title="Zur Homepage" property="item" typeof="WebPage">
+            <span property="name">Home</span>
+        </a> >         <meta property="position" content="1">
+    </span>
+    </span>                                        <span>
+    <span property="itemListElement" typeof="ListItem">
+                        <a href="https://www.macwelt.de/ratgeber" title="Zur Ratgeber Übersicht" property="item" typeof="WebPage">
+            <span property="name">Ratgeber</span>
+        </a> >         <meta property="position" content="2">
+    </span>
+    </span>                                                        <span>
+    <span property="itemListElement" typeof="ListItem">
+                        <a href="https://www.macwelt.de/ratgeber/iphone-ipad" title="Zur iPhone &amp; iPad Übersicht" property="item" typeof="WebPage">
+            <span property="name">iPhone &amp; iPad</span>
+        </a>        <meta property="position" content="3">
+    </span>
+    </span>                        </div>
+            <span class="bid_info invis">2631553</span>
+                            
+                <h1 class="headline">iPhone 14: Warum sich das Warten wirklich lohnt</h1>
+                    <div class="author">
+        <p>
+            <strong class="author">
+                04.02.2022 | 15:33 Uhr
+                                    |
+                                                                                                                                                                                                                                                    <span>
+                                    <a class="authors" data-authors="Dennis Steimels">Dennis Steimels</a>                                </span>
+                                                                                                                                                                                                                    <script>
+                            $(function() {
+                                authorsPlugin.initOpenClick();
+                                                            });
+                        </script>
+                                                </strong>
+        </p>
+    </div>
+
+    <div class="social_media_buttons">
+        <a title="Facebook"
+       href="https://www.facebook.com/sharer.php?u=https://www.macwelt.de/2631553/facebook&amp;t=iPhone&#x20;14&#x3A;&#x20;Warum&#x20;sich&#x20;das&#x20;Warten&#x20;wirklich&#x20;lohnt"
+       target="_blank" rel="noopener" data-network="Facebook" data-action="Share">
+        <div class='social_media_icon facebook'>
+            <i class="icon-facebook"></i>
+        </div>
+    </a>
+        <a title="Twitter"
+       href="https://twitter.com/share?url=https://www.macwelt.de/2631553/twitter&amp;text=iPhone&#x20;14&#x3A;&#x20;Warum&#x20;sich&#x20;das&#x20;Warten&#x20;wirklich&#x20;lohnt&amp;via=MACWELT"
+       target="_blank" rel="noopener" data-network="Twitter" data-action="Tweet">
+        <div class='social_media_icon twitter'>
+            <i class="icon-twitter"></i>
+        </div>
+    </a>
+        <a title="Pocket"
+       href="https://getpocket.com/edit.php?url=https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;2631553&#x2F;pocket"
+       target="_blank" rel="noopener" data-network="Pocket" data-action="Share">
+        <div class='social_media_icon pocket'>
+            <i class="icon-get-pocket"></i>
+        </div>
+    </a>
+        <a title="Xing"
+       href="https://www.xing.com/spi/shares/new?url=https://www.macwelt.de/2631553/xing;title=iPhone&#x20;14&#x3A;&#x20;Warum&#x20;sich&#x20;das&#x20;Warten&#x20;wirklich&#x20;lohnt"
+       target="_blank" rel="noopener" data-network="XING" data-action="Share">
+        <div class='social_media_icon xing'>
+            <i class="icon-xing"></i>
+        </div>
+    </a>
+</div>                    </div>
+    </div>
+                                                        <header class="heading-page">
+        <div class="holder2">
+            <nav class="nav-page-holder">
+                                                                    <ul id="nav-page" class="four">
+                    <li >
+                        <a rel="nofollow sponsored noopener" href="/preisvergleich/p/41190_apple_iphone_13/ueberblick?bid=2631553">Übersicht</a>
+                    </li>
+                                                                        <li >
+                                <a href="/preisvergleich/p/41190_apple_iphone_13/tests?bid=2631553">Tests</a>
+                            </li>
+                                                                                        <li >
+                            <a rel="nofollow sponsored noopener" href="/preisvergleich/p/41190_apple_iphone_13/preise?bid=2631553">Preisvergleich</a>
+                        </li>
+                                                                                    <li >
+                            <a rel="nofollow sponsored noopener" href="/preisvergleich/p/41190_apple_iphone_13/artikel?bid=2631553">Alle Artikel</a>
+                        </li>
+                                    </ul>
+            </nav>
+        </div>
+    </header>
+                        <article class="article" itemscope itemtype="https://schema.org/Article" data-io-article-url="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html">
+        <meta itemprop="datePublished" content="2021-12-14T15:41:07+01:00"/>
+    <meta itemprop="dateModified" content="2022-02-04T15:33:00+01:00"/>
+    <span class="schema-author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Dennis Steimels</span>
+    </span>
+            <meta itemprop="headline" content="iPhone 14: Warum sich das Warten wirklich lohnt"/>
+    <meta itemprop="image" content="https://bilder.macwelt.de/4324738_original.jpg"/>
+    <meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html"/>
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+        <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="https://www.macwelt.de/img/macwelt/amp_logo.png">
+            <meta itemprop="width" content="60">
+            <meta itemprop="height" content="60">
+        </div>
+        <meta itemprop="name" content="Macwelt">
+    </div>
+            <div class="add-box">
+            <p>
+                <strong class="title">
+                    Im September 2022 kommt das iPhone 14 mit Features auf den Markt, die wir uns für das iPhone 13 gewünscht hätten. Warum sich das Warten also lohnt.
+                </strong>
+            </p>
+        </div>
+                                    <div class="visual first-gallery">
+                                                    <div class="visual inline">
+            <picture>
+                <source data-srcset="//bilder.macwelt.de/4324738_620x310_r.webp" type="image/webp">
+                <img
+                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        data-src="//bilder.macwelt.de/4324738_620x310_r.jpg"
+                        alt="Kommt&#x20;das&#x20;iPhone&#x20;14&#x20;ohne&#x20;Notch&#x3F;"
+                        title="Kommt&#x20;das&#x20;iPhone&#x20;14&#x20;ohne&#x20;Notch&#x3F;"
+                        width="620"
+                        height="310"
+                        class="lazyload"
+                />
+            </picture>
+            <div class="description">
+                <a class="btn"
+                   data-doi="4324738"
+                   data-image-lightbox-id="4324738"
+                   data-author_name=""
+                   data-description="Kommt&#x20;das&#x20;iPhone&#x20;14&#x20;ohne&#x20;Notch&#x3F;"
+                   href="//bilder.macwelt.de/4324738_original.jpg">
+                    <strong>Vergrößern</strong>
+                </a>
+                <strong class="title" title="Kommt&#x20;das&#x20;iPhone&#x20;14&#x20;ohne&#x20;Notch&#x3F;">Kommt das iPhone 14 ohne Notch?</strong>
+                <div class="box">
+                    <span class="copy"></span>
+                </div>
+            </div>
+        </div>
+            
+            </div>
+                                    <div class="add-box linkdb-marker">
+                <!-- AD: adsense article_top --><div style="width:620px; min-height:155px;" data-idg-sizes="[620,155]" id="ad_adsense_top" class="idgGoogleAdTag ad_adsense_top ad"></div>
+            </div>
+                                                                                                            
+                                        
+                                            <p class="linkdb-marker">
+
+                            Mitte September 2021 hat <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="Apple" data-ga-event-value="66" rel="nofollow noopener" href="/handover/66?ws=3&subid=macwelt_www_linkdb_2631553">Apple</a> die iPhone-13-Generation vorgestellt. Doch leider verzichtet das Unternehmen auf Features, die wir durchaus als praktisch empfunden hätten und die es bei der Android-Konkurrent schon lange gibt. Deshalb finden Sie hier Gründe, weshalb es sich lohnt, das <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="iPhone" data-ga-event-value="3208" rel="nofollow noopener" href="/handover/3208?ws=3&subid=macwelt_www_linkdb_2631553">iPhone</a> 13 zu überspringen und auf das  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/international/iPhone-14-Features-Design-Preis-das-kommt-2022-11052944.html" rel="noopener" target="_blank" title="iPhone&#x20;14&#x20;&#x28;alle&#x20;aktuellen&#x20;Ger&#x00FC;chte&#x29;">iPhone 14 (alle aktuellen Gerüchte)</a>
+                                             zu warten, dass im September 2022 auf den Markt kommen wird. Auch können Sie noch  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/ratgeber/iPhone-13-vs-iPhone-12-Vergleich-11089723.html" rel="noopener" target="_blank" title="getrost&#x20;zum&#x20;iPhone&#x20;12&#x20;greifen,&#x20;wie&#x20;unser&#x20;Vergleich&#x20;zeigt">getrost zum iPhone 12 greifen, wie unser Vergleich zeigt</a>
+                                            .
+
+    
+    </p>
+                                        <p id="piano-anchor"></p>
+                                                                                                                                                                                                    
+        
+                                        	<div class="clearfix"></div>
+    <h2 id="abschnitt-iphone-14-statt-notch-mit-punch-hole-design">iPhone 14 statt Notch mit Punch-Hole-Design</h2>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Das <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="iPhone" data-ga-event-value="3208" rel="nofollow noopener" href="/handover/3208?ws=3&subid=macwelt_www_linkdb_2631553">iPhone</a> 14 soll tatsächlich ganz ohne Notch erscheinen. Schon kurz nach dem iPhone-13-Release hat der bekannte Leaker  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/news/iPhone-14-Design-geleakt-das-schoenste-Handy-seit-iPhone-4-11093927.html" rel="noopener" target="_blank" title="Jon&#x20;Prosser&#x20;Renderings&#x20;des&#x20;iPhone&#x20;14&#x20;ver&#x00F6;ffentlicht">Jon Prosser Renderings des iPhone 14 veröffentlicht</a>
+                                            , die das kommende Apple-Handy komplett ohne Display-Kerbe am oberen Bildschirmrand zeigen. Stattdessen ist dort nur ein  
+
+                                <b>Punch-Hole</b>
+
+                                 für die Frontkamera, die Sensoren für die Face-ID sind hinter dem Display-Glas versteckt.  
+
+                <br>
+    
+    </p>
+                                                                                                                                                                                                
+        
+                    
+                                                                                                                                            <div class="visual inline">
+            <picture>
+                <source data-srcset="//bilder.macwelt.de/4311932_620x310_r.webp" type="image/webp">
+                <img
+                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        data-src="//bilder.macwelt.de/4311932_620x310_r.jpg"
+                        alt="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14."
+                        title="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14."
+                        width="620"
+                        height="310"
+                        class="lazyload"
+                />
+            </picture>
+            <div class="description">
+                <a class="btn"
+                   data-doi="4311932"
+                   data-image-lightbox-id="4311932"
+                   data-author_name="&amp;copy; Jon Prosser &amp; Renders by Rian"
+                   data-description="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14."
+                   href="//bilder.macwelt.de/4311932_original.jpg">
+                    <strong>Vergrößern</strong>
+                </a>
+                <strong class="title" title="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14.">Eine kleine runde Aussparung für die Facetime-Kamera im Display des iPhones 14.</strong>
+                <div class="box">
+                    <span class="copy">&copy; Jon Prosser & Renders by Rian</span>
+                </div>
+            </div>
+        </div>
+                    <!-- AD: dfp image1 --><div style="width:620px; min-height:90px;" data-idg-sizes="[620,90]" title="Google-Ad (Position: image1)" id="ad_image1" class="image1 ad"></div>
+            
+                                                                                                                                                                                                                        <!-- AD: dfp video --><div style="width:620px; min-height:350px;" data-idg-sizes="[1,1]" title="Google-Ad (Position: video)" id="ad_video" class="idgGoogleAdTag video ad"></div>
+                                    
+                                    <!-- AD: performance article_link --><div class="shopping24-text-placeholder"
+data-cache-date="2022-02-08-08-00" 
+data-brand="Apple"
+data-name="iPhone&#x20;13&#x20;128&#x20;GB&#x20;mitternacht"
+data-id="3232088077"></div>
+                                
+                                            <p class="linkdb-marker">
+
+                            Aktuell besagen einige Gerüchte, dass <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="Apple" data-ga-event-value="66" rel="nofollow noopener" href="/handover/66?ws=3&subid=macwelt_www_linkdb_2631553">Apple</a> zumindest beim <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="iPhone" data-ga-event-value="3208" rel="nofollow noopener" href="/handover/3208?ws=3&subid=macwelt_www_linkdb_2631553">iPhone</a> 14 Pro tatsächlich die Notch entfernt, stattdessen würde das Unternehmen auf eine Mischung aus Punch-Hole und Pillenform der Frontkamera setzen, wie der 
+
+                        
+                                                                                                                                        <a href="https://twitter.com/DSCCRoss/status/1481306555857481731" rel="noopener" target="_blank" title="Experte&#x20;Ross&#x20;Young&#x20;berichtet">Experte Ross Young berichtet</a>
+                                            . Die kleine kreisrunde Aussparrung soll dabei Sensoren für die Face-ID enthalten und im Pillen-Ausschnitt soll die Selfie-Cam mit weiteren Elementen der Gesichtserkennung untergebracht sein. Wie das iPhone 14 ohne Notch aussieht, sehen Sie in unserem Video:
+
+    
+    </p>
+                                                                                                                                                                                                
+        
+                    
+                                                                                                                    <iframe width="620" height="349" src="https://www.youtube.com/embed/n3hs8ag7YKM?modestbranding=1&autoplay=0&autonav=1" frameborder="0" allowfullscreen></iframe>
+<div class="video-detail">
+    <div class="description">
+        <div class="box">
+            <a href="#" class="show_video_description hidden">Video-Beschreibung einblenden</a>
+            <p>
+            Das iPhone 14 kommt wohl ohne Notch. Derzeit gibt es viele Konzepte, wie ein Notch-loses iPhone aussehen könnte. Wir haben uns mit Trick 17 ein solches iPhone "gebaut" und mal geschaut, wie die Konzepte in der Praxis aussehen. 
+
+► Zum Technikliebe T-Shirt-Shop:
+<a href="https://shop.spreadshirt.de/technikliebe/" target="_blank" rel="noopener">shop.spreadshirt.de/technikliebe/</a>
+
+00:00 iPhone 14 ohne Notch? 
+02:06 Punchhole-Kamera
+02:46 Pillen-Kamera
+03:53 Unsichtbare Kamera
+            </p>
+        </div>
+    </div>
+</div>
+                                                
+                                                                                                                                                                                
+                                    <!-- AD: billigerDe breaker --><div id="billiger_breaker" data-content-id="2631553"></div>
+                                
+                                            <p class="linkdb-marker">
+
+                            Die Standardmodelle des iPhone 14 sollen hingegen weiterhin mit Notch kommen. Vermutlich würde die dann wieder etwas kleiner werden gegenüber der Notch im iPhone 13.
+
+    
+    </p>
+                                                                                                                            
+                                                                                                    
+                                        
+                                            <p class="linkdb-marker">
+
+                    
+                                                                                                                                        <a href="https://www.macwelt.de/international/iPhone-14-Features-Design-Preis-das-kommt-2022-11052944.html" rel="noopener" target="_blank" title="iPhone&#x20;14&#x3A;&#x20;Alles&#x20;zu&#x20;Features,&#x20;Design,&#x20;Preis&#x20;&#x2013;&#x20;das&#x20;kommt&#x20;2022">iPhone 14: Alles zu Features, Design, Preis – das kommt 2022</a>
+                
+    </p>
+                                                                                                                                                                                                
+        
+                                        	<div class="clearfix"></div>
+    <h2 id="abschnitt-iphone-14-mit-komplett-neuem-design">iPhone 14 mit komplett neuem Design?</h2>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Die Rendering-Bilder von Jon Prosser zeigen aber nicht nur, dass die Notch angeblich verschwinden soll, sondern auch, dass 2022 ein iPhone mit völlig neuem Design kommen könnte, das in Teilen aber an ein altes Apple-Handy erinnern lässt, und zwar an das iPhone 4.
+
+    
+    </p>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Die Metallumrahmung der beiden Glasseiten schließt nicht mehr an den Rändern ab, wie es beim iPhone 12 der Fall ist, sondern lässt einen winzigen Abstand wie schon beim iPhone 4 zu. <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="Apple" data-ga-event-value="66" rel="nofollow noopener" href="/handover/66?ws=3&subid=macwelt_www_linkdb_2631553">Apple</a> wird wohl  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/news/iPhone-14-Pro-wohl-mit-Titan-statt-Aluminium-Gehaeuse-11068701.html" rel="noopener" target="_blank" title="statt&#x20;Edelstahl&#x20;auf&#x20;Titan&#x20;bei&#x20;der&#x20;Umrandung&#x20;setzen">statt Edelstahl auf Titan bei der Umrandung setzen</a>
+                                            .
+
+    
+    </p>
+                                                                                                                                                                                                
+        
+                    
+                                                                                                                                            <div class="visual inline">
+            <picture>
+                <source data-srcset="//bilder.macwelt.de/4311931_620x310_r.webp" type="image/webp">
+                <img
+                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        data-src="//bilder.macwelt.de/4311931_620x310_r.jpg"
+                        alt="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14."
+                        title="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14."
+                        width="620"
+                        height="310"
+                        class="lazyload"
+                />
+            </picture>
+            <div class="description">
+                <a class="btn"
+                   data-doi="4311931"
+                   data-image-lightbox-id="4311931"
+                   data-author_name="&amp;copy; Jon Prosser &amp; Renders by Rian"
+                   data-description="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14."
+                   href="//bilder.macwelt.de/4311931_original.jpg">
+                    <strong>Vergrößern</strong>
+                </a>
+                <strong class="title" title="Eine&#x20;kleine&#x20;runde&#x20;Aussparung&#x20;f&#x00FC;r&#x20;die&#x20;Facetime-Kamera&#x20;im&#x20;Display&#x20;des&#x20;iPhones&#x20;14.">Eine kleine runde Aussparung für die Facetime-Kamera im Display des iPhones 14.</strong>
+                <div class="box">
+                    <span class="copy">&copy; Jon Prosser & Renders by Rian</span>
+                </div>
+            </div>
+        </div>
+                    <!-- AD: dfp image2 --><div style="width:620px; min-height:90px;" data-idg-sizes="[620,90]" title="Google-Ad (Position: image2)" id="ad_image2" class="image2 ad"></div>
+            
+                                                                                                                                                                                                                            
+                                        
+                                            <p class="linkdb-marker">
+
+                            Die Renderings, die auf Bildern und Blaupausen seiner Quellen basieren, zeigen, dass das Apple-Logo auf der Rückseite unter dem Glas eingebracht und nicht mehr direkt auf der Oberfläche ist. Neben der Notch auf der Voderseite soll auch auch der Kamera-Buckel auf der Rückseite fast fast vollständig verschwinden. Die drei Objektive, der Lidar-Sensor und der Blitz schließen nahezu nahtlos mit der Oberfläche ab. Und das wäre eine erhebliche Verbesserung des Designs gegenüber der Vorgänger-iPhones.
+
+    
+    </p>
+                                                                                                                                                                                                
+        
+                                        	<div class="clearfix"></div>
+    <h2 id="abschnitt-viele-kamera-verbesserungen-48-megapixel-periskop-8k-videos">Viele Kamera-Verbesserungen: 48-Megapixel, Periskop, 8K-Videos</h2>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Das iPhone 14 soll  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/news/Kuo-iPhone-2022-mit-DSLR-Qualitaet-ohne-Mini-11012104.html" rel="noopener" target="_blank" title="laut&#x20;dem&#x20;gut&#x20;informierten&#x20;Insider&#x20;Ming-Chi&#x20;Kuo">laut dem gut informierten Insider Ming-Chi Kuo</a>
+                                             einen bedeutenden Sprung in Sachen Kamera-Feature und -Qualität machen. So werden wohl mindestens die beiden Pro-Modelle 8K-Videos aufnehmen können wie aktuell auch Samsungs Galaxy-S21-Reihe.
+
+    
+    </p>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Auch soll sich Apple endlich von der 12-Megapixel-Auflösung verabschieden und auf 48 Megapixel bei der Hauptkamera mit größerem Bildsensor setzen, wie unter anderem 
+
+                        
+                                                                                                                                        <a href="https://www.macrumors.com/2021/12/13/iphone-14-pro-48mp-camera-8gb-ram-rumors/" rel="noopener" target="_blank" title="Macrumors&#x20;berichtet">Macrumors berichtet</a>
+                                            , die sich auf den Analysten Jeff Pu beziehen. Generell ist es aber möglich, dass die Kameras standardmäßig weiterhin Fotos mit 12 Megapixeln knipsen. Wie bei vielen Android-Geräten könnte Apple einen Algorithmus verwenden, der aus den 48-Megapixeln-Rohdaten ein 12-Megapixel-Bild mit mehr Lichtinformationen erstellt. So werden quasi vier Pixel zu einem Pixel, die mit 2,5 Mikrometern deutlich größer wären als die 1,7-Mikrometer-Pixel des iPhone 12.  
+
+                <br>
+    
+    </p>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Darüber hinaus soll Apple dieses Jahr erstmals eine Periskop-Kamera für 10-fach optischen Zoom verbauen, mit der auch iPhone-Nutzer endlich anständige Tele-Fotos aufnehmen könnten. Eine Periskop-Kamera findet sich bereits in so manchem Android-Handy von <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="Huawei" data-ga-event-value="3318" rel="nofollow noopener" href="/handover/3318?ws=3&subid=macwelt_www_linkdb_2631553">Huawei</a>, <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="Samsung" data-ga-event-value="326" rel="nofollow noopener" href="/handover/326?ws=3&subid=macwelt_www_linkdb_2631553">Samsung</a> und Oppo. Allerdings beschreibt Apples Patent eine etwas andere Technik,  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/news/Apple-patentiert-Periskopkamera-fuer-kuenftige-iPhones-11061669.html" rel="noopener" target="_blank" title="die&#x20;wir&#x20;in&#x20;diesem&#x20;Artikel&#x20;genauer&#x20;berichten">die wir in diesem Artikel genauer berichten</a>
+                                            .
+
+    
+    </p>
+                                                                                                                                                                                                
+        
+                                        	<div class="clearfix"></div>
+    <h2 id="abschnitt-120-hertz-display-in-jedem-iphone-14-modell">120-Hertz-Display in jedem iPhone-14-Modell?</h2>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Apple hängt primär bei der Bildwiederholrate seiner Displays stark der Konkurrenz hinterher, die mittlerweile nicht nur im Flaggschiff-Bereich bei 120 Hertz und teils sogar 144 Hertz angelangt ist, während die iPhones bis zum iPhone 13 nur 60 Hertz boten. Immerhin setzen die aktuellen Pro-Modelle jetzt auf 120 Hertz, die kleineren Standard-Versionen schauen in die Röhre.
+
+    
+    </p>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Lange hielten sich die Gerüchte, dass 2022 alle vier iPhone-Modelle ein ProMotion-Display mit 120 Hertz erhalten würden. Das sollte unter dadurch möglich werden, dass Apple neben <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="Samsung" data-ga-event-value="326" rel="nofollow noopener" href="/handover/326?ws=3&subid=macwelt_www_linkdb_2631553">Samsung</a> auch LG als weiteren Lieferant von LTPO-OLED-Bildschirmen ins Boot holen wollte,  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/international/iPhone-14-Warum-Apple-erst-2022-auf-120-Hz-Displays-komplett-umsteigt-11057470.html" rel="noopener" target="_blank" title="wie&#x20;wir&#x20;hier&#x20;ausf&#x00FC;hrlicher&#x20;erkl&#x00E4;ren">wie wir hier ausführlicher erklären</a>
+                                             und wie  
+
+                        
+                                                                                                                                        <a href="http://www.thelec.net/news/articleView.html?idxno=3665" rel="noopener" target="_blank" title="The&#x20;Elec&#x20;ebenfalls&#x20;berichtete">The Elec ebenfalls berichtete</a>
+                                            . Dank der LTPO-Technik ist es nämlich möglich, die Bildwiederholrate variabel zu gestalten und die höchste Frequenz nur dann abzurufen, wenn sie auch erforderlich ist – zum Beispiel bei Spielen. Wenn Sie etwa ein E-Book lesen, dann geht die Rate automatisch runter auf beispielsweise 10 Hertz.
+
+    
+    </p>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Zwar werden <a target="_blank" data-ga-event-type="view|click" data-ga-event-category="Affiliate Datenbank" data-ga-event-label="Samsung" data-ga-event-value="326" rel="nofollow noopener" href="/handover/326?ws=3&subid=macwelt_www_linkdb_2631553">Samsung</a> und auch LG Displays für das iPhone 14 produzieren,  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/news/iPhone-14-120-Hertz-Display-doch-nur-im-Pro-Modell-11168688.html" rel="noopener" target="_blank" title="laut&#x20;den&#x20;neuesten&#x20;Ger&#x00FC;chten&#x20;sollen&#x20;aber&#x20;wieder&#x20;nur&#x20;die&#x20;Pro-Varianten&#x20;120&#x20;Hertz&#x20;biete">laut den neuesten Gerüchten sollen aber wieder nur die Pro-Varianten 120 Hertz biete</a>
+                                            n. Unter anderem soll auch der chinesische Hersteller BOE Displays liefern, allerdings baut BOE seine Produktionsstätten gerade erst weiter aus, um 2023 mehr Bildschirme für Apple produzieren zu können. Vermutlich wird dann erst die iPhone-15-Generation komplett auf 120 Hertz umsteigen. Unserer Meinung nach ist das den Kunden über schon fast eine Frechheit, bieten doch sogar schon 300-Euro-Android-Handys diese hohe Bildwiederholrate, die in der Praxis smoothes Bedienen des Smartphones möglich macht. 
+
+                <br>
+    
+    </p>
+                                                                                                                                                                                                
+        
+                                        	<div class="clearfix"></div>
+    <h2 id="abschnitt-iphone-13-ohne-touch-id-im-display-erst-im-iphone-14">iPhone 13 ohne Touch-ID im Display – erst im iPhone 14?</h2>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Lange hielten sich die Gerüchte, dass die Touch-ID mit dem iPhone 13 auch im High-End-Bereich zurückkehren könnte – diesmal aber nicht in Form eines physischen Buttons wie beim aktuellen 
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/produkte/iPhone-SE-2020-im-Macwelt-Test-Angriff-auf-die-Android-Mittelklasse-10800563.html" rel="noopener" target="_blank" title="iPhone&#x20;SE&#x20;2&#x20;&#x28;im&#x20;Test&#x29;">iPhone SE 2 (im Test)</a>
+                                            , sondern unter dem Display-Glas, wie Sie es bereits von Android-Handys wie dem aktuellen  
+
+                        
+                                                                                                                                        <a href="https://www.pcwelt.de/news/Samsung-Galaxy-S21-S21-Plus-und-S21-Ultra-vorgestellt-Ausstattung-Preise-Release-10955085.html" rel="noopener" target="_blank" title="Galaxy&#x20;S21&#x20;&#x28;alle&#x20;Infos&#x29;">Galaxy S21 (alle Infos)</a>
+                                             kennen.
+
+    
+    </p>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Dass ein Fingerabdrucksensor neben der Gesichtserkennung über Face-ID in Zeiten der Pandemie als Entsperrmethode praktisch ist, steht außer Frage. Deshalb hoffte man bis zuletzt, dass Apple die Touch-ID zurückbringt. Ob wir im iPhone 14 eine Touch-ID im Display sehen werden, bleibt weiterhin offen. Denn hier sind sich die Gerüchte aktuell noch nicht einig. Während vor einigen Monaten noch die Rede davon war, dass die Touch-ID kommen soll, spricht man aktuell eher davon,  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/news/Warum-Apple-auch-beim-iPhone-14-auf-Touch-ID-verzichtet-11100654.html" rel="noopener" target="_blank" title="dass&#x20;Apple&#x20;diese&#x20;wohl&#x20;erst&#x20;2023&#x20;bringen&#x20;k&#x00F6;nnte">dass Apple diese wohl erst 2023 bringen könnte</a>
+                                            .  
+
+                <br>
+    
+    </p>
+                                                                                                                                                                                                
+        
+                                        	<div class="clearfix"></div>
+    <h2 id="abschnitt-iphone-14-max-das-bislang-guenstigste-6-7-zoll-iphone">iPhone 14 Max: Das bislang günstigste 6,7-Zoll-iPhone?</h2>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Nach dem iPhone 12 Mini und 13 Mini soll beim iPhone 14 auch schon wieder Schluss sein mit der kleinen Version. Grund soll unter anderem der mäßige Erfolg des aktuellen Mini-iPhones sein.  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/news/Statt-iPhone-14-Mini-Apple-plant-neues-iPhone-Modell-11059143.html" rel="noopener" target="_blank" title="Stattdessen&#x20;werden&#x20;wir&#x20;laut&#x20;dem&#x20;bekannten&#x20;Apple-Analysten&#x20;Ming-Chi&#x20;Kuo">Stattdessen werden wir laut dem bekannten Apple-Analysten Ming-Chi Kuo</a>
+                                            vom iPhone 14 folgende vier Modelle zu sehen bekommen:
+
+    
+    </p>
+                                                                                                                                                                                                
+        
+                                        <div class="list-element linkdb-marker">
+            <ul>
+                                        <li>
+                        <p class="linkdb-marker">
+
+                            iPhone 14 (6,1 Zoll) 
+
+                <br>
+    
+    </p>
+                </li>
+                            <li>
+                        <p class="linkdb-marker">
+
+                            iPhone 14 Max (6,7 Zoll) 
+
+                <br>
+    
+    </p>
+                </li>
+                            <li>
+                        <p class="linkdb-marker">
+
+                            iPhone 14 Pro (6,1 Zoll) 
+
+                <br>
+    
+    </p>
+                </li>
+                            <li>
+                        <p class="linkdb-marker">
+
+                            iPhone 14 Pro Max (6,7 Zoll) 
+
+                <br>
+    
+    </p>
+                </li>
+                            </ul>
+    </div>                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Kein Mini mehr, dafür ein Max-Modell der Standard-Version. Das könnte auch bedeuten, dass die Preise sinken – zumindest soll laut Kuo –  
+
+                        
+                                                                                                                                        <a href="https://9to5mac.com/2021/06/23/kuo-2022-iphones-could-feature-under-display-touch-id-lowest-price-ever-for-6-7-inch-iphone/" rel="noopener" target="_blank" title="wie&#x20;9to5Mac&#x20;berichtet">wie 9to5Mac berichtet</a>
+                                             – das iPhone 14 Max das günstigste 6,7-Zoll-iPhone in der Apple-Geschichte werden. Er geht von unter 900 US-Dollar aus. Wie es um die weiteren Preise steht, können wir zum aktuellen Zeitpunkt noch nicht sagen. Wir gehen aber davon aus, dass dadurch auch der Preis für das Standard-Modell iPhone 14 gegenüber dem iPhone 13 sinken könnte und der Einstieg in die neueste Generation günstiger wird.
+
+    
+    </p>
+                                                                                                                                                                                                
+        
+                                        	<div class="clearfix"></div>
+    <h2 id="abschnitt-einschaetzung">Einschätzung</h2>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            Die Neuerungen des iPhone 13 gegenüber den aktuellen 12er-Modellen fallen nicht so gewaltig aus, als dass Sie auf jeden Fall upgraden müssen, wie Sie auch in  
+
+                        
+                                                                                                                                        <a href="https://www.macwelt.de/ratgeber/iPhone-13-vs-iPhone-12-Vergleich-11089723.html" rel="noopener" target="_blank" title="unserem&#x20;Vergleich&#x20;detailliert&#x20;nachlesen&#x20;k&#x00F6;nnen">unserem Vergleich detailliert nachlesen können</a>
+                                            . Bei der iPhone-14-Generation aber – wenn die Features denn so kommen – sieht das schon etwas anders aus. Das Warten lohnt sich also, wenn Sie vorwiegend viel fotografieren und von der wahrscheinlich deutlich besseren Kamera profitieren wollen. Und der Einstiegspreis soll sinken, was auch ein wichtiger Punkt für viele Käufer sein wird. Unsere Euphorie wäre aber noch größer, wenn auch 120 Hertz in allen Modellen und der Fingerabdrucksensor im Display als Feature integriert werden würden, aber das wird dieses Jahr wohl eher nichts werden. 
+
+                <br>
+    
+    </p>
+                                                                                                                                                                                                
+                                        
+                                            <p class="linkdb-marker">
+
+                            <b>Hinweis:</b>
+
+                                 Natürlich müssen wir bedenken, dass die Veröffentlichung des iPhone 14 noch etliche Monate entfernt ist. In dieser Zeit kann sich viel ändern. Doch die Gerüchte klingen sehr plausibel.
+
+    
+    </p>
+                                                                                                        <!-- AD: dfp marktplatz_special --><div data-idg-sizes="[1,1]" title="Google-Ad (Position: marktplatz_special)" id="ad_marktplatz_special" class="idgGoogleAdTag marktplatz_special ad"></div>
+                
+        <!-- AD: performance article_bottom --><div class="shopping24-banner-placeholder"
+data-cache-date="2022-02-08-08-00" 
+data-brand="Apple"
+data-name="iPhone&#x20;13&#x20;128&#x20;GB&#x20;mitternacht"
+data-id="3232088077"></div>
+</article>
+<div id="rs_ctTileRecommender"></div>
+<div id="feedback_info" style="display:none">
+    📧 <a href="mailto:redaktion@macwelt.de?subject=Ihr&#x20;Kommentar&#x20;zum&#x20;Artikel&#x20;&#x27;iPhone&#x20;14&#x3A;&#x20;Warum&#x20;sich&#x20;das&#x20;Warten&#x20;wirklich&#x20;lohnt&#x27;&amp;body=Ihr&#x20;Kommentar&#x20;zum&#x20;Artikel&#x20;https&#x3A;&#x2F;&#x2F;www.macwelt.de&#x2F;ratgeber&#x2F;iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html&#x3A;" title="Feedback an Macwelt">Feedback an Macwelt</a>
+</div>                            <!-- AD: dfp sfp_infeed --><div style="width:620px; min-height:155px;" data-idg-sizes='[[1,1],[620,140],[620,155],["fluid"]]' title="Google-Ad (Position: sfp_infeed)" id="ad_sfp_infeed" class="sfp_infeed ad"></div>
+    <!-- AD: outbrain article --><div class="OUTBRAIN" data-src="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html" data-widget-id="AR_1" data-ob-template="DE_Mac-welt.de" ></div>
+    <!-- AD: dfp marktplatz -->
+            <div class="marketplace standard">
+                <div class="heading">
+                    <span class="banner-text">-Anzeige-</span>
+                    <h4>Macwelt Marktplatz</h4>
+                </div>
+                <div class="content clearfix">
+                <div class="marketplace_element">
+                    <div data-idg-sizes="[[309,363],[618,363]]" id="ad_marktplatz_links" class="marktplatz_links ad"></div>
+                </div>
+                <div class="marketplace_element">
+                    <div data-idg-sizes="[309,363]" id="ad_marktplatz_rechts" class="marktplatz_rechts ad"></div>
+                </div>
+                </div>
+            </div>
+    <!-- AD: outbrain idg_content_footer --><div class="OUTBRAIN" data-src="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html" data-widget-id="AR_12" data-ob-template="DE_Mac-welt.de" ></div>
+        <!-- AD: yieldkit  --><script>
+                (function () {
+                    var scriptProto = 'https:' == document.location.protocol ? 'https://' : 'http://';
+                    var script = document.createElement('script');
+                    script.type = 'text/javascript';
+                    script.async = true;
+                    script.src = scriptProto+'js.srvtrck.com/v1/js?api_key=cc86ea3a04806258ca5dfd8a1fdab564&site_id=953f958589ff4d50900e79c9b4005b39';
+                    (document.getElementsByTagName('head')[0] || document.body).appendChild(script);
+                })();</script>
+    <!-- AD: intextlinks  --><script language="javascript" type="text/javascript">
+                clid=130;
+            (function(src) {
+                var a = document.createElement("script");
+                a.type = "text/javascript";
+                a.async = true;
+                a.src = src;
+                var b = document.getElementsByTagName("script")[0];
+                b.parentNode.insertBefore(a, b)
+                })("https://intextlinks.idg.zone/dist/libs/powerlinks/include.js");
+            </script>
+    <div id='blmhinweis'></div><script>var blmhinweis = document.getElementById('blmhinweis'); blmhinweis.innerHTML = 'Einige Links in diesem Artikel können Affiliate-Links sein. Kaufen Sie über einen solchen Link ein Produkt, erhält Macwelt eine kleine Provision. Am Kaufpreis ändert sich dadurch nichts. Unsere redaktionelle Berichterstattung ist grundsätzlich unabhängig vom Bestehen oder der Höhe einer Provision.';</script>
+                </div>
+                <aside id="sidebar">
+                                                                                                        <div class="news-teaser-placeholder" data-navid="202" data-breadcrumb="iPhone&#x20;&amp;&#x20;iPad" data-count="5" data-host="macwelt" data-articletypes="news,test,tip,international,ratgeber,video,external_article,download" data-mainnav="Ratgeber"></div>
+                <!-- AD Slot dfp -->
+<!-- AD: dfp mpu --><div style="width:300px; min-height:600px;" data-idg-sizes="[[1,1],[300,250],[300,600],[336,280]]" title="Google-Ad (Position: mpu)" id="ad_mpu" class="idgGoogleAdTag mpu ad iframe-box"></div>
+                
+<div class="box" data-ga-event-type="view" data-ga-event-category="right_column_specials_block_teaserspalte" data-ga-event-label="Macwelt&#x20;Specials">
+    <div class="heading">
+                                                                        <span class="banner-text">-Anzeige-</span>
+        <h4>Macwelt Specials</h4>
+    </div>
+    <div class="content">
+                        <ul>
+                            <li>
+                    <a class="holder"
+                       href="https://www.macwelt.de/2637425"
+                       data-ga-event-type="click"
+                       data-ga-event-category="right_column_specials_block_teaserspalte"
+                       data-ga-event-label="Macwelt&#x20;Specials_https://www.macwelt.de/2637425"
+                       target="_blank"
+                        >
+                                                                                                                                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4328801_120x60.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4328801_120x60.jpg"
+                                        alt="MacX&#x20;MediaTrans&#x20;gratis"
+                                        title="MacX&#x20;MediaTrans&#x20;gratis"
+                                        width="120"
+                                        height="60"
+                                        class="lazyload"
+                                />
+                            </picture>
+                                                <div class="text-holder">
+                            <h5>MacX MediaTrans gratis</h5>
+                            <p>Gratis-Software hier sichern!</p>
+                        </div>
+                    </a>
+                </li>
+                    </ul>
+    </div>
+</div>
+
+                
+<div class="box">
+    <div class="heading">
+                                            <span class="banner-text"></span>
+        <h4>iPad Kaufberatung</h4>
+    </div>
+    <div class="content">
+        <div class="cycle-gallery">
+            <div class="mask">
+                <div class="slideset" style="position: relative; height: 256px; margin-left: -300px;">
+                                                                                                                                                                        
+                        <div class="slide active" style="position: absolute; left: 0px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4270125_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4270125_300x150.jpg"
+                                        alt="iPad&#x20;Pro,&#x20;Air,&#x20;Mini&#x20;&#x2013;&#x20;Welches&#x20;soll&#x20;ich&#x20;kaufen&#x3F;"
+                                        title="iPad&#x20;Pro,&#x20;Air,&#x20;Mini&#x20;&#x2013;&#x20;Welches&#x20;soll&#x20;ich&#x20;kaufen&#x3F;"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/ratgeber/iPad-kaufen-Air-Pro-Mini-9852662.html"  target="_blank">
+                            <h5>iPad Pro, Air, Mini – Welches soll ich kaufen?</h5>
+                            <p>In diesem Ratgeber erklären wir, für wen sich welches iPad eignet und nennen aktuelle Preise.</p>
+                        </a>
+                    </div>
+                                                                                                                                                                        
+                        <div class="slide " style="position: absolute; left: 300px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4273331_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4273331_300x150.jpg"
+                                        alt="iPad&#x20;Air&#x20;4&#x20;2020&#x20;im&#x20;Test&#x3A;&#x20;Fast&#x20;schon&#x20;&#x201E;Pro&#x201C;"
+                                        title="iPad&#x20;Air&#x20;4&#x20;2020&#x20;im&#x20;Test&#x3A;&#x20;Fast&#x20;schon&#x20;&#x201E;Pro&#x201C;"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/produkte/iPad-Air-4-2020-im-Praxistest-Fast-schon-Pro-10906436.html"  target="_blank">
+                            <h5>iPad Air 4 2020 im Test: Fast schon „Pro“</h5>
+                            <p>Das iPad Air geht in die vierte Generation.  Kann es den Pro-Modellen das Wasser reichen?</p>
+                        </a>
+                    </div>
+                                                                                                                                                                        
+                        <div class="slide " style="position: absolute; left: 600px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4270123_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4270123_300x150.jpg"
+                                        alt="Testbericht&#x20;iPad&#x20;Pro&#x20;2020"
+                                        title="Testbericht&#x20;iPad&#x20;Pro&#x20;2020"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/international/iPad-Pro-2020-nur-ein-kleines-Upgrade-Die-Gruende-10780428.html"  target="_blank">
+                            <h5>Testbericht iPad Pro 2020</h5>
+                            <p>Das neue iPad Pro hat einige bemerkenswerte Aktualisierungen, aber es ist nicht wirklich schneller als das Vorgängermodell.</p>
+                        </a>
+                    </div>
+                                                                                                                    
+                        <div class="slide " style="position: absolute; left: 900px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4273332_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4273332_300x150.jpg"
+                                        alt="iPad&#x20;Air&#x20;2020&#x20;vs.&#x20;iPad&#x20;Pro&#x3A;&#x20;Billiger&#x20;&amp;&#x20;besser&#x3F;"
+                                        title="iPad&#x20;Air&#x20;2020&#x20;vs.&#x20;iPad&#x20;Pro&#x3A;&#x20;Billiger&#x20;&amp;&#x20;besser&#x3F;"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/ratgeber/iPad-Air-2020-vs-iPad-Pro-Billiger-und-besser-10884242.html"  >
+                            <h5>iPad Air 2020 vs. iPad Pro: Billiger & besser?</h5>
+                            <p>Das iPad Pro und das iPad Air der vierten Generation ähneln sich sehr, bei einem näheren Blick findet man aber doch Unterschiede.</p>
+                        </a>
+                    </div>
+                                    </div>
+            </div>
+            <div class="gallery-nav">
+                <a rel="nofollow noopener" href="#" class="next"><span class="icon-chevron-right"></span></a>
+                <a rel="nofollow noopener" href="#" class="prev"><span class="icon-chevron-left"></span></a>
+                <div class="pagination">
+                    <ul>
+                        <li class="active">
+                            <a rel="nofollow noopener" href="#">'</a>
+                        </li>
+                        <li>
+                            <a rel="nofollow noopener" href="#">'</a>
+                        </li>
+                        <li>
+                            <a rel="nofollow noopener" href="#">'</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>                <!-- AD Slot outbrain -->
+<!-- AD: outbrain teaser_short --><div class="OUTBRAIN" data-src="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html" data-widget-id="SB_1" data-ob-template="DE_Mac-welt.de" ></div>
+                
+<div class="box">
+    <div class="heading">
+                                            <span class="banner-text"></span>
+        <h4>Kaufberatung iPhone 13 (Mini/Pro)</h4>
+    </div>
+    <div class="content">
+        <div class="cycle-gallery">
+            <div class="mask">
+                <div class="slideset" style="position: relative; height: 256px; margin-left: -300px;">
+                                                                                                                                                                                                                            
+                        <div class="slide active" style="position: absolute; left: 0px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4313538_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4313538_300x150.jpg"
+                                        alt="iPhone&#x20;13&#x20;vorgestellt&#x3A;&#x20;Modelle&#x20;&amp;&#x20;Features"
+                                        title="iPhone&#x20;13&#x20;vorgestellt&#x3A;&#x20;Modelle&#x20;&amp;&#x20;Features"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/produkte/iPhone-13-Modelle-Features-Design-Preis-Release-10931431.html" rel="nofollow noopener sponsored" target="_blank">
+                            <h5>iPhone 13 vorgestellt: Modelle & Features</h5>
+                            <p>In diesem Beitrag haben wir die Modelle, alle Neuerungen und die Preise des iPhone 13 für Sie zusammengefasst.</p>
+                        </a>
+                    </div>
+                                                                                                                                                                                                                            
+                        <div class="slide " style="position: absolute; left: 300px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4313539_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4313539_300x150.jpg"
+                                        alt="iPhone&#x20;13&#x3A;&#x20;Welches&#x20;Ger&#x00E4;t&#x20;soll&#x20;ich&#x20;kaufen&#x3F;"
+                                        title="iPhone&#x20;13&#x3A;&#x20;Welches&#x20;Ger&#x00E4;t&#x20;soll&#x20;ich&#x20;kaufen&#x3F;"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/ratgeber/iPhone-13-Mini-Pro-Welches-Geraet-soll-ich-kaufen-11097448.html" rel="nofollow noopener sponsored" target="_blank">
+                            <h5>iPhone 13: Welches Gerät soll ich kaufen?</h5>
+                            <p>iPhone 13 Mini, 13, 13 Pro oder 13 Pro Max: Welches der neuen iPhone-Modelle passt am besten zu Ihnen?</p>
+                        </a>
+                    </div>
+                                                                                                                    
+                        <div class="slide " style="position: absolute; left: 600px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4313541_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4313541_300x150.jpg"
+                                        alt="iPhone&#x20;13&#x3A;&#x20;F&#x00FC;r&#x20;wen&#x20;sich&#x20;das&#x20;Upgrade&#x20;lohnt"
+                                        title="iPhone&#x20;13&#x3A;&#x20;F&#x00FC;r&#x20;wen&#x20;sich&#x20;das&#x20;Upgrade&#x20;lohnt"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/ratgeber/iPhone-13-Fuer-wen-sich-das-Upgrade-lohnt-11084547.html"  >
+                            <h5>iPhone 13: Für wen sich das Upgrade lohnt</h5>
+                            <p>Sie nutzen noch ein älteres iPhone? Wir erklären, bei welchem Modell sich der Wechsel zum iPhone 13 lohnt.</p>
+                        </a>
+                    </div>
+                                                                                                                    
+                        <div class="slide " style="position: absolute; left: 900px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4313542_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4313542_300x150.jpg"
+                                        alt="iPhone&#x20;13&#x20;&#x28;Mini&#x29;&#x20;vs.&#x20;iPhone&#x20;12&#x20;&#x28;Mini&#x29;&#x3A;&#x20;Welches&#x20;Modell&#x20;sich&#x20;mehr&#x20;lohnt"
+                                        title="iPhone&#x20;13&#x20;&#x28;Mini&#x29;&#x20;vs.&#x20;iPhone&#x20;12&#x20;&#x28;Mini&#x29;&#x3A;&#x20;Welches&#x20;Modell&#x20;sich&#x20;mehr&#x20;lohnt"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/ratgeber/iPhone-13-vs-iPhone-12-Vergleich-11089723.html"  >
+                            <h5>iPhone 13 (Mini) vs. iPhone 12 (Mini): Welches Modell sich mehr lohnt</h5>
+                            <p>Das iPhone 13 bringt die neueste Smarthone-Technik mit. Hier erfahren Sie, warum sich das 12er-Modell trotz oder gerade wegen seines Nachfolgers lohnt.</p>
+                        </a>
+                    </div>
+                                                                                                                    
+                        <div class="slide " style="position: absolute; left: 1200px; top: 0px;">
+                        <div class="image-holder">
+                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4313543_300x150.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4313543_300x150.jpg"
+                                        alt="iPhone&#x20;13&#x20;vs.&#x20;13&#x20;Pro&#x3A;&#x20;echte&#x20;Neuerungen&#x20;nur&#x20;im&#x20;teuren&#x20;Pro-Modell"
+                                        title="iPhone&#x20;13&#x20;vs.&#x20;13&#x20;Pro&#x3A;&#x20;echte&#x20;Neuerungen&#x20;nur&#x20;im&#x20;teuren&#x20;Pro-Modell"
+                                        width="300"
+                                        height="150"
+                                        class="lazyload"
+                                />
+                            </picture>
+                        </div>
+                        <a class="description" href="https://www.macwelt.de/ratgeber/iPhone-13-vs-13-Pro-echte-Neuerungen-nur-im-teuren-Pro-Modell-11096862.html"  >
+                            <h5>iPhone 13 vs. 13 Pro: echte Neuerungen nur im teuren Pro-Modell</h5>
+                            <p>Was macht das iPhone 13 Pro besser als sein Standard-Modell? Wir vergleichen die beiden Geräte und sagen Ihnen, wo die Unterschiede liegen.</p>
+                        </a>
+                    </div>
+                                    </div>
+            </div>
+            <div class="gallery-nav">
+                <a rel="nofollow noopener" href="#" class="next"><span class="icon-chevron-right"></span></a>
+                <a rel="nofollow noopener" href="#" class="prev"><span class="icon-chevron-left"></span></a>
+                <div class="pagination">
+                    <ul>
+                        <li class="active">
+                            <a rel="nofollow noopener" href="#">'</a>
+                        </li>
+                        <li>
+                            <a rel="nofollow noopener" href="#">'</a>
+                        </li>
+                        <li>
+                            <a rel="nofollow noopener" href="#">'</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>                                        <div id="sticky-anchor"></div>
+<div data-idg-sizes="[[300,390],[300,250],[1,1]]" id="ad_mpu_affiliate1" class="mpu_affiliate1 ad"></div>
+                                <!-- kein Produkt für eBay Teaser -->
+                                        <div class="billiger-teaser-placeholder" data-is-home="" data-type="article" data-categories="4373,110456"></div>
+                        <div class="box">
+        <div class="heading">
+            <a href="/macwelt-tv" class="btn">
+                <strong>Mehr</strong>
+            </a>
+            <span class="icon-play background square-30 color-white-ffffff align-left"></span>
+            <h4>Macwelt TV</h4>
+        </div>
+        <div class="content hover">
+            <div class="video-holder">
+                <a class="lightbox"
+                   href="/videos/iPhone-14-OHNE-Notch-Sieht-es-SO-aus-11171805.html"
+                   data-href="inc/video.html">
+                    <span class="icon-play-circle-o size-80"></span>
+                    <picture>
+                        <source data-srcset="//bilder.macwelt.de/4328635_300x150.webp" type="image/webp">
+                        <img
+                                src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                data-src="//bilder.macwelt.de/4328635_300x150.jpg"
+                                alt="iPhone&#x20;14&#x20;OHNE&#x20;Notch&#x3A;&#x20;Sieht&#x20;es&#x20;SO&#x20;aus&#x3F;"
+                                title="iPhone&#x20;14&#x20;OHNE&#x20;Notch&#x3A;&#x20;Sieht&#x20;es&#x20;SO&#x20;aus&#x3F;"
+                                width="300"
+                                height="150"
+                                class="lazyload"
+                        />
+                    </picture>
+                </a>
+            </div>
+            <a class="description" href="/videos/iPhone-14-OHNE-Notch-Sieht-es-SO-aus-11171805.html">
+                <h5>iPhone 14 OHNE Notch: Sieht es SO aus?</h5>
+
+                <p>iPhone 14 ohne Notch? Wir zeigen drei verschiedene Konzepte, wie das kommende Pro-Modell von Apple aussehen könnte.</p>
+            </a>
+        </div>
+    </div>
+                
+<div class="box" data-ga-event-type="view" data-ga-event-category="right_column_specials_block_teaserspalte" data-ga-event-label="Angebote&#x20;f&#x00FC;r&#x20;Macwelt-Leser">
+    <div class="heading">
+                                                                        <span class="banner-text">-Verlagsangebot-</span>
+        <h4>Angebote für Macwelt-Leser</h4>
+    </div>
+    <div class="content">
+                                            <ul>
+                            <li>
+                    <a class="holder"
+                       href="https://www.macwelt.de/news/iPhone-und-Mac-Schnaeppchen-9988966.html"
+                       data-ga-event-type="click"
+                       data-ga-event-category="right_column_specials_block_teaserspalte"
+                       data-ga-event-label="Angebote&#x20;f&#x00FC;r&#x20;Macwelt-Leser_https://www.macwelt.de/news/iPhone-und-Mac-Schnaeppchen-9988966.html"
+                       target="_blank"
+                        rel="nofollow noopener sponsored">
+                                                                                                                                            <picture>
+                                <source data-srcset="//bilder.macwelt.de/4270216_120x60.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4270216_120x60.jpg"
+                                        alt="Hardware&#x20;Angebote"
+                                        title="Hardware&#x20;Angebote"
+                                        width="120"
+                                        height="60"
+                                        class="lazyload"
+                                />
+                            </picture>
+                                                <div class="text-holder">
+                            <h5>Hardware Angebote</h5>
+                            <p>Die Schnäppchen-Tipps der Redaktion Macwelt.</p>
+                        </div>
+                    </a>
+                </li>
+                            <li>
+                    <a class="holder"
+                       href="http://www.macwelt.de/thema/tarifrechner/236"
+                       data-ga-event-type="click"
+                       data-ga-event-category="right_column_specials_block_teaserspalte"
+                       data-ga-event-label="Angebote&#x20;f&#x00FC;r&#x20;Macwelt-Leser_http://www.macwelt.de/thema/tarifrechner/236"
+                       target="_blank"
+                        rel="nofollow noopener sponsored">
+                                                                                <picture>
+                                <source data-srcset="//bilder.macwelt.de/4029803_120x60.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4029803_120x60.jpg"
+                                        alt="Handytarif-Check"
+                                        title="Handytarif-Check"
+                                        width="120"
+                                        height="60"
+                                        class="lazyload"
+                                />
+                            </picture>
+                                                <div class="text-holder">
+                            <h5>Handytarif-Check</h5>
+                            <p>Hier finden Sie schnell den günstigsten Tarif.</p>
+                        </div>
+                    </a>
+                </li>
+                            <li>
+                    <a class="holder"
+                       href="http://www.verleihshop.de/index.html?partner=macw"
+                       data-ga-event-type="click"
+                       data-ga-event-category="right_column_specials_block_teaserspalte"
+                       data-ga-event-label="Angebote&#x20;f&#x00FC;r&#x20;Macwelt-Leser_http://www.verleihshop.de/index.html?partner=macw"
+                       target="_blank"
+                        rel="nofollow noopener sponsored">
+                                                                                <picture>
+                                <source data-srcset="//bilder.macwelt.de/4270222_120x60.webp" type="image/webp">
+                                <img
+                                        src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                                        data-src="//bilder.macwelt.de/4270222_120x60.jpg"
+                                        alt="Online&#x20;Videothek"
+                                        title="Online&#x20;Videothek"
+                                        width="120"
+                                        height="60"
+                                        class="lazyload"
+                                />
+                            </picture>
+                                                <div class="text-holder">
+                            <h5>Online Videothek</h5>
+                            <p>Größtes Verleihangebot Deutschlands. Kein Abo!</p>
+                        </div>
+                    </a>
+                </li>
+                    </ul>
+    </div>
+</div>
+
+                <div class="box" data-ga-event-type="view" data-ga-event-category="right_column_jobware_teaser" data-ga-event-label="Aktuelle Jobangebote">
+    <div class="heading">
+        <a href="http://jobs.macwelt.de" class="btn" data-ga-event-type="click" data-ga-event-category="right_column_artikel_slider" data-ga-event-label="http://jobs.macwelt.de">
+            <strong>Alle</strong>
+        </a>
+        <span class="icon-globe background square-30 color-white-ffffff align-left"></span>
+        <h4>Aktuelle Jobangebote</h4>
+    </div>
+    <div class="content">
+        <ul>
+                        <li>
+                <div class="holder">
+                    <dl class="list">
+                        <dt>07.02.</dt>
+                        <dd><a data-ga-event-type="click" data-ga-event-category="right_column_jobware_teaser" data-ga-event-label="https://localhost/Job/Azure-Specialist-m-w-d.767821735.html?jw_chl_seg=MACWELTFEED" rel="nofollow sponsored noopener" target="_blank" href="https://localhost/Job/Azure-Specialist-m-w-d.767821735.html?jw_chl_seg=MACWELTFEED">Azure Specialist (m/w/d)</a><br><span>hagebau IT GmbH</span></dd>
+                    </dl>
+                </div>
+            </li>
+                        <li>
+                <div class="holder">
+                    <dl class="list">
+                        <dt>07.02.</dt>
+                        <dd><a data-ga-event-type="click" data-ga-event-category="right_column_jobware_teaser" data-ga-event-label="https://localhost/Job/Energiemanager-in.767820735.html?jw_chl_seg=MACWELTFEED" rel="nofollow sponsored noopener" target="_blank" href="https://localhost/Job/Energiemanager-in.767820735.html?jw_chl_seg=MACWELTFEED">Energiemanager*in</a><br><span>Olenex Edible Oils GmbH</span></dd>
+                    </dl>
+                </div>
+            </li>
+                        <li>
+                <div class="holder">
+                    <dl class="list">
+                        <dt>07.02.</dt>
+                        <dd><a data-ga-event-type="click" data-ga-event-category="right_column_jobware_teaser" data-ga-event-label="https://localhost/Job/Software-Entwickler-mobile-Robotik-m-w-d.767819215.html?jw_chl_seg=MACWELTFEED" rel="nofollow sponsored noopener" target="_blank" href="https://localhost/Job/Software-Entwickler-mobile-Robotik-m-w-d.767819215.html?jw_chl_seg=MACWELTFEED">Software-Entwickler mobile Robotik (m/w/d)</a><br><span>über Hays AG</span></dd>
+                    </dl>
+                </div>
+            </li>
+                        <li>
+                <div class="holder">
+                    <dl class="list">
+                        <dt>07.02.</dt>
+                        <dd><a data-ga-event-type="click" data-ga-event-category="right_column_jobware_teaser" data-ga-event-label="https://localhost/Job/Assistent-w-m-d-fuer-IT-Koordination.767817895.html?jw_chl_seg=MACWELTFEED" rel="nofollow sponsored noopener" target="_blank" href="https://localhost/Job/Assistent-w-m-d-fuer-IT-Koordination.767817895.html?jw_chl_seg=MACWELTFEED">Assistent (w/m/d) für IT-Koordination</a><br><span>Stadt Erlangen</span></dd>
+                    </dl>
+                </div>
+            </li>
+                        <li>
+                <div class="holder">
+                    <dl class="list">
+                        <dt>07.02.</dt>
+                        <dd><a data-ga-event-type="click" data-ga-event-category="right_column_jobware_teaser" data-ga-event-label="https://localhost/Job/Mitarbeiter-m-w-d-im-hochschuluebergreifenden-IT-Service-Informationssicherheit-HITS-IS.767816135.html?jw_chl_seg=MACWELTFEED" rel="nofollow sponsored noopener" target="_blank" href="https://localhost/Job/Mitarbeiter-m-w-d-im-hochschuluebergreifenden-IT-Service-Informationssicherheit-HITS-IS.767816135.html?jw_chl_seg=MACWELTFEED">Mitarbeiter (m/w/d) im hochschulübergreifenden IT-Service Informationssicherheit (HITS IS)</a><br><span>Hochschule für angewandte Wissenschaften Augsburg</span></dd>
+                    </dl>
+                </div>
+            </li>
+                    </ul>
+    </div>
+</div>
+                                        <div id="sticky-anchor"></div>
+<div data-idg-sizes="[[300,600],[300,250],[1,1]]" id="ad_mpu_affiliate2" class="mpu_affiliate2 ad"></div>
+                                                                            </aside>
+            </div>
+                                                <div class="info-section">
+                                                            </div>
+                                                        <span class="bid_info">2631553</span>
+                        <div class="divider"></div>
+        </div>
+    </div>
+                            <div class="banner outer">
+    <!-- AD: dfp sky --><div data-idg-sizes="[[200,600],[1,1],[120,600],[160,600]]" title="Google-Ad (Position: sky)" id="ad_sky" class="idgGoogleAdTag sky ad"></div>
+    <script>
+        // Damit die Werbung nicht springt
+        $( document ).ready(function() {
+            Advertising.initSkyBanner();
+        });
+        // Falls sich der Content durch #ad_leadfull verschiebt, wird nochmal neu positioniert
+        $( window ).load(function() {
+            Advertising.initSkyBanner();
+        });
+    </script>
+</div>
+<footer id="footer">
+                            <div class="panel">
+            <ul id="social">
+                <li>
+                    <div>
+                        <a href="https://www.facebook.com/macwelt">
+                            <span class="icon-facebook size-50 square-66 background-light color-dark" id="aeaoofnhgocdbnbeljkmbjdmhbcokfdb-mousedown"></span>
+                            <span>Facebook</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="https://www.twitter.com/macwelt">
+                            <span class="icon-twitter size-50 square-66 background-light color-dark"></span>
+                            <span>Twitter</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="https://www.macwelt.de/newsletter">
+                            <span class="icon-envelope size-50 square-66 background-light color-dark"></span>
+                            <span>Newsletter</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="//www.macwelt.de/rss">
+                            <span class="icon-rss size-50 square-66 background-light color-dark"></span>
+                            <span>RSS Feed</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="http://www.macwelt.de/magazinapp">
+                            <span class="icon-download size-50 square-66 background-light color-dark"></span>
+                            <span>Apps</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="https://www.idgshop.de/macwelt">
+                            <span class="icon-shopping-cart size-50 square-66 background-light color-dark"></span>
+                            <span>Shop</span>
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <a href="//www.macwelt.de/kontakt">
+                            <span class="icon-user size-50 square-66 background-light color-dark"></span>
+                            <span>Kontakt</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+                <div class="bar">
+    <div class="columns-holder">
+                    
+            <div class="col">
+    <div class="heading">
+        <div class="header">Service</div>
+        <div class="divider lightblue"></div>
+    </div>
+    <ul>
+                                    <li><a href="https://www.macwelt.de/a/macwelt-wir-ueber-uns,3439833">Über uns</a></li>
+                                                <li><a href="https://www.macwelt.de/kontakt">Kontakt</a></li>
+                                                <li><a href="https://www.macwelt.de/sitemap">Sitemap</a></li>
+                                                <li><a href="https://www.idg.de/kontakt/mediadaten/">Media-Daten</a></li>
+                                                <li><a href="https://www.macwelt.de/impressum">Impressum</a></li>
+                                                <li><a href="https://www.macwelt.de/datenschutz">Datenschutz</a></li>
+                                                <li><a href="javascript:window._sp_.loadPrivacyManagerModal(165623)">Datenschutzeinstellungen</a></li>
+                                                <li><a href="https://www.idg.de/marketing-services/leadgeneration/">Nutzerbasierte Werbung</a></li>
+                                                <li><a href="https://www.macwelt.de/cookie-policy">Cookie Policy</a></li>
+                                                <li><a href="https://www.macwelt.de/archiv">Archiv</a></li>
+                                                <li><a href="https://www.idg.de/thema/karriere/">Karriere bei IDG</a></li>
+                        </ul>
+</div>
+
+            </div>
+</div>
+
+        <div class="copy">
+        <p>&copy;  IDG Tech Media GmbH - <a href="http://www.interred.de" target="_blank" rel="noopener" title="Content Management by InterRed">Content Management</a> by InterRed</p>
+    </div>
+</footer>
+                        </div>
+        </div>
+                                    <!-- AD: dfp layer --><div data-idg-sizes="[1,1]" title="Google-Ad (Position: layer)" id="ad_layer" class="idgGoogleAdTag layer ad"></div>
+                <div id="loader-modal">
+            <div class="spinner">
+                <div></div>
+            </div>
+        </div>
+        <!-- AD: dfp sovrn --><div data-idg-sizes="[1,1]" title="Google-Ad (Position: sovrn)" id="ad_sovrn" class="idgGoogleAdTag sovrn ad"></div>
+                    <script src="/js/adserver_footer.js"></script><script async="async" defer src="https://widgets.outbrain.com/outbrain.js"></script><div class="OUTBRAIN" data-src="https://www.macwelt.de/ratgeber/iPhone-14-Warum-sich-das-Warten-wirklich-lohnt-11153570.html" data-widget-id="TR_1" data-ob-template="DE_Mac-welt.de" ></div><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NRFD8HK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+                                            
+                
+        <script>
+            tp = window["tp"] || [];
+            if (typeof idgStorage.gaData !== 'undefined') {
+                tp.push(["setContentCreated", idgStorage.gaData[5]]);
+                tp.push(["setContentAuthor",  idgStorage.gaData[7]]);
+                tp.push(["setContentSection", idgStorage.gaData[11]]);
+                pianoTags = [idgStorage.gaData[10], idgStorage.gaData[11], idgStorage.gaData[12]];
+                if (idgStorage.rs_tax && idgStorage.rs_tax.length > 0) {
+                    contentTags = idgStorage.rs_tax.split(',');
+                    contentTags = contentTags.map(function(element) {
+                        return element.trim()
+                    });
+                    pianoTags = pianoTags.concat(contentTags);
+                }
+                tp.push(["setTags", pianoTags]);
+                tp.push(["setCustomVariable", "ContentType", idgStorage.gaData[9]]);
+                tp.push(["setCustomVariable", "ContentId", idgStorage.gaData[2]]);
+                tp.push(["setCustomVariable", "ContentTitle", idgStorage.gaData[3]]);
+                tp.push(["setCustomVariable", "RubricPath", idgStorage.gaData[13]]);
+                tp.push(["setCustomVariable", "LoginStatus", idgStorage.gaData[17]]);
+            }
+            if (idgStorage.adScore1 && idgStorage.adScore2 && typeof idgStorage.adTax !== 'undefined') {
+                tp.push(["setCustomVariable", "Score1", idgStorage.adScore1]);
+                tp.push(["setCustomVariable", "Score2", idgStorage.adScore2]);
+                tp.push(["setCustomVariable", "Tax", idgStorage.adTax]);
+            }
+            if ($.cookie('idg_company')) {
+                tp.push(["setCustomVariable", "Company", $.cookie('idg_company')]);
+            }
+                                                                                var fromNewsletter = false;
+            if (window.location.href.match('utm_medium=email')) {
+                fromNewsletter = true;
+            }
+            tp.push(["setCustomVariable", "fromNewsletter", fromNewsletter]);
+            window.__permutive = window.__permutive || {};
+            window.__permutive.pianoEvents = window.__permutive.pianoEvents || [];
+            window.tp = window.tp || [];
+            var events = ['loginRequired', 'showTemplate', 'showOffer', 'startCheckout', 'checkoutComplete', 'checkoutClose', 'meterActive', 'meterExpired']
+            events.forEach(function (evt) {
+                window.tp.push(['addHandler', evt, function (e) {
+                    window.__permutive.pianoEvents.push({
+                    name: evt,
+                    e: e
+                    })
+                }]);
+            });
+            tp.push(["setCustomVariable", "ArticleStatus", "Free"]);
+            tp.push(["setContentIsNative", false]);
+            tp.push(["setDebug", false]);
+            tp.push(["setUsePianoIdUserProvider", true ]);
+            tp.push(["addHandler", "loginSuccess", function(){
+                $.cookie('user_is_insider', 'true', {expires: 365, path: '/', domain: '.macwelt.de'});
+                window.setTimeout(function(){window.location.reload()}, 5000);
+            }]);
+
+            (function(src) {
+                var a = document.createElement("script");
+                a.type = "text/javascript";
+                a.async = true;
+                a.src = src;
+                var b = document.getElementsByTagName("script")[0];
+                b.parentNode.insertBefore(a, b)
+            })("//experience.tinypass.com/xbuilder/experience/load?aid=Y9I9RrtSDP");
+        </script>
+                                <script type="text/javascript">
+            var subscribersSiteId = 'bd33746e-a137-462e-9d3e-c64bba1717ad';
+        </script>
+        <script type="text/javascript" src="https://cdn.subscribers.com/assets/subscribers.js"></script>
+        <div id="login_holder"></div>
+                        <script async="async" src="//zdwidget3-bs.sphereup.com/zoomd/SearchUi/Script?clientId=24166459"></script>
+        <style>
+            .field input {
+                outline: none;
+                border: 0px;
+                padding-left: 10px;
+            }
+            .alignright button {
+                background-color: #fff;
+                padding: 0px;
+                position: relative;
+                left: 165px;
+                bottom: 19px;
+                margin-top: -1px;
+            }
+            .alignright button::after {
+                content: url('https://suweb.blob.core.windows.net/content/pc-welt/images/magnifier.png');
+            }
+        </style>
+    </body>
+</html>

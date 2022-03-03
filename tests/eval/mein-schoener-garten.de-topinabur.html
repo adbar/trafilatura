@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="de" dir="ltr" prefix="og: https://ogp.me/ns#">
+<head>
+<script>
+    window._sp_ = {
+      config: {
+        isSPA: false,
+        accountId: 217,
+        baseEndpoint: 'https://cdn.privacy-mgmt.com',
+        targetingParams: {
+          env: "nonAMP"
+        },
+        events: {
+          onMessageReady: function () {
+            dataLayer.push({'event': 'onMessageReady_Sourcepoint'})
+          },
+          onMessageChoiceSelect: function (choice_id, choice_type_id) {
+            dataLayer.push({'event': 'onMessageChoiceSelect_Sourcepoint'})
+          },
+          onPrivacyManagerAction: function (pmData) {
+            dataLayer.push({'event': 'onPrivacyManagerAction_Sourcepoint'})
+          },
+          onMessageChoiceError: function (err) {
+            dataLayer.push({'event': 'onMessageChoiceError_Sourcepoint'})
+          },
+          onConsentReady: function (consentUUID, euconsent) {
+            dataLayer.push({'event': 'onConsentReady_Sourcepoint'});
+
+            // Clear the outbrain containers first.
+            jQuery('div.OUTBRAIN').each(function(i, element) {
+              jQuery(this).empty();
+            });
+
+            // Remove the existing script if it exists.
+            let outbrainScript = jQuery('script#outbrain');
+            if (outbrainScript.length) {
+              outbrainScript.remove();
+            }
+
+            let newScript = jQuery('<script>');
+            newScript.attr('src', 'https://widgets.outbrain.com/outbrain.js');
+            newScript.attr('id',  'outbrain');
+            newScript.attr('type', 'text/javascript');
+            jQuery('body').append(newScript);
+          },
+          onPMCancel: function () {
+            dataLayer.push({'event': 'onPMCancel_Sourcepoint'})
+          },
+          onMessageReceiveData: function (data) {
+            dataLayer.push({'event': 'onMessageReceiveData_Sourcepoint'})
+          },
+          onSPPMObjectReady: function () {
+            dataLayer.push({'event': 'onSPPMObjectReadySourcepoint'})
+          }
+        }
+      }
+    }
+  </script>
+<script src="/core/assets/vendor/jquery/jquery.min.js?v=3.5.1"></script>
+<script type="text/javascript">
+    if ('undefined' !== typeof $)
+      $.noConflict();
+  </script>
+<meta charset="utf-8" />
+<script id="ad-entity-settings" type="application/json">{"responsive":false,"inline":true,"p13n":true,"consent":{"method":"disabled"}}</script>
+<script type="text/javascript"> (function () {
+    /**
+     * Wait for tcf api load in timeouts, because no ready state change worked.
+     */
+    function waitForTcfApiLoaded(callback) {
+      if ('undefined' === typeof __tcfapi) {
+        setTimeout(function () {
+          waitForTcfApiLoaded(callback);
+        }, 100);
+      } else {
+        callback.call();
+      }
+    }
+
+    /**
+     * Binds the tcf api getCustomVendorConsents event.
+     */
+    var bindTcfApiGetCustomVendorConsents = function () {
+      window.__tcfapi('getCustomVendorConsents', 2, function (vendorConsents, success) {
+
+        if (vendorConsents.grants["5e542b3a4cd8884eb41b5a72"].vendorGrant == true) {
+          window.dataLayer.push({
+            'consent_analytics': true
+          });
+        } else {
+          window.dataLayer.push({
+            'consent_analytics': false
+          });
+        }
+
+        if (vendorConsents.grants["5f16f7af468f8b3f41f432e7"].vendorGrant == true) {
+          window.dataLayer.push({
+            'facebook_consent': true
+          });
+        } else {
+          window.dataLayer.push({
+            'facebook_consent': false
+          });
+        }
+
+        if (vendorConsents.grants["5ecc95435cf6286f3b5872a2"].vendorGrant == true) {
+          window.dataLayer.push({
+            'adwords_consent': true
+          });
+        } else {
+          window.dataLayer.push({
+            'adwords_consent': false
+          });
+        }
+
+        if (vendorConsents.grants["5e77872a9cb08971eb078e56"].vendorGrant == true) {
+          window.dataLayer.push({
+            'kameleoon_consent': true
+          });
+        } else {
+          window.dataLayer.push({
+            'kameleoon_consent': false
+          });
+        }
+
+        if (vendorConsents.grants["5eb2856cbb0c9a4439bfe303"].vendorGrant == true) {
+          window.dataLayer.push({
+            'optimize_consent': true
+          });
+        } else {
+          window.dataLayer.push({
+            'optimize_consent': false
+          });
+        }
+        if (vendorConsents.grants["5e7786abf443bb795772efee"].vendorGrant == true) {
+          window.dataLayer.push({
+            'bing_consent': true
+          });
+        } else {
+          window.dataLayer.push({
+            'bing_consent': false
+          });
+        }
+
+      });
+    }
+
+    waitForTcfApiLoaded(bindTcfApiGetCustomVendorConsents);
+  }());
+</script>
+<script type="text/javascript" src="https://gdpr-tcfv2.sp-prod.net/wrapperMessagingWithoutDetection.js"></script>
+<script id="page-targeting">window.dataLayer=window.dataLayer||[];dataLayer.push({"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]});dataLayer.push({show_ads:true});</script>
+<link rel="preload" href="//data-6e2baaf3b9.mein-schoener-garten.de/iomm/latest/manager/base/es6/bundle.js" as="script" id="IOMmBundle" />
+<link rel="preload" href="//data-6e2baaf3b9.mein-schoener-garten.de/iomm/latest/bootstrap/loader.js" as="script" />
+<script src="//data-6e2baaf3b9.mein-schoener-garten.de/iomm/latest/bootstrap/loader.js" data-cmp-ab="2"></script>
+<link rel="canonical" href="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" />
+<meta http-equiv="content-language" content="de" />
+<link rel="image_src" href="https://www.mein-schoener-garten.de/sites/default/files/styles/og_image/public/2021-12/topinambur-ernten-winter-172327040-istock.jpg?h=e95b4cb1&amp;itok=wu4LZq_R" />
+<meta name="description" content="Topinambur ist ein wiederentdecktes altes Gemüse. Das Tolle ist: Die Knollen kann man den ganzen Winter über ernten. 3 Tipps dazu gibt es hier von uns!" />
+<meta property="fb:pages" content="371273748250" />
+<meta property="fb:app_id" content="1716406311977591" />
+<meta property="og:site_name" content="Mein schöner Garten" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" />
+<meta property="og:title" content="Topinambur ernten: 3 Profi-Tipps" />
+<meta property="og:description" content="Im Winter Gemüse frisch aus dem Garten ernten können – mit der knollenbildenden Verwandten der Sonnenblume ist das möglich. Wir haben hier 3 Tipps rund um die Ernte von Topinambur für Sie!" />
+<meta property="og:image" content="https://www.mein-schoener-garten.de/sites/default/files/styles/og_image/public/2021-12/topinambur-ernten-winter-172327040-istock.jpg?h=e95b4cb1&amp;itok=wu4LZq_R" />
+<meta name="referrer" content="no-referrer" />
+<meta name="Generator" content="Drupal 9 (Thunder | https://www.thunder.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script type="text/javascript">!function(){var e,t,n,i,r={passive:!0,capture:!0},a=new Date,o=function(){i=[],t=-1,e=null,f(addEventListener)},c=function(i,r){e||(e=r,t=i,n=new Date,f(removeEventListener),u())},u=function(){if(t>=0&&t<n-a){var r={entryType:"first-input",name:e.type,target:e.target,cancelable:e.cancelable,startTime:e.timeStamp,processingStart:e.timeStamp+t};i.forEach((function(e){e(r)})),i=[]}},s=function(e){if(e.cancelable){var t=(e.timeStamp>1e12?new Date:performance.now())-e.timeStamp;"pointerdown"==e.type?function(e,t){var n=function(){c(e,t),a()},i=function(){a()},a=function(){removeEventListener("pointerup",n,r),removeEventListener("pointercancel",i,r)};addEventListener("pointerup",n,r),addEventListener("pointercancel",i,r)}(t,e):c(t,e)}},f=function(e){["mousedown","keydown","touchstart","pointerdown"].forEach((function(t){return e(t,s,r)}))},p="hidden"===document.visibilityState?0:1/0;addEventListener("visibilitychange",(function e(t){"hidden"===document.visibilityState&&(p=t.timeStamp,removeEventListener("visibilitychange",e,!0))}),!0);o(),self.webVitals={firstInputPolyfill:function(e){i.push(e),u()},resetFirstInputPolyfill:o,get firstHiddenTime(){return p}}}();
+</script>
+<script src="/modules/contrib/web-vitals/js/reportWebVitalsExternal.js"></script>
+<script src="/modules/contrib/web-vitals/js/reportBasePolyfill.js"></script>
+<base href="https://www.mein-schoener-garten.de/" />
+<link rel="dns-prefetch" href="//arc.nexx.cloud" />
+<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+<link rel="dns-prefetch" href="//widgets.outbrain.com" />
+<link rel="preconnect" href="//www.googletagmanager.com" />
+<link rel="preload" as="script" href="//assets.pinterest.com/js/pinit.js" />
+<link rel="preload" as="script" href="//widgets.outbrain.com/outbrain.js" />
+<link rel="icon" href="/themes/custom/infinite/msg_infinite/favicon/de/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="alternate" hreflang="de" href="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" />
+<link rel="amphtml" href="https://amp.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" />
+<link rel="apple-touch-icon" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon.png />
+<link rel="apple-touch-icon" sizes="57x57" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-57x57.png />
+<link rel="apple-touch-icon" sizes="72x72" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-72x72.png />
+<link rel="apple-touch-icon" sizes="76x76" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-76x76.png />
+<link rel="apple-touch-icon" sizes="114x114" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-114x114.png />
+<link rel="apple-touch-icon" sizes="120x120" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-120x120.png />
+<link rel="apple-touch-icon" sizes="144x144" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-144x144.png />
+<link rel="apple-touch-icon" sizes="152x152" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-152x152.png />
+<link rel="apple-touch-icon" sizes="180x180" href=/themes/custom/infinite/msg_infinite/apple-touch/de/apple-touch-icon-180x180.png />
+
+<link rel="preload" as="font" href="/themes/custom/infinite/msg_infinite/fonts/Roboto/Roboto-Regular.woff2" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" as="font" href="/themes/custom/infinite/msg_infinite/fonts/Roboto/Roboto-Italic.woff2" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" as="font" href="/themes/custom/infinite/msg_infinite/fonts/Roboto/Roboto-Black.woff2" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" as="font" href="/themes/custom/infinite/msg_infinite/fonts/webfonts/fa-regular-400.woff2" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" as="font" href="/themes/custom/infinite/msg_infinite/fonts/webfonts/fa-brands-400.woff2" type="font/woff2" crossorigin="anonymous">
+<link rel="preload" as="font" href="/themes/custom/infinite/msg_infinite/fonts/webfonts/fa-solid-900.woff2" type="font/woff2" crossorigin="anonymous">
+
+<title>3 Profi-Tipps rund um die Topinambur-Ernte - Mein schöner Garten</title>
+<style id="critical-css">*,*::before,*::after{box-sizing:border-box}html{font-family:sans-serif;line-height:1.15;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:"Roboto",sans-serif;font-size:1.8rem;font-weight:400;line-height:1.65;color:#636363;text-align:left;background-color:#fff}[tabindex="-1"]:focus{outline:0 !important}h1,h2{margin-top:0;margin-bottom:1.3rem}p{margin-top:0;margin-bottom:1rem}a{color:#6DB644;text-decoration:none;background-color:transparent}a:hover{color:#4c7e2f;text-decoration:none}img{vertical-align:middle;border-style:none}button:focus{outline:1px dotted;outline:5px auto -webkit-focus-ring-color}button{border-radius:0;margin:0;font-family:inherit;font-size:inherit;line-height:inherit;overflow:visible;text-transform:none;-webkit-appearance:button}button::-moz-focus-inner{padding:0;border-style:none}[hidden]{display:none !important}h1,h2,h3,.h1,.h2,.h3,.h4{margin-top:0;margin-bottom:1.3rem;font-weight:700;line-height:1.2;color:#000}h1,.h1{font-size:5.6rem}h2,.h2{font-size:4rem}h3,.h3{font-size:3.3rem}.h4{font-size:2.4rem}.container{width:100%;padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}@media (min-width: 1260px){.container{max-width:1158px}}.btn{display:inline-block;font-weight:400;color:#636363;text-align:center;vertical-align:middle;user-select:none;background-color:transparent;border:1px solid transparent;padding:.5rem 1.3rem;font-size:1.5rem;line-height:1.65;border-radius:.5rem;transition:color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out}@media (prefers-reduced-motion: reduce){.btn{transition:none}}.btn:hover{color:#636363;text-decoration:none}.btn:focus,.btn.focus{outline:0;box-shadow:0 0 0 .2rem rgba(109,182,68,0.25)}.btn.disabled,.btn:disabled{opacity:.65}a.btn.disabled,fieldset:disabled a.btn{pointer-events:none}.btn-primary{color:#fff;background-color:#6DB644;border-color:#6DB644}.btn-primary:hover{color:#fff;background-color:#5c9a3a;border-color:#579136}.btn-primary:focus,.btn-primary.focus{box-shadow:0 0 0 .2rem rgba(131,193,96,0.5)}.btn-primary.disabled,.btn-primary:disabled{color:#fff;background-color:#6DB644;border-color:#6DB644}.btn-primary:not(:disabled):not(.disabled):active,.btn-primary:not(:disabled):not(.disabled).active,.show>.btn-primary.dropdown-toggle{color:#fff;background-color:#579136;border-color:#518833}.btn-primary:not(:disabled):not(.disabled):active:focus,.btn-primary:not(:disabled):not(.disabled).active:focus,.show>.btn-primary.dropdown-toggle:focus{box-shadow:0 0 0 .2rem rgba(131,193,96,0.5)}.btn-secondary{color:#212529;background-color:#FB8100;border-color:#FB8100}.btn-secondary:hover{color:#fff;background-color:#d56d00;border-color:#c86700}.btn-secondary:focus,.btn-secondary.focus{box-shadow:0 0 0 .2rem rgba(218,115,6,0.5)}.btn-secondary.disabled,.btn-secondary:disabled{color:#212529;background-color:#FB8100;border-color:#FB8100}.btn-secondary:not(:disabled):not(.disabled):active,.btn-secondary:not(:disabled):not(.disabled).active,.show>.btn-secondary.dropdown-toggle{color:#fff;background-color:#c86700;border-color:#bb6000}.btn-secondary:not(:disabled):not(.disabled):active:focus,.btn-secondary:not(:disabled):not(.disabled).active:focus,.show>.btn-secondary.dropdown-toggle:focus{box-shadow:0 0 0 .2rem rgba(218,115,6,0.5)}.btn-lg{padding:1.4rem 2.2rem;font-size:1.9rem;line-height:1.5;border-radius:.5rem}.nav{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;padding-left:0;margin-bottom:0;list-style:none}html{font-size:62.5%}body{position:relative}img{max-width:100%}h1,.h1{color:#6DB644}@media (max-width: 767.98px){h1,.h1{font-size:4rem;line-height:1.1}}h2,.h2{margin-bottom:1.8rem}@media (max-width: 767.98px){h2,.h2{font-size:3rem}}@media (min-width: 768px){h2,.h2{line-height:1.1}}h3,.h3{color:#000;line-height:1.2}@media (max-width: 767.98px){h3,.h3{font-size:2.5rem}}h4,.h4{line-height:1.3}@media (max-width: 767.98px){h4,.h4{font-size:2rem}}.media.media--loading::before{background:#6DB644}.btn{color:#fff}@media (max-width: 767.98px){.btn:not(.btn-lg){font-size:1.4rem}}#msg_incontent_2{min-height:600px}@media (min-width: 768px){#msg_incontent_2{min-height:400px}}#msg_incontent_1{min-height:280px}@media (min-width: 768px){#msg_incontent_1{min-height:400px}}#msg_incontent_3,#msg_incontent_4,#msg_incontent_5,#msg_incontent_6,#msg_incontent_7,#msg_incontent_8,#msg_incontent_9{min-height:600px}@media (min-width: 768px){#msg_incontent_3,#msg_incontent_4,#msg_incontent_5,#msg_incontent_6,#msg_incontent_7,#msg_incontent_8,#msg_incontent_9{min-height:400px}}.region-marketing{min-height:300px}.hdr{margin-bottom:3rem}@media (min-width: 768px){.hdr{margin-bottom:4rem}}.hdr .mn-sl{border-bottom:1px solid #dcdcdd;box-shadow:0 1px 5px rgba(0,0,0,0.2)}.hdr__t{position:relative;max-width:1640px;height:15.2rem;display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:center;align-items:center}@media (max-width: 599.98px){.hdr__t{height:8.2rem}}.hdr__mn-ic{width:2.4rem;position:absolute;z-index:1;cursor:pointer;top:calc(50% - 7px)}@media (min-width: 500px){.hdr__mn-ic{width:3.6rem;top:calc(50% - 11px)}}.hdr__mn-ic span{display:block;height:0.3rem;margin-bottom:0.4rem;background-color:#6DB644;border-radius:0.7rem}@media (min-width: 500px){.hdr__mn-ic span{height:0.5rem;margin-bottom:0.6rem}}.hdr__mn-ic span:last-child{margin-bottom:0}@media (min-width: 992px){.hdr__mn-ic{display:none}}.hdr__br{width:11rem;margin-left:11%}@media (min-width: 375px){.hdr__br{width:13rem}}@media (min-width: 500px){.hdr__br{width:38%}}@media (min-width: 600px){.hdr__br{width:30%}}@media (min-width: 992px){.hdr__br{margin-left:0}}.hdr__br a{display:block;max-width:20.5rem;position:relative;z-index:1}.hdr__br a img{aspect-ratio:110 / 31}.hdr__pr{display:-webkit-flex;display:flex}@media (min-width: 600px){.hdr__pr .socials{margin-right:0.2rem}}@media (min-width: 1064px){.hdr__pr .socials{margin-right:3.3rem}}@media (max-width: 991.98px){.hdr__pr .socials{display:none}}.hdr__pr .socials ul{margin:0 -0.7rem}.hdr__pr .socials ul li{padding:0 0.7rem}.hdr__pr .socials ul a{padding:0;display:inline-block;width:5.5rem;height:5.5rem;border:1px solid transparent;border-radius:50%;font-size:0;line-height:5.5rem}.hdr__pr .socials li.has-whatsapp{display:none}.hdr__pr .socials a{border-color:#6DB644 !important;border-width:2px !important}.hdr__pr .socials a:before{font-size:2.2rem}.hdr__mg{display:none}.hdr__btns{margin-right:4rem}@media (min-width: 600px){.hdr__btns{margin-right:6.2rem}}@media (min-width: 1064px){.hdr__btns{margin-right:9.2rem}}.hdr__btns ul{padding-left:0;list-style:none;margin:0}.hdr__btns .menu-item{padding-left:1.5rem}@media (max-width: 599.98px){.hdr__btns .menu-item{padding-left:0}}@media (max-width: 599.98px){.hdr__btns .menu-item:first-child{display:none}}@media (min-width: 600px){.hdr__btns .menu-item:last-child{display:none}}.hdr__btns a{display:inline-block;color:#fff;border:1px solid transparent;padding:1.4rem 2.2rem;font-size:1.9rem;line-height:1.5;border-radius:.5rem}@media (max-width: 599.98px){.hdr__btns a{padding:0.8rem 1.4rem;font-size:1.6rem}}@media (max-width: 374px){.hdr__btns a{padding:0.7rem 1.2rem;font-size:1.4rem}}.hdr__b{border-top:1px solid #28a745}.hdr__b #menu-submenu-navigation .menu-item a{padding:2rem 0}@media (min-width: 600px){.hdr__b #menu-submenu-navigation .menu-item a{padding:2.8rem 0}}.hdr__menu a,.hdr__menu span{color:#404040;display:block;letter-spacing:0.02em;padding:2rem 0;border-bottom:2px solid transparent;white-space:nowrap}@media (min-width: 600px){.hdr__menu a,.hdr__menu span{padding:2.8rem 0}}.hdr__menu a.is-active,.hdr__menu span.is-active{color:#6DB644}.hdr__menu .has-children>span::after{content:"";display:inline-block;min-width:1rem;min-height:1.5rem;margin-left:0.6rem}.hdr__menu .has-children ul{display:none;position:absolute}.hdr__sr{position:absolute;left:15px;right:15px}.hdr__sr form{visibility:hidden}.hdr__sr-i{position:absolute;right:0}.mn-sl__wr{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;white-space:nowrap;font-size:0}.mn-sl__wr::-webkit-scrollbar{display:none}.mn-sl .menu{padding-left:0;margin-bottom:0}.mn-sl .menu>.menu-item{display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-align-items:center;align-items:center;min-height:4.5rem;padding:0 2.2rem;font-size:1.6rem;font-weight:700}@media (min-width: 375px){.mn-sl .menu>.menu-item{font-size:1.9rem}}@media (min-width: 600px){.mn-sl .menu>.menu-item{padding:0 2.8rem}}@media (min-width: 1260px){.mn-sl .menu>.menu-item{padding:0 3rem}}.mn-sl .menu>.menu-item:first-child{padding-left:0}.mn-sl .menu>.menu-item:last-child{padding-right:0}.mn-sl__ar{position:absolute;opacity:0}.mn-sl__fd{display:none}.js .mn-sl__wr{-ms-overflow-style:-ms-autohiding-scrollbar}.js .mn-sl__wr::-webkit-scrollbar{display:none}.brd{margin-bottom:3.8rem}.brd__ul{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin-top:-2rem;font-size:1.6rem !important;font-weight:700;letter-spacing:0.02em;margin-bottom:0;padding-left:0;list-style:none}@media (min-width: 768px){.brd__ul{margin-top:-1.5rem}}.brd__li{margin-right:2.1rem;padding-right:2.8rem;position:relative}.brd__li:before{content:'';display:block;width:.4rem;height:1rem;position:absolute}.brd__li:first-child{padding-right:2rem}.brd__li:first-child a{font-size:0}.brd__li:first-child a:before{content:"";display:inline-block;min-width:2.1rem}.brd__a{color:#636363}.region-msg_chameleon,footer{display:none}#menu-sidebar{position:fixed;opacity:0;visibility:hidden}.itm-con{min-height:60rem}.itm-con__c{max-width:105rem;min-height:50rem;position:relative}.itm-con__r{position:relative}@media (min-width: 992px){.itm-con__r{display:-webkit-flex;display:flex;flex-direction:row}}.itm-con__hd,.itm-con__b-hd{max-width:105rem}.itm-con__hd{margin-bottom:0.5rem}@media (min-width: 769px){.itm-con__hd{display:-webkit-flex;display:flex}}@media (min-width: 768px){.itm-con__b-hd{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;width:100%}}@media (min-width: 768px){.itm-con__hi-l{width:78%;flex-basis:78%;padding-right:6rem}}@media (min-width: 769px){.itm-con__hi-l{width:83%;flex-basis:83%}}.itm-con__hi-l .pt{padding:2rem 0;font-weight:700;font-size:2rem;line-height:1.5}.itm-con__hi-l .content--description{padding:2rem 0;font-weight:700;font-size:2rem;line-height:1.5}@media (min-width: 768px){.itm-con__hi-r{padding-top:3.7rem;width:22%;flex-basis:22%;-webkit-flex-shrink:0;flex-shrink:0}}@media (min-width: 769px){.itm-con__hi-r{width:17%;flex-basis:17%}}@media (min-width: 768px){.itm-con__hi{padding-left:7rem}}@media (min-width: 1390px){.itm-con__hi{padding-left:0}}.itm-con__hi .h-md__md{width:100%}.itm-con__hi .h-md__c{position:relative;overflow:hidden;height:0;padding-bottom:61.3%;border-radius:.7rem}.itm-con__hi .h-md img{position:absolute;top:50%;transform:translateY(-50%)}.itm-con__hi .pt-brid,.itm-con__hi .h-md{padding-bottom:3rem;width:100%}@media (min-width: 768px){.itm-con__hi .pt-brid,.itm-con__hi .h-md{padding-bottom:4rem}}@media (min-width: 600px){.itm-con__hi .h-md{padding-bottom:4rem}}.itm-con__m{padding-bottom:1.5rem}.itm-con__d{white-space:nowrap;min-width:175px}@media (min-width: 768px){.itm-con__d{font-size:2rem}}.itm-con__b{display:none}.itm-con.wth-br h1{color:#6DB644}.itm-con.wth-br .itm-con__hd{position:relative}@media (min-width: 769px){.itm-con.wth-br .itm-con__hd,.itm-con.wth-br .itm-con__b-hd{padding-right:22rem}}@media (min-width: 769px){.itm-con.wth-br .itm-con__hi-l{width:73%;flex-basis:73%;padding-right:6rem}}@media (min-width: 769px){.itm-con.wth-br .itm-con__hi-r{width:27%;flex-basis:27%;-webkit-flex-shrink:0;flex-shrink:0}}.br-i-l{display:block;max-width:17rem;margin:0 auto 3.5rem auto}@media (min-width: 769px){.br-i-l{position:absolute;top:-0.5rem;right:0;max-width:20rem;margin:0}}.aut{display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;-webkit-align-items:center;align-items:center}.aut>a{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;color:inherit}.aut img{width:6rem;height:6rem;border-radius:50%;margin-right:.8rem}.aut span{font-size:1.6rem;margin-right:5rem;text-transform:uppercase}.msg-campaign.aut{-webkit-justify-content:flex-start;justify-content:flex-start;margin-top:2rem;margin-bottom:.8rem}.msg-campaign.aut .aut__n{padding-top:0;padding-right:1.5rem}@media (max-width: 767.98px){.msg-campaign.aut .aut__p-c img{max-width:12rem}}.msg-campaign.aut img{width:auto;height:auto;border-radius:0;margin-right:0}.vt-r{margin:0.5rem 0 1.2rem 0;min-height:2.9rem}.vt-r .msg-votingapi-inner{min-height:60px;min-width:175px}.vt-r .br-theme-fontawesome-stars{display:inline-block}.vt-r .vote-count{display:inline-block;min-width:25px}.vt-l{font-size:1.8rem;display:inline-block}@media (min-width: 768px){.vt-l{font-size:2rem}}.soc-b-v{display:-webkit-flex;display:flex;margin:0 -.7rem}@media (max-width: 767.98px){.soc-b-v{margin:-1rem 0 3rem 0}}@media (min-width: 768px){.soc-b-v{-webkit-flex-direction:column;flex-direction:column;position:absolute;top:0}}.soc-b-v .soc-b__itm{padding:0;border:1px solid #6DB644;border-radius:50%;font-size:0;display:block;width:4.6rem;height:4.6rem;line-height:4.6rem;-webkit-flex-shrink:0;flex-shrink:0;margin-right:1.2rem}@media (min-width: 768px){.soc-b-v .soc-b__itm{margin-right:0;margin-bottom:1.2rem;margin-left:1.2rem}}.soc-b-v .soc-b__itm:last-child{margin-right:0;margin-bottom:0}.soc-b-v .soc-b__itm:before{color:#6DB644;font-size:2.2rem}@media (min-width: 1390px){.soc-b-v .soc-b__itm{margin-left:-6.7rem}}.soc-b-v .soc-b__itm--fb,.soc-b-v .soc-b__itm--pin{position:relative;margin-bottom:3.2rem}.soc-b-v .mustache-sync{font-size:1.5rem;line-height:1.4;font-weight:700;font-family:"Roboto",sans-serif;color:#6DB644;position:absolute;top:100%;left:50%;transform:translate(-50%, 0);padding-top:5px}.soc-b-v .mustache-sync:before{content:'';width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #6DB644;position:absolute;top:0;left:calc(50% - 4px)}.soc-b-v.hid,.soc-b-v .soc-b__sum,.soc-b-v .soc-b__itm--pr{display:none}.h-md__cp{padding-top:2rem;padding-bottom:1.8rem;font-size:1.6rem;line-height:1.5}.h-md__d p:last-child{margin-bottom:0}.h-md img{width:100%}.h-md__s{float:right;margin-left:.5rem}.pt-brid.container{padding-right:0;padding-left:0}.brid:not(.brid-sticky){border-radius:1rem;width:100% !important;height:0 !important;padding-bottom:56.25% !important}.brid-desc{padding-top:2rem;padding-bottom:1.8rem;font-size:1.6rem;line-height:1.5}@media (min-width: 769px){.brid-desc{padding-top:3rem}}.brid-desc p:last-child{margin-bottom:0}.a-var-1 .itm-con__m{padding-bottom:1.5rem}.a-var-1 .itm-con__c{max-width:100%}@media (max-width: 1534px){.a-var-1 .itm-con__r{justify-content:center}}.a-var-1 .itm-con__s{display:none}@media (min-width: 1535px){.a-var-1 .itm-con__s{display:block;width:calc((100% - 1050px) / 2);flex:none}.a-var-1 .itm-con__s .item-sticky{width:100%}}.a-var-1 .itm-con__b{width:100%;max-width:1050px}@media (min-width: 850px){.a-var-1 .itm-con__b{font-size:2.1rem}}@media (min-width: 1535px){.a-var-1 .itm-con__b{padding:0 25px;flex:none}}.a-var-1 .itm-con__b img{width:100%}@media (min-width: 768px){.a-var-1 .itm-con__cn{padding:0 0 0 7rem}}@media (min-width: 1390px){.a-var-1 .itm-con__cn{padding:0 25px}}.a-var-1.container{max-width:1680px}.region-newsletter{display:none}.region-marketing{margin-bottom:4.4rem}</style>
+<link rel="stylesheet" media="print" href="/sites/default/files/css/css_UFezI1v6orh1EvOqnzHqzuCO1AreljzTrnr_IBkon5Y.css" data-onload-media="all" onload="this.onload=null;this.media=this.dataset.onloadMedia" />
+<noscript><link rel="stylesheet" media="all" href="/sites/default/files/css/css_UFezI1v6orh1EvOqnzHqzuCO1AreljzTrnr_IBkon5Y.css" />
+</noscript><link rel="stylesheet" media="print" href="/sites/default/files/css/css_Y-guIpNCt1vW5VfU0mAwV8kcIpyRX1_nVoRoFyD9Aac.css" data-onload-media="all" onload="this.onload=null;this.media=this.dataset.onloadMedia" />
+<noscript><link rel="stylesheet" media="all" href="/sites/default/files/css/css_Y-guIpNCt1vW5VfU0mAwV8kcIpyRX1_nVoRoFyD9Aac.css" />
+</noscript><link rel="stylesheet" media="print" href="/sites/default/files/css/css_th6JSA5M1rmcYwuflEli4M8rpHhDd3ZOPtbKyzmd6Og.css" />
+<link rel="stylesheet" media="print" href="/sites/default/files/css/css_Rvx69rHNiHyEzAMbGWkDu5995cXeGBGmSSjQKTyZ1hs.css" data-onload-media="all" onload="this.onload=null;this.media=this.dataset.onloadMedia" />
+<noscript><link rel="stylesheet" media="all" href="/sites/default/files/css/css_Rvx69rHNiHyEzAMbGWkDu5995cXeGBGmSSjQKTyZ1hs.css" />
+</noscript>
+<script src="/sites/default/files/js/js_OgBxY_QbG4RKLMnmk9OJamwwETQ7ioZQ9nGiBklyLwI.js"></script>
+<script type="application/ld+json">{"@context":"http:\/\/schema.org","@graph":[{"@type":"Organization","@id":"https:\/\/www.mein-schoener-garten.de\/#organization","name":"Mein sch\u00f6ner Garten","url":"https:\/\/www.mein-schoener-garten.de\/","sameAs":["https:\/\/www.facebook.com\/meinschoenergarten","https:\/\/www.instagram.com\/mein_schoener_garten\/","https:\/\/de.pinterest.com\/schoenergarten\/","https:\/\/twitter.com\/meingarten",""],"contactPoint":{"@type":"ContactPoint","email":"msg-online@burda.com","url":"https:\/\/www.mein-schoener-garten.de\/impressum","contactType":"customer service"},"logo":{"@type":"ImageObject","url":"https:\/\/www.mein-schoener-garten.de\/sites\/default\/files\/meta.logo.png","width":171,"height":60}},{"@type":"NewsArticle","headline":"Topinambur ernten: 3 Profi-Tipps","description":"Im Winter Gem\u00fcse frisch aus dem Garten ernten k\u00f6nnen \u2013 mit der knollenbildenden Verwandten der Sonnenblume ist das m\u00f6glich. Wir haben hier 3 Tipps rund um die Ernte von Topinambur f\u00fcr Sie!","dateModified":"2022-01-26T09:27:13+01:00","datePublished":"2022-01-26T09:22:16+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/www.mein-schoener-garten.de\/news\/3-profi-tipps-rund-um-die-topinambur-ernte-48412"},"author":{"@type":"Person","name":"Kathrin Hofmeister","url":"https:\/\/www.mein-schoener-garten.de\/autoren\/kathrin-hofmeister"},"image":[{"@type":"ImageObject","url":"https:\/\/www.mein-schoener-garten.de\/sites\/default\/files\/styles\/discover_1x1\/public\/2021-12\/topinambur-ernten-winter-172327040-istock.jpg?h=e95b4cb1\u0026itok=cjMkEkwp","width":1200,"height":1200},{"@type":"ImageObject","url":"https:\/\/www.mein-schoener-garten.de\/sites\/default\/files\/styles\/discover_4x3\/public\/2021-12\/topinambur-ernten-winter-172327040-istock.jpg?h=e95b4cb1\u0026itok=Ur666WbT","width":1200,"height":900},{"@type":"ImageObject","url":"https:\/\/www.mein-schoener-garten.de\/sites\/default\/files\/styles\/discover_16x9\/public\/2021-12\/topinambur-ernten-winter-172327040-istock.jpg?h=e95b4cb1\u0026itok=GERlBlBl","width":1200,"height":675}],"publisher":{"@type":"Organization","@id":"https:\/\/www.mein-schoener-garten.de\/#organization","name":"Mein sch\u00f6ner Garten","logo":{"@type":"ImageObject","url":"https:\/\/www.mein-schoener-garten.de\/sites\/default\/files\/meta.logo.png","width":171,"height":60}},"video":{"@type":"VideoObject","name":"Topinambur ernten: 3 Profi-Tipps","description":"Topinambur ist ein wiederentdecktes altes Gem\u00fcse, das sich gro\u00dfer Beliebtheit erfreut. Mit diesen Tipps ernten und lagern Sie die Knollen richtig\r\n\r\nMSG\/Violetta Belaev","duration":"PT2M15S","thumbnailUrl":"https:\/\/cdn.brid.tv\/live\/partners\/11398\/thumb\/942941_t_1642599809.png","uploadDate":"2022-01-19","contentUrl":{},"embedUrl":"\/\/cdn.brid.tv\/live\/partners\/11398\/hd\/942941.mp4"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/www.mein-schoener-garten.de\/","name":"Startseite"}},{"@type":"ListItem","position":2,"item":{"@id":"https:\/\/www.mein-schoener-garten.de\/pflanzen\/gemuse\/topinambur","name":"Topinambur"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/www.mein-schoener-garten.de\/news\/3-profi-tipps-rund-um-die-topinambur-ernte-48412","name":"Topinambur ernten: 3 Profi-Tipps"}}]}]}</script>
+</head>
+<body class="with-branding branding-meinschnergarten wth-br not-branding-page page-node page-article test">
+<div id="page-wrapper">
+<div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+<div class="empty"></div>
+<div data-drupal-messages-fallback class="hidden"></div>
+<div id="page">
+<header class="header hdr">
+<div class="header-top hdr__t container">
+<div class="icon-menu hdr__mn-ic">
+<span></span>
+ <span></span>
+<span></span>
+</div>
+<div class="region-branding hdr__br">
+<a href="/" title="Startseite" class="logo branding-link-icon branding-link-icon-small br-i-s"><img src="/sites/default/files/branding/icon_small/logo.green_.svg" class="branding-icon branding-icon-small" title="Mein schöner Garten" alt="Mein schöner Garten" /></a>
+</div>
+<div class="region-preheader hdr__pr">
+<script type="text/javascript">
+    var responsive_data = {
+      "cp": "msg-homeL1F1S1H1D1A2P2C13",
+      "dn": "data-6e2baaf3b9.mein-schoener-garten.de",
+      "sv": "in",
+      "st": "msg",
+      "dc": "web",
+      "pt": "cp",
+      "dg": "",
+      "bfe": "1",
+      "sample": "in",
+    }
+
+    if ( (window.innerWidth <= 480) || (/iPhone/.test(window.navigator.userAgent))) {
+      responsive_data.cp = "msg-homeL1F1S1H1D2A2P2C13";
+      responsive_data.sv = "mo";
+      responsive_data.dn = "data-15374d3e40.mein-schoener-garten.de";
+      responsive_data.sample = "mo";
+
+      var ivw_mobile_site = "mobmsg";
+      if((typeof ivw_mobile_site !== 'undefined') && ivw_mobile_site != '') {
+        responsive_data.st = ivw_mobile_site;
+      }
+    }
+
+    if ((typeof window.IOMm !== 'undefined') && (typeof window.IOMm === 'function')) {
+      var IOMmConfigureParameter = {
+        "st": responsive_data.st,
+        "dn": responsive_data.dn,
+        "dc": responsive_data.dc,
+        "dg": responsive_data.dg,
+      }
+
+      IOMmConfigureParameter.mh = 5
+
+      IOMm('configure', IOMmConfigureParameter);
+
+      IOMm('pageview', { cp: responsive_data.cp, pt: responsive_data.pt });
+
+      if (responsive_data.bfe) {
+        IOMm('3p', 'qds', responsive_data.sample);
+      }
+    }
+</script>
+<nav role="navigation" class="socials social-links-menu">
+<ul block="sociallinksmenu_2" class="menu nav">
+<li class="menu-item">
+<a href="https://www.facebook.com/meinschoenergarten" class="icon-facebook" target="_blank" rel="nofollow noopener noreferrer">Facebook</a>
+</li>
+<li class="menu-item">
+<a href="https://www.pinterest.de/schoenergarten/" class="icon-pinterest" target="_blank" rel="nofollow noopener noreferrer">Pinterest</a>
+</li>
+<li class="menu-item">
+<a href="https://www.instagram.com/mein_schoener_garten/" class="icon-instagram" target="_blank" rel="nofollow noopener noreferrer">Instagram</a>
+</li>
+<li class="menu-item">
+<a href="https://www.youtube.com/user/meinschoenergarten" class="icon-youtube" target="_blank" rel="nofollow noopener noreferrer">Youtube</a>
+</li>
+<li class="menu-item">
+<a href="/cdn-cgi/l/email-protection#513c22367c3e3f3d383f341133242335307f323e3c" class="icon-email" target="_blank" rel="noopener noreferrer">E-Mail</a>
+</li>
+</ul>
+</nav>
+<nav role="navigation" class="menu--menu-buttons hdr__btns">
+<ul block="menubuttons" class="menu">
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/abc" class="btn-primary" data-drupal-link-system-path="abc">Themen</a>
+</li>
+<li class="menu-item">
+<a href="https://shop.mein-schoener-garten.de/" class="btn-secondary" target="_blank" rel="noopener noreferrer">Zum Shop</a>
+</li>
+</ul>
+</nav>
+<div class="search-block hdr__sr">
+<form block="views__msg_search__form" action="https://www.mein-schoener-garten.de/suche" method="get" id="views-exposed-form-msg-search-page" accept-charset="UTF-8">
+<div class="js-form-item form-item js-form-type-textfield form-item-text js-form-item-text">
+<label for="edit-text">Search</label>
+<input data-drupal-selector="edit-text" type="text" id="edit-text" name="text" value="" size="30" maxlength="128" placeholder="Suche eingeben..." class="form-text" />
+</div>
+<input data-drupal-selector="edit-submit-msg-search" type="submit" id="edit-submit-msg-search" value="Suchen" class="button js-form-submit form-submit" />
+</form>
+<i class="icon-search hdr__sr-i"></i>
+</div>
+</div>
+<div class="header-magazine hdr__mg">
+<a href="https://meinschoenergarten-abo.de/?hnr=extern.verlag.msg.header" target="_blank" rel="noopener noreferrer" title="Abonnieren">
+<img src="/sites/default/files/2022-01/mg2202-titel-header.jpg" alt="Mein schöner Garten Februar 2022" title="Mein schöner Garten Februar 2022">
+<span class="btn btn-primary">Abonnieren</span>
+</a>
+</div>
+</div>
+<div class="header-bottom hdr__b">
+<div class="block-system-menu-blockmain menu-slider mn-sl">
+<div class="container">
+<div class="menu-slider--wrapper hdr__menu mn-sl__wr">
+<ul data-region="header" block="msg_infinite_mainnavigation" class="menu">
+<li class="menu-item">
+<a href="https://shop.mein-schoener-garten.de?utm_source=portal&amp;utm_campaign=hauptnavigation&amp;utm_medium=hauptnavigation" class="menu-item__link--transparent" rel="noopener noreferrer" target="_blank" title="zum Gartenshop">Gartenshop</a>
+</li>
+<li class="has-children menu-item">
+<span class="menu-item__link--transparent">Gärtnern</span>
+<ul>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/gartenpraxis" title="Gartenpraxis" data-drupal-link-system-path="taxonomy/term/16">Gartenpraxis</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/lifestyle" title="Grünes Leben" data-drupal-link-system-path="taxonomy/term/241">Grünes Leben</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/videos" data-drupal-link-system-path="taxonomy/term/13381">Videos</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/urban-gardening" title="Urban Gardening – Gärtnern in der Stadt" data-drupal-link-system-path="node/33746">Urban Gardening</a>
+</li>
+</ul>
+</li>
+<li class="has-children menu-item">
+<span>Gestalten</span>
+<ul>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/gartengestaltung" class="menu-item__link--teal" title="Gartengestaltung" data-drupal-link-system-path="taxonomy/term/6">Gartengestaltung</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/pflanzen/kategorien" title="Pflanzen" data-drupal-link-system-path="pflanzen/kategorien">Pflanzenfinder</a>
+</li>
+<li class="has-children menu-item">
+<span class="menu-item__link--transparent">Community</span>
+<ul>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/lifestyle/gruenstadtmenschen-podcast-44110" data-drupal-link-system-path="node/44110">Podcast</a>
+</li>
+<li class="menu-item">
+<a href="https://forum.mein-schoener-garten.de" rel="noopener noreferrer" target="_blank" title="Gartenforum">Forum</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/content/fotocommunity" title="Foto-Community" data-drupal-link-system-path="node/31966">Foto-Community</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="https://meinschoenergarten-abo.de/?hnr=extern.verlag.msg.hauptnavigation&amp;utm_source=portal&amp;utm_campaign=abonavigation&amp;utm_medium=hauptnavigation" title="Mein schöner Garten Abo" target="_blank" rel="nofollow noopener noreferrer">Abo</a>
+</li>
+<li class="has-children menu-item">
+<span>Onlinekurse</span>
+<ul>
+<li class="menu-item">
+<a href="https://onlinekurs.mein-schoener-garten.de/gemuesegarten-kurs-ab?utm_source=msg.de&amp;utm_medium=menulink_gemuse&amp;utm_campaign=menulink_gemuse" target="_blank" rel="noopener noreferrer">Gemüsegarten</a>
+</li>
+<li class="menu-item">
+<a href="https://onlinekurs.mein-schoener-garten.de/kleineronlinekurs/?utm_source=msg.de&amp;utm_medium=menulink_kinder&amp;utm_campaign=menulink_kinderkurs" target="_blank" rel="noopener noreferrer">Gemüsegarten Kinder</a>
+</li>
+<li class="menu-item">
+<a href="https://onlinekurs.mein-schoener-garten.de/onlinekurs-zimmerpflanzen?utm_source=msg.de&amp;utm_medium=menulink_zp&amp;utm_campaign=menulink_zp" target="_blank" rel="noopener noreferrer">Zimmerpflanzen</a>
+</li>
+<li class="menu-item">
+<a href="https://onlinekurs.mein-schoener-garten.de/insektenfreundlicher-garten/?utm_source=msgde&amp;utm_medium=menulink_insekten&amp;utm_campaign=menulink_insekten" target="_blank" rel="noopener noreferrer">Tierfreundlicher Garten</a>
+</li>
+<li class="menu-item">
+<a href="https://kurs.mein-schoener-garten.de/s/MeinSchoenerGarten/sign_in?utm_source=menulink%20&amp;utm_medium=menu&amp;utm_campaign=login_menulink" title="Kurs-Login" target="_blank" rel="noopener noreferrer">Kurs-Login</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="menu-slider--fade-bg__left mn-sl__fd mn-sl__fd--l"></div>
+<div class="menu-slider--fade-bg__right mn-sl__fd mn-sl__fd--r"></div>
+<button class="menu-slider--arrow menu-slider--arrow__left mn-sl__ar mn-sl__ar--l" type="button"></button>
+<button class="menu-slider--arrow menu-slider--arrow__right mn-sl__ar mn-sl__ar--r" type="button"></button>
+</div>
+</div>
+</div>
+</header>
+<main role="main" class="main">
+<div id="content">
+<div data-view-type="infiniteBlockView" data-history-url="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-history-title="3 Profi-Tipps rund um die Topinambur-Ernte" data-nid="48412" data-no-track="true" class="region-full-content infinite-item region-infinite-block">
+<nav class="breadcrumb container brd">
+<ul class="brd__ul">
+<li class="breadcrumb-item brd__li">
+<a href="https://www.mein-schoener-garten.de/" class="brd__a">
+Startseite
+</a>
+</li>
+<li class="breadcrumb-item brd__li">
+<a href="https://www.mein-schoener-garten.de/pflanzen/gemuse/topinambur" class="brd__a">
+Topinambur
+</a>
+</li>
+<li class="breadcrumb-item brd__li">
+<span>Topinambur ernten: 3 Profi-Tipps</span>
+</li>
+</ul>
+</nav>
+<div class="region-marketing">
+<div class="container">
+<div id="ad-entity-_9qr3lfuO0o" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_top" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_leaderboard_1" class="adtag" data-ad-format="msg_leaderboard_1"></div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-_9qr3lfuO0o'));</script></div>
+</div>
+</div>
+<article role="article" class="article_variant_default a-var-def without-branding contentbird-use-import item-content item-content--article container itm-con" data-view-type="articleView">
+<div class="item-content__header itm-con__hd">
+<div>
+<h1 class="h2 text-headline"> Topinambur ernten: 3 Profi-Tipps
+</h1>
+</div>
+</div>
+<div class="item-content-highlighted-below-header container-fixed-content itm-con__b-hd">
+<div class="content-highlighted--left itm-con__hi-l">
+<div class="text-author aut with-image"><a href="https://www.mein-schoener-garten.de/autoren/kathrin-hofmeister"><img class="author-inline" alt="Kathrin Hofmeister" src="https://www.mein-schoener-garten.de/sites/default/files/styles/author/public/kathrin-hofmeister-autorenfoto.jpg?h=178bad00&amp;itok=hmYQOxBe" /> <span typeof="Person">Kathrin Hofmeister</span></a></div>
+<div id="paragraph-wrapper-875893" class="paragraph pt paragraph--type--text paragraph--view-mode--default">
+<p>Im Winter Gemüse frisch aus dem Garten ernten können – mit der knollenbildenden Verwandten der Sonnenblume ist das möglich. Wir haben hier 3 Tipps rund um die Ernte von Topinambur für Sie!</p>
+</div>
+</div>
+<div class="content-highlighted--right itm-con__hi-r">
+<div class="article-meta itm-con__m">
+<div class="article-date itm-con__d">26 Jan, 2022 09:22 Uhr</div>
+<div class="votingapi-widgets fivestar voting_results msg_votingapi vt-r" id="msg_fivestar_voting" data-node-id="48412" data-vote-average="4.42857" data-vote-count="7" data-vote-average-rounded="4">
+<div class="msg-votingapi-inner">
+<div class="voting-label vt-l">Bewertung: </div>
+<div class="br-wrapper br-theme-fontawesome-stars">
+<div class="br-widget br-readonly">
+<a href="#" data-rating-value="1" data-rating-text="Poor"></a>
+<a href="#" data-rating-value="2" data-rating-text="Not so poor"></a>
+<a href="#" data-rating-value="3" data-rating-text="average"></a>
+<a href="#" data-rating-value="4" data-rating-text="good"></a>
+<a href="#" data-rating-value="5" data-rating-text="very good"></a>
+</div>
+</div>
+<div class="vote-count">
+<div class="vote-count-inner">
+<div class="vote-count-value-outer"><span>(</span><span class="vote-count-value"></span><span>)</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="item-block item-google-dfp leaderboard"> <div id="ad-entity-x6G-GuIABNA" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_above" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_leaderboard_2" class="adtag" data-ad-format="msg_leaderboard_2"></div>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-x6G-GuIABNA'));</script></div>
+</div>
+</div>
+<div class="item-content-column region-fixed-content itm-con__c">
+<div class="extra-sidebar">
+<div class="item-fixed">
+<div id="ad-entity-ENznXl2xD9I" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_skyscrapper" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_skyscraper_2" class="adtag" data-ad-format="msg_skyscraper_2"></div>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-ENznXl2xD9I'));</script></div>
+</div>
+</div>
+<aside class="socials socials-bar socials-vertical-bar soc-b-v" data-view-type="stickyView">
+<div class="item-social-sum soc-b__sum contentbird-ignore-import">
+<div id="msync-TRYUhg" class="mustache-sync not-synced">
+<span data-count="0">Teilen</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-TRYUhg"), template: "de_social_summary_count", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["shariff"]});
+        </script>
+</div>
+</div>
+<div class="item-social icon-facebook soc-b__itm soc-b__itm--fb contentbird-ignore-import" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-description="Topinambur&#x20;ernten&#x3A;&#x20;3&#x20;Profi-Tipps" data-social-type="facebook">
+<div id="msync-rctzUw" class="mustache-sync not-synced">
+<span data-count="0">Teilen</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-rctzUw"), template: "de_social_facebook_count", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["shariff"]});
+        </script>
+</div>
+</div>
+<div class="item-social icon-pinterest soc-b__itm soc-b__itm--pin contentbird-ignore-import" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-media-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;sites&#x2F;default&#x2F;files&#x2F;styles&#x2F;inline_scaled_l&#x2F;public&#x2F;2021-12&#x2F;topinambur-ernten-winter-172327040-istock.jpg&#x3F;itok&#x3D;S3wjS86U" data-description="Topinambur&#x20;ernten&#x3A;&#x20;3&#x20;Profi-Tipps" data-social-type="pinterest">
+<div id="msync-lHSLTg" class="mustache-sync not-synced">
+<span data-count="0">Pin</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-lHSLTg"), template: "de_social_pinterest_count", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["shariff"]});
+        </script>
+</div>
+</div>
+<a class="item-social icon-whatsapp soc-b__itm soc-b__itm--wa contentbird-ignore-import" href="whatsapp://send?text=Ich%20habe%20diesen%20Artikel%20auf%20https%3A%2F%2Fwww.mein-schoener-garten.de%2F%20entdeckt%20und%20dachte%2C%20er%20k%C3%B6nnte%20Dich%20interessieren%3A%20Topinambur%20ernten%3A%203%20Profi-Tipps%20-%20https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-social-type="whatsapp">
+<span data-count="0">Teilen</span>
+</a>
+<a class="item-social icon-twitter soc-b__itm soc-b__itm--tw contentbird-ignore-import" href="https://twitter.com/intent/tweet?text=Topinambur%20ernten%3A%203%20Profi-Tipps&amp;url=https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412&amp;via=meingarten" target="_blank" data-social-type="twitter">
+<span data-count="0">Tweet</span>
+</a>
+<div class="item-social icon-email soc-b__itm soc-b__itm--em contentbird-ignore-import" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-email-share-text="Ich&#x20;habe&#x20;diesen&#x20;Artikel&#x20;auf&#x20;https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;&#x20;entdeckt&#x20;und&#x20;dachte,&#x20;er&#x20;k&#x00F6;nnte&#x20;Dich&#x20;interessieren&#x3A;" data-email-subject="www.mein-schoener-garten.de&#x3A;" data-description="Topinambur&#x20;ernten&#x3A;&#x20;3&#x20;Profi-Tipps" data-social-type="email">
+<span data-count="0">E-Mail</span>
+</div>
+<div class="item-social icon-print soc-b__itm soc-b__itm--pr contentbird-ignore-import" onclick="window.print()" data-social-type="print">
+<span data-count="0">Drucken</span>
+</div>
+</aside>
+<div class="item-content-highlighted itm-con__hi">
+<div id="paragraph-wrapper-875929" class="paragraph paragraph--type--bridtv-embedded pt-brid paragraph--view-mode--default container">
+<div class="content">
+<div class="content-video">
+<div id="brid-SAgLsIKpIZ8" class="brid"></div>
+</div>
+<script>
+  window.bridPlayStack = window.bridPlayStack || [];
+  bridPlayStack.push({
+    "div": "brid-SAgLsIKpIZ8",
+    "obj": {
+      "id": "14139",
+      "width": "1405",
+      "height": "750",
+      "video": "942941",
+    }
+  });
+</script>
+<div id="brid-SAgLsIKpIZ8-desc" class="brid-desc brid-942941-desc">
+<p>Topinambur ist ein wiederentdecktes altes Gemüse, das sich großer Beliebtheit erfreut. Mit diesen Tipps ernten und lagern Sie die Knollen richtig</p>
+<p>MSG/Violetta Belaev</p>
+</div>
+</div>
+</div><div id="ad-entity-PjkCbvSUmUs" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_outstream" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_outstream" class="adtag" data-ad-format="msg_outstream"></div>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-PjkCbvSUmUs'));</script></div> </div>
+<div class="container-row itm-con__r">
+<div class="container-row-body item-content-body itm-con__b">
+<div id="paragraph-wrapper-875896" class="paragraph pt paragraph--type--text paragraph--view-mode--default">
+<p>Topinambur fällt durch gelbe Blüten auf. Als Spätblüher ist die Sonnenblumenverwandte aus Nord- und Mittelamerika eine Zierde bis in den Herbst. Das eigentlich Interessante aber findet sich unter der Erde. Die Knollen der mehrjährigen Pflanze sind nahrhaft, ballaststoffreich und wegen ihres Inulingehalts auch für Diabetiker gut geeignet. Bis die “Wunderknolle” im 18. Jahrhundert von der lagerfähigeren <a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="f9feab57-77f4-4670-825d-938c93a71900" href="https://www.mein-schoener-garten.de/pflanzen/gemuse/kartoffeln" target="_blank" rel="noopener noreferrer">Kartoffel</a> verdrängt wurde, war <a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="9bcd8bbe-998d-4ed0-9f4c-760383139646" href="https://www.mein-schoener-garten.de/pflanzen/gemuse/topinambur" target="_blank" rel="noopener noreferrer">Topinambur</a> eine wichtige Nahrungspflanze. </p>
+</div>
+<div class="contentbird-ignore-import paragraph paragraph--type--google-dfp paragraph--view-mode--default container" id="paragraph-wrapper-875899">
+<div id="ad-entity-O6tk8zmmZ2M" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_inside" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_incontent_1" class="adtag" data-ad-format="msg_incontent_1"></div>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-O6tk8zmmZ2M'));</script></div>
+</div>
+<div id="paragraph-wrapper-875902" class="paragraph paragraph--type--text-subheadline paragraph--view-mode--default">
+<h2 class="paragraph-field-subheadline h2">Tipp 1: Den richtigen Erntezeitpunkt erkennen</h2>
+<p>Topinamburknollen sind erntereif, sobald das Laub im Herbst braun ist. Je nach Lage und Sorte kann das bei frühreifenden Sorten bereits ab September sein. Meist beginnt die Erntereife Ende Oktober, Anfang November. Oft färbt die erste Frostnacht die Triebe schwarz. Spätestens dann schneidet man das Kraut bodentief ab.<br />
+<br />
+<a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="84b27697-bbc3-4e49-90e9-5d83cb5cc18a" href="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/topinambur-ernten-47065" target="_blank" rel="noopener noreferrer">Topinambur ernten</a> können Sie ab jetzt über den ganzen Winter bis zur neuen Pflanzung im März. Solange der Boden offen ist, holt man sich die Knollen am besten frisch aus dem Garten. Tiefe Temperaturen (bis minus 30 Grad Celsius) können den Knollen nichts anhaben – die Bedingungen in unseren Lagerräumen dagegen schon. Topinambur ist schlecht lagerfähig. Einmal ausgegraben, schrumpeln die dünnschaligen Knollen nach kurzer Zeit und können leicht schimmeln. Graben Sie Topinamburknollen deshalb nach Bedarf aus.</p>
+</div>
+<div class="contentbird-ignore-import paragraph paragraph--type--teaser paragraph--view-mode--default" id="paragraph-wrapper-875905">
+<div class="no-assets  region-full-content region-teaser-list region--topic-top-articles">
+<div class="container-content container-fixed-content">
+<div class="teaser-list teaser-list-large">
+<div class="teaser-item even">
+<article role="article" class="without-branding contentbird-use-import teaser-landscape-large teaser contextual-region" data-nid="18971">
+<div class="img-container" data-internal-url="https://www.mein-schoener-garten.de/pflanzen/gemuse/topinambur">
+<div class="media media--blazy media--bundle--image media--loading is-b-loading media--image"><img alt="Topinambur (Helianthus tuberosus)" title="Topinambur (Helianthus tuberosus)" class="media__image media__element b-lazy" data-src="/sites/default/files/styles/landscape_l/public/topinambur-helianthus-tuberosus-12206027-strauss.jpg?h=c3bf4dd4&amp;itok=rFnu0vy-" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%201050%20590&#039;%2F%3E" width="1050" height="590" loading="lazy" />
+</div>
+</div>
+<div class="caption caption-teaser">
+<div class="channel-name channel-color--green"><div class="text-label text-category" data-internal-url="https://www.mein-schoener-garten.de/abc">Thema</div></div>
+<div class="title--wrapper">
+<h3 class="text-headline">
+<a href="https://www.mein-schoener-garten.de/pflanzen/gemuse/topinambur" target="_self" rel="bookmark">Topinambur: Die essbare Sonnenblume</a>
+</h3>
+</div>
+<header>
+<div class="text-teaser">
+Topinambur galt vor allem im 17. Jahrhundert in der Pariser Haute Cuisine als Delikatesse, bevor sie von der Kartoffel verdrängt wurde. Nun erlebt sie in der modernen Küche ein Revival. Die Knollen der Pflanzen sind für Diabetiker geeignet und helfen beim Abnehmen.
+</div>
+<div class="call-to-action-button">
+</div>
+</header>
+</div>
+</article>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="paragraph-wrapper-875908" class="paragraph pt paragraph--type--text paragraph--view-mode--default">
+<p>Nur drei Dinge können die ständig frische Ernte über den Winter einschränken. Erstens: Der Boden ist gefroren. Dagegen hilft es, rund um die Pflanzen mit Laub oder Stroh zu mulchen. Unter der Schutzschicht bleibt der Boden länger offen. Zweitens: <a data-entity-substitution="canonical" data-entity-type="node" data-entity-uuid="1ffa1875-7e27-44f2-8207-0707c5a896d9" href="https://www.mein-schoener-garten.de/wuehlmaeuse" target="_blank" rel="noopener noreferrer">Wühlmäuse</a> fressen die nahrhaften Knollen. Besteht die Gefahr, hebt man die Knollen nach der ersten Frostnacht mit einer Grabegabel aus der Erde. Drittens: Der Inulingehalt in den Knollen soll möglichst hoch sein. Dann erntet man im Herbst.</p>
+</div>
+<div id="paragraph-wrapper-875911" class="paragraph paragraph--type--text-subheadline paragraph--view-mode--default">
+<h2 class="paragraph-field-subheadline h2">Tipp 2: So lagern Sie Topinambur am besten</h2>
+<p>Kurzzeitig können Sie Topinambur als Frischgemüse lagern, indem Sie die ungewaschenen Knollen kühl und dunkel stellen und mit Vlies abdecken. Im Kühlschrank halten die Knollen in ein feuchtes Tuch eingeschlagen im Plastikbeutel circa 14 Tage. Für eine längere Lagerung schlagen Sie die frisch geernteten Knollen, so wie sie mit Erde aus dem Boden kommen, in feuchten Sand ein. Mischen Sie den Sand mit Kokosfasern. Das hält die Feuchtigkeit und verhindert, dass die Knollen schrumpeln. Eine dritte Möglichkeit ist das Einfrieren. Gewaschene Topinamburknollen kann man portionsweise gut in der Tiefkühltruhe lagern. </p>
+</div>
+<div id="paragraph-wrapper-875914" class="paragraph paragraph--type--media h-md paragraph--view-mode--default">
+<div class="item-media item-media-image unconstrained">
+<div class="img-container h-md__c">
+<div class="media media--blazy media--bundle--image media--loading is-b-loading media--responsive media--image"> <picture>
+<source srcset="" media="all and (min-width: 992px)" type="image/jpeg" data-srcset="/sites/default/files/styles/inline_scaled_l/public/2022-01/topinambur-knollen-971090212-istock.jpg?itok=iQUo2_Om 1x" />
+<source srcset="" media="all and (min-width: 0px)" type="image/jpeg" data-srcset="/sites/default/files/styles/inline_scaled_m/public/2022-01/topinambur-knollen-971090212-istock.jpg?itok=FMAeflbE 1x" />
+<img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/inline_scaled_s/public/2022-01/topinambur-knollen-971090212-istock.jpg?itok=QsVGLjiF" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%202000%201226&#039;%2F%3E" alt="Topinamburknollen" title="Topinamburknollen" />
+</picture>
+</div>
+</div>
+<div class="caption h-md__cp">
+<div class="socials socials-bar h-md__s">
+<div class="item-social icon-facebook" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-media-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;sites&#x2F;default&#x2F;files&#x2F;styles&#x2F;inline_scaled_l&#x2F;public&#x2F;2022-01&#x2F;topinambur-knollen-971090212-istock.jpg&#x3F;itok&#x3D;iQUo2_Om" data-description="Topinambur&#x20;&#x28;Helianthus&#x20;tuberosus&#x29;&#x20;ist&#x20;ein&#x20;gesundes&#x20;Gem&#x00FC;se,&#x20;das&#x20;man&#x20;im&#x20;Winter&#x20;ernten&#x20;und&#x20;f&#x00FC;r&#x20;verschiedene&#x20;Rezepte&#x20;verwenden&#x20;kann.&#x20;Am&#x20;besten&#x20;genie&#x00DF;t&#x20;man&#x20;die&#x20;Knollen&#x20;frisch,&#x20;mitsamt&#x20;anhaftender&#x20;Erde&#x20;kann&#x20;man&#x20;sie&#x20;auch&#x20;etwas&#x20;lagern" target="_blank" data-social-type="facebook"></div>
+<div class="item-social icon-pinterest" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-media-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;sites&#x2F;default&#x2F;files&#x2F;styles&#x2F;inline_scaled_l&#x2F;public&#x2F;2022-01&#x2F;topinambur-knollen-971090212-istock.jpg&#x3F;itok&#x3D;iQUo2_Om" data-description="Topinambur&#x20;&#x28;Helianthus&#x20;tuberosus&#x29;&#x20;ist&#x20;ein&#x20;gesundes&#x20;Gem&#x00FC;se,&#x20;das&#x20;man&#x20;im&#x20;Winter&#x20;ernten&#x20;und&#x20;f&#x00FC;r&#x20;verschiedene&#x20;Rezepte&#x20;verwenden&#x20;kann.&#x20;Am&#x20;besten&#x20;genie&#x00DF;t&#x20;man&#x20;die&#x20;Knollen&#x20;frisch,&#x20;mitsamt&#x20;anhaftender&#x20;Erde&#x20;kann&#x20;man&#x20;sie&#x20;auch&#x20;etwas&#x20;lagern" data-social-type="pinterest"></div>
+</div>
+<div class="text-copyright h-md__t-cp"><span>iStock/Gargonia</span></div>
+<div class="text-description h-md__d"><p><span>Topinambur (Helianthus tuberosus) ist ein gesundes Gemüse, das man im Winter ernten und für verschiedene Rezepte verwenden kann. Am besten genießt man die Knollen frisch, mitsamt anhaftender Erde kann man sie auch etwas lagern</span></p>&#13;
+</div>
+</div>
+</div>
+</div>
+<div id="paragraph-wrapper-875917" class="paragraph paragraph--type--text-subheadline paragraph--view-mode--default">
+<h2 class="paragraph-field-subheadline h2">Tipp 3: Mal was anderes – unbekannte Topinambur-Sorten ausprobieren</h2>
+<p>Sie kennen Topinambur nur als höckrige, bräunliche Knollen? Von der wegen ihres artischockenähnlichen Geschmacks auch als Erdartischocke bezeichneten Pflanze gibt es viele Sorten. Sie haben unterschiedliche Formen und Farben von einer keulenförmigen, violettschaligen ‘Violet de Rennes’ bis zu länglichen, gelben ‘Witzenhausener Zapfen’. Je glatter und klarer die Formen sind, umso leichter lassen sie sich waschen oder nach dem Kochen wie die ‘Gföhler Rote’ mit ihren großen Knollen schälen.</p>
+</div>
+<div class="contentbird-ignore-import paragraph paragraph--type--teaser paragraph--view-mode--default" id="paragraph-wrapper-875920">
+<div class="no-assets  region-full-content region-teaser-list region--topic-top-articles">
+<div class="container-content container-fixed-content">
+<div class="teaser-list teaser-list-large">
+<div class="teaser-item even">
+<article role="article" class="article_variant_default a-var-def without-branding contentbird-use-import teaser-landscape-large teaser contextual-region" data-nid="43996">
+<div class="img-container" data-internal-url="https://www.mein-schoener-garten.de/lifestyle/essen-trinken/topinambur-schaelen-43996">
+<div class="media media--blazy media--bundle--image media--loading is-b-loading media--image"><img alt="Topinambur schälen" title="Topinambur schälen" class="media__image media__element b-lazy" data-src="/sites/default/files/styles/landscape_l/public/topinambur-schaelen-11278660-dam-stockfood.jpg?h=c029297a&amp;itok=DeoMLdBP" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%201050%20590&#039;%2F%3E" width="1050" height="590" loading="lazy" />
+</div>
+</div>
+<div class="caption caption-teaser">
+<div class="msg-tags">
+<div class="text-label text-category" data-internal-url="https://www.mein-schoener-garten.de/lifestyle/essen-trinken">Essen &amp; Trinken</div>
+</div>
+<div class="title--wrapper">
+<h3 class="text-headline">
+<a href="https://www.mein-schoener-garten.de/lifestyle/essen-trinken/topinambur-schaelen-43996" target="_self" rel="bookmark"> Topinambur schälen: So geht es am besten
+</a>
+</h3>
+</div>
+<header>
+<div class="text-teaser">
+Die köstlichen Knollen mit der nussigen Note sind von einer feinen Schale umgeben. Hier erfahren Sie, wie man Topinambur ganz einfach schälen kann und was es dabei zu beachten gilt.
+</div>
+<div class="call-to-action-button">
+<a href="https://www.mein-schoener-garten.de/lifestyle/essen-trinken/topinambur-schaelen-43996" hreflang="de">Mehr erfahren</a>
+</div>
+</header>
+</div>
+</article>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="paragraph-wrapper-875923" class="paragraph pt paragraph--type--text paragraph--view-mode--default">
+<p>Sortenwahl ist natürlich Geschmackssache und eine Frage des Ertrags. Bei der rot-violett gefärbten Ertragssorte ‘Violo’ geht er ins Nussige. Die ertragreiche ‘Rote Zonenkugel’ verwendet man auch zum Schnapsbrennen. Eine der ertragreichsten ist die spätreifende ‘Gute Gelbe’. Wollen Sie früh Topinambur ernten, bieten sich etwa wie mit der halbhohen ‘Bianca’ frühreife Sorten an. Sind Ihnen die bis 2,50 Meter hohen Sorten zu hoch, bleibt ‘Topstar’ niedriger. Für den Topf gibt es mit ‘Dwarf’ eine nur 40 Zentimeter hohe Alternative.</p>
+</div>
+<div id="paragraph-wrapper-876532" class="item-block item-suggestion-box paragraph--type--tip-box">
+<div class="paragraph-suggestionbox   paragraph-suggestionbox--left">
+<div class="paragraph-suggestionbox__head">
+<h3 class="paragraph-suggestionbox__head__title">
+Bildnachweis
+</h3>
+<div class="paragraph-suggestionbox__head__sponsor">
+</div>
+</div>
+<div class="paragraph-suggestionbox__content">
+<div class="paragraph-suggestionbox__image">
+<div class="media media--blazy media--bundle--image media--loading is-b-loading media--responsive media--image"> <picture>
+<source srcset="" media="all and (min-width: 992px)" type="image/jpeg" data-srcset="/sites/default/files/styles/inline_scaled_l/public/2021-12/topinambur-ernten-winter-172327040-istock.jpg?itok=S3wjS86U 1x" />
+<source srcset="" media="all and (min-width: 0px)" type="image/jpeg" data-srcset="/sites/default/files/styles/inline_scaled_m/public/2021-12/topinambur-ernten-winter-172327040-istock.jpg?itok=Medt9qdC 1x" />
+<img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/inline_scaled_s/public/2021-12/topinambur-ernten-winter-172327040-istock.jpg?itok=cH_42s7e" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%202000%201226&#039;%2F%3E" alt="Topinambur ernten" title="Topinambur ernten" />
+</picture>
+</div>
+</div>
+<div class="paragraph-suggestionbox__copy">
+<div class="paragraph-suggestionbox__text">
+<p>iStock/cjp</p>
+</div>
+</div>
+<div class="paragraph-suggestionbox__button">
+</div>
+</div>
+</div>
+</div>
+<div class="contentbird-ignore-import paragraph paragraph--type--chameleon-shop shop-3 paragraph--view-mode--default" id="paragraph-wrapper-875926">
+<div class="paragraph-field-subheadline h2">Empfehlungen aus dem MEIN SCHÖNER GARTEN-Shop</div>
+<div class="chameleon-products">
+<div class="chameleon-product">
+<div onclick="window.chamQuickView.open('4857');" class="cham-btn-quickview quickview-4857">Quick View
+</div>
+<a class="cham-link cham-widget-link" href="https://shop.mein-schoener-garten.de/topinambur3-stueck-helianthustuberosus-alternative-zur-kartoffel/products/4857?itm_source=portal&amp;itm_medium=shop-paragraph&amp;itm_campaign=ecom-tracking&amp;itm_content=https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412" title="Topinambur,3 Stück Helianthustuberosus Alternative zur Kartoffel" target="_blank" rel="noopener noreferrer">
+<div class="chameleon-product__image_container">
+<div class="media media--blazy media--loading is-b-loading media--image"><img class="chameleon-product__image media__image media__element b-lazy" alt="Topinambur,3 Stück Helianthustuberosus Alternative zur Kartoffel" title="Topinambur,3 Stück Helianthustuberosus Alternative zur Kartoffel" width="340" height="340" data-src="https://www.mein-schoener-garten.de/sites/default/files/styles/chameleon_product/public/externals/a3f498d040152f5957147158f0a6dcdf.jpg?itok=EJsMnpSl" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%20340%20340&#039;%2F%3E" />
+</div>
+</div>
+<div class="chameleon-product__info_container">
+<div class="chameleon-product__partner"></div>
+<div class="chameleon-product__title">
+Topinambur,3 Stück Helianthustuberosus...
+</div>
+<div class="champ-price__wrapper">
+<div class="champ-price">9,99 €</div>
+<div class="champ-price-stp"></div>
+</div>
+<div class="chameleon-product__price-info">zzgl. Versandkosten</div>
+<div class="availability"> <div id="msync-FWtdfQ" class="mustache-sync not-synced">
+<span class="available">3 Werktage Lieferzeit</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-FWtdfQ"), template: "chameleon_availability", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["chameleon","products",4857,"av"]});
+        </script>
+</div>
+</div>
+<div class="chameleon-product__buy">Jetzt kaufen</div>
+</div>
+</a>
+</div>
+<div class="chameleon-product">
+<div onclick="window.chamQuickView.open('3228');" class="cham-btn-quickview quickview-3228">Quick View
+</div>
+<a class="cham-link cham-widget-link" href="https://shop.mein-schoener-garten.de/ideal-grabegabel-mit-4-bajonettzinken/products/3228?itm_source=portal&amp;itm_medium=shop-paragraph&amp;itm_campaign=ecom-tracking&amp;itm_content=https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412" title="Grabegabel mit 4 Bajonettzinken" target="_blank" rel="noopener noreferrer">
+<div class="chameleon-product__image_container">
+<div class="media media--blazy media--loading is-b-loading media--image"><img class="chameleon-product__image media__image media__element b-lazy" alt="Grabegabel mit 4 Bajonettzinken" title="Grabegabel mit 4 Bajonettzinken" width="340" height="340" data-src="https://www.mein-schoener-garten.de/sites/default/files/styles/chameleon_product/public/externals/5921be4ff99312ad6fa472b9861b293c.jpg?itok=2M__zlau" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%20340%20340&#039;%2F%3E" />
+</div>
+</div>
+<div class="chameleon-product__info_container">
+<div class="chameleon-product__partner">IDEAL</div>
+<div class="chameleon-product__title">
+Grabegabel mit 4 Bajonettzinken
+</div>
+<div class="champ-price__wrapper">
+<div class="champ-price">30,95 €</div>
+<div class="champ-price-stp"></div>
+</div>
+<div class="chameleon-product__price-info">zzgl. Versandkosten</div>
+<div class="availability"> <div id="msync-AcRZ9w" class="mustache-sync not-synced">
+<span class="available">3-5 Werktage Lieferzeit</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-AcRZ9w"), template: "chameleon_availability", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["chameleon","products",3228,"av"]});
+        </script>
+</div>
+</div>
+<div class="chameleon-product__buy">Jetzt kaufen</div>
+</div>
+</a>
+</div>
+<div class="chameleon-product">
+<div onclick="window.chamQuickView.open('18032');" class="cham-btn-quickview quickview-18032">Quick View
+</div>
+<a class="cham-link cham-widget-link" href="https://shop.mein-schoener-garten.de/compo-compo-bio-beeren-langzeit-duenger-mit-schafwolle-2-kg/products/18032?itm_source=portal&amp;itm_medium=shop-paragraph&amp;itm_campaign=ecom-tracking&amp;itm_content=https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412" title=" BIO Beeren Langzeit-Dünger mit Schafwolle 2 kg" target="_blank" rel="noopener noreferrer">
+<div class="chameleon-product__image_container">
+<div class="media media--blazy media--loading is-b-loading media--image"><img class="chameleon-product__image media__image media__element b-lazy" alt=" BIO Beeren Langzeit-Dünger mit Schafwolle 2 kg" title=" BIO Beeren Langzeit-Dünger mit Schafwolle 2 kg" width="340" height="340" data-src="https://www.mein-schoener-garten.de/sites/default/files/styles/chameleon_product/public/externals/7ee881e761fd03b30be7a58f779e572c.jpg?itok=yQYXCW9b" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%20340%20340&#039;%2F%3E" />
+</div>
+</div>
+<div class="chameleon-product__info_container">
+<div class="chameleon-product__partner">COMPO</div>
+<div class="chameleon-product__title">
+BIO Beeren Langzeit-Dünger mit Schafw...
+</div>
+<div class="champ-price__wrapper">
+<div class="champ-price">12,99 €</div>
+<div class="champ-price-stp"></div>
+<div class="champ-price-bsc">(€ 6,50 / 1kg)</div>
+</div>
+<div class="chameleon-product__price-info">zzgl. Versandkosten</div>
+<div class="availability"> <div id="msync-rJgEbg" class="mustache-sync not-synced">
+<span class="available">4 Wochen Lieferzeit</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-rJgEbg"), template: "chameleon_availability", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["chameleon","products",18032,"av"]});
+        </script>
+</div>
+</div>
+<div class="chameleon-product__buy">Jetzt kaufen</div>
+</div>
+</a>
+</div>
+<iframe class="global-teaser-iframe" src="https://www.mein-schoener-garten.de/global-shop-teaser-iframe?parent_url=https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412"></iframe>
+<div class="global-teaser-print-txt">Besuchen Sie die Webseite um dieses Element zu sehen.</div>
+</div>
+<div class="chameleon-landing">
+<a href="https://shop.mein-schoener-garten.de/" target="_blank" class="chameleon-link-landingpage btn-primary btn-more-lg" rel="noopener noreferrer">Noch mehr Pflanzen und Gartenbedarf im MEIN SCHÖNER GARTEN-Shop entdecken!</a>
+</div>
+</div>
+<div class="votingapi-widgets fivestar"><div id="vote-form-wrapper" class="create-article-voting" data-voted-entity="48412">
+<div class="item-block item-text-subheadline">
+<div class="h2 paragraph-field-subheadline">Wie hat Ihnen dieser Artikel gefallen?</div></div><form class="node-article-48412-vote-field-voting__vote-vote-msg-votingapi-msg-fivestar-form vote-form" id="vote-form" voted_entity_id="48412" data-drupal-selector="node-article-48412-vote-field-voting-vote-vote-msg-votingapi-msg-fivestar-form" action="/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" method="post" accept-charset="UTF-8">
+<div class="js-form-item form-item js-form-type-select form-item-value js-form-item-value form-no-label">
+<select autocomplete="off" data-result-value="-1" data-vote-value="-1" data-style="fontawesome-stars" data-show-own-vote="true" data-all-votes="7" data-drupal-selector="edit-value" id="edit-value" name="value" class="form-select"><option value="1">Poor</option><option value="2">Not so poor</option><option value="3">average</option><option value="4">good</option><option value="5">very good</option></select>
+</div>
+<input autocomplete="off" data-drupal-selector="form-wvavuip2tetulivljgpy9ohcstawjhhetfjf2a0dicy" type="hidden" name="form_build_id" value="form-WvaVUIP2TetULivLJgpY9OHCsTawjhHETFjf2A0dICY" />
+<input data-drupal-selector="edit-node-article-48412-vote-field-voting-vote-vote-msg-votingapi-msg-fivestar-form" type="hidden" name="form_id" value="node_article_48412_vote_field_voting__vote_vote_msg_votingapi_msg_fivestar_form" />
+<input data-drupal-selector="edit-submit" type="submit" id="edit-submit--2" name="op" value="Speichern" class="button button--primary js-form-submit form-submit" />
+</form>
+</div></div>
+<div id="msg-videoteaser"></div>
+<div class="item-block item-google-dfp bottomcontent"> <div id="ad-entity-V2X3VXnuTy8" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_bottom_content" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_incontent_2" class="adtag" data-ad-format="msg_incontent_2"></div>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-V2X3VXnuTy8'));</script></div>
+</div>
+<div class="article-categories">
+<div>
+<ul class="category-list">
+<li><a href="https://www.mein-schoener-garten.de/gemuesebeet-0" target="_blank" rel="noopener noreferrer">Gemüsebeet</a></li>
+</ul>
+</div>
+</div>
+<div class="related-articles">
+<a name="verwandte-artikel"></a>
+<div class="h3">
+Verwandte Artikel
+</div>
+<div class="related-articles--wrapper">
+<article role="article" class="article_variant_default a-var-def without-branding contentbird-use-import msg-teaser-square-small teaser contextual-region" data-nid="25996">
+<div class="msg-teaser-square-small--inner">
+<div class="msg-teaser-square-small__image">
+<div data-internal-url="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/herbsternte-das-beliebteste-gemuese-25996">
+<div class="media media--blazy media--bundle--image media--loading is-b-loading media--image"><img alt="Illustration Gemüse" title="Illustration Gemüse" class="media__image media__element b-lazy" data-src="/sites/default/files/styles/square_m/public/illustration-gemuese-3400293-blp-fotolia_0.jpg?h=f76589a9&amp;itok=pK_quhM3" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%20360%20345&#039;%2F%3E" width="360" height="345" loading="lazy" />
+</div>
+</div>
+</div>
+<div class="msg-teaser-square-small__content">
+<div class="msg-tags">
+<div class="text-label text-category" data-internal-url="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten">Nutzgärten</div>
+</div>
+<span class="inner">
+<a href="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/herbsternte-das-beliebteste-gemuese-25996">
+<h3 class="h4"> Herbsternte: Das beliebteste Gemüse unserer Community
+</h3>
+</a>
+<span data-internal-url="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/herbsternte-das-beliebteste-gemuese-25996" class="btn btn-primary">Mehr erfahren</span>
+</span>
+</div>
+</div>
+</article>
+<article role="article" class="article_variant_default a-var-def without-branding contentbird-use-import teaser teaser-square-small related-teaser-square-s contextual-region" data-nid="27216" data-internal-url="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/rueben-schaetze-aus-dem-untergrund-27216">
+<div class="teaser-inner">
+<div class="img-container">
+<div class="media media--blazy media--bundle--image media--loading is-b-loading media--responsive media--image"> <picture>
+<source srcset="" media="all and (min-width: 767px)" type="image/jpeg" data-srcset="/sites/default/files/styles/video_landscape_l/public/moehren-pastinaken-4090871-blp-twilight.jpg?h=7ece5483&amp;itok=FMOo5GkY 1x" />
+<source srcset="" media="all and (min-width: 480px)" type="image/jpeg" data-srcset="/sites/default/files/styles/v/public/moehren-pastinaken-4090871-blp-twilight.jpg?h=7ece5483&amp;itok=gJ10aURt 1x" />
+<source srcset="" media="all and (min-width: 0px)" type="image/jpeg" data-srcset="/sites/default/files/styles/video_landscape_s_mobile/public/moehren-pastinaken-4090871-blp-twilight.jpg?h=7ece5483&amp;itok=mV0j_SML 1x" />
+<img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/video_landscape_s_mobile/public/moehren-pastinaken-4090871-blp-twilight.jpg?h=7ece5483&amp;itok=mV0j_SML" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%202805%201870&#039;%2F%3E" alt="Möhren und Pastinaken" title="Möhren und Pastinaken" />
+</picture>
+</div>
+</div>
+<div class="caption caption-teaser"> <div class="msg-tags">
+Nutzgärten
+</div>
+<div class="inner">
+<h3>
+<a href="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/rueben-schaetze-aus-dem-untergrund-27216" target="_self"> Rüben: Schätze aus dem Untergrund
+</a>
+</h3>
+<span class="btn btn-primary">Mehr erfahren</span>
+</div>
+</div>
+</div>
+</article>
+<article role="article" class="article_variant_default a-var-def without-branding contentbird-use-import teaser teaser-square-small related-teaser-square-s contextual-region" data-nid="44224" data-internal-url="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/mangold-ernten-44224">
+<div class="teaser-inner">
+<div class="img-container">
+<div class="media media--blazy media--bundle--image media--loading is-b-loading media--responsive media--image"> <picture>
+<source srcset="" media="all and (min-width: 767px)" type="image/jpeg" data-srcset="/sites/default/files/styles/video_landscape_l/public/mangold-ernten-bright-lights-12597182-strauss.jpg?h=c029297a&amp;itok=KywauR7c 1x" />
+<source srcset="" media="all and (min-width: 480px)" type="image/jpeg" data-srcset="/sites/default/files/styles/v/public/mangold-ernten-bright-lights-12597182-strauss.jpg?h=c029297a&amp;itok=92ydMS0z 1x" />
+<source srcset="" media="all and (min-width: 0px)" type="image/jpeg" data-srcset="/sites/default/files/styles/video_landscape_s_mobile/public/mangold-ernten-bright-lights-12597182-strauss.jpg?h=c029297a&amp;itok=lQyt7i9X 1x" />
+<img class="media__image media__element b-lazy b-responsive" data-src="/sites/default/files/styles/video_landscape_s_mobile/public/mangold-ernten-bright-lights-12597182-strauss.jpg?h=c029297a&amp;itok=lQyt7i9X" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039;%20viewBox%3D&#039;0%200%202000%201226&#039;%2F%3E" alt="Mangold ernten" title="Mangold ernten" />
+</picture>
+</div>
+</div>
+<div class="caption caption-teaser"> <div class="msg-tags">
+Nutzgärten
+</div>
+<div class="inner">
+<h3>
+<a href="https://www.mein-schoener-garten.de/gartenpraxis/nutzgaerten/mangold-ernten-44224" target="_self"> Mangold ernten: Tipps zum Zeitpunkt, Lagern und Haltbarmachen
+</a>
+</h3>
+<span class="btn btn-primary">Mehr erfahren</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+</div>
+<div class="socials socials-bar socials-horizontal-bar item-block">
+<div class="item-social icon-facebook soc-b__itm soc-b__itm--fb contentbird-ignore-import" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-description="Topinambur&#x20;ernten&#x3A;&#x20;3&#x20;Profi-Tipps" data-social-type="facebook">
+<div id="msync-U2xUKg" class="mustache-sync not-synced">
+<span data-count="0">Teilen</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-U2xUKg"), template: "de_social_facebook_count", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["shariff"]});
+        </script>
+</div>
+</div>
+<div class="item-social icon-pinterest soc-b__itm soc-b__itm--pin contentbird-ignore-import" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-media-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;sites&#x2F;default&#x2F;files&#x2F;styles&#x2F;inline_scaled_l&#x2F;public&#x2F;2021-12&#x2F;topinambur-ernten-winter-172327040-istock.jpg&#x3F;itok&#x3D;S3wjS86U" data-description="Topinambur&#x20;ernten&#x3A;&#x20;3&#x20;Profi-Tipps" data-social-type="pinterest">
+<div id="msync-rrqLrw" class="mustache-sync not-synced">
+<span data-count="0">Pin</span>
+<script>
+      window.mustacheSync = window.mustacheSync || {items: [], templates: []};
+              window.mustacheSync.items.push({element: document.getElementById("msync-rrqLrw"), template: "de_social_pinterest_count", data: "https://www.mein-schoener-garten.de/prepared/get?s=61eab1c79b5d0", select: ["shariff"]});
+        </script>
+</div>
+</div>
+<a class="item-social icon-whatsapp soc-b__itm soc-b__itm--wa contentbird-ignore-import" href="whatsapp://send?text=Ich%20habe%20diesen%20Artikel%20auf%20https%3A%2F%2Fwww.mein-schoener-garten.de%2F%20entdeckt%20und%20dachte%2C%20er%20k%C3%B6nnte%20Dich%20interessieren%3A%20Topinambur%20ernten%3A%203%20Profi-Tipps%20-%20https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-social-type="whatsapp">
+<span data-count="0">Teilen</span>
+</a>
+<a class="item-social icon-twitter soc-b__itm soc-b__itm--tw contentbird-ignore-import" href="https://twitter.com/intent/tweet?text=Topinambur%20ernten%3A%203%20Profi-Tipps&amp;url=https%3A%2F%2Fwww.mein-schoener-garten.de%2Fnews%2F3-profi-tipps-rund-um-die-topinambur-ernte-48412&amp;via=meingarten" target="_blank" data-social-type="twitter">
+<span data-count="0">Tweet</span>
+</a>
+<div class="item-social icon-email soc-b__itm soc-b__itm--em contentbird-ignore-import" data-url="https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;news&#x2F;3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-email-share-text="Ich&#x20;habe&#x20;diesen&#x20;Artikel&#x20;auf&#x20;https&#x3A;&#x2F;&#x2F;www.mein-schoener-garten.de&#x2F;&#x20;entdeckt&#x20;und&#x20;dachte,&#x20;er&#x20;k&#x00F6;nnte&#x20;Dich&#x20;interessieren&#x3A;" data-email-subject="www.mein-schoener-garten.de&#x3A;" data-description="Topinambur&#x20;ernten&#x3A;&#x20;3&#x20;Profi-Tipps" data-social-type="email">
+<span data-count="0">E-Mail</span>
+</div>
+<div class="item-social icon-print soc-b__itm soc-b__itm--pr contentbird-ignore-import" onclick="window.print()" data-social-type="print">
+<span data-count="0">Drucken</span>
+</div>
+</div>
+</div>
+<div class="container-row-sidebar item-content-sidebar">
+<div class="item-sticky" data-view-type="stickyView">
+<div class="container-sidebar-content container-marketing">
+<div class="item-marketing">
+<div id="ad-entity-m6DMSOPVr68" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_sidebar" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["md","lg","xl","xxl"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_skyscraper_1" class="adtag" data-ad-format="msg_skyscraper_1"></div>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-m6DMSOPVr68'));</script></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="ad-entity-U0UctY5d1so" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_custom_script_1" data-ad-entity-type="direct_ad_slot_recognified" data-ad-entity-view="direct_ad_slot_recognified" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'> <script src="https://cdn.recognified.net/rd.loader.php?pub_id=161"></script>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-U0UctY5d1so'));</script></div>
+<div id="ad-entity-x-u-4YpKsPE" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_custom_script_2" data-ad-entity-type="generic" data-ad-entity-view="generic" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'><div id="msg_custom_script_2" class="adtag" data-ad-format="msg_custom_script_2"></div>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-x-u-4YpKsPE'));</script></div>
+<div id="ad-entity-suByqsn8Jso" class="ad-entity-container not-initialized contentbird-ignore-import" data-ad-entity="gen_custom_script_3" data-ad-entity-type="direct_ad_slot_recognified" data-ad-entity-view="direct_ad_slot_recognified" data-ad-entity-variant='["any"]' data-ad-entity-targeting='{"entitytype":"node\/article","entitylabel":"Topinambur ernten: 3 Profi-Tipps","entityuuid":"123768c7-946b-40cc-9c79-8f564ea245d7","article":"Topinambur ernten: 3 Profi-Tipps","gartenarten_gartenbereiche":["Gemüsebeet","Gartenbereiche"],"garden_tools_work":["Ernte","Gartenarbeit"],"channel":["News","Home"]}'> <script src="https://cdn.recognified.net/rd.loader.php?pub_id=562"></script>
+<script>window.adEntity = window.adEntity || {queue: []}; window.adEntity.queue.push(document.getElementById('ad-entity-suByqsn8Jso'));</script></div>
+</article>
+</div>
+<div class="region-full-content region-feed" data-view-type="feedView">
+<div class="outbrain_div_container"><div class="outbrain_div_container">
+<div class="OUTBRAIN" data-ob-template="DE_MeinSchoenerGarten" data-src="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-widget-id="AR_1">
+</div>
+<div class="OUTBRAIN" data-ob-template="DE_MeinSchoenerGarten" data-src="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-widget-id="AR_2">
+</div>
+<div class="OUTBRAIN" data-ob-template="DE_MeinSchoenerGarten" data-src="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-widget-id="AR_3">
+</div>
+</div>
+</div>
+<div class="container-content container-content-dynamic container-feed-items"></div>
+</div>
+<div class="outbrain_div_container"><div class="outbrain_div_container">
+<div class="OUTBRAIN" data-ob-template="DE_MeinSchoenerGarten" data-src="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-widget-id="AR_1">
+</div>
+<div class="OUTBRAIN" data-ob-template="DE_MeinSchoenerGarten" data-src="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-widget-id="AR_2">
+</div>
+<div class="OUTBRAIN" data-ob-template="DE_MeinSchoenerGarten" data-src="https://www.mein-schoener-garten.de/news/3-profi-tipps-rund-um-die-topinambur-ernte-48412" data-widget-id="AR_3">
+</div>
+</div>
+</div>
+<div role="article" class="without-branding contextual-region region-full-content region-msg_chameleon">
+<h2 class="region__title">
+Unsere Empfehlungen im MEIN SCHÖNER GARTEN Shop
+</h2>
+</div>
+</div>
+</main>
+<footer class="footer">
+<div class="container">
+<div class="row region-footer-top">
+<a href="/" title="Startseite" class="logo branding-link-icon branding-link-icon-small br-i-s"><img src="/sites/default/files/branding/icon_small/logo.green_.svg" class="branding-icon branding-icon-small" title="Mein schöner Garten" alt="Mein schöner Garten" /></a>
+<div class="footer-top__menu">
+<div class="footer-top__menu-inner">
+<ul block="sidebarmisc_4" class="menu nav">
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/service" data-drupal-link-system-path="taxonomy/term/216">Service</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/autoren" data-drupal-link-system-path="autoren">Autoren</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/mediadaten" data-drupal-link-system-path="node/19546">Mediadaten</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/kontakt" data-drupal-link-system-path="node/19841">Kontakt</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/nutzungsbedingungen" data-drupal-link-system-path="node/19501">Nutzungsbedingungen</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/datenschutzerklaerung" data-drupal-link-system-path="datenschutzerklaerung">Datenschutz</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/netiquette" data-drupal-link-system-path="node/19566">Netiquette</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/sitemap.xml" data-drupal-link-system-path="sitemap.xml">Sitemap</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/impressum" data-drupal-link-system-path="node/19271">Impressum</a>
+</li>
+<li class="menu-item">
+<a href="#" id="footer-consent-button"> Privacy Einstellungen</a>
+<script type="text/javascript">
+              document.getElementById("footer-consent-button").addEventListener('click', function (e) {
+                e.preventDefault();
+                if (window.hasOwnProperty('_sp_')) {
+                  window._sp_.loadPrivacyManagerModal(208062)
+                }
+              });
+
+              // AMP privacy open redirect.
+              window.onload = function () {
+                var params = window.location.search;
+                if (params.indexOf('open_privacy_manager') >= 0) {
+                  window._sp_.loadPrivacyManagerModal(208062)
+                }
+              };
+            </script>
+</li>
+</ul>
+<ul block="sidebarsubscriptions_4" class="menu nav">
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/newsletter" data-drupal-link-system-path="node/19846">Newsletter</a>
+</li>
+<li class="menu-item">
+<a href="http://meinschoenergarten-abo.de/?hnr=extern.verlag.msg.menu" rel="noopener noreferrer" target="_blank">Jetzt Heft abonnieren!</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/content/push-nachrichten-aktivieren-und-deaktivieren" title="Push-Nachrichten aktivieren und deaktivieren" data-drupal-link-system-path="node/37874">Push-Nachrichten</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row region-footer-bottom">
+<nav role="navigation" class="socials social-links-menu">
+<ul block="sociallinksmenu" class="menu nav">
+<li class="menu-item">
+<a href="https://www.facebook.com/meinschoenergarten" class="icon-facebook" target="_blank" rel="nofollow noopener noreferrer">Facebook</a>
+</li>
+<li class="menu-item">
+<a href="https://www.pinterest.de/schoenergarten/" class="icon-pinterest" target="_blank" rel="nofollow noopener noreferrer">Pinterest</a>
+</li>
+<li class="menu-item">
+<a href="https://www.instagram.com/mein_schoener_garten/" class="icon-instagram" target="_blank" rel="nofollow noopener noreferrer">Instagram</a>
+</li>
+<li class="menu-item">
+<a href="https://www.youtube.com/user/meinschoenergarten" class="icon-youtube" target="_blank" rel="nofollow noopener noreferrer">Youtube</a>
+</li>
+<li class="menu-item">
+<a href="/cdn-cgi/l/email-protection#315c42561c5e5f5d585f547153444355501f525e5c" class="icon-email" target="_blank" rel="noopener noreferrer">E-Mail</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</footer>
+</div>
+<aside id="menu-sidebar">
+<div class="menu-sidebar--content">
+<div class="icon icon-close"></div>
+<nav role="navigation" id="menu-sidebar-account" id="menu-sidebar-account" class="item-sidebar">
+<ul block="sidebaraccount" class="menu">
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/" data-drupal-link-system-path="&lt;front&gt;">Startseite</a>
+</li>
+</ul>
+</nav>
+<nav role="navigation" id="menu-sidebar-subscriptions" id="menu-sidebar-subscriptions" class="item-sidebar">
+<ul block="sidebarsubscriptions" class="menu nav">
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/newsletter" data-drupal-link-system-path="node/19846">Newsletter</a>
+</li>
+<li class="menu-item">
+<a href="http://meinschoenergarten-abo.de/?hnr=extern.verlag.msg.menu" rel="noopener noreferrer" target="_blank">Jetzt Heft abonnieren!</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/content/push-nachrichten-aktivieren-und-deaktivieren" title="Push-Nachrichten aktivieren und deaktivieren" data-drupal-link-system-path="node/37874">Push-Nachrichten</a>
+</li>
+</ul>
+</nav>
+<nav role="navigation" id="menu-sidebar-main" id="menu-sidebar-main" class="item-sidebar">
+<ul block="sidebarmain" class="menu">
+<li class="menu-item">
+<a href="https://shop.mein-schoener-garten.de?utm_source=portal&amp;utm_campaign=hauptnavigation&amp;utm_medium=hauptnavigation" class="menu-item__link--transparent" rel="noopener noreferrer" target="_blank" title="zum Gartenshop">Gartenshop</a>
+</li>
+<li class="has-children menu-item">
+<span class="menu-item__link--transparent">Gärtnern</span>
+<ul>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/gartenpraxis" class="menu-item__link--transparent" data-drupal-link-system-path="taxonomy/term/16">Gartenpraxis</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/lifestyle" class="menu-item__link--transparent" data-drupal-link-system-path="taxonomy/term/241">Grünes Leben</a>
+</li>
+ <li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/videos" class="menu-item__link--transparent" data-drupal-link-system-path="taxonomy/term/13381">Videos</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/urban-gardening" class="menu-item__link--transparent" title="Urban Gardening – Gärtnern in der Stadt" data-drupal-link-system-path="node/33746">Urban Gardening</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="/gestalten" class="menu-item__link--transparent">Gestalten</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/pflanzen/kategorien" class="menu-item__link--transparent" data-drupal-link-system-path="pflanzen/kategorien">Pflanzen</a>
+</li>
+<li class="has-children menu-item">
+<span class="menu-item__link--transparent">Community</span>
+<ul>
+<li class="menu-item">
+<a href="https://forum.mein-schoener-garten.de" class="menu-item__link--transparent" rel="noopener noreferrer" target="_blank" title="Forum">Forum</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/content/fotocommunity" class="menu-item__link--transparent" data-drupal-link-system-path="node/31966">Foto-Community</a>
+</li>
+</ul>
+</li>
+<li class="has-children menu-item">
+<span>Onlinekurse</span>
+<ul>
+<li class="menu-item">
+<a href="https://onlinekurs.mein-schoener-garten.de/gemuesegarten-kurs-ab?utm_source=msg.de&amp;utm_medium=menulink_gemuse&amp;utm_campaign=menulink_gemuse" target="_blank" rel="noopener noreferrer">Gemüsegarten-Kurs</a>
+</li>
+<li class="menu-item">
+<a href="https://onlinekurs.mein-schoener-garten.de/onlinekurs-zimmerpflanzen?utm_source=msg.de&amp;utm_medium=menulink_zp&amp;utm_campaign=menulink_zp" target="_blank" rel="noopener noreferrer">Zimmerpflanzen-Kurs</a>
+</li>
+</ul>
+</li>
+<li class="menu-item">
+<a href="http://meinschoenergarten-abo.de/?hnr=extern.verlag.msg.hauptnavigation&amp;utm_source=portal&amp;utm_campaign=abonavigation&amp;utm_medium=hauptnavigation" class="menu-item__link--transparent" rel="noopener noreferrer" target="_blank" title="zum Abo-Angebot">Abo</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/abc" class="menu-item__link--green-outlined" data-drupal-link-system-path="abc">ABC</a>
+</li>
+</ul>
+</nav>
+<nav role="navigation" class="socials social-links-menu">
+<ul block="sociallinksmenu_3" class="menu nav">
+<li class="menu-item">
+<a href="https://www.facebook.com/meinschoenergarten" class="icon-facebook" target="_blank" rel="nofollow noopener noreferrer">Facebook</a>
+</li>
+<li class="menu-item">
+<a href="https://www.pinterest.de/schoenergarten/" class="icon-pinterest" target="_blank" rel="nofollow noopener noreferrer">Pinterest</a>
+</li>
+<li class="menu-item">
+<a href="https://www.instagram.com/mein_schoener_garten/" class="icon-instagram" target="_blank" rel="nofollow noopener noreferrer">Instagram</a>
+</li>
+<li class="menu-item">
+<a href="https://www.youtube.com/user/meinschoenergarten" class="icon-youtube" target="_blank" rel="nofollow noopener noreferrer">Youtube</a>
+</li>
+<li class="menu-item">
+<a href="/cdn-cgi/l/email-protection#d5b8a6b2f8babbb9bcbbb095b7a0a7b1b4fbb6bab8" class="icon-email" target="_blank" rel="noopener noreferrer">E-Mail</a>
+</li>
+</ul>
+</nav>
+<nav role="navigation" id="menu-sidebar-misc" id="menu-sidebar-misc" class="item-sidebar">
+<ul block="sidebarmisc" class="menu nav">
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/service" data-drupal-link-system-path="taxonomy/term/216">Service</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/autoren" data-drupal-link-system-path="autoren">Autoren</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/mediadaten" data-drupal-link-system-path="node/19546">Mediadaten</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/kontakt" data-drupal-link-system-path="node/19841">Kontakt</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/nutzungsbedingungen" data-drupal-link-system-path="node/19501">Nutzungsbedingungen</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/datenschutzerklaerung" data-drupal-link-system-path="datenschutzerklaerung">Datenschutz</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/netiquette" data-drupal-link-system-path="node/19566">Netiquette</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/sitemap.xml" data-drupal-link-system-path="sitemap.xml">Sitemap</a>
+</li>
+<li class="menu-item">
+<a href="https://www.mein-schoener-garten.de/impressum" data-drupal-link-system-path="node/19271">Impressum</a>
+</li>
+<li class="menu-item">
+<a href="#" id="footer-consent-button"> Privacy Einstellungen</a>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+              document.getElementById("footer-consent-button").addEventListener('click', function (e) {
+                e.preventDefault();
+                if (window.hasOwnProperty('_sp_')) {
+                  window._sp_.loadPrivacyManagerModal(208062)
+                }
+              });
+
+              // AMP privacy open redirect.
+              window.onload = function () {
+                var params = window.location.search;
+                if (params.indexOf('open_privacy_manager') >= 0) {
+                  window._sp_.loadPrivacyManagerModal(208062)
+                }
+              };
+            </script>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
+</div>
+</div>
+<script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/48412","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"de"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"ajaxPageState":{"libraries":"ad_entity\/view,ad_entity\/viewready,ad_entity_generic\/base,ad_entity_generic\/view,better_exposed_filters\/general,blazy\/load,bridtv\/play,chosen\/drupal.chosen,chosen_lib\/chosen.css,core\/jquery.form,infinite\/infinite.init,infinite\/infinite.manager.scroll-manager,infinite\/infinite.manager.tracking-manager,infinite\/infinite.models.adsc-model,infinite\/infinite.models.ajax-model,infinite\/infinite.models.base.base-collection-model,infinite\/infinite.models.base.base-model,infinite\/infinite.models.device-model,infinite\/infinite.models.page-offsets-model,infinite\/infinite.views.article-view,infinite\/infinite.views.base.base-dynamic-view,infinite\/infinite.views.base.base-feed-view,infinite\/infinite.views.base.base-inview-view,infinite\/infinite.views.base.base-list-swipeable-view,infinite\/infinite.views.base.base-newsletter-view,infinite\/infinite.views.base.base-sidebar-view,infinite\/infinite.views.base.base-view,infinite\/infinite.views.infinite-block-view,infinite\/infinite.views.main-view,infinite\/infinite.views.marketing-view,infinite\/infinite.views.menu-sidebar-view,infinite\/infinite.views.spinner,infinite\/infinite.views.sticky-view,msg_chameleon\/iframe_resizer,msg_chameleon\/msg_chameleon_global_item,msg_chameleon\/quickview,msg_consent\/consent,msg_infinite\/base-styling,msg_infinite\/breadcrumbs,msg_infinite\/global-js,msg_infinite\/page-article-styling,msg_infinite\/paragraph-brid,msg_infinite\/paragraph-bridtv-embedded,msg_infinite\/paragraph-chameleon-shop-items,msg_infinite\/paragraph-content-teaser,msg_infinite\/paragraph-google-dfp,msg_infinite\/paragraph-media,msg_infinite\/paragraph-suggestion-box,msg_infinite\/paragraph-text,msg_infinite\/paragraph-text-subheadline,msg_infinite\/paragraph-topic-links,msg_infinite\/paragraphs-base,msg_infinite\/search,msg_infinite\/teaser-square-small,msg_infinite\/view-article-categories,msg_infinite\/view-articles-related,msg_infinite\/voting,msg_infinite\/voting-results,msg_recognified_direct_adslot\/view,msg_search_api\/search_form,msg_videoteaser\/msg_videoteaser,msg_votingapi\/msg_votingapi,mustache\/template.module.chameleon_availability,mustache\/template.module.chameleon_details,mustache\/template.msg_infinite.de_social_facebook_count,mustache\/template.msg_infinite.de_social_pinterest_count,mustache\/template.msg_infinite.de_social_summary_count,paragraphs\/drupal.paragraphs.unpublished,system\/base,theme_breakpoints_js\/breakpointsLoader,thunder_media\/gallery,views\/views.module,votingapi_widgets\/fivestar","theme":"msg_infinite","theme_token":null},"ajaxTrustedUrl":{"https:\/\/www.mein-schoener-garten.de\/suche":true,"form_action_p_pvdeGsVG5zNF_XLGPTvYSKCf43t8qZYSwcfZl2uzM":true,"https:\/\/www.mein-schoener-garten.de\/news\/3-profi-tipps-rund-um-die-topinambur-ernte-48412?ajax_form=1":true},"shariff_backend":{"url":"https:\/\/www.mein-schoener-garten.de\/shariff\/backend"},"theme_breakpoints":"[{\u0022name\u0022:\u0022xxs\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 0px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022]},{\u0022name\u0022:\u0022xs\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 480px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022]},{\u0022name\u0022:\u0022sm\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 767px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022]},{\u0022name\u0022:\u0022md\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 992px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022]},{\u0022name\u0022:\u0022lg\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 1128px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022]},{\u0022name\u0022:\u0022xl\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 1450px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022]},{\u0022name\u0022:\u0022xxl\u0022,\u0022mediaQuery\u0022:\u0022all and (min-width: 1800px)\u0022,\u0022multipliers\u0022:[\u00221x\u0022]}]","blazy":{"loadInvisible":false,"offset":2000,"saveViewportOffsetDelay":50},"blazyIo":{"enabled":false,"disconnect":false,"rootMargin":"0px","threshold":[0]},"ajax":{"edit-submit--2":{"callback":[{},"ajaxSubmit"],"event":"click","wrapper":"vote-form-wrapper","progress":{"type":null},"url":"https:\/\/www.mein-schoener-garten.de\/news\/3-profi-tipps-rund-um-die-topinambur-ernte-48412?ajax_form=1","dialogType":"ajax","submit":{"_triggering_element_name":"op","_triggering_element_value":"Speichern"}}},"chosen":{"selector":"select.shs-select, .taxonomy-term-form select#edit-parent","minimum_single":0,"minimum_multiple":0,"minimum_width":200,"use_relative_width":false,"options":{"disable_search":false,"disable_search_threshold":0,"allow_single_deselect":false,"search_contains":false,"placeholder_text_multiple":"Choose some option","placeholder_text_single":"Eine Option ausw\u00e4hlen","no_results_text":"Keine passenden Resultate","max_shown_results":null,"inherit_select_classes":true}},"user":{"uid":0,"permissionsHash":"6569c8c2259f186a06b3ffd889f0775cbe347f8d6ec0a3774d108ec01de22241"}}</script>
+<script src="//assets.pinterest.com/js/pinit.js" defer async></script>
+<script src="//services.brid.tv/player/build/brid.min.js" async></script>
+<script src="/sites/default/files/js/js_buQ7gc-Oi3LGssxrDtV2rj9yogQe_IqJSU465XhNyO8.js"></script>
+<script type="text/javascript">!function () { var e = function () { var e, t = "__tcfapiLocator", a = [], n = window; for (; n;) { try { if (n.frames[t]) { e = n; break } } catch (e) { } if (n === window.top) break; n = n.parent } e || (!function e() { var a = n.document, r = !!n.frames[t]; if (!r) if (a.body) { var i = a.createElement("iframe"); i.style.cssText = "display:none", i.name = t, a.body.appendChild(i) } else setTimeout(e, 5); return !r }(), n.__tcfapi = function () { for (var e, t = arguments.length, n = new Array(t), r = 0; r < t; r++) n[r] = arguments[r]; if (!n.length) return a; if ("setGdprApplies" === n[0]) n.length > 3 && 2 === parseInt(n[1], 10) && "boolean" == typeof n[3] && (e = n[3], "function" == typeof n[2] && n[2]("set", !0)); else if ("ping" === n[0]) { var i = {gdprApplies: e, cmpLoaded: !1, cmpStatus: "stub"}; "function" == typeof n[2] && n[2](i) } else a.push(n) }, n.addEventListener("message", (function (e) { var t = "string" == typeof e.data, a = {}; try { a = t ? JSON.parse(e.data) : e.data } catch (e) { } var n = a.__tcfapiCall; n && window.__tcfapi(n.command, n.version, (function (a, r) { var i = {__tcfapiReturn: {returnValue: a, success: r, callId: n.callId}}; t && (i = JSON.stringify(i)), e.source.postMessage(i, "*") }), n.parameter) }), !1)) }; "undefined" != typeof module ? module.exports = e : e() }();</script>
+<script src="https://gdpr-tcfv2.sp-prod.net/wrapperMessagingWithoutDetection.js"></script>
+<script async src="https://cdns.yieldscale.com/mein-schoener-garten.js"></script>
+</body>
+</html>

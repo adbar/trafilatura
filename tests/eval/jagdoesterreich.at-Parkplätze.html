@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html class="avada-html-layout-wide avada-html-header-position-top" lang="de-DE" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><script>if(navigator.userAgent.match(/MSIE|Internet Explorer/i)||navigator.userAgent.match(/Trident\/7\..*?rv:11/i)){var href=document.location.href;if(!href.match(/[?&]nowprocket/)){if(href.indexOf("?")==-1){if(href.indexOf("#")==-1){document.location.href=href+"?nowprocket=1"}else{document.location.href=href.replace("#","?nowprocket=1#")}}else{if(href.indexOf("#")==-1){document.location.href=href+"&nowprocket=1"}else{document.location.href=href.replace("#","&nowprocket=1#")}}}}</script><script>class RocketLazyLoadScripts{constructor(e){this.triggerEvents=e,this.eventOptions={passive:!0},this.userEventListener=this.triggerListener.bind(this),this.delayedScripts={normal:[],async:[],defer:[]},this.allJQueries=[]}_addUserInteractionListener(e){this.triggerEvents.forEach((t=>window.addEventListener(t,e.userEventListener,e.eventOptions)))}_removeUserInteractionListener(e){this.triggerEvents.forEach((t=>window.removeEventListener(t,e.userEventListener,e.eventOptions)))}triggerListener(){this._removeUserInteractionListener(this),"loading"===document.readyState?document.addEventListener("DOMContentLoaded",this._loadEverythingNow.bind(this)):this._loadEverythingNow()}async _loadEverythingNow(){this._delayEventListeners(),this._delayJQueryReady(this),this._handleDocumentWrite(),this._registerAllDelayedScripts(),this._preloadAllScripts(),await this._loadScriptsFromList(this.delayedScripts.normal),await this._loadScriptsFromList(this.delayedScripts.defer),await this._loadScriptsFromList(this.delayedScripts.async),await this._triggerDOMContentLoaded(),await this._triggerWindowLoad(),window.dispatchEvent(new Event("rocket-allScriptsLoaded"))}_registerAllDelayedScripts(){document.querySelectorAll("script[type=rocketlazyloadscript]").forEach((e=>{e.hasAttribute("src")?e.hasAttribute("async")&&!1!==e.async?this.delayedScripts.async.push(e):e.hasAttribute("defer")&&!1!==e.defer||"module"===e.getAttribute("data-rocket-type")?this.delayedScripts.defer.push(e):this.delayedScripts.normal.push(e):this.delayedScripts.normal.push(e)}))}async _transformScript(e){return await this._requestAnimFrame(),new Promise((t=>{const n=document.createElement("script");let r;[...e.attributes].forEach((e=>{let t=e.nodeName;"type"!==t&&("data-rocket-type"===t&&(t="type",r=e.nodeValue),n.setAttribute(t,e.nodeValue))})),e.hasAttribute("src")?(n.addEventListener("load",t),n.addEventListener("error",t)):(n.text=e.text,t()),e.parentNode.replaceChild(n,e)}))}async _loadScriptsFromList(e){const t=e.shift();return t?(await this._transformScript(t),this._loadScriptsFromList(e)):Promise.resolve()}_preloadAllScripts(){var e=document.createDocumentFragment();[...this.delayedScripts.normal,...this.delayedScripts.defer,...this.delayedScripts.async].forEach((t=>{const n=t.getAttribute("src");if(n){const t=document.createElement("link");t.href=n,t.rel="preload",t.as="script",e.appendChild(t)}})),document.head.appendChild(e)}_delayEventListeners(){let e={};function t(t,n){!function(t){function n(n){return e[t].eventsToRewrite.indexOf(n)>=0?"rocket-"+n:n}e[t]||(e[t]={originalFunctions:{add:t.addEventListener,remove:t.removeEventListener},eventsToRewrite:[]},t.addEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.add.apply(t,arguments)},t.removeEventListener=function(){arguments[0]=n(arguments[0]),e[t].originalFunctions.remove.apply(t,arguments)})}(t),e[t].eventsToRewrite.push(n)}function n(e,t){let n=e[t];Object.defineProperty(e,t,{get:()=>n||function(){},set(r){e["rocket"+t]=n=r}})}t(document,"DOMContentLoaded"),t(window,"DOMContentLoaded"),t(window,"load"),t(window,"pageshow"),t(document,"readystatechange"),n(document,"onreadystatechange"),n(window,"onload"),n(window,"onpageshow")}_delayJQueryReady(e){let t=window.jQuery;Object.defineProperty(window,"jQuery",{get:()=>t,set(n){if(n&&n.fn&&!e.allJQueries.includes(n)){n.fn.ready=n.fn.init.prototype.ready=function(t){e.domReadyFired?t.bind(document)(n):document.addEventListener("rocket-DOMContentLoaded",(()=>t.bind(document)(n)))};const t=n.fn.on;n.fn.on=n.fn.init.prototype.on=function(){if(this[0]===window){function e(e){return e.split(" ").map((e=>"load"===e||0===e.indexOf("load.")?"rocket-jquery-load":e)).join(" ")}"string"==typeof arguments[0]||arguments[0]instanceof String?arguments[0]=e(arguments[0]):"object"==typeof arguments[0]&&Object.keys(arguments[0]).forEach((t=>{delete Object.assign(arguments[0],{[e(t)]:arguments[0][t]})[t]}))}return t.apply(this,arguments),this},e.allJQueries.push(n)}t=n}})}async _triggerDOMContentLoaded(){this.domReadyFired=!0,await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-DOMContentLoaded")),await this._requestAnimFrame(),document.dispatchEvent(new Event("rocket-readystatechange")),await this._requestAnimFrame(),document.rocketonreadystatechange&&document.rocketonreadystatechange()}async _triggerWindowLoad(){await this._requestAnimFrame(),window.dispatchEvent(new Event("rocket-load")),await this._requestAnimFrame(),window.rocketonload&&window.rocketonload(),await this._requestAnimFrame(),this.allJQueries.forEach((e=>e(window).trigger("rocket-jquery-load"))),window.dispatchEvent(new Event("rocket-pageshow")),await this._requestAnimFrame(),window.rocketonpageshow&&window.rocketonpageshow()}_handleDocumentWrite(){const e=new Map;document.write=document.writeln=function(t){const n=document.currentScript,r=document.createRange(),i=n.parentElement;let o=e.get(n);void 0===o&&(o=n.nextSibling,e.set(n,o));const a=document.createDocumentFragment();r.setStart(a,0),a.appendChild(r.createContextualFragment(t)),i.insertBefore(a,o)}}async _requestAnimFrame(){return new Promise((e=>requestAnimationFrame(e)))}static run(){const e=new RocketLazyLoadScripts(["keydown","mousemove","touchmove","touchstart","touchend","wheel"]);e._addUserInteractionListener(e)}}RocketLazyLoadScripts.run();</script>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+<!-- Google Tag Manager for WordPress by gtm4wp.com -->
+<script data-cfasync="false" data-pagespeed-no-defer>//<![CDATA[
+	var gtm4wp_datalayer_name = "dataLayer";
+	var dataLayer = dataLayer || [];
+//]]>
+</script>
+<!-- End Google Tag Manager for WordPress by gtm4wp.com -->
+	<!-- This site is optimized with the Yoast SEO plugin v17.9 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>NÖ Jagdverband: Auf Natur &amp; Wildtier-Bedürfnisse achten - jagd-oesterreich.at</title><link rel="stylesheet" href="https://www.jagd-oesterreich.at/wp-content/cache/min/1/9dd05d38c25ec703cae9a31fe64011f0.css" media="all" data-minify="1" />
+	<meta name="description" content="Insbesondere das Rotwild flüchtet oft über lange Strecken und verbraucht im tiefen Schnee viel Energie. Das kann für die Tiere lebensbedrohlich werden." />
+	<link rel="canonical" href="https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/" />
+	<meta property="og:locale" content="de_DE" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="NÖ Jagdverband: Auf Natur &amp; Wildtier-Bedürfnisse achten - jagd-oesterreich.at" />
+	<meta property="og:description" content="Insbesondere das Rotwild flüchtet oft über lange Strecken und verbraucht im tiefen Schnee viel Energie. Das kann für die Tiere lebensbedrohlich werden." />
+	<meta property="og:url" content="https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/" />
+	<meta property="og:site_name" content="jagd-oesterreich.at" />
+	<meta property="article:published_time" content="2021-12-14T11:38:19+00:00" />
+	<meta property="og:image" content="https://www.jagd-oesterreich.at/wp-content/uploads/2021/12/Rotwild-im-Winter_cMichael-Breuer-1-scaled.jpg" />
+	<meta property="og:image:width" content="2560" />
+	<meta property="og:image:height" content="1707" />
+	<meta property="og:image:type" content="image/jpeg" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:label1" content="Verfasst von" />
+	<meta name="twitter:data1" content="Lutz Molter" />
+	<meta name="twitter:label2" content="Geschätzte Lesezeit" />
+	<meta name="twitter:data2" content="3 Minuten" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.jagd-oesterreich.at/#website","url":"https://www.jagd-oesterreich.at/","name":"jagd-oesterreich.at","description":"Dachverband \u201eJagd \u00d6sterreich\u201c","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://www.jagd-oesterreich.at/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"de-DE"},{"@type":"ImageObject","@id":"https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/#primaryimage","inLanguage":"de-DE","url":"https://www.jagd-oesterreich.at/wp-content/uploads/2021/12/Rotwild-im-Winter_cMichael-Breuer-1-scaled.jpg","contentUrl":"https://www.jagd-oesterreich.at/wp-content/uploads/2021/12/Rotwild-im-Winter_cMichael-Breuer-1-scaled.jpg","width":2560,"height":1707},{"@type":"WebPage","@id":"https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/#webpage","url":"https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/","name":"N\u00d6 Jagdverband: Auf Natur & Wildtier-Bed\u00fcrfnisse achten - jagd-oesterreich.at","isPartOf":{"@id":"https://www.jagd-oesterreich.at/#website"},"primaryImageOfPage":{"@id":"https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/#primaryimage"},"datePublished":"2021-12-14T11:38:19+00:00","dateModified":"2021-12-14T11:38:19+00:00","author":{"@id":"https://www.jagd-oesterreich.at/#/schema/person/1e648dae2747ccd22dcd6d81360a6ef0"},"description":"Insbesondere das Rotwild fl\u00fcchtet oft \u00fcber lange Strecken und verbraucht im tiefen Schnee viel Energie. Das kann f\u00fcr die Tiere lebensbedrohlich werden.","breadcrumb":{"@id":"https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/#breadcrumb"},"inLanguage":"de-DE","potentialAction":[{"@type":"ReadAction","target":["https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/"]}]},{"@type":"BreadcrumbList","@id":"https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Startseite","item":"https://www.jagd-oesterreich.at/"},{"@type":"ListItem","position":2,"name":"N\u00d6 Jagdverband: Auf Natur &#038; Wildtier-Bed\u00fcrfnisse achten"}]},{"@type":"Person","@id":"https://www.jagd-oesterreich.at/#/schema/person/1e648dae2747ccd22dcd6d81360a6ef0","name":"Lutz Molter"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//maps.googleapis.com' />
+
+<link rel="alternate" type="application/rss+xml" title="jagd-oesterreich.at &raquo; Feed" href="https://www.jagd-oesterreich.at/feed/" />
+<link rel="alternate" type="application/rss+xml" title="jagd-oesterreich.at &raquo; Kommentar-Feed" href="https://www.jagd-oesterreich.at/comments/feed/" />
+					<link rel="shortcut icon" href="https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd_Oe_Favicon_32x32.png" type="image/x-icon" />
+		
+					<!-- For iPhone -->
+			<link rel="apple-touch-icon" href="https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd_Oe_Favicon_57x57.png">
+		
+		
+					<!-- For iPad -->
+			<link rel="apple-touch-icon" sizes="152x152" href="https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd_Oe_Favicon_72x72.png">
+		
+					<!-- For iPad Retina display -->
+			<link rel="apple-touch-icon" sizes="167x167" href="https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd_Oe_Favicon_150x150.png">
+		
+		<link rel="alternate" type="application/rss+xml" title="jagd-oesterreich.at &raquo; NÖ Jagdverband: Auf Natur &#038; Wildtier-Bedürfnisse achten Kommentar-Feed" href="https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/feed/" />
+
+		<meta property="og:title" content="NÖ Jagdverband: Auf Natur &amp; Wildtier-Bedürfnisse achten"/>
+		<meta property="og:type" content="article"/>
+		<meta property="og:url" content="https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/"/>
+		<meta property="og:site_name" content="jagd-oesterreich.at"/>
+		<meta property="og:description" content="NÖ Jagdverband appelliert, Wege freizuhalten, vorgesehene Parkplätze zu nützen und grundsätzliche Regeln in der Natur einzuhalten, um Wildtiere zu schonen.
+
+Wien, 14. Dezember 2021 – Aufgrund der steigenden Technologisierung und Mobilität sowie der damit verbundenen Schnelllebigkeit im Alltag erholen sich die Menschen vermehrt in der Natur – v.a. während der Eindämmungsmaßnahmen gegen das Corona-Virus. Durch die zunehmende Freizeitnutzung hat"/>
+
+									<meta property="og:image" content="https://www.jagd-oesterreich.at/wp-content/uploads/2021/12/Rotwild-im-Winter_cMichael-Breuer-1-scaled.jpg"/>
+							
+
+
+
+
+<link rel='stylesheet' id='avada-max-1c-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-1c.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 640px)' />
+<link rel='stylesheet' id='avada-max-2c-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-2c.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 712px)' />
+<link rel='stylesheet' id='avada-min-2c-max-3c-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-2c-max-3c.min.css?ver=7.6' type='text/css' media='only screen and (min-width: 712px) and (max-width: 784px)' />
+<link rel='stylesheet' id='avada-min-3c-max-4c-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-3c-max-4c.min.css?ver=7.6' type='text/css' media='only screen and (min-width: 784px) and (max-width: 856px)' />
+<link rel='stylesheet' id='avada-min-4c-max-5c-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-4c-max-5c.min.css?ver=7.6' type='text/css' media='only screen and (min-width: 856px) and (max-width: 928px)' />
+<link rel='stylesheet' id='avada-min-5c-max-6c-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-5c-max-6c.min.css?ver=7.6' type='text/css' media='only screen and (min-width: 928px) and (max-width: 1000px)' />
+<link rel='stylesheet' id='avada-min-shbp-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-shbp.min.css?ver=7.6' type='text/css' media='only screen and (min-width: 801px)' />
+<link rel='stylesheet' id='avada-min-shbp-header-legacy-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-shbp-header-legacy.min.css?ver=7.6' type='text/css' media='only screen and (min-width: 801px)' />
+<link rel='stylesheet' id='avada-max-shbp-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-shbp.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='avada-max-shbp-header-legacy-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-shbp-header-legacy.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='avada-max-sh-shbp-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-sh-shbp.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='avada-max-sh-shbp-header-legacy-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-sh-shbp-header-legacy.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='avada-min-768-max-1024-p-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-768-max-1024-p.min.css?ver=7.6' type='text/css' media='only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)' />
+<link rel='stylesheet' id='avada-min-768-max-1024-p-header-legacy-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-768-max-1024-p-header-legacy.min.css?ver=7.6' type='text/css' media='only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)' />
+<link rel='stylesheet' id='avada-min-768-max-1024-l-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-768-max-1024-l.min.css?ver=7.6' type='text/css' media='only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape)' />
+<link rel='stylesheet' id='avada-min-768-max-1024-l-header-legacy-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-768-max-1024-l-header-legacy.min.css?ver=7.6' type='text/css' media='only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape)' />
+<link rel='stylesheet' id='avada-max-sh-cbp-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-sh-cbp.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='avada-max-sh-sbp-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-sh-sbp.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='avada-max-sh-640-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-sh-640.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 640px)' />
+<link rel='stylesheet' id='avada-max-shbp-18-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-shbp-18.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 782px)' />
+<link rel='stylesheet' id='avada-max-shbp-32-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-shbp-32.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 768px)' />
+<link rel='stylesheet' id='avada-min-sh-cbp-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/min-sh-cbp.min.css?ver=7.6' type='text/css' media='only screen and (min-width: 800px)' />
+<link rel='stylesheet' id='avada-max-640-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-640.min.css?ver=7.6' type='text/css' media='only screen and (max-device-width: 640px)' />
+<link rel='stylesheet' id='avada-max-main-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-main.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 1000px)' />
+<link rel='stylesheet' id='avada-max-cbp-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-cbp.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='avada-max-640-sliders-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-640-sliders.min.css?ver=7.6' type='text/css' media='only screen and (max-device-width: 640px)' />
+<link rel='stylesheet' id='avada-max-sh-cbp-sliders-css'  href='https://www.jagd-oesterreich.at/wp-content/themes/Avada/assets/css/media/max-sh-cbp-sliders.min.css?ver=7.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='fb-max-sh-cbp-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/max-sh-cbp.min.css?ver=3.6' type='text/css' media='only screen and (max-width: 800px)' />
+<link rel='stylesheet' id='fb-min-768-max-1024-p-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/min-768-max-1024-p.min.css?ver=3.6' type='text/css' media='only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait)' />
+<link rel='stylesheet' id='fb-max-640-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/max-640.min.css?ver=3.6' type='text/css' media='only screen and (max-device-width: 640px)' />
+<link rel='stylesheet' id='fb-max-1c-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/max-1c.css?ver=3.6' type='text/css' media='only screen and (max-width: 640px)' />
+<link rel='stylesheet' id='fb-max-2c-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/max-2c.css?ver=3.6' type='text/css' media='only screen and (max-width: 712px)' />
+<link rel='stylesheet' id='fb-min-2c-max-3c-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/min-2c-max-3c.css?ver=3.6' type='text/css' media='only screen and (min-width: 712px) and (max-width: 784px)' />
+<link rel='stylesheet' id='fb-min-3c-max-4c-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/min-3c-max-4c.css?ver=3.6' type='text/css' media='only screen and (min-width: 784px) and (max-width: 856px)' />
+<link rel='stylesheet' id='fb-min-4c-max-5c-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/min-4c-max-5c.css?ver=3.6' type='text/css' media='only screen and (min-width: 856px) and (max-width: 928px)' />
+<link rel='stylesheet' id='fb-min-5c-max-6c-css'  href='https://www.jagd-oesterreich.at/wp-content/plugins/fusion-builder/assets/css/media/min-5c-max-6c.css?ver=3.6' type='text/css' media='only screen and (min-width: 928px) and (max-width: 1000px)' />
+		<script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+			ajaxurl = typeof(ajaxurl) !== 'string' ? 'https://www.jagd-oesterreich.at/wp-admin/admin-ajax.php' : ajaxurl;
+		</script>
+		<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.jagd-oesterreich.at/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.jagd-oesterreich.at/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.jagd-oesterreich.at/wp-content/plugins/revslider/public/assets/js/rbtools.min.js?ver=6.5.11' async id='tp-tools-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.jagd-oesterreich.at/wp-content/plugins/revslider/public/assets/js/rs6.min.js?ver=6.5.11' async id='revmin-js'></script>
+<script type='text/javascript' id='cookie-notice-front-js-extra'>
+/* <![CDATA[ */
+var cnArgs = {"ajaxUrl":"https:\/\/www.jagd-oesterreich.at\/wp-admin\/admin-ajax.php","nonce":"1b903c3704","hideEffect":"fade","position":"bottom","onScroll":"0","onScrollOffset":"100","onClick":"0","cookieName":"cookie_notice_accepted","cookieTime":"2592000","cookieTimeRejected":"2592000","cookiePath":"\/","cookieDomain":"","redirection":"0","cache":"1","refuse":"0","revokeCookies":"0","revokeCookiesOpt":"automatic","secure":"1"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" async data-rocket-type='text/javascript' src='https://www.jagd-oesterreich.at/wp-content/plugins/cookie-notice/includes/../js/front.min.js?ver=2.2.1' id='cookie-notice-front-js'></script>
+<link rel="https://api.w.org/" href="https://www.jagd-oesterreich.at/wp-json/" /><link rel="alternate" type="application/json" href="https://www.jagd-oesterreich.at/wp-json/wp/v2/posts/28703" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.jagd-oesterreich.at/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.jagd-oesterreich.at/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.8.3" />
+<link rel='shortlink' href='https://www.jagd-oesterreich.at/?p=28703' />
+<link rel="alternate" type="application/json+oembed" href="https://www.jagd-oesterreich.at/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.jagd-oesterreich.at%2F2021%2F12%2F14%2Fnoe-jagdverband-auf-natur-wildtier-beduerfnisse-achten%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.jagd-oesterreich.at/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.jagd-oesterreich.at%2F2021%2F12%2F14%2Fnoe-jagdverband-auf-natur-wildtier-beduerfnisse-achten%2F&#038;format=xml" />
+
+<!-- Google Tag Manager for WordPress by gtm4wp.com -->
+<script data-cfasync="false" data-pagespeed-no-defer>//<![CDATA[
+	var dataLayer_content = {"pagePostType":"post","pagePostType2":"single-post","pageCategory":["aktuelles","allgemein"],"pagePostAuthor":"Lutz Molter"};
+	dataLayer.push( dataLayer_content );//]]>
+</script>
+<script type="rocketlazyloadscript" data-cfasync="false">//<![CDATA[
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.'+'js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-G8ZWFGX');//]]>
+</script>
+<!-- End Google Tag Manager -->
+<!-- End Google Tag Manager for WordPress by gtm4wp.com --><style type="text/css" id="css-fb-visibility">@media screen and (max-width: 640px){.fusion-no-small-visibility{display:none !important;}body:not(.fusion-builder-ui-wireframe) .sm-text-align-center{text-align:center !important;}body:not(.fusion-builder-ui-wireframe) .sm-text-align-left{text-align:left !important;}body:not(.fusion-builder-ui-wireframe) .sm-text-align-right{text-align:right !important;}body:not(.fusion-builder-ui-wireframe) .sm-flex-align-center{justify-content:center !important;}body:not(.fusion-builder-ui-wireframe) .sm-flex-align-flex-start{justify-content:flex-start !important;}body:not(.fusion-builder-ui-wireframe) .sm-flex-align-flex-end{justify-content:flex-end !important;}body:not(.fusion-builder-ui-wireframe) .sm-mx-auto{margin-left:auto !important;margin-right:auto !important;}body:not(.fusion-builder-ui-wireframe) .sm-ml-auto{margin-left:auto !important;}body:not(.fusion-builder-ui-wireframe) .sm-mr-auto{margin-right:auto !important;}body:not(.fusion-builder-ui-wireframe) .fusion-absolute-position-small{position:absolute;top:auto;width:100%;}}@media screen and (min-width: 641px) and (max-width: 1024px){.fusion-no-medium-visibility{display:none !important;}body:not(.fusion-builder-ui-wireframe) .md-text-align-center{text-align:center !important;}body:not(.fusion-builder-ui-wireframe) .md-text-align-left{text-align:left !important;}body:not(.fusion-builder-ui-wireframe) .md-text-align-right{text-align:right !important;}body:not(.fusion-builder-ui-wireframe) .md-flex-align-center{justify-content:center !important;}body:not(.fusion-builder-ui-wireframe) .md-flex-align-flex-start{justify-content:flex-start !important;}body:not(.fusion-builder-ui-wireframe) .md-flex-align-flex-end{justify-content:flex-end !important;}body:not(.fusion-builder-ui-wireframe) .md-mx-auto{margin-left:auto !important;margin-right:auto !important;}body:not(.fusion-builder-ui-wireframe) .md-ml-auto{margin-left:auto !important;}body:not(.fusion-builder-ui-wireframe) .md-mr-auto{margin-right:auto !important;}body:not(.fusion-builder-ui-wireframe) .fusion-absolute-position-medium{position:absolute;top:auto;width:100%;}}@media screen and (min-width: 1025px){.fusion-no-large-visibility{display:none !important;}body:not(.fusion-builder-ui-wireframe) .lg-text-align-center{text-align:center !important;}body:not(.fusion-builder-ui-wireframe) .lg-text-align-left{text-align:left !important;}body:not(.fusion-builder-ui-wireframe) .lg-text-align-right{text-align:right !important;}body:not(.fusion-builder-ui-wireframe) .lg-flex-align-center{justify-content:center !important;}body:not(.fusion-builder-ui-wireframe) .lg-flex-align-flex-start{justify-content:flex-start !important;}body:not(.fusion-builder-ui-wireframe) .lg-flex-align-flex-end{justify-content:flex-end !important;}body:not(.fusion-builder-ui-wireframe) .lg-mx-auto{margin-left:auto !important;margin-right:auto !important;}body:not(.fusion-builder-ui-wireframe) .lg-ml-auto{margin-left:auto !important;}body:not(.fusion-builder-ui-wireframe) .lg-mr-auto{margin-right:auto !important;}body:not(.fusion-builder-ui-wireframe) .fusion-absolute-position-large{position:absolute;top:auto;width:100%;}}</style><style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style><meta name="generator" content="Powered by Slider Revolution 6.5.11 - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface." />
+<script type="rocketlazyloadscript" data-rocket-type="text/javascript">function setREVStartSize(e){
+			//window.requestAnimationFrame(function() {				 
+				window.RSIW = window.RSIW===undefined ? window.innerWidth : window.RSIW;	
+				window.RSIH = window.RSIH===undefined ? window.innerHeight : window.RSIH;	
+				try {								
+					var pw = document.getElementById(e.c).parentNode.offsetWidth,
+						newh;
+					pw = pw===0 || isNaN(pw) ? window.RSIW : pw;
+					e.tabw = e.tabw===undefined ? 0 : parseInt(e.tabw);
+					e.thumbw = e.thumbw===undefined ? 0 : parseInt(e.thumbw);
+					e.tabh = e.tabh===undefined ? 0 : parseInt(e.tabh);
+					e.thumbh = e.thumbh===undefined ? 0 : parseInt(e.thumbh);
+					e.tabhide = e.tabhide===undefined ? 0 : parseInt(e.tabhide);
+					e.thumbhide = e.thumbhide===undefined ? 0 : parseInt(e.thumbhide);
+					e.mh = e.mh===undefined || e.mh=="" || e.mh==="auto" ? 0 : parseInt(e.mh,0);		
+					if(e.layout==="fullscreen" || e.l==="fullscreen") 						
+						newh = Math.max(e.mh,window.RSIH);					
+					else{					
+						e.gw = Array.isArray(e.gw) ? e.gw : [e.gw];
+						for (var i in e.rl) if (e.gw[i]===undefined || e.gw[i]===0) e.gw[i] = e.gw[i-1];					
+						e.gh = e.el===undefined || e.el==="" || (Array.isArray(e.el) && e.el.length==0)? e.gh : e.el;
+						e.gh = Array.isArray(e.gh) ? e.gh : [e.gh];
+						for (var i in e.rl) if (e.gh[i]===undefined || e.gh[i]===0) e.gh[i] = e.gh[i-1];
+											
+						var nl = new Array(e.rl.length),
+							ix = 0,						
+							sl;					
+						e.tabw = e.tabhide>=pw ? 0 : e.tabw;
+						e.thumbw = e.thumbhide>=pw ? 0 : e.thumbw;
+						e.tabh = e.tabhide>=pw ? 0 : e.tabh;
+						e.thumbh = e.thumbhide>=pw ? 0 : e.thumbh;					
+						for (var i in e.rl) nl[i] = e.rl[i]<window.RSIW ? 0 : e.rl[i];
+						sl = nl[0];									
+						for (var i in nl) if (sl>nl[i] && nl[i]>0) { sl = nl[i]; ix=i;}															
+						var m = pw>(e.gw[ix]+e.tabw+e.thumbw) ? 1 : (pw-(e.tabw+e.thumbw)) / (e.gw[ix]);					
+						newh =  (e.gh[ix] * m) + (e.tabh + e.thumbh);
+					}
+					var el = document.getElementById(e.c);
+					if (el!==null && el) el.style.height = newh+"px";					
+					el = document.getElementById(e.c+"_wrapper");
+					if (el!==null && el) {
+						el.style.height = newh+"px";
+						el.style.display = "block";
+					}
+				} catch(e){
+					console.log("Failure at Presize of Slider:" + e)
+				}					   
+			//});
+		  };</script>
+		<script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+			var doc = document.documentElement;
+			doc.setAttribute( 'data-useragent', navigator.userAgent );
+		</script>
+		
+	</head>
+
+<body class="post-template-default single single-post postid-28703 single-format-standard fusion-image-hovers fusion-pagination-sizing fusion-button_type-flat fusion-button_span-no fusion-button_gradient-linear avada-image-rollover-circle-yes avada-image-rollover-yes avada-image-rollover-direction-left cookies-not-set fusion-body ltr fusion-sticky-header no-tablet-sticky-header no-mobile-sticky-header no-mobile-slidingbar no-mobile-totop fusion-disable-outline fusion-sub-menu-fade mobile-logo-pos-center layout-wide-mode avada-has-boxed-modal-shadow-none layout-scroll-offset-full avada-has-zero-margin-offset-top fusion-top-header menu-text-align-center mobile-menu-design-modern fusion-show-pagination-text fusion-header-layout-v5 avada-responsive avada-footer-fx-none avada-menu-highlight-style-bar fusion-search-form-classic fusion-main-menu-search-dropdown fusion-avatar-square avada-dropdown-styles avada-blog-layout-grid avada-blog-archive-layout-grid avada-header-shadow-no avada-menu-icon-position-left avada-has-megamenu-shadow avada-has-mainmenu-dropdown-divider avada-has-titlebar-hide avada-has-pagination-padding avada-flyout-menu-direction-fade avada-ec-views-v1" >
+	
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-G8ZWFGX"
+height="0" width="0" style="display:none;visibility:hidden" aria-hidden="true"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->	<a class="skip-link screen-reader-text" href="#content">Zum Inhalt springen</a>
+
+	<div id="boxed-wrapper">
+		<div class="fusion-sides-frame"></div>
+		<div id="wrapper" class="fusion-wrapper">
+			<div id="home" style="position:relative;top:-1px;"></div>
+			
+				
+			<header class="fusion-header-wrapper">
+				<div class="fusion-header-v5 fusion-logo-alignment fusion-logo-center fusion-sticky-menu- fusion-sticky-logo-1 fusion-mobile-logo-1 fusion-sticky-menu-only fusion-header-menu-align-center fusion-mobile-menu-design-modern">
+					<div class="fusion-header-sticky-height"></div>
+<div class="fusion-sticky-header-wrapper"> <!-- start fusion sticky header wrapper -->
+	<div class="fusion-header">
+		<div class="fusion-row">
+							<div class="fusion-logo" data-margin-top="31px" data-margin-bottom="31px" data-margin-left="0px" data-margin-right="0px">
+			<a class="fusion-logo-link"  href="https://www.jagd-oesterreich.at/" >
+
+						<!-- standard logo -->
+			<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd-Oesterreich-Logo200.png" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd-Oesterreich-Logo200.png 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd-Oesterreich-Logo400.png 2x" width="200" height="200" style="max-height:200px;height:auto;" alt="jagd-oesterreich.at Logo" data-retina_logo_url="https://www.jagd-oesterreich.at/wp-content/uploads/2018/05/Jagd-Oesterreich-Logo400.png" class="fusion-standard-logo" />
+
+											<!-- mobile logo -->
+				<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-mobil.png" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-mobil.png 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-mobil-retina.png 2x" width="75" height="75" style="max-height:75px;height:auto;" alt="jagd-oesterreich.at Logo" data-retina_logo_url="https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-mobil-retina.png" class="fusion-mobile-logo" />
+			
+											<!-- sticky header logo -->
+				<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-klein.png" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-klein.png 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-klein.png 2x" width="80" height="80" style="max-height:80px;height:auto;" alt="jagd-oesterreich.at Logo" data-retina_logo_url="https://www.jagd-oesterreich.at/wp-content/uploads/2018/04/logo-klein.png" class="fusion-sticky-logo" />
+					</a>
+		</div>
+								<div class="fusion-mobile-menu-icons">
+							<a href="#" class="fusion-icon awb-icon-bars" aria-label="Toggle mobile menu" aria-expanded="false"></a>
+		
+		
+		
+			</div>
+			
+					</div>
+	</div>
+	<div class="fusion-secondary-main-menu">
+		<div class="fusion-row">
+			<nav class="fusion-main-menu" aria-label="Hauptmenü"><ul id="menu-menue-neu" class="fusion-menu"><li  id="menu-item-27619"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-27619 fusion-dropdown-menu"  data-item-id="27619"><a  href="https://www.jagd-oesterreich.at/ueber-uns/" class="fusion-bar-highlight"><span class="menu-text">ÜBER UNS</span> <span class="fusion-caret"><i class="fusion-dropdown-indicator" aria-hidden="true"></i></span></a><ul class="sub-menu"><li  id="menu-item-27644"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27644 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/ueber-uns/landesjagdverbaende/" class="fusion-bar-highlight"><span>Landesjagdverbände</span></a></li><li  id="menu-item-27620"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27620 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/ueber-uns/praesidium/" class="fusion-bar-highlight"><span>Präsidium</span></a></li><li  id="menu-item-27668"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27668 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/ueber-uns/geschaeftsstelle/" class="fusion-bar-highlight"><span>Geschäftsstelle</span></a></li><li  id="menu-item-27621"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27621 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/ueber-uns/charta-jagd-oesterreich/" class="fusion-bar-highlight"><span>Charta Jagd Österreich</span></a></li><li  id="menu-item-27622"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27622 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/ueber-uns/kooperationspartner/" class="fusion-bar-highlight"><span>Kooperationspartner</span></a></li></ul></li><li  id="menu-item-27623"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27623"  data-item-id="27623"><a  href="https://www.jagd-oesterreich.at/interaktivkarte/" class="fusion-bar-highlight"><span class="menu-text">INTERAKTIVKARTE</span></a></li><li  id="menu-item-27624"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-27624 fusion-dropdown-menu"  data-item-id="27624"><a  href="https://www.jagd-oesterreich.at/wildinformation/" class="fusion-bar-highlight"><span class="menu-text">WILDINFORMATION</span> <span class="fusion-caret"><i class="fusion-dropdown-indicator" aria-hidden="true"></i></span></a><ul class="sub-menu"><li  id="menu-item-27625"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27625 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/wildinformation/schalenwild/" class="fusion-bar-highlight"><span>Schalenwild</span></a></li><li  id="menu-item-27626"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27626 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/wildinformation/federwild/" class="fusion-bar-highlight"><span>Federwild</span></a></li><li  id="menu-item-27627"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27627 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/wildinformation/raubwild/" class="fusion-bar-highlight"><span>Raubwild</span></a></li><li  id="menu-item-27628"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27628 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/wildinformation/hasenartige-nagetiere/" class="fusion-bar-highlight"><span>Hasenartige &#038; Nagetiere</span></a></li></ul></li><li  id="menu-item-27629"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-27629 fusion-dropdown-menu"  data-item-id="27629"><a  href="https://www.jagd-oesterreich.at/kompetenzen/" class="fusion-bar-highlight"><span class="menu-text">KOMPETENZEN</span> <span class="fusion-caret"><i class="fusion-dropdown-indicator" aria-hidden="true"></i></span></a><ul class="sub-menu"><li  id="menu-item-27630"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27630 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/kompetenzen/lebensraum/" class="fusion-bar-highlight"><span>Lebensraum</span></a></li><li  id="menu-item-27631"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27631 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/kompetenzen/wildbret/" class="fusion-bar-highlight"><span>Wildbret</span></a></li><li  id="menu-item-27632"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27632 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/kompetenzen/tradition-brauchtum/" class="fusion-bar-highlight"><span>Tradition &#038; Brauchtum</span></a></li><li  id="menu-item-27633"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27633 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/kompetenzen/jagdliches-handwerk/" class="fusion-bar-highlight"><span>Jagdliches Handwerk</span></a></li></ul></li><li  id="menu-item-27634"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-27634 fusion-dropdown-menu"  data-item-id="27634"><a  href="https://www.jagd-oesterreich.at/media/" class="fusion-bar-highlight"><span class="menu-text">MEDIA</span> <span class="fusion-caret"><i class="fusion-dropdown-indicator" aria-hidden="true"></i></span></a><ul class="sub-menu"><li  id="menu-item-27635"  class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-27635 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/category/aktuelles/" class="fusion-bar-highlight"><span>Neuigkeiten</span></a></li><li  id="menu-item-27636"  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-27636 fusion-dropdown-submenu" ><a  target="_blank" rel="noopener noreferrer" href="https://www.jagdfakten.at" class="fusion-bar-highlight"><span>Jagdfakten.at</span></a></li><li  id="menu-item-27637"  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-27637 fusion-dropdown-submenu" ><a  target="_blank" rel="noopener noreferrer" href="https://www.fragen-zur-jagd.at" class="fusion-bar-highlight"><span>Fragen zur Jagd</span></a></li><li  id="menu-item-27638"  class="menu-item menu-item-type-custom menu-item-object-custom menu-item-27638 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/media/social-media/" class="fusion-bar-highlight"><span>Social Media</span></a></li><li  id="menu-item-27641"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27641 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/media/positionspapiere/" class="fusion-bar-highlight"><span>Positionspapiere</span></a></li><li  id="menu-item-27640"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27640 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/media/broschueren/" class="fusion-bar-highlight"><span>Broschüren</span></a></li><li  id="menu-item-27642"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27642 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/media/presseaussendungen/" class="fusion-bar-highlight"><span>Presseaussendungen</span></a></li><li  id="menu-item-27643"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27643 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/media/pressefotos/" class="fusion-bar-highlight"><span>Pressefotos</span></a></li><li  id="menu-item-27669"  class="menu-item menu-item-type-post_type menu-item-object-page menu-item-27669 fusion-dropdown-submenu" ><a  href="https://www.jagd-oesterreich.at/media/pressekontakt/" class="fusion-bar-highlight"><span>Pressekontakt</span></a></li></ul></li></ul></nav>
+<nav class="fusion-mobile-nav-holder fusion-mobile-menu-text-align-left" aria-label="Main Menu Mobile"></nav>
+
+					</div>
+	</div>
+</div> <!-- end fusion sticky header wrapper -->
+				</div>
+				<div class="fusion-clearfix"></div>
+			</header>
+							
+						<div id="sliders-container" class="fusion-slider-visibility">
+					</div>
+				
+				
+			
+			
+						<main id="main" class="clearfix ">
+				<div class="fusion-row" style="">
+
+<section id="content" style="width: 100%;">
+			<div class="single-navigation clearfix">
+			<a href="https://www.jagd-oesterreich.at/2021/11/26/achtung-registrierungsfrist-fuer-flinten-laeuft-ab/" rel="prev">Zurück</a>					</div>
+	
+					<article id="post-28703" class="post post-28703 type-post status-publish format-standard has-post-thumbnail hentry category-aktuelles category-allgemein">
+						
+				
+															<h1 class="entry-title fusion-post-title">NÖ Jagdverband: Auf Natur &#038; Wildtier-Bedürfnisse achten</h1>										<div class="post-content">
+				<p><strong>NÖ Jagdverband appelliert, Wege freizuhalten, vorgesehene Parkplätze zu nützen und grundsätzliche Regeln in der Natur einzuhalten, um Wildtiere zu schonen.<br />
+</strong><br />
+Wien, 14. Dezember 2021 – Aufgrund der steigenden Technologisierung und Mobilität sowie der damit verbundenen Schnelllebigkeit im Alltag erholen sich die Menschen vermehrt in der Natur – v.a. während der Eindämmungsmaßnahmen gegen das Corona-Virus. Durch die zunehmende Freizeitnutzung hat sich auch der Druck auf Wildtiere erhöht, was gerade im Winter und aufgrund der Überlebensstrategien einzelner Arten enorme Auswirkungen haben kann: „Im Winter haben Wildtiere v.a. drei Bedürfnisse: Ruhe, Äsung und Deckung. Werden diese nicht ausreichend gedeckt, kommt es zu Wildschäden, hohen Fallwildzahlen oder zum Abwandern der Tiere. <a href="https://www.noejagdverband.at/auf-natur-wildtier-beduerfnisse-achten/">Der NÖ Jagdverband appelliert</a> daher an die Bevölkerung, bei der Freizeitnutzung die Lebensräume des Wildes zu respektieren, sich im Wald ruhig zu verhalten und sich an die Regeln zu halten. Dann steht einer Erholung in der Natur nichts im Wege“, so Niederösterreichs Landesjägermeister Josef Pröll, der auf sechs grundlegende Regeln verweist, die der NÖ Jagdverband zusammengefasst hat:</p>
+<ul>
+<li>Immer auf (Forst-)Straßen oder markierten Routen und Steigen bleiben.</li>
+<li>Hunde an die Leine nehmen. Sie können Wildtiere hetzen, verletzen oder sogar töten. Es dient aber auch dem Schutz der Hunde: Momentan ist Hauptrauschzeit (Brunftzeit) beim Schwarzwild, das dadurch unruhiger ist.</li>
+<li>Aufenthalt in der freien Natur untertags und nicht in der Nacht sowie ruhiges Verhalten zu jeder Zeit.</li>
+<li>Drohnennutzung und Paragleiten einschränken, auf ausreichenden Abstand achten.</li>
+<li>Das Betretungsverbot von Fütterungsbereichen einhalten.</li>
+<li>Den eigenen Müll wieder mit nach Hause nehmen.</li>
+</ul>
+<p>Kein Verständnis hat Pröll jedoch für die vielen Freizeitnutzer, die Parkverbote missachten und auf Forst- und Güterwegen sowie in Zufahrten in Niederösterreichs Wäldern parken. „Die Natur ist kein Parkplatz. Die Wege und Straßen sind vielmehr wichtige Transportwege für Land- und Forstwirte sowie für Jägerinnen und Jäger. Sie werden dadurch bei ihrer Arbeit behindert. Sollte es zudem zu Notfällen kommen, können die Rettungskräfte nicht zufahren. Daher werden Wildparker keinesfalls toleriert und kostenpflichtig abgeschleppt“, so Pröll.</p>
+<p><strong>Jägerinnen &amp; Jäger unterstützen in winterlicher Notzeit<br />
+</strong>Die Wildtiere reagieren im Winter besonders sensibel auf Beunruhigung. Aufgrund der kalten Jahreszeit und fehlenden Äsung reduzieren sie ihre Bewegung sowie den Stoffwechsel und senken die Körpertemperatur ab, um wertvolle Energie zu sparen. Wird das Wild durch äußere Einflüsse wiederholt beunruhigt, verbraucht es durch Stress und oft kilometerlange Flucht mehr Energie, als zur Verfügung steht. Dadurch kann ein Erschöpfungszustand eintreten, der auch zum Tod der Tiere führen kann. Insbesondere im Winter nach ausgiebigem Schneefall und bei tiefem Schnee steigt das Risiko, da weniger Äsung bereitsteht und die Fortbewegung im tiefen Schnee mehr Energie fordert.</p>
+<p>„Daher sind die Jägerinnen und Jäger im Winter und bei hohen Schneelagen im Einsatz, um die fehlende natürliche Äsung durch Vorlage von Futter zu kompensieren. Das ist insbesondere in höheren Lagen notwendig, da das Rotwild sein Winterverhalten an den Menschen sowie die Verbauung der Landschaft angepasst hat und in seinen Sommereinständen bleibt, die im Winter weniger Äsung bieten“, so Pröll. Mit der Fütterung in Notzeiten erhalten die Jägerinnen und Jäger die Bestände bei Reh- und Rotwild gesund und minimieren das Risiko von Wildschäden. Beim Niederwild setzen die Jägerinnen und Jäger ganzjährig Hegemaßnahmen, um natürliche Äsung und Deckung zu bieten. Sollte die Schneedecke den Boden geschlossen bedecken, füttern sie in Notzeiten aber auch zu oder pflügen kleine Flächen in Wiesen oder Saaten frei, damit die Tiere zu Grünäsung kommen.</p>
+<p><strong>Über den NÖ Jagdverband<br />
+</strong>Der NÖ Jagdverband ist die Interessenvertretung der rund 35.400 Jägerinnen und Jäger in Niederösterreich. Im Interesse seiner Mitglieder setzt sich der NÖ Jagdverband für gute Rahmenbedingungen für ein nachhaltiges Jagdwesen auf Landes-, Bundes- oder EU-Ebene ein. Im Interesse des heimischen Wildes kümmert er sich um den Erhalt und die Verbesserung von Lebensräumen, um so für einen artenreichen und gesunden Wildbestand in Niederösterreich zu sorgen, der im Einklang mit der land- und forstwirtschaftlichen Nutzung des Landes steht.</p>
+							</div>
+
+												<div class="fusion-meta-info"><div class="fusion-meta-info-wrapper"><span class="vcard rich-snippet-hidden"><span class="fn"><a href="https://www.jagd-oesterreich.at/author/lutz-molter/" title="Beiträge von Lutz Molter" rel="author">Lutz Molter</a></span></span><span class="updated rich-snippet-hidden">2021-12-14T12:38:19+01:00</span><span>Dezember 14th, 2021</span><span class="fusion-inline-sep">|</span><a href="https://www.jagd-oesterreich.at/category/aktuelles/" rel="category tag">AKTUELLES</a>, <a href="https://www.jagd-oesterreich.at/category/allgemein/" rel="category tag">Allgemein</a><span class="fusion-inline-sep">|</span><span class="fusion-comments"><a href="https://www.jagd-oesterreich.at/2021/12/14/noe-jagdverband-auf-natur-wildtier-beduerfnisse-achten/#respond">0 Kommentare</a></span></div></div>																								<section class="related-posts single-related-posts">
+				<div class="fusion-title fusion-title-size-two sep-none fusion-sep-none" style="margin-top:50px;margin-bottom:31px;">
+				<h2 class="title-heading-left" style="margin:0;">
+					Ähnliche Beiträge				</h2>
+			</div>
+			
+	
+	
+	
+					<div class="fusion-carousel" data-imagesize="fixed" data-metacontent="no" data-autoplay="no" data-touchscroll="no" data-columns="5" data-itemmargin="44px" data-itemwidth="180" data-touchscroll="yes" data-scrollitems="">
+		<div class="fusion-carousel-positioner">
+			<ul class="fusion-carousel-holder">
+																							<li class="fusion-carousel-item">
+						<div class="fusion-carousel-item-wrapper">
+							<div  class="fusion-image-wrapper fusion-image-size-fixed" aria-haspopup="true">
+					<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2021/11/Flinteregistrierung_Illustration_Website-500x383.jpg" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2021/11/Flinteregistrierung_Illustration_Website-500x383.jpg 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2021/11/Flinteregistrierung_Illustration_Website-500x383@2x.jpg 2x" width="500" height="383" alt="Achtung: Registrierungsfrist für Flinten läuft ab" />
+	<div class="fusion-rollover">
+	<div class="fusion-rollover-content">
+
+														<a class="fusion-rollover-link" href="https://www.jagd-oesterreich.at/2021/11/26/achtung-registrierungsfrist-fuer-flinten-laeuft-ab/">Achtung: Registrierungsfrist für Flinten läuft ab</a>
+			
+														
+								
+													<div class="fusion-rollover-sep"></div>
+				
+																		<a class="fusion-rollover-gallery" href="https://www.jagd-oesterreich.at/wp-content/uploads/2021/11/Flinteregistrierung_Illustration_Website.jpg" data-id="28696" data-rel="iLightbox[gallery]" data-title="Flinteregistrierung_Illustration_Website" data-caption="">
+						Gallerie					</a>
+														
+		
+												<h4 class="fusion-rollover-title">
+					<a class="fusion-rollover-title-link" href="https://www.jagd-oesterreich.at/2021/11/26/achtung-registrierungsfrist-fuer-flinten-laeuft-ab/">
+						Achtung: Registrierungsfrist für Flinten läuft ab					</a>
+				</h4>
+			
+								
+		
+						<a class="fusion-link-wrapper" href="https://www.jagd-oesterreich.at/2021/11/26/achtung-registrierungsfrist-fuer-flinten-laeuft-ab/" aria-label="Achtung: Registrierungsfrist für Flinten läuft ab"></a>
+	</div>
+</div>
+</div>
+													</div><!-- fusion-carousel-item-wrapper -->
+					</li>
+																			<li class="fusion-carousel-item">
+						<div class="fusion-carousel-item-wrapper">
+							<div  class="fusion-image-wrapper fusion-image-size-fixed" aria-haspopup="true">
+					<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1-500x383.jpg" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1-500x383.jpg 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1-500x383@2x.jpg 2x" width="500" height="383" alt="LOCKDOWN: Jagd ist systemrelevant &#8211; neues Merkblatt 22. November" />
+	<div class="fusion-rollover">
+	<div class="fusion-rollover-content">
+
+														<a class="fusion-rollover-link" href="https://www.jagd-oesterreich.at/2021/11/22/lockdown-jagd-ist-systemrelevant-neues-merkblatt/">LOCKDOWN: Jagd ist systemrelevant &#8211; neues Merkblatt 22. November</a>
+			
+														
+								
+													<div class="fusion-rollover-sep"></div>
+				
+																		<a class="fusion-rollover-gallery" href="https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1.jpg" data-id="28691" data-rel="iLightbox[gallery]" data-title="20200901_MNS_(c)_Sabine_Flieser-Just_1" data-caption="">
+						Gallerie					</a>
+														
+		
+												<h4 class="fusion-rollover-title">
+					<a class="fusion-rollover-title-link" href="https://www.jagd-oesterreich.at/2021/11/22/lockdown-jagd-ist-systemrelevant-neues-merkblatt/">
+						LOCKDOWN: Jagd ist systemrelevant &#8211; neues Merkblatt 22. November					</a>
+				</h4>
+			
+								
+		
+						<a class="fusion-link-wrapper" href="https://www.jagd-oesterreich.at/2021/11/22/lockdown-jagd-ist-systemrelevant-neues-merkblatt/" aria-label="LOCKDOWN: Jagd ist systemrelevant &#8211; neues Merkblatt 22. November"></a>
+	</div>
+</div>
+</div>
+													</div><!-- fusion-carousel-item-wrapper -->
+					</li>
+																			<li class="fusion-carousel-item">
+						<div class="fusion-carousel-item-wrapper">
+							<div  class="fusion-image-wrapper fusion-image-size-fixed" aria-haspopup="true">
+					<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1-500x383.jpg" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1-500x383.jpg 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1-500x383@2x.jpg 2x" width="500" height="383" alt="COVID-19-Merkblatt Stand 15.November" />
+	<div class="fusion-rollover">
+	<div class="fusion-rollover-content">
+
+														<a class="fusion-rollover-link" href="https://www.jagd-oesterreich.at/2021/11/09/covid-19-merkblatt-stand-9-november/">COVID-19-Merkblatt Stand 15.November</a>
+			
+														
+								
+													<div class="fusion-rollover-sep"></div>
+				
+																		<a class="fusion-rollover-gallery" href="https://www.jagd-oesterreich.at/wp-content/uploads/2020/08/20200901_MNS_c_Sabine_Flieser-Just_1.jpg" data-id="28680" data-rel="iLightbox[gallery]" data-title="20200901_MNS_(c)_Sabine_Flieser-Just_1" data-caption="">
+						Gallerie					</a>
+														
+		
+												<h4 class="fusion-rollover-title">
+					<a class="fusion-rollover-title-link" href="https://www.jagd-oesterreich.at/2021/11/09/covid-19-merkblatt-stand-9-november/">
+						COVID-19-Merkblatt Stand 15.November					</a>
+				</h4>
+			
+								
+		
+						<a class="fusion-link-wrapper" href="https://www.jagd-oesterreich.at/2021/11/09/covid-19-merkblatt-stand-9-november/" aria-label="COVID-19-Merkblatt Stand 15.November"></a>
+	</div>
+</div>
+</div>
+													</div><!-- fusion-carousel-item-wrapper -->
+					</li>
+																			<li class="fusion-carousel-item">
+						<div class="fusion-carousel-item-wrapper">
+							<div  class="fusion-image-wrapper fusion-image-size-fixed" aria-haspopup="true">
+					<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Herbstzeit-ist-WIldbretzeit_-cMarko-Bartilla-500x383.jpg" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Herbstzeit-ist-WIldbretzeit_-cMarko-Bartilla-500x383.jpg 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Herbstzeit-ist-WIldbretzeit_-cMarko-Bartilla-500x383@2x.jpg 2x" width="500" height="383" alt="NÖ Jagdverband: Herbstzeit ist Wildbretzeit" />
+	<div class="fusion-rollover">
+	<div class="fusion-rollover-content">
+
+														<a class="fusion-rollover-link" href="https://www.jagd-oesterreich.at/2021/09/30/noe-jagdverband-herbstzeit-ist-wildbretzeit/">NÖ Jagdverband: Herbstzeit ist Wildbretzeit</a>
+			
+														
+								
+													<div class="fusion-rollover-sep"></div>
+				
+																		<a class="fusion-rollover-gallery" href="https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Herbstzeit-ist-WIldbretzeit_-cMarko-Bartilla.jpg" data-id="28668" data-rel="iLightbox[gallery]" data-title="Herbstzeit ist WIldbretzeit_ (c)Marko Bartilla" data-caption="">
+						Gallerie					</a>
+														
+		
+												<h4 class="fusion-rollover-title">
+					<a class="fusion-rollover-title-link" href="https://www.jagd-oesterreich.at/2021/09/30/noe-jagdverband-herbstzeit-ist-wildbretzeit/">
+						NÖ Jagdverband: Herbstzeit ist Wildbretzeit					</a>
+				</h4>
+			
+								
+		
+						<a class="fusion-link-wrapper" href="https://www.jagd-oesterreich.at/2021/09/30/noe-jagdverband-herbstzeit-ist-wildbretzeit/" aria-label="NÖ Jagdverband: Herbstzeit ist Wildbretzeit"></a>
+	</div>
+</div>
+</div>
+													</div><!-- fusion-carousel-item-wrapper -->
+					</li>
+																			<li class="fusion-carousel-item">
+						<div class="fusion-carousel-item-wrapper">
+							<div  class="fusion-image-wrapper fusion-image-size-fixed" aria-haspopup="true">
+					<img src="https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Philipp-Harmer-scaled-500x383.jpg" srcset="https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Philipp-Harmer-scaled-500x383.jpg 1x, https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Philipp-Harmer-scaled-500x383@2x.jpg 2x" width="500" height="383" alt="JAGD ÖSTERREICH gratuliert Philipp Harmer zur Präsidentschaft der globalen Naturschutzorganisation CIC" />
+	<div class="fusion-rollover">
+	<div class="fusion-rollover-content">
+
+														<a class="fusion-rollover-link" href="https://www.jagd-oesterreich.at/2021/09/29/jagd-oesterreich-gratuliert-philipp-harmer-zur-praesidentschaft-der-globalen-naturschutzorganisation-cic/">JAGD ÖSTERREICH gratuliert Philipp Harmer zur Präsidentschaft der globalen Naturschutzorganisation CIC</a>
+			
+														
+								
+													<div class="fusion-rollover-sep"></div>
+				
+																		<a class="fusion-rollover-gallery" href="https://www.jagd-oesterreich.at/wp-content/uploads/2021/09/Philipp-Harmer-scaled.jpg" data-id="28662" data-rel="iLightbox[gallery]" data-title="Philipp Harmer" data-caption="">
+						Gallerie					</a>
+														
+		
+												<h4 class="fusion-rollover-title">
+					<a class="fusion-rollover-title-link" href="https://www.jagd-oesterreich.at/2021/09/29/jagd-oesterreich-gratuliert-philipp-harmer-zur-praesidentschaft-der-globalen-naturschutzorganisation-cic/">
+						JAGD ÖSTERREICH gratuliert Philipp Harmer zur Präsidentschaft der globalen Naturschutzorganisation CIC					</a>
+				</h4>
+			
+								
+		
+						<a class="fusion-link-wrapper" href="https://www.jagd-oesterreich.at/2021/09/29/jagd-oesterreich-gratuliert-philipp-harmer-zur-praesidentschaft-der-globalen-naturschutzorganisation-cic/" aria-label="JAGD ÖSTERREICH gratuliert Philipp Harmer zur Präsidentschaft der globalen Naturschutzorganisation CIC"></a>
+	</div>
+</div>
+</div>
+													</div><!-- fusion-carousel-item-wrapper -->
+					</li>
+							</ul><!-- fusion-carousel-holder -->
+										<div class="fusion-carousel-nav">
+					<span class="fusion-nav-prev"></span>
+					<span class="fusion-nav-next"></span>
+				</div>
+			
+		</div><!-- fusion-carousel-positioner -->
+	</div><!-- fusion-carousel -->
+</section><!-- related-posts -->
+
+
+																	</article>
+	</section>
+						
+					</div>  <!-- fusion-row -->
+				</main>  <!-- #main -->
+				
+				
+								
+					
+		<div class="fusion-footer">
+					
+	<footer class="fusion-footer-widget-area fusion-widget-area">
+		<div class="fusion-row">
+			<div class="fusion-columns fusion-columns-2 fusion-widget-area">
+				
+																									<div class="fusion-column col-lg-6 col-md-6 col-sm-6">
+							<section id="text-2" class="fusion-footer-widget-column widget widget_text" style="border-style: solid;border-color:transparent;border-width:0px;"><h4 class="widget-title">Kontakt:</h4>			<div class="textwidget"><p>Gumpendorfer Straße  15 / 1 / 9<br />
+A-1060 Wien<br />
+Telefon: <a href="tel:+4313618898">+43 – (0)1 – 361 88 98</a><br />
+Telefax: +43 – (0)1 – 361 88 98-98<br />
+E-Mail: <a href="&#x6d;&#97;i&#x6c;&#116;o&#x3a;&#111;f&#x66;&#105;c&#x65;&#64;j&#x61;&#103;d&#x2d;&#111;e&#x73;&#116;e&#x72;&#114;e&#x69;&#99;h&#x2e;&#97;t">o&#102;&#x66;&#x69;c&#101;&#x40;&#x6a;a&#103;&#x64;&#x2d;o&#101;&#x73;&#x74;e&#114;&#x72;&#x65;i&#99;&#104;&#x2e;&#x61;t</a></p>
+</div>
+		<div style="clear:both;"></div></section><section id="social_links-widget-2" class="fusion-footer-widget-column widget social_links"><h4 class="widget-title">Folgen Sie uns:</h4>
+		<div class="fusion-social-networks">
+
+			<div class="fusion-social-networks-wrapper">
+																												
+						
+																																			<a class="fusion-social-network-icon fusion-tooltip fusion-youtube awb-icon-youtube" href="https://www.youtube.com/channel/UChg22X7aAy-xTRX-58RMd5g"  data-placement="top" data-title="Youtube" data-toggle="tooltip" data-original-title=""  title="YouTube" aria-label="YouTube" rel="noopener noreferrer" target="_self" style="font-size:32px;color:#ffffff;"></a>
+											
+										
+																				
+						
+																																			<a class="fusion-social-network-icon fusion-tooltip fusion-rss awb-icon-rss" href="https://www.jagd-oesterreich.at/feed/"  data-placement="top" data-title="Rss" data-toggle="tooltip" data-original-title=""  title="Rss" aria-label="Rss" rel="noopener noreferrer" target="_self" style="font-size:32px;color:#ffffff;"></a>
+											
+										
+																				
+						
+											
+										
+				
+			</div>
+		</div>
+
+		<div style="clear:both;"></div></section>																					</div>
+																										<div class="fusion-column fusion-column-last col-lg-6 col-md-6 col-sm-6">
+													</div>
+																																													
+				<div class="fusion-clearfix"></div>
+			</div> <!-- fusion-columns -->
+		</div> <!-- fusion-row -->
+	</footer> <!-- fusion-footer-widget-area -->
+
+	
+	<footer id="footer" class="fusion-footer-copyright-area fusion-footer-copyright-center">
+		<div class="fusion-row">
+			<div class="fusion-copyright-content">
+
+				<div class="fusion-copyright-notice">
+		<div>
+		2018 © Jagd Österreich | <a href="/datenschutzerklaerung/">Datenschutzerklärung</a> | <a href="/impressum/">Impressum</a> | <a href="/service/">Kontakt</a>	</div>
+</div>
+
+			</div> <!-- fusion-fusion-copyright-content -->
+		</div> <!-- fusion-row -->
+	</footer> <!-- #footer -->
+		</div> <!-- fusion-footer -->
+
+		
+					<div class="fusion-sliding-bar-wrapper">
+											</div>
+
+												</div> <!-- wrapper -->
+		</div> <!-- #boxed-wrapper -->
+		<div class="fusion-top-frame"></div>
+		<div class="fusion-bottom-frame"></div>
+		<div class="fusion-boxed-shadow"></div>
+		<a class="fusion-one-page-text-link fusion-page-load-link" tabindex="-1" href="#" aria-hidden="true">Page load link</a>
+
+		<div class="avada-footer-scripts">
+			
+		<script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+			window.RS_MODULES = window.RS_MODULES || {};
+			window.RS_MODULES.modules = window.RS_MODULES.modules || {};
+			window.RS_MODULES.waiting = window.RS_MODULES.waiting || [];
+			window.RS_MODULES.defered = false;
+			window.RS_MODULES.moduleWaiting = window.RS_MODULES.moduleWaiting || {};
+			window.RS_MODULES.type = 'compiled';
+		</script>
+					<script type="rocketlazyloadscript" data-rocket-type="text/javascript">function showhide_toggle(e,t,r,g){var a=jQuery("#"+e+"-link-"+t),s=jQuery("a",a),i=jQuery("#"+e+"-content-"+t),l=jQuery("#"+e+"-toggle-"+t);a.toggleClass("sh-show sh-hide"),i.toggleClass("sh-show sh-hide").toggle(),"true"===s.attr("aria-expanded")?s.attr("aria-expanded","false"):s.attr("aria-expanded","true"),l.text()===r?(l.text(g),a.trigger("sh-link:more")):(l.text(r),a.trigger("sh-link:less")),a.trigger("sh-link:toggle")}</script>
+		<script type="rocketlazyloadscript" src="/wp-content/themes/Avada-Child-Theme/build/script.js?v=1560243944"></script>
+<script type="rocketlazyloadscript">
+</script>
+<script type="text/javascript">var fusionNavIsCollapsed=function(e){var t;window.innerWidth<=e.getAttribute("data-breakpoint")?(e.classList.add("collapse-enabled"),e.classList.contains("expanded")||(e.setAttribute("aria-expanded","false"),window.dispatchEvent(new Event("fusion-mobile-menu-collapsed",{bubbles:!0,cancelable:!0})))):(null!==e.querySelector(".menu-item-has-children.expanded .fusion-open-nav-submenu-on-click")&&e.querySelector(".menu-item-has-children.expanded .fusion-open-nav-submenu-on-click").click(),e.classList.remove("collapse-enabled"),e.setAttribute("aria-expanded","true"),null!==e.querySelector(".fusion-custom-menu")&&e.querySelector(".fusion-custom-menu").removeAttribute("style")),e.classList.add("no-wrapper-transition"),clearTimeout(t),t=setTimeout(()=>{e.classList.remove("no-wrapper-transition")},400),e.classList.remove("loading")},fusionRunNavIsCollapsed=function(){var e,t=document.querySelectorAll(".fusion-menu-element-wrapper");for(e=0;e<t.length;e++)fusionNavIsCollapsed(t[e])};function avadaGetScrollBarWidth(){var e,t,n,s=document.createElement("p");return s.style.width="100%",s.style.height="200px",(e=document.createElement("div")).style.position="absolute",e.style.top="0px",e.style.left="0px",e.style.visibility="hidden",e.style.width="200px",e.style.height="150px",e.style.overflow="hidden",e.appendChild(s),document.body.appendChild(e),t=s.offsetWidth,e.style.overflow="scroll",t==(n=s.offsetWidth)&&(n=e.clientWidth),document.body.removeChild(e),jQuery("html").hasClass("awb-scroll")&&10<t-n?10:t-n}fusionRunNavIsCollapsed(),window.addEventListener("fusion-resize-horizontal",fusionRunNavIsCollapsed);</script>
+<style id='wp-block-library-theme-inline-css' type='text/css'>
+#start-resizable-editor-section{display:none}.wp-block-audio figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio figcaption{color:hsla(0,0%,100%,.65)}.wp-block-code{font-family:Menlo,Consolas,monaco,monospace;color:#1e1e1e;padding:.8em 1em;border:1px solid #ddd;border-radius:4px}.wp-block-embed figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed figcaption{color:hsla(0,0%,100%,.65)}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:hsla(0,0%,100%,.65)}.wp-block-image figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-image figcaption{color:hsla(0,0%,100%,.65)}.wp-block-pullquote{border-top:4px solid;border-bottom:4px solid;margin-bottom:1.75em;color:currentColor}.wp-block-pullquote__citation,.wp-block-pullquote cite,.wp-block-pullquote footer{color:currentColor;text-transform:uppercase;font-size:.8125em;font-style:normal}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;position:relative;font-style:normal}.wp-block-quote.has-text-align-right{border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote.has-text-align-center{border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large{border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-group.has-background{padding:1.25em 2.375em;margin-top:0;margin-bottom:0}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto;opacity:.4}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table thead{border-bottom:3px solid}.wp-block-table tfoot{border-top:3px solid}.wp-block-table td,.wp-block-table th{padding:.5em;border:1px solid;word-break:normal}.wp-block-table figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table figcaption{color:hsla(0,0%,100%,.65)}.wp-block-video figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video figcaption{color:hsla(0,0%,100%,.65)}.wp-block-template-part.has-background{padding:1.25em 2.375em;margin-top:0;margin-bottom:0}#end-resizable-editor-section{display:none}
+</style>
+
+<style id='rs-plugin-settings-inline-css' type='text/css'>
+#rs-demo-id {}
+</style>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.jagd-oesterreich.at/wp-content/plugins/document-gallery/assets/js/gallery.min.js?ver=4.4.3' id='document-gallery-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-browser-checker-js-after'>
+"use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+/* <![CDATA[ */
+var RocketPreloadLinksConfig = {"excludeUris":"\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin\/|\/logout\/|\/wp-login.php","usesTrailingSlash":"1","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/www.jagd-oesterreich.at","onHoverDelay":"100","rateThrottle":"3"};
+/* ]]> */
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' id='rocket-preload-links-js-after'>
+(function() {
+"use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+}());
+</script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyC1kcTkgxopMD_xsGSaIQ24E6YakIQ_yO0&#038;ver=5.8.3' id='google-maps-js'></script>
+<script type='text/javascript' src='https://www.jagd-oesterreich.at/wp-includes/js/wp-embed.min.js?ver=5.8.3' id='wp-embed-js'></script>
+<script type="rocketlazyloadscript" data-rocket-type='text/javascript' src='https://www.jagd-oesterreich.at/wp-content/uploads/fusion-scripts/24dfc95d3fa74bd52218156681cda3f5.min.js?ver=3.6' id='fusion-scripts-js'></script>
+				<script type="rocketlazyloadscript" data-rocket-type="text/javascript">
+				jQuery( document ).ready( function() {
+					var ajaxurl = 'https://www.jagd-oesterreich.at/wp-admin/admin-ajax.php';
+					if ( 0 < jQuery( '.fusion-login-nonce' ).length ) {
+						jQuery.get( ajaxurl, { 'action': 'fusion_login_nonce' }, function( response ) {
+							jQuery( '.fusion-login-nonce' ).html( response );
+						});
+					}
+				});
+								</script>
+				
+		<!-- Cookie Notice plugin v2.2.1 by Hu-manity.co https://hu-manity.co/ -->
+		<div id="cookie-notice" role="dialog" class="cookie-notice-hidden cookie-revoke-hidden cn-position-bottom" aria-label="Cookie Notice" style="background-color: rgba(134,117,56,1);"><div class="cookie-notice-container" style="color: #fff;"><span id="cn-notice-text" class="cn-text-container">Diese Webseite benutzt Cookies. Wenn Sie diese Website weiter nutzen, stimmen Sie der Verwendung von Cookies zu. </span><span id="cn-notice-buttons" class="cn-buttons-container"><a href="#" id="cn-accept-cookie" data-cookie-set="accept" class="cn-set-cookie cn-button cn-button-custom button" aria-label="OK">OK</a><a href="https://www.jagd-oesterreich.at/datenschutzerklaerung/" target="_blank" id="cn-more-info" class="cn-more-info cn-button cn-button-custom button" aria-label="Erfahren Sie mehr">Erfahren Sie mehr</a></span><a href="javascript:void(0);" id="cn-close-notice" data-cookie-set="accept" class="cn-close-icon" aria-label="OK"></a></div>
+			
+		</div>
+		<!-- / Cookie Notice plugin -->		</div>
+
+			<div class="to-top-container to-top-right">
+		<a href="#" id="toTop" class="fusion-top-top-link">
+			<span class="screen-reader-text">Nach oben</span>
+		</a>
+	</div>
+		</body>
+</html>
+
+<!-- This website is like a Rocket, isn't it? Performance optimized by WP Rocket. Learn more: https://wp-rocket.me - Debug: cached@1643200962 -->
