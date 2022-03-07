@@ -1,5 +1,11 @@
 ## History / Changelog
 
+### 1.2.0
+- efficiency: replaced module readability-lxml by trimmed fork
+- bug fixed: (#179, #180, #183, #184)
+- improved baseline extraction
+- cleaner metadata (with @felipehertzer)
+
 
 ### 1.1.0
 - encodings: better detection, output NFC-normalized Unicode

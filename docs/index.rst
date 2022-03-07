@@ -39,7 +39,7 @@ Description
 
 Distinguishing between a whole page and the page's essential parts can help to alleviate many quality problems related to web text processing, by dealing with the noise caused by recurring elements (headers and footers, ads, links/blogroll, etc.).
 
-The extractor aims to be precise enough in order not to miss texts or discard valid documents. In addition, it must be robust and reasonably fast. With these objectives in mind, it is designed to run in production on millions of web documents. It is based on `lxml <http://lxml.de/>`_ as well as `readability <https://github.com/buriy/python-readability>`_ and `jusText <http://corpus.tools/wiki/Justext>`_ used as fallback.
+The extractor aims to be precise enough in order not to miss texts or discard valid documents. In addition, it must be robust and reasonably fast. With these objectives in mind, it is designed to run in production on millions of web documents. It is based on `lxml <http://lxml.de/>`_ and on generic algorithms used as fallback (`jusText <http://corpus.tools/wiki/Justext>`_ and a fork of readability-lxml).
 
 The intended audience encompasses disciplines where collecting web pages represents an important step for data collection, notably linguistics, natural language processing and social sciences. In general, it is relevant for anyone interested in gathering texts from the Web, e.g. web crawling and scraping-intensive fields like information security and search engine optimization.
 

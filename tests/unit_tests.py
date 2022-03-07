@@ -54,12 +54,12 @@ MOCK_PAGES = {
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
     '''load mock page from samples'''
     try:
-        with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
+        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'r') as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
         # read as binary
-        with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'rb') as inputf:
+        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'rb') as inputf:
             htmlbinary = inputf.read()
         guessed_encoding = detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
@@ -151,7 +151,7 @@ def test_exotic_tags(xmloutput=False):
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
-    filepath = os.path.join(TEST_DIR, 'cache', 'exotic_tags_tei.html')
+    filepath = os.path.join(TEST_DIR, 'resources', 'exotic_tags_tei.html')
     with open(filepath) as f:
         content = etree.fromstring(f.read())
     res = xml.check_tei(content, 'http://dummy')
