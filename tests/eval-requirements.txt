@@ -1,7 +1,7 @@
-trafilatura==1.0.0
+trafilatura==1.2.0
 
 # alternatives
-boilerpy3==1.0.5
+boilerpy3==1.0.6
 dragnet==2.0.4
 goose3==3.1.11
 html2text==2020.1.16

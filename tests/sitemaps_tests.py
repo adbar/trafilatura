@@ -33,6 +33,8 @@ def test_extraction():
     # safety belts
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml.gz', b'\x1f\x8bABC') is None
     assert sitemaps.check_sitemap('http://example.org/sitemap.xml', 'ABC') is None
+    assert sitemaps.check_sitemap('http://test.org/sitemap.xml', '<!DOCTYPE html><html><body/></html>') is None
+    assert sitemaps.check_sitemap('http://test.org/sitemap', '<!DOCTYPE html><html><body/></html>') is None
     # parsing a file
     filepath = os.path.join(RESOURCES_DIR, 'sitemap.xml')
     with open(filepath) as f:

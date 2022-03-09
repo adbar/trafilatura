@@ -14,15 +14,14 @@ import sys
 
 from functools import lru_cache
 from html import unescape
+from unicodedata import normalize
 
 # CChardet is faster and can be more accurate
 try:
-    import cchardet
+    from cchardet import detect as cchardet_detect
 except ImportError:
-    cchardet = None
-
-
-from charset_normalizer import detect
+    cchardet_detect = None
+from charset_normalizer import from_bytes
 
 from lxml import etree, html
 # from lxml.html.soupparser import fromstring as fromsoup
@@ -33,9 +32,11 @@ from urllib3.response import HTTPResponse
 
 LOGGER = logging.getLogger(__name__)
 
-# collect_ids=False, default_doctype=False, huge_tree=True, remove_blank_text=True
-HTML_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True, encoding='utf-8')
-RECOVERY_PARSER = html.HTMLParser(remove_comments=True, remove_pis=True)
+UNICODE_ALIASES = {'utf-8', 'utf_8'}
+
+# note: htmldate could use HTML comments
+# huge_tree=True, remove_blank_text=True
+HTML_PARSER = html.HTMLParser(collect_ids=False, default_doctype=False, encoding='utf-8', remove_comments=True, remove_pis=True)
 
 UNICODE_WHITESPACE = re.compile(
     r'''
@@ -52,7 +53,6 @@ NOPRINT_TRANS_TABLE = {
     for i in range(sys.maxunicode + 1)
     if not chr(i).isprintable() and not chr(i).isspace()
 }
-
 
 # Regex to check image file extensions
 IMAGE_EXTENSION = re.compile(r'[^\s]+\.(jpe?g|png|gif|bmp)(\b|$)')
@@ -71,6 +71,8 @@ AUTHOR_EMOJI_REMOVE = re.compile(
     u"\U00002500-\U00002BEF" u"\U00002702-\U000027B0" u"\U000024C2-\U0001F251"
     u"\U0001f926-\U0001f937" u"\U00010000-\U0010ffff" u"\u2640-\u2642" u"\u2600-\u2B55" u"\u200d"
     u"\u23cf" u"\u23e9" u"\u231a" u"\ufe0f" u"\u3030" "]+", flags=re.UNICODE)
+
+CLEAN_META_TAGS = re.compile(r'["\']')
 
 
 def handle_gz_file(filecontent):
@@ -97,22 +99,24 @@ def isutf8(data):
 
 
 def detect_encoding(bytesobject):
-    """Read the first chunk of input and return its encoding"""
+    """"Read all input or first chunk and return a list of encodings"""
     # alternatives: https://github.com/scrapy/w3lib/blob/master/w3lib/encoding.py
     # unicode-test
     if isutf8(bytesobject):
-        return 'UTF-8'
-    # try one of the installed detectors on first part
-    if cchardet is not None:
-        guess = cchardet.detect(bytesobject[:5000])
-    else:
-        guess = detect(bytesobject[:5000])
-    LOGGER.debug('guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
-    # fallback on full response
-    if guess is None or (guess['confidence'] is not None and guess['confidence'] < 0.98):
-        guess = detect(bytesobject)
-        LOGGER.debug('second-guessed encoding: %s, confidence: %s', guess['encoding'], guess['confidence'])
-    return guess['encoding']
+        return ['utf-8']
+    guesses = []
+    # additional module
+    if cchardet_detect is not None:
+        cchardet_guess = cchardet_detect(bytesobject)['encoding']
+        if cchardet_guess is not None:
+            guesses.append(cchardet_guess.lower())
+    # try charset_normalizer on first part, fallback on full document
+    detection_results = from_bytes(bytesobject[:15000]) or from_bytes(bytesobject)
+    # return alternatives
+    if len(detection_results) > 0:
+        guesses.extend([r.encoding for r in detection_results])
+    # it cannot be utf-8 (tested above)
+    return [g for g in guesses if g not in UNICODE_ALIASES]
 
 
 def decode_response(response):
@@ -120,31 +124,30 @@ def decode_response(response):
        check if it could be GZip and eventually decompress it, then
        try to guess its encoding and decode it to return a unicode string"""
     # urllib3 response object / bytes switch
-    if isinstance(response, bytes):
-        resp_content = response
-    else:
-        resp_content = response.data
-    # suggested:
-    # resp_content = response if isinstance(response, bytes) else response.data
-    # decode GZipped data if necessary
-    resp_content = handle_gz_file(resp_content)
-    # detect encoding
-    guessed_encoding = detect_encoding(resp_content)
-    LOGGER.debug('response encoding: %s', guessed_encoding)
-    # process
+    resp_content = response if isinstance(response, bytes) else response.data
+    return decode_file(resp_content)
+
+
+def decode_file(filecontent):
+    """Guess bytestring encoding and try to decode to Unicode string.
+       Resort to destructive conversion otherwise."""
+    # init
+    if isinstance(filecontent, str):
+        return filecontent
     htmltext = None
-    if guessed_encoding is not None:
+    # GZip test
+    filecontent = handle_gz_file(filecontent)
+    # encoding
+    for guessed_encoding in detect_encoding(filecontent):
         try:
-            htmltext = resp_content.decode(guessed_encoding)
+            htmltext = filecontent.decode(guessed_encoding)
         except (LookupError, UnicodeDecodeError): # VISCII: lookup
             LOGGER.warning('wrong encoding detected: %s', guessed_encoding)
-    else:
-        LOGGER.error('no encoding detected: %s', guessed_encoding)
-    # force decoding # ascii instead?
-    if htmltext is None:
-        htmltext = str(resp_content, encoding='utf-8', errors='replace')
-    return htmltext
-
+            htmltext = None
+        else:
+            break
+    # return original content if nothing else succeeded
+    return htmltext or str(filecontent, encoding='utf-8', errors='replace')
 
 
 def is_dubious_html(htmlobject):
@@ -160,59 +163,45 @@ def is_dubious_html(htmlobject):
 
 def load_html(htmlobject):
     """Load object given as input and validate its type
-    (accepted: LXML tree, bytestring and string)
+    (accepted: LXML tree, trafilatura/urllib3 response, bytestring and string)
     """
     # use tree directly
     if isinstance(htmlobject, (etree._ElementTree, html.HtmlElement)):
         return htmlobject
-    tree = None
     # use trafilatura or urllib3 responses directly
-    try:
-        if isinstance(htmlobject, HTTPResponse) or htmlobject.data:
-            htmlobject = decode_response(htmlobject.data)
-    except AttributeError:
-        pass
-    # GZip test
-    htmlobject = handle_gz_file(htmlobject)
+    if isinstance(htmlobject, HTTPResponse) or hasattr(htmlobject, 'data'):
+        htmlobject = htmlobject.data
+    # do not accept any other type after this point
+    if not isinstance(htmlobject, (bytes, str)):
+        raise TypeError('incompatible input type', type(htmlobject))
+    # start processing
+    tree = None
+    # try to guess encoding and decode file: if None then keep original
+    htmlobject = decode_file(htmlobject)
     # sanity check
     check_flag = is_dubious_html(htmlobject)
-    # try to detect encoding and convert to string
-    if isinstance(htmlobject, bytes):
-        guessed_encoding = detect_encoding(htmlobject)
-        if guessed_encoding is None:
-            tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-        elif guessed_encoding == 'UTF-8':
-            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-        else:
-            try:
-                htmlobject = htmlobject.decode(guessed_encoding)
-                tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-            except (LookupError, UnicodeDecodeError):  # VISCII encoding
-                LOGGER.warning('encoding issue: %s', guessed_encoding)
-                tree = html.fromstring(htmlobject, parser=RECOVERY_PARSER)
-    # use string if applicable
-    elif isinstance(htmlobject, str):
+    # use Unicode string
+    try:
+        tree = html.fromstring(htmlobject, parser=HTML_PARSER)
+    except ValueError:
+        # "Unicode strings with encoding declaration are not supported."
         try:
-            tree = html.fromstring(htmlobject, parser=HTML_PARSER)
-        except ValueError:
-            # try to parse a bytestring
-            try:
-                tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
-            except Exception as err:
-                LOGGER.error('parser bytestring %s', err)
+            tree = html.fromstring(htmlobject.encode('utf8'), parser=HTML_PARSER)
         except Exception as err:
-            LOGGER.error('parsing failed: %s', err)
-    # default to None
-    else:
-        LOGGER.error('this type cannot be processed: %s', type(htmlobject))
+            LOGGER.error('lxml parser bytestring %s', err)
+    except Exception as err:
+        LOGGER.error('lxml parsing failed: %s', err)
+    # more robust option: try BeautifulSoup
+    #if tree is None or not isinstance(tree, (etree._ElementTree, html.HtmlElement)):
+    #    if isinstance(htmlobject, (bytes, str)):
+    #        try:
+    #            tree = fromsoup(htmlobject)
+    #        except Exception as err:
+    #            LOGGER.error('BS parser error: %s', err)
     # rejection test: is it (well-formed) HTML at all?
     if tree is not None and check_flag is True and len(tree) < 2:
         LOGGER.error('parsed tree length: %s, wrong data type or not valid HTML', len(tree))
         tree = None
-    #if tree is None:
-    #    if isinstance(htmlobject, bytes) or isinstance(htmlobject, str):
-    #        # more robust parsing
-    #        tree = fromsoup(htmlobject)
     return tree
 
 
@@ -227,18 +216,18 @@ def txttocsv(text, comments, docmeta):
     tsv_output = \
         '{url}\t{fingerprint}\t{hostname}\t{doctitle}\t{docdate}\t{text}\t{comments}\t{textlicense}\n' \
         .format(
-        url=docmeta['url'],
-        fingerprint=docmeta['fingerprint'],
-        hostname=docmeta['hostname'],
-        doctitle=docmeta['title'],
-        docdate=docmeta['date'],
+        url=docmeta.url,
+        fingerprint=docmeta.fingerprint,
+        hostname=docmeta.hostname,
+        doctitle=docmeta.title,
+        docdate=docmeta.date,
         text=text,
         comments=comments,
-        textlicense=docmeta['license']
+        textlicense=docmeta.license
         )
     # add id up front if provided
-    if docmeta['id'] is not None:
-        tsv_output = docmeta['id'] + '\t' + tsv_output
+    if docmeta.id is not None:
+        tsv_output = docmeta.id + '\t' + tsv_output
     return tsv_output
 
 
@@ -249,11 +238,17 @@ def remove_control_characters(string):
     return string.translate(NOPRINT_TRANS_TABLE)
 
 
+def normalize_unicode(string, unicodeform='NFC'):
+    'Normalize the given string to the specified unicode format.'
+    return normalize(unicodeform, string)
+
+
 @lru_cache(maxsize=128)
 def line_processing(line):
-    '''Discard incompatible unicode and invalid XML characters on line level'''
+    '''Remove HTML space entities, then discard incompatible unicode
+       and invalid XML characters on line level'''
     # spacing HTML entities: https://www.w3.org/MarkUp/html-spec/html-spec_13.html
-    line = line.replace('&#13;', '\r').replace('&#10;', '\n')
+    line = line.replace('&#13;', '\r').replace('&#10;', '\n').replace('&nbsp;', '\u00A0')
     # remove non-printable chars and normalize space characters
     line = trim(remove_control_characters(UNICODE_WHITESPACE.sub(' ', line)))
     # prune empty lines
@@ -284,6 +279,13 @@ def trim(string):
         return SPACE_TRIMMING.sub(r' ', NO_TAG_SPACE.sub(r' ', string)).strip(' \t\n\r\v')
     except TypeError:
         return None
+
+
+def normalize_tags(tags):
+    '''Remove special characters of tags'''
+    tags = CLEAN_META_TAGS.sub(r'', trim(unescape(tags)))
+    tags = list(filter(None, tags.split(", ")))
+    return ", ".join(tags)
 
 
 def is_image_file(imagesrc):

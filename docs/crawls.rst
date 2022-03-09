@@ -8,7 +8,7 @@ Web crawling
 
 
 
-A crawler is a computer program that automatically and systematically visits web pages. Crawling implies to send robots across the Web in order to “read” web pages and collecting information about them. A web crawler usually searches the visited pages for the links (i.e. URLs) that they entail and follows them through. It keeps track of and permanently sorts the URLs seen in order to get to new websites to visit. Essentially, a crawler is a sort of a virtual librarian which looks for info and catalogues it.
+A crawler is a computer program that automatically and systematically visits web pages. Crawling implies to send robots across the Web in order to “read” web pages and collect information about them. A web crawler usually searches the visited pages for the links (i.e. URLs) that they entail and follows them through. It keeps track of and permanently sorts the URLs seen in order to get to new websites to visit. Essentially, a crawler is a sort of a virtual librarian which looks for info and catalogues it.
 
 The most well-known operators of web crawlers are companies running web search engines. These programs feed search engines all the information they need to create a (giant) database, the search index.
 Another use of web crawlers is in Web archiving, which involves large sets of webpages to be periodically collected and archived.
@@ -123,14 +123,22 @@ It can also crawl websites in parallel by reading a list of target sites from a 
 References
 ----------
 
-Boldi, P., Codenotti, B., Santini, M., & Vigna, S. (2004). `Ubicrawler: A scalable fully distributed web crawler <https://onlinelibrary.wiley.com/doi/pdf/10.1002/spe.587>`_. Software: Practice and Experience, 34(8), 711-726.
+Boldi, P., Codenotti, B., Santini, M., & Vigna, S. (2004). Ubicrawler: A scalable fully distributed web crawler. Software: Practice and Experience, 34(8), 711-726.
 
-Cho, J., Garcia-Molina, H., & Page, L. (1998). `Efficient crawling through URL ordering <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.1540&rep=rep1&type=pdf>`_. Computer networks and ISDN systems, 30(1-7), 161-172.
+Cho, J., Garcia-Molina, H., & Page, L. (1998). Efficient crawling through URL ordering. Computer networks and ISDN systems, 30(1-7), 161-172.
 
-Cho, J. (2001). `Crawling the Web: Discovery and Maintenance of a Large-Scale Web Data <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.101.5295&rep=rep1&type=pdf>`_, PhD dissertation, Dept. of Computer Science, Stanford University.
+Cho, J. (2001). Crawling the Web: Discovery and Maintenance of a Large-Scale Web Data, PhD dissertation, Dept. of Computer Science, Stanford University.
 
-Hirai, J., Raghavan, S., Garcia-Molina, H., & Paepcke, A. (2000). `WebBase: A repository of web pages <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.29.3140&rep=rep1&type=pdf>`_. Computer Networks, 33(1-6), 277-293.
+Hirai, J., Raghavan, S., Garcia-Molina, H., & Paepcke, A. (2000). WebBase: A repository of web pages. Computer Networks, 33(1-6), 277-293.
 
-Olston, C., & Najork, M. (2010). `Web crawling <https://dl.acm.org/doi/abs/10.1561/1500000017>`_. Now Publishers Inc.
+Olston, C., & Najork, M. (2010). Web crawling. Now Publishers Inc.
 
-Shkapenyuk, V., & Suel, T. (2002). `Design and implementation of a high-performance distributed web crawler <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.13.4762&rep=rep1&type=pdf>`_. In Proceedings 18th International Conference on Data Engineering (pp. 357-368). IEEE.
+Shkapenyuk, V., & Suel, T. (2002). Design and implementation of a high-performance distributed web crawler. In Proceedings 18th International Conference on Data Engineering (pp. 357-368). IEEE.
+
+..
+    <https://onlinelibrary.wiley.com/doi/pdf/10.1002/spe.587>`_
+    <http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.33.1540&rep=rep1&type=pdf>`_
+    <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.101.5295&rep=rep1&type=pdf>`_
+    <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.29.3140&rep=rep1&type=pdf>`_
+    <https://dl.acm.org/doi/abs/10.1561/1500000017>`_
+    <https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.13.4762&rep=rep1&type=pdf>`_

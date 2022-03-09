@@ -15,16 +15,39 @@ from lxml import html
 
 from .json_metadata import extract_json, extract_json_parse_error
 from .metaxpaths import author_xpaths, categories_xpaths, tags_xpaths, title_xpaths, author_discard_xpaths
-from .utils import line_processing, load_html, normalize_authors, trim, check_authors
+from .utils import check_authors, line_processing, load_html, normalize_authors, normalize_tags, trim, unescape
 from .htmlprocessing import prune_unwanted_nodes
 
 LOGGER = logging.getLogger(__name__)
 logging.getLogger('htmldate').setLevel(logging.WARNING)
 
-METADATA_LIST = [
+
+class Document:
+    "Defines a class to store all necessary data and metadata fields for extracted information."
+    __slots__ = [
     'title', 'author', 'url', 'hostname', 'description', 'sitename',
-    'date', 'categories', 'tags', 'fingerprint', 'id', 'license'
-]
+    'date', 'categories', 'tags', 'fingerprint', 'id', 'license',
+    'body', 'comments', 'commentsbody', 'raw_text', 'text'
+    ]
+    # consider dataclasses for Python 3.7+
+    def __init__(self):
+        for slot in self.__slots__:
+            setattr(self, slot, None)
+
+    def clean_and_trim(self):
+        'Limit text length and trim the attributes.'
+        for slot in self.__slots__:
+            value = getattr(self, slot)
+            if isinstance(value, str):
+                # length
+                if len(value) > 10000:
+                    new_value = value[:9999] + '…'
+                    setattr(self, slot, new_value)
+                    value = new_value
+                # HTML entities, remove spaces and control characters
+                value = line_processing(unescape(value))
+                setattr(self, slot, value)
+
 
 HTMLDATE_CONFIG_FAST = {'extensive_search': False, 'original_date': True}
 HTMLDATE_CONFIG_EXTENSIVE = {'extensive_search': True, 'original_date': True}
@@ -113,18 +136,17 @@ def extract_opengraph(tree):
         # og:locale
         # elif elem.get('property') == 'og:locale':
         #    pagelocale = elem.get('content')
-    return trim(title), trim(author), trim(url), trim(description), trim(site_name)
+    return title, author, url, description, site_name
 
 
 def examine_meta(tree):
     '''Search meta tags for relevant information'''
-    metadata = dict.fromkeys(METADATA_LIST)
+    metadata = Document()  # alt: Metadata()
     # bootstrap from potential OpenGraph tags
     title, author, url, description, site_name = extract_opengraph(tree)
     # test if all return values have been assigned
     if all((title, author, url, description, site_name)):  # if they are all defined
-        metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata[
-            'sitename'] = title, author, url, description, site_name
+        metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename = title, author, url, description, site_name
         return metadata
     tags, backup_sitename = [], None
     # skim through meta tags
@@ -141,7 +163,7 @@ def examine_meta(tree):
             if elem.get('property').startswith('og:'):
                 continue
             if elem.get('property') == 'article:tag':
-                tags.append(content_attr)
+                tags.append(normalize_tags(content_attr))
             elif elem.get('property') in PROPERTY_AUTHOR:
                 author = normalize_authors(author, content_attr)
         # name attribute
@@ -167,7 +189,7 @@ def examine_meta(tree):
                     url = content_attr
             # keywords
             elif name_attr in METANAME_TAG:  # 'page-topic'
-                tags.append(content_attr)
+                tags.append(normalize_tags(content_attr))
         elif 'itemprop' in elem.attrib:
             if elem.get('itemprop') == 'author':
                 author = normalize_authors(author, content_attr)
@@ -190,8 +212,7 @@ def examine_meta(tree):
     if site_name is None and backup_sitename is not None:
         site_name = backup_sitename
     # copy
-    metadata['title'], metadata['author'], metadata['url'], metadata['description'], metadata['sitename'], metadata[
-        'tags'] = title, author, url, description, site_name, tags
+    metadata.title, metadata.author, metadata.url, metadata.description, metadata.sitename, metadata.tags = title, author, url, description, site_name, tags
     return metadata
 
 
@@ -212,6 +233,20 @@ def extract_metainfo(tree, expressions, len_limit=200):
     return None
 
 
+def examine_title_element(tree):
+    '''Extract text segments out of main <title> element.'''
+    title, first, second = None, None, None
+    try:
+        title = trim(tree.xpath('//head//title')[0].text_content())
+        mymatch = HTMLTITLE_REGEX.match(title)
+        if mymatch is not None:
+            first = mymatch.group(1) or None
+            second = mymatch.group(2) or None
+    except IndexError:
+        LOGGER.warning('no main title found')
+    return title, first, second
+
+
 def extract_title(tree):
     '''Extract the document title'''
     # only one h1-element: take it
@@ -225,18 +260,11 @@ def extract_title(tree):
     if title is not None:
         return title
     # extract using title tag
-    try:
-        title = trim(tree.xpath('//head/title')[0].text_content())
-        # refine
-        mymatch = HTMLTITLE_REGEX.match(title)
-        if mymatch:
-            if '.' not in mymatch.group(1):
-                title = mymatch.group(1)
-            elif '.' not in mymatch.group(2):
-                title = mymatch.group(2)
-            return title
-    except IndexError:
-        LOGGER.warning('no main title found')
+    title, first, second = examine_title_element(tree)
+    if first is not None and '.' not in first:
+        return first
+    if second is not None and '.' not in second:
+        return second
     # take first h1-title
     if h1_results:
         return h1_results[0].text_content()
@@ -306,14 +334,11 @@ def extract_url(tree, default_url=None):
 
 def extract_sitename(tree):
     '''Extract the name of a site from the main title (if it exists)'''
-    title_elem = tree.find('.//head/title')
-    if title_elem is not None and title_elem.text is not None:
-        mymatch = HTMLTITLE_REGEX.match(title_elem.text)
-        if mymatch:
-            if '.' in mymatch.group(1):
-                return mymatch.group(1)
-            if '.' in mymatch.group(2):
-                return mymatch.group(2)
+    _, first, second = examine_title_element(tree)
+    if first is not None and '.' in first:
+        return first
+    if second is not None and '.' in second:
+        return second
     return None
 
 
@@ -404,8 +429,8 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
     # initialize dict and try to strip meta tags
     metadata = examine_meta(tree)
     # to check: remove it and replace with author_blacklist in test case
-    if metadata['author'] is not None and ' ' not in metadata['author']:
-        metadata['author'] = None
+    if metadata.author is not None and ' ' not in metadata.author:
+        metadata.author = None
     # fix: try json-ld metadata and override
     try:
         metadata = extract_meta_json(tree, metadata)
@@ -414,23 +439,23 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
         LOGGER.warning('error in JSON metadata extraction: %s', err)
     # try with x-paths
     # title
-    if metadata['title'] is None:
-        metadata['title'] = extract_title(tree)
+    if metadata.title is None:
+        metadata.title = extract_title(tree)
     # check author in blacklist
-    if metadata['author'] is not None and len(author_blacklist) > 0:
-        metadata['author'] = check_authors(metadata['author'], author_blacklist)
+    if metadata.author is not None and len(author_blacklist) > 0:
+        metadata.author = check_authors(metadata.author, author_blacklist)
     # author
-    if metadata['author'] is None:
-        metadata['author'] = extract_author(tree)
+    if metadata.author is None:
+        metadata.author = extract_author(tree)
     # recheck author in blacklist
-    if metadata['author'] is not None and len(author_blacklist) > 0:
-        metadata['author'] = check_authors(metadata['author'], author_blacklist)
+    if metadata.author is not None and len(author_blacklist) > 0:
+        metadata.author = check_authors(metadata.author, author_blacklist)
     # url
-    if metadata['url'] is None:
-        metadata['url'] = extract_url(tree, default_url)
+    if metadata.url is None:
+        metadata.url = extract_url(tree, default_url)
     # hostname
-    if metadata['url'] is not None:
-        metadata['hostname'] = extract_domain(metadata['url'])
+    if metadata.url is not None:
+        metadata.hostname = extract_domain(metadata.url)
     # extract date with external module htmldate
     if date_config is None:
         # decide on fast mode
@@ -438,45 +463,39 @@ def extract_metadata(filecontent, default_url=None, date_config=None, fastmode=F
             date_config = HTMLDATE_CONFIG_EXTENSIVE
         else:
             date_config = HTMLDATE_CONFIG_FAST
-    date_config['url'] = metadata['url']
-    metadata['date'] = find_date(tree, **date_config)
+    date_config['url'] = metadata.url
+    metadata.date = find_date(tree, **date_config)
     # sitename
-    if metadata['sitename'] is None:
-        metadata['sitename'] = extract_sitename(tree)
-    if metadata['sitename'] is not None:
-        if metadata['sitename'].startswith('@'):
+    if metadata.sitename is None:
+        metadata.sitename = extract_sitename(tree)
+    if metadata.sitename is not None:
+        if metadata.sitename.startswith('@'):
             # scrap Twitter ID
-            metadata['sitename'] = re.sub(r'^@', '', metadata['sitename'])
+            metadata.sitename = re.sub(r'^@', '', metadata.sitename)
         # capitalize
         try:
             if (
-                '.' not in metadata['sitename']
-                and not metadata['sitename'][0].isupper()
+                '.' not in metadata.sitename
+                and not metadata.sitename[0].isupper()
             ):
-                metadata['sitename'] = metadata['sitename'].title()
+                metadata.sitename = metadata.sitename.title()
         # fix for empty name
         except IndexError as err:
             LOGGER.warning('error in sitename extraction: %s', err)
     # use URL
-    elif metadata['url']:
-        mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata['url'])
+    elif metadata.url:
+        mymatch = re.match(r'https?://(?:www\.|w[0-9]+\.)?([^/]+)', metadata.url)
         if mymatch:
-            metadata['sitename'] = mymatch.group(1)
+            metadata.sitename = mymatch.group(1)
     # categories
-    if not metadata['categories']:
-        metadata['categories'] = extract_catstags('category', tree)
+    if not metadata.categories:
+        metadata.categories = extract_catstags('category', tree)
     # tags
-    if not metadata['tags']:
-        metadata['tags'] = extract_catstags('tag', tree)
+    if not metadata.tags:
+        metadata.tags = extract_catstags('tag', tree)
     # license
-    metadata['license'] = extract_license(tree)
-    # for safety: length check
-    for key, value in metadata.items():
-        if value is not None and len(value) > 10000:
-            metadata[key] = value[:9999] + '…'
-    # remove spaces and control characters
-    for item in metadata:
-        if metadata[item] is not None and isinstance(metadata[item], str):
-            metadata[item] = line_processing(metadata[item])
-    # return
+    metadata.license = extract_license(tree)
+    # safety checks
+    metadata.clean_and_trim()
+    # return result
     return metadata

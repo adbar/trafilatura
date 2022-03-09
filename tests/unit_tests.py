@@ -7,12 +7,14 @@ import logging
 import os
 import sys
 
+import pytest
+
 from lxml import etree, html
 
 try:
-    import cchardet as chardet
+    from cchardet import detect
 except ImportError:
-    import chardet
+    from charset_normalizer import detect
 
 # language detection
 try:
@@ -26,7 +28,7 @@ import trafilatura.htmlprocessing
 from trafilatura.core import baseline, bare_extraction, extract, handle_formatting, handle_lists, handle_image, handle_paragraphs, handle_quotes, handle_table, handle_textelem, process_record, sanitize_tree, trim
 from trafilatura.lru import LRUCache
 from trafilatura.filters import check_html_lang, duplicate_test, textfilter
-from trafilatura.metadata import METADATA_LIST
+from trafilatura.metadata import Document
 from trafilatura.settings import DEFAULT_CONFIG, TAG_CATALOG, use_config
 
 from trafilatura import utils, xml
@@ -36,7 +38,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 TEST_DIR = os.path.abspath(os.path.dirname(__file__))
 RESOURCES_DIR = os.path.join(TEST_DIR, 'resources')
-SAMPLE_META = dict.fromkeys(METADATA_LIST)
+SAMPLE_META = Document()
 
 ZERO_CONFIG = DEFAULT_CONFIG
 ZERO_CONFIG['DEFAULT']['MIN_OUTPUT_SIZE'] = '0'
@@ -52,14 +54,14 @@ MOCK_PAGES = {
 def load_mock_page(url, xml_flag=False, langcheck=None, tei_output=False):
     '''load mock page from samples'''
     try:
-        with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'r') as inputf:
+        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'r') as inputf:
             htmlstring = inputf.read()
     # encoding/windows fix for the tests
     except UnicodeDecodeError:
         # read as binary
-        with open(os.path.join(TEST_DIR, 'cache', MOCK_PAGES[url]), 'rb') as inputf:
+        with open(os.path.join(TEST_DIR, 'resources', MOCK_PAGES[url]), 'rb') as inputf:
             htmlbinary = inputf.read()
-        guessed_encoding = chardet.detect(htmlbinary)['encoding']
+        guessed_encoding = detect(htmlbinary)['encoding']
         if guessed_encoding is not None:
             try:
                 htmlstring = htmlbinary.decode(guessed_encoding)
@@ -94,34 +96,44 @@ def test_trim():
     # sanitize logic
     assert utils.sanitize(None) is None
     # non-breaking spaces
-    #print(utils.sanitize('Test&nbsp;Text'))
-    #assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
+    print(utils.sanitize('Test&nbsp;Text'))
+    assert utils.sanitize('Test&nbsp;Text') == 'Test Text'
 
 
 def test_input():
     '''test if loaded strings/trees are handled properly'''
-    assert utils.load_html(123) is None
+    assert utils.is_dubious_html('This is a string.') is True
+    assert utils.is_dubious_html(b'This is a string.') is True
+    with pytest.raises(TypeError) as err:
+        assert utils.load_html(123) is None
+    assert 'incompatible' in str(err.value)
     assert utils.load_html('<html><body>ÄÖÜ</body></html>') is not None
     assert utils.load_html(b'<html><body>\x2f\x2e\x9f</body></html>') is not None
     assert utils.load_html('<html><body>\x2f\x2e\x9f</body></html>'.encode('latin-1')) is not None
     #assert utils.load_html(b'0'*int(10e3)) is None
-    assert extract(None, 'url', '0000', target_language=None) is None
+    with pytest.raises(TypeError) as err:
+        assert extract(None, 'url', '0000', target_language=None) is None
+        # legacy
+        assert process_record(None, 'url', '0000', target_language=None) is None
     # GZip
     with open(os.path.join(RESOURCES_DIR, 'webpage.html.gz'), 'rb') as gzfile:
         myinput = gzfile.read()
     assert 'Long story short,' in extract(myinput)
-    # legacy
-    assert process_record(None, 'url', '0000', target_language=None) is None
+
+    # unicode normalization
+    assert utils.normalize_unicode('A\u0308ffin') != 'A\u0308ffin'
+    testresult = extract('<html><body><p>A\u0308ffin</p></body></html>', config=ZERO_CONFIG)
+    assert testresult != 'A\u0308ffin' and testresult == 'Äffin'
 
 
 def test_txttocsv():
-    mymeta = dict.fromkeys(METADATA_LIST)
+    mymeta = Document()
     assert utils.txttocsv('', '', mymeta) == 'None\tNone\tNone\tNone\tNone\t\t\tNone\n'
-    mymeta['title'] = 'Test title'
-    mymeta['url'] = 'https://example.org'
-    mymeta['hostname'] = 'example.org'
-    mymeta['id'] = '1'
-    mymeta['license'] = 'CC BY-SA'
+    mymeta.title = 'Test title'
+    mymeta.url = 'https://example.org'
+    mymeta.hostname = 'example.org'
+    mymeta.id = '1'
+    mymeta.license = 'CC BY-SA'
     assert utils.txttocsv('Test text', 'Test comment', mymeta) == '1\thttps://example.org\tNone\texample.org\tTest title\tNone\tTest text\tTest comment\tCC BY-SA\n'
     mystring = '<html><body><p>ÄÄÄÄÄÄÄÄÄÄÄÄÄÄ</p></body></html>'
     assert extract(mystring, output_format='csv', config=ZERO_CONFIG) is not None
@@ -131,15 +143,15 @@ def test_txttocsv():
     assert result.endswith('}') and '"fingerprint":' in result
     assert extract(mystring, output_format='json', include_comments=False, config=ZERO_CONFIG).endswith('}')
     # bare extraction for python
-    result = bare_extraction(mystring, config=ZERO_CONFIG)
-    assert isinstance(result, dict) and len(result) == 14
+    result = bare_extraction(mystring, config=ZERO_CONFIG, as_dict=True)
+    assert isinstance(result, dict) and len(result) == 17
 
 
 def test_exotic_tags(xmloutput=False):
     # cover some edge cases with a specially crafted file
     result = load_mock_page('http://exotic_tags', xml_flag=xmloutput, tei_output=True)
     assert 'Teletype text' in result and 'My new car is silver.' in result
-    filepath = os.path.join(TEST_DIR, 'cache', 'exotic_tags_tei.html')
+    filepath = os.path.join(TEST_DIR, 'resources', 'exotic_tags_tei.html')
     with open(filepath) as f:
         content = etree.fromstring(f.read())
     res = xml.check_tei(content, 'http://dummy')
@@ -347,8 +359,8 @@ def test_formatting():
 
 
 def test_baseline():
-    _, length, string = baseline('')
-    assert (length, string) == (0, '')
+    _, string, length = baseline('')
+    assert (string, length) == ('', 0)
     my_document = r'<html><body><script type="application/ld+json">{"description":"In letzter Zeit kam man am Begriff \"Hygge\", was so viel wie \"angenehm\" oder \"gemütlich\" bedeutet, ja nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend ...","image":[{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/uncropped-0-0\/7d00b2658fd0a3b19e1b161f4657cc20\/Xw\/ikigai--1-.jpg","width":"2048","height":"1366","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-1280-720\/bf947c7c24167d7c0adae0be10942d57\/Uf\/ikigai--1-.jpg","width":"1280","height":"720","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/16x9-938-528\/bf947c7c24167d7c0adae0be10942d57\/JK\/ikigai--1-.jpg","width":"938","height":"528","@type":"ImageObject"},{"name":"Mit der Ikigai-Methode wirst du glücklicher","url":"https:\/\/image.brigitte.de\/10973004\/large1x1-622-622\/f5544b7d67e1be04f7729b130e7e0485\/KN\/ikigai--1-.jpg","width":"622","height":"622","@type":"ImageObject"}],"mainEntityOfPage":{"@id":"https:\/\/www.brigitte.de\/liebe\/persoenlichkeit\/ikigai-macht-dich-sofort-gluecklicher--10972896.html","@type":"WebPage"},"headline":"Ikigai macht dich sofort glücklicher!","datePublished":"2019-06-19T14:29:08+0000","dateModified":"2019-06-19T14:29:10+0000","author":{"name":"BRIGITTE.de","@type":"Organization"},"publisher":{"name":"BRIGITTE.de","logo":{"url":"https:\/\/image.brigitte.de\/11476842\/uncropped-0-0\/f19537e97b9189bf0f25ce924168bedb\/kK\/bri-logo-schema-org.png","width":"167","height":"60","@type":"ImageObject"},"@type":"Organization"},"articleBody":"In letzter Zeit kam man am Begriff \"Hygge\" (\"gemütlich\" oder \"angenehm\") nicht vorbei. Jetzt macht ihm ein neuer Glücks-Trend Konkurrenz: \"Ikigai\". Bist du glücklich? Schwierige Frage, nicht wahr? Viele von uns müssen da erst mal überlegen.","@type":"NewsArticle"}</script></body></html>'
     _, result, _  = baseline(my_document)
     assert result.startswith('In letzter Zeit kam man') and result.endswith('erst mal überlegen.')
@@ -358,6 +370,9 @@ def test_baseline():
     my_document = '<html><body><quote>This is only a quote but it is better than nothing.</quote></body></html>'
     _, result, _ = baseline(my_document)
     assert result is not None
+    my_document = "<html><body><div>   Document body...   </div><script> console.log('Hello world') </script></body></html>"
+    _, result, _ = baseline(my_document)
+    assert result == 'Document body...'
 
 
 def test_filters():
@@ -541,25 +556,25 @@ def test_tei():
     # test header + metadata
     tei = etree.Element('TEI', xmlns='http://www.tei-c.org/ns/1.0')
     header = etree.SubElement(tei, 'teiHeader')
-    docmeta = dict.fromkeys(METADATA_LIST)
-    docmeta['categories'], docmeta['tags'] = [], []
-    docmeta['title'] = 'Title'
+    docmeta = Document()
+    docmeta.categories, docmeta.tags = [], []
+    docmeta.title = 'Title'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['sitename'] = 'Site Name'
-    docmeta['date'] = '2021-01-01'
+    docmeta.sitename = 'Site Name'
+    docmeta.date = '2021-01-01'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['date'] = None
+    docmeta.date = None
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['hostname'] = 'hostname'
+    docmeta.hostname = 'hostname'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['sitename'] = None
-    docmeta['license'] = 'CC BY-SA'
-    docmeta['url'] = 'https://test.org/'
-    docmeta['categories'] = ['cat1', 'cat2']
+    docmeta.sitename = None
+    docmeta.license = 'CC BY-SA'
+    docmeta.url = 'https://test.org/'
+    docmeta.categories = ['cat1', 'cat2']
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['date'] = '2021-01-01'
+    docmeta.date = '2021-01-01'
     assert xml.write_fullheader(header, docmeta) is not None
-    docmeta['title'], docmeta['sitename'] = None, None
+    docmeta.title, docmeta.sitename = None, None
     assert xml.write_fullheader(header, docmeta) is not None
 
 
@@ -604,7 +619,7 @@ def test_precision_recall():
     my_document = html.fromstring('<html><body><p>This here is the text.</p></body></html>')
     assert extract(my_document, favor_precision=True, config=ZERO_CONFIG) is not None
     assert extract(my_document, favor_recall=True, config=ZERO_CONFIG) is not None
-    my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><p>This here is the text.</p></div></body></html>')
+    my_document = html.fromstring('<html><body><div class="article-body"><div class="teaser-content"><p>This here is a teaser text.</p></div><div><p>This here is the text.</p></div></body></html>')
     assert 'teaser text' in extract(my_document, favor_recall=True, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, config=ZERO_CONFIG)
     assert 'teaser text' not in extract(my_document, favor_precision=True, config=ZERO_CONFIG)

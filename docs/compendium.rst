@@ -23,6 +23,9 @@ How well defined corpora should be, depends on research tradition and practices.
 For Baroni & Ueyama (2006), corpora bring “actual usage evidence”, “collections of language samples produced in natural contexts and without experimental interference”. They distinguish four main cases where such evidence is needed: theoretical and applied linguistic questions, simulations of language acquisition, lexicography, and a large number of tasks in natural language processing.
 
 
+    “First, [Internet corpora] can be searched using linguistic criteria, at least with respect to lemmas and POS tags […]. Second, it is possible to produce sets of collocates […]. It is also possible to obtain other statistical data from Internet corpora, such as word and n-gram frequencies.” (Sharoff 2006)
+
+
 
 Corpus types and resulting methods
 ----------------------------------
@@ -87,6 +90,7 @@ The distinction is not always clear-cut, web corpora can target a particular set
 Corpus construction steps
 -------------------------
 
+
 In a `seminal article <https://aclanthology.org/J07-1010.pdf>`_, Adam Kilgarriff sums up issues related to the “low-entry-cost way to use the Web” which commercial search engines represent. He shows how an alternative can be developed within the academic community.
 
 
@@ -107,6 +111,14 @@ Handling of steps (1) & (2) is the primary motivation behind the development of 
 
 .. hint::
     For more information on the article mentioned above see the blog post `“Googleology is bad science”: Anatomy of a web corpus infrastructure <https://adrien.barbaresi.eu/blog/googleology-anatomy-corpus-infrastructure.html>`_.
+
+
+In case a search engine is used to find documents, pre- and post-processing phases may differ.
+
+    “A large reference corpus for an arbitrary language can be collected in six steps: word selection, query generation, downloading from the Internet, post-processing, composition assessment and comparison of word lists (the last two steps are optional).” (Sharoff 2006)
+
+*N.B.: unlike in BootCat corpora, in this approach words from the general lexicon as used as seeds.*
+
 
 
 Crawling and download
@@ -132,6 +144,8 @@ The corpus construction strategy usually follows from the chosen corpus type, on
 
 
 Certain indicators can be applied while scouting the Web and potentially affect the course of events, such as language identification in order to keep the crawl language-focused (Jauhiainen et al. 2020).
+
+Crawling efficiency is usually understood as a “yield rate”, i.e. as a measure of residual corpus size vs. computational power invested.
 
 
 .. hint::
@@ -181,8 +195,7 @@ That is why web texts can and should be further examined and prepared for inclus
     Further text quality criteria are discussed in Schäfer & Bildhauer (2013) chapter 5, and Barbaresi (2015) chapter 2.
 
 
-A different series of questions arise when randomly searching for text on the Internet: What is a text? When does input stop to be a text? What should be included in the corpus? Sometimes the results are bounded by certain texts types (like classified ads) or by the toolchain (with scraps of text coming from the tools). See the challenges and indicators described in Schäfer et al. (2013).
-
+A different series of questions arise when randomly searching for text on the Internet: What is a text? When does input stop to be a text? What should be included in the corpus? Sometimes the results are bounded by certain texts types (like classified ads) or by the toolchain (with scraps of text coming from the tools). See the challenges and indicators described in Kilgarriff & Suchomel (2013), Schäfer et al. (2013). For work on corpus description in terms of genres see Sharoff (2018).
 
 
 
@@ -198,11 +211,31 @@ The above deals with texts published in the form of web pages. There are also a 
 The Web constantly evolves and hyperlinks cannot be expected to remain stable in time. Page display is also affected by technological or commercial evolutions, for example prominent news outlets may disappear behind pay walls. See the Wikipedia page on `link rot <https://en.wikipedia.org/wiki/Link_rot>`_ for ideas on how to prevent it (chiefly using clean URLs and web archives).
 
 
+Superfluous data
+~~~~~~~~~~~~~~~~
+
+“Web spam is a large and growing problem for web corpus builders.” (Kilgarriff & Suchomel 2013)
+
+“In contrast to the traditional or search engine definitions of web spam, the corpus use point of view is not concerned with intentions of spam producers or the justification of the search engine optimisation of a web page. A text corpus built for NLP or linguistics purpose should contain coherent and consistent, meaningful, natural and authentic sentences in the target language. Only texts created by spamming techniques breaking those properties should be detected and avoided.” (Suchomel 2020)
+
+
+
 Technicalities
 ~~~~~~~~~~~~~~
 
 
 Technical problems are mostly related to communications over the network and text processing. For smaller projects running from a single computer, bandwidth and RAM are two main limitations. For larger projects, the capacity to scale crawling and processing operations across servers is paramount. This notably includes the capacity to control when web servers are contacted, to what extent web pages can be processed on the fly, and how the resulting corpus data is stored and eventually indexed.
+
+
+Access
+~~~~~~
+
+
+Sharing URL lists can alleviate copyright issues raised by access to web corpora:
+
+   “Given that the list of links in an Internet corpus does not give the impression that websites it points to are the same as the URL list itself nor compete with services provided by respective websites, a corpus in the form of lists of URLs is not subject to copyright restrictions.” (Sharoff 2006)
+
+
 
 
 
@@ -237,13 +270,21 @@ Jauhiainen, H., Jauhiainen, T., & Lindén, K. (2020). Building web corpora for m
 
 Kilgarriff, A. (2007). Googleology is bad science. *Computational linguistics*, 33(1), 147-151.
 
+Kilgarriff, A. and Suchomel, V. (2013) "Web Spam". In: *Proceedings of the 8th Web as Corpus Workshop (WAC-8)*, Corpus Linguistics 2013, pp. 46–52.
+
 McEnery, T. (2003). Corpus Linguistics. In R. Mitkov (Ed.), *The Oxford Handbook of Computational Linguistics* (pp. 448–463). Oxford University Press.
 
 Schäfer, R., Barbaresi, A., & Bildhauer, F. (2013). The Good, the Bad, and the Hazy: Design Decisions in Web Corpus Construction. In *8th Web as Corpus Workshop*, pp. 7-15, ACL SIGWAC.
 
 Schäfer, R., & Bildhauer, F. (2013). Web Corpus Construction. Morgan & Claypool.
 
+Sharoff, S. (2006). Open-source corpora: Using the net to fish for linguistic data. *International journal of corpus linguistics*, 11(4), 435-462.
+
+Sharoff, S. (2018). Functional text dimensions for the annotation of web corpora. *Corpora*, 13(1), 65-95.
+
 Spoustová, J., & Spousta, M. (2012). A High-Quality Web Corpus of Czech. In *Proceedings of the Eighth International Conference on Language Resources and Evaluation (LREC'12)*, pp. 311-315.
+
+Suchomel, V. (2020). Better Web Corpora For Corpus Linguistics And NLP (Doctoral dissertation, PhD thesis, Masaryk University).
 
 Tanguy, L. (2013). La ruée linguistique vers le Web. *Texto! Textes et Cultures*, 18(4).
 
