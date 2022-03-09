@@ -13,10 +13,10 @@
 
 import os
 import sys
+
 sys.path.insert(0, os.path.abspath('.'))
 
 import trafilatura
-
 
 # -- Project information -----------------------------------------------------
 
@@ -25,7 +25,6 @@ copyright = '2022, Adrien Barbaresi'
 html_show_sphinx = False
 author = 'Adrien Barbaresi'
 version = trafilatura.__version__
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -67,13 +66,12 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # unit titles (such as .. function::).
 add_module_names = True
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'pydata_sphinx_theme' # 'furo' # 'alabaster'
+html_theme = 'pydata_sphinx_theme'  # 'furo' # 'alabaster'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -84,21 +82,20 @@ html_theme = 'pydata_sphinx_theme' # 'furo' # 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 
-## pydata options
+# pydata options
 html_theme_options = {
-  "github_url": "https://github.com/adbar/trafilatura",
-  "twitter_url": "https://twitter.com/adbarbaresi",
-  "external_links": [
-      {"name": "Blog", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
-  ],
-  "google_analytics_id": "G-K3R5QCVDF1",
-#  "use_edit_page_button": True,
-#  "navigation_depth": 3,
-#  "show_toc_level": 3,
+    "github_url": "https://github.com/adbar/trafilatura",
+    "twitter_url": "https://twitter.com/adbarbaresi",
+    "external_links": [
+        {"name": "Blog", "url": "https://adrien.barbaresi.eu/blog/tag/trafilatura.html"},
+    ],
+    "google_analytics_id": "G-K3R5QCVDF1",
+    #  "use_edit_page_button": True,
+    #  "navigation_depth": 3,
+    #  "show_toc_level": 3,
 }
 
 html_logo = "trafilatura-logo.png"
-
 
 html_context = {
     # "github_url": "https://github.com", # or your GitHub Enterprise interprise
@@ -108,14 +105,13 @@ html_context = {
     "doc_path": "docs",
 }
 
-
 ## furo options
-#html_theme_options = {
+# html_theme_options = {
 #    "announcement": "<em>Important</em> announcement!",
-#}
+# }
 
 ## alabaster theme
-#html_theme_options = {
+# html_theme_options = {
 #    "description": "Web scraping tool for text discovery and retrieval",
 #    "show_powered_by": False,
 #    "github_button": False,
@@ -127,7 +123,7 @@ html_context = {
 #    "sidebar_collapse": True,
 #    "extra_nav_links": {'test': 'https://example.org'},
 #    "note_bg": "#FFF59C",
-#}
+# }
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),

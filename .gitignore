@@ -31,3 +31,5 @@ Pipfile*
 # older stuff
 old/
 /eval/
+/.pytest_cache/
+/.github/
